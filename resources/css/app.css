@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --ink: #15281F;
+    --violet: #6D28D9;
+    --cream: #FBF5E6;
+    --coral: #E8522A;
+    --gold: #D4A017;
+    --mint: #10B981;
+  }
+  body { @apply bg-cream text-ink font-sans; }
+}
