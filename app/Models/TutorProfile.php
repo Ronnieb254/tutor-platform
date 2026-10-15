@@ -90,6 +90,11 @@ class TutorProfile extends Model
         return 'under_review';
     }
 
+    public function getSlugAttribute(): string
+    {
+        return \Illuminate\Support\Str::slug($this->user->name ?? 'tutor-'.$this->id);
+    }
+
     public function scopeApproved($query)
     {
         return $query->where('is_approved', true);

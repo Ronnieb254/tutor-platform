@@ -136,7 +136,7 @@
                     @endforeach
                 </div>
 
-                <a href="{{ route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name)) }}"
+                <a href="{{ route('tutors.show', $tutor->id) }}"
                    class="mt-3 w-full pill-btn-primary text-sm py-2.5 block text-center">
                     View Profile & Book
                 </a>

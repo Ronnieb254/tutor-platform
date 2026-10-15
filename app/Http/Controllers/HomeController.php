@@ -29,12 +29,33 @@ class HomeController extends Controller
         return view('pages.tutors.index');
     }
 
-    public function tutorProfile(string $slug)
+    public function tutorProfile(int $id)
     {
-        $user = \App\Models\User::where('name', 'like', "%{$slug}%")->firstOrFail();
-        $tutor = TutorProfile::where('user_id', $user->id)->with(['user', 'subjects.category', 'reviews.student'])->firstOrFail();
-
+        $tutor = TutorProfile::with(['user', 'subjects.category', 'reviews.student', 'availabilities'])
+            ->findOrFail($id);
         return view('pages.tutors.show', compact('tutor'));
+    }
+
+    public function tutorProfileBySlug(string $slug)
+    {
+        // Convert slug back: "ms-fatuma-abdi" → search by words
+        $words = array_filter(explode('-', $slug), fn($w) => strlen($w) > 2);
+        $query = \App\Models\User::where('role', 'tutor');
+        foreach ($words as $word) {
+            $query->where('name', 'like', "%{$word}%");
+        }
+        $user = $query->first();
+
+        if (!$user) {
+            abort(404, 'Tutor not found');
+        }
+
+        $tutor = TutorProfile::where('user_id', $user->id)
+            ->with(['user', 'subjects.category', 'reviews.student', 'availabilities'])
+            ->firstOrFail();
+
+        // Redirect to canonical ID-based URL
+        return redirect()->route('tutors.show', $tutor->id);
     }
 
     public function dashboard()

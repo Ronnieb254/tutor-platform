@@ -219,9 +219,9 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
             <div style="display:flex;gap:8px;">
-                <a href="<?php echo e(route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name))); ?>" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View & Book</a>
+                <a href="<?php echo e(route('tutors.show', $tutor->id)); ?>" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View & Book</a>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
-                <a href="<?php echo e(route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name))); ?>" class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
+                <a href="<?php echo e(route('tutors.show', $tutor->id)); ?>" class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
                     <i class="fa-regular fa-heart"></i>
                 </a>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>

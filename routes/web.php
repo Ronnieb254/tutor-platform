@@ -15,7 +15,8 @@ Route::get('/examiner-clinic', fn() => view('pages.examiner-clinic'))->name('exa
 Route::get('/contact', fn() => view('pages.contact'))->name('contact');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
 Route::get('/tutors', [HomeController::class, 'tutors'])->name('tutors.index');
-Route::get('/tutors/{slug}', [HomeController::class, 'tutorProfile'])->name('tutors.show');
+Route::get('/tutors/{id}', [HomeController::class, 'tutorProfile'])->name('tutors.show')->where('id', '[0-9]+');
+Route::get('/tutors/{slug}', [HomeController::class, 'tutorProfileBySlug'])->name('tutors.show.slug');
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
@@ -66,6 +67,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard/tutor', fn() => view('pages.dashboard.tutor'))->name('tutor.dashboard');
         Route::get('/tutor/onboarding', fn() => view('pages.auth.tutor-onboarding'))->name('tutor.onboarding');
 
+        // New onboarding submit (file uploads + speedy verification)
+        Route::post('/tutor/onboarding/submit', [App\Http\Controllers\TutorOnboardingController::class, 'submit'])->name('tutor.onboarding.submit');
+
         // Document upload
         Route::post('/tutor/documents/upload', [App\Http\Controllers\TutorController::class, 'uploadDocument'])->name('tutor.documents.upload');
 
@@ -92,6 +96,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/categories', fn() => view('pages.admin.categories'))->name('categories');
         Route::get('/settings',   fn() => view('pages.admin.settings'))->name('settings');
         Route::get('/blog',       fn() => view('pages.admin.blog'))->name('blog');
+
+        // Tutor approve / suspend
+        Route::patch('/tutors/{profile}/approve',  [App\Http\Controllers\Admin\TutorApprovalController::class, 'approve'])->name('tutors.approve');
+        Route::patch('/tutors/{profile}/suspend',  [App\Http\Controllers\Admin\TutorApprovalController::class, 'suspend'])->name('tutors.suspend');
+
+        // Document approve / reject
+        Route::patch('/documents/{document}/approve', [App\Http\Controllers\Admin\TutorApprovalController::class, 'approveDoc'])->name('documents.approve');
+        Route::patch('/documents/{document}/reject',  [App\Http\Controllers\Admin\TutorApprovalController::class, 'rejectDoc'])->name('documents.reject');
+
+        // User toggle active
+        Route::patch('/users/{user}/toggle-active', [App\Http\Controllers\Admin\TutorApprovalController::class, 'toggleUser'])->name('users.toggle');
     });
 });
 

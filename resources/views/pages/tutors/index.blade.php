@@ -217,9 +217,9 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
                 @endforeach
             </div>
             <div style="display:flex;gap:8px;">
-                <a href="{{ route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name)) }}" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View & Book</a>
+                <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View & Book</a>
                 @auth
-                <a href="{{ route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name)) }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
+                <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
                     <i class="fa-regular fa-heart"></i>
                 </a>
                 @endauth

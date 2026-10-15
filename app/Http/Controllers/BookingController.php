@@ -83,11 +83,16 @@ class BookingController extends Controller
 
         if (($result['data']['status'] ?? '') === 'success') {
             $payment->update(['status' => 'success', 'paid_at' => now()]);
-            $this->bookingService->confirmBooking($payment->booking);
+            $booking = $payment->booking;
+            $this->bookingService->confirmBooking($booking);
+
+            $fresh = $booking->fresh();
 
             return response()->json([
-                'status'       => 'ok',
-                'booking_uuid' => $payment->booking->uuid,
+                'status'        => 'ok',
+                'booking_uuid'  => $fresh->uuid,
+                'student_code'  => $fresh->session_code_student,
+                'tutor_code'    => $fresh->session_code_tutor,
             ]);
         }
 

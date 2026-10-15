@@ -725,8 +725,8 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
-                <a href="{{ route('tutors.show', \Illuminate\Support\Str::slug($profile->user->name)) }}" class="btn btn-v btn-sm">Book Session</a>
-                <a href="{{ route('tutors.show', \Illuminate\Support\Str::slug($profile->user->name)) }}" class="btn btn-o btn-sm">View Profile</a>
+                <a href="{{ route('tutors.show', $profile->id) }}" class="btn btn-v btn-sm">Book Session</a>
+                <a href="{{ route('tutors.show', $profile->id) }}" class="btn btn-o btn-sm">View Profile</a>
             </div>
         </div>
         @endforeach

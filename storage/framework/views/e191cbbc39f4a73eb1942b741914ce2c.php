@@ -401,7 +401,7 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
-                <a href="<?php echo e(route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name))); ?>" class="btn btn-v" style="width:100%;font-size:13px;padding:10px;"><i class="fa-solid fa-calendar-check"></i> Book Session</a>
+                <a href="<?php echo e(route('tutors.show', $tutor->id)); ?>" class="btn btn-v" style="width:100%;font-size:13px;padding:10px;"><i class="fa-solid fa-calendar-check"></i> Book Session</a>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
@@ -502,7 +502,6 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
     </div>
 </section>
 
-<!-- <?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?> -->
 <style>.blog-show-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.blog-show-g{grid-template-columns:1fr 300px!important;}}</style>
 <?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>

@@ -399,7 +399,7 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
                     </div>
                     @endforeach
                 </div>
-                <a href="{{ route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name)) }}" class="btn btn-v" style="width:100%;font-size:13px;padding:10px;"><i class="fa-solid fa-calendar-check"></i> Book Session</a>
+                <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-v" style="width:100%;font-size:13px;padding:10px;"><i class="fa-solid fa-calendar-check"></i> Book Session</a>
             </div>
             @endforeach
         </div>
@@ -500,7 +500,6 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
     </div>
 </section>
 
-<!-- @include('partials.footer') -->
 <style>.blog-show-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.blog-show-g{grid-template-columns:1fr 300px!important;}}</style>
 @include('partials.footer')
 @livewireScripts

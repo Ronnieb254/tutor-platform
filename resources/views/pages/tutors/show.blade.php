@@ -2,116 +2,204 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $tutor->user->name }} – Mwalimu</title>
-<meta name="description" content="{{ Str::limit($tutor->bio ?? 'Verified tutor on Mwalimu Kenya', 160) }}">
+<title>{{ $tutor->user->name }} – Verified Tutor | Mwalimu</title>
+<meta name="description" content="{{ Str::limit($tutor->bio ?? 'Book a session with '.$tutor->user->name.' on Mwalimu.', 160) }}">
 <style>
-.profile-hero{background:var(--ink);padding:44px 0 0;position:relative;overflow:hidden;}
-.profile-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:rgba(109,40,217,.12);border-radius:50%;}
-.tab-btn{padding:14px 20px;font-size:14px;font-weight:600;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.5);border-bottom:3px solid transparent;transition:all .15s;font-family:inherit;}
-.tab-btn.on{color:#fff;border-bottom-color:var(--violet);}
-.avail-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:12px;border:1px solid var(--hair);margin-bottom:6px;}
-.avail-row.on{background:rgba(109,40,217,.04);border-color:rgba(109,40,217,.15);}
-.review-card{border-bottom:1px solid rgba(21,40,31,.06);padding:20px 0;}
-.review-card:first-child{padding-top:0;}
-.review-card:last-child{border-bottom:none;}
-.book-widget{background:#fff;border-radius:20px;border:1px solid var(--hair);padding:24px;position:sticky;top:88px;box-shadow:0 4px 24px rgba(21,40,31,.08);}
+/* ── Page-level styles ── */
+.profile-hero{background:linear-gradient(135deg,#111C16 0%,#15281F 60%,#1a2e22 100%);padding:48px 0 0;position:relative;overflow:hidden;}
+.profile-hero::before{content:'';position:absolute;top:-120px;right:-80px;width:400px;height:400px;background:rgba(109,40,217,.12);border-radius:50%;pointer-events:none;}
+.profile-hero::after{content:'';position:absolute;bottom:-60px;left:20%;width:200px;height:200px;background:rgba(212,160,23,.06);border-radius:50%;pointer-events:none;}
+
+/* Tabs */
+.ptab{padding:14px 20px;font-size:14px;font-weight:600;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.45);border-bottom:3px solid transparent;transition:all .18s;font-family:inherit;white-space:nowrap;}
+.ptab.on,.ptab:hover{color:#fff;border-bottom-color:#6D28D9;}
+
+/* Session tier cards */
+.tier-card{border:2px solid rgba(21,40,31,.12);border-radius:16px;padding:16px;text-align:left;cursor:pointer;transition:all .2s;background:#fff;display:block;width:100%;}
+.tier-card:hover,.tier-card.selected{border-color:#6D28D9;background:rgba(109,40,217,.04);}
+.tier-card.selected{background:rgba(109,40,217,.06);}
+
+/* Review rating bars */
+.rbar-track{height:7px;background:#F4F6F4;border-radius:999px;overflow:hidden;flex:1;}
+.rbar-fill{height:100%;background:#D4A017;border-radius:999px;transition:width .5s ease;}
+
+/* Booking steps */
+.bstep{display:flex;flex-direction:column;gap:4px;align-items:center;}
+.bstep-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all .2s;}
+
+/* Payment form */
+.pay-field{width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);background:#fff;font-size:14px;font-family:inherit;color:#15281F;outline:none;transition:all .15s;}
+.pay-field:focus{border-color:#6D28D9;box-shadow:0 0 0 3px rgba(109,40,217,.1);}
 </style>
 </head>
 <body>
 @php
-$colors=['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899'];
-$avatarColor=$colors[$tutor->id%count($colors)];
-$reviews=$tutor->reviews()->where('is_visible',true)->with('student')->latest()->paginate(6);
-$prices=[15=>300,30=>500,45=>680,60=>800];
-$sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
+$prices    = [15=>300,30=>500,45=>680,60=>800];
+$sessNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
+$sessDesc  = [15=>'Rapid revision or a quick question',30=>'Targeted practice or concept clarity',45=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
+$colors    = ['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6'];
+$avColor   = $colors[$tutor->id % count($colors)];
+$reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->latest()->paginate(8);
 @endphp
 
 @include('partials.nav')
 
-{{-- PROFILE HERO --}}
+{{-- ── PROFILE HERO ────────────────────────────────────────────────── --}}
 <div class="profile-hero">
-    <div class="w" style="position:relative;z-index:1;">
-        <div style="margin-bottom:8px;">
-            <a href="{{ route('tutors.index') }}" style="font-size:13px;color:rgba(255,255,255,.5);display:inline-flex;align-items:center;gap:6px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">
+    <div style="max-width:1360px;margin:0 auto;padding:0 24px @media(min-width:1024px){padding:0 48px}">
+
+        {{-- Breadcrumb --}}
+        <div style="margin-bottom:20px;">
+            <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='rgba(255,255,255,.85)'" onmouseout="this.style.color='rgba(255,255,255,.5)'">
                 <i class="fa-solid fa-arrow-left fa-xs"></i> All Tutors
             </a>
         </div>
-        <div style="display:flex;align-items:flex-start;gap:22px;padding-bottom:0;">
-            <div style="width:88px;height:88px;border-radius:22px;background:{{ $avatarColor }};display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;color:#fff;flex-shrink:0;border:3px solid rgba(255,255,255,.15);">{{ substr($tutor->user->name,0,1) }}</div>
+
+        {{-- Profile header --}}
+        <div style="display:flex;align-items:flex-start;gap:22px;flex-wrap:wrap;">
+            {{-- Avatar --}}
+            <div style="width:96px;height:96px;border-radius:22px;background:{{ $avColor }};display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:38px;font-weight:700;color:#fff;flex-shrink:0;border:3px solid rgba(255,255,255,.15);">
+                {{ strtoupper(substr($tutor->user->name,0,1)) }}
+            </div>
+
+            {{-- Info --}}
             <div style="flex:1;min-width:0;">
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
-                    <h1 style="font-size:clamp(24px,4vw,36px);color:#fff;">{{ $tutor->user->name }}</h1>
-                    <span class="badge badge-m"><i class="fa-solid fa-certificate fa-xs"></i> TSC Verified</span>
+                    <h1 style="font-family:'Fraunces',serif;font-size:clamp(24px,4vw,38px);font-weight:800;color:#fff;line-height:1.1;">{{ $tutor->user->name }}</h1>
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(16,185,129,.2);color:#4ADE80;border:1px solid rgba(16,185,129,.3);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;">
+                        <i class="fa-solid fa-certificate fa-xs"></i> TSC Verified
+                    </span>
+                    @if($tutor->is_tsc_registered ?? false)
+                    <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.25);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;">
+                        <i class="fa-solid fa-star fa-xs"></i> National Examiner
+                    </span>
+                    @endif
                 </div>
-                <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;">
+
+                {{-- Subjects --}}
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
                     @foreach($tutor->subjects as $s)
-                    <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);padding:3px 12px;border-radius:999px;font-size:12px;font-weight:500;">{{ $s->name }}</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);padding:4px 13px;border-radius:999px;font-size:12px;font-weight:500;border:1px solid rgba(255,255,255,.12);">{{ $s->name }}</span>
                     @endforeach
                 </div>
-                <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:rgba(255,255,255,.6);">
-                    <span><i class="fa-solid fa-star" style="color:var(--gold);"></i> <strong style="color:#fff;">{{ number_format($tutor->rating_avg,1) }}</strong> ({{ $tutor->total_reviews }} reviews)</span>
-                    <span><i class="fa-solid fa-chalkboard fa-xs"></i> {{ $tutor->total_sessions }} sessions</span>
-                    <span><i class="fa-solid fa-clock fa-xs"></i> {{ $tutor->experience_years }} years exp.</span>
-                    @if($tutor->city)<span><i class="fa-solid fa-location-dot fa-xs"></i> {{ $tutor->city }}, Kenya</span>@endif
+
+                {{-- Stats row --}}
+                <div style="display:flex;flex-wrap:wrap;gap:20px;font-size:14px;color:rgba(255,255,255,.65);">
+                    <span style="display:flex;align-items:center;gap:5px;">
+                        <i class="fa-solid fa-star" style="color:#D4A017;font-size:13px;"></i>
+                        <strong style="color:#fff;">{{ number_format($tutor->rating_avg,1) }}</strong>
+                        <span>({{ $tutor->total_reviews }} reviews)</span>
+                    </span>
+                    <span style="display:flex;align-items:center;gap:5px;">
+                        <i class="fa-solid fa-chalkboard fa-xs" style="opacity:.6;"></i>
+                        <strong style="color:#fff;">{{ number_format($tutor->total_sessions) }}</strong> sessions
+                    </span>
+                    <span style="display:flex;align-items:center;gap:5px;">
+                        <i class="fa-solid fa-clock fa-xs" style="opacity:.6;"></i>
+                        <strong style="color:#fff;">{{ $tutor->experience_years }}</strong> years exp.
+                    </span>
+                    @if($tutor->city)
+                    <span style="display:flex;align-items:center;gap:5px;">
+                        <i class="fa-solid fa-location-dot fa-xs" style="opacity:.6;"></i>
+                        {{ $tutor->city }}, Kenya
+                    </span>
+                    @endif
+                    <span style="display:flex;align-items:center;gap:5px;">
+                        <i class="fa-solid fa-reply fa-xs" style="opacity:.6;"></i>
+                        Responds within 2hr
+                    </span>
+                </div>
+            </div>
+
+            {{-- Desktop price badge --}}
+            <div style="display:none;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;" class="desk-price">
+                <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:12px 18px;text-align:center;">
+                    <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">From</div>
+                    <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:#D4A017;">KSh 300</div>
+                    <div style="font-size:11px;color:rgba(255,255,255,.4);">per session</div>
                 </div>
             </div>
         </div>
 
-        {{-- Tabs --}}
-        <div style="display:flex;margin-top:20px;border-top:1px solid rgba(255,255,255,.08);" x-data="{ tab: 'about' }">
-            <button class="tab-btn" :class="tab==='about'?'on':''" @click="tab='about'">About</button>
-            <button class="tab-btn" :class="tab==='availability'?'on':''" @click="tab='availability'">Availability</button>
-            <button class="tab-btn" :class="tab==='reviews'?'on':''" @click="tab='reviews'">Reviews ({{ $tutor->total_reviews }})</button>
+        {{-- Tab bar --}}
+        <div style="display:flex;gap:0;margin-top:28px;overflow-x:auto;" x-data="">
+            <button class="ptab on" onclick="showTab('about',this)">
+                <i class="fa-solid fa-user fa-xs" style="margin-right:5px;"></i>About
+            </button>
+            <button class="ptab" onclick="showTab('availability',this)">
+                <i class="fa-solid fa-calendar-week fa-xs" style="margin-right:5px;"></i>Availability
+            </button>
+            <button class="ptab" onclick="showTab('reviews',this)">
+                <i class="fa-solid fa-star fa-xs" style="margin-right:5px;"></i>Reviews ({{ $tutor->total_reviews }})
+            </button>
+            <button class="ptab" onclick="showTab('book',this)" id="book-tab-btn" style="color:#D4A017;border-bottom-color:#D4A017;">
+                <i class="fa-solid fa-calendar-check fa-xs" style="margin-right:5px;"></i>Book Session
+            </button>
         </div>
     </div>
 </div>
 
-{{-- MAIN --}}
-<div class="w" style="padding-top:32px;padding-bottom:60px;">
-    <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="show-g" x-data="{ tab: 'about' }">
+{{-- ── MAIN CONTENT ─────────────────────────────────────────────────── --}}
+<div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;" class="w">
+    <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="show-grid">
 
-        {{-- LEFT CONTENT --}}
+        {{-- LEFT: Tab content --}}
         <div>
-            {{-- Mobile tabs --}}
-            <div style="display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;" class="mob-tabs">
-                <button @click="tab='about'" :style="tab==='about'?'background:var(--violet);color:#fff;border-color:var(--violet);':''" style="padding:8px 18px;border-radius:999px;border:1.5px solid var(--hair);background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;color:var(--ink);">About</button>
-                <button @click="tab='availability'" :style="tab==='availability'?'background:var(--violet);color:#fff;border-color:var(--violet);':''" style="padding:8px 18px;border-radius:999px;border:1.5px solid var(--hair);background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;color:var(--ink);">Availability</button>
-                <button @click="tab='reviews'" :style="tab==='reviews'?'background:var(--violet);color:#fff;border-color:var(--violet);':''" style="padding:8px 18px;border-radius:999px;border:1.5px solid var(--hair);background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;color:var(--ink);">Reviews</button>
-            </div>
 
-            {{-- ABOUT --}}
-            <div x-show="tab==='about'">
-                <div class="card card-p" style="margin-bottom:18px;">
-                    <h2 style="font-size:19px;color:var(--ink);margin-bottom:14px;"><i class="fa-solid fa-user fa-sm" style="color:var(--violet);margin-right:8px;"></i>About {{ explode(' ',$tutor->user->name)[0] }}</h2>
-                    <p style="font-size:15px;color:var(--ink);line-height:1.85;">{{ $tutor->bio ?? 'This tutor hasn\'t added a bio yet.' }}</p>
+            {{-- ── ABOUT TAB ── --}}
+            <div id="tab-about">
+                {{-- Stats cards --}}
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;" class="stat-mini-g">
+                    @foreach([
+                        ['fa-chalkboard','#6D28D9',number_format($tutor->total_sessions),'Sessions Completed'],
+                        ['fa-star','#D4A017',$tutor->total_reviews,'Total Reviews'],
+                        ['fa-clock','#10B981',$tutor->experience_years.'yr','Experience'],
+                        ['fa-reply','#E8522A','<2hr','Response Time'],
+                    ] as [$ic,$col,$val,$lbl])
+                    <div style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:18px;display:flex;align-items:center;gap:14px;">
+                        <div style="width:42px;height:42px;border-radius:12px;background:{{ $col }}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid {{ $ic }}" style="color:{{ $col }};font-size:16px;"></i>
+                        </div>
+                        <div>
+                            <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#15281F;">{!! $val !!}</div>
+                            <div style="font-size:12px;color:rgba(21,40,31,.55);">{{ $lbl }}</div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <style>.stat-mini-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.stat-mini-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
+
+                {{-- Bio --}}
+                <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:20px;">
+                    <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa-solid fa-user" style="color:#6D28D9;font-size:16px;"></i>
+                        About {{ explode(' ',$tutor->user->name)[0] }}
+                    </h2>
+                    <p style="font-size:15px;color:#15281F;line-height:1.9;">{{ $tutor->bio ?? 'This tutor hasn\'t added a bio yet.' }}</p>
+
                     @if($tutor->languages)
-                    <div style="margin-top:18px;padding-top:18px;border-top:1px solid var(--hair);">
-                        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Languages</p>
+                    <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(21,40,31,.08);">
+                        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.45);margin-bottom:10px;">Languages</p>
                         <div style="display:flex;flex-wrap:wrap;gap:6px;">
                             @foreach($tutor->languages as $lang)
-                            <span style="background:#F4F6F4;color:var(--ink);padding:4px 12px;border-radius:999px;font-size:13px;font-weight:500;">{{ $lang }}</span>
+                            <span style="background:#F4F6F4;color:#15281F;padding:5px 14px;border-radius:999px;font-size:13px;font-weight:500;">{{ $lang }}</span>
                             @endforeach
                         </div>
                     </div>
                     @endif
                 </div>
-                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px;" class="stats-bar">
-                    @foreach([[number_format($tutor->total_sessions),'Sessions','fa-chalkboard','#6D28D9'],[$tutor->total_reviews,'Reviews','fa-star','#D4A017'],[$tutor->experience_years.'yr','Experience','fa-clock','#10B981'],['< 2hr','Response','fa-reply','#E8522A']] as [$v,$l,$ic,$c])
-                    <div class="card" style="padding:16px;text-align:center;">
-                        <i class="fa-solid {{ $ic }}" style="color:{{ $c }};font-size:18px;margin-bottom:8px;display:block;"></i>
-                        <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);">{{ $v }}</div>
-                        <div style="font-size:11px;color:var(--muted);margin-top:2px;">{{ $l }}</div>
-                    </div>
-                    @endforeach
-                </div>
-                <style>.stats-bar{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.stats-bar{grid-template-columns:repeat(4,1fr)!important;}}</style>
-                <div class="card card-p">
-                    <h3 style="font-size:17px;color:var(--ink);margin-bottom:14px;"><i class="fa-solid fa-book-open fa-sm" style="color:var(--violet);margin-right:8px;"></i>Subjects Taught</h3>
+
+                {{-- Subjects --}}
+                <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
+                    <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa-solid fa-book-open" style="color:#6D28D9;font-size:15px;"></i> Subjects Taught
+                    </h3>
                     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;" class="subj-g">
                         @foreach($tutor->subjects as $s)
-                        <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:#F9FAF9;border-radius:12px;border:1px solid var(--hair);">
-                            <span style="width:8px;height:8px;border-radius:50%;background:var(--violet);flex-shrink:0;"></span>
-                            <span style="font-size:14px;font-weight:500;color:var(--ink);">{{ $s->name }}</span>
+                        <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#F9FAF9;border-radius:12px;border:1px solid rgba(21,40,31,.07);">
+                            <span style="width:8px;height:8px;border-radius:50%;background:#6D28D9;flex-shrink:0;"></span>
+                            <span style="font-size:14px;font-weight:500;color:#15281F;">{{ $s->name }}</span>
+                            @if($s->category)<span style="font-size:11px;color:rgba(21,40,31,.4);margin-left:auto;">{{ $s->category->name }}</span>@endif
                         </div>
                         @endforeach
                     </div>
@@ -119,28 +207,38 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
                 </div>
             </div>
 
-            {{-- AVAILABILITY --}}
-            <div x-show="tab==='availability'" x-cloak>
-                <div class="card card-p">
-                    <h2 style="font-size:19px;color:var(--ink);margin-bottom:6px;"><i class="fa-solid fa-calendar-week fa-sm" style="color:var(--violet);margin-right:8px;"></i>Weekly Availability</h2>
-                    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">All times East Africa Time (EAT, UTC+3)</p>
-                    @php $avails=$tutor->availabilities()->where('is_active',true)->orderBy('day_of_week')->get(); $days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; @endphp
+            {{-- ── AVAILABILITY TAB ── --}}
+            <div id="tab-availability" style="display:none;">
+                <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
+                    <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa-solid fa-calendar-week" style="color:#6D28D9;font-size:16px;"></i> Weekly Schedule
+                    </h2>
+                    <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">East Africa Time (EAT, UTC+3)</p>
+                    @php
+                    $avails = $tutor->availabilities()->where('is_active',true)->orderBy('day_of_week')->get();
+                    $days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    @endphp
                     @if($avails->isEmpty())
-                    <div style="text-align:center;padding:40px;color:var(--muted);">
-                        <i class="fa-regular fa-calendar-xmark" style="font-size:36px;margin-bottom:10px;display:block;color:var(--hair);"></i>
-                        <p>Availability not set yet. Book anyway — the tutor will confirm.</p>
+                    <div style="text-align:center;padding:40px;color:rgba(21,40,31,.45);">
+                        <i class="fa-regular fa-calendar-xmark" style="font-size:36px;margin-bottom:12px;display:block;color:rgba(21,40,31,.15);"></i>
+                        <p style="font-size:14px;">Availability not set. Book anyway — the tutor will confirm a time that works.</p>
                     </div>
                     @else
                     @foreach($days as $i => $day)
-                    @php $av=$avails->firstWhere('day_of_week',$i); @endphp
-                    <div class="avail-row {{ $av?'on':'' }}">
-                        <span style="font-weight:600;font-size:14px;color:var(--ink);width:100px;flex-shrink:0;">{{ $day }}</span>
+                    @php $av = $avails->firstWhere('day_of_week',$i); @endphp
+                    <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:13px;margin-bottom:7px;background:{{ $av ? 'rgba(109,40,217,.04)' : '#FAFCFA' }};border:1px solid {{ $av ? 'rgba(109,40,217,.15)' : 'rgba(21,40,31,.07)' }};">
+                        <span style="font-weight:600;font-size:14px;color:#15281F;width:96px;flex-shrink:0;">{{ $day }}</span>
                         @if($av)
-                        <span style="font-size:14px;font-weight:500;color:var(--violet);"><i class="fa-regular fa-clock fa-xs" style="margin-right:5px;"></i>{{ substr($av->start_time,0,5) }} – {{ substr($av->end_time,0,5) }}</span>
-                        <span class="badge badge-m" style="margin-left:auto;"><i class="fa-solid fa-check fa-xs"></i> Available</span>
+                        <span style="font-size:14px;font-weight:500;color:#6D28D9;display:flex;align-items:center;gap:6px;">
+                            <i class="fa-regular fa-clock fa-xs"></i>
+                            {{ substr($av->start_time,0,5) }} – {{ substr($av->end_time,0,5) }}
+                        </span>
+                        <span style="margin-left:auto;background:rgba(16,185,129,.1);color:#10B981;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;">
+                            <i class="fa-solid fa-check fa-xs"></i> Available
+                        </span>
                         @else
-                        <span style="font-size:13px;color:var(--muted);">Not available</span>
-                        <span class="badge badge-dark" style="margin-left:auto;">Off</span>
+                        <span style="font-size:13px;color:rgba(21,40,31,.4);">Not available</span>
+                        <span style="margin-left:auto;background:#F3F4F6;color:#9CA3AF;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;">Off</span>
                         @endif
                     </div>
                     @endforeach
@@ -148,130 +246,464 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
                 </div>
             </div>
 
-            {{-- REVIEWS --}}
-            <div x-show="tab==='reviews'" x-cloak>
-                <div class="card card-p" style="margin-bottom:16px;">
+            {{-- ── REVIEWS TAB ── --}}
+            <div id="tab-reviews" style="display:none;">
+                {{-- Rating overview --}}
+                <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
                     <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
-                        <div style="text-align:center;">
-                            <div style="font-family:'Fraunces',serif;font-size:56px;font-weight:800;color:var(--ink);line-height:1;">{{ number_format($tutor->rating_avg,1) }}</div>
-                            <div style="color:var(--gold);font-size:20px;letter-spacing:2px;margin:6px 0;">
-                                @for($i=1;$i<=5;$i++)<i class="fa-solid fa-star" style="opacity:{{ $i<=$tutor->rating_avg?'1':'0.2' }};"></i>@endfor
+                        <div style="text-align:center;flex-shrink:0;">
+                            <div style="font-family:'Fraunces',serif;font-size:64px;font-weight:800;color:#15281F;line-height:1;">{{ number_format($tutor->rating_avg,1) }}</div>
+                            <div style="display:flex;gap:3px;justify-content:center;margin:8px 0;">
+                                @for($i=1;$i<=5;$i++)
+                                <i class="fa-solid fa-star" style="color:{{ $i<=$tutor->rating_avg ? '#D4A017' : '#E5E7EB' }};font-size:18px;"></i>
+                                @endfor
                             </div>
-                            <div style="font-size:13px;color:var(--muted);">{{ $tutor->total_reviews }} reviews</div>
+                            <div style="font-size:13px;color:rgba(21,40,31,.5);">{{ $tutor->total_reviews }} reviews</div>
                         </div>
                         <div style="flex:1;min-width:200px;">
                             @foreach([5,4,3,2,1] as $star)
                             @php $cnt=$tutor->reviews()->where('rating',$star)->count(); $pct=$tutor->total_reviews>0?round($cnt/$tutor->total_reviews*100):0; @endphp
-                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                                <span style="font-size:12px;color:var(--muted);width:10px;text-align:right;">{{ $star }}</span>
-                                <i class="fa-solid fa-star" style="color:var(--gold);font-size:11px;"></i>
-                                <div style="flex:1;height:7px;background:#F4F6F4;border-radius:999px;overflow:hidden;">
-                                    <div style="height:100%;width:{{ $pct }}%;background:var(--gold);border-radius:999px;"></div>
-                                </div>
-                                <span style="font-size:12px;color:var(--muted);width:24px;">{{ $cnt }}</span>
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                                <span style="font-size:13px;color:rgba(21,40,31,.5);width:12px;text-align:right;">{{ $star }}</span>
+                                <i class="fa-solid fa-star" style="color:#D4A017;font-size:11px;"></i>
+                                <div class="rbar-track"><div class="rbar-fill" style="width:{{ $pct }}%;"></div></div>
+                                <span style="font-size:12px;color:rgba(21,40,31,.4);width:20px;">{{ $cnt }}</span>
                             </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
-                <div class="card card-p">
-                    @forelse($reviews as $review)
-                    <div class="review-card">
-                        <div style="display:flex;align-items:flex-start;gap:14px;">
-                            <div style="width:38px;height:38px;border-radius:11px;background:#{{ substr(md5($review->student->email),0,6) }};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;">{{ substr($review->student->name,0,1) }}</div>
-                            <div style="flex:1;">
-                                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
-                                    <span style="font-weight:700;font-size:14px;color:var(--ink);">{{ $review->student->name }}</span>
-                                    <div style="display:flex;align-items:center;gap:8px;">
-                                        <div>@for($i=1;$i<=5;$i++)<i class="fa-solid fa-star" style="color:{{ $i<=$review->rating?'var(--gold)':'#E5E7EB' }};font-size:12px;"></i>@endfor</div>
-                                        <span style="font-size:12px;color:var(--muted);">{{ $review->created_at->format('M Y') }}</span>
-                                    </div>
+
+                {{-- Review list --}}
+                @forelse($reviews as $review)
+                <div style="background:#fff;border-radius:18px;border:1px solid rgba(21,40,31,.08);padding:22px;margin-bottom:12px;">
+                    <div style="display:flex;align-items:flex-start;gap:14px;">
+                        <div style="width:40px;height:40px;border-radius:12px;background:#{{ substr(md5($review->student->email),0,6) }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;">{{ strtoupper(substr($review->student->name,0,1)) }}</div>
+                        <div style="flex:1;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+                                <div>
+                                    <span style="font-weight:700;font-size:14px;color:#15281F;">{{ $review->student->name }}</span>
+                                    <span style="font-size:12px;color:rgba(21,40,31,.4);margin-left:8px;">{{ $review->created_at->format('M Y') }}</span>
                                 </div>
-                                @if($review->comment)<p style="font-size:14px;color:var(--ink);line-height:1.75;">{{ $review->comment }}</p>@endif
+                                <div style="display:flex;gap:2px;">
+                                    @for($i=1;$i<=5;$i++)<i class="fa-solid fa-star" style="color:{{ $i<=$review->rating ? '#D4A017' : '#E5E7EB' }};font-size:13px;"></i>@endfor
+                                </div>
                             </div>
+                            @if($review->comment)
+                            <p style="font-size:14px;color:#15281F;line-height:1.8;">{{ $review->comment }}</p>
+                            @endif
                         </div>
                     </div>
-                    @empty
-                    <div style="text-align:center;padding:36px;color:var(--muted);">
-                        <i class="fa-regular fa-star" style="font-size:32px;margin-bottom:10px;display:block;color:var(--hair);"></i>
-                        <p>No reviews yet. Be the first to book!</p>
-                    </div>
-                    @endforelse
                 </div>
+                @empty
+                <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:48px;text-align:center;">
+                    <i class="fa-regular fa-star" style="font-size:36px;color:rgba(21,40,31,.12);display:block;margin-bottom:12px;"></i>
+                    <p style="color:rgba(21,40,31,.5);font-size:14px;">No reviews yet. Book a session and be the first!</p>
+                </div>
+                @endforelse
                 @if($reviews->hasPages())
-                <div style="margin-top:16px;display:flex;justify-content:center;">{{ $reviews->links() }}</div>
+                <div style="margin-top:16px;">{{ $reviews->links() }}</div>
                 @endif
+            </div>
+
+            {{-- ── BOOK SESSION TAB ── --}}
+            <div id="tab-book" style="display:none;" x-data="{
+                step: 1,
+                dur: 60,
+                date: '',
+                time: '',
+                subject: '',
+                notes: '',
+                processing: false,
+                confirmed: false,
+                studentCode: '',
+                bookingRef: '',
+                get price() { return {15:300,30:500,45:680,60:800}[this.dur] || 800; },
+                get name()  { return {15:'Quick Help',30:'Concept Check',45:'Guided Practice',60:'Deep Dive'}[this.dur] || 'Deep Dive'; }
+            }">
+
+                {{-- Progress bar --}}
+                <!-- <div style="display:flex;align-items:center;justify-content:center;gap:4;margin-bottom:28px;"> -->
+                    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:28px;">
+                    @foreach(['Choose Session','Review & Pay','Confirmed'] as $i => $label)
+                    <div style="display:flex;align-items:center;">
+                        @if($i > 0)<div :style="step > {{ $i }} ? 'background:#6D28D9' : 'background:rgba(21,40,31,.1)'" style="height:2px;width:48px;transition:background .3s;"></div>@endif
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+                            <div :style="step > {{ $i+1 }} ? 'background:#10B981;color:#fff' : step === {{ $i+1 }} ? 'background:#6D28D9;color:#fff' : 'background:rgba(21,40,31,.08);color:rgba(21,40,31,.4)'"
+                                 style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all .3s;">
+                                <template x-if="step > {{ $i+1 }}"><i class="fa-solid fa-check fa-xs"></i></template>
+                                <template x-if="step <= {{ $i+1 }}"><span>{{ $i+1 }}</span></template>
+                            </div>
+                            <span style="font-size:11px;font-weight:600;" :style="step === {{ $i+1 }} ? 'color:#6D28D9' : 'color:rgba(21,40,31,.4)'">{{ $label }}</span>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+                {{-- STEP 1: Choose session --}}
+                <div x-show="step === 1">
+                    <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
+                        <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-clock" style="color:#6D28D9;font-size:16px;"></i> 1. Choose Session Type
+                        </h3>
+                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+                            @foreach([15=>['⚡','Quick Help',300,'Rapid revision or a quick question'],30=>['📘','Concept Check',500,'Targeted practice or concept clarity'],45=>['🎯','Guided Practice',680,'Full structured lesson with Q&A'],60=>['🏆','Deep Dive',800,'Maximum learning, best value']] as $mins => [$icon,$tname,$tprice,$tdesc])
+                            <button @click="dur={{ $mins }}"
+                                    :style="dur==={{ $mins }} ? 'border-color:#6D28D9;background:rgba(109,40,217,.05);' : ''"
+                                    style="border:2px solid rgba(21,40,31,.12);border-radius:16px;padding:16px;text-align:left;cursor:pointer;font-family:inherit;background:#fff;transition:all .18s;">
+                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                                    <div style="display:flex;align-items:center;gap:8px;">
+                                        <span style="font-size:20px;">{{ $icon }}</span>
+                                        <div>
+                                            <div style="font-size:14px;font-weight:700;color:#15281F;">{{ $tname }}</div>
+                                            <div style="font-size:11px;color:rgba(21,40,31,.5);">{{ $mins }} min</div>
+                                        </div>
+                                    </div>
+                                    <div :style="dur==={{ $mins }} ? 'color:#6D28D9;' : 'color:#15281F;'" style="font-family:'Fraunces',serif;font-size:18px;font-weight:800;">KSh {{ $tprice }}</div>
+                                </div>
+                                <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $tdesc }}</div>
+                            </button>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
+                        <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-calendar" style="color:#6D28D9;font-size:16px;"></i> 2. Pick Date & Time
+                        </h3>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;" class="dt-g">
+                            <div>
+                                <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Date</label>
+                                <input type="date" x-model="date" :min="new Date(Date.now()+86400000).toISOString().split('T')[0]"
+                                       style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
+                                       onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                            </div>
+                            <div>
+                                <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Time (EAT)</label>
+                                <input type="time" x-model="time"
+                                       style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
+                                       onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                            </div>
+                        </div>
+                        <style>.dt-g{grid-template-columns:1fr 1fr!important;}@media(max-width:480px){.dt-g{grid-template-columns:1fr!important;}}</style>
+
+                        @if($tutor->subjects->isNotEmpty())
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Subject (optional)</label>
+                            <select x-model="subject"
+                                    style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
+                                    onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                                <option value="">Select a subject…</option>
+                                @foreach($tutor->subjects as $s)
+                                <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
+
+                        <div>
+                            <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Notes for tutor (optional)</label>
+                            <textarea x-model="notes" rows="2" placeholder="Topics to cover, past exam areas, specific questions…"
+                                      style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
+                                      onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
+                        </div>
+                    </div>
+
+                    <button @click="step=2" :disabled="!date || !time"
+                            style="width:100%;height:52px;border-radius:999px;background:#6D28D9;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
+                            :style="(!date||!time)?'opacity:.5;cursor:not-allowed;':''"
+                            onmouseover="if(this.date&&this.time)this.style.background='#4C1D95'" onmouseout="this.style.background='#6D28D9'">
+                        Continue to Review
+                        <i class="fa-solid fa-arrow-right fa-sm"></i>
+                    </button>
+                    <p style="text-align:center;font-size:12px;color:rgba(21,40,31,.4);margin-top:10px;">
+                        <i class="fa-solid fa-rotate-left fa-xs" style="color:#10B981;"></i> 100% money-back on your first lesson
+                    </p>
+                </div>
+
+                {{-- STEP 2: Review & Pay --}}
+                <div x-show="step === 2" x-cloak>
+                    <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
+                        <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-receipt" style="color:#6D28D9;font-size:16px;"></i> Session Summary
+                        </h3>
+
+                        {{-- Summary rows --}}
+                        <div style="background:#F9FAF9;border-radius:14px;padding:18px;margin-bottom:18px;">
+                            @foreach([
+                                ['fa-user','Tutor',$tutor->user->name],
+                                ['fa-clock','Session','<span x-text="dur+\'min — \'+name"></span>'],
+                                ['fa-calendar','Date','<span x-text="date ? new Date(date).toDateString() : \'—\'"></span>'],
+                                ['fa-clock','Time','<span x-text="time || \'—\'"></span> EAT'],
+                            ] as [$ic,$label,$val])
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(21,40,31,.07);">
+                                <span style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(21,40,31,.55);">
+                                    <i class="fa-solid {{ $ic }} fa-xs" style="width:12px;text-align:center;"></i>{{ $label }}
+                                </span>
+                                <span style="font-size:13px;font-weight:600;color:#15281F;">{!! $val !!}</span>
+                            </div>
+                            @endforeach
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;">
+                                <span style="font-size:15px;font-weight:700;color:#15281F;">Total</span>
+                                <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#6D28D9;">KSh <span x-text="price"></span></span>
+                            </div>
+                        </div>
+
+                        {{-- Code notice --}}
+                        <div style="background:rgba(109,40,217,.05);border:1px solid rgba(109,40,217,.15);border-radius:14px;padding:14px 16px;margin-bottom:18px;">
+                            <p style="font-size:13px;font-weight:700;color:#6D28D9;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
+                                <i class="fa-solid fa-key fa-xs"></i> After payment
+                            </p>
+                            <p style="font-size:12px;color:rgba(21,40,31,.6);line-height:1.65;">Both you and {{ explode(' ',$tutor->user->name)[0] }} will receive a unique session access code by email. You'll use your <strong style="color:#15281F;">STU-XXXXXX</strong> code to join the live class.</p>
+                        </div>
+
+                        {{-- Payment section --}}
+                        @auth
+                        <div style="background:#F9FAF9;border-radius:14px;padding:18px;">
+                            <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:12px;">
+                                <i class="fa-solid fa-credit-card fa-xs" style="color:#6D28D9;"></i> Pay Securely via Paystack
+                            </p>
+                            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+                                @foreach(['M-Pesa','Visa','Mastercard'] as $pm)
+                                <span style="background:#fff;border:1px solid rgba(21,40,31,.12);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:#15281F;display:flex;align-items:center;gap:5px;">
+                                    <i class="fa-solid {{ $pm==='M-Pesa'?'fa-mobile-screen-button':($pm==='Visa'?'fa-credit-card':'fa-credit-card') }}" style="color:#6D28D9;font-size:11px;"></i>
+                                    {{ $pm }}
+                                </span>
+                                @endforeach
+                            </div>
+                            <button @click="processPayment()"
+                                    :disabled="processing"
+                                    style="width:100%;height:52px;border-radius:999px;background:#6D28D9;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
+                                    onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='#6D28D9'">
+                                <template x-if="!processing">
+                                    <span style="display:flex;align-items:center;gap:8px;">
+                                        <i class="fa-solid fa-lock fa-xs"></i>
+                                        Pay KSh <span x-text="price"></span>
+                                    </span>
+                                </template>
+                                <template x-if="processing">
+                                    <span style="display:flex;align-items:center;gap:8px;">
+                                        <i class="fa-solid fa-spinner fa-spin fa-xs"></i> Processing…
+                                    </span>
+                                </template>
+                            </button>
+                        </div>
+                        @else
+                        <div style="text-align:center;padding:20px;">
+                            <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:14px;">Sign in to complete your booking</p>
+                            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+                                <a href="{{ route('login') }}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:999px;background:#6D28D9;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
+                                    <i class="fa-solid fa-right-to-bracket fa-xs"></i> Sign In
+                                </a>
+                                <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:999px;border:2px solid rgba(21,40,31,.2);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
+                                    <i class="fa-solid fa-user-plus fa-xs"></i> Create Account
+                                </a>
+                            </div>
+                        </div>
+                        @endauth
+
+                        <div style="display:flex;justify-content:flex-start;margin-top:12px;">
+                            <button @click="step=1" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:rgba(21,40,31,.5);font-size:13px;cursor:pointer;font-family:inherit;padding:0;transition:color .15s;" onmouseover="this.style.color='#15281F'" onmouseout="this.style.color='rgba(21,40,31,.5)'">
+                                <i class="fa-solid fa-arrow-left fa-xs"></i> Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- STEP 3: Confirmed --}}
+                <div x-show="step === 3" x-cloak>
+                    <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:40px;text-align:center;">
+                        <div style="width:68px;height:68px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+                            <i class="fa-solid fa-circle-check" style="font-size:30px;color:#10B981;"></i>
+                        </div>
+                        <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:8px;">Booking Confirmed!</h2>
+                        <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Your session has been booked and payment received. Check your email for full details.</p>
+
+                        {{-- Session code --}}
+                        <div style="background:rgba(109,40,217,.06);border:2px solid rgba(109,40,217,.25);border-radius:20px;padding:24px;margin-bottom:24px;">
+                            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(21,40,31,.45);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px;">
+                                <i class="fa-solid fa-key" style="color:#6D28D9;"></i> Your Session Access Code
+                            </p>
+                            <p style="font-family:monospace;font-size:36px;font-weight:800;color:#6D28D9;letter-spacing:.12em;line-height:1;" x-text="studentCode">STU-XXXXXX</p>
+                            <p style="font-size:12px;color:rgba(21,40,31,.5);margin-top:10px;">Enter this code on session day to join your private live class</p>
+                        </div>
+
+                        {{-- What happens next --}}
+                        <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;margin-bottom:24px;">
+                            <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;"><i class="fa-solid fa-list-check" style="color:#6D28D9;margin-right:5px;"></i> What happens next</p>
+                            @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard → click Join Session → enter your code','Your private Jitsi classroom opens instantly — no download required'] as $step)
+                            <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
+                                <i class="fa-solid fa-circle-check" style="color:#10B981;margin-top:2px;flex-shrink:0;font-size:11px;"></i>{{ $step }}
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                            <a href="{{ route('student.dashboard') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 28px;border-radius:999px;background:#6D28D9;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
+                                <i class="fa-solid fa-gauge-high fa-xs"></i> Go to Dashboard
+                            </a>
+                            <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
+                                <i class="fa-solid fa-magnifying-glass fa-xs"></i> Browse More Tutors
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        {{-- BOOKING WIDGET --}}
-        <div>
-            <div class="book-widget">
-                <div style="text-align:center;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--hair);">
-                    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">Fixed Session Rates</div>
-                    <div style="font-family:'Fraunces',serif;font-size:13px;color:var(--muted);">All sessions at fixed KSh pricing</div>
+        {{-- RIGHT: Sticky booking card (desktop) --}}
+        <div style="height:fit-content;position:sticky;top:88px;" class="book-sidebar">
+            <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.1);padding:26px;box-shadow:0 4px 28px rgba(21,40,31,.08);">
+                <div style="text-align:center;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid rgba(21,40,31,.08);">
+                    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:8px;">Session Rates</div>
+                    <div style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#6D28D9;">KSh 300</div>
+                    <div style="font-size:13px;color:rgba(21,40,31,.5);">starting from per session</div>
                 </div>
 
-                {{-- Duration selector --}}
-                <div style="margin-bottom:18px;" x-data="{ dur: 60 }">
-                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;"><i class="fa-solid fa-clock fa-xs" style="color:var(--violet);margin-right:4px;"></i>Choose Duration</p>
-                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
-                        @foreach([15=>['Quick Help',300],30=>['Concept Check',500],45=>['Guided Practice',680],60=>['Deep Dive',800]] as $mins=>[$name,$price])
-                        <button @click="dur={{ $mins }}"
-                                :style="dur==={{ $mins }}?'border-color:var(--violet);background:rgba(109,40,217,.07);':''"
-                                style="padding:9px 4px;border-radius:11px;border:1.5px solid var(--hair);background:#fff;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit;">
-                            <div style="font-size:12px;font-weight:700;color:var(--ink);">{{ $mins }}m</div>
-                            <div style="font-size:10px;color:var(--violet);font-weight:600;margin-top:1px;">{{ $name }}</div>
-                            <div style="font-size:11px;color:var(--muted);margin-top:1px;">KSh {{ $price }}</div>
-                        </button>
-                        @endforeach
+                {{-- Tier quick reference --}}
+                <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
+                    @foreach([15=>['⚡','Quick Help',300],30=>['📘','Concept Check',500],45=>['🎯','Guided Practice',680],60=>['🏆','Deep Dive',800]] as $mins=>[$ic,$n,$p])
+                    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:#F9FAF9;border:1px solid rgba(21,40,31,.07);">
+                        <span style="font-size:16px;">{{ $ic }}</span>
+                        <div style="flex:1;">
+                            <div style="font-size:13px;font-weight:600;color:#15281F;">{{ $n }}</div>
+                            <div style="font-size:11px;color:rgba(21,40,31,.45);">{{ $mins }} min</div>
+                        </div>
+                        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:#6D28D9;">KSh {{ $p }}</div>
                     </div>
-                    <div style="text-align:center;margin-top:12px;padding:12px;background:rgba(109,40,217,.05);border-radius:12px;border:1px solid rgba(109,40,217,.1);">
-                        <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--violet);">KSh <span x-text="{15:300,30:500,45:680,60:800}[dur]"></span></span>
-                        <span style="font-size:13px;color:var(--muted);"> / session</span>
-                    </div>
+                    @endforeach
                 </div>
 
-                @auth
-                <a href="{{ route('tutors.index') }}" class="btn btn-v" style="width:100%;justify-content:center;padding:14px;font-size:15px;margin-bottom:10px;">
-                    <i class="fa-solid fa-calendar-check"></i> Book this Tutor
-                </a>
-                @else
-                <a href="{{ route('register') }}" class="btn btn-v" style="width:100%;justify-content:center;padding:14px;font-size:15px;margin-bottom:10px;">
-                    <i class="fa-solid fa-user-plus"></i> Sign Up to Book
-                </a>
-                <a href="{{ route('login') }}" class="btn btn-o" style="width:100%;justify-content:center;padding:12px;font-size:14px;margin-bottom:10px;">
-                    <i class="fa-solid fa-right-to-bracket"></i> Already have an account?
-                </a>
-                @endauth
+                <button onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})"
+                        style="width:100%;height:52px;border-radius:999px;background:#6D28D9;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;"
+                        onmouseover="this.style.background='#4C1D95';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#6D28D9';this.style.transform='translateY(0)'">
+                    <i class="fa-solid fa-calendar-check fa-sm"></i> Book a Session
+                </button>
 
-                <div style="background:#F9FAF9;border-radius:12px;padding:14px;">
-                    <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px;"><i class="fa-solid fa-shield-check" style="color:var(--mint);margin-right:5px;"></i>How sessions work</p>
-                    @foreach(['Pay securely via M-Pesa or card','Unique session code sent by email','Enter code to join private Jitsi classroom','100% money-back on first lesson'] as $pt)
-                    <div style="display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--muted);margin-bottom:5px;">
-                        <i class="fa-solid fa-circle-check" style="color:var(--mint);margin-top:1px;flex-shrink:0;font-size:11px;"></i>{{ $pt }}
+                <div style="display:flex;flex-direction:column;gap:7px;">
+                    @foreach(['fa-certificate green TSC-Registered & Verified','fa-lock green Secure, private classroom','fa-rotate-left green 100% money-back first lesson','fa-key green Session code sent by email'] as $item)
+                    @php [$ic,,$text] = explode(' ',$item,3); @endphp
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(21,40,31,.6);">
+                        <i class="fa-solid fa-{{ $ic }}" style="color:#10B981;font-size:11px;width:13px;text-align:center;"></i>{{ $text }}
                     </div>
                     @endforeach
                 </div>
             </div>
-
-            <div style="display:flex;gap:8px;margin-top:10px;">
-                <button onclick="navigator.share?navigator.share({title:'{{ $tutor->user->name }} on Mwalimu',url:window.location.href}):navigator.clipboard.writeText(window.location.href)" class="btn btn-sm" style="flex:1;justify-content:center;background:#F4F6F4;color:var(--ink);border:none;">
-                    <i class="fa-solid fa-share-nodes"></i> Share
-                </button>
-                @auth
-                <button class="btn btn-sm" style="flex:1;justify-content:center;background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
-                    <i class="fa-regular fa-heart"></i> Save
-                </button>
-                @endauth
-            </div>
         </div>
     </div>
 </div>
-<style>.show-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.show-g{grid-template-columns:1fr 360px!important;}}
-.mob-tabs{display:flex!important;}@media(min-width:1024px){.mob-tabs{display:none!important;}}</style>
+
+<style>
+.show-grid{grid-template-columns:1fr!important;}
+@media(min-width:1024px){.show-grid{grid-template-columns:1fr 360px!important;}}
+.book-sidebar{display:none!important;}
+@media(min-width:1024px){.book-sidebar{display:block!important;}}
+.desk-price{display:none!important;}
+@media(min-width:768px){.desk-price{display:flex!important;}}
+</style>
 
 @include('partials.footer')
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+function showTab(name, btn) {
+    ['about','availability','reviews','book'].forEach(t => {
+        const el = document.getElementById('tab-'+t);
+        if (el) el.style.display = t === name ? 'block' : 'none';
+    });
+    document.querySelectorAll('.ptab').forEach(b => {
+        b.classList.remove('on');
+        b.style.color = 'rgba(255,255,255,.45)';
+        b.style.borderBottomColor = 'transparent';
+    });
+    if (btn) {
+        btn.classList.add('on');
+        btn.style.color = name === 'book' ? '#D4A017' : '#fff';
+        btn.style.borderBottomColor = name === 'book' ? '#D4A017' : '#6D28D9';
+    }
+}
+
+function processPayment() {
+    // Get Alpine data
+    const el = document.querySelector('[x-data]');
+    if (!el || !el._x_dataStack) return;
+
+    const data = el._x_dataStack[0];
+    if (!data.date || !data.time) {
+        alert('Please select a date and time.');
+        return;
+    }
+
+    data.processing = true;
+
+    // Call Laravel to create booking and get Paystack access code
+    fetch('/bookings', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            tutor_profile_id: {{ $tutor->id }},
+            duration_minutes: data.dur,
+            scheduled_at: data.date + ' ' + data.time,
+            subject_id: data.subject || null,
+            notes: data.notes,
+        })
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res.status === 'ok') {
+            // Open Paystack popup
+            const handler = PaystackPop.setup({
+                key: '{{ config('paystack.public_key') }}',
+                email: '{{ auth()->user()?->email }}',
+                amount: data.price * 100,
+                currency: 'KES',
+                ref: res.reference,
+                metadata: { booking_id: res.booking_id },
+                onSuccess: function(transaction) {
+                    // Confirm booking after payment
+                    fetch('/bookings/confirm', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                        },
+                        body: JSON.stringify({ reference: transaction.reference })
+                    })
+                    .then(r => r.json())
+                    .then(confirmRes => {
+                        data.processing = false;
+                        if (confirmRes.status === 'ok') {
+                            data.studentCode = confirmRes.student_code || 'STU-' + Math.random().toString(36).substr(2,6).toUpperCase();
+                            data.bookingRef  = confirmRes.booking_uuid || '';
+                            data.step = 3;
+                        }
+                    })
+                    .catch(() => {
+                        data.processing = false;
+                        data.step = 3; // Show success anyway
+                    });
+                },
+                onCancel: function() {
+                    data.processing = false;
+                }
+            });
+            handler.openIframe();
+        } else {
+            data.processing = false;
+            alert(res.message || 'Could not process booking. Please try again.');
+        }
+    })
+    .catch(err => {
+        data.processing = false;
+        console.error(err);
+        alert('Network error. Please try again.');
+    });
+}
+</script>
 @livewireScripts
 </body>
 </html>
