@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Route;
 
 // ─── Public ───────────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/how-it-works', fn() => view('pages.how-it-works'))->name('how-it-works');
+Route::get('/examiner-clinic', fn() => view('pages.examiner-clinic'))->name('examiner-clinic');
+Route::get('/contact', fn() => view('pages.contact'))->name('contact');
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
 Route::get('/tutors', [HomeController::class, 'tutors'])->name('tutors.index');
 Route::get('/tutors/{slug}', [HomeController::class, 'tutorProfile'])->name('tutors.show');
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');

@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-<title>Mwalimu – Find Verified Tutors in Kenya</title>
-<meta name="description" content="Book verified 1:1 tutors across 80+ subjects. Choose 15, 30, 45 or 60-minute sessions and pay securely with Paystack.">
+<title>Mwalimu – Instant 1-on-1 Tutoring in Kenya</title>
+<meta name="description" content="Instant 1-on-1 tutoring matched in seconds. TSC-registered teachers, secure classrooms, 100% money-back guarantee. Book, pay, and learn in one safe place.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
@@ -24,449 +25,571 @@ a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 28px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer;transition:all .18s;border:none;font-family:inherit;text-decoration:none;}
 .btn-v{background:var(--violet);color:#fff;}.btn-v:hover{background:#4C1D95;transform:translateY(-1px);box-shadow:0 6px 20px rgba(109,40,217,.3);}
 .btn-o{background:transparent;color:var(--ink);border:2px solid var(--ink);}.btn-o:hover{background:var(--ink);color:var(--cream);}
+.btn-coral{background:var(--coral);color:#fff;}.btn-coral:hover{opacity:.9;transform:translateY(-1px);}
+.btn-mint{background:var(--mint);color:#fff;}.btn-mint:hover{background:#059669;}
 .btn-w{background:#fff;color:var(--violet);font-weight:700;}.btn-w:hover{background:var(--cream);}
-.btn-c{background:var(--coral);color:#fff;}.btn-c:hover{opacity:.9;}
-.badge{display:inline-flex;align-items:center;padding:5px 13px;border-radius:999px;font-size:12px;font-weight:600;}
+.card{background:#fff;border-radius:22px;border:1px solid var(--hair);box-shadow:0 2px 16px rgba(21,40,31,.06);}
+.card-lift{transition:transform .2s,box-shadow .2s;}.card-lift:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(21,40,31,.12);}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:999px;font-size:12px;font-weight:600;}
 .bv{background:rgba(109,40,217,.1);color:var(--violet);}
 .bm{background:rgba(16,185,129,.1);color:var(--mint);}
-.card{background:#fff;border-radius:24px;border:1px solid var(--hair);box-shadow:0 2px 16px rgba(21,40,31,.06);}
-.card-lift{transition:transform .2s,box-shadow .2s;}.card-lift:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(21,40,31,.12);}
+.bc{background:rgba(232,82,42,.1);color:var(--coral);}
+/* NAV */
+nav.main{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--hair);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px;}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--ink);}
+.logo em{font-style:normal;color:var(--violet);}
+.desk-links{display:none;align-items:center;gap:4px;}
+@media(min-width:1024px){.desk-links{display:flex;}}
+.desk-links a{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500;transition:background .15s;}
+.desk-links a:hover{background:rgba(21,40,31,.07);}
 </style>
 </head>
 <body>
+<?php
+use App\Models\Category;
+use App\Models\TutorProfile;
+use App\Models\ExaminerClinic;
+use App\Models\PlatformSetting;
+$categories    = Category::active()->with('subjects')->take(8)->get();
+$featuredTutors = TutorProfile::approved()->with(['user','subjects'])->orderByDesc('rating_avg')->take(6)->get();
+$upcomingClinics = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
+$prices = [15=>200,30=>400,45=>600,60=>800];
+?>
 
 
-<div x-data="{ show: true }" x-show="show" x-cloak style="background:var(--ink);color:var(--cream);font-size:13px;padding:9px 24px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;">
-    <span>🎓 Kenya's verified tutor marketplace — book 15, 30, 45 or 60-minute sessions</span>
-    <button @click="show=false" style="position:absolute;right:16px;background:none;border:none;color:rgba(251,245,230,.5);cursor:pointer;font-size:20px;line-height:1;">&times;</button>
+<div x-data="{ show: true }" x-show="show" x-cloak style="background:var(--violet);color:#fff;font-size:13px;padding:9px 24px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;">
+    <i class="fa-solid fa-shield-check"></i>
+    <span>All tutors are TSC-registered and background-checked. <strong>100% money-back guarantee</strong> on your first lesson.</span>
+    <button @click="show=false" style="position:absolute;right:16px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:18px;line-height:1;">&times;</button>
 </div>
 
 
-<nav style="position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--hair);" x-data="{ open:false }">
-    <div class="w" style="display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px;">
-        <a href="<?php echo e(route('home')); ?>" style="display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);flex-shrink:0;">
-            <svg width="38" height="38" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#15281F"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-            Mwalimu
-        </a>
-        <div style="display:none;align-items:center;gap:4px;" class="desk-nav">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['Find a Tutor', route('tutors.index')],['Courses', route('courses.index')],['Blog', route('blog.index')],['How It Works','#how']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$l,$h]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <a href="<?php echo e($h); ?>" style="padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500;transition:background .15s;" onmouseover="this.style.background='rgba(21,40,31,.07)'" onmouseout="this.style.background='transparent'"><?php echo e($l); ?></a>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+<nav class="main" x-data="{ open: false }">
+    <div class="w">
+        <div class="nav-inner">
+            <a href="<?php echo e(route('home')); ?>" class="logo">
+                <svg width="38" height="38" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#15281F"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+                <em>Mwalimu</em>
+            </a>
+            <div class="desk-links">
+                <a href="<?php echo e(route('tutors.index')); ?>"><i class="fa-solid fa-magnifying-glass fa-xs mr-1"></i> Find a Tutor</a>
+                <a href="<?php echo e(route('how-it-works')); ?>"><i class="fa-solid fa-circle-info fa-xs mr-1"></i> How It Works</a>
+                <a href="/examiner-clinic"><i class="fa-solid fa-star fa-xs mr-1"></i> Examiner's Clinic</a>
+                <a href="/contact"><i class="fa-solid fa-envelope fa-xs mr-1"></i> Contact</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
+                <a href="<?php echo e(route('dashboard')); ?>" class="btn btn-v" style="font-size:14px;padding:10px 22px;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+                <?php else: ?>
+                <a href="<?php echo e(route('login')); ?>" style="font-size:14px;font-weight:600;padding:8px 18px;border-radius:999px;display:none;" class="desk-signin" onmouseover="this.style.background='rgba(21,40,31,.07)'" onmouseout="this.style.background='transparent'">Sign In</a>
+                <a href="<?php echo e(route('register')); ?>" class="btn btn-v" style="font-size:14px;padding:10px 22px;"><i class="fa-solid fa-user-plus"></i> Get Started</a>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <button @click="open=!open" style="display:flex;width:42px;height:42px;border-radius:999px;border:2px solid var(--hair);background:none;cursor:pointer;align-items:center;justify-content:center;" class="mob-ham">
+                    <i x-show="!open" class="fa-solid fa-bars"></i>
+                    <i x-show="open" x-cloak class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
-            <a href="<?php echo e(route('dashboard')); ?>" class="btn btn-v" style="padding:10px 22px;font-size:14px;">Dashboard</a>
-            <?php else: ?>
-            <a href="<?php echo e(route('login')); ?>" style="padding:8px 18px;border-radius:999px;font-size:14px;font-weight:600;transition:background .15s;display:none;" class="desk-signin" onmouseover="this.style.background='rgba(21,40,31,.07)'" onmouseout="this.style.background='transparent'">Sign In</a>
-            <a href="<?php echo e(route('register')); ?>" class="btn btn-v" style="padding:10px 22px;font-size:14px;">Get Started</a>
-            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            <button @click="open=!open" style="display:flex;width:42px;height:42px;border-radius:999px;border:2px solid var(--hair);background:none;cursor:pointer;align-items:center;justify-content:center;" class="mob-ham">
-                <svg x-show="!open" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                <svg x-show="open" x-cloak width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
+        <div x-show="open" x-cloak x-transition style="position:absolute;left:0;right:0;top:100%;background:var(--cream);border-bottom:1px solid var(--hair);padding:14px 24px;display:flex;flex-direction:column;gap:2px;z-index:99;box-shadow:0 8px 24px rgba(21,40,31,.1);">
+            <a href="<?php echo e(route('tutors.index')); ?>" style="padding:12px 0;font-size:15px;font-weight:500;border-bottom:1px solid var(--hair);"><i class="fa-solid fa-magnifying-glass fa-sm" style="color:var(--violet);margin-right:8px;"></i>Find a Tutor</a>
+            <a href="<?php echo e(route('how-it-works')); ?>" style="padding:12px 0;font-size:15px;font-weight:500;border-bottom:1px solid var(--hair);"><i class="fa-solid fa-circle-info fa-sm" style="color:var(--violet);margin-right:8px;"></i>How It Works</a>
+            <a href="/examiner-clinic" style="padding:12px 0;font-size:15px;font-weight:500;border-bottom:1px solid var(--hair);"><i class="fa-solid fa-star fa-sm" style="color:var(--gold);margin-right:8px;"></i>Examiner's Clinic</a>
+            <a href="/contact" style="padding:12px 0;font-size:15px;font-weight:500;"><i class="fa-solid fa-envelope fa-sm" style="color:var(--violet);margin-right:8px;"></i>Contact</a>
         </div>
     </div>
-    <div x-show="open" x-cloak x-transition style="position:absolute;left:0;right:0;top:100%;background:var(--cream);border-bottom:1px solid var(--hair);padding:16px 24px;display:flex;flex-direction:column;gap:4px;box-shadow:0 8px 32px rgba(21,40,31,.1);z-index:99;">
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['Find a Tutor', route('tutors.index')],['Courses', route('courses.index')],['Blog', route('blog.index')],['How It Works','#how']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$l,$h]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <a href="<?php echo e($h); ?>" style="padding:13px 0;font-size:15px;font-weight:500;border-bottom:1px solid var(--hair);"><?php echo e($l); ?></a>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->guest()): ?>
-        <a href="<?php echo e(route('login')); ?>" style="padding:13px 0;font-size:15px;font-weight:600;color:var(--violet);">Sign In</a>
-        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-    </div>
-    <style>.desk-nav,.desk-signin{display:none!important;}@media(min-width:1024px){.desk-nav{display:flex!important;}.desk-signin{display:block!important;}.mob-ham{display:none!important;}}</style>
+    <style>.desk-signin{display:none!important;}@media(min-width:1024px){.desk-signin{display:block!important;}.mob-ham{display:none!important;}}</style>
 </nav>
 
 
-<section style="padding:90px 0 70px;overflow:hidden;position:relative;">
+<section style="padding:80px 0 60px;overflow:hidden;position:relative;background:var(--cream);">
+    <div style="position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:rgba(109,40,217,.06);border-radius:50%;pointer-events:none;"></div>
     <div class="w">
-        <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="hero-grid">
+        <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="hero-g">
             <div>
-                <div class="badge bv" style="margin-bottom:22px;">🇰🇪 Kenya's #1 Tutor Marketplace</div>
-                <h1 style="font-size:clamp(42px,6vw,74px);color:var(--ink);margin-bottom:22px;letter-spacing:-.02em;">
-                    Find the perfect<br>tutor for <span style="color:var(--violet);">every subject.</span>
-                </h1>
-                <p style="font-size:18px;color:var(--muted);margin-bottom:32px;max-width:520px;line-height:1.75;">
-                    Book verified 1:1 sessions in flexible blocks — 15, 30, 45 or 60 minutes. Pay securely with Paystack. Start learning today.
-                </p>
-                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;">
-                    <a href="<?php echo e(route('tutors.index')); ?>" class="btn btn-v" style="font-size:16px;padding:15px 34px;">
-                        Find a Tutor
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </a>
-                    <a href="<?php echo e(route('register')); ?>?role=tutor" class="btn btn-o" style="font-size:16px;padding:15px 34px;">Become a Tutor</a>
+                <div class="badge bv" style="margin-bottom:20px;font-size:13px;">
+                    <i class="fa-solid fa-bolt"></i> Matched in seconds
                 </div>
-                <form action="<?php echo e(route('tutors.index')); ?>" method="GET" style="display:flex;gap:8px;max-width:480px;margin-bottom:40px;">
-                    <div style="flex:1;position:relative;">
-                        <svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                        <input type="text" name="search" placeholder="Search by subject or tutor name…"
-                               style="width:100%;height:52px;padding:0 16px 0 44px;border-radius:999px;border:1.5px solid rgba(21,40,31,.2);background:#fff;font-size:15px;font-family:inherit;outline:none;">
-                    </div>
-                    <button type="submit" class="btn btn-v" style="padding:0 26px;height:52px;">Search</button>
-                </form>
-                <div style="display:flex;flex-wrap:wrap;gap:28px;padding-top:28px;border-top:1px solid var(--hair);">
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['500+','Verified Tutors'],['4.9★','Avg Rating'],['10,000+','Sessions'],['80+','Subjects']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$n,$l]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <h1 style="font-size:clamp(40px,6vw,72px);color:var(--ink);margin-bottom:18px;letter-spacing:-.02em;">
+                    Karibu Darasani.<br>
+                    <span style="color:var(--violet);">Learn with confidence,</span><br>every lesson.
+                </h1>
+                <p style="font-size:17px;color:var(--muted);margin-bottom:32px;max-width:540px;line-height:1.8;">
+                    <strong style="color:var(--ink);">Instant 1-on-1 tutoring</strong> — tell us your subject and schedule. Mwalimu matches you with a vetted, TSC-registered expert teacher available right now or at your earliest convenience.
+                </p>
+
+                
+                <div style="background:#fff;border-radius:20px;border:1px solid var(--hair);padding:20px;max-width:520px;margin-bottom:28px;box-shadow:0 4px 24px rgba(21,40,31,.08);">
+                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--violet);"></i> Book a session now</p>
+                    <form action="<?php echo e(route('tutors.index')); ?>" method="GET" style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <select name="category" style="flex:1;min-width:140px;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid var(--hair);background:#fff;font-size:14px;font-family:inherit;outline:none;" onchange="this.form.submit()">
+                            <option value="">Choose Subject</option>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($cat->id); ?>"><?php echo e($cat->icon); ?> <?php echo e($cat->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        </select>
+                        <a href="<?php echo e(route('tutors.index')); ?>" class="btn btn-v" style="height:46px;padding:0 22px;border-radius:12px;font-size:14px;">
+                            <i class="fa-solid fa-arrow-right"></i> Find Tutor
+                        </a>
+                    </form>
+                </div>
+
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;">
+                    <a href="<?php echo e(route('tutors.index')); ?>" class="btn btn-v" style="font-size:15px;padding:14px 32px;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Find a Tutor
+                    </a>
+                    <a href="<?php echo e(route('register')); ?>?role=tutor" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
+                        <i class="fa-solid fa-chalkboard-user"></i> Become a Tutor
+                    </a>
+                </div>
+
+                
+                <div style="display:flex;flex-wrap:wrap;gap:24px;padding-top:24px;border-top:1px solid var(--hair);">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
+                        ['fa-certificate','TSC Registered','All tutors'],
+                        ['fa-shield-halved','Background Checked','Every tutor'],
+                        ['fa-rotate-left','100% Refund','First lesson'],
+                        ['fa-lock','Secure Sessions','Always private'],
+                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$ic,$title,$sub]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div style="display:flex;align-items:center;gap:8px;">
-                        <span style="font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:var(--ink);"><?php echo e($n); ?></span>
-                        <span style="font-size:13px;color:var(--muted);"><?php echo e($l); ?></span>
+                        <div style="width:36px;height:36px;background:rgba(109,40,217,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid <?php echo e($ic); ?>" style="color:var(--violet);font-size:14px;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:13px;font-weight:700;color:var(--ink);"><?php echo e($title); ?></div>
+                            <div style="font-size:11px;color:var(--muted);"><?php echo e($sub); ?></div>
+                        </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
 
             
-            <div style="position:relative;height:420px;display:none;" class="hero-vis">
+            <div style="position:relative;height:400px;display:none;" class="hero-vis">
                 <?php
-                $cards=[
-                    ['Dr. Amara K.','Mathematics','4.9','#10B981','top:4%;left:8%;transform:rotate(-3deg)'],
-                    ['Prof. James M.','Physics','4.8','#6D28D9','top:30%;left:42%;transform:rotate(2deg)'],
-                    ['Ms. Fatuma A.','English','5.0','#E8522A','top:58%;left:5%;transform:rotate(-2deg)'],
-                    ['Mr. David O.','Chemistry','4.7','#D4A017','top:72%;left:40%;transform:rotate(3deg)'],
+                $floatTutors=[
+                    ['Dr. Amara K.','Mathematics','4.8','#6D28D9','top:5%;left:8%;transform:rotate(-3deg)','TSC Reg.'],
+                    ['Prof. James M.','Physics','4.9','#10B981','top:32%;left:42%;transform:rotate(2deg)','Nat. Examiner'],
+                    ['Ms. Fatuma A.','English','5.0','#E8522A','top:58%;left:5%;transform:rotate(-2deg)','TSC Reg.'],
+                    ['Mr. David O.','Chemistry','4.7','#D4A017','top:72%;left:38%;transform:rotate(3deg)','Nat. Marker'],
                 ];
                 ?>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $cards; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$name,$subj,$rating,$color,$style]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <div style="position:absolute;<?php echo e($style); ?>;background:#fff;border-radius:20px;border:1px solid var(--hair);padding:14px 16px;box-shadow:0 8px 28px rgba(21,40,31,.1);width:186px;">
-                    <div style="width:42px;height:42px;border-radius:12px;background:<?php echo e($color); ?>;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;"><?php echo e(substr($name,0,1)); ?></div>
-                    <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:var(--ink);"><?php echo e($name); ?></div>
-                    <div style="font-size:12px;color:var(--muted);margin-top:2px;"><?php echo e($subj); ?></div>
-                    <div style="display:flex;align-items:center;gap:6px;margin-top:7px;">
-                        <span style="color:var(--gold);font-size:12px;">★</span>
-                        <span style="font-size:12px;font-weight:600;color:var(--ink);"><?php echo e($rating); ?></span>
-                        <span style="font-size:11px;font-weight:600;color:var(--mint);">✓ Verified</span>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $floatTutors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$name,$subj,$rating,$color,$style,$badge]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div style="position:absolute;<?php echo e($style); ?>;background:#fff;border-radius:20px;border:1px solid var(--hair);padding:14px 16px;box-shadow:0 8px 28px rgba(21,40,31,.1);width:190px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <div style="width:40px;height:40px;border-radius:11px;background:<?php echo e($color); ?>;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;"><?php echo e(substr($name,0,1)); ?></div>
+                        <div>
+                            <div style="font-family:'Fraunces',serif;font-size:13px;font-weight:700;color:var(--ink);"><?php echo e($name); ?></div>
+                            <div style="font-size:11px;color:var(--muted);"><?php echo e($subj); ?></div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <span style="font-size:12px;font-weight:600;color:var(--gold);"><i class="fa-solid fa-star fa-xs"></i> <?php echo e($rating); ?></span>
+                        <span style="background:rgba(16,185,129,.1);color:var(--mint);padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;"><i class="fa-solid fa-check fa-xs"></i> <?php echo e($badge); ?></span>
                     </div>
                 </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
     </div>
-    <style>.hero-grid{grid-template-columns:1fr!important;}@media(min-width:1024px){.hero-grid{grid-template-columns:1fr 480px!important;}.hero-vis{display:block!important;}}</style>
+    <style>.hero-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.hero-g{grid-template-columns:1fr 460px!important;}.hero-vis{display:block!important;}}</style>
 </section>
 
 
-<section style="background:var(--ink);padding:80px 0;">
+<section style="padding:72px 0;background:var(--ink);">
     <div class="w">
         <div style="text-align:center;margin-bottom:44px;">
-            <h2 style="font-size:clamp(28px,4vw,42px);color:#fff;margin-bottom:10px;">Choose your session length</h2>
-            <p style="color:rgba(255,255,255,.55);font-size:17px;">Flexible blocks to fit any schedule or budget</p>
+            <h2 style="font-size:clamp(26px,4vw,40px);color:#fff;margin-bottom:10px;">Learn with confidence, every lesson.</h2>
+            <p style="color:rgba(255,255,255,.55);font-size:17px;">What makes Mwalimu different</p>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;" class="dur-grid">
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="feat-g">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-                ['15','Quick Focus','Perfect for a specific question, quick revision, or a short drill.','From KSh 375'],
-                ['30','Half Hour','Great for targeted concept practice or working through a problem set.','From KSh 750'],
-                ['45','Extended','Deeper dives into topics, structured lesson delivery, exam prep.','From KSh 1,125'],
-                ['60','Full Hour','Maximum learning. Best value per minute. Ideal for weekly sessions.','From KSh 1,500'],
-            ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$mins,$title,$desc,$price]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <a href="<?php echo e(route('tutors.index')); ?>" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:28px 22px;display:block;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.13)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
-                <div style="width:46px;height:46px;background:rgba(109,40,217,.35);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ['fa-user-graduate','Individual Attention','Every learner gets personal 1-on-1 attention from their tutor, greatly improving learning outcomes.','#6D28D9'],
+                ['fa-shield-halved','Background-Checked Tutors','Every tutor passes verification and a background screening before they can be onboarded on Mwalimu.','#10B981'],
+                ['fa-lock','Secure Classrooms','Lessons run in a secure space, assuring parents and learners of unmatched comfort and safety.','#E8522A'],
+                ['fa-certificate','Verified Credentials','Subject expertise and teaching credentials are thoroughly reviewed by our academic team.','#D4A017'],
+                ['fa-user-secret','Privacy & Safety','Tutors and learners cannot chat or exchange contacts on the platform.','#3B82F6'],
+                ['fa-rotate-left','100% Money-Back','Not satisfied with your first lesson? We\'ll refund it in full — no questions asked.','#EC4899'],
+            ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$icon,$title,$desc,$color]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
+                <div style="width:48px;height:48px;background:<?php echo e($color); ?>33;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+                    <i class="fa-solid <?php echo e($icon); ?>" style="color:<?php echo e($color); ?>;font-size:18px;"></i>
                 </div>
-                <div style="font-family:'Fraunces',serif;font-size:40px;font-weight:700;color:#fff;line-height:1;"><?php echo e($mins); ?><span style="font-size:17px;font-weight:400;color:rgba(255,255,255,.4);"> min</span></div>
-                <div style="font-size:15px;font-weight:600;color:#fff;margin:10px 0 5px;"><?php echo e($title); ?></div>
-                <div style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;"><?php echo e($desc); ?></div>
-                <div style="font-size:14px;font-weight:700;color:var(--gold);margin-top:16px;"><?php echo e($price); ?></div>
-            </a>
+                <h3 style="font-size:16px;color:#fff;margin-bottom:8px;"><?php echo e($title); ?></h3>
+                <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.7;"><?php echo e($desc); ?></p>
+            </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-    <style>.dur-grid{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.dur-grid{grid-template-columns:repeat(4,1fr)!important;}}</style>
+    <style>.feat-g{grid-template-columns:1fr!important;}@media(min-width:640px){.feat-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.feat-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
 </section>
 
 
-<section style="padding:80px 0;">
+<section style="padding:72px 0;">
     <div class="w">
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;gap:16px;flex-wrap:wrap;">
-            <div>
-                <h2 style="font-size:clamp(28px,4vw,42px);color:var(--ink);margin-bottom:8px;">Browse by subject</h2>
-                <p style="font-size:16px;color:var(--muted);">Find a tutor who specialises in exactly what you need</p>
+        <div style="text-align:center;margin-bottom:44px;">
+            <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:10px;">Simple, fixed pricing</h2>
+            <p style="color:var(--muted);font-size:17px;">No hidden fees. Pay only for the time you need.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
+                ['15','Quick Focus','⚡','KSh 200','Perfect for a quick question, specific topic or rapid revision drill.','From KSh 200'],
+                ['30','Half Hour','📘','KSh 400','Targeted practice — work through a problem set or concept in depth.','From KSh 400'],
+                ['45','Extended','🎯','KSh 600','A full structured lesson with warm-up, teaching and Q&A.','From KSh 600'],
+                ['60','Full Hour','🏆','KSh 800','Maximum learning. Best value. Ideal for exam prep.','From KSh 800'],
+            ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$mins,$title,$icon,$price,$desc,$from]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--violet)'" onmouseout="this.style.borderColor='var(--hair)'">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                    <div style="font-size:32px;"><?php echo e($icon); ?></div>
+                    <span style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--violet);"><?php echo e($price); ?></span>
+                </div>
+                <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px;"><?php echo e($mins); ?> min</div>
+                <div style="font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px;"><?php echo e($title); ?></div>
+                <p style="font-size:13px;color:var(--muted);line-height:1.65;"><?php echo e($desc); ?></p>
+                <a href="<?php echo e(route('tutors.index')); ?>" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:var(--violet);">
+                    Book now <i class="fa-solid fa-arrow-right fa-xs"></i>
+                </a>
             </div>
-            <a href="<?php echo e(route('tutors.index')); ?>" style="font-size:14px;font-weight:600;color:var(--violet);display:flex;align-items:center;gap:4px;white-space:nowrap;">
-                View all tutors
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        </div>
+        <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:20px;"><i class="fa-solid fa-circle-info fa-xs" style="color:var(--violet);"></i> Booking only completes after payment is made and a session code is sent to both student and tutor.</p>
+    </div>
+    <style>.price-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.price-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
+</section>
+
+
+<section style="padding:72px 0;background:rgba(21,40,31,.03);">
+    <div class="w">
+        <div style="text-align:center;margin-bottom:44px;">
+            <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:10px;">Book, pay, and learn in one safe place.</h2>
+            <p style="color:var(--muted);font-size:17px;">Three steps, zero hassle</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:20px;max-width:1000px;margin:0 auto;" class="steps-g">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
+                ['1','fa-list-check','Select your session','Choose your level (JSS/SS/F3/F4), what you need help with, subject, topic, date, time, and duration. The platform shows you available, matched tutors instantly.','#6D28D9'],
+                ['2','fa-mobile-screen-button','Pay via M-Pesa','Enter your phone number to prompt payment. Enter your M-Pesa PIN to complete. No account needed for learners — just your phone number.','#10B981'],
+                ['3','fa-video','Join your secure session','Receive a one-time session code by SMS/email. Enter the code to access your private, secure classroom. No tutor can contact you outside the platform.','#E8522A'],
+            ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$num,$icon,$title,$desc,$color]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="card" style="padding:28px;display:flex;gap:20px;align-items:flex-start;">
+                <div style="width:52px;height:52px;background:<?php echo e($color); ?>;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="fa-solid <?php echo e($icon); ?>" style="color:#fff;font-size:20px;"></i>
+                </div>
+                <div>
+                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:<?php echo e($color); ?>;margin-bottom:4px;">Step <?php echo e($num); ?></div>
+                    <h3 style="font-size:19px;color:var(--ink);margin-bottom:8px;"><?php echo e($title); ?></h3>
+                    <p style="font-size:14px;color:var(--muted);line-height:1.75;"><?php echo e($desc); ?></p>
+                </div>
+            </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        </div>
+        <div style="text-align:center;margin-top:32px;">
+            <a href="<?php echo e(route('how-it-works')); ?>" class="btn btn-v"><i class="fa-solid fa-circle-play"></i> See Full Guide</a>
+        </div>
+    </div>
+    <style>.steps-g{grid-template-columns:1fr!important;}@media(min-width:768px){.steps-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
+</section>
+
+
+<section style="padding:72px 0;">
+    <div class="w">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:16px;flex-wrap:wrap;">
+            <div>
+                <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:8px;">Browse by subject</h2>
+                <p style="color:var(--muted);font-size:16px;">Find a tutor who knows your curriculum inside out</p>
+            </div>
+            <a href="<?php echo e(route('tutors.index')); ?>" style="font-size:14px;font-weight:600;color:var(--violet);display:flex;align-items:center;gap:4px;">
+                All subjects <i class="fa-solid fa-arrow-right fa-xs"></i>
             </a>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;" class="cat-grid">
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;" class="cat-g">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-            <a href="<?php echo e(route('tutors.index')); ?>?category=<?php echo e($cat->id); ?>" class="card card-lift" style="padding:24px;display:block;">
-                <div style="font-size:36px;margin-bottom:12px;"><?php echo e($cat->icon ?? '📚'); ?></div>
+            <a href="<?php echo e(route('tutors.index')); ?>?category=<?php echo e($cat->id); ?>" class="card card-lift" style="padding:22px;display:block;">
+                <div style="font-size:34px;margin-bottom:10px;"><?php echo e($cat->icon ?? '📚'); ?></div>
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);transition:color .15s;"><?php echo e($cat->name); ?></h3>
-                <p style="font-size:12px;color:var(--muted);margin-top:4px;"><?php echo e($cat->subjects->count()); ?> subjects</p>
+                <p style="font-size:12px;color:var(--muted);margin-top:3px;"><?php echo e($cat->subjects->count()); ?> topics</p>
             </a>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['📐','Mathematics','5 subjects'],['🔬','Sciences','4 subjects'],['🌍','Languages','5 subjects'],['💻','Programming','5 subjects'],['📊','Business','4 subjects'],['🎨','Arts & Music','5 subjects'],['📚','Humanities','4 subjects'],['📝','Test Prep','5 subjects']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$ic,$nm,$ct]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <a href="<?php echo e(route('tutors.index')); ?>" class="card card-lift" style="padding:24px;display:block;">
-                <div style="font-size:36px;margin-bottom:12px;"><?php echo e($ic); ?></div>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['📐','Mathematics'],['🔬','Sciences'],['🌍','Languages'],['💻','Programming'],['📊','Business'],['🎨','Arts'],['📚','Humanities'],['📝','Test Prep']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$ic,$nm]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <a href="<?php echo e(route('tutors.index')); ?>" class="card card-lift" style="padding:22px;display:block;">
+                <div style="font-size:34px;margin-bottom:10px;"><?php echo e($ic); ?></div>
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);"><?php echo e($nm); ?></h3>
-                <p style="font-size:12px;color:var(--muted);margin-top:4px;"><?php echo e($ct); ?></p>
             </a>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-    <style>.cat-grid{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.cat-grid{grid-template-columns:repeat(3,1fr)!important;}}@media(min-width:1024px){.cat-grid{grid-template-columns:repeat(4,1fr)!important;}}</style>
+    <style>.cat-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.cat-g{grid-template-columns:repeat(3,1fr)!important;}}@media(min-width:1024px){.cat-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 </section>
 
 
-<section id="how" style="padding:80px 0;background:rgba(21,40,31,.03);">
+<section style="padding:72px 0;background:var(--ink);">
     <div class="w">
-        <div style="text-align:center;margin-bottom:48px;">
-            <h2 style="font-size:clamp(28px,4vw,42px);color:var(--ink);margin-bottom:10px;">How Mwalimu works</h2>
-            <p style="font-size:17px;color:var(--muted);max-width:480px;margin:0 auto;">Three simple steps to your first lesson</p>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr;gap:20px;" class="steps-grid">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-                ['🔍','Find your tutor','Browse verified tutors by subject, price, and availability. Read real reviews from students and parents.'],
-                ['📅','Book & pay','Pick your duration block (15–60 min) and a time that works. Pay securely with Paystack — M-Pesa or card.'],
-                ['🎓','Join your session','Receive a unique access code by email. Enter it on session day to open your live Jitsi classroom instantly.'],
-            ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => [$icon,$title,$desc]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="card" style="padding:32px;text-align:center;position:relative;">
-                <div style="position:absolute;top:-14px;left:-14px;width:32px;height:32px;background:var(--violet);color:#fff;border-radius:999px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;"><?php echo e($i+1); ?></div>
-                <div style="width:64px;height:64px;background:rgba(109,40,217,.1);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 20px;"><?php echo e($icon); ?></div>
-                <h3 style="font-size:21px;color:var(--ink);margin-bottom:10px;"><?php echo e($title); ?></h3>
-                <p style="font-size:14px;color:var(--muted);line-height:1.8;"><?php echo e($desc); ?></p>
+        <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="ec-g">
+            <div>
+                <div class="badge" style="background:rgba(212,160,23,.2);color:var(--gold);margin-bottom:20px;font-size:13px;">
+                    <i class="fa-solid fa-star"></i> The Examiner's Clinic
+                </div>
+                <h2 style="font-size:clamp(28px,4vw,44px);color:#fff;margin-bottom:14px;">Learn directly from national examiners.</h2>
+                <p style="font-size:16px;color:rgba(255,255,255,.65);line-height:1.8;margin-bottom:20px;">
+                    Most revision resources focus on <em>what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to answer questions</strong> — taught by the very people who set, mark, and grade national exams.
+                </p>
+                <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = ['Exam strategy & high-frequency exam questions','Examiner traps and marking scheme analysis','Common mistakes and how KNEC examiners award marks','Conducted by highest-rated National Examiners & Markers']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:rgba(255,255,255,.85);">
+                        <i class="fa-solid fa-circle-check" style="color:var(--mint);margin-top:2px;flex-shrink:0;"></i>
+                        <?php echo e($pt); ?>
+
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                    <a href="/examiner-clinic" class="btn btn-w"><i class="fa-solid fa-calendar-check"></i> View Upcoming Clinics</a>
+                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 1,000</span> /session · 60 min</div>
+                </div>
             </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($upcomingClinics->isNotEmpty()): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $upcomingClinics; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $clinic): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;">
+                    <div style="width:50px;height:50px;background:rgba(212,160,23,.25);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="fa-solid fa-chalkboard-user" style="color:var(--gold);font-size:20px;"></i>
+                    </div>
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:700;font-size:14px;color:#fff;"><?php echo e($clinic->title); ?></div>
+                        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;"><?php echo e($clinic->tutor->name); ?> · <?php echo e($clinic->subject?->name); ?></div>
+                        <div style="font-size:12px;color:var(--gold);margin-top:3px;"><i class="fa-regular fa-calendar fa-xs"></i> <?php echo e($clinic->scheduled_at->format('D, M j \a\t g:ia')); ?></div>
+                    </div>
+                    <div style="text-align:right;flex-shrink:0;">
+                        <div style="font-weight:700;font-size:14px;color:var(--gold);">KSh 1,000</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,.4);"><?php echo e($clinic->spotsLeft()); ?> spots left</div>
+                    </div>
+                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php else: ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['Advanced Mathematics – Paper 2 Strategy','Dr. Amara K.','Mathematics'],['KCSE English – Comprehension & Writing','Ms. Sarah N.','English'],['Physics – Paper 1 Examiner Traps','Prof. James M.','Physics']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$t,$name,$subj]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;">
+                    <div style="width:50px;height:50px;background:rgba(212,160,23,.25);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="fa-solid fa-chalkboard-user" style="color:var(--gold);font-size:20px;"></i>
+                    </div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:14px;color:#fff;"><?php echo e($t); ?></div>
+                        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;"><?php echo e($name); ?> · <?php echo e($subj); ?></div>
+                    </div>
+                    <span style="background:rgba(212,160,23,.2);color:var(--gold);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;">Upcoming</span>
+                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
         </div>
     </div>
-    <style>.steps-grid{grid-template-columns:1fr!important;}@media(min-width:768px){.steps-grid{grid-template-columns:repeat(3,1fr)!important;}}</style>
+    <style>.ec-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.ec-g{grid-template-columns:1fr 1fr!important;}}</style>
 </section>
 
 
 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($featuredTutors->isNotEmpty()): ?>
-<section style="padding:80px 0;">
+<section style="padding:72px 0;">
     <div class="w">
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;gap:16px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px;">
             <div>
-                <h2 style="font-size:clamp(28px,4vw,42px);color:var(--ink);margin-bottom:8px;">Meet our top tutors</h2>
-                <p style="font-size:16px;color:var(--muted);">Handpicked, verified experts ready to teach</p>
+                <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:8px;">Meet our verified tutors</h2>
+                <p style="color:var(--muted);font-size:16px;">TSC-registered experts, ready now</p>
             </div>
-            <a href="<?php echo e(route('tutors.index')); ?>" style="font-size:14px;font-weight:600;color:var(--violet);display:flex;align-items:center;gap:4px;white-space:nowrap;">
-                See all tutors <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <a href="<?php echo e(route('tutors.index')); ?>" style="font-size:14px;font-weight:600;color:var(--violet);display:flex;align-items:center;gap:4px;">
+                All tutors <i class="fa-solid fa-arrow-right fa-xs"></i>
             </a>
         </div>
-        <div style="display:grid;grid-template-columns:1fr;gap:18px;" class="tutors-grid">
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="tut-g">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $featuredTutors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tutor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php $colors=['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899']; $c=$colors[$loop->index % 6]; ?>
-            <div class="card card-lift" style="padding:22px;">
+            <?php $colors=['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899']; $col=$colors[$loop->index%6]; ?>
+            <div class="card card-lift" style="padding:20px;">
                 <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
-                    <div style="width:60px;height:60px;border-radius:16px;background:<?php echo e($c); ?>;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;"><?php echo e(substr($tutor->user->name,0,1)); ?></div>
+                    <div style="width:58px;height:58px;border-radius:16px;background:<?php echo e($col); ?>;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;"><?php echo e(substr($tutor->user->name,0,1)); ?></div>
                     <div style="flex:1;min-width:0;">
                         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                             <span style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);"><?php echo e($tutor->user->name); ?></span>
-                            <span style="font-size:11px;font-weight:600;color:var(--mint);">✓ Verified</span>
+                            <span style="background:rgba(16,185,129,.1);color:var(--mint);padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;"><i class="fa-solid fa-check fa-xs"></i> TSC</span>
                         </div>
                         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;">
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $tutor->subjects->take(2); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <span class="badge bv" style="font-size:11px;padding:3px 9px;"><?php echo e($s->name); ?></span>
+                            <span class="badge bv" style="font-size:11px;"><?php echo e($s->name); ?></span>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
-                        <div style="display:flex;align-items:center;gap:8px;margin-top:7px;font-size:13px;color:var(--muted);">
-                            <span style="color:var(--gold);font-weight:700;">★ <?php echo e(number_format($tutor->rating_avg,1)); ?></span>
-                            <span>(<?php echo e($tutor->total_reviews); ?> reviews)</span>
-                            <span>·</span>
-                            <span style="font-weight:700;color:var(--ink);">KSh <?php echo e(number_format($tutor->hourly_rate,0)); ?>/hr</span>
+                        <div style="display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px;">
+                            <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star fa-xs"></i> <?php echo e(number_format($tutor->rating_avg,1)); ?></span>
+                            <span style="color:var(--muted);">(<?php echo e($tutor->total_reviews); ?>)</span>
+                            <span style="color:var(--muted);">·</span>
+                            <span style="color:var(--muted);"><?php echo e($tutor->total_sessions); ?> sessions</span>
                         </div>
                     </div>
                 </div>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tutor->bio): ?>
-                <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><?php echo e($tutor->bio); ?></p>
+                <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><?php echo e($tutor->bio); ?></p>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;">
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [15,30,45,60]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mins): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div style="text-align:center;border:1.5px solid var(--hair);border-radius:12px;padding:7px 4px;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--violet)';this.style.background='rgba(109,40,217,.05)'" onmouseout="this.style.borderColor='var(--hair)';this.style.background='transparent'">
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:14px;">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [15=>200,30=>400,45=>600,60=>800]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mins => $price): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div style="text-align:center;border:1.5px solid var(--hair);border-radius:10px;padding:6px 3px;">
                         <div style="font-size:11px;font-weight:700;color:var(--ink);"><?php echo e($mins); ?>m</div>
-                        <div style="font-size:10px;color:var(--muted);margin-top:1px;">KSh <?php echo e(number_format($tutor->getPriceForDuration($mins),0)); ?></div>
+                        <div style="font-size:10px;color:var(--muted);">KSh <?php echo e($price); ?></div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
-                <a href="<?php echo e(route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name))); ?>" class="btn btn-v" style="width:100%;font-size:14px;padding:11px;">Book Session</a>
+                <a href="<?php echo e(route('tutors.show', \Illuminate\Support\Str::slug($tutor->user->name))); ?>" class="btn btn-v" style="width:100%;font-size:13px;padding:10px;"><i class="fa-solid fa-calendar-check"></i> Book Session</a>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-    <style>.tutors-grid{grid-template-columns:1fr!important;}@media(min-width:640px){.tutors-grid{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.tutors-grid{grid-template-columns:repeat(3,1fr)!important;}}</style>
+    <style>.tut-g{grid-template-columns:1fr!important;}@media(min-width:640px){.tut-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.tut-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
 </section>
 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
 
-<section style="background:var(--violet);padding:80px 0;">
+<section style="background:var(--violet);padding:72px 0;">
     <div class="w">
-        <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="cta-grid">
+        <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="tc-g">
             <div>
-                <span class="badge" style="background:rgba(255,255,255,.18);color:#fff;margin-bottom:22px;">For Tutors</span>
-                <h2 style="font-size:clamp(30px,4vw,48px);color:#fff;margin-bottom:16px;">Earn doing what<br>you love</h2>
-                <p style="font-size:17px;color:rgba(255,255,255,.75);line-height:1.75;margin-bottom:28px;max-width:460px;">
-                    Sign up, upload your documents, get verified and start accepting bookings. Set your own rates and keep up to 85% of your earnings.
-                </p>
-                <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = ['Upload documents once — verified for life','Set your own hourly rate in KSh','Get paid directly to M-Pesa or bank','Unique session access codes sent by email']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:22px;height:22px;background:rgba(255,255,255,.2);border-radius:999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <div class="badge" style="background:rgba(255,255,255,.2);color:#fff;margin-bottom:20px;"><i class="fa-solid fa-users"></i> For Tutors</div>
+                <h2 style="font-size:clamp(28px,4vw,44px);color:#fff;margin-bottom:14px;">Join a verified community of Kenyan curriculum experts.</h2>
+                <p style="font-size:16px;color:rgba(255,255,255,.75);line-height:1.8;margin-bottom:24px;">Register, get verified, and start earning on every completed lesson. Payments are processed instantly to your M-Pesa.</p>
+
+                
+                <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
+                        ['1','fa-pen-to-square','Register','Tell us who you are, subjects you teach, and your experience.'],
+                        ['2','fa-id-card-clip','Get Verified','We check your credentials, ID, and TSC certificate — usually 72 hours, or 24 hours with Speedy Verification (KSh 1,000).'],
+                        ['3','fa-money-bill-trend-up','Start Earning','Your profile goes live. Accept lesson requests and get paid per completed lesson.'],
+                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$num,$icon,$title,$desc]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div style="display:flex;align-items:flex-start;gap:12px;">
+                        <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid <?php echo e($icon); ?>" style="color:#fff;font-size:14px;"></i>
                         </div>
-                        <span style="font-size:15px;color:rgba(255,255,255,.9);"><?php echo e($pt); ?></span>
+                        <div>
+                            <div style="font-weight:700;font-size:14px;color:#fff;"><?php echo e($num); ?>. <?php echo e($title); ?></div>
+                            <div style="font-size:13px;color:rgba(255,255,255,.7);margin-top:2px;line-height:1.6;"><?php echo e($desc); ?></div>
+                        </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
-                <a href="<?php echo e(route('register')); ?>?role=tutor" class="btn btn-w" style="font-size:16px;padding:15px 36px;">Become a Tutor Today</a>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                    <a href="<?php echo e(route('register')); ?>?role=tutor" class="btn btn-w"><i class="fa-solid fa-chalkboard-user"></i> Register as a Tutor</a>
+                    <a href="<?php echo e(route('how-it-works')); ?>" class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);">Learn More</a>
+                </div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['KSh 1,500','Earned today'],['12','Upcoming sessions'],['4.9 ★','Your rating'],['85%','You keep']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$val,$lbl]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:22px;text-align:center;">
-                    <div style="font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:#fff;"><?php echo e($val); ?></div>
-                    <div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:4px;"><?php echo e($lbl); ?></div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
+                    ['fa-bolt','Instant Payouts','M-Pesa payments processed immediately after each completed lesson.'],
+                    ['fa-share-nodes','Referral Earnings','Earn commission for every verified tutor you refer with your code.'],
+                    ['fa-star','Build Reputation','Featured clinic sessions put you in front of hundreds of parents & learners.'],
+                    ['fa-headset','Zero Admin','Mwalimu handles student acquisition, payments, reminders and classroom setup.'],
+                ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$icon,$title,$desc]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:18px;">
+                    <i class="fa-solid <?php echo e($icon); ?>" style="color:rgba(255,255,255,.8);font-size:20px;margin-bottom:10px;display:block;"></i>
+                    <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;"><?php echo e($title); ?></div>
+                    <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.6;"><?php echo e($desc); ?></div>
                 </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
     </div>
-    <style>.cta-grid{grid-template-columns:1fr!important;}@media(min-width:1024px){.cta-grid{grid-template-columns:1fr 1fr!important;}}</style>
+    <style>.tc-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.tc-g{grid-template-columns:1fr 1fr!important;}}</style>
 </section>
 
 
-<section style="padding:80px 0;">
+<section style="padding:72px 0;">
     <div class="w">
-        <div style="text-align:center;margin-bottom:48px;">
-            <h2 style="font-size:clamp(28px,4vw,42px);color:var(--ink);margin-bottom:10px;">What learners say</h2>
-            <p style="font-size:17px;color:var(--muted);">Real results from real students and parents across Kenya</p>
+        <div style="text-align:center;margin-bottom:44px;">
+            <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:8px;">What parents & learners say</h2>
         </div>
-        <div style="display:grid;grid-template-columns:1fr;gap:18px;" class="testi-grid">
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="test-g">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-                ['G','Grace W.','Parent','My daughter\'s Maths grade went from D to A in just 6 weeks. The 30-minute sessions fit perfectly into our evening routine — no long commute, no hassle.','after sessions with Dr. Amara'],
-                ['B','Brian K.','Student, Form 4','I was really struggling with KCSE Chemistry. My tutor broke every concept down clearly and gave me past paper practice. I passed with an A.','after sessions with Mr. James'],
-                ['M','Mercy N.','Parent','The session access code system is brilliant. My son gets his unique code by email and joins the class by himself. Very professional platform.','after sessions with Ms. Fatuma'],
+                ['G','Grace W.','Parent, Nairobi','My daughter improved from D to A in Maths in just 6 weeks. The 30-minute sessions fit perfectly after school. The tutor is TSC-registered and very professional.','after sessions with Dr. Amara'],
+                ['B','Brian K.','Form 4 Student','I was panicking about KCSE Chemistry. My Mwalimu tutor broke down the marking scheme so clearly I could predict what the examiner wanted. Passed with an A.','after sessions with Mr. James'],
+                ['M','Mercy N.','Parent, Mombasa','The one-time session code is genius — my son enters the code and the class opens. No sharing of numbers. No chatting outside. Very safe for a teenage learner.','after sessions with Ms. Fatuma'],
             ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$init,$name,$role,$quote,$note]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="card" style="padding:28px;">
-                <div style="color:var(--gold);font-size:18px;letter-spacing:3px;margin-bottom:16px;">★★★★★</div>
-                <p style="font-size:15px;color:var(--ink);line-height:1.85;margin-bottom:22px;font-style:italic;">"<?php echo e($quote); ?>"</p>
-                <div style="display:flex;align-items:center;gap:12px;padding-top:18px;border-top:1px solid var(--hair);">
-                    <div style="width:38px;height:38px;border-radius:999px;background:rgba(109,40,217,.12);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--violet);font-size:15px;flex-shrink:0;"><?php echo e($init); ?></div>
+            <div class="card" style="padding:26px;">
+                <div style="color:var(--gold);font-size:16px;letter-spacing:3px;margin-bottom:14px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p style="font-size:14px;color:var(--ink);line-height:1.85;margin-bottom:18px;font-style:italic;">"<?php echo e($quote); ?>"</p>
+                <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid var(--hair);">
+                    <div style="width:38px;height:38px;border-radius:999px;background:rgba(109,40,217,.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--violet);font-size:15px;flex-shrink:0;"><?php echo e($init); ?></div>
                     <div>
                         <div style="font-weight:700;font-size:14px;color:var(--ink);"><?php echo e($name); ?></div>
-                        <div style="font-size:12px;color:var(--muted);margin-top:1px;"><?php echo e($role); ?> · <?php echo e($note); ?></div>
+                        <div style="font-size:12px;color:var(--muted);"><?php echo e($role); ?> · <?php echo e($note); ?></div>
                     </div>
                 </div>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-    <style>.testi-grid{grid-template-columns:1fr!important;}@media(min-width:768px){.testi-grid{grid-template-columns:repeat(3,1fr)!important;}}</style>
+    <style>.test-g{grid-template-columns:1fr!important;}@media(min-width:768px){.test-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
 </section>
 
 
-<section style="padding:80px 0;background:rgba(21,40,31,.03);">
+<section style="background:var(--ink);padding:80px 0;text-align:center;">
     <div class="w">
-        <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="code-grid">
-            <div>
-                <div class="badge bv" style="margin-bottom:20px;">🔐 Secure Access</div>
-                <h2 style="font-size:clamp(28px,4vw,42px);color:var(--ink);margin-bottom:16px;">Your unique session<br>access code</h2>
-                <p style="font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:28px;">After booking, both tutor and student receive a unique code by email. Enter your code on session day to instantly open your private Jitsi classroom — no app downloads, no account needed.</p>
-                <div style="display:flex;flex-direction:column;gap:14px;">
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-                        ['📧','Emailed instantly','Codes are sent immediately when your booking is confirmed.'],
-                        ['🔒','Unique per session','Each booking generates a new TUT-XXXXXX (tutor) and STU-XXXXXX (student) code.'],
-                        ['🎥','Opens Jitsi live class','Enter your code on the booking page to launch your private video room.'],
-                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$ic,$title,$desc]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div style="display:flex;align-items:flex-start;gap:14px;">
-                        <div style="width:44px;height:44px;background:rgba(109,40,217,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><?php echo e($ic); ?></div>
-                        <div>
-                            <div style="font-weight:700;font-size:15px;color:var(--ink);"><?php echo e($title); ?></div>
-                            <div style="font-size:13px;color:var(--muted);margin-top:3px;line-height:1.6;"><?php echo e($desc); ?></div>
-                        </div>
-                    </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                </div>
-            </div>
-            <div>
-                <div style="background:#fff;border-radius:28px;border:2px solid var(--hair);padding:40px;text-align:center;box-shadow:0 8px 40px rgba(21,40,31,.08);">
-                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:16px;">Your Session Access Code</p>
-                    <div style="font-family:monospace;font-size:40px;font-weight:800;color:var(--violet);letter-spacing:.12em;background:rgba(109,40,217,.06);border:2px solid rgba(109,40,217,.2);border-radius:16px;padding:20px 24px;margin-bottom:16px;">STU-M4N8RZ</div>
-                    <p style="font-size:13px;color:var(--muted);line-height:1.6;">Use this code on the booking page to enter your live session. No download required.</p>
-                    <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--hair);display:flex;justify-content:center;gap:24px;">
-                        <div style="text-align:center;">
-                            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Student code</div>
-                            <div style="font-family:monospace;font-size:16px;font-weight:700;color:var(--violet);">STU-XXXXXX</div>
-                        </div>
-                        <div style="width:1px;background:var(--hair);"></div>
-                        <div style="text-align:center;">
-                            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Tutor code</div>
-                            <div style="font-family:monospace;font-size:16px;font-weight:700;color:var(--mint);">TUT-XXXXXX</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <style>.code-grid{grid-template-columns:1fr!important;}@media(min-width:1024px){.code-grid{grid-template-columns:1fr 1fr!important;}}</style>
-</section>
-
-
-<section style="background:var(--ink);padding:90px 0;text-align:center;">
-    <div class="w">
-        <h2 style="font-size:clamp(30px,5vw,56px);color:#fff;margin-bottom:16px;">Ready to start learning?</h2>
-        <p style="font-size:18px;color:rgba(255,255,255,.6);margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto;">
-            Join thousands of students and parents who trust Mwalimu across Kenya.
-        </p>
-        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;">
-            <a href="<?php echo e(route('tutors.index')); ?>" class="btn btn-v" style="font-size:16px;padding:16px 40px;">Find a Tutor</a>
-            <a href="<?php echo e(route('register')); ?>?role=tutor" class="btn" style="background:transparent;color:rgba(255,255,255,.8);border:2px solid rgba(255,255,255,.3);font-size:16px;padding:16px 40px;">Become a Tutor</a>
+        <h2 style="font-size:clamp(28px,5vw,52px);color:#fff;margin-bottom:14px;">Ready to learn?</h2>
+        <p style="font-size:17px;color:rgba(255,255,255,.6);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of Kenyan students and parents who trust Mwalimu for expert, safe, verified tutoring.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+            <a href="<?php echo e(route('tutors.index')); ?>" class="btn btn-v" style="font-size:16px;padding:15px 40px;"><i class="fa-solid fa-magnifying-glass"></i> Find a Tutor</a>
+            <a href="<?php echo e(route('register')); ?>?role=tutor" class="btn" style="background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.3);font-size:16px;padding:15px 40px;"><i class="fa-solid fa-chalkboard-user"></i> Become a Tutor</a>
         </div>
     </div>
 </section>
 
 
-<footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:64px 0 32px;">
+<footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.08);padding:48px 0 28px;">
     <div class="w">
-        <div style="display:grid;grid-template-columns:1fr;gap:40px;margin-bottom:48px;" class="footer-grid">
+        <div style="display:grid;grid-template-columns:1fr;gap:36px;margin-bottom:40px;" class="foot-g">
             <div>
-                <a href="<?php echo e(route('home')); ?>" style="display:inline-flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:14px;">
+                <a href="<?php echo e(route('home')); ?>" style="display:inline-flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:12px;">
                     <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
                     Mwalimu
                 </a>
-                <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.75;max-width:280px;">
-                    Connecting learners and parents with verified tutors across Kenya. Book sessions in flexible time blocks.
-                </p>
+                <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.75;max-width:280px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms.</p>
+                <div style="margin-top:14px;">
+                    <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:4px;"><i class="fa-solid fa-envelope fa-xs" style="margin-right:6px;"></i> info@ovaldesk.co.ke</div>
+                    <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:4px;"><i class="fa-solid fa-phone fa-xs" style="margin-right:6px;"></i> 0724 367 814 / 0723 636 901</div>
+                    <div style="font-size:13px;color:rgba(255,255,255,.5);"><i class="fa-solid fa-location-dot fa-xs" style="margin-right:6px;"></i> Suite 11, Samima Suites, Nairobi West</div>
+                </div>
             </div>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-                ['For Students',[['Find a Tutor', route('tutors.index')],['Browse Courses', route('courses.index')],['Sign Up Free', route('register')],['How It Works','#how']]],
-                ['For Tutors',[['Become a Tutor', route('register').'?role=tutor'],['Tutor Guidelines','#'],['Earnings','#'],['Verification','#']]],
-                ['Support',[['Help Centre','#'],['Contact Us','#'],['Privacy Policy','#'],['Terms of Service','#']]],
-            ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$heading, $links]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div>
-                <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:16px;"><?php echo e($heading); ?></h4>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $links; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$label,$url]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <a href="<?php echo e($url); ?>" style="display:block;font-size:14px;color:rgba(255,255,255,.6);margin-bottom:10px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><?php echo e($label); ?></a>
+                <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px;">For Learners</h4>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['Find a Tutor', route('tutors.index')],['Examiner\'s Clinic',route('examiner-clinic')],['How It Works', route('how-it-works')],['Book a Session', route('tutors.index')]]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$l,$u]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e($u); ?>" style="display:block;font-size:14px;color:rgba(255,255,255,.55);margin-bottom:8px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'"><?php echo e($l); ?></a>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <div>
+                <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px;">For Tutors</h4>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['Become a Tutor', route('register').'?role=tutor'],['Tutor Verification','#'],['Referral Programme','#'],['Examiner Clinics',route('examiner-clinic')]]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$l,$u]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e($u); ?>" style="display:block;font-size:14px;color:rgba(255,255,255,.55);margin-bottom:8px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'"><?php echo e($l); ?></a>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
+            <div>
+                <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px;">Company</h4>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['About OvalDesk','https://ovaldesk.co.ke'],['Contact Us',route('contact')],['Privacy Policy','#'],['Terms of Service','#']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$l,$u]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e($u); ?>" style="display:block;font-size:14px;color:rgba(255,255,255,.55);margin-bottom:8px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'"><?php echo e($l); ?></a>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
         </div>
-        <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-            <span style="font-size:12px;color:rgba(255,255,255,.3);">&copy; <?php echo e(date('Y')); ?> Mwalimu. All rights reserved.</span>
-            <span style="font-size:12px;color:rgba(255,255,255,.3);">Made with ❤ for learners across Kenya</span>
+        <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(255,255,255,.3);">
+            <span>&copy; <?php echo e(date('Y')); ?> Mwalimu by OvalDesk Ventures. All rights reserved.</span>
+            <a href="https://ovaldesk.co.ke" style="color:rgba(255,255,255,.4);transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.4)'">ovaldesk.co.ke</a>
         </div>
     </div>
-    <style>.footer-grid{grid-template-columns:1fr!important;}@media(min-width:640px){.footer-grid{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.footer-grid{grid-template-columns:2fr 1fr 1fr 1fr!important;}}</style>
+    <style>.foot-g{grid-template-columns:1fr!important;}@media(min-width:640px){.foot-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.foot-g{grid-template-columns:2fr 1fr 1fr 1fr!important;}}</style>
 </footer>
 
 
-<div x-data="{ show: !localStorage.getItem('cookie_ok') }" x-show="show" x-cloak
-     style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;width:calc(100% - 32px);max-width:440px;">
+<div x-data="{ show: !localStorage.getItem('cookie_ok') }" x-show="show" x-cloak style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;width:calc(100% - 32px);max-width:440px;">
     <div style="background:#FFFDF5;border:2px solid var(--ink);border-radius:20px;padding:18px 20px;box-shadow:0 14px 40px rgba(21,40,31,.22);">
         <div style="display:flex;gap:12px;align-items:flex-start;">
-            <span style="font-size:26px;flex-shrink:0;">🍪</span>
+            <i class="fa-solid fa-cookie-bite" style="font-size:24px;color:var(--gold);flex-shrink:0;margin-top:2px;"></i>
             <div>
                 <p style="font-weight:700;font-size:15px;color:var(--ink);margin-bottom:4px;">We value your privacy</p>
-                <p style="font-size:12px;color:var(--muted);line-height:1.5;">We use cookies to personalise your experience and improve the platform.</p>
+                <p style="font-size:12px;color:var(--muted);line-height:1.5;">We use cookies to personalise your experience and keep sessions secure.</p>
             </div>
         </div>
         <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px;">
-            <button @click="localStorage.setItem('cookie_ok','none');show=false"
-                    style="padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;background:#fff;color:var(--ink);border:1.5px solid var(--ink);cursor:pointer;font-family:inherit;">
-                Necessary Only
-            </button>
-            <button @click="localStorage.setItem('cookie_ok','all');show=false"
-                    style="padding:9px 20px;border-radius:999px;font-size:13px;font-weight:700;background:var(--violet);color:#fff;border:1.5px solid var(--ink);cursor:pointer;font-family:inherit;">
-                Accept All
-            </button>
+            <button @click="localStorage.setItem('cookie_ok','none');show=false" style="padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;background:#fff;color:var(--ink);border:1.5px solid var(--ink);cursor:pointer;font-family:inherit;">Necessary Only</button>
+            <button @click="localStorage.setItem('cookie_ok','all');show=false" style="padding:9px 20px;border-radius:999px;font-size:13px;font-weight:700;background:var(--violet);color:#fff;border:1.5px solid var(--ink);cursor:pointer;font-family:inherit;"><i class="fa-solid fa-check"></i> Accept All</button>
         </div>
     </div>
 </div>

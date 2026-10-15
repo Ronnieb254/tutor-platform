@@ -5,21 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\TutorProfile;
 use App\Models\BlogPost;
+use App\Models\ExaminerClinic;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $categories    = Category::active()->with('subjects')->take(8)->get();
+        $categories     = Category::active()->with('subjects')->take(8)->get();
         $featuredTutors = TutorProfile::approved()
             ->with(['user', 'subjects'])
             ->orderByDesc('rating_avg')
             ->take(6)
             ->get();
-        $recentPosts = BlogPost::published()->with('author')->latest('published_at')->take(3)->get();
+        $recentPosts       = BlogPost::published()->with('author')->latest('published_at')->take(3)->get();
+        $upcomingClinics   = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
 
-        return view('pages.home', compact('categories', 'featuredTutors', 'recentPosts'));
+        return view('pages.home', compact('categories', 'featuredTutors', 'recentPosts', 'upcomingClinics'));
     }
 
     public function tutors(Request $request)
