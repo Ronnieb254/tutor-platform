@@ -59,12 +59,25 @@ class TutorProfile extends Model
         return $this->belongsToMany(User::class, 'wishlists');
     }
 
-    // Price for a given duration block
+    // Fixed session pricing per Mwalimu
+    public static function sessionPrices(): array
+    {
+        return [
+            15 => ['name' => 'Quick Help',       'price' => 300],
+            30 => ['name' => 'Concept Check',    'price' => 500],
+            45 => ['name' => 'Guided Practice',  'price' => 680],
+            60 => ['name' => 'Deep Dive',         'price' => 800],
+        ];
+    }
+
     public function getPriceForDuration(int $minutes): float
     {
-        $multipliers = [15 => 0.25, 30 => 0.50, 45 => 0.75, 60 => 1.00];
-        $multiplier = $multipliers[$minutes] ?? 1.00;
-        return round($this->hourly_rate * $multiplier, 2);
+        return self::sessionPrices()[$minutes]['price'] ?? 300;
+    }
+
+    public function getSessionNameForDuration(int $minutes): string
+    {
+        return self::sessionPrices()[$minutes]['name'] ?? 'Session';
     }
 
     public function getVerificationStatusAttribute(): string

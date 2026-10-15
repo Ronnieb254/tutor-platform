@@ -22,7 +22,8 @@
 $colors=['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899'];
 $avatarColor=$colors[$tutor->id%count($colors)];
 $reviews=$tutor->reviews()->where('is_visible',true)->with('student')->latest()->paginate(6);
-$prices=[15=>200,30=>400,45=>600,60=>800];
+$prices=[15=>300,30=>500,45=>680,60=>800];
+$sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
 @endphp
 
 @include('partials.nav')
@@ -215,17 +216,18 @@ $prices=[15=>200,30=>400,45=>600,60=>800];
                 <div style="margin-bottom:18px;" x-data="{ dur: 60 }">
                     <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;"><i class="fa-solid fa-clock fa-xs" style="color:var(--violet);margin-right:4px;"></i>Choose Duration</p>
                     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
-                        @foreach($prices as $mins=>$price)
+                        @foreach([15=>['Quick Help',300],30=>['Concept Check',500],45=>['Guided Practice',680],60=>['Deep Dive',800]] as $mins=>[$name,$price])
                         <button @click="dur={{ $mins }}"
                                 :style="dur==={{ $mins }}?'border-color:var(--violet);background:rgba(109,40,217,.07);':''"
                                 style="padding:9px 4px;border-radius:11px;border:1.5px solid var(--hair);background:#fff;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit;">
                             <div style="font-size:12px;font-weight:700;color:var(--ink);">{{ $mins }}m</div>
+                            <div style="font-size:10px;color:var(--violet);font-weight:600;margin-top:1px;">{{ $name }}</div>
                             <div style="font-size:11px;color:var(--muted);margin-top:1px;">KSh {{ $price }}</div>
                         </button>
                         @endforeach
                     </div>
                     <div style="text-align:center;margin-top:12px;padding:12px;background:rgba(109,40,217,.05);border-radius:12px;border:1px solid rgba(109,40,217,.1);">
-                        <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--violet);">KSh <span x-text="{{ json_encode($prices) }}[dur]"></span></span>
+                        <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--violet);">KSh <span x-text="{15:300,30:500,45:680,60:800}[dur]"></span></span>
                         <span style="font-size:13px;color:var(--muted);"> / session</span>
                     </div>
                 </div>

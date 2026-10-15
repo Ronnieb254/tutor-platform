@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php echo $__env->make('partials.head', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
@@ -54,52 +56,18 @@ use App\Models\PlatformSetting;
 $categories    = Category::active()->with('subjects')->take(8)->get();
 $featuredTutors = TutorProfile::approved()->with(['user','subjects'])->orderByDesc('rating_avg')->take(6)->get();
 $upcomingClinics = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
-$prices = [15=>200,30=>400,45=>600,60=>800];
+$prices = [15=>300,30=>500,45=>680,60=>800];
+$sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
 ?>
 
 
-<div x-data="{ show: true }" x-show="show" x-cloak style="background:var(--violet);color:#fff;font-size:13px;padding:9px 24px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;">
+<!-- <div x-data="{ show: true }" x-show="show" x-cloak style="background:var(--violet);color:#fff;font-size:13px;padding:9px 24px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;">
     <i class="fa-solid fa-shield-check"></i>
     <span>All tutors are TSC-registered and background-checked. <strong>100% money-back guarantee</strong> on your first lesson.</span>
     <button @click="show=false" style="position:absolute;right:16px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:18px;line-height:1;">&times;</button>
-</div>
+</div> -->
 
-
-<nav class="main" x-data="{ open: false }">
-    <div class="w">
-        <div class="nav-inner">
-            <a href="<?php echo e(route('home')); ?>" class="logo">
-                <svg width="38" height="38" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#15281F"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-                <em>Mwalimu</em>
-            </a>
-            <div class="desk-links">
-                <a href="<?php echo e(route('tutors.index')); ?>"><i class="fa-solid fa-magnifying-glass fa-xs mr-1"></i> Find a Tutor</a>
-                <a href="<?php echo e(route('how-it-works')); ?>"><i class="fa-solid fa-circle-info fa-xs mr-1"></i> How It Works</a>
-                <a href="/examiner-clinic"><i class="fa-solid fa-star fa-xs mr-1"></i> Examiner's Clinic</a>
-                <a href="/contact"><i class="fa-solid fa-envelope fa-xs mr-1"></i> Contact</a>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
-                <a href="<?php echo e(route('dashboard')); ?>" class="btn btn-v" style="font-size:14px;padding:10px 22px;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-                <?php else: ?>
-                <a href="<?php echo e(route('login')); ?>" style="font-size:14px;font-weight:600;padding:8px 18px;border-radius:999px;display:none;" class="desk-signin" onmouseover="this.style.background='rgba(21,40,31,.07)'" onmouseout="this.style.background='transparent'">Sign In</a>
-                <a href="<?php echo e(route('register')); ?>" class="btn btn-v" style="font-size:14px;padding:10px 22px;"><i class="fa-solid fa-user-plus"></i> Get Started</a>
-                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                <button @click="open=!open" style="display:flex;width:42px;height:42px;border-radius:999px;border:2px solid var(--hair);background:none;cursor:pointer;align-items:center;justify-content:center;" class="mob-ham">
-                    <i x-show="!open" class="fa-solid fa-bars"></i>
-                    <i x-show="open" x-cloak class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-        </div>
-        <div x-show="open" x-cloak x-transition style="position:absolute;left:0;right:0;top:100%;background:var(--cream);border-bottom:1px solid var(--hair);padding:14px 24px;display:flex;flex-direction:column;gap:2px;z-index:99;box-shadow:0 8px 24px rgba(21,40,31,.1);">
-            <a href="<?php echo e(route('tutors.index')); ?>" style="padding:12px 0;font-size:15px;font-weight:500;border-bottom:1px solid var(--hair);"><i class="fa-solid fa-magnifying-glass fa-sm" style="color:var(--violet);margin-right:8px;"></i>Find a Tutor</a>
-            <a href="<?php echo e(route('how-it-works')); ?>" style="padding:12px 0;font-size:15px;font-weight:500;border-bottom:1px solid var(--hair);"><i class="fa-solid fa-circle-info fa-sm" style="color:var(--violet);margin-right:8px;"></i>How It Works</a>
-            <a href="/examiner-clinic" style="padding:12px 0;font-size:15px;font-weight:500;border-bottom:1px solid var(--hair);"><i class="fa-solid fa-star fa-sm" style="color:var(--gold);margin-right:8px;"></i>Examiner's Clinic</a>
-            <a href="/contact" style="padding:12px 0;font-size:15px;font-weight:500;"><i class="fa-solid fa-envelope fa-sm" style="color:var(--violet);margin-right:8px;"></i>Contact</a>
-        </div>
-    </div>
-    <style>.desk-signin{display:none!important;}@media(min-width:1024px){.desk-signin{display:block!important;}.mob-ham{display:none!important;}}</style>
-</nav>
+<?php echo $__env->make('partials.nav', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 
 <section style="padding:80px 0 60px;overflow:hidden;position:relative;background:var(--cream);">
@@ -233,10 +201,10 @@ $prices = [15=>200,30=>400,45=>600,60=>800];
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-                ['15','Quick Focus','⚡','KSh 200','Perfect for a quick question, specific topic or rapid revision drill.','From KSh 200'],
-                ['30','Half Hour','📘','KSh 400','Targeted practice — work through a problem set or concept in depth.','From KSh 400'],
-                ['45','Extended','🎯','KSh 600','A full structured lesson with warm-up, teaching and Q&A.','From KSh 600'],
-                ['60','Full Hour','🏆','KSh 800','Maximum learning. Best value. Ideal for exam prep.','From KSh 800'],
+                ['15','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.','KSh 300'],
+                ['30','Concept Check','📘','KSh 500','Targeted practice — work through a problem set or concept in depth.','KSh 500'],
+                ['45','Guided Practice','🎯','KSh 680','A full structured lesson with warm-up, teaching and Q&A.','KSh 680'],
+                ['60','Deep Dive','🏆','KSh 800','Maximum learning. Best value. Ideal for exam prep.','KSh 800'],
             ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$mins,$title,$icon,$price,$desc,$from]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--violet)'" onmouseout="this.style.borderColor='var(--hair)'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
@@ -426,7 +394,7 @@ $prices = [15=>200,30=>400,45=>600,60=>800];
                 <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><?php echo e($tutor->bio); ?></p>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:14px;">
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [15=>200,30=>400,45=>600,60=>800]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mins => $price): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [15=>300,30=>500,45=>680,60=>800]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mins => $price): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div style="text-align:center;border:1.5px solid var(--hair);border-radius:10px;padding:6px 3px;">
                         <div style="font-size:11px;font-weight:700;color:var(--ink);"><?php echo e($mins); ?>m</div>
                         <div style="font-size:10px;color:var(--muted);">KSh <?php echo e($price); ?></div>
@@ -534,66 +502,9 @@ $prices = [15=>200,30=>400,45=>600,60=>800];
     </div>
 </section>
 
-
-<footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.08);padding:48px 0 28px;">
-    <div class="w">
-        <div style="display:grid;grid-template-columns:1fr;gap:36px;margin-bottom:40px;" class="foot-g">
-            <div>
-                <a href="<?php echo e(route('home')); ?>" style="display:inline-flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:12px;">
-                    <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-                    Mwalimu
-                </a>
-                <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.75;max-width:280px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms.</p>
-                <div style="margin-top:14px;">
-                    <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:4px;"><i class="fa-solid fa-envelope fa-xs" style="margin-right:6px;"></i> info@ovaldesk.co.ke</div>
-                    <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:4px;"><i class="fa-solid fa-phone fa-xs" style="margin-right:6px;"></i> 0724 367 814 / 0723 636 901</div>
-                    <div style="font-size:13px;color:rgba(255,255,255,.5);"><i class="fa-solid fa-location-dot fa-xs" style="margin-right:6px;"></i> Suite 11, Samima Suites, Nairobi West</div>
-                </div>
-            </div>
-            <div>
-                <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px;">For Learners</h4>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['Find a Tutor', route('tutors.index')],['Examiner\'s Clinic',route('examiner-clinic')],['How It Works', route('how-it-works')],['Book a Session', route('tutors.index')]]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$l,$u]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <a href="<?php echo e($u); ?>" style="display:block;font-size:14px;color:rgba(255,255,255,.55);margin-bottom:8px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'"><?php echo e($l); ?></a>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </div>
-            <div>
-                <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px;">For Tutors</h4>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['Become a Tutor', route('register').'?role=tutor'],['Tutor Verification','#'],['Referral Programme','#'],['Examiner Clinics',route('examiner-clinic')]]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$l,$u]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <a href="<?php echo e($u); ?>" style="display:block;font-size:14px;color:rgba(255,255,255,.55);margin-bottom:8px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'"><?php echo e($l); ?></a>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </div>
-            <div>
-                <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px;">Company</h4>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['About OvalDesk','https://ovaldesk.co.ke'],['Contact Us',route('contact')],['Privacy Policy','#'],['Terms of Service','#']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$l,$u]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <a href="<?php echo e($u); ?>" style="display:block;font-size:14px;color:rgba(255,255,255,.55);margin-bottom:8px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'"><?php echo e($l); ?></a>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </div>
-        </div>
-        <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(255,255,255,.3);">
-            <span>&copy; <?php echo e(date('Y')); ?> Mwalimu by OvalDesk Ventures. All rights reserved.</span>
-            <a href="https://ovaldesk.co.ke" style="color:rgba(255,255,255,.4);transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.4)'">ovaldesk.co.ke</a>
-        </div>
-    </div>
-    <style>.foot-g{grid-template-columns:1fr!important;}@media(min-width:640px){.foot-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.foot-g{grid-template-columns:2fr 1fr 1fr 1fr!important;}}</style>
-</footer>
-
-
-<div x-data="{ show: !localStorage.getItem('cookie_ok') }" x-show="show" x-cloak style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;width:calc(100% - 32px);max-width:440px;">
-    <div style="background:#FFFDF5;border:2px solid var(--ink);border-radius:20px;padding:18px 20px;box-shadow:0 14px 40px rgba(21,40,31,.22);">
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-            <i class="fa-solid fa-cookie-bite" style="font-size:24px;color:var(--gold);flex-shrink:0;margin-top:2px;"></i>
-            <div>
-                <p style="font-weight:700;font-size:15px;color:var(--ink);margin-bottom:4px;">We value your privacy</p>
-                <p style="font-size:12px;color:var(--muted);line-height:1.5;">We use cookies to personalise your experience and keep sessions secure.</p>
-            </div>
-        </div>
-        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px;">
-            <button @click="localStorage.setItem('cookie_ok','none');show=false" style="padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;background:#fff;color:var(--ink);border:1.5px solid var(--ink);cursor:pointer;font-family:inherit;">Necessary Only</button>
-            <button @click="localStorage.setItem('cookie_ok','all');show=false" style="padding:9px 20px;border-radius:999px;font-size:13px;font-weight:700;background:var(--violet);color:#fff;border:1.5px solid var(--ink);cursor:pointer;font-family:inherit;"><i class="fa-solid fa-check"></i> Accept All</button>
-        </div>
-    </div>
-</div>
-
+<!-- <?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?> -->
+<style>.blog-show-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.blog-show-g{grid-template-columns:1fr 300px!important;}}</style>
+<?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
 </body>

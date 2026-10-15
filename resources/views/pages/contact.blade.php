@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+@include('partials.head')
+
+    
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contact Us – Mwalimu</title>
@@ -40,24 +43,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
 <body>
 
 {{-- NAV --}}
-<nav>
-    <div class="w">
-        <div class="nav-inner">
-            <a href="{{ route('home') }}" class="logo">
-                <svg width="34" height="34" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#15281F"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-                <em>Mwalimu</em>
-            </a>
-            <div style="display:flex;align-items:center;gap:10px;">
-                <a href="{{ route('home') }}" class="btn btn-o" style="font-size:13px;padding:8px 18px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
-                @auth
-                <a href="{{ route('dashboard') }}" class="btn btn-v" style="font-size:13px;padding:8px 18px;"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-                @else
-                <a href="{{ route('register') }}" class="btn btn-v" style="font-size:13px;padding:8px 18px;"><i class="fa-solid fa-user-plus"></i> Get Started</a>
-                @endauth
-            </div>
-        </div>
-    </div>
-</nav>
+@include('partials.nav')
 
 {{-- HERO --}}
 <section style="background:var(--ink);padding:60px 0;text-align:center;position:relative;overflow:hidden;">
@@ -225,7 +211,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
 </section>
 
 {{-- FOOTER --}}
-<footer style="background:var(--ink);padding:36px 0;">
+<!-- <footer style="background:var(--ink);padding:36px 0;">
     <div class="w" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
         <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#fff;">
             <svg width="28" height="28" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
@@ -233,7 +219,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
         </a>
         <span style="font-size:12px;color:rgba(255,255,255,.3);">&copy; {{ date('Y') }} Mwalimu by OvalDesk Ventures</span>
     </div>
-</footer>
+</footer> -->
+<style>.blog-show-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.blog-show-g{grid-template-columns:1fr 300px!important;}}</style>
+@include('partials.footer')
 
 @livewireScripts
 </body>

@@ -1,57 +1,94 @@
+@php
+$sessionTiers = [
+    15 => ['name' => 'Quick Help',      'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question'],
+    30 => ['name' => 'Concept Check',   'price' => 500, 'icon' => '📘', 'desc' => 'Targeted practice or concept clarity'],
+    45 => ['name' => 'Guided Practice', 'price' => 680, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A'],
+    60 => ['name' => 'Deep Dive',       'price' => 800, 'icon' => '🏆', 'desc' => 'Maximum learning, best value'],
+];
+@endphp
+
 <div>
     {{-- Step indicator --}}
-    <div class="flex items-center justify-center gap-2 mb-8">
-        @foreach(['Pick time', 'Review', 'Confirmed'] as $i => $label)
-        <div class="flex items-center gap-2 {{ !$loop->first ? 'ml-2' : '' }}">
-            <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold
-                {{ $step > $i+1 ? 'bg-mint text-white' : ($step === $i+1 ? 'bg-violet text-white' : 'bg-hairline text-muted') }}">
-                {{ $step > $i+1 ? '✓' : $i+1 }}
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px;">
+        @foreach(['Pick Session','Review','Confirmed'] as $i => $label)
+        <div style="display:flex;align-items:center;gap:6px;">
+            @if(!$loop->first)<div style="width:24px;height:1px;background:{{ $step > $i ? 'var(--violet)' : 'rgba(21,40,31,.12)' }};"></div>@endif
+            <div style="display:flex;align-items:center;gap:5px;">
+                <div style="width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+                    background:{{ $step > $i+1 ? 'var(--mint)' : ($step === $i+1 ? 'var(--violet)' : 'rgba(21,40,31,.08)') }};
+                    color:{{ ($step > $i+1 || $step === $i+1) ? '#fff' : 'var(--muted)' }};">
+                    {{ $step > $i+1 ? '✓' : $i+1 }}
+                </div>
+                <span style="font-size:12px;font-weight:{{ $step === $i+1 ? '700' : '500' }};color:{{ $step === $i+1 ? 'var(--ink)' : 'var(--muted)' }};">{{ $label }}</span>
             </div>
-            <span class="text-xs font-medium {{ $step === $i+1 ? 'text-ink' : 'text-muted' }}">{{ $label }}</span>
-            @if(!$loop->last)<div class="w-8 h-px bg-hairline"></div>@endif
         </div>
         @endforeach
     </div>
 
-    {{-- STEP 1: Pick duration + date/time --}}
+    {{-- ── STEP 1: Pick duration + date/time ── --}}
     @if($step === 1)
-    <div class="space-y-6">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+
+        {{-- Duration selector --}}
         <div>
-            <label class="form-label">Session duration</label>
-            <div class="grid grid-cols-4 gap-2">
-                @foreach([15, 30, 45, 60] as $mins)
-                <label class="cursor-pointer">
-                    <input type="radio" wire:model="duration" value="{{ $mins }}" class="sr-only">
-                    <div class="rounded-2xl border-2 p-3 text-center transition
-                        {{ $duration == $mins ? 'border-violet bg-violet/5' : 'border-hairline hover:border-violet/40' }}">
-                        <p class="font-bold text-ink text-base">{{ $mins }}m</p>
-                        <p class="text-xs text-muted mt-0.5">KSh {{ number_format($tutorProfile->getPriceForDuration($mins), 0) }}</p>
+            <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;">
+                <i class="fa-solid fa-clock fa-xs" style="color:var(--violet);margin-right:4px;"></i> Choose Session Type
+            </p>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+                @foreach($sessionTiers as $mins => $tier)
+                <label style="cursor:pointer;">
+                    <input type="radio" wire:model.live="duration" value="{{ $mins }}" style="display:none;">
+                    <div style="border:2px solid {{ $duration == $mins ? 'var(--violet)' : 'rgba(21,40,31,.12)' }};
+                                background:{{ $duration == $mins ? 'rgba(109,40,217,.05)' : '#fff' }};
+                                border-radius:14px;padding:14px 12px;transition:all .18s;text-align:left;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <span style="font-size:18px;">{{ $tier['icon'] }}</span>
+                                <span style="font-size:14px;font-weight:700;color:var(--ink);">{{ $tier['name'] }}</span>
+                            </div>
+                            <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:{{ $duration == $mins ? 'var(--violet)' : 'var(--ink)' }};">KSh {{ $tier['price'] }}</span>
+                        </div>
+                        <div style="font-size:11px;color:var(--muted);">{{ $mins }} min — {{ $tier['desc'] }}</div>
                     </div>
                 </label>
                 @endforeach
             </div>
+            @error('duration')<p style="font-size:12px;color:var(--coral);margin-top:4px;"><i class="fa-solid fa-triangle-exclamation fa-xs"></i> {{ $message }}</p>@enderror
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        {{-- Date + Time --}}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div>
-                <label class="form-label">Date</label>
+                <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
+                    <i class="fa-regular fa-calendar fa-xs" style="color:var(--violet);margin-right:4px;"></i> Date
+                </p>
                 <input type="date" wire:model="scheduledDate"
                        min="{{ now()->addDay()->format('Y-m-d') }}"
-                       class="form-input">
-                @error('scheduledDate')<p class="form-error">{{ $message }}</p>@enderror
+                       style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
+                       onfocus="this.style.borderColor='var(--violet)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                @error('scheduledDate')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
             </div>
             <div>
-                <label class="form-label">Time</label>
-                <input type="time" wire:model="scheduledTime" class="form-input">
-                @error('scheduledTime')<p class="form-error">{{ $message }}</p>@enderror
+                <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
+                    <i class="fa-regular fa-clock fa-xs" style="color:var(--violet);margin-right:4px;"></i> Time
+                </p>
+                <input type="time" wire:model="scheduledTime"
+                       style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
+                       onfocus="this.style.borderColor='var(--violet)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                @error('scheduledTime')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
             </div>
         </div>
 
+        {{-- Subject --}}
         @if($subjects->isNotEmpty())
         <div>
-            <label class="form-label">Subject (optional)</label>
-            <select wire:model="subjectId" class="form-input">
-                <option value="">Select a subject</option>
+            <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
+                <i class="fa-solid fa-book-open fa-xs" style="color:var(--violet);margin-right:4px;"></i> Subject <span style="font-weight:400;text-transform:none;">(optional)</span>
+            </p>
+            <select wire:model="subjectId"
+                    style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
+                    onfocus="this.style.borderColor='var(--violet)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                <option value="">Select a subject…</option>
                 @foreach($subjects as $subject)
                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                 @endforeach
@@ -59,97 +96,115 @@
         </div>
         @endif
 
-        @if(auth()->user()?->isParent())
+        {{-- Notes --}}
         <div>
-            <label class="form-label">Booking for</label>
-            <select wire:model="bookingFor" class="form-input">
-                <option value="self">Myself</option>
-                @foreach($children as $child)
-                <option value="child:{{ $child->id }}">{{ $child->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        @endif
-
-        <div>
-            <label class="form-label">Notes for tutor (optional)</label>
-            <textarea wire:model="notes" rows="2" class="form-input resize-none" placeholder="Any specific topics or requirements…"></textarea>
+            <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
+                <i class="fa-solid fa-note-sticky fa-xs" style="color:var(--violet);margin-right:4px;"></i> Notes for tutor <span style="font-weight:400;text-transform:none;">(optional)</span>
+            </p>
+            <textarea wire:model="notes" rows="2"
+                      placeholder="Topics to cover, past exam areas, specific questions…"
+                      style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
+                      onfocus="this.style.borderColor='var(--violet)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
         </div>
 
-        <button wire:click="nextStep" class="w-full pill-btn-primary py-3">
-            Continue to Review →
+        <button wire:click="nextStep"
+                style="width:100%;height:50px;border-radius:999px;background:var(--violet);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
+                onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='var(--violet)'">
+            Continue to Review
+            <i class="fa-solid fa-arrow-right fa-sm"></i>
         </button>
     </div>
     @endif
 
-    {{-- STEP 2: Review & Pay --}}
+    {{-- ── STEP 2: Review & Pay ── --}}
     @if($step === 2)
-    <div class="space-y-5">
-        <div class="card p-5 space-y-3">
-            <h3 class="font-serif text-lg font-semibold text-ink">Session summary</h3>
-            <div class="divide-y divide-hairline">
+    @php $tier = $sessionTiers[$duration] ?? $sessionTiers[60]; @endphp
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+        {{-- Summary card --}}
+        <div style="background:#F9FAF9;border-radius:16px;border:1px solid var(--hair);padding:20px;">
+            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px;">Session Summary</p>
+            <div style="display:flex;flex-direction:column;gap:0;">
                 @foreach([
                     ['Tutor', $tutorProfile->user->name],
-                    ['Duration', $duration . ' minutes'],
-                    ['Date & Time', \Carbon\Carbon::parse($scheduledDate . ' ' . $scheduledTime)->format('D, M j Y \a\t g:ia')],
-                    ['Session fee', 'KSh ' . number_format($this->sessionPrice, 0)],
+                    ['Session type', $tier['icon'].' '.$tier['name'].' ('.$duration.' min)'],
+                    ['Date', \Carbon\Carbon::parse($scheduledDate)->format('D, M j, Y')],
+                    ['Time', \Carbon\Carbon::parse($scheduledTime)->format('g:i a').' (EAT)'],
+                    ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? '—') : 'General'],
                 ] as [$label, $value])
-                <div class="flex items-center justify-between py-2.5">
-                    <span class="text-sm text-muted">{{ $label }}</span>
-                    <span class="text-sm font-semibold text-ink">{{ $value }}</span>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.06);">
+                    <span style="font-size:13px;color:var(--muted);">{{ $label }}</span>
+                    <span style="font-size:13px;font-weight:600;color:var(--ink);">{{ $value }}</span>
                 </div>
                 @endforeach
-            </div>
-            <div class="flex items-center justify-between pt-2 border-t-2 border-ink">
-                <span class="font-bold text-ink">Total</span>
-                <span class="font-bold text-xl text-ink">KSh {{ number_format($this->sessionPrice, 0) }}</span>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;">
+                    <span style="font-size:15px;font-weight:700;color:var(--ink);">Total</span>
+                    <span style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--violet);">KSh {{ $tier['price'] }}</span>
+                </div>
             </div>
         </div>
 
-        <div class="rounded-2xl bg-violet/5 border border-violet/20 p-4 text-sm text-violet">
-            <p class="font-semibold mb-1">📧 After payment</p>
-            <p class="text-violet/80">You'll receive an email with your unique session access code (STU-XXXXXX) and the session details.</p>
+        {{-- Code notice --}}
+        <div style="background:rgba(109,40,217,.05);border:1px solid rgba(109,40,217,.15);border-radius:14px;padding:14px 16px;">
+            <p style="font-size:13px;font-weight:700;color:var(--violet);margin-bottom:4px;">
+                <i class="fa-solid fa-key fa-xs" style="margin-right:5px;"></i> After payment
+            </p>
+            <p style="font-size:12px;color:var(--muted);line-height:1.65;">You'll receive a unique <strong style="color:var(--ink);">STU-XXXXXX</strong> session access code by email and SMS. Use it to enter your live class on session day.</p>
         </div>
 
-        <div class="flex gap-3">
-            <button wire:click="prevStep" class="flex-1 pill-btn-outline py-3">← Back</button>
+        <div style="display:flex;gap:10px;">
+            <button wire:click="prevStep"
+                    style="flex:1;height:48px;border-radius:999px;background:#fff;color:var(--ink);border:2px solid rgba(21,40,31,.18);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .18s;">
+                <i class="fa-solid fa-arrow-left fa-xs"></i> Back
+            </button>
             <button wire:click="initPayment"
                     wire:loading.attr="disabled"
-                    class="flex-1 pill-btn-primary py-3 relative">
+                    style="flex:2;height:48px;border-radius:999px;background:var(--violet);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;"
+                    onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='var(--violet)'">
                 <span wire:loading.remove wire:target="initPayment">
-                    Pay KSh {{ number_format($this->sessionPrice, 0) }}
+                    <i class="fa-solid fa-credit-card fa-sm"></i>
+                    Pay KSh {{ $tier['price'] }}
                 </span>
-                <span wire:loading wire:target="initPayment">Processing…</span>
+                <span wire:loading wire:target="initPayment" style="display:flex;align-items:center;gap:6px;">
+                    <i class="fa-solid fa-spinner fa-spin fa-sm"></i> Processing…
+                </span>
             </button>
         </div>
+        <p style="font-size:11px;text-align:center;color:var(--muted);">
+            <i class="fa-solid fa-lock fa-xs" style="color:var(--mint);"></i>
+            Secured by Paystack · M-Pesa, Visa & Mastercard accepted
+        </p>
     </div>
     @endif
 
-    {{-- STEP 3: Confirmed --}}
+    {{-- ── STEP 3: Confirmed ── --}}
     @if($step === 3 && $bookingConfirmed)
-    <div class="text-center space-y-6">
-        <div class="w-16 h-16 rounded-full bg-mint/20 flex items-center justify-center mx-auto">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    <div style="text-align:center;padding:8px 0;">
+        <div style="width:64px;height:64px;border-radius:999px;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+            <i class="fa-solid fa-circle-check" style="font-size:28px;color:var(--mint);"></i>
         </div>
-        <div>
-            <h3 class="font-serif text-2xl font-bold text-ink mb-2">Booking confirmed!</h3>
-            <p class="text-muted">Check your email for full details. Your session access code is:</p>
+        <h3 style="font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:8px;">Booking Confirmed!</h3>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:22px;">Check your email and SMS for full session details.</p>
+
+        {{-- Session code --}}
+        <div style="background:rgba(109,40,217,.06);border:2px solid rgba(109,40,217,.25);border-radius:18px;padding:20px;margin-bottom:18px;">
+            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">
+                <i class="fa-solid fa-key" style="color:var(--violet);margin-right:4px;"></i> Your Session Access Code
+            </p>
+            <p style="font-family:monospace;font-size:32px;font-weight:800;color:var(--violet);letter-spacing:.12em;line-height:1;">{{ $studentCode }}</p>
+            <p style="font-size:12px;color:var(--muted);margin-top:8px;">Enter this code to join your live session on the day</p>
         </div>
 
-        <div class="session-code-box">
-            <p class="text-sm font-semibold text-muted uppercase tracking-widest mb-2">Your Session Access Code</p>
-            <p class="session-code-text">{{ $studentCode }}</p>
-            <p class="text-sm text-muted mt-2">Use this code to enter your live session on the day</p>
-        </div>
-
-        <a href="{{ route('bookings.show', $bookingUuid) }}" class="pill-btn-primary w-full py-3 block">
-            View Booking Details
+        <a href="{{ route('bookings.show', $bookingUuid) }}"
+           style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;border-radius:999px;background:var(--violet);color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
+            <i class="fa-solid fa-calendar-check fa-sm"></i> View Booking Details
         </a>
     </div>
     @endif
 </div>
 
 @push('scripts')
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
 document.addEventListener('livewire:initialized', () => {
     Livewire.on('open-paystack', (data) => {
@@ -159,17 +214,16 @@ document.addEventListener('livewire:initialized', () => {
             amount: data.amount,
             currency: 'KES',
             ref: data.reference,
-            access_code: data.access_code,
+            metadata: { cancel_action: window.location.href },
             onSuccess: function(transaction) {
                 @this.paymentSuccess(transaction.reference);
             },
             onCancel: function() {
-                console.log('Payment cancelled');
+                // User cancelled, stay on step 2
             }
         });
         handler.openIframe();
     });
 });
 </script>
-<script src="https://js.paystack.co/v1/inline.js"></script>
 @endpush

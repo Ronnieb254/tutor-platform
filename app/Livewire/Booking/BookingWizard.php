@@ -38,7 +38,14 @@ class BookingWizard extends Component
 
     public function getSessionPriceProperty(): float
     {
-        return $this->tutorProfile->getPriceForDuration($this->duration);
+        $prices = \App\Models\TutorProfile::sessionPrices();
+        return (float) ($prices[$this->duration]['price'] ?? 300);
+    }
+
+    public function getSessionNameProperty(): string
+    {
+        $prices = \App\Models\TutorProfile::sessionPrices();
+        return $prices[$this->duration]['name'] ?? 'Session';
     }
 
     public function nextStep()

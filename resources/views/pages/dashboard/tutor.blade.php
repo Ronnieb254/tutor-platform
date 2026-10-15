@@ -1026,7 +1026,7 @@ $activeTab = request('tab','overview');
                         @foreach([15,30,45,60] as $mins)
                         <div style="text-align:center;background:#fff;border-radius:9px;border:1px solid var(--hair);padding:8px 4px;">
                             <div style="font-size:11px;font-weight:700;color:var(--ink);">{{ $mins }}min</div>
-                            <div style="font-size:13px;font-weight:700;color:var(--violet);margin-top:2px;">KSh {{ number_format($profile->getPriceForDuration($mins)) }}</div>
+                            <div style="font-size:13px;font-weight:700;color:var(--violet);margin-top:2px;">KSh {{ \App\Models\TutorProfile::sessionPrices()[$mins]['price'] ?? '' }}</div>
                         </div>
                         @endforeach
                     </div>

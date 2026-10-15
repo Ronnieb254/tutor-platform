@@ -131,7 +131,7 @@
                     @foreach([15, 30, 45, 60] as $mins)
                     <div class="text-center rounded-xl border border-hairline py-1.5 hover:border-violet hover:bg-violet/5 cursor-pointer transition">
                         <p class="text-[11px] font-bold text-ink">{{ $mins }}m</p>
-                        <p class="text-[10px] text-muted">KSh {{ number_format($tutor->getPriceForDuration($mins), 0) }}</p>
+                        <p class="text-[10px] text-muted">KSh {{ \App\Models\TutorProfile::sessionPrices()[$mins]['price'] ?? '' }}</p>
                     </div>
                     @endforeach
                 </div>

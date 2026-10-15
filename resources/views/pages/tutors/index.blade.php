@@ -3,7 +3,7 @@
 <head>
 @include('partials.head')
 <title>Find a Tutor – Mwalimu</title>
-<meta name="description" content="Browse TSC-registered tutors across all Kenyan curriculum subjects. Book sessions from KSh 200.">
+<meta name="description" content="Browse TSC-registered tutors across all Kenyan curriculum subjects. Book sessions from KSh 300.">
 <style>
 .hero-band{background:var(--ink);padding:52px 0;position:relative;overflow:hidden;}
 .hero-band::after{content:'';position:absolute;bottom:-60px;right:-60px;width:280px;height:280px;background:rgba(109,40,217,.15);border-radius:50%;}
@@ -41,7 +41,8 @@ $q=TutorProfile::approved()->with(['user','subjects'])
 $q=$sort==='price_asc'?$q->orderBy('hourly_rate'):($sort==='sessions'?$q->orderByDesc('total_sessions'):$q->orderByDesc('rating_avg'));
 $tutors=$q->paginate(12)->withQueryString();
 $colors=['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899','#0EA5E9','#8B5CF6'];
-$prices=[15=>200,30=>400,45=>600,60=>800];
+$prices=[15=>300,30=>500,45=>680,60=>800];
+$sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
 @endphp
 
 @include('partials.nav')
@@ -53,7 +54,7 @@ $prices=[15=>200,30=>400,45=>600,60=>800];
             <div>
                 <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-certificate"></i> TSC-Registered Tutors Only</div>
                 <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">Find your perfect tutor</h1>
-                <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:460px;">{{ TutorProfile::approved()->count() }}+ verified tutors across the Kenyan curriculum. Sessions from KSh 200.</p>
+                <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:460px;">{{ TutorProfile::approved()->count() }}+ verified tutors across the Kenyan curriculum. Sessions from KSh 300.</p>
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;align-self:flex-end;max-width:480px;">
                 @foreach($categories->take(6) as $cat)
@@ -207,8 +208,12 @@ $prices=[15=>200,30=>400,45=>600,60=>800];
             <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $tutor->bio }}</p>
             @endif
             <div class="dur-pills">
-                @foreach($prices as $mins=>$price)
-                <div class="dp"><div class="dp-min">{{ $mins }}m</div><div class="dp-price">KSh {{ $price }}</div></div>
+                @foreach([15=>['Quick Help',300],30=>['Concept Check',500],45=>['Guided Practice',680],60=>['Deep Dive',800]] as $mins=>[$name,$price])
+                <div class="dp" title="{{ $name }}">
+                    <div class="dp-min">{{ $mins }}m</div>
+                    <div style="font-size:9px;color:var(--violet);font-weight:600;margin:1px 0;line-height:1.2;">{{ $name }}</div>
+                    <div class="dp-price">KSh {{ $price }}</div>
+                </div>
                 @endforeach
             </div>
             <div style="display:flex;gap:8px;">

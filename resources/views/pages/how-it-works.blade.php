@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+@include('partials.head')
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How It Works – TutorLink</title>
-<meta name="description" content="Learn how TutorLink connects students with verified tutors in Kenya. Book a session in 3 simple steps.">
+<title>How It Works – Mwalimu</title>
+<meta name="description" content="Learn how Mwalimu connects students with verified tutors in Kenya. Book a session in 3 simple steps.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -83,38 +85,14 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
 <body>
 
 {{-- NAV --}}
-<nav x-data="{ open: false }">
-    <div class="w">
-        <div class="nav-inner">
-            <a href="{{ route('home') }}" class="logo">
-                <svg width="34" height="34" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#15281F"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-                TutorLink
-            </a>
-            <div class="desk-links">
-                <a href="{{ route('tutors.index') }}">Find a Tutor</a>
-                <a href="{{ route('courses.index') }}">Courses</a>
-                <a href="{{ route('blog.index') }}">Blog</a>
-                <a href="{{ route('how-it-works') }}" class="cur">How It Works</a>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-                @auth
-                <a href="{{ route('dashboard') }}" class="btn btn-v" style="font-size:13px;padding:9px 18px;">Dashboard</a>
-                @else
-                <a href="{{ route('login') }}" style="font-size:14px;font-weight:600;padding:8px 16px;border-radius:999px;transition:background .15s;display:none;" class="desk-signin" onmouseover="this.style.background='rgba(21,40,31,.07)'" onmouseout="this.style.background='transparent'">Sign In</a>
-                <a href="{{ route('register') }}" class="btn btn-v" style="font-size:13px;padding:9px 18px;">Get Started Free</a>
-                @endauth
-            </div>
-        </div>
-    </div>
-    <style>.desk-signin{display:none!important;}@media(min-width:1024px){.desk-signin{display:block!important;}}</style>
-</nav>
+@include('partials.nav')
 
 {{-- HERO --}}
 <section class="hero">
     <div class="w" style="position:relative;z-index:1;">
         <div class="hero-badge">📖 Simple · Secure · Effective</div>
         <h1>Learning made <em>simple</em></h1>
-        <p>TutorLink connects Kenyan students and parents with verified expert tutors. Book a session in minutes, pay securely, and join a live class from anywhere.</p>
+        <p>Mwalimu connects Kenyan students and parents with verified expert tutors. Book a session in minutes, pay securely, and join a live class from anywhere.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
             <a href="{{ route('tutors.index') }}" class="btn btn-v" style="font-size:16px;padding:14px 36px;">Find a Tutor</a>
             <a href="{{ route('register') }}?role=tutor" class="btn btn-w" style="font-size:16px;padding:14px 36px;">Become a Tutor</a>
@@ -237,7 +215,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
                         'On session day, enter your TUT-XXXXXX code to open your private Jitsi classroom as the moderator. You control recording and screen sharing.',
                         ['Enter TUT-XXXXXX code to join as moderator','Full video, audio, screen share and whiteboard','Recording with student consent','Earnings credited to wallet after session']],
                     ['7','💰','Get Paid to Your Wallet','#10B981',
-                        'After each completed session, your earnings are automatically credited to your TutorLink wallet (platform takes 15% commission). Request a payout anytime.',
+                        'After each completed session, your earnings are automatically credited to your Mwalimu wallet (platform takes 15% commission). Request a payout anytime.',
                         ['Earnings credited after session completes','Platform fee: 15% (you keep 85%)','Request payout to M-Pesa or bank','Processed within 2–3 business days']],
                 ];
                 @endphp
@@ -272,14 +250,14 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
     <div class="w">
         <div style="text-align:center;margin-bottom:48px;">
             <h2 style="font-size:clamp(26px,4vw,40px);color:#fff;margin-bottom:10px;">Session Duration Blocks</h2>
-            <p style="font-size:17px;color:rgba(255,255,255,.55);">Choose the block that fits your needs and budget. Prices are calculated from the tutor's hourly rate.</p>
+            <p style="font-size:17px;color:rgba(255,255,255,.55);">Simple fixed pricing — no negotiation, no surprises.</p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:40px;" class="dur-grid">
             @foreach([
-                ['15','Quick Focus','⚡','Perfect for a quick question, revision drill, or checking a specific topic you\'re stuck on.','Ideal for: Daily revision, quick questions, exam week check-ins','From KSh 375'],
-                ['30','Half Hour','📘','Structured half-hour session for working through a problem set or clarifying a concept in depth.','Ideal for: Homework help, concept explanations, KCSE prep','From KSh 750'],
-                ['45','Extended','🎯','A full lesson with time for warm-up, teaching, practice and Q&A. The most popular session length.','Ideal for: Weekly lessons, exam preparation, new topics','From KSh 1,125'],
-                ['60','Full Hour','🏆','Maximum learning time. Best value per minute. Great for students with multiple topics to cover.','Ideal for: Holiday intensive prep, multiple subjects, catching up','From KSh 1,500'],
+                ['15','Quick Help','⚡','Perfect for a rapid revision drill, a single exam question, or a quick topic check.','Ideal for: Daily revision, quick questions, exam week check-ins','KSh 300'],
+                ['30','Concept Check','📘','Work through a problem set, clarify a concept, or get targeted homework help.','Ideal for: Homework help, concept explanations, KCSE prep','KSh 500'],
+                ['45','Guided Practice','🎯','A full lesson with warm-up, teaching, practice and Q&A. The most popular session.','Ideal for: Weekly lessons, exam preparation, new topics','KSh 680'],
+                ['60','Deep Dive','🏆','Maximum learning time. Best value. Great for multiple topics or intensive exam prep.','Ideal for: Holiday intensive prep, multiple subjects, catching up','KSh 800'],
             ] as [$mins,$title,$icon,$desc,$ideal,$from])
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:26px;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.13)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
@@ -345,7 +323,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
                     </div>
                     <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;">
                         <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px;">How to join:</p>
-                        @foreach(['1. Open your booking on TutorLink','2. Click "Join Session"','3. Enter your code (STU- or TUT-)','4. Jitsi classroom opens instantly in your browser'] as $step)
+                        @foreach(['1. Open your booking on Mwalimu','2. Click "Join Session"','3. Enter your code (STU- or TUT-)','4. Jitsi classroom opens instantly in your browser'] as $step)
                         <p style="font-size:13px;color:var(--muted);margin-bottom:4px;">{{ $step }}</p>
                         @endforeach
                     </div>
@@ -360,15 +338,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
 <section style="padding:80px 0;background:rgba(21,40,31,.03);">
     <div class="w">
         <div style="text-align:center;margin-bottom:44px;">
-            <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:10px;">TutorLink vs Traditional Tutoring</h2>
-            <p style="font-size:16px;color:var(--muted);">See why thousands of Kenyan families choose TutorLink</p>
+            <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:10px;">Mwalimu vs Traditional Tutoring</h2>
+            <p style="font-size:16px;color:var(--muted);">See why thousands of Kenyan families choose Mwalimu</p>
         </div>
         <div class="card" style="overflow:hidden;">
             <table class="cmp-table">
                 <thead>
                     <tr style="background:#F9FAF9;">
                         <th style="width:40%;">Feature</th>
-                        <th style="color:var(--violet);">✓ TutorLink</th>
+                        <th style="color:var(--violet);">✓ Mwalimu</th>
                         <th style="color:var(--muted);">Traditional Tutoring</th>
                     </tr>
                 </thead>
@@ -406,16 +384,16 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
         </div>
 
         @foreach([
-            ['How do I know tutors are trustworthy?','Every tutor on TutorLink goes through our verification process: they upload a National ID, and optionally teaching certificates and academic qualifications. Our team manually reviews each document before approving a tutor\'s profile. Approved tutors display a green "✓ Verified" badge.'],
+            ['How do I know tutors are trustworthy?','Every tutor on Mwalimu goes through our verification process: they upload a National ID, and optionally teaching certificates and academic qualifications. Our team manually reviews each document before approving a tutor\'s profile. Approved tutors display a green "✓ Verified" badge.'],
             ['What if I\'m not happy with my session?','Contact our support team within 24 hours of your session. We review all disputes fairly and offer refunds where appropriate. You can also rate and review your tutor to help other students.'],
             ['Do I need to download anything to join a session?','No. Sessions run in your browser using Jitsi Meet. No app download is required. Just enter your access code on the booking page and your session opens in a new tab.'],
             ['Can parents book sessions for their children?','Yes. Select "Parent" when creating your account. You can add child profiles (name, age, grade level) and book sessions on their behalf. The session code is sent to your email.'],
             ['How are session prices calculated?','Each tutor sets their hourly rate. Session prices are automatically calculated: 15min = 25%, 30min = 50%, 45min = 75%, 60min = 100% of the hourly rate. All prices are shown in KSh before you book.'],
-            ['How and when do tutors get paid?','After a session is completed, the tutor\'s earnings (85% of the session fee — TutorLink keeps 15%) are credited to their in-app wallet. Tutors can request a payout to M-Pesa or bank at any time. Payouts are processed within 2–3 business days.'],
+            ['How and when do tutors get paid?','After a session is completed, the tutor\'s earnings (85% of the session fee — Mwalimu keeps 15%) are credited to their in-app wallet. Tutors can request a payout to M-Pesa or bank at any time. Payouts are processed within 2–3 business days.'],
             ['What happens if a tutor cancels?','If a tutor cancels a confirmed session, you receive a full refund automatically. We also flag repeated cancellations and may suspend tutors who cancel excessively.'],
             ['Can I message my tutor before booking?','Once a booking is confirmed, you can message your tutor through the in-app chat. Pre-booking messages aren\'t available to prevent off-platform arrangements.'],
             ['Is my payment information secure?','Yes. All payments are processed by Paystack, a PCI-DSS compliant payment gateway trusted by thousands of African businesses. We never store your card details.'],
-            ['How do I become a tutor on TutorLink?','Sign up and select "Tutor" as your role, complete your profile, upload your National ID, and set your availability. Our team reviews your application within 48 hours. There\'s no joining fee.'],
+            ['How do I become a tutor on Mwalimu?','Sign up and select "Tutor" as your role, complete your profile, upload your National ID, and set your availability. Our team reviews your application within 48 hours. There\'s no joining fee.'],
         ] as [$q,$a])
         <div class="faq-item" x-data="{ open: false }">
             <div class="faq-q" @click="open=!open">
@@ -444,19 +422,21 @@ nav{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-
 </section>
 
 {{-- FOOTER --}}
-<footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:40px 0;">
+<!-- <footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:40px 0;">
     <div class="w" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
         <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:#fff;">
-            <svg width="26" height="26" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>TutorLink
+            <svg width="26" height="26" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>Mwalimu
         </a>
         <div style="display:flex;gap:20px;flex-wrap:wrap;">
             @foreach([['home','Home'],['tutors.index','Find Tutors'],['courses.index','Courses'],['blog.index','Blog']] as [$r,$l])
             <a href="{{ route($r) }}" style="font-size:13px;color:rgba(255,255,255,.55);transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'">{{ $l }}</a>
             @endforeach
         </div>
-        <span style="font-size:12px;color:rgba(255,255,255,.3);">&copy; {{ date('Y') }} TutorLink. All rights reserved.</span>
+        <span style="font-size:12px;color:rgba(255,255,255,.3);">&copy; {{ date('Y') }} Mwalimu. All rights reserved.</span>
     </div>
-</footer>
+</footer> -->
+<style>.blog-show-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.blog-show-g{grid-template-columns:1fr 300px!important;}}</style>
+@include('partials.footer')
 
 @livewireStyles
 @livewireScripts

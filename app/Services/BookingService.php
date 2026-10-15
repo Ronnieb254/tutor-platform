@@ -32,9 +32,12 @@ class BookingService
 
     public function createBooking(array $data): Booking
     {
+        // Fixed pricing — does not depend on tutor's hourly rate
+        $prices = \App\Models\TutorProfile::sessionPrices();
+        $amount = $prices[$data['duration_minutes']]['price'] ?? 300;
+        $fees   = $this->calculateFees($amount);
+
         $tutorProfile = TutorProfile::findOrFail($data['tutor_profile_id']);
-        $amount       = $tutorProfile->getPriceForDuration($data['duration_minutes']);
-        $fees         = $this->calculateFees($amount);
 
         return DB::transaction(function () use ($data, $fees, $tutorProfile) {
             $room = 'Mwalimu-session-' . Str::uuid();

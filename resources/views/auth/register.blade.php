@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Create Account – TutorLink</title>
+<title>Create Account – Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -104,7 +104,7 @@ a{color:inherit;text-decoration:none;}
     <div class="left">
         <a href="{{ route('home') }}" class="left-logo">
             <svg width="32" height="32" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-            <span>TutorLink</span>
+            <span>Mwalimu</span>
         </a>
 
         <div class="left-body">
@@ -153,7 +153,7 @@ a{color:inherit;text-decoration:none;}
         <div class="right-head">
             <a href="{{ route('home') }}" class="right-logo">
                 <svg width="28" height="28" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#15281F"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-                TutorLink
+                Mwalimu
             </a>
             <span style="font-size:14px;color:var(--muted);">
                 Already have an account?
@@ -262,7 +262,7 @@ a{color:inherit;text-decoration:none;}
         </div>
 
         <div class="right-foot">
-            Already have an account? <a href="{{ route('login') }}">Sign in to TutorLink</a>
+            Already have an account? <a href="{{ route('login') }}">Sign in to Mwalimu</a>
         </div>
     </div>
 </div>
