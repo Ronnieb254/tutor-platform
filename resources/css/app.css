@@ -1,15 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --ink: #15281F;
-    --violet: #6D28D9;
-    --cream: #FBF5E6;
-    --coral: #E8522A;
-    --gold: #D4A017;
-    --mint: #10B981;
+    --ink:     #15281F;
+    --cream:   #FBF5E6;
+    --violet:  #6D28D9;
+    --coral:   #E8522A;
+    --gold:    #D4A017;
+    --mint:    #10B981;
+    --muted:   rgba(21,40,31,0.55);
+    --hairline: rgba(21,40,31,0.12);
+    --card:    #FFFFFF;
   }
-  body { @apply bg-cream text-ink font-sans; }
+
+  html { background-color: var(--cream); }
+  body { font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; color: var(--ink); background-color: var(--cream); }
+  h1,h2,h3 { font-family: 'Fraunces', Georgia, serif; }
+  [x-cloak] { display: none !important; }
+}
+
+@layer components {
+  .pill-btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all duration-150 cursor-pointer;
+  }
+  .pill-btn-primary {
+    @apply pill-btn bg-violet text-white hover:bg-violet-700;
+  }
+  .pill-btn-outline {
+    @apply pill-btn border-2 border-ink text-ink hover:bg-ink hover:text-cream;
+  }
+  .pill-btn-coral {
+    @apply pill-btn bg-coral text-white hover:opacity-90;
+  }
+
+  .card {
+    @apply bg-white rounded-3xl border border-[rgba(21,40,31,0.08)] shadow-card;
+  }
+  .card-hover {
+    @apply card hover:-translate-y-1 hover:shadow-card-hover transition-all duration-200;
+  }
+
+  .form-input {
+    @apply w-full h-12 px-4 rounded-2xl border border-[rgba(21,40,31,0.25)] bg-white text-ink
+           placeholder:text-[rgba(21,40,31,0.4)] focus:outline-none focus:ring-2 focus:ring-violet/30
+           focus:border-violet transition text-sm;
+  }
+  .form-label {
+    @apply block text-sm font-semibold text-ink mb-1.5;
+  }
+  .form-error {
+    @apply text-xs text-red-600 mt-1;
+  }
+
+  .section-container {
+    @apply max-w-site mx-auto px-4 sm:px-5 lg:px-10;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+  .badge-violet { @apply badge bg-violet/10 text-violet; }
+  .badge-mint   { @apply badge bg-mint/10 text-mint; }
+  .badge-coral  { @apply badge bg-coral/10 text-coral; }
+  .badge-gold   { @apply badge bg-gold/10 text-[#8B6914]; }
+
+  .star-rating { @apply flex items-center gap-0.5 text-gold text-sm; }
+
+  /* Session code box */
+  .session-code-box {
+    @apply rounded-3xl border-2 border-violet bg-violet/5 p-6 text-center;
+  }
+  .session-code-text {
+    @apply font-mono text-3xl font-bold text-violet tracking-widest;
+  }
+
+  /* Verification status badges */
+  .status-pending   { @apply badge bg-amber-100 text-amber-800 border border-amber-300; }
+  .status-approved  { @apply badge bg-green-100 text-green-800 border border-green-300; }
+  .status-rejected  { @apply badge bg-red-100 text-red-800 border border-red-300; }
+
+  /* Hairline border utility */
+  .hairline { border-color: var(--hairline); }
 }

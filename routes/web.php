@@ -1,7 +1,72 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+// ─── Public ───────────────────────────────────────────────────────────────────
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/tutors', [HomeController::class, 'tutors'])->name('tutors.index');
+Route::get('/tutors/{slug}', [HomeController::class, 'tutorProfile'])->name('tutors.show');
+Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+
+// ─── Auth ──────────────────────────────────────────────────────────────────────
+Route::middleware('guest')->group(function () {
+    Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login',   [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register',[AuthController::class, 'register']);
 });
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// ─── Social OAuth ─────────────────────────────────────────────────────────────
+Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('auth.social.redirect');
+Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('auth.social.callback');
+
+// ─── Authenticated ────────────────────────────────────────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+
+    // Bookings
+    Route::get('/bookings/{booking}',      [BookingController::class, 'show'])->name('bookings.show');
+    Route::post('/bookings',               [BookingController::class, 'store'])->name('bookings.store');
+    Route::post('/bookings/confirm',       [BookingController::class, 'confirm'])->name('bookings.confirm');
+    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+
+    // Course enrollment
+    Route::post('/courses/{course}/enroll', [CourseController::class, 'enroll'])->name('courses.enroll');
+
+    // Student dashboard
+    Route::middleware('role:student,parent')->group(function () {
+        Route::get('/dashboard/student', fn() => view('pages.dashboard.student'))->name('student.dashboard');
+    });
+
+    // Tutor dashboard & onboarding
+    Route::middleware('role:tutor')->group(function () {
+        Route::get('/dashboard/tutor', fn() => view('pages.dashboard.tutor'))->name('tutor.dashboard');
+        Route::get('/tutor/onboarding', fn() => view('pages.auth.tutor-onboarding'))->name('tutor.onboarding');
+    });
+
+    // Admin
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/',           fn() => view('pages.dashboard.admin'))->name('dashboard');
+        Route::get('/tutors',     fn() => view('pages.admin.tutors'))->name('tutors');
+        Route::get('/users',      fn() => view('pages.admin.users'))->name('users');
+        Route::get('/payouts',    fn() => view('pages.admin.payouts'))->name('payouts');
+        Route::get('/categories', fn() => view('pages.admin.categories'))->name('categories');
+        Route::get('/settings',   fn() => view('pages.admin.settings'))->name('settings');
+        Route::get('/blog',       fn() => view('pages.admin.blog'))->name('blog');
+    });
+});
+
+// ─── Paystack Callback (redirected from Paystack, not a webhook) ──────────────
+Route::get('/paystack/callback', function () {
+    return redirect()->route('student.dashboard')->with('info', 'Payment processed.');
+})->name('paystack.callback');

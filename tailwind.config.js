@@ -5,20 +5,33 @@ export default {
     './resources/**/*.js',
     './app/Livewire/**/*.php',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         ink:    '#15281F',
         cream:  '#FBF5E6',
-        violet: '#6D28D9',
+        violet: { DEFAULT: '#6D28D9', 50: '#f5f3ff', 100: '#ede9fe', 700: '#4C1D95' },
         coral:  '#E8522A',
         gold:   '#D4A017',
         mint:   '#10B981',
+        muted:  'rgba(21,40,31,0.55)',
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        sans:  ['DM Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['Fraunces', 'Georgia', 'serif'],
+      },
+      borderRadius: {
+        '4xl': '2rem',
+      },
+      boxShadow: {
+        'card': '0 2px 16px rgba(21,40,31,0.08)',
+        'card-hover': '0 8px 32px rgba(21,40,31,0.14)',
+      },
+      maxWidth: {
+        'site': '1360px',
       },
     },
   },
   plugins: [],
-};
+}
