@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-<title>Tutor Dashboard – TutorLink</title>
+<title>Tutor Dashboard – Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -158,7 +158,7 @@ $activeTab = request('tab','overview');
     <div class="sb-logo">
         <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
         <div>
-            <div class="sb-logo-text">TutorLink</div>
+            <div class="sb-logo-text">Mwalimu</div>
             <div class="sb-logo-sub">Tutor Portal</div>
         </div>
     </div>

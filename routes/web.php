@@ -46,6 +46,15 @@ Route::middleware('auth')->group(function () {
     // Student dashboard
     Route::middleware('role:student,parent')->group(function () {
         Route::get('/dashboard/student', fn() => view('pages.dashboard.student'))->name('student.dashboard');
+        Route::post('/student/notifications/mark-all-read', function () {
+            auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+            return back()->with('success', 'All notifications marked as read.');
+        })->name('student.notifications.read');
+        Route::post('/student/children', function (\Illuminate\Http\Request $request) {
+            $request->validate(['name' => 'required|string|max:100', 'age' => 'nullable|integer|min:3|max:25', 'grade_level' => 'nullable|string|max:50', 'notes' => 'nullable|string|max:500']);
+            auth()->user()->childProfiles()->create($request->only('name','age','grade_level','notes'));
+            return back()->with('success', 'Child profile added.');
+        })->name('student.children.store');
     });
 
     // Tutor dashboard & onboarding
