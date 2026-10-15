@@ -1,249 +1,378 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr" x-data="{ darkMode: false }" :class="{ dark: darkMode }">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'TutorLink') – Find Verified Tutors in Kenya</title>
-    <meta name="description" content="@yield('description', 'Book verified 1:1 tutors across 80+ subjects. Choose 15, 30, 45 or 60-minute sessions and pay securely with Paystack.')">
+    <meta name="description" content="@yield('description', 'Book verified 1:1 tutors across 80+ subjects in Kenya.')">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     @livewireStyles
+    <style>
+        :root {
+            --ink: #15281F;
+            --cream: #FBF5E6;
+            --violet: #6D28D9;
+            --coral: #E8522A;
+            --gold: #D4A017;
+            --mint: #10B981;
+            --muted: rgba(21,40,31,0.55);
+            --hairline: rgba(21,40,31,0.1);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { background: var(--cream); }
+        body { font-family: 'DM Sans', sans-serif; color: var(--ink); background: var(--cream); line-height: 1.6; }
+        h1,h2,h3,h4 { font-family: 'Fraunces', Georgia, serif; line-height: 1.1; }
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+        [x-cloak] { display: none !important; }
+
+        .container { max-width: 1360px; margin: 0 auto; padding: 0 24px; }
+        @media(min-width:1024px) { .container { padding: 0 40px; } }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 999px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all .15s; border: none; }
+        .btn-primary { background: var(--violet); color: #fff; }
+        .btn-primary:hover { background: #4C1D95; transform: translateY(-1px); }
+        .btn-outline { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+        .btn-outline:hover { background: var(--ink); color: var(--cream); }
+        .btn-coral { background: var(--coral); color: #fff; }
+        .btn-white { background: #fff; color: var(--violet); font-weight: 700; }
+        .btn-white:hover { background: var(--cream); }
+
+        /* Cards */
+        .card { background: #fff; border-radius: 24px; border: 1px solid var(--hairline); box-shadow: 0 2px 16px rgba(21,40,31,0.06); }
+        .card-hover { transition: transform .2s, box-shadow .2s; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(21,40,31,0.12); }
+
+        /* Badges */
+        .badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+        .badge-violet { background: rgba(109,40,217,0.1); color: var(--violet); }
+        .badge-mint { background: rgba(16,185,129,0.1); color: var(--mint); }
+        .badge-coral { background: rgba(232,82,42,0.1); color: var(--coral); }
+        .badge-gold { background: rgba(212,160,23,0.1); color: #8B6914; }
+
+        /* Nav */
+        nav.main-nav { position: sticky; top: 0; z-index: 100; background: rgba(251,245,230,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--hairline); }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; color: var(--ink); flex-shrink: 0; }
+        .nav-links { display: flex; align-items: center; gap: 4px; }
+        .nav-links a { padding: 8px 16px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--ink); transition: background .15s; }
+        .nav-links a:hover { background: rgba(21,40,31,0.06); }
+        .nav-actions { display: flex; align-items: center; gap: 10px; }
+        .nav-login { padding: 8px 18px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--ink); transition: background .15s; }
+        .nav-login:hover { background: rgba(21,40,31,0.06); }
+        .nav-hamburger { display: none; width: 40px; height: 40px; border-radius: 999px; border: 2px solid var(--hairline); background: none; cursor: pointer; align-items: center; justify-content: center; }
+        @media(max-width:1023px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
+        @media(max-width:640px) { .nav-login { display: none; } }
+
+        /* Mobile menu */
+        .mobile-menu { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--cream); border-bottom: 1px solid var(--hairline); padding: 16px 24px; flex-direction: column; gap: 4px; z-index: 99; box-shadow: 0 8px 24px rgba(21,40,31,0.1); }
+        .mobile-menu a { padding: 12px 0; font-size: 15px; font-weight: 500; border-bottom: 1px solid var(--hairline); }
+        .mobile-menu a:last-child { border-bottom: none; }
+
+        /* Hero */
+        .hero { padding: 80px 0 60px; overflow: hidden; }
+        @media(min-width:1024px) { .hero { padding: 100px 0 80px; } }
+        .hero-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
+        @media(min-width:1024px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
+        .hero h1 { font-size: clamp(40px, 6vw, 72px); color: var(--ink); margin-bottom: 20px; }
+        .hero h1 span { color: var(--violet); }
+        .hero p { font-size: 18px; color: var(--muted); margin-bottom: 32px; max-width: 520px; line-height: 1.7; }
+        .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; }
+        .hero-search { display: flex; gap: 8px; max-width: 480px; }
+        .hero-search input { flex: 1; height: 52px; padding: 0 20px; border-radius: 999px; border: 1.5px solid rgba(21,40,31,0.2); background: #fff; font-size: 15px; font-family: inherit; color: var(--ink); outline: none; transition: border-color .15s; }
+        .hero-search input:focus { border-color: var(--violet); }
+        .hero-trust { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 36px; }
+        .trust-item { display: flex; align-items: center; gap: 8px; }
+        .trust-num { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; color: var(--ink); }
+        .trust-label { font-size: 13px; color: var(--muted); }
+
+        /* Floating cards (hero visual) */
+        .hero-visual { position: relative; height: 400px; display: none; }
+        @media(min-width:1024px) { .hero-visual { display: block; } }
+        .tutor-float-card { position: absolute; background: #fff; border-radius: 20px; border: 1px solid var(--hairline); padding: 14px; box-shadow: 0 8px 24px rgba(21,40,31,0.1); width: 180px; }
+        .tutor-float-card .avatar { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .tutor-float-card .name { font-family: 'Fraunces', serif; font-size: 14px; font-weight: 600; color: var(--ink); }
+        .tutor-float-card .subject { font-size: 12px; color: var(--muted); margin-top: 2px; }
+        .tutor-float-card .rating { display: flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 12px; }
+
+        /* Duration blocks */
+        .duration-section { background: var(--ink); color: #fff; padding: 72px 0; }
+        .duration-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
+        @media(min-width:768px) { .duration-grid { grid-template-columns: repeat(4, 1fr); } }
+        .duration-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 24px; transition: background .2s; cursor: pointer; }
+        .duration-card:hover { background: rgba(255,255,255,0.14); }
+        .duration-card .icon { width: 44px; height: 44px; background: rgba(109,40,217,0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .duration-card .mins { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 700; color: #fff; line-height: 1; }
+        .duration-card .mins span { font-size: 16px; font-weight: 400; color: rgba(255,255,255,0.5); }
+        .duration-card .title { font-weight: 600; font-size: 14px; color: #fff; margin: 6px 0; }
+        .duration-card .desc { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+        .duration-card .price { font-size: 13px; font-weight: 700; color: var(--gold); margin-top: 12px; }
+
+        /* Categories */
+        .section { padding: 72px 0; }
+        .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
+        .section-header h2 { font-size: clamp(28px, 4vw, 40px); color: var(--ink); }
+        .section-header p { color: var(--muted); margin-top: 6px; font-size: 16px; }
+        .view-all { font-size: 14px; font-weight: 600; color: var(--violet); display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+        .view-all:hover { text-decoration: underline; }
+        .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        @media(min-width:640px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media(min-width:1024px) { .categories-grid { grid-template-columns: repeat(4, 1fr); } }
+        .category-card { padding: 24px; cursor: pointer; transition: all .2s; }
+        .category-card .icon { font-size: 36px; margin-bottom: 12px; }
+        .category-card h3 { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; color: var(--ink); transition: color .15s; }
+        .category-card:hover h3 { color: var(--violet); }
+        .category-card p { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+        /* How it works */
+        .how-section { background: rgba(21,40,31,0.03); padding: 72px 0; }
+        .steps-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
+        @media(min-width:768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
+        .step-card { padding: 32px; text-align: center; position: relative; }
+        .step-num { position: absolute; top: -12px; left: -12px; width: 32px; height: 32px; background: var(--violet); color: #fff; border-radius: 999px; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+        .step-icon { width: 60px; height: 60px; background: rgba(109,40,217,0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
+        .step-card h3 { font-family: 'Fraunces', serif; font-size: 20px; color: var(--ink); margin-bottom: 10px; }
+        .step-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+        /* Tutors grid */
+        .tutor-card { padding: 20px; cursor: pointer; }
+        .tutor-card-top { display: flex; align-items: flex-start; gap: 16px; }
+        .tutor-avatar { width: 64px; height: 64px; border-radius: 16px; object-fit: cover; flex-shrink: 0; font-size: 24px; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; }
+        .tutor-name { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; color: var(--ink); }
+        .tutor-verified { font-size: 12px; color: var(--mint); font-weight: 600; }
+        .tutor-subjects { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+        .tutor-meta { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 13px; color: var(--muted); }
+        .star { color: var(--gold); }
+        .tutor-rate { font-weight: 700; color: var(--ink); }
+        .tutor-bio { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .duration-pills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 16px; }
+        .duration-pill { text-align: center; border: 1.5px solid var(--hairline); border-radius: 12px; padding: 6px 4px; font-size: 11px; transition: all .15s; cursor: pointer; }
+        .duration-pill:hover { border-color: var(--violet); background: rgba(109,40,217,0.05); }
+        .duration-pill .d-min { font-weight: 700; color: var(--ink); }
+        .duration-pill .d-price { color: var(--muted); margin-top: 1px; }
+        .tutors-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media(min-width:640px) { .tutors-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(min-width:1024px) { .tutors-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        /* Tutor CTA */
+        .tutor-cta { background: var(--violet); padding: 72px 0; }
+        .tutor-cta-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
+        @media(min-width:1024px) { .tutor-cta-grid { grid-template-columns: 1fr 1fr; } }
+        .tutor-cta h2 { font-size: clamp(28px, 4vw, 44px); color: #fff; margin-bottom: 16px; }
+        .tutor-cta p { color: rgba(255,255,255,0.75); font-size: 17px; line-height: 1.7; margin-bottom: 24px; }
+        .cta-points { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+        .cta-point { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.9); }
+        .cta-point-dot { width: 20px; height: 20px; background: rgba(255,255,255,0.2); border-radius: 999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .cta-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .cta-stat { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 20px; text-align: center; }
+        .cta-stat-num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 700; color: #fff; }
+        .cta-stat-label { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+        /* Testimonials */
+        .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media(min-width:768px) { .testimonials-grid { grid-template-columns: repeat(3, 1fr); } }
+        .testimonial-card { padding: 24px; }
+        .stars { color: var(--gold); font-size: 16px; letter-spacing: 2px; margin-bottom: 14px; }
+        .testimonial-text { font-size: 14px; color: var(--ink); line-height: 1.8; margin-bottom: 20px; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid var(--hairline); }
+        .author-avatar { width: 36px; height: 36px; border-radius: 999px; background: rgba(109,40,217,0.15); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--violet); font-size: 14px; }
+        .author-name { font-weight: 600; font-size: 13px; color: var(--ink); }
+        .author-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+        /* Final CTA */
+        .final-cta { background: var(--ink); color: #fff; padding: 80px 0; text-align: center; }
+        .final-cta h2 { font-size: clamp(28px, 5vw, 52px); color: #fff; margin-bottom: 16px; }
+        .final-cta p { color: rgba(255,255,255,0.6); font-size: 18px; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .final-cta-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+        /* Footer */
+        footer { background: var(--ink); color: rgba(255,255,255,0.7); padding: 64px 0 32px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 48px; }
+        @media(min-width:640px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(min-width:1024px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+        .footer-brand p { font-size: 14px; line-height: 1.7; margin-top: 12px; max-width: 280px; color: rgba(255,255,255,0.5); }
+        .footer-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+        .footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 8px; transition: color .15s; }
+        .footer-col a:hover { color: #fff; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12px; color: rgba(255,255,255,0.35); }
+
+        /* Flash messages */
+        .flash { padding: 12px 20px; border-radius: 16px; font-size: 14px; font-weight: 500; margin: 16px 0; }
+        .flash-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: var(--mint); }
+        .flash-error { background: rgba(232,82,42,0.1); border: 1px solid rgba(232,82,42,0.3); color: var(--coral); }
+
+        /* User dropdown */
+        .user-menu { position: relative; }
+        .user-trigger { display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; border: 1.5px solid var(--hairline); cursor: pointer; background: none; font-family: inherit; font-size: 14px; font-weight: 500; color: var(--ink); transition: border-color .15s; }
+        .user-trigger:hover { border-color: rgba(109,40,217,0.4); }
+        .user-trigger img { width: 28px; height: 28px; border-radius: 999px; object-fit: cover; }
+        .user-dropdown { position: absolute; right: 0; top: calc(100% + 8px); width: 200px; background: #fff; border-radius: 16px; border: 1px solid var(--hairline); box-shadow: 0 8px 32px rgba(21,40,31,0.14); padding: 6px; z-index: 200; }
+        .user-dropdown a, .user-dropdown button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 500; color: var(--ink); background: none; border: none; cursor: pointer; font-family: inherit; transition: background .15s; text-align: left; }
+        .user-dropdown a:hover, .user-dropdown button:hover { background: var(--cream); }
+        .user-dropdown .divider { height: 1px; background: var(--hairline); margin: 4px 0; }
+        .user-dropdown .danger { color: var(--coral); }
+
+        /* Notification bell */
+        .notif-btn { position: relative; width: 40px; height: 40px; border-radius: 999px; border: 1.5px solid var(--hairline); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color .15s; }
+        .notif-btn:hover { border-color: rgba(109,40,217,0.4); }
+        .notif-badge { position: absolute; top: -2px; right: -2px; width: 16px; height: 16px; background: var(--coral); color: #fff; border-radius: 999px; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    </style>
     @stack('styles')
 </head>
-<body class="bg-cream text-ink antialiased">
+<body>
 
-{{-- Announcement Bar --}}
-<div x-data="{ show: true }" x-show="show" x-cloak
-     class="relative z-50 bg-ink text-cream text-[13px] sm:text-sm overflow-hidden">
-    <div class="max-w-site mx-auto px-2.5 sm:px-3 lg:px-4 py-1 sm:py-1.5 flex items-center justify-between gap-2">
-        <span class="mx-auto">🎓 Find verified tutors across Kenya — book sessions in 15, 30, 45 or 60-minute blocks</span>
-        <button type="button" @click="show = false"
-                class="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full hover:bg-white/10 transition text-cream"
-                aria-label="Dismiss">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                <path d="M6 6l12 12M18 6L6 18"/>
-            </svg>
-        </button>
-    </div>
+{{-- Announcement bar --}}
+<div x-data="{ show: true }" x-show="show" x-cloak style="background:var(--ink);color:var(--cream);font-size:13px;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+    <span style="margin:0 auto;">🎓 Find verified tutors across Kenya — book 15, 30, 45 or 60-minute sessions</span>
+    <button @click="show=false" style="background:none;border:none;color:rgba(251,245,230,0.6);cursor:pointer;font-size:18px;line-height:1;flex-shrink:0;">×</button>
 </div>
 
 {{-- Navigation --}}
-<header x-data="{ mobileMenuOpen: false }" class="sticky top-0 z-40 bg-cream/85 backdrop-blur border-b border-[rgba(21,40,31,0.1)]">
-    <div class="max-w-site mx-auto px-4 sm:px-5 lg:px-10 h-16 sm:h-[72px] flex items-center justify-between gap-4">
+<nav class="main-nav" x-data="{ open: false }">
+    <div class="container">
+        <div class="nav-inner">
+            {{-- Logo --}}
+            <a href="{{ route('home') }}" class="nav-logo">
+                <svg width="36" height="36" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="50" fill="#15281F"/>
+                    <circle cx="50" cy="50" r="34" fill="#6D28D9"/>
+                    <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
+                </svg>
+                TutorLink
+            </a>
 
-        {{-- Logo --}}
-        <a href="{{ route('home') }}" class="flex items-center gap-2.5 flex-shrink-0">
-            <svg width="36" height="36" viewBox="0 0 100 100" aria-hidden="true">
-                <circle cx="50" cy="50" r="50" fill="#15281F"/>
-                <circle cx="50" cy="50" r="34" fill="#6D28D9"/>
-                <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
-            </svg>
-            <span class="font-serif text-xl font-semibold text-ink">TutorLink</span>
-        </a>
+            {{-- Desktop links --}}
+            <div class="nav-links">
+                <a href="{{ route('tutors.index') }}">Find a Tutor</a>
+                <a href="{{ route('courses.index') }}">Courses</a>
+                <a href="{{ route('blog.index') }}">Blog</a>
+                <a href="{{ route('home') }}#how-it-works">How It Works</a>
+            </div>
 
-        {{-- Desktop Nav --}}
-        <nav class="hidden lg:flex items-center gap-1">
-            <a href="{{ route('tutors.index') }}" class="px-4 py-2 rounded-full text-sm font-medium text-ink hover:bg-ink/5 transition">Find a Tutor</a>
-            <a href="{{ route('courses.index') }}" class="px-4 py-2 rounded-full text-sm font-medium text-ink hover:bg-ink/5 transition">Courses</a>
-            <a href="{{ route('blog.index') }}" class="px-4 py-2 rounded-full text-sm font-medium text-ink hover:bg-ink/5 transition">Blog</a>
-            <a href="#how-it-works" class="px-4 py-2 rounded-full text-sm font-medium text-ink hover:bg-ink/5 transition">How It Works</a>
-        </nav>
-
-        {{-- Right Side --}}
-        <div class="flex items-center gap-2">
-            @auth
-                {{-- Notification Bell --}}
-                @livewire('shared.notification-bell')
-
-                {{-- User Menu --}}
-                <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" @click.outside="open = false"
-                            class="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border border-[rgba(21,40,31,0.15)] hover:border-violet/40 transition">
-                        <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-7 h-7 rounded-full object-cover">
-                        <span class="hidden sm:block text-sm font-medium text-ink max-w-[120px] truncate">{{ auth()->user()->name }}</span>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" :class="open ? 'rotate-180' : ''" class="transition-transform text-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
-                    </button>
-                    <div x-show="open" x-transition x-cloak
-                         class="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl border border-hairline shadow-card-hover py-1.5 z-50">
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-ink hover:bg-cream transition">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                            Dashboard
-                        </a>
-                        @if(auth()->user()->isTutor())
-                        <a href="{{ route('tutor.dashboard') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-ink hover:bg-cream transition">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            My Profile
-                        </a>
-                        @endif
-                        <div class="h-px bg-hairline mx-3 my-1"></div>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-coral hover:bg-red-50 transition text-left">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                                Sign Out
-                            </button>
-                        </form>
+            {{-- Right side --}}
+            <div class="nav-actions">
+                @auth
+                    @livewire('shared.notification-bell')
+                    <div class="user-menu" x-data="{ open: false }">
+                        <button class="user-trigger" @click="open=!open" @click.outside="open=false">
+                            <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}">
+                            <span class="hidden-mobile">{{ Str::limit(auth()->user()->name, 16) }}</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" :style="open ? 'transform:rotate(180deg)' : ''" style="transition:.2s"><path d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                        </button>
+                        <div class="user-dropdown" x-show="open" x-transition x-cloak>
+                            <a href="{{ route('dashboard') }}">
+                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                                Dashboard
+                            </a>
+                            <div class="divider"></div>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="danger">
+                                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    Sign Out
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            @else
-                <a href="{{ route('login') }}" class="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-ink hover:bg-ink/5 rounded-full transition">Sign In</a>
-                <a href="{{ route('register') }}" class="pill-btn-primary text-sm px-5 py-2.5">Get Started</a>
-            @endauth
+                @else
+                    <a href="{{ route('login') }}" class="nav-login">Sign In</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary" style="padding:10px 20px;font-size:14px;">Get Started</a>
+                @endauth
+                <button class="nav-hamburger" @click="open=!open" aria-label="Menu">
+                    <svg x-show="!open" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg x-show="open" x-cloak width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </div>
 
-            {{-- Mobile Hamburger --}}
-            <button @click="mobileMenuOpen = !mobileMenuOpen"
-                    class="lg:hidden w-10 h-10 rounded-full border-2 border-[rgba(21,40,31,0.2)] grid place-items-center hover:border-ink transition text-ink">
-                <svg x-show="!mobileMenuOpen" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-                <svg x-show="mobileMenuOpen" x-cloak width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
+        {{-- Mobile menu --}}
+        <div class="mobile-menu" x-show="open" x-cloak style="display:flex">
+            <a href="{{ route('tutors.index') }}">Find a Tutor</a>
+            <a href="{{ route('courses.index') }}">Courses</a>
+            <a href="{{ route('blog.index') }}">Blog</a>
+            <a href="{{ route('home') }}#how-it-works">How It Works</a>
+            @guest
+            <a href="{{ route('login') }}" style="color:var(--violet);font-weight:600;">Sign In</a>
+            <a href="{{ route('register') }}" style="margin-top:8px;" class="btn btn-primary">Create Free Account</a>
+            @endguest
         </div>
     </div>
+</nav>
 
-    {{-- Mobile Menu --}}
-    <div x-show="mobileMenuOpen" x-cloak
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0 -translate-y-2"
-         x-transition:enter-end="opacity-100 translate-y-0"
-         class="absolute left-0 right-0 top-full bg-cream border-b border-hairline shadow-lg lg:hidden px-4 py-4 flex flex-col gap-1">
-        <a href="{{ route('tutors.index') }}" class="py-3 border-b border-hairline text-sm font-medium text-ink">Find a Tutor</a>
-        <a href="{{ route('courses.index') }}" class="py-3 border-b border-hairline text-sm font-medium text-ink">Courses</a>
-        <a href="{{ route('blog.index') }}" class="py-3 border-b border-hairline text-sm font-medium text-ink">Blog</a>
-        <a href="#how-it-works" class="py-3 text-sm font-medium text-ink">How It Works</a>
-    </div>
-</header>
-
-{{-- Flash Messages --}}
+{{-- Flash messages --}}
 @if(session('success'))
-<div class="max-w-site mx-auto px-4 mt-4">
-    <div class="rounded-2xl bg-mint/10 border border-mint/30 text-mint px-4 py-3 text-sm font-medium flex items-center gap-2">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        {{ session('success') }}
-    </div>
-</div>
+<div class="container"><div class="flash flash-success">{{ session('success') }}</div></div>
 @endif
 @if(session('error'))
-<div class="max-w-site mx-auto px-4 mt-4">
-    <div class="rounded-2xl bg-coral/10 border border-coral/30 text-coral px-4 py-3 text-sm font-medium">
-        {{ session('error') }}
-    </div>
-</div>
+<div class="container"><div class="flash flash-error">{{ session('error') }}</div></div>
 @endif
 
-{{-- Main Content --}}
-<main>
-    @yield('content')
-</main>
+<main>@yield('content')</main>
 
 {{-- Footer --}}
-<footer class="bg-ink text-cream mt-24">
-    <div class="max-w-site mx-auto px-4 sm:px-5 lg:px-10 py-16">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
-            {{-- Brand --}}
-            <div class="lg:col-span-2">
-                <a href="{{ route('home') }}" class="flex items-center gap-2.5 mb-4">
-                    <svg width="32" height="32" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="50" fill="#FBF5E6"/>
-                        <circle cx="50" cy="50" r="34" fill="#6D28D9"/>
-                        <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
-                    </svg>
-                    <span class="font-serif text-xl font-semibold text-cream">TutorLink</span>
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:10px;color:#fff;font-family:'Fraunces',serif;font-size:20px;font-weight:700;">
+                    <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+                    TutorLink
                 </a>
-                <p class="text-cream/60 text-sm leading-relaxed max-w-xs">Connecting learners and parents with verified tutors across Kenya. Book 1:1 sessions in flexible time blocks.</p>
-                <div class="flex items-center gap-3 mt-5">
-                    <a href="#" class="w-9 h-9 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition" aria-label="Twitter/X">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </a>
-                    <a href="#" class="w-9 h-9 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition" aria-label="Instagram">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-                    </a>
-                    <a href="#" class="w-9 h-9 rounded-full border border-cream/20 flex items-center justify-center text-cream/60 hover:text-cream hover:border-cream/50 transition" aria-label="Facebook">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                    </a>
-                </div>
+                <p>Connecting learners and parents with verified tutors across Kenya. Book sessions in flexible time blocks.</p>
             </div>
-
-            <div>
-                <p class="text-xs font-bold uppercase tracking-widest text-cream/40 mb-4">For Students</p>
-                <ul class="space-y-2.5">
-                    <li><a href="{{ route('tutors.index') }}" class="text-sm text-cream/70 hover:text-cream transition">Find a Tutor</a></li>
-                    <li><a href="{{ route('courses.index') }}" class="text-sm text-cream/70 hover:text-cream transition">Browse Courses</a></li>
-                    <li><a href="{{ route('register') }}" class="text-sm text-cream/70 hover:text-cream transition">Sign Up Free</a></li>
-                    <li><a href="#how-it-works" class="text-sm text-cream/70 hover:text-cream transition">How It Works</a></li>
-                </ul>
+            <div class="footer-col">
+                <h4>For Students</h4>
+                <a href="{{ route('tutors.index') }}">Find a Tutor</a>
+                <a href="{{ route('courses.index') }}">Browse Courses</a>
+                <a href="{{ route('register') }}">Sign Up Free</a>
+                <a href="{{ route('home') }}#how-it-works">How It Works</a>
             </div>
-            <div>
-                <p class="text-xs font-bold uppercase tracking-widest text-cream/40 mb-4">For Tutors</p>
-                <ul class="space-y-2.5">
-                    <li><a href="{{ route('register') }}?role=tutor" class="text-sm text-cream/70 hover:text-cream transition">Become a Tutor</a></li>
-                    <li><a href="#" class="text-sm text-cream/70 hover:text-cream transition">Tutor Guidelines</a></li>
-                    <li><a href="#" class="text-sm text-cream/70 hover:text-cream transition">Earnings</a></li>
-                    <li><a href="#" class="text-sm text-cream/70 hover:text-cream transition">Verification Process</a></li>
-                </ul>
+            <div class="footer-col">
+                <h4>For Tutors</h4>
+                <a href="{{ route('register') }}?role=tutor">Become a Tutor</a>
+                <a href="#">Tutor Guidelines</a>
+                <a href="#">Earnings</a>
+                <a href="#">Verification</a>
             </div>
-            <div>
-                <p class="text-xs font-bold uppercase tracking-widest text-cream/40 mb-4">Support</p>
-                <ul class="space-y-2.5">
-                    <li><a href="#" class="text-sm text-cream/70 hover:text-cream transition">Help Centre</a></li>
-                    <li><a href="#" class="text-sm text-cream/70 hover:text-cream transition">Contact Us</a></li>
-                    <li><a href="#" class="text-sm text-cream/70 hover:text-cream transition">Privacy Policy</a></li>
-                    <li><a href="#" class="text-sm text-cream/70 hover:text-cream transition">Terms of Service</a></li>
-                </ul>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Centre</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
-
-        <div class="border-t border-cream/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-cream/40">
+        <div class="footer-bottom">
             <span>&copy; {{ date('Y') }} TutorLink. All rights reserved.</span>
             <span>Made with ❤ for learners across Kenya</span>
         </div>
     </div>
 </footer>
 
-{{-- Cookie Banner --}}
-<div id="cookie-banner-root"
-     x-data="cookieBanner()"
-     x-show="show"
-     x-transition:enter="transition ease-out duration-250 transform"
-     x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-     x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-     x-cloak
-     style="position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:99999;width:calc(100% - 2rem);max-width:440px;"
-     role="dialog" aria-label="Cookie consent">
-    <div style="background:#FFFDF5;border:2px solid #15281F;border-radius:1.25rem;box-shadow:0 14px 40px rgba(21,40,31,0.22);padding:1.15rem;color:#15281F;font-family:'DM Sans',sans-serif;">
-        <div style="display:flex;align-items:flex-start;gap:0.75rem;">
-            <div style="width:2.25rem;height:2.25rem;border-radius:0.75rem;background:#E8F5E9;border:1.5px solid #128C4B;color:#128C4B;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                🍪
-            </div>
+{{-- Cookie banner --}}
+<div x-data="{ show: !localStorage.getItem('cookie_ok') }" x-show="show" x-cloak
+     style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;width:calc(100% - 32px);max-width:440px;">
+    <div style="background:#FFFDF5;border:2px solid var(--ink);border-radius:20px;padding:18px;box-shadow:0 14px 40px rgba(21,40,31,0.22);">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:24px;flex-shrink:0;">🍪</span>
             <div style="flex:1;">
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                    <span style="font-size:0.95rem;font-weight:800;">We value your privacy</span>
-                    <button @click="rejectAll()" style="background:none;border:none;color:rgba(21,40,31,0.45);cursor:pointer;padding:0.25rem;">✕</button>
-                </div>
-                <p style="font-size:0.75rem;color:rgba(21,40,31,0.7);margin:0.3rem 0 0;">We use cookies to personalise your experience and improve the platform.</p>
+                <p style="font-weight:700;font-size:15px;color:var(--ink);margin-bottom:4px;">We value your privacy</p>
+                <p style="font-size:12px;color:var(--muted);">We use cookies to personalise your experience and improve the platform.</p>
             </div>
         </div>
-        <div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1.5px solid rgba(21,40,31,0.12);display:flex;align-items:center;justify-content:flex-end;gap:0.5rem;">
-            <button @click="rejectAll()" style="padding:0.45rem 0.85rem;border-radius:0.65rem;font-size:0.75rem;font-weight:700;background:#fff;color:#15281F;border:1.5px solid #15281F;cursor:pointer;">Necessary Only</button>
-            <button @click="acceptAll()" style="padding:0.45rem 1rem;border-radius:0.65rem;font-size:0.75rem;font-weight:800;background:#6D28D9;color:#fff;border:1.5px solid #15281F;cursor:pointer;">Accept All</button>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px;">
+            <button @click="localStorage.setItem('cookie_ok','none');show=false" style="padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;background:#fff;color:var(--ink);border:1.5px solid var(--ink);cursor:pointer;">Necessary Only</button>
+            <button @click="localStorage.setItem('cookie_ok','all');show=false" style="padding:8px 18px;border-radius:999px;font-size:13px;font-weight:700;background:var(--violet);color:#fff;border:1.5px solid var(--ink);cursor:pointer;">Accept All</button>
         </div>
     </div>
 </div>
 
 @livewireScripts
 @stack('scripts')
-<script>
-function cookieBanner() {
-    return {
-        show: !localStorage.getItem('cookie_consent'),
-        acceptAll()  { localStorage.setItem('cookie_consent','all');  this.show = false; },
-        rejectAll()  { localStorage.setItem('cookie_consent','none'); this.show = false; },
-    }
-}
-</script>
 </body>
 </html>

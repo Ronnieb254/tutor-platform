@@ -1,0 +1,148 @@
+<?php $__env->startSection('title', 'Create Account'); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="w-full max-w-md">
+    <div class="card p-8 sm:p-10">
+        <h1 class="font-serif text-3xl font-bold text-ink mb-1">Create your account</h1>
+        <p class="text-muted text-sm mb-8">Join TutorLink — it's free to get started</p>
+
+        
+        <div x-data="{ role: '<?php echo e(old('role', 'student')); ?>' }" class="space-y-5">
+            <div>
+                <label class="form-label">I am a…</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = ['student' => ['🎓','Student'], 'parent' => ['👨‍👩‍👧','Parent'], 'tutor' => ['📚','Tutor']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val => [$icon, $label]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <label class="cursor-pointer">
+                        <input type="radio" name="role" value="<?php echo e($val); ?>" x-model="role" class="sr-only">
+                        <div :class="role === '<?php echo e($val); ?>' ? 'border-violet bg-violet/5 text-violet' : 'border-hairline text-muted'"
+                             class="flex flex-col items-center gap-1 p-3 rounded-2xl border-2 text-center transition hover:border-violet/40">
+                            <span class="text-2xl"><?php echo e($icon); ?></span>
+                            <span class="text-xs font-semibold"><?php echo e($label); ?></span>
+                        </div>
+                    </label>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['role'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><p class="form-error"><?php echo e($message); ?></p><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
+
+            <form method="POST" action="<?php echo e(route('register')); ?>" class="space-y-4">
+                <?php echo csrf_field(); ?>
+                <input type="hidden" name="role" :value="role">
+
+                <div>
+                    <label class="form-label">Full name</label>
+                    <input type="text" name="name" class="form-input <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-400 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                           placeholder="Your full name" value="<?php echo e(old('name')); ?>" required>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><p class="form-error"><?php echo e($message); ?></p><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <div>
+                    <label class="form-label">Email address</label>
+                    <input type="email" name="email" class="form-input <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-400 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                           placeholder="you@example.com" value="<?php echo e(old('email')); ?>" required>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><p class="form-error"><?php echo e($message); ?></p><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <div>
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-400 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                           placeholder="At least 8 characters" required>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><p class="form-error"><?php echo e($message); ?></p><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+                <div>
+                    <label class="form-label">Confirm password</label>
+                    <input type="password" name="password_confirmation" class="form-input" placeholder="Repeat your password" required>
+                </div>
+
+                <div x-show="role === 'tutor'" x-cloak
+                     class="rounded-2xl bg-violet/5 border border-violet/20 p-4 text-sm text-violet">
+                    <p class="font-semibold mb-1">📋 Next steps for tutors</p>
+                    <p class="text-violet/80">After registration you'll complete your profile, upload verification documents, and set your availability. You'll go live once approved.</p>
+                </div>
+
+                <button type="submit" class="w-full pill-btn-primary py-3 text-base">
+                    Create Account
+                </button>
+            </form>
+        </div>
+
+        <div class="flex items-center gap-3 my-5">
+            <div class="flex-1 h-px bg-hairline"></div>
+            <span class="text-xs text-muted">or continue with</span>
+            <div class="flex-1 h-px bg-hairline"></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+            <a href="<?php echo e(route('auth.social.redirect', 'google')); ?>"
+               class="flex items-center justify-center gap-1.5 h-10 rounded-xl border border-hairline hover:border-violet/30 transition text-xs font-medium">
+                <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                Google
+            </a>
+            <a href="<?php echo e(route('auth.social.redirect', 'facebook')); ?>"
+               class="flex items-center justify-center gap-1.5 h-10 rounded-xl border border-hairline hover:border-[#1877F2]/30 transition text-xs font-medium">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                Facebook
+            </a>
+            <a href="<?php echo e(route('auth.social.redirect', 'github')); ?>"
+               class="flex items-center justify-center gap-1.5 h-10 rounded-xl border border-hairline hover:border-ink/30 transition text-xs font-medium">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                GitHub
+            </a>
+        </div>
+    </div>
+
+    <p class="text-center text-sm text-muted mt-5">
+        Already have an account?
+        <a href="<?php echo e(route('login')); ?>" class="text-violet font-semibold hover:underline">Sign in</a>
+    </p>
+</div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.guest', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Administrator\Downloads\mediacity.co.in-2026-10-13\mediacity.co.in-2026-10-13\tutor-platform\resources\views/auth/register.blade.php ENDPATH**/ ?>
