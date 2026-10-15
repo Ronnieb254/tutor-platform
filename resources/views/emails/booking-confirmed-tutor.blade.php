@@ -21,7 +21,7 @@
                 <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
               </svg>
             </td>
-            <td><span style="font-size:22px;font-weight:700;color:#FBF5E6;">TutorLink</span></td>
+            <td><span style="font-size:22px;font-weight:700;color:#FBF5E6;">Mwalimu</span></td>
           </tr>
         </table>
       </td></tr>
@@ -69,8 +69,8 @@
         </div>
 
         <p style="font-size:12px;color:rgba(21,40,31,0.45);line-height:1.5;margin:0;border-top:1px solid rgba(21,40,31,0.1);padding-top:16px;">
-          You're receiving this because a student booked a session with you on TutorLink.
-          &copy; {{ date('Y') }} TutorLink &mdash; Kenya's Tutor Marketplace
+          You're receiving this because a student booked a session with you on Mwalimu.
+          &copy; {{ date('Y') }} Mwalimu &mdash; Kenya's Tutor Marketplace
         </p>
       </td></tr>
     </table>

@@ -21,7 +21,7 @@ class JitsiService
 
     public function generateRoomName(Booking $booking): string
     {
-        return 'tutorlink-session-' . $booking->uuid;
+        return 'Mwalimu-session-' . $booking->uuid;
     }
 
     public function generateToken(User $user, string $room, bool $isModerator = false): ?string

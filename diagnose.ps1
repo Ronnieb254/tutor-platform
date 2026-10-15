@@ -1,4 +1,4 @@
-Write-Host "=== TutorLink Diagnostic ===" -ForegroundColor Cyan
+Write-Host "=== Mwalimu Diagnostic ===" -ForegroundColor Cyan
 
 Write-Host "`n1. Laravel version:" -ForegroundColor Yellow
 php artisan --version

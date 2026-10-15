@@ -1,7 +1,7 @@
-# TutorLink Setup Script
+# Mwalimu Setup Script
 # Run this as Administrator in PowerShell
 
-Write-Host "=== TutorLink Setup ===" -ForegroundColor Cyan
+Write-Host "=== Mwalimu Setup ===" -ForegroundColor Cyan
 
 # Step 1: Find Herd PHP and MySQL
 Write-Host "`nSearching for PHP and MySQL..." -ForegroundColor Yellow
@@ -109,4 +109,4 @@ Write-Host "Run these in separate terminals:" -ForegroundColor White
 Write-Host "  npm install && npm run dev" -ForegroundColor Yellow
 Write-Host "  php artisan serve" -ForegroundColor Yellow
 Write-Host "`nThen open: http://localhost:8000" -ForegroundColor Cyan
-Write-Host "Admin login: admin@tutorlink.co.ke / password" -ForegroundColor Green
+Write-Host "Admin login: admin@Mwalimu.co.ke / password" -ForegroundColor Green

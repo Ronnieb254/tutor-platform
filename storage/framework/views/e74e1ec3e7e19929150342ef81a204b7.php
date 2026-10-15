@@ -1,9 +1,9 @@
-<?php $__env->startSection('title', 'Sign In – TutorLink'); ?>
+<?php $__env->startSection('title', 'Sign In – Mwalimu'); ?>
 
 <?php $__env->startSection('content'); ?>
 <div class="auth-card">
     <h1>Welcome back</h1>
-    <p class="subtitle">Sign in to your TutorLink account</p>
+    <p class="subtitle">Sign in to your Mwalimu account</p>
 
     
     <div class="social-grid">

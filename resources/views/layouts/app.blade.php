@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'TutorLink') – Find Verified Tutors in Kenya</title>
+    <title>@yield('title', 'Mwalimu') – Find Verified Tutors in Kenya</title>
     <meta name="description" content="@yield('description', 'Book verified 1:1 tutors across 80+ subjects in Kenya.')">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -243,7 +243,7 @@
                     <circle cx="50" cy="50" r="34" fill="#6D28D9"/>
                     <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
                 </svg>
-                TutorLink
+                Mwalimu
             </a>
 
             {{-- Desktop links --}}
@@ -321,7 +321,7 @@
             <div class="footer-brand">
                 <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:10px;color:#fff;font-family:'Fraunces',serif;font-size:20px;font-weight:700;">
                     <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-                    TutorLink
+                    Mwalimu
                 </a>
                 <p>Connecting learners and parents with verified tutors across Kenya. Book sessions in flexible time blocks.</p>
             </div>
@@ -348,7 +348,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <span>&copy; {{ date('Y') }} TutorLink. All rights reserved.</span>
+            <span>&copy; {{ date('Y') }} Mwalimu. All rights reserved.</span>
             <span>Made with ❤ for learners across Kenya</span>
         </div>
     </div>

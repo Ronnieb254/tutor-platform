@@ -20,7 +20,7 @@
                 <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
               </svg>
             </td>
-            <td><span style="font-size:22px;font-weight:700;color:#FBF5E6;">TutorLink</span></td>
+            <td><span style="font-size:22px;font-weight:700;color:#FBF5E6;">Mwalimu</span></td>
           </tr>
         </table>
       </td></tr>
@@ -57,7 +57,7 @@
         <div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:16px;padding:16px;margin-bottom:24px;">
           <p style="font-size:13px;font-weight:700;color:#15803D;margin:0 0 6px;">📋 How to join your session</p>
           <ol style="font-size:13px;color:#166534;margin:0;padding-left:18px;line-height:1.8;">
-            <li>Go to your TutorLink dashboard</li>
+            <li>Go to your Mwalimu dashboard</li>
             <li>Find this booking under "Upcoming Sessions"</li>
             <li>Click "Join Session" and enter your code: <strong>{{ $booking->session_code_student }}</strong></li>
             <li>Your live session opens in the browser — no downloads needed!</li>
@@ -72,7 +72,7 @@
         </div>
 
         <p style="font-size:12px;color:rgba(21,40,31,0.45);line-height:1.5;margin:0;border-top:1px solid rgba(21,40,31,0.1);padding-top:16px;">
-          &copy; {{ date('Y') }} TutorLink &mdash; Kenya's Tutor Marketplace
+          &copy; {{ date('Y') }} Mwalimu &mdash; Kenya's Tutor Marketplace
         </p>
       </td></tr>
     </table>

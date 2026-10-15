@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'TutorLink')</title>
+    <title>@yield('title', 'Mwalimu')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -75,7 +75,7 @@
                 <circle cx="50" cy="50" r="34" fill="#6D28D9"/>
                 <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
             </svg>
-            TutorLink
+            Mwalimu
         </a>
     </header>
 
@@ -84,7 +84,7 @@
     </main>
 
     <footer class="guest-footer">
-        &copy; {{ date('Y') }} TutorLink &middot;
+        &copy; {{ date('Y') }} Mwalimu &middot;
         <a href="#">Privacy</a> &middot; <a href="#">Terms</a>
     </footer>
 

@@ -1,10 +1,10 @@
 @extends('layouts.guest')
-@section('title', 'Sign In – TutorLink')
+@section('title', 'Sign In – Mwalimu')
 
 @section('content')
 <div class="auth-card">
     <h1>Welcome back</h1>
-    <p class="subtitle">Sign in to your TutorLink account</p>
+    <p class="subtitle">Sign in to your Mwalimu account</p>
 
     {{-- Social --}}
     <div class="social-grid">

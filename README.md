@@ -1,4 +1,4 @@
-# TutorLink – Kenya's Tutor Marketplace
+# Mwalimu – Kenya's Tutor Marketplace
 
 A full-stack tutor booking marketplace built with Laravel 11, Livewire 3, Alpine.js, Tailwind CSS, Paystack payments, and Jitsi live sessions.
 
@@ -67,7 +67,7 @@ php artisan migrate --seed
 ```
 
 This creates all tables and seeds:
-- Admin: `admin@tutorlink.co.ke` / `password`
+- Admin: `admin@Mwalimu.co.ke` / `password`
 - 6 demo tutors (all approved)
 - 3 demo students/parents
 - 8 subject categories with 35+ subjects
@@ -97,9 +97,9 @@ Visit: http://localhost:8000
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@tutorlink.co.ke | password |
-| Tutor | amara@tutorlink.co.ke | password |
-| Tutor | grace@tutorlink.co.ke | password |
+| Admin | admin@Mwalimu.co.ke | password |
+| Tutor | amara@Mwalimu.co.ke | password |
+| Tutor | grace@Mwalimu.co.ke | password |
 | Student | alice@example.com | password |
 | Parent | sarah@example.com | password |
 

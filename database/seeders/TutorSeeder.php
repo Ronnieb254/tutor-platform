@@ -14,12 +14,12 @@ class TutorSeeder extends Seeder
     public function run(): void
     {
         $tutors = [
-            ['name' => 'Dr. Amara Kimani',   'email' => 'amara@tutorlink.co.ke',  'rate' => 3000, 'exp' => 8,  'subjects' => ['Algebra','Calculus','Statistics'],      'city' => 'Nairobi'],
-            ['name' => 'Prof. James Mwangi',  'email' => 'james@tutorlink.co.ke',  'rate' => 2500, 'exp' => 12, 'subjects' => ['Physics','Mathematics'],                 'city' => 'Nairobi'],
-            ['name' => 'Ms. Fatuma Abdi',     'email' => 'fatuma@tutorlink.co.ke', 'rate' => 2000, 'exp' => 5,  'subjects' => ['English','Swahili','French'],            'city' => 'Mombasa'],
-            ['name' => 'Mr. David Otieno',    'email' => 'david@tutorlink.co.ke',  'rate' => 2800, 'exp' => 7,  'subjects' => ['Chemistry','Biology'],                   'city' => 'Kisumu'],
-            ['name' => 'Ms. Grace Wanjiku',   'email' => 'grace@tutorlink.co.ke',  'rate' => 3500, 'exp' => 10, 'subjects' => ['Python','Web Development','JavaScript'], 'city' => 'Nairobi'],
-            ['name' => 'Mr. Brian Kipchoge',  'email' => 'brian@tutorlink.co.ke',  'rate' => 1800, 'exp' => 4,  'subjects' => ['KCSE Prep','Mathematics','Physics'],     'city' => 'Eldoret'],
+            ['name' => 'Dr. Amara Kimani',   'email' => 'amara@Mwalimu.co.ke',  'rate' => 3000, 'exp' => 8,  'subjects' => ['Algebra','Calculus','Statistics'],      'city' => 'Nairobi'],
+            ['name' => 'Prof. James Mwangi',  'email' => 'james@Mwalimu.co.ke',  'rate' => 2500, 'exp' => 12, 'subjects' => ['Physics','Mathematics'],                 'city' => 'Nairobi'],
+            ['name' => 'Ms. Fatuma Abdi',     'email' => 'fatuma@Mwalimu.co.ke', 'rate' => 2000, 'exp' => 5,  'subjects' => ['English','Swahili','French'],            'city' => 'Mombasa'],
+            ['name' => 'Mr. David Otieno',    'email' => 'david@Mwalimu.co.ke',  'rate' => 2800, 'exp' => 7,  'subjects' => ['Chemistry','Biology'],                   'city' => 'Kisumu'],
+            ['name' => 'Ms. Grace Wanjiku',   'email' => 'grace@Mwalimu.co.ke',  'rate' => 3500, 'exp' => 10, 'subjects' => ['Python','Web Development','JavaScript'], 'city' => 'Nairobi'],
+            ['name' => 'Mr. Brian Kipchoge',  'email' => 'brian@Mwalimu.co.ke',  'rate' => 1800, 'exp' => 4,  'subjects' => ['KCSE Prep','Mathematics','Physics'],     'city' => 'Eldoret'],
         ];
 
         foreach ($tutors as $i => $data) {

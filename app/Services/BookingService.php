@@ -37,7 +37,7 @@ class BookingService
         $fees         = $this->calculateFees($amount);
 
         return DB::transaction(function () use ($data, $fees, $tutorProfile) {
-            $room = 'tutorlink-session-' . Str::uuid();
+            $room = 'Mwalimu-session-' . Str::uuid();
 
             $booking = Booking::create([
                 'uuid'            => (string) Str::uuid(),
