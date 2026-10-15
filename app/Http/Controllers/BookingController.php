@@ -6,20 +6,45 @@ use App\Models\Booking;
 use App\Models\Payment;
 use App\Services\BookingService;
 use App\Services\PaystackService;
+use App\Services\JitsiService;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
     public function __construct(
         protected BookingService  $bookingService,
-        protected PaystackService $paystack
+        protected PaystackService $paystack,
+        protected JitsiService    $jitsi
     ) {}
 
     public function show(Booking $booking)
     {
-        $this->authorize('view', $booking);
-        $booking->load(['student', 'tutor', 'subject', 'messages.sender', 'review']);
-        return view('pages.bookings.show', compact('booking'));
+        // Allow student, tutor, or admin to view
+        $user = auth()->user();
+        if ($user->id !== $booking->student_id &&
+            $user->id !== $booking->tutor_id &&
+            !$user->isAdmin()) {
+            abort(403);
+        }
+
+        $booking->load([
+            'student',
+            'tutor.tutorProfile.subjects',
+            'subject',
+            'messages.sender',
+            'review',
+            'payment',
+        ]);
+
+        // Generate Jitsi JWT if configured
+        $jwtToken = null;
+        if ($booking->status === 'confirmed') {
+            $isTutor  = $user->id === $booking->tutor_id;
+            $roomName = 'mwalimu-session-' . $booking->uuid;
+            $jwtToken = $this->jitsi->generateToken($user, $roomName, $isTutor);
+        }
+
+        return view('pages.bookings.show', compact('booking', 'jwtToken'));
     }
 
     public function store(Request $request)
@@ -29,8 +54,9 @@ class BookingController extends Controller
             'subject_id'       => 'nullable|exists:subjects,id',
             'scheduled_at'     => 'required|date|after:now',
             'duration_minutes' => 'required|in:15,30,45,60',
-            'booking_for'      => 'in:self,child',
+            'booking_for'      => 'nullable|in:self,child',
             'child_profile_id' => 'nullable|exists:child_profiles,id',
+            'notes'            => 'nullable|string|max:500',
         ]);
 
         $booking = $this->bookingService->createBooking(array_merge(
@@ -59,10 +85,10 @@ class BookingController extends Controller
             ]);
 
             return response()->json([
-                'status'       => 'ok',
-                'access_code'  => $result['data']['access_code'],
-                'reference'    => $reference,
-                'booking_id'   => $booking->id,
+                'status'      => 'ok',
+                'access_code' => $result['data']['access_code'],
+                'reference'   => $reference,
+                'booking_id'  => $booking->id,
             ]);
         }
 
@@ -78,21 +104,21 @@ class BookingController extends Controller
             ->where('status', 'pending')
             ->firstOrFail();
 
-        // Verify with Paystack
+        // Verify with Paystack API
         $result = $this->paystack->verifyTransaction($request->reference);
 
         if (($result['data']['status'] ?? '') === 'success') {
             $payment->update(['status' => 'success', 'paid_at' => now()]);
             $booking = $payment->booking;
             $this->bookingService->confirmBooking($booking);
-
             $fresh = $booking->fresh();
 
             return response()->json([
-                'status'        => 'ok',
-                'booking_uuid'  => $fresh->uuid,
-                'student_code'  => $fresh->session_code_student,
-                'tutor_code'    => $fresh->session_code_tutor,
+                'status'       => 'ok',
+                'booking_uuid' => $fresh->uuid,
+                'student_code' => $fresh->session_code_student,
+                'tutor_code'   => $fresh->session_code_tutor,
+                'booking_url'  => route('bookings.show', $fresh->uuid),
             ]);
         }
 
@@ -101,8 +127,22 @@ class BookingController extends Controller
 
     public function cancel(Booking $booking, Request $request)
     {
-        $this->authorize('cancel', $booking);
-        $this->bookingService->cancelBooking($booking, $request->reason ?? '', auth()->user());
+        $user = auth()->user();
+        if ($user->id !== $booking->student_id && $user->id !== $booking->tutor_id) {
+            abort(403);
+        }
+        $this->bookingService->cancelBooking($booking, $request->reason ?? '', $user);
         return back()->with('success', 'Booking cancelled.');
+    }
+
+    public function markJoined(Booking $booking)
+    {
+        $user = auth()->user();
+        if ($user->id === $booking->tutor_id) {
+            $booking->update(['tutor_joined' => true]);
+        } elseif ($user->id === $booking->student_id) {
+            $booking->update(['student_joined' => true]);
+        }
+        return response()->json(['status' => 'ok']);
     }
 }

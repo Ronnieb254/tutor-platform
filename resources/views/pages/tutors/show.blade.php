@@ -517,7 +517,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                             <i class="fa-solid fa-circle-check" style="font-size:30px;color:#10B981;"></i>
                         </div>
                         <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:8px;">Booking Confirmed!</h2>
-                        <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Your session has been booked and payment received. Check your email for full details.</p>
+                        <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Payment received. Your session codes have been emailed to you. Redirecting to your session in 3 seconds…</p>
 
                         {{-- Session code --}}
                         <div style="background:rgba(109,40,217,.06);border:2px solid rgba(109,40,217,.25);border-radius:20px;padding:24px;margin-bottom:24px;">
@@ -539,8 +539,12 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         </div>
 
                         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-                            <a href="{{ route('student.dashboard') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 28px;border-radius:999px;background:#6D28D9;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
-                                <i class="fa-solid fa-gauge-high fa-xs"></i> Go to Dashboard
+                            <a :href="bookingRef ? '/bookings/' + bookingRef : '{{ route('student.dashboard') }}'"
+                               style="display:inline-flex;align-items:center;gap:7px;padding:13px 28px;border-radius:999px;background:#10B981;color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
+                                <i class="fa-solid fa-video fa-xs"></i> Go to My Session
+                            </a>
+                            <a href="{{ route('student.dashboard') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
+                                <i class="fa-solid fa-gauge-high fa-xs"></i> Dashboard
                             </a>
                             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
                                 <i class="fa-solid fa-magnifying-glass fa-xs"></i> Browse More Tutors
@@ -677,14 +681,20 @@ function processPayment() {
                     .then(confirmRes => {
                         data.processing = false;
                         if (confirmRes.status === 'ok') {
-                            data.studentCode = confirmRes.student_code || 'STU-' + Math.random().toString(36).substr(2,6).toUpperCase();
+                            data.studentCode = confirmRes.student_code || '';
                             data.bookingRef  = confirmRes.booking_uuid || '';
                             data.step = 3;
+                            // Redirect to session page after 3 seconds
+                            if (confirmRes.booking_url) {
+                                setTimeout(() => {
+                                    window.location.href = confirmRes.booking_url;
+                                }, 3000);
+                            }
                         }
                     })
                     .catch(() => {
                         data.processing = false;
-                        data.step = 3; // Show success anyway
+                        data.step = 3;
                     });
                 },
                 onCancel: function() {

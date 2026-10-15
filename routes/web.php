@@ -40,9 +40,42 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
     // Bookings
-    Route::get('/bookings/{booking}',      [BookingController::class, 'show'])->name('bookings.show');
-    Route::post('/bookings',               [BookingController::class, 'store'])->name('bookings.store');
-    Route::post('/bookings/confirm',       [BookingController::class, 'confirm'])->name('bookings.confirm');
+    Route::get('/bookings/{booking}',         [BookingController::class, 'show'])->name('bookings.show');
+    Route::post('/bookings',                  [BookingController::class, 'store'])->name('bookings.store');
+    Route::post('/bookings/confirm',          [BookingController::class, 'confirm'])->name('bookings.confirm');
+    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('/bookings/{booking}/joined', [BookingController::class, 'markJoined'])->name('bookings.joined');
+
+    // Booking messages
+    Route::post('/bookings/{booking}/messages', function(\Illuminate\Http\Request $req, \App\Models\Booking $booking) {
+        $req->validate(['body' => 'required|string|max:1000']);
+        $receiver = auth()->id() === $booking->student_id ? $booking->tutor_id : $booking->student_id;
+        $msg = $booking->messages()->create([
+            'sender_id'   => auth()->id(),
+            'receiver_id' => $receiver,
+            'body'        => $req->body,
+        ]);
+        return response()->json(['status'=>'ok','id'=>$msg->id]);
+    })->name('bookings.messages.store');
+
+    // Booking review
+    Route::post('/bookings/{booking}/review', function(\Illuminate\Http\Request $req, \App\Models\Booking $booking) {
+        $req->validate(['rating'=>'required|integer|min:1|max:5','comment'=>'nullable|string|max:1000']);
+        $booking->review()->create([
+            'student_id' => auth()->id(),
+            'tutor_id'   => $booking->tutor_id,
+            'rating'     => $req->rating,
+            'comment'    => $req->comment,
+            'is_visible' => true,
+        ]);
+        // Update tutor rating avg
+        $profile = \App\Models\TutorProfile::where('user_id', $booking->tutor_id)->first();
+        if ($profile) {
+            $avg = $profile->reviews()->where('is_visible',true)->avg('rating');
+            $profile->update(['rating_avg'=>round($avg,2),'total_reviews'=>$profile->reviews()->where('is_visible',true)->count()]);
+        }
+        return response()->json(['status'=>'ok']);
+    })->name('bookings.review.store');
     Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 
     // Course enrollment
