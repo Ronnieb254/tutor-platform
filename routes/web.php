@@ -52,6 +52,22 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:tutor')->group(function () {
         Route::get('/dashboard/tutor', fn() => view('pages.dashboard.tutor'))->name('tutor.dashboard');
         Route::get('/tutor/onboarding', fn() => view('pages.auth.tutor-onboarding'))->name('tutor.onboarding');
+
+        // Document upload
+        Route::post('/tutor/documents/upload', [App\Http\Controllers\TutorController::class, 'uploadDocument'])->name('tutor.documents.upload');
+
+        // Availability
+        Route::post('/tutor/availability', [App\Http\Controllers\TutorController::class, 'updateAvailability'])->name('tutor.availability.update');
+
+        // Profile updates
+        Route::patch('/tutor/profile/update', [App\Http\Controllers\TutorController::class, 'updatePersonal'])->name('tutor.profile.update');
+        Route::patch('/tutor/profile/tutor-update', [App\Http\Controllers\TutorController::class, 'updateTutorProfile'])->name('tutor.profile.tutor-update');
+
+        // Payout request
+        Route::post('/tutor/payouts', [App\Http\Controllers\TutorController::class, 'requestPayout'])->name('tutor.payouts.store');
+
+        // Notifications mark read
+        Route::post('/tutor/notifications/mark-all-read', [App\Http\Controllers\TutorController::class, 'markNotificationsRead'])->name('tutor.notifications.read');
     });
 
     // Admin
