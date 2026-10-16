@@ -277,7 +277,7 @@
 </section>
 
 {{-- FAQ --}}
-<section style="padding:80px 0;">
+<!-- <section style="padding:80px 0;">
     <div style="max-width:760px;margin:0 auto;padding:0 24px;">
         <div style="text-align:center;margin-bottom:44px;">
             <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#15281F;margin-bottom:10px;">Frequently Asked Questions</h2>
@@ -304,7 +304,7 @@
         </div>
         @endforeach
     </div>
-</section>
+</section> -->
 
 {{-- FINAL CTA --}}
 <section style="background:linear-gradient(135deg,#15281F,#0D1F14);padding:90px 0;text-align:center;">

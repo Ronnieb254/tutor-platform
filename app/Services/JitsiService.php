@@ -26,8 +26,10 @@ class JitsiService
 
     public function generateToken(User $user, string $room, bool $isModerator = false): ?string
     {
-        if (empty($this->appId) || empty($this->appSecret)) {
-            return null; // No JWT needed for public meet.jit.si
+        // Public meet.jit.si does not need JWT. Skip placeholder / too-short secrets
+        // so local bookings still confirm without a real Jitsi app key.
+        if (! $this->hasUsableJwtSecret()) {
+            return null;
         }
 
         $now = time();
@@ -54,7 +56,24 @@ class JitsiService
             ],
         ];
 
-        return JWT::encode($payload, $this->appSecret, 'HS256');
+        try {
+            return JWT::encode($payload, $this->appSecret, 'HS256');
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    protected function hasUsableJwtSecret(): bool
+    {
+        if ($this->appId === '' || $this->appSecret === '') {
+            return false;
+        }
+
+        if (str_starts_with($this->appSecret, 'your_') || str_starts_with($this->appId, 'your_')) {
+            return false;
+        }
+
+        return strlen($this->appSecret) >= 32;
     }
 
     public function getMeetingUrl(Booking $booking, User $user): string

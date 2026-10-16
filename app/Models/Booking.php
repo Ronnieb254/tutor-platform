@@ -57,9 +57,25 @@ class Booking extends Model
 
     public function canJoin(): bool
     {
-        return $this->status === 'confirmed'
-            && now()->diffInMinutes($this->scheduled_at, false) >= -15
-            && now()->diffInMinutes($this->scheduled_at, false) <= 15;
+        if ($this->status !== 'confirmed') {
+            return false;
+        }
+
+        $opensAt  = $this->scheduled_at->copy()->subMinutes(60);
+        $closesAt = $this->scheduled_at->copy()->addMinutes($this->duration_minutes + 30);
+
+        return now()->between($opensAt, $closesAt);
+    }
+
+    public function scopeHistory($q)
+    {
+        return $q->where(function ($inner) {
+            $inner->whereIn('status', ['completed', 'cancelled', 'no_show'])
+                ->orWhere(function ($past) {
+                    $past->where('scheduled_at', '<=', now())
+                        ->whereNotIn('status', ['pending']);
+                });
+        });
     }
 
     public function formattedDuration(): string

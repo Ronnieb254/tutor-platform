@@ -12,6 +12,7 @@ use App\Notifications\BookingConfirmedStudent;
 use App\Notifications\BookingConfirmedTutor;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BookingService
 {
@@ -32,25 +33,27 @@ class BookingService
 
     public function createBooking(array $data): Booking
     {
-        // Fixed pricing — does not depend on tutor's hourly rate
-        $prices = \App\Models\TutorProfile::sessionPrices();
-        $amount = $prices[$data['duration_minutes']]['price'] ?? 300;
-        $fees   = $this->calculateFees($amount);
-
+        // Fixed pricing — check free first session for 15-min
+        $studentId = $data['student_id'];
         $tutorProfile = TutorProfile::findOrFail($data['tutor_profile_id']);
+        $minutes  = $data['duration_minutes'];
+
+        $isFree   = ($minutes === 15) && TutorProfile::isFreeFirstSession($studentId, $tutorProfile->user_id);
+        $amount   = $isFree ? 0.00 : ($tutorProfile->getPriceForDuration($minutes));
+        $fees     = $this->calculateFees($amount);
 
         return DB::transaction(function () use ($data, $fees, $tutorProfile) {
-            $room = 'Mwalimu-session-' . Str::uuid();
+            $uuid = (string) Str::uuid();
 
             $booking = Booking::create([
-                'uuid'            => (string) Str::uuid(),
+                'uuid'            => $uuid,
                 'student_id'      => $data['student_id'],
                 'tutor_id'        => $tutorProfile->user_id,
                 'subject_id'      => $data['subject_id'] ?? null,
                 'scheduled_at'    => $data['scheduled_at'],
                 'duration_minutes'=> $data['duration_minutes'],
                 'status'          => 'pending',
-                'meeting_room'    => $room,
+                'meeting_room'    => 'Mwalimu-session-' . $uuid,
                 'total_amount'    => $fees['total_amount'],
                 'platform_fee'    => $fees['platform_fee'],
                 'tutor_earning'   => $fees['tutor_earning'],
@@ -75,28 +78,40 @@ class BookingService
 
             $booking->update([
                 'status'               => 'confirmed',
+                'meeting_room'         => $this->jitsi->generateRoomName($booking),
                 'meeting_url'          => $meetingUrl,
                 'session_code_tutor'   => $tutorCode,
                 'session_code_student' => $studentCode,
             ]);
 
-            // Credit tutor wallet
-            $wallet = Wallet::firstOrCreate(
-                ['user_id' => $booking->tutor_id],
-                ['balance' => 0, 'currency' => 'KES']
-            );
-            $wallet->credit(
-                $booking->tutor_earning,
-                "Earnings from session #{$booking->uuid}",
-                $booking->uuid
-            );
+            if ((float) $booking->tutor_earning > 0) {
+                $wallet = Wallet::firstOrCreate(
+                    ['user_id' => $booking->tutor_id],
+                    ['balance' => 0, 'currency' => 'KES']
+                );
+                $wallet->credit(
+                    $booking->tutor_earning,
+                    "Earnings from session #{$booking->uuid}",
+                    $booking->uuid
+                );
+            }
 
             // Update tutor stats
             $booking->tutor->tutorProfile?->increment('total_sessions');
 
-            // Send notifications
-            $booking->student->notify(new BookingConfirmedStudent($booking));
-            $booking->tutor->notify(new BookingConfirmedTutor($booking));
+            $booking->refresh()->load(['student', 'tutor', 'subject']);
+
+            try {
+                $booking->student->notify(new BookingConfirmedStudent($booking));
+            } catch (\Throwable $e) {
+                Log::warning('Student booking notification failed: '.$e->getMessage());
+            }
+
+            try {
+                $booking->tutor->notify(new BookingConfirmedTutor($booking));
+            } catch (\Throwable $e) {
+                Log::warning('Tutor booking notification failed: '.$e->getMessage());
+            }
         });
     }
 

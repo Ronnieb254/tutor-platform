@@ -24,12 +24,12 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // ─── Auth ──────────────────────────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
-    Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login',   [AuthController::class, 'login']);
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register',[AuthController::class, 'register']);
+    Route::get('/login',    [App\Http\Controllers\Auth\LoginController::class, 'show'])->name('login');
+    Route::post('/login',   [App\Http\Controllers\Auth\LoginController::class, 'store']);
+    Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'show'])->name('register');
+    Route::post('/register',[App\Http\Controllers\Auth\RegisterController::class, 'store']);
 });
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'destroy'])->name('logout')->middleware('auth');
 
 // ─── Social OAuth ─────────────────────────────────────────────────────────────
 Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('auth.social.redirect');
@@ -37,7 +37,7 @@ Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'
 
 // ─── Authenticated ────────────────────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     // Bookings
     Route::get('/bookings/{booking}',         [BookingController::class, 'show'])->name('bookings.show');
@@ -76,10 +76,41 @@ Route::middleware('auth')->group(function () {
         }
         return response()->json(['status'=>'ok']);
     })->name('bookings.review.store');
-    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 
     // Course enrollment
     Route::post('/courses/{course}/enroll', [CourseController::class, 'enroll'])->name('courses.enroll');
+
+    // Sessions
+    Route::prefix('sessions')->name('sessions.')->group(function () {
+        Route::get('/', [App\Http\Controllers\SessionController::class, 'index'])->name('index');
+        Route::get('/history', [App\Http\Controllers\SessionController::class, 'history'])->name('history');
+        Route::get('/{booking:uuid}', [App\Http\Controllers\SessionController::class, 'show'])->name('show');
+        Route::get('/{booking:uuid}/join', [App\Http\Controllers\SessionController::class, 'join'])->name('join');
+        Route::post('/{booking:uuid}/confirm', [App\Http\Controllers\SessionController::class, 'confirm'])->name('confirm');
+        Route::post('/{booking:uuid}/cancel', [App\Http\Controllers\SessionController::class, 'cancel'])->name('cancel');
+        Route::post('/{booking:uuid}/complete', [App\Http\Controllers\SessionController::class, 'complete'])->name('complete');
+    });
+
+    // Messages
+    Route::prefix('sessions/{booking:uuid}/messages')->name('messages.')->group(function () {
+        Route::get('/', [App\Http\Controllers\MessageController::class, 'index'])->name('index');
+        Route::post('/', [App\Http\Controllers\MessageController::class, 'store'])->name('store');
+        Route::post('/read', [App\Http\Controllers\MessageController::class, 'markAsRead'])->name('read');
+    });
+
+    // Notifications
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [App\Http\Controllers\NotificationController::class, 'index'])->name('index');
+        Route::get('/unread', [App\Http\Controllers\NotificationController::class, 'unread'])->name('unread');
+        Route::post('/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('read');
+        Route::post('/read-all', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('readAll');
+        Route::delete('/{id}', [App\Http\Controllers\NotificationController::class, 'destroy'])->name('destroy');
+    });
+
+    // Direct Messages
+    Route::get('/inbox', [App\Http\Controllers\MessagesController::class, 'index'])->name('inbox.index');
+    Route::get('/api/messages/{userId}', [App\Http\Controllers\MessagesController::class, 'getMessages']);
+    Route::post('/api/messages/{userId}', [App\Http\Controllers\MessagesController::class, 'sendMessage']);
 
     // Student dashboard
     Route::middleware('role:student,parent')->group(function () {

@@ -36,10 +36,10 @@ $otherName = $isTutor ? $booking->student->name : $booking->tutor->name;
 $sessionStart   = $booking->scheduled_at;
 $sessionEnd     = $sessionStart->copy()->addMinutes($booking->duration_minutes);
 $minutesUntil   = now()->diffInMinutes($sessionStart, false);
-$canJoin        = $minutesUntil <= 15 && $minutesUntil >= -$booking->duration_minutes;
+$canJoin        = $booking->canJoin();
 $sessionPrices  = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
 $sessionName    = $sessionPrices[$booking->duration_minutes] ?? 'Session';
-$jitsiRoom      = 'mwalimu-session-' . $booking->uuid;
+$jitsiRoom      = $roomName ?? $booking->meeting_room ?? ('Mwalimu-session-' . $booking->uuid);
 $jitsiDomain    = config('jitsi.domain','meet.jit.si');
 @endphp
 
@@ -107,7 +107,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
             {{-- ── SESSION JOIN PANEL ── --}}
             @if($booking->status === 'confirmed')
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);overflow:hidden;box-shadow:0 4px 24px rgba(21,40,31,.06);" x-data="{
-                codeInput: '',
+                codeInput: '{{ $myCode }}',
                 codeError: '',
                 verified: false,
                 jitsiLoaded: false,
@@ -232,8 +232,8 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                             </div>
                             <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:6px;">Enter Your Session Code</h3>
                             <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;">
-                                Your unique session code was sent to your email when your booking was confirmed.
-                                {{ $isTutor ? 'Enter your TUT-XXXXXX code below.' : 'Enter your STU-XXXXXX code below.' }}
+                                You're logged in for this booking. Confirm your session code below, then join the classroom.
+                                {{ $isTutor ? 'Your tutor code starts with TUT-.' : 'Your student code starts with STU-.' }}
                             </p>
                             <div style="max-width:320px;margin:0 auto;">
                                 <input type="text"
@@ -263,14 +263,14 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                             <div id="jitsi-placeholder" class="jitsi-placeholder">
                                 <i class="fa-solid fa-satellite-dish" style="font-size:48px;color:rgba(255,255,255,.15);margin-bottom:18px;"></i>
                                 <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#fff;margin-bottom:8px;">Session Room Waiting</h3>
-                                <p style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;max-width:380px;">This room will open 15 minutes before your session starts. Come back then and enter your code to join.</p>
+                                <p style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;max-width:380px;">This room opens 60 minutes before your session starts. Your access code is already on this page.</p>
                                 <div style="background:rgba(255,255,255,.08);border-radius:16px;padding:16px 24px;display:inline-block;">
                                     <p style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:6px;">Time until session</p>
                                     <div id="countdown">--:--:--</div>
                                 </div>
                                 <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;justify-content:center;">
                                     @foreach([
-                                        ['fa-video','Join 15 min before'],
+                                        ['fa-video','Join 60 min before'],
                                         ['fa-key','Enter your '.($isTutor?'TUT':'STU').'-XXXXXX code'],
                                         ['fa-globe','No download required'],
                                     ] as [$ic,$tip])

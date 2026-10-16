@@ -160,7 +160,7 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
             </div>
         </div>
     </div>
-    <style>.hero-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.hero-g{grid-template-columns:1fr 460px!important;}.hero-vis{display:block!important;}}</style>
+    <!-- <style>.hero-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.hero-g{grid-template-columns:1fr 460px!important;}.hero-vis{display:block!important;}}</style> -->
 </section>
 
 
@@ -258,36 +258,6 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
 </section>
 
 
-<section style="padding:72px 0;">
-    <div class="w">
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:16px;flex-wrap:wrap;">
-            <div>
-                <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:8px;">Browse by subject</h2>
-                <p style="color:var(--muted);font-size:16px;">Find a tutor who knows your curriculum inside out</p>
-            </div>
-            <a href="<?php echo e(route('tutors.index')); ?>" style="font-size:14px;font-weight:600;color:var(--violet);display:flex;align-items:center;gap:4px;">
-                All subjects <i class="fa-solid fa-arrow-right fa-xs"></i>
-            </a>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;" class="cat-g">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-            <a href="<?php echo e(route('tutors.index')); ?>?category=<?php echo e($cat->id); ?>" class="card card-lift" style="padding:22px;display:block;">
-                <div style="font-size:34px;margin-bottom:10px;"><?php echo e($cat->icon ?? '📚'); ?></div>
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);transition:color .15s;"><?php echo e($cat->name); ?></h3>
-                <p style="font-size:12px;color:var(--muted);margin-top:3px;"><?php echo e($cat->subjects->count()); ?> topics</p>
-            </a>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['📐','Mathematics'],['🔬','Sciences'],['🌍','Languages'],['💻','Programming'],['📊','Business'],['🎨','Arts'],['📚','Humanities'],['📝','Test Prep']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$ic,$nm]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <a href="<?php echo e(route('tutors.index')); ?>" class="card card-lift" style="padding:22px;display:block;">
-                <div style="font-size:34px;margin-bottom:10px;"><?php echo e($ic); ?></div>
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);"><?php echo e($nm); ?></h3>
-            </a>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-        </div>
-    </div>
-    <style>.cat-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.cat-g{grid-template-columns:repeat(3,1fr)!important;}}@media(min-width:1024px){.cat-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
-</section>
 
 
 <section style="padding:72px 0;background:var(--ink);">
@@ -353,63 +323,36 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
     <style>.ec-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.ec-g{grid-template-columns:1fr 1fr!important;}}</style>
 </section>
 
-
-<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($featuredTutors->isNotEmpty()): ?>
 <section style="padding:72px 0;">
     <div class="w">
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px;">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:16px;flex-wrap:wrap;">
             <div>
-                <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:8px;">Meet our verified tutors</h2>
-                <p style="color:var(--muted);font-size:16px;">TSC-registered experts, ready now</p>
+                <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:8px;">Browse by subject</h2>
+                <p style="color:var(--muted);font-size:16px;">Find a tutor who knows your curriculum inside out</p>
             </div>
             <a href="<?php echo e(route('tutors.index')); ?>" style="font-size:14px;font-weight:600;color:var(--violet);display:flex;align-items:center;gap:4px;">
-                All tutors <i class="fa-solid fa-arrow-right fa-xs"></i>
+                All subjects <i class="fa-solid fa-arrow-right fa-xs"></i>
             </a>
         </div>
-        <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="tut-g">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $featuredTutors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tutor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php $colors=['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899']; $col=$colors[$loop->index%6]; ?>
-            <div class="card card-lift" style="padding:20px;">
-                <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
-                    <div style="width:58px;height:58px;border-radius:16px;background:<?php echo e($col); ?>;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;"><?php echo e(substr($tutor->user->name,0,1)); ?></div>
-                    <div style="flex:1;min-width:0;">
-                        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                            <span style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);"><?php echo e($tutor->user->name); ?></span>
-                            <span style="background:rgba(16,185,129,.1);color:var(--mint);padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;"><i class="fa-solid fa-check fa-xs"></i> TSC</span>
-                        </div>
-                        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;">
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $tutor->subjects->take(2); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <span class="badge bv" style="font-size:11px;"><?php echo e($s->name); ?></span>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px;">
-                            <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star fa-xs"></i> <?php echo e(number_format($tutor->rating_avg,1)); ?></span>
-                            <span style="color:var(--muted);">(<?php echo e($tutor->total_reviews); ?>)</span>
-                            <span style="color:var(--muted);">·</span>
-                            <span style="color:var(--muted);"><?php echo e($tutor->total_sessions); ?> sessions</span>
-                        </div>
-                    </div>
-                </div>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tutor->bio): ?>
-                <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><?php echo e($tutor->bio); ?></p>
-                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:14px;">
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [15=>300,30=>500,45=>680,60=>800]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mins => $price): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div style="text-align:center;border:1.5px solid var(--hair);border-radius:10px;padding:6px 3px;">
-                        <div style="font-size:11px;font-weight:700;color:var(--ink);"><?php echo e($mins); ?>m</div>
-                        <div style="font-size:10px;color:var(--muted);">KSh <?php echo e($price); ?></div>
-                    </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                </div>
-                <a href="<?php echo e(route('tutors.show', $tutor->id)); ?>" class="btn btn-v" style="width:100%;font-size:13px;padding:10px;"><i class="fa-solid fa-calendar-check"></i> Book Session</a>
-            </div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;" class="cat-g">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <a href="<?php echo e(route('tutors.index')); ?>?category=<?php echo e($cat->id); ?>" class="card card-lift" style="padding:22px;display:block;">
+                <div style="font-size:34px;margin-bottom:10px;"><?php echo e($cat->icon ?? '📚'); ?></div>
+                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);transition:color .15s;"><?php echo e($cat->name); ?></h3>
+                <p style="font-size:12px;color:var(--muted);margin-top:3px;"><?php echo e($cat->subjects->count()); ?> topics</p>
+            </a>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [['📐','Mathematics'],['🔬','Sciences'],['🌍','Languages'],['💻','Programming'],['📊','Business'],['🎨','Arts'],['📚','Humanities'],['📝','Test Prep']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$ic,$nm]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <a href="<?php echo e(route('tutors.index')); ?>" class="card card-lift" style="padding:22px;display:block;">
+                <div style="font-size:34px;margin-bottom:10px;"><?php echo e($ic); ?></div>
+                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);"><?php echo e($nm); ?></h3>
+            </a>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-    <style>.tut-g{grid-template-columns:1fr!important;}@media(min-width:640px){.tut-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.tut-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
+    <style>.cat-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.cat-g{grid-template-columns:repeat(3,1fr)!important;}}@media(min-width:1024px){.cat-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 </section>
-<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
 
 <section style="background:var(--violet);padding:72px 0;">
     <div class="w">

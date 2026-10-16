@@ -63,11 +63,36 @@ class TutorProfile extends Model
     public static function sessionPrices(): array
     {
         return [
-            15 => ['name' => 'Quick Help',       'price' => 300],
-            30 => ['name' => 'Concept Check',    'price' => 500],
-            45 => ['name' => 'Guided Practice',  'price' => 680],
-            60 => ['name' => 'Deep Dive',         'price' => 800],
+            15 => ['name' => 'Quick Help',       'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question'],
+            30 => ['name' => 'Concept Check',    'price' => 500, 'icon' => '📘', 'desc' => 'Targeted practice or concept clarity'],
+            45 => ['name' => 'Guided Practice',  'price' => 680, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A'],
+            60 => ['name' => 'Deep Dive',        'price' => 800, 'icon' => '🏆', 'desc' => 'Maximum learning, best value'],
         ];
+    }
+
+    /**
+     * Check if a student qualifies for a free first 15-min session with this tutor.
+     * First time = no confirmed/completed booking between student and this tutor.
+     */
+    public static function isFreeFirstSession(int $studentId, int $tutorUserId): bool
+    {
+        return !\App\Models\Booking::where('student_id', $studentId)
+            ->where('tutor_id', $tutorUserId)
+            ->whereIn('status', ['confirmed', 'completed', 'pending'])
+            ->exists();
+    }
+
+    /**
+     * Get the price for a given duration, factoring in the free first 15-min offer.
+     */
+    public function getPriceForStudent(int $minutes, ?int $studentId = null): float
+    {
+        if ($minutes === 15 && $studentId) {
+            if (self::isFreeFirstSession($studentId, $this->user_id)) {
+                return 0.00; // FREE first 15-min session
+            }
+        }
+        return self::sessionPrices()[$minutes]['price'] ?? 300;
     }
 
     public function getPriceForDuration(int $minutes): float

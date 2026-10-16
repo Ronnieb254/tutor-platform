@@ -186,6 +186,10 @@ $activeTab = request('tab','overview');
                 Bookings
                 @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
             </button>
+            <button class="sb-item" :class="tab==='history'?'active':''" @click="tab='history';sidebarOpen=false">
+                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Session History
+            </button>
             <button class="sb-item" :class="tab==='chats'?'active':''" @click="tab='chats';sidebarOpen=false">
                 <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 Messages
@@ -259,7 +263,7 @@ $activeTab = request('tab','overview');
                 <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <div class="page-title" x-text="{
-                overview:'Dashboard Overview',documents:'My Documents',bookings:'Bookings',
+                overview:'Dashboard Overview',documents:'My Documents',bookings:'Bookings',history:'Session History',
                 chats:'Messages',availability:'Availability',earnings:'Earnings & Wallet',
                 payouts:'Payout Requests',notifications:'Notifications',profile:'My Profile'
             }[tab] || 'Dashboard'"></div>
@@ -384,8 +388,8 @@ $activeTab = request('tab','overview');
                     <div style="font-size:12px;color:var(--muted);">{{ $b->scheduled_at->format('g:ia') }}</div>
                 </div>
                 <div style="flex-shrink:0;">
-                    @if($b->canJoin())
-                    <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">Join Now</a>
+                    @if($b->status === 'confirmed')
+                    <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">{{ $b->canJoin() ? 'Join Now' : 'Open Session' }}</a>
                     @else
                     <span class="bdg bdg-blue">{{ ucfirst($b->status) }}</span>
                     @endif
@@ -522,7 +526,7 @@ $activeTab = request('tab','overview');
 </div>
 
 {{-- ═══════════════════════ BOOKINGS TAB ═══════════════════════ --}}
-<div x-show="tab==='bookings'" x-cloak>
+<div x-show="tab==='bookings' || tab==='history'" x-cloak>
     @php
     $bFilter = request('bstatus','all');
     $allBookings = $user->bookingsAsTutor()->with(['student','subject'])->latest('scheduled_at')->get();
@@ -542,7 +546,7 @@ $activeTab = request('tab','overview');
 
     {{-- Upcoming --}}
     @if($upcomingB->isNotEmpty())
-    <div class="card" style="margin-bottom:20px;">
+    <div class="card" style="margin-bottom:20px;" x-show="tab==='bookings'">
         <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
             <div class="sec-title">Upcoming Sessions</div>
         </div>
@@ -565,8 +569,8 @@ $activeTab = request('tab','overview');
                 <div style="font-family:monospace;font-size:14px;font-weight:800;color:var(--violet);">{{ $b->session_code_tutor }}</div>
             </div>
             @endif
-            @if($b->canJoin())
-            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">Join Session</a>
+            @if($b->status === 'confirmed')
+            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">{{ $b->canJoin() ? 'Join Session' : 'Open Session' }}</a>
             @else
             <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a>
             @endif
@@ -578,7 +582,8 @@ $activeTab = request('tab','overview');
     {{-- All bookings table --}}
     <div class="card">
         <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
-            <div class="sec-title">All Bookings History</div>
+            <div class="sec-title">Session History</div>
+            <div class="sec-sub">Every session you have taught or have scheduled</div>
         </div>
         <div style="overflow-x:auto;">
             <table>
@@ -609,7 +614,13 @@ $activeTab = request('tab','overview');
                             @php $sc=['pending'=>'bdg-amber','confirmed'=>'bdg-blue','completed'=>'bdg-green','cancelled'=>'bdg-gray','no_show'=>'bdg-red'][$b->status]??'bdg-gray'; @endphp
                             <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
                         </td>
-                        <td><a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a></td>
+                        <td>
+                            @if($b->status === 'confirmed')
+                            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">{{ $b->canJoin() ? 'Join' : 'Open' }}</a>
+                            @else
+                            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a>
+                            @endif
+                        </td>
                     </tr>
                     @empty
                     <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">No bookings yet. Once students book sessions with you, they'll appear here.</td></tr>
@@ -896,6 +907,9 @@ $activeTab = request('tab','overview');
                     <div style="text-align:right;flex-shrink:0;">
                         <div style="font-size:11px;color:var(--muted);white-space:nowrap;">{{ $notif->created_at->diffForHumans() }}</div>
                         @if($isUnread)<div style="width:8px;height:8px;background:var(--violet);border-radius:50%;margin:4px 0 0 auto;"></div>@endif
+                        @if(!empty($data['url']))
+                        <a href="{{ $data['url'] }}" class="btn btn-mint btn-sm" style="margin-top:8px;">Join / View</a>
+                        @endif
                     </div>
                 </div>
             </div>

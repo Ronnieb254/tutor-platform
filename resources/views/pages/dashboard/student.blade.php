@@ -132,7 +132,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 $user = auth()->user();
 $unreadNotifs = $user->unreadNotifications()->count();
 $upcomingBookings = $user->bookingsAsStudent()->with(['tutor','subject'])->upcoming()->orderBy('scheduled_at')->get();
-$pastBookings = $user->bookingsAsStudent()->with(['tutor','subject','review'])->where('status','completed')->latest('scheduled_at')->take(20)->get();
+$pastBookings = $user->bookingsAsStudent()->with(['tutor','subject','review'])->history()->latest('scheduled_at')->take(50)->get();
 $totalSpent = $user->payments()->where('status','success')->sum('amount');
 $totalSessions = $user->bookingsAsStudent()->where('status','completed')->count();
 $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
@@ -328,8 +328,8 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 <div class="code-val">{{ $b->session_code_student }}</div>
             </div>
             @endif
-            @if($b->canJoin())
-            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">Join Now</a>
+            @if($b->status === 'confirmed')
+            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">{{ $b->canJoin() ? 'Join Now' : 'Open Session' }}</a>
             @else
             <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a>
             @endif
@@ -412,8 +412,8 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             @endif
 
             <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
-                @if($b->canJoin())
-                <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint">🎥 Join Session</a>
+                @if($b->status === 'confirmed')
+                <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint">{{ $b->canJoin() ? '🎥 Join Session' : 'Open Session' }}</a>
                 @else
                 <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-v">View Booking</a>
                 @endif
@@ -449,12 +449,12 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
     <div class="card">
         <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
             <div class="sec-title">Session History</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:1px;">{{ $pastBookings->count() }} completed sessions</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:1px;">{{ $pastBookings->count() }} past sessions</div>
         </div>
         <div style="overflow-x:auto;">
             <table>
                 <thead><tr>
-                    <th>Tutor</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Review</th><th></th>
+                    <th>Tutor</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Status</th><th>Review</th><th></th>
                 </tr></thead>
                 <tbody>
                     @forelse($pastBookings as $b)
@@ -468,22 +468,28 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                             </div>
                         </td>
                         <td style="color:var(--muted);">{{ $b->subject?->name ?? 'General' }}</td>
-                        <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y') }}</td>
+                        <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y g:ia') }}</td>
                         <td>{{ $b->duration_minutes }}min</td>
                         <td style="font-weight:600;">KSh {{ number_format($b->total_amount) }}</td>
                         <td>
-                            @if($b->review)
+                            @php $sc=['pending'=>'bdg-amber','confirmed'=>'bdg-blue','completed'=>'bdg-green','cancelled'=>'bdg-red','no_show'=>'bdg-gray'][$b->status]??'bdg-gray'; @endphp
+                            <span class="bdg {{ $sc }}">{{ ucfirst(str_replace('_',' ',$b->status)) }}</span>
+                        </td>
+                        <td>
+                            @if($b->status === 'completed' && $b->review)
                             <div style="display:flex;gap:1px;">
                                 @for($i=1;$i<=5;$i++)<span style="color:{{ $i<=$b->review->rating ? 'var(--gold)' : 'var(--hair)' }};font-size:13px;">★</span>@endfor
                             </div>
-                            @else
+                            @elseif($b->status === 'completed')
                             <a href="{{ route('bookings.show',$b->uuid) }}" style="font-size:12px;color:var(--violet);font-weight:600;">Leave review</a>
+                            @else
+                            <span style="color:var(--muted);">—</span>
                             @endif
                         </td>
                         <td><a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a></td>
                     </tr>
                     @empty
-                    <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No completed sessions yet</td></tr>
+                    <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">No session history yet</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -678,6 +684,9 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 <div style="font-size:12px;color:var(--muted);margin-top:4px;">📅 {{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
                 @endif
                 <div style="font-size:11px;color:var(--muted);margin-top:6px;">{{ $notif->created_at->diffForHumans() }}</div>
+                @if(!empty($data['url']))
+                <a href="{{ $data['url'] }}" class="btn btn-mint btn-sm" style="margin-top:8px;">Join / View Session</a>
+                @endif
             </div>
             @if($isUnread)<div style="width:8px;height:8px;background:var(--violet);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>@endif
         </div>

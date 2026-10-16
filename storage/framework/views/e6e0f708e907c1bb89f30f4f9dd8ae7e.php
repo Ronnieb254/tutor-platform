@@ -133,7 +133,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 $user = auth()->user();
 $unreadNotifs = $user->unreadNotifications()->count();
 $upcomingBookings = $user->bookingsAsStudent()->with(['tutor','subject'])->upcoming()->orderBy('scheduled_at')->get();
-$pastBookings = $user->bookingsAsStudent()->with(['tutor','subject','review'])->where('status','completed')->latest('scheduled_at')->take(20)->get();
+$pastBookings = $user->bookingsAsStudent()->with(['tutor','subject','review'])->history()->latest('scheduled_at')->take(50)->get();
 $totalSpent = $user->payments()->where('status','success')->sum('amount');
 $totalSessions = $user->bookingsAsStudent()->where('status','completed')->count();
 $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
@@ -329,8 +329,8 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 <div class="code-val"><?php echo e($b->session_code_student); ?></div>
             </div>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($b->canJoin()): ?>
-            <a href="<?php echo e(route('bookings.show',$b->uuid)); ?>" class="btn btn-mint btn-sm">Join Now</a>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($b->status === 'confirmed'): ?>
+            <a href="<?php echo e(route('bookings.show',$b->uuid)); ?>" class="btn btn-mint btn-sm"><?php echo e($b->canJoin() ? 'Join Now' : 'Open Session'); ?></a>
             <?php else: ?>
             <a href="<?php echo e(route('bookings.show',$b->uuid)); ?>" class="btn btn-o btn-sm">View</a>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -413,8 +413,8 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($b->canJoin()): ?>
-                <a href="<?php echo e(route('bookings.show',$b->uuid)); ?>" class="btn btn-mint">🎥 Join Session</a>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($b->status === 'confirmed'): ?>
+                <a href="<?php echo e(route('bookings.show',$b->uuid)); ?>" class="btn btn-mint"><?php echo e($b->canJoin() ? '🎥 Join Session' : 'Open Session'); ?></a>
                 <?php else: ?>
                 <a href="<?php echo e(route('bookings.show',$b->uuid)); ?>" class="btn btn-v">View Booking</a>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -451,12 +451,12 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
     <div class="card">
         <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
             <div class="sec-title">Session History</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:1px;"><?php echo e($pastBookings->count()); ?> completed sessions</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:1px;"><?php echo e($pastBookings->count()); ?> past sessions</div>
         </div>
         <div style="overflow-x:auto;">
             <table>
                 <thead><tr>
-                    <th>Tutor</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Review</th><th></th>
+                    <th>Tutor</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Status</th><th>Review</th><th></th>
                 </tr></thead>
                 <tbody>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $pastBookings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
@@ -470,22 +470,28 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                             </div>
                         </td>
                         <td style="color:var(--muted);"><?php echo e($b->subject?->name ?? 'General'); ?></td>
-                        <td style="white-space:nowrap;font-size:13px;"><?php echo e($b->scheduled_at->format('M j, Y')); ?></td>
+                        <td style="white-space:nowrap;font-size:13px;"><?php echo e($b->scheduled_at->format('M j, Y g:ia')); ?></td>
                         <td><?php echo e($b->duration_minutes); ?>min</td>
                         <td style="font-weight:600;">KSh <?php echo e(number_format($b->total_amount)); ?></td>
                         <td>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($b->review): ?>
+                            <?php $sc=['pending'=>'bdg-amber','confirmed'=>'bdg-blue','completed'=>'bdg-green','cancelled'=>'bdg-red','no_show'=>'bdg-gray'][$b->status]??'bdg-gray'; ?>
+                            <span class="bdg <?php echo e($sc); ?>"><?php echo e(ucfirst(str_replace('_',' ',$b->status))); ?></span>
+                        </td>
+                        <td>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($b->status === 'completed' && $b->review): ?>
                             <div style="display:flex;gap:1px;">
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($i=1;$i<=5;$i++): ?><span style="color:<?php echo e($i<=$b->review->rating ? 'var(--gold)' : 'var(--hair)'); ?>;font-size:13px;">★</span><?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
-                            <?php else: ?>
+                            <?php elseif($b->status === 'completed'): ?>
                             <a href="<?php echo e(route('bookings.show',$b->uuid)); ?>" style="font-size:12px;color:var(--violet);font-weight:600;">Leave review</a>
+                            <?php else: ?>
+                            <span style="color:var(--muted);">—</span>
                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </td>
                         <td><a href="<?php echo e(route('bookings.show',$b->uuid)); ?>" class="btn btn-o btn-sm">View</a></td>
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                    <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No completed sessions yet</td></tr>
+                    <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">No session history yet</td></tr>
                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tbody>
             </table>
@@ -682,6 +688,9 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 <div style="font-size:12px;color:var(--muted);margin-top:4px;">📅 <?php echo e(\Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia')); ?></div>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <div style="font-size:11px;color:var(--muted);margin-top:6px;"><?php echo e($notif->created_at->diffForHumans()); ?></div>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($data['url'])): ?>
+                <a href="<?php echo e($data['url']); ?>" class="btn btn-mint btn-sm" style="margin-top:8px;">Join / View Session</a>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isUnread): ?><div style="width:8px;height:8px;background:var(--violet);border-radius:50%;margin-top:6px;flex-shrink:0;"></div><?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>

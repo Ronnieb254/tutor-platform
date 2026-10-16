@@ -3,20 +3,16 @@
 namespace App\Notifications;
 
 use App\Models\Booking;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class BookingConfirmedStudent extends Notification implements ShouldQueue
+class BookingConfirmedStudent extends Notification
 {
-    use Queueable;
-
     public function __construct(public Booking $booking) {}
 
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['database', 'mail'];
     }
 
     public function toMail(object $notifiable): MailMessage
@@ -29,11 +25,13 @@ class BookingConfirmedStudent extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            'type'       => 'booking_confirmed',
-            'booking_id' => $this->booking->id,
-            'message'    => 'Your session with ' . $this->booking->tutor->name . ' is confirmed!',
-            'code'       => $this->booking->session_code_student,
+            'type'         => 'booking_confirmed',
+            'booking_id'   => $this->booking->id,
+            'booking_uuid' => $this->booking->uuid,
+            'message'      => 'Your session with ' . $this->booking->tutor->name . ' is confirmed!',
+            'code'         => $this->booking->session_code_student,
             'scheduled_at' => $this->booking->scheduled_at->toDateTimeString(),
+            'url'          => route('bookings.show', $this->booking->uuid),
         ];
     }
 }

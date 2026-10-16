@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -25,8 +24,13 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $user = Auth::user();
+            if (! $user->is_active) {
+                Auth::logout();
+                return back()->withErrors(['email' => 'This account has been deactivated. Please contact support.'])->withInput();
+            }
             $request->session()->regenerate();
-            return $this->redirectAfterLogin(Auth::user());
+            return $this->redirectAfterLogin($user);
         }
 
         return back()->withErrors(['email' => 'These credentials do not match our records.'])->withInput();
@@ -44,21 +48,26 @@ class AuthController extends Controller
             'email'    => 'required|email|unique:users',
             'password' => ['required', 'confirmed', Password::min(8)],
             'role'     => 'required|in:student,tutor,parent',
+            'phone'    => 'nullable|string|max:30',
         ]);
 
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => $request->role,
+            'name'              => $request->name,
+            'email'             => $request->email,
+            'password'          => $request->password,
+            'role'              => $request->role,
+            'phone'             => $request->phone,
+            'email_verified_at' => now(),
+            'is_active'         => true,
         ]);
 
-        // Create wallet for tutors
         if ($user->isTutor()) {
-            Wallet::create(['user_id' => $user->id, 'balance' => 0, 'currency' => 'KES']);
+            Wallet::firstOrCreate(
+                ['user_id' => $user->id],
+                ['balance' => 0, 'currency' => 'KES']
+            );
         }
 
-        $user->sendEmailVerificationNotification();
         Auth::login($user);
 
         if ($user->isTutor()) {

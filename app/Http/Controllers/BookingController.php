@@ -8,6 +8,7 @@ use App\Services\BookingService;
 use App\Services\PaystackService;
 use App\Services\JitsiService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
@@ -36,15 +37,16 @@ class BookingController extends Controller
             'payment',
         ]);
 
-        // Generate Jitsi JWT if configured
         $jwtToken = null;
+        $roomName = $booking->meeting_room ?: $this->jitsi->generateRoomName($booking);
         if ($booking->status === 'confirmed') {
             $isTutor  = $user->id === $booking->tutor_id;
-            $roomName = 'mwalimu-session-' . $booking->uuid;
             $jwtToken = $this->jitsi->generateToken($user, $roomName, $isTutor);
         }
 
-        return view('pages.bookings.show', compact('booking', 'jwtToken'));
+        $joinUrl = $this->jitsi->getMeetingUrl($booking, $user);
+
+        return view('pages.bookings.show', compact('booking', 'jwtToken', 'roomName', 'joinUrl'));
     }
 
     public function store(Request $request)
@@ -63,6 +65,31 @@ class BookingController extends Controller
             $request->all(),
             ['student_id' => auth()->id()]
         ));
+
+        if ((float) $booking->total_amount <= 0) {
+            Payment::create([
+                'booking_id'         => $booking->id,
+                'user_id'            => auth()->id(),
+                'amount'             => 0,
+                'currency'           => 'KES',
+                'paystack_reference' => 'FREE-' . strtoupper(Str::random(12)),
+                'status'             => 'success',
+                'paid_at'            => now(),
+            ]);
+
+            $this->bookingService->confirmBooking($booking);
+            $fresh = $booking->fresh();
+
+            return response()->json([
+                'status'       => 'ok',
+                'free'         => true,
+                'booking_id'   => $fresh->id,
+                'booking_uuid' => $fresh->uuid,
+                'student_code' => $fresh->session_code_student,
+                'tutor_code'   => $fresh->session_code_tutor,
+                'booking_url'  => route('bookings.show', $fresh->uuid),
+            ]);
+        }
 
         // Initialize Paystack transaction
         $reference = $this->paystack->generateReference();

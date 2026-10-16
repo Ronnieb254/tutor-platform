@@ -88,6 +88,21 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(PayoutRequest::class, 'tutor_id');
     }
 
+    public function notificationPreferences()
+    {
+        return $this->hasOne(NotificationPreference::class);
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
     // Helpers
     public function isAdmin(): bool   { return $this->role === 'admin'; }
     public function isTutor(): bool   { return $this->role === 'tutor'; }

@@ -1,251 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-@include('partials.head')
-<title>Sign In – Mwalimu</title>
-<style>
-html,body{height:100%;margin:0;}
-.page{display:flex;min-height:100vh;}
-
-/* ── LEFT PANEL ── */
-.left{display:none;background:var(--ink);padding:52px;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;width:460px;flex-shrink:0;}
-@media(min-width:1024px){.left{display:flex;}}
-.left-glow{position:absolute;border-radius:50%;pointer-events:none;}
-.left-glow-1{top:-100px;right:-80px;width:340px;height:340px;background:rgba(109,40,217,.18);}
-.left-glow-2{bottom:-80px;left:-60px;width:260px;height:260px;background:rgba(109,40,217,.1);}
-.left-logo{display:flex;align-items:center;gap:10px;position:relative;z-index:1;}
-.left-logo-text{font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#fff;}
-.left-logo-text em{font-style:normal;color:#a78bfa;}
-.left-body{position:relative;z-index:1;}
-.left-body h2{font-family:'Fraunces',serif;font-size:36px;color:#fff;line-height:1.15;margin-bottom:14px;}
-.left-body h2 em{font-style:normal;color:var(--gold);}
-.left-body p{font-size:15px;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:28px;}
-.trust-list{display:flex;flex-direction:column;gap:14px;}
-.trust-item{display:flex;align-items:flex-start;gap:12px;}
-.trust-dot{width:28px;height:28px;background:rgba(109,40,217,.4);border-radius:999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.trust-item p{font-size:14px;color:rgba(255,255,255,.82);line-height:1.5;}
-.left-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;position:relative;z-index:1;}
-.lstat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;text-align:center;}
-.lstat-n{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:#fff;}
-.lstat-l{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;}
-
-/* ── RIGHT PANEL ── */
-.right{flex:1;background:var(--cream);display:flex;flex-direction:column;}
-.right-head{padding:20px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--hair);}
-.right-logo{display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:var(--ink);}
-.right-logo em{font-style:normal;color:var(--violet);}
-.right-main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px;}
-.form-box{width:100%;max-width:420px;}
-.form-box h1{font-family:'Fraunces',serif;font-size:32px;color:var(--ink);margin-bottom:5px;}
-.form-box .sub{font-size:14px;color:var(--muted);margin-bottom:28px;}
-
-/* Social buttons */
-.soc-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
-.soc-btn{display:flex;align-items:center;justify-content:center;gap:7px;height:44px;border-radius:12px;border:1.5px solid var(--hair);background:#fff;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .18s;text-decoration:none;}
-.soc-btn:hover{border-color:rgba(109,40,217,.4);transform:translateY(-1px);box-shadow:0 4px 12px rgba(21,40,31,.08);}
-
-/* Divider */
-.or-line{display:flex;align-items:center;gap:10px;margin:4px 0 20px;}
-.or-line::before,.or-line::after{content:'';flex:1;height:1px;background:var(--hair);}
-.or-line span{font-size:12px;color:var(--muted);}
-
-/* Form fields */
-.field{margin-bottom:14px;}
-.field label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:5px;}
-.field label i{color:var(--violet);font-size:11px;}
-.f-wrap{position:relative;}
-.f-wrap i.lead{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none;}
-.field input{width:100%;height:48px;padding:0 14px 0 38px;border-radius:13px;border:1.5px solid rgba(21,40,31,.18);background:#fff;font-size:14px;font-family:inherit;color:var(--ink);outline:none;transition:all .18s;}
-.field input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(109,40,217,.1);}
-.field input.err{border-color:var(--coral);}
-.field-err{font-size:12px;color:var(--coral);margin-top:4px;display:flex;align-items:center;gap:4px;}
-
-/* Remember row */
-.remember-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.check-wrap{display:flex;align-items:center;gap:8px;}
-.check-wrap input{width:16px;height:16px;accent-color:var(--violet);cursor:pointer;}
-.check-wrap label{font-size:13px;color:var(--muted);}
-.forgot{font-size:13px;color:var(--violet);font-weight:600;transition:opacity .15s;}
-.forgot:hover{opacity:.75;}
-
-/* Submit */
-.btn-submit{width:100%;height:52px;border-radius:999px;background:var(--violet);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.btn-submit:hover{background:#4C1D95;transform:translateY(-1px);box-shadow:0 8px 22px rgba(109,40,217,.35);}
-
-/* Bottom */
-.form-foot{text-align:center;font-size:13px;color:var(--muted);margin-top:18px;}
-.form-foot a{color:var(--violet);font-weight:700;}
-.right-foot{padding:16px 32px;text-align:center;font-size:12px;color:var(--muted);border-top:1px solid var(--hair);}
-
-/* Alert */
-.alert{padding:12px 16px;border-radius:13px;font-size:13.5px;font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:9px;}
-.alert-err{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Login - Mwalimu</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-<div class="page">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
+    <div class="flex min-h-screen">
+        <!-- Left Panel - Branding -->
+        <div class="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 text-white relative overflow-hidden">
+            <!-- Decorative gradient background -->
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-indigo-600/20 opacity-50"></div>
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
 
-    {{-- ── LEFT DECORATIVE PANEL ── --}}
-    <div class="left">
-        <div class="left-glow left-glow-1"></div>
-        <div class="left-glow left-glow-2"></div>
-
-        <a href="{{ route('home') }}" class="left-logo">
-            <svg width="34" height="34" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-            <span class="left-logo-text"><em>Mw</em>alimu</span>
-        </a>
-
-        <div class="left-body">
-            <h2>Welcome <em>back</em> to your classroom.</h2>
-            <p>Sign in to access your sessions, session codes, messages and dashboard. Kenya's most trusted tutoring platform.</p>
-            <div class="trust-list">
-                @foreach([
-                    ['fa-certificate','TSC-registered & background-checked tutors'],
-                    ['fa-lock','Secure, private classrooms — no contact sharing'],
-                    ['fa-rotate-left','100% money-back on your first lesson'],
-                ] as [$icon, $text])
-                <div class="trust-item">
-                    <div class="trust-dot"><i class="fa-solid {{ $icon }}" style="font-size:11px;color:rgba(255,255,255,.85);"></i></div>
-                    <p>{{ $text }}</p>
+            <!-- Content -->
+            <div class="relative z-10">
+                <div class="mb-4 flex items-center space-x-2">
+                    <span class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">
+                        Mwalimu
+                    </span>
                 </div>
-                @endforeach
+                <p class="text-lg text-gray-300 mt-2">Connecting Students with Expert Tutors</p>
+            </div>
+
+            <div class="relative z-10 space-y-8">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-check-circle text-purple-400 text-xl mt-1"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">Learn from Experts</h3>
+                            <p class="text-gray-400 text-sm mt-1">TSC-registered tutors with proven expertise</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-check-circle text-purple-400 text-xl mt-1"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">Secure & Safe</h3>
+                            <p class="text-gray-400 text-sm mt-1">Background-checked tutors in a secure platform</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-check-circle text-purple-400 text-xl mt-1"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">Instant Booking</h3>
+                            <p class="text-gray-400 text-sm mt-1">Book sessions and start learning in minutes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative z-10">
+                <p class="text-gray-400 text-sm">
+                    © 2026 Mwalimu. Trusted by thousands of learners.
+                </p>
             </div>
         </div>
 
-        <div class="left-stats">
-            <div class="lstat">
-                <div class="lstat-n">500+</div>
-                <div class="lstat-l">Tutors</div>
-            </div>
-            <div class="lstat">
-                <div class="lstat-n">4.9★</div>
-                <div class="lstat-l">Rating</div>
-            </div>
-            <div class="lstat">
-                <div class="lstat-n">10k+</div>
-                <div class="lstat-l">Sessions</div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ── RIGHT FORM PANEL ── --}}
-    <div class="right">
-        <div class="right-head">
-            <a href="{{ route('home') }}" class="right-logo">
-                <svg width="28" height="28" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#15281F"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-                <em>Mw</em>alimu
-            </a>
-            <span style="font-size:13px;color:var(--muted);">
-                No account?
-                <a href="{{ route('register') }}" style="color:var(--violet);font-weight:700;">Create one free</a>
-            </span>
-        </div>
-
-        <div class="right-main">
-            <div class="form-box">
-                <h1>Sign in</h1>
-                <p class="sub">Access your Mwalimu dashboard and upcoming sessions.</p>
-
-                {{-- Error alert --}}
-                @if($errors->any())
-                <div class="alert alert-err">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    {{ $errors->first() }}
-                </div>
-                @endif
-
-                {{-- Social login --}}
-                <div class="soc-row">
-                    <a href="{{ route('auth.social.redirect','google') }}" class="soc-btn">
-                        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                        Google
-                    </a>
-                    <a href="{{ route('auth.social.redirect','facebook') }}" class="soc-btn">
-                        <i class="fa-brands fa-facebook" style="color:#1877F2;font-size:16px;"></i>
-                        Facebook
-                    </a>
-                    <a href="{{ route('auth.social.redirect','github') }}" class="soc-btn">
-                        <i class="fa-brands fa-github" style="font-size:16px;"></i>
-                        GitHub
-                    </a>
+        <!-- Right Panel - Login Form -->
+        <div class="flex-1 flex items-center justify-center px-6 sm:px-12 lg:px-8">
+            <div class="w-full max-w-sm">
+                <!-- Header -->
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-2">Welcome Back</h2>
+                    <p class="text-gray-400">Sign in to your account to continue</p>
                 </div>
 
-                <div class="or-line"><span>or sign in with email</span></div>
-
-                {{-- Form --}}
-                <form method="POST" action="{{ route('login') }}">
+                <!-- Form -->
+                <form id="loginForm" class="space-y-6" action="{{ route('login') }}" method="POST">
                     @csrf
 
-                    <div class="field">
-                        <label><i class="fa-solid fa-envelope"></i> Email address</label>
-                        <div class="f-wrap">
-                            <i class="fa-solid fa-envelope lead"></i>
-                            <input type="email" name="email" value="{{ old('email') }}"
-                                   placeholder="you@example.com"
-                                   class="{{ $errors->has('email') ? 'err' : '' }}"
-                                   autocomplete="email" required>
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
+                            Email Address
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-gray-500"></i>
+                            </div>
+                            <input id="email" name="email" type="email" autocomplete="email" required
+                                class="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                placeholder="you@example.com" value="{{ old('email') }}">
                         </div>
-                        @error('email')<p class="field-err"><i class="fa-solid fa-triangle-exclamation fa-xs"></i>{{ $message }}</p>@enderror
+                        @error('email')
+                            <span class="text-red-400 text-sm mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    <div class="field">
-                        <label><i class="fa-solid fa-lock"></i> Password</label>
-                        <div class="f-wrap" x-data="{ show: false }">
-                            <i class="fa-solid fa-lock lead"></i>
-                            <input :type="show ? 'text' : 'password'" name="password"
-                                   placeholder="Your password"
-                                   class="{{ $errors->has('password') ? 'err' : '' }}"
-                                   style="padding-right:42px;"
-                                   autocomplete="current-password" required>
-                            <button type="button" @click="show=!show"
-                                    style="position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;">
-                                <i :class="show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
-                            </button>
+                    <!-- Password Field -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-500"></i>
+                            </div>
+                            <input id="password" name="password" type="password" autocomplete="current-password" required
+                                class="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                placeholder="••••••••">
                         </div>
-                        @error('password')<p class="field-err"><i class="fa-solid fa-triangle-exclamation fa-xs"></i>{{ $message }}</p>@enderror
+                        @error('password')
+                            <span class="text-red-400 text-sm mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    <div class="remember-row">
-                        <div class="check-wrap">
-                            <input type="checkbox" name="remember" id="remember" value="1">
-                            <label for="remember">Keep me signed in</label>
-                        </div>
-                        <a href="#" class="forgot">Forgot password?</a>
+                    <!-- Remember & Forgot -->
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input id="remember" name="remember" type="checkbox"
+                                class="w-4 h-4 bg-gray-800 border border-gray-700 rounded accent-purple-500 focus:ring-2 focus:ring-purple-500">
+                            <span class="text-sm text-gray-400">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm text-purple-400 hover:text-purple-300 transition">
+                            Forgot password?
+                        </a>
                     </div>
 
-                    <button type="submit" class="btn-submit">
-                        <i class="fa-solid fa-right-to-bracket"></i>
-                        Sign In to Mwalimu
+                    <!-- Submit Button -->
+                    <button type="submit"
+                        class="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition duration-200 transform hover:scale-105">
+                        Sign In
                     </button>
                 </form>
 
-                <p class="form-foot">
-                    New to Mwalimu?
-                    <a href="{{ route('register') }}">Create a free account</a>
-                </p>
-
-                <div style="margin-top:24px;background:rgba(109,40,217,.05);border:1px solid rgba(109,40,217,.12);border-radius:14px;padding:14px 16px;">
-                    <p style="font-size:12px;font-weight:700;color:var(--violet);margin-bottom:6px;"><i class="fa-solid fa-graduation-cap fa-xs" style="margin-right:5px;"></i>Demo accounts</p>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-                        @foreach([['Admin','admin@mwalimu.co.ke'],['Tutor','amara@mwalimu.co.ke'],['Student','alice@example.com'],['Parent','sarah@example.com']] as [$role,$email])
-                        <div style="background:#fff;border:1px solid var(--hair);border-radius:9px;padding:7px 10px;cursor:pointer;"
-                             onclick="document.querySelector('[name=email]').value='{{ $email }}';document.querySelector('[name=password]').value='password';"
-                             title="Click to fill credentials">
-                            <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">{{ $role }}</div>
-                            <div style="font-size:11px;color:var(--ink);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $email }}</div>
-                        </div>
-                        @endforeach
+                <!-- Divider -->
+                <div class="relative my-8">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-700"></div>
                     </div>
-                    <p style="font-size:11px;color:var(--muted);margin-top:8px;"><i class="fa-solid fa-info-circle fa-xs"></i> Password for all demo accounts: <code style="background:rgba(21,40,31,.06);padding:1px 6px;border-radius:4px;font-size:11px;">password</code></p>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-3 bg-gray-900 text-gray-400">New to Mwalimu?</span>
+                    </div>
+                </div>
+
+                <!-- Sign Up Link -->
+                <div class="text-center">
+                    <p class="text-gray-400 text-sm">
+                        Don't have an account?
+                        <a href="{{ route('register') }}" class="text-purple-400 hover:text-purple-300 font-semibold transition">
+                            Create one now
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
-
-        <div class="right-foot">
-            &copy; {{ date('Y') }} Mwalimu by OvalDesk Ventures &middot;
-            <a href="#">Privacy</a> &middot; <a href="#">Terms</a>
-        </div>
     </div>
-</div>
+
+    <script src="{{ asset('js/sweetalert-config.js') }}"></script>
+    @if ($errors->any())
+    <script>
+        window.addEventListener('load', function() {
+            const errors = {!! json_encode($errors->all()) !!};
+            const message = errors.length > 0 ? errors[0] : 'Login failed';
+            showError('Login Failed', message);
+        });
+    </script>
+    @endif
 </body>
 </html>

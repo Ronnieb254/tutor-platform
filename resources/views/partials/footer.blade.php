@@ -18,7 +18,7 @@
                     <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;max-width:280px;margin-bottom:20px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms. 100% money-back on your first lesson.</p>
 
                     {{-- Trust badges --}}
-                    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+                    <!-- <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
                         @foreach([
                             ['fa-certificate','TSC-Registered Tutors','#10B981'],
                             ['fa-shield-halved','Background Checked','#10B981'],
@@ -29,7 +29,7 @@
                             {{ $label }}
                         </div>
                         @endforeach
-                    </div>
+                    </div> -->
 
                     {{-- Contact details --}}
                     <div style="display:flex;flex-direction:column;gap:6px;">
@@ -105,7 +105,7 @@
             </div>
 
             {{-- Session pricing quick reference --}}
-            <div style="border-top:1px solid rgba(255,255,255,.07);padding:24px 0;margin-bottom:0;">
+            <!-- <div style="border-top:1px solid rgba(255,255,255,.07);padding:24px 0;margin-bottom:0;">
                 <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:12px;">Session Pricing</p>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;">
                     @foreach([['⚡','Quick Help','15 min','KSh 300'],['📘','Concept Check','30 min','KSh 500'],['🎯','Guided Practice','45 min','KSh 680'],['🏆','Deep Dive','60 min','KSh 800']] as [$ic,$name,$dur,$price])
@@ -118,7 +118,7 @@
                     </a>
                     @endforeach
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 

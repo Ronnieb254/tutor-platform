@@ -37,6 +37,10 @@
 $prices    = [15=>300,30=>500,45=>680,60=>800];
 $sessNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
 $sessDesc  = [15=>'Rapid revision or a quick question',30=>'Targeted practice or concept clarity',45=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
+// Free first 15-min session check
+$isFreeFirstSession = auth()->check()
+    ? \App\Models\TutorProfile::isFreeFirstSession(auth()->id(), $tutor->user_id)
+    : true; // Show free badge to guests too to encourage signup
 $colors    = ['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6'];
 $avColor   = $colors[$tutor->id % count($colors)];
 $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->latest()->paginate(8);
@@ -99,12 +103,12 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         <i class="fa-solid fa-clock fa-xs" style="opacity:.6;"></i>
                         <strong style="color:#fff;"><?php echo e($tutor->experience_years); ?></strong> years exp.
                     </span>
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tutor->city): ?>
+                    <!-- <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tutor->city): ?>
                     <span style="display:flex;align-items:center;gap:5px;">
                         <i class="fa-solid fa-location-dot fa-xs" style="opacity:.6;"></i>
                         <?php echo e($tutor->city); ?>, Kenya
                     </span>
-                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?> -->
                     <span style="display:flex;align-items:center;gap:5px;">
                         <i class="fa-solid fa-reply fa-xs" style="opacity:.6;"></i>
                         Responds within 2hr
@@ -321,7 +325,13 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 confirmed: false,
                 studentCode: '',
                 bookingRef: '',
-                get price() { return {15:300,30:500,45:680,60:800}[this.dur] || 800; },
+                get price() {
+                    const base = {15:300,30:500,45:680,60:800}[this.dur] || 800;
+                    // Free first 15-min session
+                    if (this.dur === 15 && <?php echo e($isFreeFirstSession ? 'true' : 'false'); ?>) return 0;
+                    return base;
+                },
+                get isFree() { return this.price === 0; },
                 get name()  { return {15:'Quick Help',30:'Concept Check',45:'Guided Practice',60:'Deep Dive'}[this.dur] || 'Deep Dive'; }
             }">
 
@@ -351,9 +361,13 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         </h3>
                         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [15=>['⚡','Quick Help',300,'Rapid revision or a quick question'],30=>['📘','Concept Check',500,'Targeted practice or concept clarity'],45=>['🎯','Guided Practice',680,'Full structured lesson with Q&A'],60=>['🏆','Deep Dive',800,'Maximum learning, best value']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mins => [$icon,$tname,$tprice,$tdesc]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $actualPrice = ($mins===15 && $isFreeFirstSession) ? 0 : $tprice; ?>
                             <button @click="dur=<?php echo e($mins); ?>"
                                     :style="dur===<?php echo e($mins); ?> ? 'border-color:#6D28D9;background:rgba(109,40,217,.05);' : ''"
-                                    style="border:2px solid rgba(21,40,31,.12);border-radius:16px;padding:16px;text-align:left;cursor:pointer;font-family:inherit;background:#fff;transition:all .18s;">
+                                    style="border:2px solid rgba(21,40,31,.12);border-radius:16px;padding:16px;text-align:left;cursor:pointer;font-family:inherit;background:#fff;transition:all .18s;position:relative;">
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($mins===15 && $isFreeFirstSession): ?>
+                                <span style="position:absolute;top:-10px;right:10px;background:#10B981;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:999px;letter-spacing:.05em;">FREE FIRST SESSION</span>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
                                     <div style="display:flex;align-items:center;gap:8px;">
                                         <span style="font-size:20px;"><?php echo e($icon); ?></span>
@@ -362,7 +376,14 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                                             <div style="font-size:11px;color:rgba(21,40,31,.5);"><?php echo e($mins); ?> min</div>
                                         </div>
                                     </div>
-                                    <div :style="dur===<?php echo e($mins); ?> ? 'color:#6D28D9;' : 'color:#15281F;'" style="font-family:'Fraunces',serif;font-size:18px;font-weight:800;">KSh <?php echo e($tprice); ?></div>
+                                    <div :style="dur===<?php echo e($mins); ?> ? 'color:#6D28D9;' : 'color:#15281F;'" style="font-family:'Fraunces',serif;font-weight:800;text-align:right;">
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($actualPrice === 0): ?>
+                                        <span style="font-size:20px;color:#10B981;">FREE</span>
+                                        <div style="font-size:11px;text-decoration:line-through;color:rgba(21,40,31,.35);">KSh <?php echo e($tprice); ?></div>
+                                        <?php else: ?>
+                                        <span style="font-size:18px;">KSh <?php echo e($actualPrice); ?></span>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                    </div>
                                 </div>
                                 <div style="font-size:12px;color:rgba(21,40,31,.5);"><?php echo e($tdesc); ?></div>
                             </button>
@@ -449,7 +470,15 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;">
                                 <span style="font-size:15px;font-weight:700;color:#15281F;">Total</span>
-                                <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#6D28D9;">KSh <span x-text="price"></span></span>
+                                <template x-if="isFree">
+                                    <div style="text-align:right;">
+                                        <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#10B981;">FREE</span>
+                                        <div style="font-size:12px;text-decoration:line-through;color:rgba(21,40,31,.35);">KSh 300</div>
+                                    </div>
+                                </template>
+                                <template x-if="!isFree">
+                                    <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#6D28D9;">KSh <span x-text="price"></span></span>
+                                </template>
                             </div>
                         </div>
 
@@ -476,14 +505,14 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                                 </span>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
-                            <button @click="processPayment()"
+                            <button @click="processPayment($data)"
                                     :disabled="processing"
-                                    style="width:100%;height:52px;border-radius:999px;background:#6D28D9;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
-                                    onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='#6D28D9'">
+                                    :style="isFree ? 'background:#10B981;' : 'background:#6D28D9;'"
+                                    style="width:100%;height:52px;border-radius:999px;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;">
                                 <template x-if="!processing">
                                     <span style="display:flex;align-items:center;gap:8px;">
-                                        <i class="fa-solid fa-lock fa-xs"></i>
-                                        Pay KSh <span x-text="price"></span>
+                                        <i :class="isFree ? 'fa-solid fa-gift fa-xs' : 'fa-solid fa-lock fa-xs'"></i>
+                                        <span x-text="isFree ? 'Book Free Session' : 'Pay KSh ' + price"></span>
                                     </span>
                                 </template>
                                 <template x-if="processing">
@@ -522,7 +551,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                             <i class="fa-solid fa-circle-check" style="font-size:30px;color:#10B981;"></i>
                         </div>
                         <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:8px;">Booking Confirmed!</h2>
-                        <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Your session has been booked and payment received. Check your email for full details.</p>
+                        <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Payment received. Your session codes have been emailed to you. Redirecting to your session in 3 seconds…</p>
 
                         
                         <div style="background:rgba(109,40,217,.06);border:2px solid rgba(109,40,217,.25);border-radius:20px;padding:24px;margin-bottom:24px;">
@@ -545,8 +574,12 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         </div>
 
                         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-                            <a href="<?php echo e(route('student.dashboard')); ?>" style="display:inline-flex;align-items:center;gap:7px;padding:13px 28px;border-radius:999px;background:#6D28D9;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
-                                <i class="fa-solid fa-gauge-high fa-xs"></i> Go to Dashboard
+                            <a :href="bookingRef ? '/bookings/' + bookingRef : '<?php echo e(route('student.dashboard')); ?>'"
+                               style="display:inline-flex;align-items:center;gap:7px;padding:13px 28px;border-radius:999px;background:#10B981;color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
+                                <i class="fa-solid fa-video fa-xs"></i> Go to My Session
+                            </a>
+                            <a href="<?php echo e(route('student.dashboard')); ?>" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
+                                <i class="fa-solid fa-gauge-high fa-xs"></i> Dashboard
                             </a>
                             <a href="<?php echo e(route('tutors.index')); ?>" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
                                 <i class="fa-solid fa-magnifying-glass fa-xs"></i> Browse More Tutors
@@ -567,18 +600,29 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 </div>
 
                 
-                <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
+                <!-- <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [15=>['⚡','Quick Help',300],30=>['📘','Concept Check',500],45=>['🎯','Guided Practice',680],60=>['🏆','Deep Dive',800]]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mins=>[$ic,$n,$p]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:#F9FAF9;border:1px solid rgba(21,40,31,.07);">
+                    <?php $sidePrice = ($mins===15 && $isFreeFirstSession) ? 0 : $p; ?>
+                    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:<?php echo e($mins===15&&$isFreeFirstSession?'rgba(16,185,129,.06)':'#F9FAF9'); ?>;border:1px solid <?php echo e($mins===15&&$isFreeFirstSession?'rgba(16,185,129,.2)':'rgba(21,40,31,.07)'); ?>;position:relative;">
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($mins===15 && $isFreeFirstSession): ?>
+                        <span style="position:absolute;top:-8px;right:8px;background:#10B981;color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:999px;letter-spacing:.04em;">FREE</span>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         <span style="font-size:16px;"><?php echo e($ic); ?></span>
                         <div style="flex:1;">
                             <div style="font-size:13px;font-weight:600;color:#15281F;"><?php echo e($n); ?></div>
                             <div style="font-size:11px;color:rgba(21,40,31,.45);"><?php echo e($mins); ?> min</div>
                         </div>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sidePrice === 0): ?>
+                        <div style="text-align:right;">
+                            <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:#10B981;">FREE</div>
+                            <div style="font-size:10px;text-decoration:line-through;color:rgba(21,40,31,.3);">KSh <?php echo e($p); ?></div>
+                        </div>
+                        <?php else: ?>
                         <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:#6D28D9;">KSh <?php echo e($p); ?></div>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                </div>
+                </div> -->
 
                 <button onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})"
                         style="width:100%;height:52px;border-radius:999px;background:#6D28D9;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;"
@@ -630,20 +674,14 @@ function showTab(name, btn) {
     }
 }
 
-function processPayment() {
-    // Get Alpine data
-    const el = document.querySelector('[x-data]');
-    if (!el || !el._x_dataStack) return;
-
-    const data = el._x_dataStack[0];
-    if (!data.date || !data.time) {
+function processPayment(data) {
+    if (!data || !data.date || !data.time) {
         alert('Please select a date and time.');
         return;
     }
 
     data.processing = true;
 
-    // Call Laravel to create booking and get Paystack access code
     fetch('/bookings', {
         method: 'POST',
         headers: {
@@ -661,8 +699,17 @@ function processPayment() {
     })
     .then(r => r.json())
     .then(res => {
+        if (res.status === 'ok' && res.free) {
+            data.processing = false;
+            data.studentCode = res.student_code || '';
+            data.bookingRef  = res.booking_uuid || '';
+            data.step = 3;
+            if (res.booking_url) {
+                setTimeout(() => { window.location.href = res.booking_url; }, 3000);
+            }
+            return;
+        }
         if (res.status === 'ok') {
-            // Open Paystack popup
             const handler = PaystackPop.setup({
                 key: '<?php echo e(config('paystack.public_key')); ?>',
                 email: '<?php echo e(auth()->user()?->email); ?>',
@@ -684,14 +731,20 @@ function processPayment() {
                     .then(confirmRes => {
                         data.processing = false;
                         if (confirmRes.status === 'ok') {
-                            data.studentCode = confirmRes.student_code || 'STU-' + Math.random().toString(36).substr(2,6).toUpperCase();
+                            data.studentCode = confirmRes.student_code || '';
                             data.bookingRef  = confirmRes.booking_uuid || '';
                             data.step = 3;
+                            // Redirect to session page after 3 seconds
+                            if (confirmRes.booking_url) {
+                                setTimeout(() => {
+                                    window.location.href = confirmRes.booking_url;
+                                }, 3000);
+                            }
                         }
                     })
                     .catch(() => {
                         data.processing = false;
-                        data.step = 3; // Show success anyway
+                        data.step = 3;
                     });
                 },
                 onCancel: function() {

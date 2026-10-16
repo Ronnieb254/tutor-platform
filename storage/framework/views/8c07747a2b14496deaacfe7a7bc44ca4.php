@@ -54,9 +54,9 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
             <div>
                 <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-certificate"></i> TSC-Registered Tutors Only</div>
                 <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">Find your perfect tutor</h1>
-                <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:460px;"><?php echo e(TutorProfile::approved()->count()); ?>+ verified tutors across the Kenyan curriculum. Sessions from KSh 300.</p>
+                <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:460px;">TSC verified tutors across the Kenyan curriculum. Sessions from KSh 300.</p>
             </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;align-self:flex-end;max-width:480px;">
+            <!-- <div style="display:flex;flex-wrap:wrap;gap:8px;align-self:flex-end;max-width:480px;">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $categories->take(6); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <a href="<?php echo e(route('tutors.index')); ?>?category=<?php echo e($cat->id); ?>"
                    style="display:flex;align-items:center;gap:5px;background:<?php echo e($catId==$cat->id ? 'rgba(255,255,255,.25)' : 'rgba(255,255,255,.08)'); ?>;border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;color:rgba(255,255,255,.85);transition:all .15s;"
@@ -65,7 +65,7 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
 
                 </a>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -103,23 +103,7 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
                     </select>
                 </div>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                <div style="width:110px;">
-                    <span class="f-label">Min KSh/hr</span>
-                    <input type="number" name="min_price" value="<?php echo e($minP); ?>" class="f-input" placeholder="Any" min="0">
-                </div>
-                <div style="width:110px;">
-                    <span class="f-label">Max KSh/hr</span>
-                    <input type="number" name="max_price" value="<?php echo e($maxP); ?>" class="f-input" placeholder="Any" min="0">
-                </div>
-                <div style="min-width:130px;">
-                    <span class="f-label"><i class="fa-solid fa-star fa-xs" style="color:var(--gold);"></i> Rating</span>
-                    <select name="min_rating" class="f-input">
-                        <option value="">Any</option>
-                        <option value="4.5" <?php echo e($minR=='4.5'?'selected':''); ?>>★ 4.5+</option>
-                        <option value="4.0" <?php echo e($minR=='4.0'?'selected':''); ?>>★ 4.0+</option>
-                        <option value="3.5" <?php echo e($minR=='3.5'?'selected':''); ?>>★ 3.5+</option>
-                    </select>
-                </div>
+                
                 <div style="min-width:140px;">
                     <span class="f-label"><i class="fa-solid fa-arrow-up-wide-short fa-xs" style="color:var(--violet);"></i> Sort</span>
                     <select name="sort" class="f-input">
@@ -181,16 +165,20 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
                 <div style="flex:1;min-width:0;">
                     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
                         <div>
-                            <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);"><?php echo e($tutor->user->name); ?></div>
+                            <!-- <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);"><?php echo e($tutor->user->name); ?></div> -->
+                             <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">
+    <?php echo e(implode(' ', array_slice(explode(' ', trim($tutor->user->name)), 0, 2))); ?>
+
+</div>
                             <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
                                 <span style="font-size:11px;font-weight:600;color:var(--mint);"><i class="fa-solid fa-certificate fa-xs"></i> TSC Verified</span>
                                 <span style="color:var(--muted);font-size:11px;">· <?php echo e($tutor->experience_years); ?>yr exp</span>
                             </div>
                         </div>
-                        <div style="text-align:right;flex-shrink:0;">
+                        <!-- <div style="text-align:right;flex-shrink:0;">
                             <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);">KSh <?php echo e(number_format($tutor->hourly_rate)); ?></div>
                             <div style="font-size:11px;color:var(--muted);">/hr</div>
-                        </div>
+                        </div> -->
                     </div>
                     <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $tutor->subjects->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -202,22 +190,31 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
                         <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star fa-xs"></i> <?php echo e(number_format($tutor->rating_avg,1)); ?></span>
                         <span>(<?php echo e($tutor->total_reviews); ?>)</span>
                         <span>·</span><span><?php echo e($tutor->total_sessions); ?> sessions</span>
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tutor->city): ?><span>·</span><span><i class="fa-solid fa-location-dot fa-xs"></i> <?php echo e($tutor->city); ?></span><?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        <!-- <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tutor->city): ?><span>·</span><span><i class="fa-solid fa-location-dot fa-xs"></i> <?php echo e($tutor->city); ?></span><?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?> -->
                     </div>
                 </div>
             </div>
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tutor->bio): ?>
             <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><?php echo e($tutor->bio); ?></p>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            <div class="dur-pills">
+            <!-- <div class="dur-pills">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [15=>['Quick Help',300],30=>['Concept Check',500],45=>['Guided Practice',680],60=>['Deep Dive',800]]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mins=>[$name,$price]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <div class="dp" title="<?php echo e($name); ?>">
+                <?php
+                $isFreeForUser = $mins === 15 && auth()->check()
+                    ? \App\Models\TutorProfile::isFreeFirstSession(auth()->id(), $tutor->user_id)
+                    : ($mins === 15); // show FREE to guests too
+                ?>
+                <div class="dp" title="<?php echo e($name); ?>" style="<?php echo e($isFreeForUser ? 'border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.04);' : ''); ?>">
                     <div class="dp-min"><?php echo e($mins); ?>m</div>
-                    <div style="font-size:9px;color:var(--violet);font-weight:600;margin:1px 0;line-height:1.2;"><?php echo e($name); ?></div>
+                    <div style="font-size:9px;font-weight:700;margin:1px 0;line-height:1.2;color:<?php echo e($isFreeForUser ? '#10B981' : 'var(--violet)'); ?>"><?php echo e($name); ?></div>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isFreeForUser): ?>
+                    <div style="font-size:9px;font-weight:800;color:#10B981;letter-spacing:.02em;">FREE</div>
+                    <?php else: ?>
                     <div class="dp-price">KSh <?php echo e($price); ?></div>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </div>
+            </div> -->
             <div style="display:flex;gap:8px;">
                 <a href="<?php echo e(route('tutors.show', $tutor->id)); ?>" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View & Book</a>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
