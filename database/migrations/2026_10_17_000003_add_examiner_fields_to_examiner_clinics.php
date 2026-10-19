@@ -7,30 +7,41 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void
-    {
-        Schema::table('examiner_clinics', function (Blueprint $table) {
-            // created_by = tutor who created this clinic (examiner)
-            $table->foreignId('created_by')->nullable()->after('tutor_id')->constrained('users')->nullOnDelete();
-            
-            // session_code for Jitsi room identification
-            $table->string('session_code', 100)->nullable()->after('meeting_room');
-            
-            // name field separate from title
-            $table->string('name')->nullable()->after('subject_id');
-            
-            // recording_url to store Jitsi recording
-            $table->string('recording_url')->nullable()->after('session_code');
-        });
+{
+    $cols = [
+        'bbb_meeting_id'   => null,
+        'bbb_attendee_pw'  => 'bbb_meeting_id',
+        'bbb_moderator_pw' => 'bbb_attendee_pw',
+    ];
 
-        // Backfill created_by from tutor_id for existing records
-        DB::table('examiner_clinics')->whereNull('created_by')->update(['created_by' => DB::raw('tutor_id')]);
-    }
+    foreach (['examiner_clinics', 'bookings'] as $tableName) {
+        Schema::table($tableName, function (Blueprint $table) use ($tableName, $cols) {
+            foreach ($cols as $col => $prev) {
+                if (Schema::hasColumn($tableName, $col)) {
+                    continue;
+                }
+                $column = $table->string($col)->nullable();
 
-    public function down(): void
-    {
-        Schema::table('examiner_clinics', function (Blueprint $table) {
-            $table->dropForeign(['created_by']);
-            $table->dropColumn(['created_by', 'session_code', 'name', 'recording_url']);
+                // Only position the column if the anchor exists
+                $anchor = $prev ?? 'session_code';
+                if (Schema::hasColumn($tableName, $anchor)) {
+                    $column->after($anchor);
+                }
+            }
         });
     }
+}
+
+public function down(): void
+{
+    foreach (['examiner_clinics', 'bookings'] as $tableName) {
+        $existing = array_filter(
+            ['bbb_meeting_id', 'bbb_attendee_pw', 'bbb_moderator_pw'],
+            fn ($c) => Schema::hasColumn($tableName, $c)
+        );
+        if ($existing) {
+            Schema::table($tableName, fn (Blueprint $t) => $t->dropColumn(array_values($existing)));
+        }
+    }
+}
 };
