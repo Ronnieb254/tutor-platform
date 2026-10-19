@@ -58,11 +58,6 @@ class SessionController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        // Check authorization manually
-        if (!$this->canViewBooking($booking)) {
-            abort(403, 'Unauthorized');
-        }
-
         // Check if booking is confirmed
         if ($booking->status !== 'confirmed') {
             if (request()->expectsJson()) {
@@ -89,6 +84,40 @@ class SessionController extends Controller
             return back()->with('error', 'The session is not yet available to join.');
         }
 
+        // Initialize BBB if credentials don't exist
+        if (!$booking->bbb_meeting_id) {
+            $bbb = new \App\Services\BigBlueButtonService();
+            $booking->bbb_meeting_id = 'session-' . time() . '-' . Str::random(8);
+            $booking->bbb_attendee_pw = $bbb->generatePassword(12);
+            $booking->bbb_moderator_pw = $bbb->generatePassword(12);
+            $booking->save();
+        }
+
+        // Initialize BBB service
+        $bbb = new \App\Services\BigBlueButtonService();
+        $user = Auth::user();
+        $isModerator = ($user->id === $booking->tutor_id);
+
+        // Create/ensure meeting exists
+        $meetingOptions = [
+            'welcome' => "Welcome to your {$booking->subject->name} session!",
+            'record' => 'true',
+            'autoStartRecording' => 'false',
+            'allowStartStopRecording' => 'true',
+            'maxParticipants' => 2, // 1-on-1 session
+            'logoutURL' => route('sessions.show', $booking),
+            'lockSettingsDisableCam' => 'false',
+            'lockSettingsDisableMic' => 'false',
+        ];
+
+        $bbb->createMeeting(
+            $booking->bbb_meeting_id,
+            "{$booking->subject->name} - {$booking->tutor->name} & {$booking->student->name}",
+            $booking->bbb_attendee_pw,
+            $booking->bbb_moderator_pw,
+            $meetingOptions
+        );
+
         // Mark user as joined
         if (Auth::id() === $booking->student_id) {
             $booking->update(['student_joined' => true]);
@@ -99,16 +128,28 @@ class SessionController extends Controller
         // Notify other party
         $this->notificationService->notifyUserJoined($booking, Auth::user());
 
+        // Generate join URL
+        $password = $isModerator ? $booking->bbb_moderator_pw : $booking->bbb_attendee_pw;
+        $displayName = $user->name . ($isModerator ? ' (Tutor)' : '');
+
+        $joinUrl = $bbb->getJoinUrl(
+            $booking->bbb_meeting_id,
+            $displayName,
+            $password,
+            $isModerator,
+            (string) $user->id
+        );
+
         // Redirect to meeting URL
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Joining session...',
-                'redirect' => $booking->meeting_url,
+                'redirect' => $joinUrl,
             ]);
         }
 
-        return redirect($booking->meeting_url);
+        return redirect($joinUrl);
     }
 
     public function history()

@@ -92,7 +92,7 @@ $colors = ['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899'];
 
             <div class="card card-p" style="background:var(--violet);border-color:var(--violet);">
                 <h3 style="font-size:16px;font-family:'Fraunces',serif;color:#fff;margin-bottom:8px;"><i class="fa-solid fa-star" style="color:var(--gold);margin-right:6px;"></i>Examiner's Clinic</h3>
-                <p style="font-size:13px;color:rgba(255,255,255,.75);margin-bottom:14px;line-height:1.65;">Learn directly from the national examiners who set and mark KCSE papers. Only KSh 1,000 per session.</p>
+                <p style="font-size:13px;color:rgba(255,255,255,.75);margin-bottom:14px;line-height:1.65;">Learn directly from the national examiners who set and mark KCSE papers. Only KSh 300 per session.</p>
                 <a href="<?php echo e(route('examiner-clinic')); ?>" class="btn btn-gold btn-sm" style="width:100%;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View Clinics</a>
             </div>
         </aside>

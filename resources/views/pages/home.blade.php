@@ -280,7 +280,7 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
                 </div>
                 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
                     <a href="/examiner-clinic" class="btn btn-w"><i class="fa-solid fa-calendar-check"></i> View Upcoming Clinics</a>
-                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 1,000</span> /session · 60 min</div>
+                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 300</span> /session · 60 min</div>
                 </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px;">
@@ -296,7 +296,7 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
                         <div style="font-size:12px;color:var(--gold);margin-top:3px;"><i class="fa-regular fa-calendar fa-xs"></i> {{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</div>
                     </div>
                     <div style="text-align:right;flex-shrink:0;">
-                        <div style="font-weight:700;font-size:14px;color:var(--gold);">KSh 1,000</div>
+                        <div style="font-weight:700;font-size:14px;color:var(--gold);">KSh {{ number_format($clinic->price) }}</div>
                         <div style="font-size:11px;color:rgba(255,255,255,.4);">{{ $clinic->spotsLeft() }} spots left</div>
                     </div>
                 </div>

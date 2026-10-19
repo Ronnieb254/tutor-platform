@@ -366,6 +366,11 @@ $activeTab = request('tab','overview');
     </div>
     <style>.stats-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.stats-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 
+    {{-- Earnings Widget --}}
+    @if(isset($earnings))
+        @include('components.earnings-widget', ['earnings' => $earnings])
+    @endif
+
     @if($isApproved && $upcoming->isNotEmpty())
     <div class="card" style="margin-bottom:20px;">
         <div style="padding:18px 20px;border-bottom:1px solid var(--hair);" class="sec-hdr">

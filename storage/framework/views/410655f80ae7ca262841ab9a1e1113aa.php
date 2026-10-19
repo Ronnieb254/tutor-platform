@@ -369,6 +369,11 @@ $activeTab = request('tab','overview');
     </div>
     <style>.stats-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.stats-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 
+    
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($earnings)): ?>
+        <?php echo $__env->make('components.earnings-widget', ['earnings' => $earnings], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isApproved && $upcoming->isNotEmpty()): ?>
     <div class="card" style="margin-bottom:20px;">
         <div style="padding:18px 20px;border-bottom:1px solid var(--hair);" class="sec-hdr">

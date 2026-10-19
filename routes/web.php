@@ -11,12 +11,16 @@ use Illuminate\Support\Facades\Route;
 // ─── Public ───────────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/how-it-works', fn() => view('pages.how-it-works'))->name('how-it-works');
-Route::get('/examiner-clinic', fn() => view('pages.examiner-clinic'))->name('examiner-clinic');
+Route::get('/examiner-clinic', [App\Http\Controllers\ClinicController::class, 'index'])->name('examiner-clinic');
 Route::get('/contact', fn() => view('pages.contact'))->name('contact');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
-Route::get('/tutors', [HomeController::class, 'tutors'])->name('tutors.index');
-Route::get('/tutors/{id}', [HomeController::class, 'tutorProfile'])->name('tutors.show')->where('id', '[0-9]+');
-Route::get('/tutors/{slug}', [HomeController::class, 'tutorProfileBySlug'])->name('tutors.show.slug');
+
+// ─── Authenticated Tutor Listings ─────────────────────────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get('/tutors', [HomeController::class, 'tutors'])->name('tutors.index');
+    Route::get('/tutors/{id}', [HomeController::class, 'tutorProfile'])->name('tutors.show')->where('id', '[0-9]+');
+    Route::get('/tutors/{slug}', [HomeController::class, 'tutorProfileBySlug'])->name('tutors.show.slug');
+});
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
@@ -38,6 +42,28 @@ Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'
 // ─── Authenticated ────────────────────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
+    // Clinic enrollment (KSh 300 per session, 30 students max)
+    Route::post('/clinic/{clinic}/enroll', [App\Http\Controllers\ClinicController::class, 'enroll'])->name('clinic.enroll');
+
+    // Clinic booking & payment flow
+    Route::get('/clinic/{clinic}/checkout', [App\Http\Controllers\ClinicBookingController::class, 'checkout'])->name('clinic.checkout');
+    Route::post('/clinic/{clinic}/pay', [App\Http\Controllers\ClinicBookingController::class, 'pay'])->name('clinic.pay');
+    Route::get('/clinic/callback', [App\Http\Controllers\ClinicBookingController::class, 'callback'])->name('clinic.callback');
+
+    // Clinic session access (platform-only)
+    Route::get('/clinic/my-bookings', [App\Http\Controllers\ClinicBookingController::class, 'myBookings'])->name('clinic.my-bookings');
+    Route::get('/clinic/{clinic}/join', [App\Http\Controllers\ClinicBookingController::class, 'joinSession'])->name('clinic.join');
+    Route::get('/clinic/session', [App\Http\Controllers\ClinicBookingController::class, 'sessionRoom'])->name('clinic.session-room');
+
+    // Examiner (verified tutors creating clinics)
+    Route::get('/examiner/apply', [App\Http\Controllers\ExaminerController::class, 'showApplyForm'])->name('examiner.apply');
+    Route::post('/examiner/apply', [App\Http\Controllers\ExaminerController::class, 'apply']);
+    Route::get('/examiner/dashboard', [App\Http\Controllers\ExaminerController::class, 'dashboard'])->name('examiner.dashboard');
+    Route::get('/examiner/clinics/create', [App\Http\Controllers\ExaminerController::class, 'showCreateForm'])->name('examiner.clinics.create');
+    Route::post('/examiner/clinics', [App\Http\Controllers\ExaminerController::class, 'createClinic'])->name('examiner.clinics.store');
+    Route::get('/examiner/clinics/{clinic}', [App\Http\Controllers\ExaminerController::class, 'showClinic'])->name('examiner.clinics.show');
+    Route::get('/examiner/clinics/{clinic}/join', [App\Http\Controllers\ExaminerController::class, 'joinAsExaminer'])->name('examiner.clinics.join');
 
     // Bookings
     Route::get('/bookings/{booking}',         [BookingController::class, 'show'])->name('bookings.show');
@@ -128,7 +154,14 @@ Route::middleware('auth')->group(function () {
 
     // Tutor dashboard & onboarding
     Route::middleware('role:tutor')->group(function () {
-        Route::get('/dashboard/tutor', fn() => view('pages.dashboard.tutor'))->name('tutor.dashboard');
+        Route::get('/dashboard/tutor', function () {
+            $earningsService = new \App\Services\EarningsService();
+            $allEarnings = $earningsService->calculateTutorEarnings(auth()->user());
+            $recentEarnings = $earningsService->getRecentEarnings(auth()->user());
+            $earnings = array_merge($allEarnings, $recentEarnings);
+            
+            return view('pages.dashboard.tutor', compact('earnings'));
+        })->name('tutor.dashboard');
         Route::get('/tutor/onboarding', fn() => view('pages.auth.tutor-onboarding'))->name('tutor.onboarding');
 
         // New onboarding submit (file uploads + speedy verification)

@@ -30,8 +30,9 @@ class ContactController extends Controller
             Mail::raw(
                 "Name: {$request->name}\nEmail: {$request->email}\nPhone: {$request->phone}\nRole: {$request->role}\nSubject: {$request->subject}\n\nMessage:\n{$request->message}",
                 function ($msg) use ($request) {
+                    $subject = $request->subject ?: 'General Enquiry';
                     $msg->to('info@ovaldesk.co.ke')
-                        ->subject("Mwalimu Contact: {$request->subject ?: 'General Enquiry'}")
+                        ->subject("Mwalimu Contact: {$subject}")
                         ->replyTo($request->email, $request->name);
                 }
             );
