@@ -1,11 +1,11 @@
-# Mwalimu Tutoring Platform - Production Dockerfile (Ubuntu Server Optimized)
+# Mwalimu Tutoring Platform - production image
+# Place at ./microservice/tutor-platform/Dockerfile
 FROM php:8.4-fpm
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# System dependencies (netcat-openbsd provides "nc" for the entrypoint's DB wait)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     libpng-dev \
@@ -17,73 +17,35 @@ RUN apt-get update && apt-get install -y \
     nginx \
     supervisor \
     cron \
+    netcat-openbsd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+# PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && pecl install redis && docker-php-ext-enable redis
 
-# Install Redis extension
-RUN pecl install redis && docker-php-ext-enable redis
+# Composer (pinned to major version 2)
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Copy application files
+# Application code (.env, .git, vendor etc. are excluded by .dockerignore)
 COPY . /var/www/html
 
-# Copy nginx configuration
+# Nginx and supervisor config
 COPY docker/nginx/default.conf /etc/nginx/sites-available/default
-
-# Copy supervisor configuration
 COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
-
-# Install PHP dependencies (production)
+# PHP dependencies (production)
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
-# Note: The following commands will run during container initialization via entrypoint
-# - php artisan key:generate (if APP_KEY is empty)
-# - php artisan migrate --force (on first run)
-# - php artisan optimize
+# Permissions (after composer so vendor/ is covered too)
+RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 storage bootstrap/cache
 
-# Create entrypoint script
-RUN echo '#!/bin/bash\n\
-set -e\n\
-\n\
-# Wait for MySQL to be ready\n\
-echo "Waiting for MySQL..."\n\
-while ! nc -z mysql 3306; do\n\
-    sleep 1\n\
-done\n\
-echo "MySQL is ready!"\n\
-\n\
-# Run migrations on first start\n\
-if [ ! -f /var/www/html/storage/.migrated ]; then\n\
-    echo "Running initial migrations..."\n\
-    php artisan migrate --force\n\
-    touch /var/www/html/storage/.migrated\n\
-fi\n\
-\n\
-# Optimize Laravel\n\
-php artisan config:cache\n\
-php artisan route:cache\n\
-php artisan view:cache\n\
-\n\
-# Set permissions\n\
-chown -R www-data:www-data /var/www/html/storage\n\
-chmod -R 775 /var/www/html/storage\n\
-\n\
-# Start supervisor\n\
-exec /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf\n\
-' > /entrypoint.sh && chmod +x /entrypoint.sh
+# Entrypoint kept as a real file, not an echo hack
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Expose port 80
 EXPOSE 80
 
-# Use entrypoint for initialization
 ENTRYPOINT ["/entrypoint.sh"]
-
