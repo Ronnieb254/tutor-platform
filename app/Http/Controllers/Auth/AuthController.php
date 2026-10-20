@@ -43,38 +43,52 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users',
-            'password' => ['required', 'confirmed', Password::min(8)],
-            'role'     => 'required|in:student,tutor,parent',
-            'phone'    => 'nullable|string|max:30',
-        ]);
+        try {
+            $request->validate([
+                'name'     => 'required|string|max:255',
+                'email'    => 'required|email|unique:users',
+                'password' => ['required', 'confirmed', Password::min(8)],
+                'role'     => 'required|in:student,tutor,parent',
+                'phone'    => 'nullable|string|max:30',
+            ]);
 
-        $user = User::create([
-            'name'              => $request->name,
-            'email'             => $request->email,
-            'password'          => $request->password,
-            'role'              => $request->role,
-            'phone'             => $request->phone,
-            'email_verified_at' => now(),
-            'is_active'         => true,
-        ]);
+            $user = User::create([
+                'name'              => $request->name,
+                'email'             => $request->email,
+                'password'          => $request->password,
+                'role'              => $request->role,
+                'phone'             => $request->phone,
+                'email_verified_at' => now(),
+                'is_active'         => true,
+            ]);
 
-        if ($user->isTutor()) {
-            Wallet::firstOrCreate(
-                ['user_id' => $user->id],
-                ['balance' => 0, 'currency' => 'KES']
-            );
+            if ($user->isTutor()) {
+                Wallet::firstOrCreate(
+                    ['user_id' => $user->id],
+                    ['balance' => 0, 'currency' => 'KES']
+                );
+            }
+
+            Auth::login($user);
+
+            if ($user->isTutor()) {
+                return redirect()->route('tutor.onboarding');
+            }
+
+            return redirect()->route('dashboard');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions so they display properly
+            throw $e;
+        } catch (\Exception $e) {
+            \Log::error('Registration failed: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return back()->withInput()->withErrors([
+                'email' => 'Registration failed: ' . $e->getMessage()
+            ]);
         }
-
-        Auth::login($user);
-
-        if ($user->isTutor()) {
-            return redirect()->route('tutor.onboarding');
-        }
-
-        return redirect()->route('dashboard');
     }
 
     public function logout(Request $request)
