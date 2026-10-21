@@ -85,6 +85,10 @@ class RegisterController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            \Log::error('Registration failed: ' . $e->getMessage(), [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ]);
             
             if ($request->expectsJson()) {
                 return response()->json([
