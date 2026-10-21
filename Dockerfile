@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
+    libicu-dev \
     zip \
     unzip \
     nginx \
@@ -21,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl \
     && pecl install redis && docker-php-ext-enable redis
 
 # Composer (pinned to major version 2)
