@@ -44,7 +44,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         try {
-            $request->validate([
+            // Validate input
+            $validated = $request->validate([
                 'name'     => 'required|string|max:255',
                 'email'    => 'required|email|unique:users',
                 'password' => ['required', 'confirmed', Password::min(8)],
@@ -52,27 +53,35 @@ class AuthController extends Controller
                 'phone'    => 'nullable|string|max:30',
             ]);
 
+            // Create user
             $user = User::create([
-                'name'              => $request->name,
-                'email'             => $request->email,
-                'password'          => $request->password,
-                'role'              => $request->role,
-                'phone'             => $request->phone,
+                'name'              => $validated['name'],
+                'email'             => $validated['email'],
+                'password'          => $validated['password'],
+                'role'              => $validated['role'],
+                'phone'             => $validated['phone'] ?? null,
                 'email_verified_at' => now(),
                 'is_active'         => true,
             ]);
 
-            if ($user->isTutor()) {
+            // Create wallet for tutors
+            if ($user->role === 'tutor') {
                 Wallet::firstOrCreate(
                     ['user_id' => $user->id],
                     ['balance' => 0, 'currency' => 'KES']
                 );
             }
 
+            // Login user
             Auth::login($user);
 
-            if ($user->isTutor()) {
-                return redirect()->route('tutor.onboarding');
+            // Redirect based on role
+            if ($user->role === 'tutor') {
+                // Check if route exists
+                if (\Route::has('tutor.onboarding')) {
+                    return redirect()->route('tutor.onboarding');
+                }
+                return redirect('/dashboard')->with('success', 'Registration successful! Please complete your tutor profile.');
             }
 
             return redirect()->route('dashboard');
@@ -81,11 +90,16 @@ class AuthController extends Controller
             // Re-throw validation exceptions so they display properly
             throw $e;
         } catch (\Exception $e) {
-            \Log::error('Registration failed: ' . $e->getMessage(), [
+            // Log the full error
+            \Log::error('Registration Error', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
             
-            return back()->withInput()->withErrors([
+            // Return with specific error
+            return back()->withInput($request->except('password', 'password_confirmation'))->withErrors([
                 'email' => 'Registration failed: ' . $e->getMessage()
             ]);
         }
