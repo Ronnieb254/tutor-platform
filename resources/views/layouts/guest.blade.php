@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @livewireStyles
     <style>
         :root { --ink:#15281F; --cream:#FBF5E6; --trust-blue:#0A64BC; --coral:#E8522A; --gold:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.55); --hairline:rgba(21,40,31,0.1); }
@@ -89,6 +90,42 @@
     </footer>
 
     @livewireScripts
+    <script>
+    // SweetAlert2 Configuration
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    // Auto-show flash messages
+    @if(session('success'))
+        Toast.fire({
+            icon: 'success',
+            title: '{{ session('success') }}'
+        });
+    @endif
+
+    @if(session('error'))
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('error') }}'
+        });
+    @endif
+
+    @if($errors->any())
+        Toast.fire({
+            icon: 'error',
+            title: '{{ $errors->first() }}'
+        });
+    @endif
+    </script>
     @stack('scripts')
 </body>
 </html>

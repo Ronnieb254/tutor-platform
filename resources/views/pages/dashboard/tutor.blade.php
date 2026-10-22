@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @livewireStyles
 <style>
 :root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
@@ -439,136 +440,8 @@ $activeTab = request('tab','overview');
 </div>
 
 {{-- ═══════════════════════ DOCUMENTS TAB ═══════════════════════ --}}
-<div x-show="tab==='documents'" x-cloak>
-    @php
-    $docs = $profile?->documents ?? collect();
-    $docTypes = [
-        'national_id'=>['National ID / Passport','🪪','Required'],
-        'tsc_certificate'=>['TSC Certificate','📜','Required'],
-        'degree_certificate'=>['Academic Certificate','🎓','Required']
-    ];
-    
-    // Check which required docs are uploaded
-    $uploadedTypes = $docs->pluck('type')->toArray();
-    $requiredTypes = array_keys($docTypes);
-    $missingTypes = array_diff($requiredTypes, $uploadedTypes);
-    $allRequiredUploaded = count($missingTypes) === 0;
-    @endphp
-
-    <div style="margin-bottom:20px;">
-        <h2 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:6px;">Verification Documents</h2>
-        <p style="font-size:14px;color:var(--muted);">Upload your documents below. Our team reviews them within 24–48 hours. Once all required documents are approved, your profile goes live.</p>
-    </div>
-
-    {{-- Overall status --}}
-    @if($isApproved)
-    <div class="status-banner status-approved" style="margin-bottom:24px;">
-        <span style="font-size:24px;">✅</span>
-        <div>
-            <div style="font-weight:700;color:#166534;font-size:15px;">Fully Verified</div>
-            <div style="font-size:13px;color:#4ADE80;">All documents approved. Your profile is live and accepting bookings.</div>
-        </div>
-    </div>
-    @elseif(!$allRequiredUploaded)
-    <div class="status-banner status-pending" style="margin-bottom:24px;">
-        <span style="font-size:24px;">📄</span>
-        <div>
-            <div style="font-weight:700;color:#854D0E;font-size:15px;">Upload All Required Documents</div>
-            <div style="font-size:13px;color:#92400E;">
-                You must upload <strong>all 3 required documents</strong> before your profile can be reviewed.
-                <span style="font-weight:700;color:var(--coral);">{{ count($missingTypes) }} remaining</span>
-            </div>
-        </div>
-    </div>
-    @elseif($verificationStatus==='under_review')
-    <div class="status-banner status-pending" style="margin-bottom:24px;">
-        <span style="font-size:24px;">⏳</span>
-        <div>
-            <div style="font-weight:700;color:#854D0E;font-size:15px;">Under Review</div>
-            <div style="font-size:13px;color:#92400E;">Your documents have been submitted and are being reviewed by our team.</div>
-        </div>
-    </div>
-    @elseif($verificationStatus==='action_required')
-    <div class="status-banner status-rejected" style="margin-bottom:24px;">
-        <span style="font-size:24px;">⚠️</span>
-        <div>
-            <div style="font-weight:700;color:#991B1B;font-size:15px;">Action Required</div>
-            <div style="font-size:13px;color:#B91C1C;">One or more documents were rejected. Please re-upload them to continue.</div>
-        </div>
-    </div>
-    @endif
-
-    {{-- Verification steps --}}
-    <div class="card card-p" style="margin-bottom:20px;">
-        <div style="display:flex;gap:0;overflow:hidden;border-radius:10px;border:1px solid var(--hair);">
-            @foreach([['1','Upload Docs'],['2','Under Review'],['3','Approved'],['4','Go Live']] as $i => [$num,$step])
-            @php
-            $stepDone = ($isApproved && $i < 4) || (!$isApproved && $verificationStatus === 'under_review' && $i < 2) || (!$isApproved && $verificationStatus === 'no_documents' && $i < 1);
-            $stepActive = ($isApproved && $i === 3) || (!$isApproved && $verificationStatus === 'under_review' && $i === 1) || (!$isApproved && $verificationStatus === 'no_documents' && $i === 0);
-            @endphp
-            <div style="flex:1;padding:12px 8px;text-align:center;font-size:12px;font-weight:600;
-                background:{{ $stepDone ? 'var(--mint)' : ($stepActive ? 'var(--trust-blue)' : '#fff') }};
-                color:{{ ($stepDone || $stepActive) ? '#fff' : 'var(--muted)' }};
-                border-right:{{ !$loop->last ? '1px solid var(--hair)' : 'none' }};">
-                {{ $num }}. {{ $step }}
-            </div>
-            @endforeach
-        </div>
-    </div>
-
-    {{-- Document cards --}}
-    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px;">
-        @foreach($docTypes as $type => [$label,$icon,$req])
-        @php 
-            $doc = $docs->where('type',$type)->first();
-            $isMissing = !$doc && in_array($type, $missingTypes);
-        @endphp
-        <div class="doc-card {{ $doc ? ($doc->status === 'approved' ? 'approved' : ($doc->status === 'rejected' ? 'rejected' : 'uploaded')) : ($isMissing ? '' : '') }}" style="{{ $isMissing ? 'border-color:var(--coral);border-width:2px;' : '' }}">
-            <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:0;">
-                <div style="width:48px;height:48px;border-radius:12px;background:{{ $doc ? ($doc->status === 'approved' ? 'rgba(16,185,129,.15)' : ($doc->status === 'rejected' ? 'rgba(232,82,42,.15)' : 'rgba(10,100,188,.08)')) : 'rgba(232,82,42,.08)' }};display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">{{ $icon }}</div>
-                <div style="min-width:0;">
-                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                        <span style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</span>
-                        <span style="font-size:11px;font-weight:600;color:{{ $req==='Required' ? 'var(--coral)' : 'var(--muted)' }};">{{ $req }}</span>
-                        @if($isMissing)
-                        <span style="font-size:11px;font-weight:700;color:var(--coral);background:rgba(232,82,42,.1);padding:2px 8px;border-radius:999px;">NOT UPLOADED</span>
-                        @endif
-                    </div>
-                    @if($doc)
-                    <div style="font-size:12px;color:var(--muted);margin-top:3px;">{{ $doc->original_name ?? 'Uploaded file' }} · {{ $doc->created_at->format('M j, Y') }}</div>
-                    @if($doc->admin_note)
-                    <div style="font-size:12px;color:var(--coral);margin-top:3px;font-weight:500;">Admin note: {{ $doc->admin_note }}</div>
-                    @endif
-                    @else
-                    <div style="font-size:12px;color:{{ $isMissing ? 'var(--coral)' : 'var(--muted)' }};margin-top:3px;font-weight:{{ $isMissing ? '600' : '400' }};">{{ $isMissing ? '⚠️ Required - Please upload this document' : 'No document uploaded yet' }}</div>
-                    @endif
-                </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-                @if($doc)
-                @php $bc = ['pending'=>'bdg-amber','approved'=>'bdg-green','rejected'=>'bdg-red'][$doc->status]; @endphp
-                <span class="bdg {{ $bc }}">{{ ucfirst($doc->status) }}</span>
-                <a href="{{ asset('storage/'.$doc->file_path) }}" target="_blank" class="btn btn-o btn-sm">View</a>
-                @endif
-                <form method="POST" action="/tutor/documents/upload" enctype="multipart/form-data" style="display:flex;align-items:center;gap:6px;">
-                    @csrf
-                    <input type="hidden" name="type" value="{{ $type }}">
-                    <label style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;border:1.5px solid {{ $isMissing ? 'var(--coral)' : 'var(--hair)' }};background:{{ $isMissing ? 'var(--coral)' : '#fff' }};color:{{ $isMissing ? '#fff' : 'inherit' }};font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-                        {{ $doc ? 'Re-upload' : ($isMissing ? 'Upload Now' : 'Upload') }}
-                        <input type="file" name="document" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="this.closest('form').submit()">
-                    </label>
-                </form>
-            </div>
-        </div>
-        @endforeach
-    </div>
-
-    <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:16px 20px;">
-        <p style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-bottom:6px;">📋 Accepted formats</p>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;">JPG, PNG or PDF · Max 5MB per file · Must be clear and legible · National ID must show both sides if applicable</p>
-    </div>
-</div>
+{{-- 📁 pages/dashboard/partials/documents.blade.php --}}
+@include('pages.dashboard.partials.documents')
 
 {{-- ═══════════════════════ BOOKINGS TAB ═══════════════════════ --}}
 <div x-show="tab==='bookings' || tab==='history'" x-cloak>
@@ -1110,3 +983,41 @@ if (chatEl) chatEl.scrollTop = chatEl.scrollHeight;
 </script>
 </body>
 </html>
+
+
+<script>
+// SweetAlert2 Toast Configuration
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 4000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
+
+// Auto-show flash messages
+@if(session('success'))
+    Toast.fire({
+        icon: 'success',
+        title: '{{ session('success') }}'
+    });
+@endif
+
+@if(session('error'))
+    Toast.fire({
+        icon: 'error',
+        title: '{{ session('error') }}'
+    });
+@endif
+
+@if($errors->any())
+    Toast.fire({
+        icon: 'error',
+        title: '{{ $errors->first() }}'
+    });
+@endif
+</script>
