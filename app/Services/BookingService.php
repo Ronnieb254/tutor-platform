@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class BookingService
 {
-    public function __construct(protected JitsiService $jitsi) {}
+    public function __construct(protected BigBlueButtonService $bbb) {}
 
     public function calculateFees(float $amount): array
     {
@@ -73,13 +73,49 @@ class BookingService
             $tutorCode   = 'TUT-' . strtoupper(Str::random(6));
             $studentCode = 'STU-' . strtoupper(Str::random(6));
 
-            // Generate Jitsi meeting URL
-            $meetingUrl = $this->jitsi->getMeetingUrl($booking, $booking->tutor);
+            // Generate meeting room name and passwords
+            $meetingID = 'mwalimu-' . $booking->uuid;
+            $attendeePW = $this->bbb->generatePassword(8);
+            $moderatorPW = $this->bbb->generatePassword(8);
+
+            // Create BigBlueButton meeting
+            $meetingName = "Session with " . $booking->tutor->name;
+            $this->bbb->createMeeting(
+                $meetingID,
+                $meetingName,
+                $attendeePW,
+                $moderatorPW,
+                [
+                    'welcome' => 'Welcome to your Mwalimu tutoring session!',
+                    'logoutURL' => route('dashboard'),
+                    'record' => 'true',
+                    'autoStartRecording' => 'false',
+                ]
+            );
+
+            // Generate join URLs (students use attendee password, tutors use moderator password)
+            $tutorJoinUrl = $this->bbb->getJoinUrl(
+                $meetingID,
+                $booking->tutor->name,
+                $moderatorPW,
+                true,
+                'tutor-' . $booking->tutor_id
+            );
+
+            $studentJoinUrl = $this->bbb->getJoinUrl(
+                $meetingID,
+                $booking->student->name,
+                $attendeePW,
+                false,
+                'student-' . $booking->student_id
+            );
 
             $booking->update([
                 'status'               => 'confirmed',
-                'meeting_room'         => $this->jitsi->generateRoomName($booking),
-                'meeting_url'          => $meetingUrl,
+                'meeting_room'         => $meetingID,
+                'meeting_url'          => $studentJoinUrl, // Store student URL (or we can dynamically generate)
+                'meeting_password'     => $attendeePW, // Store for regenerating join URLs
+                'moderator_password'   => $moderatorPW, // For tutor
                 'session_code_tutor'   => $tutorCode,
                 'session_code_student' => $studentCode,
             ]);
