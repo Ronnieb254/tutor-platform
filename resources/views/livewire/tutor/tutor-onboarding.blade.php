@@ -128,21 +128,36 @@
         {{-- STEP 4: Documents --}}
         @if($step === 4)
         <h2 class="font-serif text-2xl font-bold text-ink mb-2">Upload your documents</h2>
-        <p class="text-muted text-sm mb-6">Our team will review your documents within 24–48 hours. JPG, PNG or PDF, max 5MB each.</p>
+        <p class="text-muted text-sm mb-6">All 3 documents are required. Our team will review them within 24–48 hours. JPG, PNG or PDF, max 5MB each.</p>
         <div class="space-y-4">
             <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
-                <label class="form-label">National ID / Passport <span class="text-coral">*</span></label>
+                <label class="form-label">🪪 National ID / Passport <span class="text-coral">* Required</span></label>
                 <input type="file" wire:model="nationalId" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
                 @error('nationalId')<p class="form-error">{{ $message }}</p>@enderror
+                <p class="text-xs text-muted mt-1">Upload a clear photo of your National ID or Passport</p>
             </div>
             <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
-                <label class="form-label">Teaching Certificate <span class="text-muted font-normal">(optional)</span></label>
-                <input type="file" wire:model="certificate" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
+                <label class="form-label">📜 TSC Certificate <span class="text-coral">* Required</span></label>
+                <input type="file" wire:model="tscCertificate" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
+                @error('tscCertificate')<p class="form-error">{{ $message }}</p>@enderror
+                <p class="text-xs text-muted mt-1">Teachers Service Commission certificate</p>
             </div>
             <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
-                <label class="form-label">Academic Qualification <span class="text-muted font-normal">(optional)</span></label>
-                <input type="file" wire:model="qualification" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
+                <label class="form-label">🎓 Academic Certificate <span class="text-coral">* Required</span></label>
+                <input type="file" wire:model="academicCertificate" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
+                @error('academicCertificate')<p class="form-error">{{ $message }}</p>@enderror
+                <p class="text-xs text-muted mt-1">Degree, diploma, or academic qualification certificate</p>
             </div>
+        </div>
+        <div class="rounded-2xl bg-trust-blue/5 border border-trust-blue/15 p-4 mt-4">
+            <p class="text-xs text-trust-blue font-semibold mb-1">📋 Document requirements</p>
+            <ul class="text-xs text-muted space-y-0.5 list-disc list-inside">
+                <li>All 3 documents must be uploaded to proceed</li>
+                <li>Documents must be clear and legible</li>
+                <li>Accepted formats: JPG, PNG, or PDF only</li>
+                <li>Maximum file size: 5MB per document</li>
+                <li>Names on documents must match your profile</li>
+            </ul>
         </div>
         <div class="flex justify-between mt-6">
             <button wire:click="prevStep" class="pill-btn-outline px-6">← Back</button>

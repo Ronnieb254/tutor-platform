@@ -33,9 +33,9 @@ class TutorOnboarding extends Component
     ];
 
     // Documents
-    public $nationalId    = null;
-    public $certificate   = null;
-    public $qualification = null;
+    public $nationalId         = null;
+    public $tscCertificate     = null;
+    public $academicCertificate = null;
 
     public function nextStep()
     {
@@ -58,9 +58,9 @@ class TutorOnboarding extends Component
     public function submit()
     {
         $this->validate([
-            'nationalId'    => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'certificate'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'qualification' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'nationalId'         => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'tscCertificate'     => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'academicCertificate' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
         $user = auth()->user();
@@ -93,7 +93,11 @@ class TutorOnboarding extends Component
         }
 
         // Store documents
-        $docTypes = ['nationalId' => 'national_id', 'certificate' => 'certificate', 'qualification' => 'qualification'];
+        $docTypes = [
+            'nationalId'         => 'national_id',
+            'tscCertificate'     => 'tsc_certificate',
+            'academicCertificate' => 'academic_certificate'
+        ];
         foreach ($docTypes as $prop => $type) {
             if ($this->{$prop}) {
                 $path = $this->{$prop}->store("documents/{$user->id}", 'public');
@@ -109,7 +113,7 @@ class TutorOnboarding extends Component
         // Create wallet
         Wallet::firstOrCreate(['user_id' => $user->id], ['balance' => 0, 'currency' => 'KES']);
 
-        $this->step = 4; // Done step
+        $this->step = 5; // Done step
     }
 
     public function render()
