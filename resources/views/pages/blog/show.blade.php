@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -12,7 +12,7 @@
 .prose ul,.prose ol{margin:0 0 18px 24px;}
 .prose li{margin-bottom:8px;}
 .prose strong{font-weight:700;}
-.prose blockquote{border-left:4px solid var(--violet);padding:12px 20px;background:rgba(109,40,217,.05);border-radius:0 12px 12px 0;margin:20px 0;font-style:italic;color:var(--muted);}
+.prose blockquote{border-left:4px solid var(--violet);padding:12px 20px;background:rgba(10,100,188,.05);border-radius:0 12px 12px 0;margin:20px 0;font-style:italic;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -60,7 +60,7 @@
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><i class="fa-solid fa-book-open fa-sm" style="color:var(--violet);margin-right:6px;"></i>Related Articles</h3>
                 @foreach($related as $r)
                 <a href="{{ route('blog.show', $r->slug) }}" style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);transition:opacity .15s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-                    <div style="width:60px;height:50px;border-radius:10px;background:rgba(109,40,217,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📝</div>
+                    <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📝</div>
                     <div>
                         <div style="font-size:13px;font-weight:600;color:var(--ink);line-height:1.4;">{{ Str::limit($r->title,55) }}</div>
                         <div style="font-size:11px;color:var(--muted);margin-top:3px;">{{ $r->published_at->format('M j') }}</div>

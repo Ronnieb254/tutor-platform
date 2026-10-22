@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
 :root{
     --ink:#15281F;
     --cream:#FBF5E6;
-    --violet:#6D28D9;
+    --violet:#0A64BC;
     --coral:#E8522A;
     --mint:#10B981;
     --muted:rgba(21,40,31,.55);
@@ -59,7 +59,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
     left:-200px;
     width:500px;
     height:500px;
-    background:radial-gradient(circle,rgba(109,40,217,.12) 0%,transparent 70%);
+    background:radial-gradient(circle,rgba(10,100,188,.12) 0%,transparent 70%);
     border-radius:50%;
 }
 
@@ -233,7 +233,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 .form-input:focus,.form-select:focus{
     outline:none;
     border-color:var(--violet);
-    box-shadow:0 0 0 4px rgba(109,40,217,.08);
+    box-shadow:0 0 0 4px rgba(10,100,188,.08);
 }
 
 .error-msg{

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -17,17 +17,17 @@
 
 {{-- HERO --}}
 <section style="background:linear-gradient(135deg,#111C16,#15281F);padding:80px 0;text-align:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:rgba(109,40,217,.1);border-radius:50%;pointer-events:none;"></div>
+    <div style="position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:rgba(10,100,188,.1);border-radius:50%;pointer-events:none;"></div>
     <div style="max-width:1360px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
-        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(109,40,217,.3);color:rgba(255,255,255,.9);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:20px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(10,100,188,.3);color:rgba(255,255,255,.9);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:20px;">
             <i class="fa-solid fa-circle-info fa-xs"></i> Simple · Secure · Effective
         </div>
-        <h1 style="font-family:'Fraunces',serif;font-size:clamp(36px,6vw,64px);color:#fff;margin-bottom:16px;line-height:1.1;">Learning made <span style="color:#D4A017;">simple.</span></h1>
+        <h1 style="font-family:'Fraunces',serif;font-size:clamp(36px,6vw,64px);color:#fff;margin-bottom:16px;line-height:1.1;">Learning made <span style="color:#EEBE15;">simple.</span></h1>
         <p style="font-size:18px;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto 32px;line-height:1.8;">
             Mwalimu connects Kenyan students and parents with verified, TSC-registered expert tutors. Book in minutes, pay securely, join a live class from anywhere.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:48px;">
-            <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#6D28D9;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#4C1D95';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#6D28D9';this.style.transform='translateY(0)'">
+            <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Find a Tutor
             </a>
             <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
@@ -57,12 +57,12 @@
         {{-- Toggle --}}
         <div style="display:flex;background:#fff;border-radius:999px;padding:4px;border:1px solid rgba(21,40,31,.1);width:fit-content;margin:0 auto 52px;box-shadow:0 2px 12px rgba(21,40,31,.06);">
             <button @click="role='student'"
-                    :style="role==='student' ? 'background:#6D28D9;color:#fff;' : 'background:transparent;color:rgba(21,40,31,.5);'"
+                    :style="role==='student' ? 'background:#0A64BC;color:#fff;' : 'background:transparent;color:rgba(21,40,31,.5);'"
                     style="padding:11px 32px;border-radius:999px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;">
                 <i class="fa-solid fa-graduation-cap fa-sm" style="margin-right:6px;"></i> I'm a Student / Parent
             </button>
             <button @click="role='tutor'"
-                    :style="role==='tutor' ? 'background:#6D28D9;color:#fff;' : 'background:transparent;color:rgba(21,40,31,.5);'"
+                    :style="role==='tutor' ? 'background:#0A64BC;color:#fff;' : 'background:transparent;color:rgba(21,40,31,.5);'"
                     style="padding:11px 32px;border-radius:999px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;">
                 <i class="fa-solid fa-chalkboard-user fa-sm" style="margin-right:6px;"></i> I'm a Tutor
             </button>
@@ -72,10 +72,10 @@
         <div x-show="role==='student'">
             <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="steps-grid">
                 @php $studentSteps = [
-                    ['1','fa-magnifying-glass','#6D28D9','Find Your Tutor','Browse TSC-registered tutors by subject, price, and availability. Read real reviews from students and parents who have already booked.','Filter by Kenyan curriculum subject','View ratings, reviews and availability','Choose from 500+ verified tutors','Background-checked for your safety'],
+                    ['1','fa-magnifying-glass','#0A64BC','Find Your Tutor','Browse TSC-registered tutors by subject, price, and availability. Read real reviews from students and parents who have already booked.','Filter by Kenyan curriculum subject','View ratings, reviews and availability','Choose from 500+ verified tutors','Background-checked for your safety'],
                     ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block — Quick Help (20min), Guided Practice (40min), or Deep Dive (60min). Fixed pricing, no surprises.','Quick Help – 20 min – KSh 300','Guided Practice – 40 min – KSh 500','Deep Dive – 60 min – KSh 700','Same price for every tutor'],
                     ['3','fa-mobile-screen-button','#E8522A','Pay via M-Pesa or Card','Complete your booking by paying through Paystack — Kenya\'s trusted payment gateway. Pay by M-Pesa, Visa, or Mastercard. Secure and instant.','M-Pesa, Visa & Mastercard accepted','Payment secured by Paystack','Full refund if tutor cancels','Booking confirmed instantly after payment'],
-                    ['4','fa-envelope','#D4A017','Receive Your Session Code','Immediately after payment, you and the tutor both receive unique session access codes by email. Yours is STU-XXXXXX. The tutor\'s is TUT-XXXXXX.','Unique STU-XXXXXX code emailed to you','Tutor receives TUT-XXXXXX separately','Session date, time and duration confirmed','Reminder sent 1 hour before session'],
+                    ['4','fa-envelope','#EEBE15','Receive Your Session Code','Immediately after payment, you and the tutor both receive unique session access codes by email. Yours is STU-XXXXXX. The tutor\'s is TUT-XXXXXX.','Unique STU-XXXXXX code emailed to you','Tutor receives TUT-XXXXXX separately','Session date, time and duration confirmed','Reminder sent 1 hour before session'],
                     ['5','fa-video','#3B82F6','Join Your Live Session','On session day, open your booking and enter your STU-XXXXXX code. Your private classroom opens instantly in your browser — no download needed.','Enter STU-XXXXXX code to verify identity','Private video room opens instantly','Screen sharing and whiteboard available','No app download required'],
                     ['6','fa-star','#EC4899','Review & Rebook','After your session, leave a star rating and written review to help other students. Rebook your favourite tutor directly from your dashboard with one click.','Star rating + written review','Tutor appears in Saved for easy rebook','Session history tracked in dashboard','Message tutor directly for follow-up'],
                 ]; @endphp
@@ -107,9 +107,9 @@
         <div x-show="role==='tutor'" x-cloak>
             <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="steps-grid">
                 @php $tutorSteps = [
-                    ['1','fa-pen-to-square','#6D28D9','Register','Sign up and select Tutor as your role. Complete your profile with your name, email, phone, subjects (max 2), and level (JSS/SS/F3/F4).','Free to join — no upfront fees','Enter name exactly as on National ID','Select up to 2 subjects you teach','Set your availability schedule'],
+                    ['1','fa-pen-to-square','#0A64BC','Register','Sign up and select Tutor as your role. Complete your profile with your name, email, phone, subjects (max 2), and level (JSS/SS/F3/F4).','Free to join — no upfront fees','Enter name exactly as on National ID','Select up to 2 subjects you teach','Set your availability schedule'],
                     ['2','fa-id-card-clip','#10B981','Upload Documents','Upload your National ID, Degree Certificate, TSC Certificate, Certificate of Good Conduct, and a recent passport photo. Our team reviews within 72 hours.','National ID / Passport required','TSC Certificate required','Degree Certificate recommended','Certificate of Good Conduct required'],
-                    ['3','fa-clock','#D4A017','Get Verified','Standard verification takes up to 72 hours. Need it faster? Pay KSh 1,000 for Speedy Verification — approved within 24 hours.','Standard: up to 72 hours','Speedy: 24 hours (KSh 1,000 fee)','Email notification when approved','Action required if any doc rejected'],
+                    ['3','fa-clock','#EEBE15','Get Verified','Standard verification takes up to 72 hours. Need it faster? Pay KSh 1,000 for Speedy Verification — approved within 24 hours.','Standard: up to 72 hours','Speedy: 24 hours (KSh 1,000 fee)','Email notification when approved','Action required if any doc rejected'],
                     ['4','fa-calendar-check','#E8522A','Profile Goes Live','Once approved, your profile is visible to thousands of students and parents searching for tutors. Students can book sessions with you instantly.','Profile listed in search results','Students can book & pay instantly','You receive booking notifications','Dashboard to manage all sessions'],
                     ['5','fa-bell','#3B82F6','Receive Bookings & Codes','When a student books and pays, you receive an email notification with session details, your earnings, and your unique TUT-XXXXXX session access code.','Email: "New Session Booked"','Your TUT-XXXXXX code included','Session details and date/time shown','Also visible in your dashboard'],
                     ['6','fa-video','#EC4899','Host Your Session','On session day, enter your TUT-XXXXXX code to open the private Jitsi classroom as the moderator. You control recording and screen sharing.','Enter TUT-XXXXXX to join as moderator','Full video, audio, screen share','Earnings credited after completion','Request payout via M-Pesa anytime'],
@@ -163,7 +163,7 @@
                             <div style="font-size:12px;color:rgba(255,255,255,.4);">{{ $mins }} minutes</div>
                         </div>
                     </div>
-                    <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#D4A017;">{{ $price }}</div>
+                    <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
                 </div>
                 <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:10px;">{{ $desc }}</p>
                 <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fa-solid fa-check fa-xs" style="color:#10B981;margin-right:4px;"></i>{{ $ideal }}</p>
@@ -171,7 +171,7 @@
             @endforeach
         </div>
         <div style="text-align:center;margin-top:28px;">
-            <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#D4A017;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+            <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Browse Tutors & Book Now
             </a>
         </div>
@@ -184,7 +184,7 @@
     <div style="max-width:1100px;margin:0 auto;padding:0 24px;">
         <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="code-grid">
             <div>
-                <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(109,40,217,.1);color:#6D28D9;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:22px;">
+                <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(10,100,188,.1);color:#0A64BC;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:22px;">
                     <i class="fa-solid fa-key fa-xs"></i> Secure Session Access
                 </div>
                 <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#15281F;margin-bottom:16px;">Your unique session access code</h2>
@@ -197,8 +197,8 @@
                         ['fa-shield-halved','Prevents unauthorised access','Only the code holder can enter. No public links. No sharing of contacts.'],
                     ] as [$icon,$title,$desc])
                     <div style="display:flex;align-items:flex-start;gap:14px;">
-                        <div style="width:44px;height:44px;background:rgba(109,40,217,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="fa-solid {{ $icon }}" style="color:#6D28D9;font-size:17px;"></i>
+                        <div style="width:44px;height:44px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid {{ $icon }}" style="color:#0A64BC;font-size:17px;"></i>
                         </div>
                         <div>
                             <div style="font-weight:700;font-size:15px;color:#15281F;">{{ $title }}</div>
@@ -212,9 +212,9 @@
                 <div style="background:#fff;border-radius:24px;border:1px solid rgba(21,40,31,.08);padding:36px;text-align:center;box-shadow:0 8px 40px rgba(21,40,31,.07);">
                     <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(21,40,31,.4);margin-bottom:20px;">Two codes. One session.</p>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;">
-                        <div style="background:rgba(109,40,217,.06);border:2px solid rgba(109,40,217,.2);border-radius:16px;padding:20px;">
+                        <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.2);border-radius:16px;padding:20px;">
                             <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.45);margin-bottom:8px;">Student Code</p>
-                            <p style="font-family:monospace;font-size:20px;font-weight:800;color:#6D28D9;letter-spacing:.08em;">STU-XXXXXX</p>
+                            <p style="font-family:monospace;font-size:20px;font-weight:800;color:#0A64BC;letter-spacing:.08em;">STU-XXXXXX</p>
                             <p style="font-size:11px;color:rgba(21,40,31,.4);margin-top:6px;">Sent to student/parent</p>
                         </div>
                         <div style="background:rgba(16,185,129,.06);border:2px solid rgba(16,185,129,.2);border-radius:16px;padding:20px;">
@@ -224,7 +224,7 @@
                         </div>
                     </div>
                     <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;">
-                        <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-list-check" style="color:#6D28D9;"></i> How to join</p>
+                        <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-list-check" style="color:#0A64BC;"></i> How to join</p>
                         @foreach(['1. Open your booking in your Mwalimu dashboard','2. Click "Join Session" button','3. Enter your code (STU- or TUT-)','4. Jitsi classroom opens instantly'] as $step)
                         <p style="font-size:13px;color:rgba(21,40,31,.6);margin-bottom:5px;">{{ $step }}</p>
                         @endforeach
@@ -247,7 +247,7 @@
                 <thead>
                     <tr style="background:#F9FAF9;">
                         <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.5);width:40%;border-bottom:1.5px solid rgba(21,40,31,.08);">Feature</th>
-                        <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6D28D9;border-bottom:1.5px solid rgba(21,40,31,.08);">✓ Mwalimu</th>
+                        <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0A64BC;border-bottom:1.5px solid rgba(21,40,31,.08);">✓ Mwalimu</th>
                         <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.4);border-bottom:1.5px solid rgba(21,40,31,.08);">Traditional</th>
                     </tr>
                 </thead>
@@ -311,7 +311,7 @@
         <h2 style="font-family:'Fraunces',serif;font-size:clamp(28px,5vw,52px);color:#fff;margin-bottom:14px;">Ready to get started?</h2>
         <p style="font-size:18px;color:rgba(255,255,255,.6);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of students, parents and tutors on Kenya's leading tutoring platform.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
-            <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:#6D28D9;color:#fff;font-size:16px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#4C1D95';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#6D28D9';this.style.transform='translateY(0)'">
+            <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:#0A64BC;color:#fff;font-size:16px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Find a Tutor
             </a>
             <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.3);font-size:16px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">

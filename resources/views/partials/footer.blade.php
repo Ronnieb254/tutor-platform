@@ -1,4 +1,4 @@
-<footer style="background:#0D1F14;color:rgba(255,255,255,.65);">
+﻿<footer style="background:#0D1F14;color:rgba(255,255,255,.65);">
     <div style="background:linear-gradient(135deg,#15281F,#111C16);padding:64px 0 0;">
         <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
 
@@ -10,10 +10,10 @@
                     <a href="{{ route('home') }}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
                         <svg width="34" height="34" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="50" fill="#FBF5E6"/>
-                            <circle cx="50" cy="50" r="34" fill="#6D28D9"/>
+                            <circle cx="50" cy="50" r="34" fill="#0A64BC"/>
                             <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
                         </svg>
-                        <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#fff;"><span style="color:#a78bfa;">Mw</span>alimu</span>
+                        <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#fff;"><span style="color:#60a5fa;">Mw</span>alimu</span>
                     </a>
                     <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;max-width:280px;margin-bottom:20px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms. 100% money-back on your first lesson.</p>
 
@@ -113,7 +113,7 @@
                         <span style="font-size:14px;">{{ $ic }}</span>
                         <div>
                             <div style="font-size:12px;font-weight:600;color:#fff;">{{ $name }}</div>
-                            <div style="font-size:11px;color:rgba(255,255,255,.45);">{{ $dur }} · <span style="color:#D4A017;font-weight:700;">{{ $price }}</span></div>
+                            <div style="font-size:11px;color:rgba(255,255,255,.45);">{{ $dur }} · <span style="color:#EEBE15;font-weight:700;">{{ $price }}</span></div>
                         </div>
                     </a>
                     @endforeach
@@ -141,7 +141,7 @@
     <div style="background:#FFFDF5;border:2px solid #15281F;border-radius:22px;padding:18px 20px;box-shadow:0 16px 48px rgba(21,40,31,.2);">
         <div style="display:flex;gap:12px;align-items:flex-start;">
             <div style="width:38px;height:38px;border-radius:11px;background:rgba(212,160,23,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <i class="fa-solid fa-cookie-bite" style="font-size:16px;color:#D4A017;"></i>
+                <i class="fa-solid fa-cookie-bite" style="font-size:16px;color:#EEBE15;"></i>
             </div>
             <div style="flex:1;">
                 <p style="font-weight:700;font-size:14px;color:#15281F;margin-bottom:3px;">We value your privacy</p>
@@ -155,8 +155,8 @@
                 Necessary Only
             </button>
             <button @click="localStorage.setItem('mw_cookie','all');show=false"
-                    style="padding:9px 20px;border-radius:999px;font-size:13px;font-weight:700;background:#6D28D9;color:#fff;border:1.5px solid #15281F;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all .18s;"
-                    onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='#6D28D9'">
+                    style="padding:9px 20px;border-radius:999px;font-size:13px;font-weight:700;background:#0A64BC;color:#fff;border:1.5px solid #15281F;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all .18s;"
+                    onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
                 <i class="fa-solid fa-check fa-xs"></i> Accept All
             </button>
         </div>

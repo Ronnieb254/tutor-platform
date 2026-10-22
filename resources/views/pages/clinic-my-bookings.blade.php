@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
 <title>My Clinic Bookings</title>
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--violet:#6D28D9;--coral:#E8522A;--gold:#D4A017;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--cream:#FBF5E6;--violet:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}
@@ -14,10 +14,10 @@ a{color:inherit;text-decoration:none;}
 .title{font-family:'Fraunces',serif;font-size:32px;font-weight:700;}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s;}
 .btn-primary{background:var(--violet);color:#fff;}
-.btn-primary:hover{background:#4C1D95;}
+.btn-primary:hover{background:#120A8F;}
 
 .booking-card{background:#fff;border-radius:14px;border:1px solid var(--hair);padding:20px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
-.booking-icon{width:48px;height:48px;background:rgba(109,40,217,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.booking-icon{width:48px;height:48px;background:rgba(10,100,188,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .booking-icon i{color:var(--violet);font-size:22px;}
 
 .booking-info{flex:1;min-width:250px;}
@@ -27,7 +27,7 @@ a{color:inherit;text-decoration:none;}
 
 .booking-status{display:flex;gap:10px;align-items:center;}
 .status-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;}
-.status-upcoming{background:rgba(109,40,217,.1);color:#6D28D9;}
+.status-upcoming{background:rgba(10,100,188,.1);color:#0A64BC;}
 .status-completed{background:rgba(16,185,129,.1);color:#10B981;}
 .status-past{background:rgba(21,40,31,.06);color:rgba(21,40,31,.5);}
 
@@ -50,7 +50,7 @@ a{color:inherit;text-decoration:none;}
 .page-link.active{background:var(--violet);color:#fff;border-color:var(--violet);}
 .page-link.disabled{opacity:.4;cursor:not-allowed;}
 
-.upcoming-section{background:rgba(109,40,217,.06);border-radius:12px;padding:16px;margin-bottom:24px;border-left:4px solid var(--violet);}
+.upcoming-section{background:rgba(10,100,188,.06);border-radius:12px;padding:16px;margin-bottom:24px;border-left:4px solid var(--violet);}
 .upcoming-count{font-size:32px;font-weight:700;color:var(--violet);}
 </style>
 </head>

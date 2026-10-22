@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -8,7 +8,7 @@ html,body{min-height:100%;}
 .page{min-height:100vh;background:var(--cream);display:flex;flex-direction:column;}
 .ob-head{background:var(--ink);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
 .ob-logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#fff;}
-.ob-logo em{font-style:normal;color:#a78bfa;}
+.ob-logo em{font-style:normal;color:#60a5fa;}
 .ob-main{flex:1;padding:32px 16px 60px;display:flex;justify-content:center;}
 .ob-wrap{width:100%;max-width:720px;}
 
@@ -29,7 +29,7 @@ html,body{min-height:100%;}
 .flabel{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;}
 .flabel i{color:var(--violet);font-size:11px;}
 .finput{width:100%;height:48px;padding:0 15px;border-radius:13px;border:1.5px solid rgba(21,40,31,.18);background:#fff;font-size:14px;font-family:inherit;color:var(--ink);outline:none;transition:all .18s;}
-.finput:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(109,40,217,.1);}
+.finput:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(10,100,188,.1);}
 textarea.finput{height:auto;padding:12px 15px;resize:vertical;line-height:1.65;}
 select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
 .ferr{font-size:12px;color:var(--coral);margin-top:4px;display:flex;align-items:center;gap:4px;}
@@ -38,7 +38,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
 /* File upload zones */
 .upload-zone{border:2px dashed rgba(21,40,31,.2);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--violet);background:rgba(109,40,217,.04);}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--violet);background:rgba(10,100,188,.04);}
 .upload-zone.has-file{border-style:solid;border-color:var(--mint);background:rgba(16,185,129,.04);}
 .upload-zone.rejected{border-color:var(--coral);background:rgba(232,82,42,.04);}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
@@ -55,13 +55,13 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 /* Subject chips */
 .subject-grid{display:flex;flex-wrap:wrap;gap:6px;}
 .s-chip{display:inline-flex;align-items:center;gap:5px;border:1.5px solid rgba(21,40,31,.15);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;background:#fff;}
-.s-chip:hover{border-color:rgba(109,40,217,.4);}
+.s-chip:hover{border-color:rgba(10,100,188,.4);}
 .s-chip.sel{border-color:var(--violet);background:var(--violet);color:#fff;}
 .s-chip.sel input{display:none;}
 
 /* Buttons */
 .btn-next{width:100%;height:52px;border-radius:999px;background:var(--violet);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.btn-next:hover{background:#4C1D95;transform:translateY(-1px);box-shadow:0 8px 20px rgba(109,40,217,.3);}
+.btn-next:hover{background:#120A8F;transform:translateY(-1px);box-shadow:0 8px 20px rgba(10,100,188,.3);}
 .btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
 .btn-back{background:none;border:1.5px solid rgba(21,40,31,.18);color:var(--ink);border-radius:999px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
 .btn-back:hover{border-color:rgba(21,40,31,.4);}
@@ -72,7 +72,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
     {{-- Header --}}
     <div class="ob-head">
         <a href="{{ route('home') }}" class="ob-logo">
-            <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+            <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
             <em>Mw</em>alimu
         </a>
         <span style="font-size:13px;color:rgba(255,255,255,.5);">Tutor Onboarding</span>
@@ -86,12 +86,12 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 @foreach(['Profile','Subjects','Documents','Verification'] as $i => $label)
                 <div class="pstep">
                     <div class="pstep-dot"
-                         :style="step > {{ $i+1 }} ? 'background:#10B981;color:#fff;' : step === {{ $i+1 }} ? 'background:#6D28D9;color:#fff;' : 'background:rgba(21,40,31,.08);color:rgba(21,40,31,.4);'">
+                         :style="step > {{ $i+1 }} ? 'background:#10B981;color:#fff;' : step === {{ $i+1 }} ? 'background:#0A64BC;color:#fff;' : 'background:rgba(21,40,31,.08);color:rgba(21,40,31,.4);'">
                         <template x-if="step > {{ $i+1 }}"><i class="fa-solid fa-check fa-xs"></i></template>
                         <template x-if="step <= {{ $i+1 }}"><span>{{ $i+1 }}</span></template>
                     </div>
                     <span class="pstep-label"
-                          :style="step === {{ $i+1 }} ? 'color:#6D28D9;' : 'color:rgba(21,40,31,.4);'">
+                          :style="step === {{ $i+1 }} ? 'color:#0A64BC;' : 'color:rgba(21,40,31,.4);'">
                         {{ $label }}
                     </span>
                 </div>
@@ -198,7 +198,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                         @endforeach
                     </div>
 
-                    <div style="margin-top:14px;padding:12px 14px;background:rgba(109,40,217,.05);border-radius:12px;border:1px solid rgba(109,40,217,.12);">
+                    <div style="margin-top:14px;padding:12px 14px;background:rgba(10,100,188,.05);border-radius:12px;border:1px solid rgba(10,100,188,.12);">
                         <span style="font-size:13px;font-weight:600;color:var(--violet);">
                             <i class="fa-solid fa-circle-info fa-xs"></i>
                             <span x-text="form.subjects.length"></span>/2 subjects selected
@@ -370,10 +370,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                         {{-- Standard --}}
                         <div style="border:2px solid rgba(21,40,31,.12);border-radius:18px;padding:22px;cursor:pointer;transition:all .2s;"
                              :class="form.speedy ? '' : 'selected-ver'"
-                             :style="!form.speedy ? 'border-color:#6D28D9;background:rgba(109,40,217,.04);' : ''"
+                             :style="!form.speedy ? 'border-color:#0A64BC;background:rgba(10,100,188,.04);' : ''"
                              @click="form.speedy=false">
                             <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-                                <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="!form.speedy ? 'border-color:#6D28D9;background:#6D28D9;' : 'border-color:rgba(21,40,31,.3);'">
+                                <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="!form.speedy ? 'border-color:#0A64BC;background:#0A64BC;' : 'border-color:rgba(21,40,31,.3);'">
                                     <div x-show="!form.speedy" style="width:100%;height:100%;border-radius:50%;background:#fff;transform:scale(.45);"></div>
                                 </div>
                                 <span style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">Standard</span>
@@ -431,7 +431,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                 {{-- Upload progress --}}
                 <div x-show="submitting" style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.1);padding:20px;margin-bottom:16px;text-align:center;">
-                    <div style="width:48px;height:48px;border:3px solid rgba(109,40,217,.2);border-top-color:var(--violet);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;"></div>
+                    <div style="width:48px;height:48px;border:3px solid rgba(10,100,188,.2);border-top-color:var(--violet);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;"></div>
                     <p style="font-size:14px;font-weight:600;color:var(--ink);" x-text="uploadStatus"></p>
                     <p style="font-size:12px;color:var(--muted);margin-top:4px;">Please don't close this page</p>
                 </div>
@@ -462,10 +462,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                         <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px;">What happens next</p>
                         <div style="display:flex;flex-direction:column;gap:12px;">
                             @foreach([
-                                ['fa-magnifying-glass','#6D28D9','Documents reviewed','Our academic team checks all your uploaded documents'],
+                                ['fa-magnifying-glass','#0A64BC','Documents reviewed','Our academic team checks all your uploaded documents'],
                                 ['fa-envelope','#10B981','Email notification','You\'ll receive an email with your approval or any actions needed'],
                                 ['fa-globe','#E8522A','Profile goes live','Students can find and book sessions with you immediately'],
-                                ['fa-money-bill-wave','#D4A017','Start earning','Accept bookings and earn per completed session'],
+                                ['fa-money-bill-wave','#EEBE15','Start earning','Accept bookings and earn per completed session'],
                             ] as [$ic,$col,$title,$desc])
                             <div style="display:flex;align-items:flex-start;gap:12px;">
                                 <div style="width:32px;height:32px;border-radius:10px;background:{{ $col }}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -482,7 +482,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                     <a href="{{ route('tutor.dashboard') }}"
                        style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:var(--violet);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .18s;"
-                       onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='var(--violet)'">
+                       onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--violet)'">
                         <i class="fa-solid fa-gauge-high fa-sm"></i> Go to Dashboard
                     </a>
                 </div>

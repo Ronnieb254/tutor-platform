@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--violet:#6D28D9;--coral:#E8522A;--gold:#D4A017;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
+:root{--ink:#15281F;--cream:#FBF5E6;--violet:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
@@ -71,9 +71,9 @@ button{font-family:inherit;cursor:pointer;}
 .clinic-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);transform:translateY(-2px);}
 .clinic-hdr{padding:12px 16px;border-bottom:1px solid var(--hair);display:flex;justify-content:space-between;align-items:center;background:#FAFCFA;}
 .badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
-.badge-primary{background:rgba(109,40,217,.1);color:var(--violet);}
+.badge-primary{background:rgba(10,100,188,.1);color:var(--violet);}
 .badge-success{background:rgba(16,185,129,.1);color:var(--mint);}
-.badge-warning{background:rgba(212,160,23,.1);color:#D4A017;}
+.badge-warning{background:rgba(212,160,23,.1);color:#EEBE15;}
 .badge-secondary{background:var(--hair);color:var(--muted);}
 .clinic-body{padding:18px;flex:1;}
 .clinic-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:12px;line-height:1.4;}
@@ -197,8 +197,8 @@ $user = auth()->user();
 
             <div class="stats">
                 <div class="stat">
-                    <div class="stat-icon" style="background:rgba(109,40,217,.1);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" stroke="#6D28D9"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <div class="stat-icon" style="background:rgba(10,100,188,.1);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" stroke="#0A64BC"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                     </div>
                     <div class="stat-lbl">Total Clinics</div>
                     <div class="stat-val">{{ $totalClinics }}</div>
@@ -216,7 +216,7 @@ $user = auth()->user();
 
                 <div class="stat">
                     <div class="stat-icon" style="background:rgba(212,160,23,.1);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" stroke="#D4A017"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" stroke="#EEBE15"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     </div>
                     <div class="stat-lbl">Clinic Earnings</div>
                     <div class="stat-val">KSh {{ number_format($totalRevenue, 0) }}</div>

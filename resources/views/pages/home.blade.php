@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -15,7 +15,7 @@
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireStyles
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--violet:#6D28D9;--coral:#E8522A;--gold:#D4A017;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--cream:#FBF5E6;--violet:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{background:var(--cream);scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;}
@@ -24,7 +24,7 @@ a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
 .w{max-width:1360px;margin:0 auto;padding:0 24px;}
 @media(min-width:1024px){.w{padding:0 48px;}}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 28px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer;transition:all .18s;border:none;font-family:inherit;text-decoration:none;}
-.btn-v{background:var(--violet);color:#fff;}.btn-v:hover{background:#4C1D95;transform:translateY(-1px);box-shadow:0 6px 20px rgba(109,40,217,.3);}
+.btn-v{background:var(--violet);color:#fff;}.btn-v:hover{background:#120A8F;transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,100,188,.3);}
 .btn-o{background:transparent;color:var(--ink);border:2px solid var(--ink);}.btn-o:hover{background:var(--ink);color:var(--cream);}
 .btn-coral{background:var(--coral);color:#fff;}.btn-coral:hover{opacity:.9;transform:translateY(-1px);}
 .btn-mint{background:var(--mint);color:#fff;}.btn-mint:hover{background:#059669;}
@@ -32,7 +32,7 @@ a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
 .card{background:#fff;border-radius:22px;border:1px solid var(--hair);box-shadow:0 2px 16px rgba(21,40,31,.06);}
 .card-lift{transition:transform .2s,box-shadow .2s;}.card-lift:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(21,40,31,.12);}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:999px;font-size:12px;font-weight:600;}
-.bv{background:rgba(109,40,217,.1);color:var(--violet);}
+.bv{background:rgba(10,100,188,.1);color:var(--violet);}
 .bm{background:rgba(16,185,129,.1);color:var(--mint);}
 .bc{background:rgba(232,82,42,.1);color:var(--coral);}
 /* NAV */
@@ -70,7 +70,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 
 {{-- HERO --}}
 <section style="padding:80px 0 60px;overflow:hidden;position:relative;background:var(--cream);">
-    <div style="position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:rgba(109,40,217,.06);border-radius:50%;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:rgba(10,100,188,.06);border-radius:50%;pointer-events:none;"></div>
     <div class="w">
         <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="hero-g">
             <div>
@@ -119,7 +119,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                         ['fa-lock','Secure Sessions','Always private'],
                     ] as [$ic,$title,$sub])
                     <div style="display:flex;align-items:center;gap:8px;">
-                        <div style="width:36px;height:36px;background:rgba(109,40,217,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <div style="width:36px;height:36px;background:rgba(10,100,188,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                             <i class="fa-solid {{ $ic }}" style="color:var(--violet);font-size:14px;"></i>
                         </div>
                         <div>
@@ -135,10 +135,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
             <div style="position:relative;height:400px;display:none;" class="hero-vis">
                 @php
                 $floatTutors=[
-                    ['Dr. Amara K.','Mathematics','4.8','#6D28D9','top:5%;left:8%;transform:rotate(-3deg)','TSC Reg.'],
+                    ['Dr. Amara K.','Mathematics','4.8','#0A64BC','top:5%;left:8%;transform:rotate(-3deg)','TSC Reg.'],
                     ['Prof. James M.','Physics','4.9','#10B981','top:32%;left:42%;transform:rotate(2deg)','Nat. Examiner'],
                     ['Ms. Fatuma A.','English','5.0','#E8522A','top:58%;left:5%;transform:rotate(-2deg)','TSC Reg.'],
-                    ['Mr. David O.','Chemistry','4.7','#D4A017','top:72%;left:38%;transform:rotate(3deg)','Nat. Marker'],
+                    ['Mr. David O.','Chemistry','4.7','#EEBE15','top:72%;left:38%;transform:rotate(3deg)','Nat. Marker'],
                 ];
                 @endphp
                 @foreach($floatTutors as [$name,$subj,$rating,$color,$style,$badge])
@@ -171,10 +171,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
         </div>
         <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="feat-g">
             @foreach([
-                ['fa-user-graduate','Individual Attention','Every learner gets personal 1-on-1 attention from their tutor, greatly improving learning outcomes.','#6D28D9'],
+                ['fa-user-graduate','Individual Attention','Every learner gets personal 1-on-1 attention from their tutor, greatly improving learning outcomes.','#0A64BC'],
                 ['fa-shield-halved','Background-Checked Tutors','Every tutor passes verification and a background screening before they can be onboarded on Mwalimu.','#10B981'],
                 ['fa-lock','Secure Classrooms','Lessons run in a secure space, assuring parents and learners of unmatched comfort and safety.','#E8522A'],
-                ['fa-certificate','Verified Credentials','Subject expertise and teaching credentials are thoroughly reviewed by our academic team.','#D4A017'],
+                ['fa-certificate','Verified Credentials','Subject expertise and teaching credentials are thoroughly reviewed by our academic team.','#EEBE15'],
                 ['fa-user-secret','Privacy & Safety','Tutors and learners cannot chat or exchange contacts on the platform.','#3B82F6'],
                 ['fa-rotate-left','100% Money-Back','Not satisfied with your first lesson? We\'ll refund it in full — no questions asked.','#EC4899'],
             ] as [$icon,$title,$desc,$color])
@@ -233,7 +233,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
         </div>
         <div style="display:grid;grid-template-columns:1fr;gap:20px;max-width:1000px;margin:0 auto;" class="steps-g">
             @foreach([
-                ['1','fa-list-check','Select your session','Choose your level (JSS/SS/F3/F4), what you need help with, subject, topic, date, time, and duration. The platform shows you available, matched tutors instantly.','#6D28D9'],
+                ['1','fa-list-check','Select your session','Choose your level (JSS/SS/F3/F4), what you need help with, subject, topic, date, time, and duration. The platform shows you available, matched tutors instantly.','#0A64BC'],
                 ['2','fa-mobile-screen-button','Pay via M-Pesa','Enter your phone number to prompt payment. Enter your M-Pesa PIN to complete. No account needed for learners — just your phone number.','#10B981'],
                 ['3','fa-video','Join your secure session','Receive a one-time session code by SMS/email. Enter the code to access your private, secure classroom. No tutor can contact you outside the platform.','#E8522A'],
             ] as [$num,$icon,$title,$desc,$color])
@@ -418,7 +418,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 <div style="color:var(--gold);font-size:16px;letter-spacing:3px;margin-bottom:14px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                 <p style="font-size:14px;color:var(--ink);line-height:1.85;margin-bottom:18px;font-style:italic;">"{{ $quote }}"</p>
                 <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid var(--hair);">
-                    <div style="width:38px;height:38px;border-radius:999px;background:rgba(109,40,217,.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--violet);font-size:15px;flex-shrink:0;">{{ $init }}</div>
+                    <div style="width:38px;height:38px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--violet);font-size:15px;flex-shrink:0;">{{ $init }}</div>
                     <div>
                         <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $name }}</div>
                         <div style="font-size:12px;color:var(--muted);">{{ $role }} · {{ $note }}</div>

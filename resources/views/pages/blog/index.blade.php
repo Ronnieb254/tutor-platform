@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -15,13 +15,13 @@
 @php use App\Models\BlogPost; use App\Models\BlogCategory;
 $posts = BlogPost::published()->with(['author','category'])->latest('published_at')->paginate(12);
 $cats  = BlogCategory::withCount(['posts' => fn($q) => $q->published()])->get();
-$colors = ['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899'];
+$colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 @endphp
 @include('partials.nav')
 
 {{-- HERO --}}
 <section style="background:var(--ink);padding:52px 0;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:rgba(109,40,217,.15);border-radius:50%;"></div>
+    <div style="position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:rgba(10,100,188,.15);border-radius:50%;"></div>
     <div class="w" style="position:relative;z-index:1;">
         <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-newspaper"></i> Learning Resources</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Study tips & exam strategies</h1>

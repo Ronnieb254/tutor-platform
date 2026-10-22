@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
 :root{
     --ink:#15281F;
     --cream:#FBF5E6;
-    --violet:#6D28D9;
+    --violet:#0A64BC;
     --coral:#E8522A;
     --mint:#10B981;
     --muted:rgba(21,40,31,.55);
@@ -48,7 +48,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
     right:-200px;
     width:500px;
     height:500px;
-    background:radial-gradient(circle,rgba(109,40,217,.15) 0%,transparent 70%);
+    background:radial-gradient(circle,rgba(10,100,188,.15) 0%,transparent 70%);
     border-radius:50%;
 }
 
@@ -102,7 +102,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 .feature-icon{
     width:48px;
     height:48px;
-    background:rgba(109,40,217,.15);
+    background:rgba(10,100,188,.15);
     border-radius:12px;
     display:flex;
     align-items:center;
@@ -223,7 +223,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 .form-input:focus{
     outline:none;
     border-color:var(--violet);
-    box-shadow:0 0 0 4px rgba(109,40,217,.08);
+    box-shadow:0 0 0 4px rgba(10,100,188,.08);
 }
 
 .error-msg{
@@ -286,12 +286,12 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
     border-radius:12px;
     cursor:pointer;
     transition:all .2s;
-    box-shadow:0 4px 14px rgba(109,40,217,.25);
+    box-shadow:0 4px 14px rgba(10,100,188,.25);
 }
 
 .btn-submit:hover{
     transform:translateY(-2px);
-    box-shadow:0 6px 20px rgba(109,40,217,.35);
+    box-shadow:0 6px 20px rgba(10,100,188,.35);
 }
 
 .btn-submit:active{

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -17,7 +17,7 @@
             <td style="padding-right:10px;">
               <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="50" fill="#FBF5E6"/>
-                <circle cx="50" cy="50" r="34" fill="#6D28D9"/>
+                <circle cx="50" cy="50" r="34" fill="#0A64BC"/>
                 <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
               </svg>
             </td>
@@ -51,9 +51,9 @@
         </table>
 
         {{-- Session code --}}
-        <div style="background:#F5F3FF;border:2px solid #6D28D9;border-radius:20px;padding:24px;text-align:center;margin-bottom:24px;">
-          <p style="font-size:13px;font-weight:700;color:rgba(109,40,217,0.7);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 8px;">Your Session Access Code</p>
-          <p style="font-family:monospace;font-size:32px;font-weight:800;color:#6D28D9;letter-spacing:0.12em;margin:0 0 8px;">{{ $booking->session_code_tutor }}</p>
+        <div style="background:#F5F3FF;border:2px solid #0A64BC;border-radius:20px;padding:24px;text-align:center;margin-bottom:24px;">
+          <p style="font-size:13px;font-weight:700;color:rgba(10,100,188,0.7);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 8px;">Your Session Access Code</p>
+          <p style="font-family:monospace;font-size:32px;font-weight:800;color:#0A64BC;letter-spacing:0.12em;margin:0 0 8px;">{{ $booking->session_code_tutor }}</p>
           <p style="font-size:12px;color:rgba(21,40,31,0.5);margin:0;">Use this code to enter the live session room</p>
         </div>
 
@@ -63,7 +63,7 @@
 
         <div style="text-align:center;margin-bottom:24px;">
           <a href="{{ route('tutor.dashboard') }}"
-             style="display:inline-block;background:#6D28D9;color:#fff;text-decoration:none;padding:14px 32px;border-radius:999px;font-weight:700;font-size:15px;border:1.5px solid #15281F;">
+             style="display:inline-block;background:#0A64BC;color:#fff;text-decoration:none;padding:14px 32px;border-radius:999px;font-weight:700;font-size:15px;border:1.5px solid #15281F;">
             View Booking
           </a>
         </div>

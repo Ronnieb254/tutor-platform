@@ -1,4 +1,4 @@
-<meta charset="utf-8">
+﻿<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,8 +9,8 @@
 <style>
 /* ── MWALIMU DESIGN SYSTEM ─────────────────────────────────────────── */
 :root{
-  --ink:#15281F; --cream:#FBF5E6; --violet:#6D28D9;
-  --coral:#E8522A; --gold:#D4A017; --mint:#10B981;
+  --ink:#15281F; --cream:#FBF5E6; --violet:#0A64BC;
+  --coral:#E8522A; --gold:#EEBE15; --mint:#10B981;
   --muted:rgba(21,40,31,.55); --hair:rgba(21,40,31,.1);
   --sidebar:#111C16;
 }
@@ -29,7 +29,7 @@ a{color:inherit;text-decoration:none;} img{max-width:100%;display:block;}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer;transition:all .18s;border:none;font-family:inherit;text-decoration:none;white-space:nowrap;}
-.btn-v{background:var(--violet);color:#fff;} .btn-v:hover{background:#4C1D95;transform:translateY(-1px);box-shadow:0 6px 20px rgba(109,40,217,.3);}
+.btn-v{background:var(--violet);color:#fff;} .btn-v:hover{background:#120A8F;transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,100,188,.3);}
 .btn-o{background:transparent;color:var(--ink);border:2px solid var(--ink);} .btn-o:hover{background:var(--ink);color:var(--cream);}
 .btn-coral{background:var(--coral);color:#fff;} .btn-coral:hover{opacity:.9;transform:translateY(-1px);}
 .btn-mint{background:var(--mint);color:#fff;} .btn-mint:hover{background:#059669;}
@@ -46,10 +46,10 @@ a{color:inherit;text-decoration:none;} img{max-width:100%;display:block;}
 
 /* ── BADGES ── */
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;}
-.badge-v{background:rgba(109,40,217,.1);color:var(--violet);}
+.badge-v{background:rgba(10,100,188,.1);color:var(--violet);}
 .badge-m{background:rgba(16,185,129,.1);color:var(--mint);}
 .badge-c{background:rgba(232,82,42,.1);color:var(--coral);}
-.badge-g{background:rgba(212,160,23,.12);color:#8B6914;}
+.badge-g{background:rgba(212,160,23,.12);color:#B8920F;}
 .badge-dark{background:rgba(21,40,31,.08);color:var(--ink);}
 .badge-white{background:rgba(255,255,255,.18);color:#fff;}
 
@@ -58,7 +58,7 @@ a{color:inherit;text-decoration:none;} img{max-width:100%;display:block;}
 .field-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:5px;}
 .field-label i{color:var(--violet);font-size:11px;}
 .input{width:100%;height:47px;padding:0 15px;border-radius:12px;border:1.5px solid rgba(21,40,31,.2);background:#fff;font-size:14px;font-family:inherit;color:var(--ink);outline:none;transition:all .15s;}
-.input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(109,40,217,.1);}
+.input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(10,100,188,.1);}
 .input.err{border-color:var(--coral);}
 .input-icon{position:relative;} .input-icon i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none;}
 .input-icon .input{padding-left:38px;}
@@ -70,7 +70,7 @@ select.input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xml
 .flash{padding:13px 18px;border-radius:14px;font-size:14px;font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
 .flash-ok{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;}
 .flash-err{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;}
-.flash-info{background:rgba(109,40,217,.08);color:var(--violet);border:1px solid rgba(109,40,217,.2);}
+.flash-info{background:rgba(10,100,188,.08);color:var(--violet);border:1px solid rgba(10,100,188,.2);}
 
 /* ── SECTION HEADINGS ── */
 .sec-eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;}

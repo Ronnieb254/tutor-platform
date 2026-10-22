@@ -1,4 +1,4 @@
-@php
+﻿@php
 $sessionTiers = [
     20 => ['name' => 'Quick Help',      'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question'],
     40 => ['name' => 'Guided Practice', 'price' => 500, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A'],
@@ -38,7 +38,7 @@ $sessionTiers = [
                 <label style="cursor:pointer;">
                     <input type="radio" wire:model.live="duration" value="{{ $mins }}" style="display:none;">
                     <div style="border:2px solid {{ $duration == $mins ? 'var(--violet)' : 'rgba(21,40,31,.12)' }};
-                                background:{{ $duration == $mins ? 'rgba(109,40,217,.05)' : '#fff' }};
+                                background:{{ $duration == $mins ? 'rgba(10,100,188,.05)' : '#fff' }};
                                 border-radius:14px;padding:14px 12px;transition:all .18s;text-align:left;">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
                             <div style="display:flex;align-items:center;gap:6px;">
@@ -108,7 +108,7 @@ $sessionTiers = [
 
         <button wire:click="nextStep"
                 style="width:100%;height:50px;border-radius:999px;background:var(--violet);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
-                onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='var(--violet)'">
+                onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--violet)'">
             Continue to Review
             <i class="fa-solid fa-arrow-right fa-sm"></i>
         </button>
@@ -144,7 +144,7 @@ $sessionTiers = [
         </div>
 
         {{-- Code notice --}}
-        <div style="background:rgba(109,40,217,.05);border:1px solid rgba(109,40,217,.15);border-radius:14px;padding:14px 16px;">
+        <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:14px 16px;">
             <p style="font-size:13px;font-weight:700;color:var(--violet);margin-bottom:4px;">
                 <i class="fa-solid fa-key fa-xs" style="margin-right:5px;"></i> After payment
             </p>
@@ -159,7 +159,7 @@ $sessionTiers = [
             <button wire:click="initPayment"
                     wire:loading.attr="disabled"
                     style="flex:2;height:48px;border-radius:999px;background:var(--violet);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;"
-                    onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='var(--violet)'">
+                    onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--violet)'">
                 <span wire:loading.remove wire:target="initPayment">
                     <i class="fa-solid fa-credit-card fa-sm"></i>
                     Pay KSh {{ $tier['price'] }}
@@ -186,7 +186,7 @@ $sessionTiers = [
         <p style="font-size:14px;color:var(--muted);margin-bottom:22px;">Check your email and SMS for full session details.</p>
 
         {{-- Session code --}}
-        <div style="background:rgba(109,40,217,.06);border:2px solid rgba(109,40,217,.25);border-radius:18px;padding:20px;margin-bottom:18px;">
+        <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.25);border-radius:18px;padding:20px;margin-bottom:18px;">
             <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">
                 <i class="fa-solid fa-key" style="color:var(--violet);margin-right:4px;"></i> Your Session Access Code
             </p>

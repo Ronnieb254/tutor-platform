@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -11,7 +11,7 @@
 {{-- HERO --}}
 <section style="background:linear-gradient(135deg,#0D1F14,#15281F);padding:72px 0;position:relative;overflow:hidden;">
     <div style="position:absolute;top:-80px;right:-80px;width:340px;height:340px;background:rgba(212,160,23,.08);border-radius:50%;pointer-events:none;"></div>
-    <div style="position:absolute;bottom:-60px;left:-40px;width:240px;height:240px;background:rgba(109,40,217,.1);border-radius:50%;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:-40px;width:240px;height:240px;background:rgba(10,100,188,.1);border-radius:50%;pointer-events:none;"></div>
     <div style="max-width:1360px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
         <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="hero-g">
             <div>
@@ -19,13 +19,13 @@
                     <i class="fa-solid fa-star fa-xs"></i> The Examiner's Clinic
                 </div>
                 <h1 style="font-family:'Fraunces',serif;font-size:clamp(34px,5vw,58px);color:#fff;margin-bottom:16px;line-height:1.1;">
-                    Learn from the experts who <span style="color:#D4A017;">set the exams.</span>
+                    Learn from the experts who <span style="color:#EEBE15;">set the exams.</span>
                 </h1>
                 <p style="font-size:17px;color:rgba(255,255,255,.65);max-width:560px;margin-bottom:28px;line-height:1.85;">
                     Most revision resources focus on <em style="font-style:italic;">what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to answer questions</strong> — delivered by national examiners and markers, structured per paper (PP1, PP2, PP3).
                 </p>
                 <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
-                    <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#D4A017;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
+                    <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
                         <i class="fa-solid fa-calendar-check fa-sm"></i> Book a Clinic Spot
                     </a>
                     <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
@@ -36,7 +36,7 @@
                     @foreach([['fa-sterling-sign','KSh 500','Per 60-min session'],['fa-users','Max 30','Learners per session'],['fa-calendar-week','Weekly','Every subject'],['fa-shield-check','Secure','All sessions']] as [$ic,$val,$lbl])
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div style="width:34px;height:34px;background:rgba(212,160,23,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="fa-solid {{ $ic }}" style="color:#D4A017;font-size:13px;"></i>
+                            <i class="fa-solid {{ $ic }}" style="color:#EEBE15;font-size:13px;"></i>
                         </div>
                         <div>
                             <div style="font-size:14px;font-weight:700;color:#fff;">{{ $val }}</div>
@@ -55,7 +55,7 @@
                 </div>
                 @endforeach
                 <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);text-align:center;">
-                    <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#D4A017;">KSh 500</span>
+                    <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">KSh 500</span>
                     <span style="font-size:14px;color:rgba(255,255,255,.45);margin-left:8px;">/ 60-minute session</span>
                 </div>
             </div>
@@ -80,8 +80,8 @@
                 </div>
                 @endforeach
             </div>
-            <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;border-left:4px solid #D4A017;">
-                <h3 style="font-size:15px;font-weight:700;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-star fa-sm" style="color:#D4A017;"></i> Examiner's Clinic</h3>
+            <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;border-left:4px solid #EEBE15;">
+                <h3 style="font-size:15px;font-weight:700;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-star fa-sm" style="color:#EEBE15;"></i> Examiner's Clinic</h3>
                 @foreach(['Focuses on HOW to answer','Strategic, marks-focused teaching','Direct insight into KNEC marking criteria','KSh 500 for a 60-minute group session'] as $item)
                 <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:13px;color:#15281F;">
                     <i class="fa-solid fa-circle-check" style="color:#10B981;margin-top:2px;flex-shrink:0;"></i>{{ $item }}
@@ -106,11 +106,11 @@
         {{-- FILTER BAR --}}
         <form method="GET" action="{{ route('examiner-clinic') }}" style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;box-shadow:0 2px 12px rgba(21,40,31,.04);">
             <div style="flex:2;min-width:180px;">
-                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-magnifying-glass fa-xs" style="color:#6D28D9;"></i> Search</label>
-                <input type="text" name="search" value="{{ $search }}" placeholder="Subject or title…" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">
+                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-magnifying-glass fa-xs" style="color:#0A64BC;"></i> Search</label>
+                <input type="text" name="search" value="{{ $search }}" placeholder="Subject or title…" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">
             </div>
             <div style="min-width:160px;">
-                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-book-open fa-xs" style="color:#6D28D9;"></i> Subject</label>
+                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-book-open fa-xs" style="color:#0A64BC;"></i> Subject</label>
                 <select name="subject" onchange="this.form.submit()" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;background:#fff;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
                     <option value="">All subjects</option>
                     @foreach($subjects as $s)
@@ -119,7 +119,7 @@
                 </select>
             </div>
             <div style="min-width:140px;">
-                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-file-lines fa-xs" style="color:#6D28D9;"></i> Paper</label>
+                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-file-lines fa-xs" style="color:#0A64BC;"></i> Paper</label>
                 <select name="paper" onchange="this.form.submit()" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;background:#fff;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
                     <option value="">All papers</option>
                     @foreach($paperTypes as $code => $label)
@@ -128,7 +128,7 @@
                 </select>
             </div>
             <div style="display:flex;gap:6px;">
-                <button type="submit" style="height:42px;padding:0 18px;border-radius:10px;background:#6D28D9;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;"><i class="fa-solid fa-magnifying-glass"></i> Filter</button>
+                <button type="submit" style="height:42px;padding:0 18px;border-radius:10px;background:#0A64BC;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;"><i class="fa-solid fa-magnifying-glass"></i> Filter</button>
                 @if($search || $subjectId || $paperType)
                 <a href="{{ route('examiner-clinic') }}" style="height:42px;padding:0 16px;border-radius:10px;background:#F4F6F4;color:#15281F;font-size:13px;font-weight:500;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-xmark fa-xs"></i> Clear</a>
                 @endif
@@ -143,7 +143,7 @@
             <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-calendar-xmark" style="color:rgba(21,40,31,.12);"></i></div>
             <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">No clinics scheduled</h3>
             <p style="color:rgba(21,40,31,.55);margin-bottom:20px;">No clinics match your filters. Try adjusting your search or check back soon — new clinics are added weekly.</p>
-            <a href="{{ route('examiner-clinic') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#6D28D9;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><i class="fa-solid fa-arrow-left fa-sm"></i> Clear Filters</a>
+            <a href="{{ route('examiner-clinic') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><i class="fa-solid fa-arrow-left fa-sm"></i> Clear Filters</a>
         </div>
         @else
         <div style="display:flex;flex-direction:column;gap:14px;">
@@ -156,7 +156,7 @@
             @endphp
             <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;{{ $isFull ? 'opacity:.75;' : '' }}box-shadow:0 2px 12px rgba(21,40,31,.04);">
                 <div style="width:54px;height:54px;border-radius:16px;background:rgba(212,160,23,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i class="fa-solid fa-chalkboard-user" style="color:#D4A017;font-size:22px;"></i>
+                    <i class="fa-solid fa-chalkboard-user" style="color:#EEBE15;font-size:22px;"></i>
                 </div>
                 <div style="flex:1;min-width:200px;">
                     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
@@ -166,32 +166,32 @@
                             <span style="font-size:11px;color:rgba(21,40,31,.4);font-weight:600;">Session {{ $clinic->batch_number }} (auto-opened)</span>
                             @endif
                         </div>
-                        <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#D4A017;flex-shrink:0;">KSh {{ number_format($clinic->price) }}</span>
+                        <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#EEBE15;flex-shrink:0;">KSh {{ number_format($clinic->price) }}</span>
                     </div>
                     <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;">
                         @if($clinic->tutor)
-                        <span style="background:rgba(109,40,217,.08);color:#6D28D9;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-user fa-xs"></i>{{ $clinic->tutor->name }}</span>
+                        <span style="background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-user fa-xs"></i>{{ $clinic->tutor->name }}</span>
                         @endif
                         @if($clinic->subject)
                         <span style="background:rgba(21,40,31,.06);color:#15281F;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-book-open fa-xs"></i>{{ $clinic->subject->name }}</span>
                         @endif
                         @if($clinic->paper_type)
-                        <span style="background:rgba(212,160,23,.1);color:#D4A017;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-file-lines fa-xs"></i>{{ $clinic->paper_type }}</span>
+                        <span style="background:rgba(212,160,23,.1);color:#EEBE15;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-file-lines fa-xs"></i>{{ $clinic->paper_type }}</span>
                         @endif
                         @if($isFull)
                         <span style="background:#FEE2E2;color:#991B1B;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-lock fa-xs"></i> FULL</span>
                         @endif
                     </div>
                     <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:rgba(21,40,31,.55);align-items:center;">
-                        <span><i class="fa-regular fa-calendar fa-xs" style="color:#6D28D9;margin-right:4px;"></i>{{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</span>
-                        <span><i class="fa-solid fa-clock fa-xs" style="color:#6D28D9;margin-right:4px;"></i>{{ $clinic->duration_minutes }} min</span>
+                        <span><i class="fa-regular fa-calendar fa-xs" style="color:#0A64BC;margin-right:4px;"></i>{{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</span>
+                        <span><i class="fa-solid fa-clock fa-xs" style="color:#0A64BC;margin-right:4px;"></i>{{ $clinic->duration_minutes }} min</span>
                         <span style="color:{{ $isFull ? '#991B1B' : '#10B981' }};font-weight:600;">
                             <i class="fa-solid fa-users fa-xs" style="margin-right:4px;"></i>{{ $enrolledCount }}/{{ $maxStudents }} enrolled
                         </span>
                     </div>
                     {{-- Capacity bar --}}
                     <div style="margin-top:10px;width:100%;max-width:300px;height:6px;background:rgba(21,40,31,.06);border-radius:999px;overflow:hidden;">
-                        <div style="width:{{ $fillPct }}%;height:100%;background:{{ $isFull ? '#E8522A' : ($fillPct > 70 ? '#D4A017' : '#10B981') }};border-radius:999px;transition:width .3s;"></div>
+                        <div style="width:{{ $fillPct }}%;height:100%;background:{{ $isFull ? '#E8522A' : ($fillPct > 70 ? '#EEBE15' : '#10B981') }};border-radius:999px;transition:width .3s;"></div>
                     </div>
                 </div>
                 <div style="flex-shrink:0;">
@@ -207,13 +207,13 @@
                     @else
                     <form method="POST" action="{{ route('clinic.enroll', $clinic) }}">
                         @csrf
-                        <button type="submit" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#D4A017;color:#15281F;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+                        <button type="submit" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
                             <i class="fa-solid fa-ticket fa-sm"></i> Book Spot — KSh {{ number_format($clinic->price) }}
                         </button>
                     </form>
                     @endif
                     @else
-                    <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#D4A017;color:#15281F;font-size:14px;font-weight:700;text-decoration:none;">
+                    <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;text-decoration:none;">
                         <i class="fa-solid fa-ticket fa-sm"></i> Book Spot
                     </a>
                     @endauth
@@ -231,7 +231,7 @@
             <a href="{{ $clinics->previousPageUrl() }}" style="padding:8px 16px;border-radius:10px;background:#fff;color:#15281F;font-size:13px;font-weight:500;border:1.5px solid rgba(21,40,31,.1);text-decoration:none;"><i class="fa-solid fa-chevron-left fa-xs"></i> Prev</a>
             @endif
             @foreach($clinics->getUrlRange(max(1, $clinics->currentPage()-2), min($clinics->lastPage(), $clinics->currentPage()+2)) as $page => $url)
-            <a href="{{ $url }}" style="padding:8px 16px;border-radius:10px;background:{{ $page == $clinics->currentPage() ? '#6D28D9' : '#fff' }};color:{{ $page == $clinics->currentPage() ? '#fff' : '#15281F' }};font-size:13px;font-weight:600;border:1.5px solid {{ $page == $clinics->currentPage() ? '#6D28D9' : 'rgba(21,40,31,.1)' }};text-decoration:none;">{{ $page }}</a>
+            <a href="{{ $url }}" style="padding:8px 16px;border-radius:10px;background:{{ $page == $clinics->currentPage() ? '#0A64BC' : '#fff' }};color:{{ $page == $clinics->currentPage() ? '#fff' : '#15281F' }};font-size:13px;font-weight:600;border:1.5px solid {{ $page == $clinics->currentPage() ? '#0A64BC' : 'rgba(21,40,31,.1)' }};text-decoration:none;">{{ $page }}</a>
             @endforeach
             @if($clinics->hasMorePages())
             <a href="{{ $clinics->nextPageUrl() }}" style="padding:8px 16px;border-radius:10px;background:#fff;color:#15281F;font-size:13px;font-weight:500;border:1.5px solid rgba(21,40,31,.1);text-decoration:none;">Next <i class="fa-solid fa-chevron-right fa-xs"></i></a>
@@ -258,8 +258,8 @@
                 ['fa-headset','Zero Administrative Overhead','You bring the expertise. Mwalimu handles student acquisition, M-Pesa ticketing, automated reminders, and classroom setup.'],
             ] as [$icon,$title,$desc])
             <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;display:flex;gap:16px;align-items:flex-start;">
-                <div style="width:48px;height:48px;background:rgba(109,40,217,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i class="fa-solid {{ $icon }}" style="color:#6D28D9;font-size:18px;"></i>
+                <div style="width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="fa-solid {{ $icon }}" style="color:#0A64BC;font-size:18px;"></i>
                 </div>
                 <div>
                     <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:6px;">{{ $title }}</h3>
@@ -269,7 +269,7 @@
             @endforeach
         </div>
         <div style="text-align:center;margin-top:28px;">
-            <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#6D28D9;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#4C1D95';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#6D28D9';this.style.transform='translateY(0)'">
+            <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                 <i class="fa-solid fa-chalkboard-user fa-sm"></i> Register as an Examiner
             </a>
         </div>

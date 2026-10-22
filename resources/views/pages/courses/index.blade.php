@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -10,13 +10,13 @@
 use App\Models\Course; use App\Models\Category;
 $courses    = Course::published()->with(['tutor','category'])->latest()->paginate(12);
 $categories = Category::active()->withCount('subjects')->get();
-$colors     = ['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899'];
+$colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 @endphp
 @include('partials.nav')
 
 {{-- HERO --}}
 <section style="background:var(--ink);padding:52px 0;position:relative;overflow:hidden;">
-    <div style="position:absolute;bottom:-60px;right:-40px;width:260px;height:260px;background:rgba(109,40,217,.15);border-radius:50%;"></div>
+    <div style="position:absolute;bottom:-60px;right:-40px;width:260px;height:260px;background:rgba(10,100,188,.15);border-radius:50%;"></div>
     <div class="w" style="position:relative;z-index:1;">
         <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-play-circle"></i> Pre-Recorded Courses</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Learn at your own pace</h1>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -11,7 +11,7 @@
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireStyles
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--violet:#6D28D9;--coral:#E8522A;--gold:#D4A017;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
+:root{--ink:#15281F;--cream:#FBF5E6;--violet:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
@@ -59,7 +59,7 @@ button{font-family:inherit;cursor:pointer;}
 .page-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .tb-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--hair);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;position:relative;}
-.tb-btn:hover{border-color:rgba(109,40,217,.4);color:var(--violet);}
+.tb-btn:hover{border-color:rgba(10,100,188,.4);color:var(--violet);}
 .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--coral);border-radius:50%;border:2px solid #fff;}
 
 /* Content */
@@ -87,14 +87,14 @@ button{font-family:inherit;cursor:pointer;}
 .bdg-green{background:#DCFCE7;color:#166534;}
 .bdg-amber{background:#FEF9C3;color:#854D0E;}
 .bdg-red{background:#FEE2E2;color:#991B1B;}
-.bdg-violet{background:rgba(109,40,217,.1);color:var(--violet);}
+.bdg-violet{background:rgba(10,100,188,.1);color:var(--violet);}
 .bdg-blue{background:#DBEAFE;color:#1E40AF;}
 .bdg-gray{background:#F3F4F6;color:#6B7280;}
 .bdg-mint{background:rgba(16,185,129,.1);color:var(--mint);}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;}
-.btn-v{background:var(--violet);color:#fff;}.btn-v:hover{background:#4C1D95;}
+.btn-v{background:var(--violet);color:#fff;}.btn-v:hover{background:#120A8F;}
 .btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--hair);}.btn-o:hover{border-color:var(--violet);color:var(--violet);}
 .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
 .btn-danger{background:#FEE2E2;color:#991B1B;}
@@ -118,7 +118,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
 /* Doc upload card */
 .doc-card{border:2px dashed var(--hair);border-radius:14px;padding:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:border-color .15s;}
-.doc-card:hover{border-color:rgba(109,40,217,.4);}
+.doc-card:hover{border-color:rgba(10,100,188,.4);}
 .doc-card.uploaded{border-style:solid;border-color:var(--hair);background:#FAFCFA;}
 .doc-card.approved{border-color:var(--mint);background:#F0FDF4;}
 .doc-card.rejected{border-color:var(--coral);background:#FEF2F2;}
@@ -155,7 +155,7 @@ $activeTab = request('tab','overview');
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
     <div class="sb-logo">
-        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
         <div>
             <div class="sb-logo-text">Mwalimu</div>
             <div class="sb-logo-sub">Tutor Portal</div>
@@ -332,8 +332,8 @@ $activeTab = request('tab','overview');
     {{-- Stats --}}
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
         <div class="stat">
-            <div class="stat-icon" style="background:rgba(109,40,217,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#6D28D9" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <div class="stat-icon" style="background:rgba(10,100,188,.1);">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
             </div>
             <div class="stat-lbl">Wallet Balance</div>
             <div class="stat-val">KSh {{ number_format($wallet?->balance ?? 0) }}</div>
@@ -357,7 +357,7 @@ $activeTab = request('tab','overview');
         </div>
         <div class="stat">
             <div class="stat-icon" style="background:rgba(212,160,23,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#D4A017" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
             </div>
             <div class="stat-lbl">My Rate</div>
             <div class="stat-val" style="font-size:22px;">KSh {{ number_format($profile?->hourly_rate ?? 0) }}/hr</div>
@@ -413,8 +413,8 @@ $activeTab = request('tab','overview');
             ['earnings','💰','Earnings','Check wallet & history'],
             ['availability','🕐','Availability','Set your schedule'],
         ] as [$t,$ic,$label,$desc])
-        <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(109,40,217,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='translateY(0)'">
-            <div style="font-size:26px;width:48px;height:48px;background:rgba(109,40,217,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ $ic }}</div>
+        <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='translateY(0)'">
+            <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ $ic }}</div>
             <div>
                 <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</div>
                 <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $desc }}</div>
@@ -488,7 +488,7 @@ $activeTab = request('tab','overview');
         @php $doc = $docs->where('type',$type)->first(); @endphp
         <div class="doc-card {{ $doc ? ($doc->status === 'approved' ? 'approved' : ($doc->status === 'rejected' ? 'rejected' : 'uploaded')) : '' }}">
             <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:0;">
-                <div style="width:48px;height:48px;border-radius:12px;background:rgba(109,40,217,.08);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">{{ $icon }}</div>
+                <div style="width:48px;height:48px;border-radius:12px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">{{ $icon }}</div>
                 <div style="min-width:0;">
                     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                         <span style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</span>
@@ -524,7 +524,7 @@ $activeTab = request('tab','overview');
         @endforeach
     </div>
 
-    <div style="background:rgba(109,40,217,.05);border:1px solid rgba(109,40,217,.15);border-radius:14px;padding:16px 20px;">
+    <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:16px 20px;">
         <p style="font-size:13px;font-weight:700;color:var(--violet);margin-bottom:6px;">📋 Accepted formats</p>
         <p style="font-size:13px;color:var(--muted);line-height:1.6;">JPG, PNG or PDF · Max 5MB per file · Must be clear and legible · National ID must show both sides if applicable</p>
     </div>
@@ -557,7 +557,7 @@ $activeTab = request('tab','overview');
         </div>
         @foreach($upcomingB->sortBy('scheduled_at') as $b)
         <div style="padding:14px 20px;border-bottom:1px solid rgba(21,40,31,.05);display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-            <div class="av" style="width:44px;height:44px;background:#6D28D9;border-radius:12px;font-size:16px;">{{ substr($b->student->name,0,1) }}</div>
+            <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;">{{ substr($b->student->name,0,1) }}</div>
             <div style="flex:1;min-width:160px;">
                 <div style="font-weight:600;font-size:14px;">{{ $b->student->name }}</div>
                 <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} · {{ $b->duration_minutes }}min · KSh {{ number_format($b->tutor_earning) }}</div>
@@ -569,7 +569,7 @@ $activeTab = request('tab','overview');
             @php $sc=['pending'=>'bdg-amber','confirmed'=>'bdg-blue','completed'=>'bdg-green','cancelled'=>'bdg-gray'][$b->status]??'bdg-gray'; @endphp
             <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
             @if($b->session_code_tutor)
-            <div style="background:rgba(109,40,217,.08);border:1px solid rgba(109,40,217,.2);border-radius:10px;padding:6px 12px;text-align:center;">
+            <div style="background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:10px;padding:6px 12px;text-align:center;">
                 <div style="font-size:10px;color:var(--muted);font-weight:600;">SESSION CODE</div>
                 <div style="font-family:monospace;font-size:14px;font-weight:800;color:var(--violet);">{{ $b->session_code_tutor }}</div>
             </div>
@@ -600,7 +600,7 @@ $activeTab = request('tab','overview');
                     <tr>
                         <td>
                             <div style="display:flex;align-items:center;gap:8px;">
-                                <div class="av" style="width:30px;height:30px;background:#6D28D9;border-radius:8px;font-size:12px;">{{ substr($b->student->name,0,1) }}</div>
+                                <div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($b->student->name,0,1) }}</div>
                                 {{ $b->student->name }}
                             </div>
                         </td>
@@ -610,7 +610,7 @@ $activeTab = request('tab','overview');
                         <td style="font-weight:600;color:var(--mint);">KSh {{ number_format($b->tutor_earning) }}</td>
                         <td>
                             @if($b->session_code_tutor)
-                            <code style="background:rgba(109,40,217,.08);color:var(--violet);padding:2px 7px;border-radius:6px;font-size:12px;font-weight:700;">{{ $b->session_code_tutor }}</code>
+                            <code style="background:rgba(10,100,188,.08);color:var(--violet);padding:2px 7px;border-radius:6px;font-size:12px;font-weight:700;">{{ $b->session_code_tutor }}</code>
                             @else
                             <span style="color:var(--muted);font-size:12px;">—</span>
                             @endif
@@ -658,7 +658,7 @@ $activeTab = request('tab','overview');
                 @forelse($chatBookings as $cb)
                 @php $lastMsg = $cb->messages->first(); $unread = $cb->messages()->where('receiver_id',$user->id)->whereNull('read_at')->count(); @endphp
                 <div @click="activeBookingId={{ $cb->id }}"
-                     :style="activeBookingId==={{ $cb->id }} ? 'background:rgba(109,40,217,.06);' : ''"
+                     :style="activeBookingId==={{ $cb->id }} ? 'background:rgba(10,100,188,.06);' : ''"
                      style="display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(21,40,31,.04);transition:background .1s;"
                      onmouseover="if(this.getAttribute('data-active')!=='true')this.style.background='#F9FAF9'" onmouseout="if(this.getAttribute('data-active')!=='true')this.style.background='transparent'">
                     <div class="av" style="width:42px;height:42px;background:#{{ substr(md5($cb->student->email),0,6) }};border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($cb->student->name,0,1) }}</div>
@@ -688,7 +688,7 @@ $activeTab = request('tab','overview');
             @if($chatBookings->isNotEmpty())
             @php $firstBooking = $chatBookings->first(); @endphp
             <div style="padding:14px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;gap:12px;">
-                <div class="av" style="width:38px;height:38px;background:#6D28D9;border-radius:10px;font-size:14px;">{{ substr($firstBooking->student->name,0,1) }}</div>
+                <div class="av" style="width:38px;height:38px;background:#0A64BC;border-radius:10px;font-size:14px;">{{ substr($firstBooking->student->name,0,1) }}</div>
                 <div>
                     <div style="font-weight:700;font-size:14px;">{{ $firstBooking->student->name }}</div>
                     <div style="font-size:12px;color:var(--muted);">{{ $firstBooking->subject?->name ?? 'General' }} · {{ $firstBooking->scheduled_at->format('M j, g:ia') }}</div>
@@ -701,7 +701,7 @@ $activeTab = request('tab','overview');
                 @php $isMine = $msg->sender_id === $user->id; @endphp
                 <div class="msg {{ $isMine ? 'mine' : 'theirs' }}">
                     @if(!$isMine)
-                    <div class="av" style="width:32px;height:32px;background:#6D28D9;border-radius:9px;font-size:12px;flex-shrink:0;">{{ substr($msg->sender->name,0,1) }}</div>
+                    <div class="av" style="width:32px;height:32px;background:#0A64BC;border-radius:9px;font-size:12px;flex-shrink:0;">{{ substr($msg->sender->name,0,1) }}</div>
                     @endif
                     <div>
                         <div class="msg-bubble">{{ $msg->body }}</div>
@@ -747,8 +747,8 @@ $activeTab = request('tab','overview');
 
     {{-- Wallet balance hero --}}
     <div style="background:linear-gradient(135deg,var(--ink) 0%,#1e3a2b 100%);border-radius:20px;padding:32px;margin-bottom:20px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(109,40,217,.2);border-radius:50%;"></div>
-        <div style="position:absolute;bottom:-20px;right:80px;width:80px;height:80px;background:rgba(109,40,217,.15);border-radius:50%;"></div>
+        <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(10,100,188,.2);border-radius:50%;"></div>
+        <div style="position:absolute;bottom:-20px;right:80px;width:80px;height:80px;background:rgba(10,100,188,.15);border-radius:50%;"></div>
         <div style="position:relative;z-index:1;">
             <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.45);margin-bottom:8px;">Available Balance</div>
             <div style="font-family:'Fraunces',serif;font-size:48px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px;">KSh {{ number_format($wallet?->balance ?? 0) }}</div>
@@ -887,11 +887,11 @@ $activeTab = request('tab','overview');
     <div class="card" style="overflow:hidden;">
         @forelse($notifications as $notif)
         @php $isUnread = is_null($notif->read_at); $data = $notif->data; @endphp
-        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(21,40,31,.05);background:{{ $isUnread ? 'rgba(109,40,217,.04)' : 'transparent' }};transition:background .1s;"
-             onmouseover="this.style.background='#F9FAF9'" onmouseout="this.style.background='{{ $isUnread ? 'rgba(109,40,217,.04)' : 'transparent' }}'">
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(21,40,31,.05);background:{{ $isUnread ? 'rgba(10,100,188,.04)' : 'transparent' }};transition:background .1s;"
+             onmouseover="this.style.background='#F9FAF9'" onmouseout="this.style.background='{{ $isUnread ? 'rgba(10,100,188,.04)' : 'transparent' }}'">
             {{-- Icon based on type --}}
             @php
-            $icons = ['new_booking'=>['📅','rgba(109,40,217,.1)'],'booking_confirmed'=>['✅','rgba(16,185,129,.1)'],'booking_cancelled'=>['❌','rgba(232,82,42,.1)'],'payout_processed'=>['💰','rgba(212,160,23,.1)']];
+            $icons = ['new_booking'=>['📅','rgba(10,100,188,.1)'],'booking_confirmed'=>['✅','rgba(16,185,129,.1)'],'booking_cancelled'=>['❌','rgba(232,82,42,.1)'],'payout_processed'=>['💰','rgba(212,160,23,.1)']];
             [$notifIcon,$notifBg] = $icons[$data['type'] ?? ''] ?? ['🔔','rgba(21,40,31,.05)'];
             @endphp
             <div style="width:44px;height:44px;border-radius:12px;background:{{ $notifBg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">{{ $notifIcon }}</div>
@@ -900,7 +900,7 @@ $activeTab = request('tab','overview');
                     <div>
                         <div style="font-weight:{{ $isUnread ? '700' : '500' }};font-size:14px;color:var(--ink);">{{ $data['message'] ?? 'New notification' }}</div>
                         @if(!empty($data['code']))
-                        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(109,40,217,.08);border:1px solid rgba(109,40,217,.2);border-radius:8px;padding:4px 10px;margin-top:6px;">
+                        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:8px;padding:4px 10px;margin-top:6px;">
                             <span style="font-size:11px;color:var(--muted);">Session code:</span>
                             <code style="font-size:13px;font-weight:800;color:var(--violet);">{{ $data['code'] }}</code>
                         </div>
@@ -946,11 +946,11 @@ $activeTab = request('tab','overview');
             <div style="display:flex;flex-direction:column;gap:10px;">
                 @foreach($days as $i => $day)
                 @php $av = $avails->get($i); $isActive = $av?->is_active ?? false; @endphp
-                <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;background:{{ $isActive ? 'rgba(109,40,217,.05)' : '#F9FAF9' }};border:1px solid {{ $isActive ? 'rgba(109,40,217,.2)' : 'var(--hair)' }};">
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;background:{{ $isActive ? 'rgba(10,100,188,.05)' : '#F9FAF9' }};border:1px solid {{ $isActive ? 'rgba(10,100,188,.2)' : 'var(--hair)' }};">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer;width:120px;flex-shrink:0;">
                         <input type="checkbox" name="days[{{ $i }}][active]" value="1" {{ $isActive ? 'checked' : '' }}
                                style="width:16px;height:16px;accent-color:var(--violet);cursor:pointer;"
-                               onchange="let row=this.closest('div');row.style.background=this.checked?'rgba(109,40,217,.05)':'#F9FAF9';row.style.borderColor=this.checked?'rgba(109,40,217,.2)':'var(--hair)'">
+                               onchange="let row=this.closest('div');row.style.background=this.checked?'rgba(10,100,188,.05)':'#F9FAF9';row.style.borderColor=this.checked?'rgba(10,100,188,.2)':'var(--hair)'">
                         <span style="font-weight:600;font-size:14px;color:var(--ink);">{{ $day }}</span>
                     </label>
                     <div style="display:flex;align-items:center;gap:8px;flex:1;">

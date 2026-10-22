@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
 <title>Clinic Booking – Checkout</title>
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--violet:#6D28D9;--coral:#E8522A;--gold:#D4A017;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--cream:#FBF5E6;--violet:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}
@@ -22,24 +22,24 @@ a{color:inherit;text-decoration:none;}
 .divider{height:1px;background:var(--hair);margin:16px 0;}
 .total-row{font-size:18px!important;font-weight:700!important;color:var(--violet)!important;}
 
-.clinic-info{background:rgba(109,40,217,.06);border-radius:12px;padding:16px;margin-bottom:24px;border-left:4px solid var(--violet);}
+.clinic-info{background:rgba(10,100,188,.06);border-radius:12px;padding:16px;margin-bottom:24px;border-left:4px solid var(--violet);}
 .clinic-title{font-weight:700;font-size:15px;color:var(--ink);margin-bottom:6px;}
 .clinic-detail{font-size:13px;color:var(--muted);margin-bottom:3px;}
 .clinic-detail i{color:var(--violet);margin-right:6px;width:14px;}
 
 .payment-method{background:#fff;border:1.5px solid var(--hair);border-radius:12px;padding:16px;margin-bottom:20px;cursor:pointer;transition:all .2s;}
-.payment-method:hover{border-color:var(--violet);background:rgba(109,40,217,.02);}
-.payment-method.selected{border-color:var(--violet);background:rgba(109,40,217,.08);}
+.payment-method:hover{border-color:var(--violet);background:rgba(10,100,188,.02);}
+.payment-method.selected{border-color:var(--violet);background:rgba(10,100,188,.08);}
 .payment-icon{font-size:24px;margin-bottom:8px;}
 .payment-name{font-weight:600;font-size:14px;margin-bottom:2px;}
 .payment-desc{font-size:12px;color:var(--muted);}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;width:100%;}
 .btn-primary{background:var(--violet);color:#fff;}
-.btn-primary:hover{background:#4C1D95;transform:translateY(-1px);}
+.btn-primary:hover{background:#120A8F;transform:translateY(-1px);}
 .btn-primary:disabled{background:rgba(21,40,31,.2);cursor:not-allowed;transform:none;}
 .btn-secondary{background:#F4F6F4;color:var(--ink);border:1.5px solid var(--hair);}
-.btn-secondary:hover{border-color:var(--violet);background:rgba(109,40,217,.02);}
+.btn-secondary:hover{border-color:var(--violet);background:rgba(10,100,188,.02);}
 
 .terms{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
 .terms a{color:var(--violet);font-weight:600;}

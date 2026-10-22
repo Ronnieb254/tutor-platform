@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Users')
 
 @section('content')
@@ -44,7 +44,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
 
 {{-- Role summary --}}
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-    @foreach([['Students','student','#6D28D9'],['Parents','parent','#E8522A'],['Tutors','tutor','#10B981'],['Admins','admin','#D4A017']] as [$label,$r,$color])
+    @foreach([['Students','student','#0A64BC'],['Parents','parent','#E8522A'],['Tutors','tutor','#10B981'],['Admins','admin','#EEBE15']] as [$label,$r,$color])
     <a href="{{ route('admin.users') }}?role={{ $r }}" style="background:#fff;border:1px solid {{ $r===$role ? $color : 'var(--hairline)' }};border-radius:12px;padding:14px 16px;text-align:center;display:block;">
         <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:{{ $color }};">{{ User::where('role',$r)->count() }}</div>
         <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $label }}</div>

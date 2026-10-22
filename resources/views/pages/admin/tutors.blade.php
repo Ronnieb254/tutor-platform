@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -10,11 +10,11 @@ html,body{height:100%;background:#F2F5F2;}
 .sidebar{width:240px;background:#111C16;display:flex;flex-direction:column;flex-shrink:0;}
 .sb-logo{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px;}
 .sb-logo-text{font-family:'Fraunces',serif;font-size:18px;font-weight:800;color:#fff;}
-.sb-logo-text em{font-style:normal;color:#a78bfa;}
+.sb-logo-text em{font-style:normal;color:#60a5fa;}
 .sb-nav{flex:1;padding:8px;overflow-y:auto;}
 .sb-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;font-size:13px;font-weight:500;color:rgba(255,255,255,.55);transition:all .15s;margin-bottom:1px;cursor:pointer;text-decoration:none;}
 .sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
-.sb-item.active{background:#6D28D9;color:#fff;}
+.sb-item.active{background:#0A64BC;color:#fff;}
 .sb-badge{margin-left:auto;background:#E8522A;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;}
 .sb-footer{padding:12px;border-top:1px solid rgba(255,255,255,.06);}
 .sb-user{display:flex;align-items:center;gap:8px;}
@@ -27,8 +27,8 @@ html,body{height:100%;background:#F2F5F2;}
 .card{background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);}
 .card-p{padding:20px;}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;}
-.btn-v{background:#6D28D9;color:#fff;}.btn-v:hover{background:#4C1D95;}
-.btn-o{background:#fff;color:#15281F;border:1.5px solid rgba(21,40,31,.15);}.btn-o:hover{border-color:#6D28D9;color:#6D28D9;}
+.btn-v{background:#0A64BC;color:#fff;}.btn-v:hover{background:#120A8F;}
+.btn-o{background:#fff;color:#15281F;border:1.5px solid rgba(21,40,31,.15);}.btn-o:hover{border-color:#0A64BC;color:#0A64BC;}
 .btn-success{background:#DCFCE7;color:#166534;}.btn-success:hover{background:#BBF7D0;}
 .btn-danger{background:#FEE2E2;color:#991B1B;}.btn-danger:hover{background:#FECACA;}
 .btn-amber{background:#FEF9C3;color:#854D0E;}.btn-amber:hover{background:#FDE68A;}
@@ -39,7 +39,7 @@ html,body{height:100%;background:#F2F5F2;}
 .bdg-red{background:#FEE2E2;color:#991B1B;}
 .bdg-blue{background:#DBEAFE;color:#1E40AF;}
 .bdg-gray{background:#F3F4F6;color:#6B7280;}
-.bdg-violet{background:rgba(109,40,217,.1);color:#6D28D9;}
+.bdg-violet{background:rgba(10,100,188,.1);color:#0A64BC;}
 /* Doc viewer modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
 .modal-box{background:#fff;border-radius:20px;width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
@@ -74,7 +74,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
     {{-- Sidebar --}}
     <aside class="sidebar">
         <div class="sb-logo">
-            <svg width="28" height="28" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+            <svg width="28" height="28" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
             <span class="sb-logo-text"><em>Mw</em>alimu</span>
         </div>
         <nav class="sb-nav">
@@ -121,7 +121,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             <div style="display:flex;align-items:center;gap:12px;">
                 <h1 style="font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:#15281F;">Tutor Approvals</h1>
                 @if($speedy > 0)
-                <span class="bdg" style="background:rgba(212,160,23,.15);color:#D4A017;border:1px solid rgba(212,160,23,.3);">
+                <span class="bdg" style="background:rgba(212,160,23,.15);color:#EEBE15;border:1px solid rgba(212,160,23,.3);">
                     <i class="fa-solid fa-bolt fa-xs"></i> {{ $speedy }} priority
                 </span>
                 @endif
@@ -144,9 +144,9 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             {{-- Summary cards --}}
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:22px;" class="sum-g">
                 @foreach([
-                    ['Pending Review',$pending->total(),'#D4A017','fa-clock','rgba(212,160,23,.1)'],
+                    ['Pending Review',$pending->total(),'#EEBE15','fa-clock','rgba(212,160,23,.1)'],
                     ['Approved',$approved,'#10B981','fa-circle-check','rgba(16,185,129,.1)'],
-                    ['Priority (Speedy)',$speedy,'#6D28D9','fa-bolt','rgba(109,40,217,.1)'],
+                    ['Priority (Speedy)',$speedy,'#0A64BC','fa-bolt','rgba(10,100,188,.1)'],
                     ['Total Tutors',$totalTutors,'#3B82F6','fa-users','rgba(59,130,246,.1)'],
                 ] as [$label,$val,$col,$ic,$bg])
                 <div style="background:#fff;border-radius:14px;border:1px solid rgba(21,40,31,.07);padding:16px;display:flex;align-items:center;gap:12px;">
@@ -171,7 +171,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             @else
             <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
                 <p style="font-size:14px;color:rgba(21,40,31,.55);">{{ $pending->total() }} application{{ $pending->total()!==1?'s':'' }} awaiting review</p>
-                <p style="font-size:12px;color:rgba(21,40,31,.4);"><i class="fa-solid fa-bolt" style="color:#D4A017;"></i> Priority applications are marked with a gold badge</p>
+                <p style="font-size:12px;color:rgba(21,40,31,.4);"><i class="fa-solid fa-bolt" style="color:#EEBE15;"></i> Priority applications are marked with a gold badge</p>
             </div>
 
             @foreach($pending as $profile)
@@ -191,7 +191,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                                 <span style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:#15281F;">{{ $profile->user->name }}</span>
                                 @if($profile->speedy_verification_paid)
-                                <span class="bdg" style="background:rgba(212,160,23,.15);color:#D4A017;border:1px solid rgba(212,160,23,.3);"><i class="fa-solid fa-bolt fa-xs"></i> Priority</span>
+                                <span class="bdg" style="background:rgba(212,160,23,.15);color:#EEBE15;border:1px solid rgba(212,160,23,.3);"><i class="fa-solid fa-bolt fa-xs"></i> Priority</span>
                                 @endif
                                 @if($hasRejected)
                                 <span class="bdg bdg-red"><i class="fa-solid fa-circle-exclamation fa-xs"></i> Action Needed</span>
@@ -202,7 +202,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                             <div style="font-size:13px;color:rgba(21,40,31,.5);margin-top:2px;">
                                 {{ $profile->user->email }} · {{ $profile->city ?? 'Kenya' }} · {{ $docCount }}/5 docs uploaded
                                 @if($profile->speedy_verification_paid)
-                                · <span style="color:#D4A017;font-weight:600;"><i class="fa-solid fa-clock fa-xs"></i> Within 24hrs</span>
+                                · <span style="color:#EEBE15;font-weight:600;"><i class="fa-solid fa-clock fa-xs"></i> Within 24hrs</span>
                                 @else
                                 · <span style="color:rgba(21,40,31,.4);">Up to 3 days</span>
                                 @endif
@@ -370,7 +370,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                             @php
                             $approvedDocs = $docs->where('status','approved')->count();
                             @endphp
-                            <i class="fa-solid fa-info-circle fa-xs" style="color:#6D28D9;"></i>
+                            <i class="fa-solid fa-info-circle fa-xs" style="color:#0A64BC;"></i>
                             {{ $approvedDocs }}/{{ $docCount }} documents approved.
                             @if($approvedDocs === $docCount && $docCount === 5)
                             <span style="color:#10B981;font-weight:600;">All documents approved — ready to activate.</span>

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Categories & Subjects')
 
 @section('content')
@@ -25,7 +25,7 @@ $categories = Category::withCount('subjects')->orderBy('sort_order')->get();
         <div style="padding:20px;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                 <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:44px;height:44px;background:rgba(109,40,217,0.08);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">{{ $category->icon ?? '📚' }}</div>
+                    <div style="width:44px;height:44px;background:rgba(10,100,188,0.08);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">{{ $category->icon ?? '📚' }}</div>
                     <div>
                         <div style="font-weight:700;font-size:15px;color:var(--ink);">{{ $category->name }}</div>
                         <div style="font-size:12px;color:var(--muted);">{{ $category->subjects_count }} subjects</div>

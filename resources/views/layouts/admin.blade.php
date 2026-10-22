@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -12,8 +12,8 @@
     @livewireStyles
     <style>
         :root {
-            --ink:#15281F; --cream:#FBF5E6; --violet:#6D28D9; --coral:#E8522A;
-            --gold:#D4A017; --mint:#10B981; --muted:rgba(21,40,31,0.5);
+            --ink:#15281F; --cream:#FBF5E6; --violet:#0A64BC; --coral:#E8522A;
+            --gold:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.5);
             --hairline:rgba(21,40,31,0.1); --sidebar:#111C16; --sidebar-w:260px;
         }
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -58,7 +58,7 @@
         .topbar-breadcrumb{font-size:13px;color:var(--muted);}
         .topbar-right{display:flex;align-items:center;gap:12px;}
         .topbar-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--hairline);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;position:relative;}
-        .topbar-btn:hover{border-color:rgba(109,40,217,0.4);color:var(--violet);}
+        .topbar-btn:hover{border-color:rgba(10,100,188,0.4);color:var(--violet);}
         .topbar-notif-badge{position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:var(--coral);border-radius:999px;font-size:8px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
 
         /* Page content */
@@ -95,13 +95,13 @@
         .badge-amber{background:#FEF9C3;color:#854D0E;}
         .badge-red{background:#FEE2E2;color:#991B1B;}
         .badge-blue{background:#DBEAFE;color:#1E40AF;}
-        .badge-violet{background:rgba(109,40,217,0.1);color:var(--violet);}
+        .badge-violet{background:rgba(10,100,188,0.1);color:var(--violet);}
         .badge-gray{background:#F3F4F6;color:#6B7280;}
 
         /* Buttons */
         .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;}
         .btn-primary{background:var(--violet);color:#fff;}
-        .btn-primary:hover{background:#4C1D95;}
+        .btn-primary:hover{background:#120A8F;}
         .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
         .btn-outline{background:#fff;color:var(--ink);border:1.5px solid var(--hairline);}
         .btn-outline:hover{border-color:var(--violet);color:var(--violet);}
@@ -112,7 +112,7 @@
 
         /* Form elements */
         .form-input{width:100%;height:40px;padding:0 12px;border-radius:10px;border:1.5px solid rgba(21,40,31,0.15);background:#fff;font-size:13.5px;font-family:inherit;color:var(--ink);outline:none;transition:border-color .15s;}
-        .form-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(109,40,217,0.1);}
+        .form-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(10,100,188,0.1);}
         .form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2315281F' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
         .form-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;}
 
@@ -150,7 +150,7 @@
     {{-- Sidebar --}}
     <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
         <div class="sidebar-logo">
-            <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+            <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
             <div>
                 <span>Mwalimu</span>
                 <small>Admin Panel</small>

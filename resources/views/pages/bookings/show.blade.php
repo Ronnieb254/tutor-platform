@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
 <title>Session #{{ substr($booking->uuid,0,8) }} – Mwalimu</title>
 <style>
 .session-hero{background:linear-gradient(135deg,#111C16,#15281F);padding:48px 0;position:relative;overflow:hidden;}
-.session-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:rgba(109,40,217,.1);border-radius:50%;pointer-events:none;}
-.code-box{border:2px solid rgba(109,40,217,.3);border-radius:20px;padding:24px;text-align:center;background:rgba(109,40,217,.06);}
-.code-text{font-family:monospace;font-size:40px;font-weight:800;color:#6D28D9;letter-spacing:.12em;line-height:1;}
+.session-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:rgba(10,100,188,.1);border-radius:50%;pointer-events:none;}
+.code-box{border:2px solid rgba(10,100,188,.3);border-radius:20px;padding:24px;text-align:center;background:rgba(10,100,188,.06);}
+.code-text{font-family:monospace;font-size:40px;font-weight:800;color:#0A64BC;letter-spacing:.12em;line-height:1;}
 .join-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 40px;border-radius:999px;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;border:none;font-family:inherit;text-decoration:none;}
 .join-btn-live{background:#10B981;color:#fff;box-shadow:0 0 0 0 rgba(16,185,129,.4);animation:pulse-green 2s infinite;}
 @keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.4);}50%{box-shadow:0 0 0 14px rgba(16,185,129,0);}}
@@ -17,13 +17,13 @@
 .jitsi-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;}
 /* Chat */
 .chat-bubble{max-width:75%;padding:10px 15px;border-radius:16px;font-size:14px;line-height:1.6;}
-.chat-mine{background:#6D28D9;color:#fff;border-radius:16px 4px 16px 16px;margin-left:auto;}
+.chat-mine{background:#0A64BC;color:#fff;border-radius:16px 4px 16px 16px;margin-left:auto;}
 .chat-theirs{background:#F4F6F4;color:#15281F;border-radius:4px 16px 16px 16px;}
 /* Timeline */
 .timeline-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px;}
 .timeline-line{width:2px;background:rgba(21,40,31,.1);flex:1;margin:4px 0;}
 /* Countdown */
-#countdown{font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:#6D28D9;letter-spacing:.05em;}
+#countdown{font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:#0A64BC;letter-spacing:.05em;}
 </style>
 </head>
 <body>
@@ -82,11 +82,11 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                     {{ $sessionName }} with {{ $otherName }}
                 </h1>
                 <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:rgba(255,255,255,.6);">
-                    <span><i class="fa-solid fa-calendar fa-xs" style="color:#6D28D9;margin-right:5px;"></i>{{ $sessionStart->format('D, M j, Y') }}</span>
-                    <span><i class="fa-solid fa-clock fa-xs" style="color:#6D28D9;margin-right:5px;"></i>{{ $sessionStart->format('g:i a') }} – {{ $sessionEnd->format('g:i a') }} EAT</span>
-                    <span><i class="fa-solid fa-hourglass-half fa-xs" style="color:#6D28D9;margin-right:5px;"></i>{{ $booking->duration_minutes }} minutes</span>
-                    @if($booking->subject)<span><i class="fa-solid fa-book-open fa-xs" style="color:#6D28D9;margin-right:5px;"></i>{{ $booking->subject->name }}</span>@endif
-                    <span><i class="fa-solid fa-money-bill fa-xs" style="color:#D4A017;margin-right:5px;"></i>KSh {{ number_format($booking->total_amount) }}</span>
+                    <span><i class="fa-solid fa-calendar fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ $sessionStart->format('D, M j, Y') }}</span>
+                    <span><i class="fa-solid fa-clock fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ $sessionStart->format('g:i a') }} – {{ $sessionEnd->format('g:i a') }} EAT</span>
+                    <span><i class="fa-solid fa-hourglass-half fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ $booking->duration_minutes }} minutes</span>
+                    @if($booking->subject)<span><i class="fa-solid fa-book-open fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ $booking->subject->name }}</span>@endif
+                    <span><i class="fa-solid fa-money-bill fa-xs" style="color:#EEBE15;margin-right:5px;"></i>KSh {{ number_format($booking->total_amount) }}</span>
                 </div>
             </div>
             <div style="text-align:center;flex-shrink:0;">
@@ -201,7 +201,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                 <div style="padding:20px 24px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
                     <div>
                         <h2 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;">
-                            <i class="fa-solid fa-video" style="color:#6D28D9;margin-right:8px;font-size:16px;"></i>Live Session Room
+                            <i class="fa-solid fa-video" style="color:#0A64BC;margin-right:8px;font-size:16px;"></i>Live Session Room
                         </h2>
                         <p style="font-size:13px;color:rgba(21,40,31,.5);margin-top:2px;">
                             Powered by Jitsi Meet · Private · Encrypted · No download needed
@@ -227,8 +227,8 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                         @if($canJoin)
                         {{-- Session is open — show code entry --}}
                         <div style="padding:32px;text-align:center;">
-                            <div style="width:72px;height:72px;border-radius:999px;background:rgba(109,40,217,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
-                                <i class="fa-solid fa-key" style="font-size:28px;color:#6D28D9;"></i>
+                            <div style="width:72px;height:72px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+                                <i class="fa-solid fa-key" style="font-size:28px;color:#0A64BC;"></i>
                             </div>
                             <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:6px;">Enter Your Session Code</h3>
                             <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;">
@@ -241,7 +241,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                                        @keydown.enter="verify()"
                                        placeholder="{{ $isTutor ? 'TUT-XXXXXX' : 'STU-XXXXXX' }}"
                                        style="width:100%;height:56px;text-align:center;font-family:monospace;font-size:22px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:16px;border:2px solid rgba(21,40,31,.18);background:#fff;outline:none;transition:all .18s;color:#15281F;margin-bottom:10px;"
-                                       onfocus="this.style.borderColor='#6D28D9';this.style.boxShadow='0 0 0 3px rgba(109,40,217,.1)'"
+                                       onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 3px rgba(10,100,188,.1)'"
                                        onblur="this.style.borderColor='rgba(21,40,31,.18)';this.style.boxShadow='none'">
                                 <p x-show="codeError" x-text="codeError" style="font-size:13px;color:#E8522A;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-triangle-exclamation fa-xs"></i></p>
                                 <button @click="verify()"
@@ -253,7 +253,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
 
                             {{-- Demo: show code hint --}}
                             <div style="margin-top:20px;padding:14px;background:#F9FAF9;border-radius:14px;display:inline-block;text-align:left;">
-                                <p style="font-size:12px;color:rgba(21,40,31,.5);margin-bottom:5px;"><i class="fa-solid fa-envelope fa-xs" style="color:#6D28D9;"></i> Your code was emailed to <strong>{{ auth()->user()->email }}</strong></p>
+                                <p style="font-size:12px;color:rgba(21,40,31,.5);margin-bottom:5px;"><i class="fa-solid fa-envelope fa-xs" style="color:#0A64BC;"></i> Your code was emailed to <strong>{{ auth()->user()->email }}</strong></p>
                                 <p style="font-size:12px;color:rgba(21,40,31,.4);">Can't find it? Check your spam folder or contact support.</p>
                             </div>
                         </div>
@@ -286,7 +286,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
 
                     {{-- Jitsi launching --}}
                     <div x-show="launching" x-cloak style="background:#111C16;padding:60px;text-align:center;border-radius:0 0 22px 22px;">
-                        <div style="width:52px;height:52px;border:3px solid rgba(109,40,217,.2);border-top-color:#6D28D9;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
+                        <div style="width:52px;height:52px;border:3px solid rgba(10,100,188,.2);border-top-color:#0A64BC;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
                         <p style="font-size:15px;color:rgba(255,255,255,.7);">Launching your private classroom…</p>
                     </div>
 
@@ -298,7 +298,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
             {{-- ── YOUR SESSION CODE ── --}}
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;">
                 <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-                    <i class="fa-solid fa-key" style="color:#6D28D9;font-size:15px;"></i> Your Session Code
+                    <i class="fa-solid fa-key" style="color:#0A64BC;font-size:15px;"></i> Your Session Code
                 </h3>
                 <div class="code-box" style="margin-bottom:18px;">
                     <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(21,40,31,.4);margin-bottom:10px;">
@@ -308,7 +308,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                     <p style="font-size:12px;color:rgba(21,40,31,.5);margin-top:10px;">Use this code to enter your live session</p>
                     @if($myCode)
                     <button onclick="navigator.clipboard.writeText('{{ $myCode }}');this.innerHTML='<i class=\'fa-solid fa-check fa-xs\'></i> Copied!';setTimeout(()=>this.innerHTML='<i class=\'fa-solid fa-copy fa-xs\'></i> Copy Code',2000)"
-                            style="margin-top:12px;background:none;border:1.5px solid rgba(109,40,217,.3);color:#6D28D9;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;">
+                            style="margin-top:12px;background:none;border:1.5px solid rgba(10,100,188,.3);color:#0A64BC;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;">
                         <i class="fa-solid fa-copy fa-xs"></i> Copy Code
                     </button>
                     @endif
@@ -316,7 +316,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
 
                 {{-- How to join steps --}}
                 <div style="background:#F9FAF9;border-radius:14px;padding:16px;">
-                    <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-list-check" style="color:#6D28D9;"></i> How to join</p>
+                    <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-list-check" style="color:#0A64BC;"></i> How to join</p>
                     @foreach([
                         '1. Come back to this page when your session starts',
                         '2. Click the "Enter Your Session Code" field',
@@ -325,14 +325,14 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                         '5. Your private Jitsi classroom opens instantly',
                     ] as $s)
                     <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:5px;display:flex;align-items:flex-start;gap:7px;">
-                        <i class="fa-solid fa-circle-dot fa-xs" style="color:#6D28D9;margin-top:3px;flex-shrink:0;"></i>{{ $s }}
+                        <i class="fa-solid fa-circle-dot fa-xs" style="color:#0A64BC;margin-top:3px;flex-shrink:0;"></i>{{ $s }}
                     </p>
                     @endforeach
                 </div>
             </div>
             @elseif($booking->status === 'pending')
             <div style="background:#FEF9C3;border:1.5px solid #FDE68A;border-radius:22px;padding:28px;text-align:center;">
-                <i class="fa-solid fa-clock" style="font-size:40px;color:#D4A017;display:block;margin-bottom:14px;"></i>
+                <i class="fa-solid fa-clock" style="font-size:40px;color:#EEBE15;display:block;margin-bottom:14px;"></i>
                 <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:8px;">Awaiting Confirmation</h3>
                 <p style="font-size:14px;color:rgba(21,40,31,.6);">Your booking is pending payment confirmation. Session codes will be sent once confirmed.</p>
             </div>
@@ -349,7 +349,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                 <i class="fa-solid fa-ban" style="font-size:40px;color:#E8522A;display:block;margin-bottom:14px;"></i>
                 <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:8px;">Session Cancelled</h3>
                 <p style="font-size:14px;color:rgba(21,40,31,.6);">This session was cancelled. {{ $booking->cancellation_reason ?? '' }}</p>
-                <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:11px 24px;border-radius:999px;background:#6D28D9;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
+                <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
                     <i class="fa-solid fa-magnifying-glass fa-xs"></i> Book a New Session
                 </a>
             </div>
@@ -383,8 +383,8 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                 <form @submit.prevent="sendMessage" style="padding:14px 18px;border-top:1px solid rgba(21,40,31,.08);display:flex;gap:8px;">
                     <input type="text" x-model="newMsg" placeholder="Type a message…"
                            style="flex:1;height:44px;padding:0 15px;border-radius:12px;border:1.5px solid rgba(21,40,31,.15);font-size:14px;font-family:inherit;outline:none;background:#fff;"
-                           onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='rgba(21,40,31,.15)'">
-                    <button type="submit" style="height:44px;padding:0 18px;border-radius:12px;background:#6D28D9;color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:600;display:flex;align-items:center;gap:6px;transition:background .15s;" onmouseover="this.style.background='#4C1D95'" onmouseout="this.style.background='#6D28D9'">
+                           onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.15)'">
+                    <button type="submit" style="height:44px;padding:0 18px;border-radius:12px;background:#0A64BC;color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:600;display:flex;align-items:center;gap:6px;transition:background .15s;" onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
                         <i class="fa-solid fa-paper-plane fa-xs"></i> Send
                     </button>
                 </form>
@@ -395,7 +395,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
             @if($booking->status === 'completed' && $isStudent && !$booking->review)
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;" x-data="{ rating:5, comment:'', submitted:false }">
                 <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
-                    <i class="fa-solid fa-star" style="color:#D4A017;font-size:15px;"></i> Leave a Review
+                    <i class="fa-solid fa-star" style="color:#EEBE15;font-size:15px;"></i> Leave a Review
                 </h3>
                 <template x-if="!submitted">
                     <form @submit.prevent="
@@ -409,14 +409,14 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                             @for($i=1;$i<=5;$i++)
                             <button type="button" @click="rating={{ $i }}" @mouseenter="hover={{ $i }}" @mouseleave="hover=0"
                                     style="font-size:32px;background:none;border:none;cursor:pointer;transition:transform .1s;"
-                                    :style="(hover>={{ $i }}||(hover===0&&rating>={{ $i }}))?'color:#D4A017;transform:scale(1.1)':'color:rgba(21,40,31,.15)'">★</button>
+                                    :style="(hover>={{ $i }}||(hover===0&&rating>={{ $i }}))?'color:#EEBE15;transform:scale(1.1)':'color:rgba(21,40,31,.15)'">★</button>
                             @endfor
                             <span style="font-size:14px;color:rgba(21,40,31,.5);align-self:center;margin-left:8px;" x-text="rating+'/5'"></span>
                         </div>
                         <textarea x-model="comment" rows="3" placeholder="Share your experience with {{ $booking->tutor->name }}…"
                                   style="width:100%;padding:12px 14px;border-radius:13px;border:1.5px solid rgba(21,40,31,.15);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.65;margin-bottom:14px;"
-                                  onfocus="this.style.borderColor='#6D28D9'" onblur="this.style.borderColor='rgba(21,40,31,.15)'"></textarea>
-                        <button type="submit" style="padding:12px 28px;border-radius:999px;background:#D4A017;color:#15281F;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">
+                                  onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.15)'"></textarea>
+                        <button type="submit" style="padding:12px 28px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">
                             <i class="fa-solid fa-star fa-xs"></i> Submit Review
                         </button>
                     </form>
@@ -430,9 +430,9 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
             </div>
             @elseif($booking->review)
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:24px;">
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:14px;"><i class="fa-solid fa-star" style="color:#D4A017;margin-right:6px;"></i>Your Review</h3>
+                <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:14px;"><i class="fa-solid fa-star" style="color:#EEBE15;margin-right:6px;"></i>Your Review</h3>
                 <div style="display:flex;gap:2px;margin-bottom:8px;">
-                    @for($i=1;$i<=5;$i++)<i class="fa-solid fa-star" style="color:{{ $i<=$booking->review->rating?'#D4A017':'#E5E7EB' }};font-size:18px;"></i>@endfor
+                    @for($i=1;$i<=5;$i++)<i class="fa-solid fa-star" style="color:{{ $i<=$booking->review->rating?'#EEBE15':'#E5E7EB' }};font-size:18px;"></i>@endfor
                 </div>
                 <p style="font-size:14px;color:#15281F;line-height:1.75;">{{ $booking->review->comment }}</p>
             </div>
@@ -445,7 +445,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
             {{-- Session details --}}
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:24px;">
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
-                    <i class="fa-solid fa-circle-info" style="color:#6D28D9;font-size:14px;"></i> Session Details
+                    <i class="fa-solid fa-circle-info" style="color:#0A64BC;font-size:14px;"></i> Session Details
                 </h3>
                 <dl style="display:flex;flex-direction:column;gap:0;">
                     @foreach([
@@ -476,7 +476,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
             {{-- Payment info --}}
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:24px;">
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
-                    <i class="fa-solid fa-credit-card" style="color:#6D28D9;font-size:14px;"></i> Payment
+                    <i class="fa-solid fa-credit-card" style="color:#0A64BC;font-size:14px;"></i> Payment
                 </h3>
                 @if($booking->payment)
                 <div style="display:flex;flex-direction:column;gap:8px;">

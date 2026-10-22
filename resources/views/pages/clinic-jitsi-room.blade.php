@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,7 +6,7 @@
 <title>{{ $clinic->title ?? $clinic->name }} - Clinic Session</title>
 <script src="https://meet.jitsi.org/external_api.js"></script>
 <style>
-:root{--ink:#15281F;--violet:#6D28D9;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--violet:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var(--ink);}
 
@@ -15,7 +15,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
 .session-header{background:var(--ink);padding:12px 20px;border-bottom:1px solid var(--hair);display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:13px;z-index:100;}
 .session-title{font-weight:700;flex:1;}
-.session-code{background:rgba(109,40,217,.2);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-left:16px;}
+.session-code{background:rgba(10,100,188,.2);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-left:16px;}
 .moderator-badge{background:rgba(234,179,8,.2);border:1px solid rgba(234,179,8,.4);color:#facc15;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-left:16px;}
 .exit-btn{background:var(--hair);color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s;}
 .exit-btn:hover{background:rgba(255,255,255,.15);}

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -11,7 +11,7 @@
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireStyles
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--violet:#6D28D9;--coral:#E8522A;--gold:#D4A017;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
+:root{--ink:#15281F;--cream:#FBF5E6;--violet:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
@@ -56,7 +56,7 @@ button{font-family:inherit;cursor:pointer;}
 .page-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .tb-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--hair);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;position:relative;}
-.tb-btn:hover{border-color:rgba(109,40,217,.4);color:var(--violet);}
+.tb-btn:hover{border-color:rgba(10,100,188,.4);color:var(--violet);}
 .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--coral);border-radius:50%;border:2px solid #fff;}
 
 .content{flex:1;overflow-y:auto;padding:24px;}
@@ -77,14 +77,14 @@ button{font-family:inherit;cursor:pointer;}
 .bdg-green{background:#DCFCE7;color:#166534;}
 .bdg-amber{background:#FEF9C3;color:#854D0E;}
 .bdg-red{background:#FEE2E2;color:#991B1B;}
-.bdg-violet{background:rgba(109,40,217,.1);color:var(--violet);}
+.bdg-violet{background:rgba(10,100,188,.1);color:var(--violet);}
 .bdg-blue{background:#DBEAFE;color:#1E40AF;}
 .bdg-mint{background:rgba(16,185,129,.1);color:var(--mint);}
 .bdg-gray{background:#F3F4F6;color:#6B7280;}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;text-decoration:none;}
-.btn-v{background:var(--violet);color:#fff;}.btn-v:hover{background:#4C1D95;}
+.btn-v{background:var(--violet);color:#fff;}.btn-v:hover{background:#120A8F;}
 .btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--hair);}.btn-o:hover{border-color:var(--violet);color:var(--violet);}
 .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
 .btn-mint{background:var(--mint);color:#fff;}
@@ -106,7 +106,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 .sec-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);}
 
 /* Session code */
-.code-box{background:rgba(109,40,217,.06);border:1.5px solid rgba(109,40,217,.2);border-radius:10px;padding:6px 12px;text-align:center;}
+.code-box{background:rgba(10,100,188,.06);border:1.5px solid rgba(10,100,188,.2);border-radius:10px;padding:6px 12px;text-align:center;}
 .code-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
 .code-val{font-family:monospace;font-size:15px;font-weight:800;color:var(--violet);}
 
@@ -124,7 +124,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
 /* Tutor card */
 .tutor-card{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1px solid var(--hair);background:#fff;transition:all .2s;}
-.tutor-card:hover{border-color:rgba(109,40,217,.3);box-shadow:0 4px 16px rgba(21,40,31,.08);}
+.tutor-card:hover{border-color:rgba(10,100,188,.3);box-shadow:0 4px 16px rgba(21,40,31,.08);}
 </style>
 </head>
 <body>
@@ -145,7 +145,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
     <div class="sb-logo">
-        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#6D28D9"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
         <div>
             <div class="sb-logo-text">Mwalimu</div>
             <div class="sb-logo-sub">{{ $user->isParent() ? 'Parent Portal' : 'Student Portal' }}</div>
@@ -270,8 +270,8 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
     {{-- Stats --}}
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
         <div class="stat">
-            <div class="stat-icon" style="background:rgba(109,40,217,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#6D28D9" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <div class="stat-icon" style="background:rgba(10,100,188,.1);">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             </div>
             <div class="stat-lbl">Upcoming Sessions</div>
             <div class="stat-val">{{ $upcomingBookings->count() }}</div>
@@ -295,7 +295,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
         </div>
         <div class="stat">
             <div class="stat-icon" style="background:rgba(212,160,23,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#D4A017" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </div>
             <div class="stat-lbl">Saved Tutors</div>
             <div class="stat-val">{{ $user->wishlist()->count() }}</div>
@@ -313,7 +313,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
         </div>
         @foreach($upcomingBookings->take(4) as $b)
         <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid rgba(21,40,31,.05);">
-            <div class="av" style="width:44px;height:44px;background:#6D28D9;border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
+            <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
             <div style="flex:1;min-width:0;">
                 <div style="font-weight:600;font-size:14px;">{{ $b->tutor->name }}</div>
                 <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} · {{ $b->duration_minutes }}min</div>
@@ -353,8 +353,8 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             ['payments','💳','Payments','View payment history'],
             ['wishlist','❤️','Saved Tutors','Your favourite tutors'],
         ] as [$t,$ic,$label,$desc])
-        <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(109,40,217,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='none'">
-            <div style="font-size:26px;width:48px;height:48px;background:rgba(109,40,217,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ $ic }}</div>
+        <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='none'">
+            <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ $ic }}</div>
             <div>
                 <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</div>
                 <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $desc }}</div>
@@ -377,7 +377,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
     @forelse($upcomingBookings as $b)
     <div class="card" style="margin-bottom:14px;padding:20px;">
         <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
-            <div class="av" style="width:52px;height:52px;background:#6D28D9;border-radius:14px;font-size:20px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
+            <div class="av" style="width:52px;height:52px;background:#0A64BC;border-radius:14px;font-size:20px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
             <div style="flex:1;min-width:180px;">
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
                     <span style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);">{{ $b->tutor->name }}</span>
@@ -404,7 +404,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
 
             {{-- Session code --}}
             @if($b->session_code_student)
-            <div style="background:rgba(109,40,217,.06);border:2px solid rgba(109,40,217,.2);border-radius:14px;padding:14px 18px;text-align:center;flex-shrink:0;">
+            <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.2);border-radius:14px;padding:14px 18px;text-align:center;flex-shrink:0;">
                 <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;">Your Session Code</div>
                 <div style="font-family:monospace;font-size:22px;font-weight:800;color:var(--violet);">{{ $b->session_code_student }}</div>
                 <div style="font-size:11px;color:var(--muted);margin-top:4px;">Enter this to join your session</div>
@@ -461,7 +461,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                     <tr>
                         <td>
                             <div style="display:flex;align-items:center;gap:10px;">
-                                <div class="av" style="width:32px;height:32px;background:#6D28D9;border-radius:9px;font-size:13px;">{{ substr($b->tutor->name,0,1) }}</div>
+                                <div class="av" style="width:32px;height:32px;background:#0A64BC;border-radius:9px;font-size:13px;">{{ substr($b->tutor->name,0,1) }}</div>
                                 <div>
                                     <div style="font-weight:600;font-size:13.5px;">{{ $b->tutor->name }}</div>
                                 </div>
@@ -515,7 +515,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 @forelse($chatBookings as $cb)
                 @php $lastMsg = $cb->messages->first(); $unread = $cb->messages()->where('receiver_id',$user->id)->whereNull('read_at')->count(); @endphp
                 <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(21,40,31,.04);transition:background .1s;" onmouseover="this.style.background='#F9FAF9'" onmouseout="this.style.background='transparent'">
-                    <div class="av" style="width:40px;height:40px;background:#6D28D9;border-radius:11px;font-size:15px;flex-shrink:0;">{{ substr($cb->tutor->name,0,1) }}</div>
+                    <div class="av" style="width:40px;height:40px;background:#0A64BC;border-radius:11px;font-size:15px;flex-shrink:0;">{{ substr($cb->tutor->name,0,1) }}</div>
                     <div style="flex:1;min-width:0;">
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;">
                             <span style="font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $cb->tutor->name }}</span>
@@ -536,7 +536,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             @if($chatBookings->isNotEmpty())
             @php $fb = $chatBookings->first(); @endphp
             <div style="padding:14px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;gap:12px;">
-                <div class="av" style="width:36px;height:36px;background:#6D28D9;border-radius:10px;font-size:13px;">{{ substr($fb->tutor->name,0,1) }}</div>
+                <div class="av" style="width:36px;height:36px;background:#0A64BC;border-radius:10px;font-size:13px;">{{ substr($fb->tutor->name,0,1) }}</div>
                 <div>
                     <div style="font-weight:700;font-size:14px;">{{ $fb->tutor->name }}</div>
                     <div style="font-size:12px;color:var(--muted);">{{ $fb->subject?->name ?? 'General' }}</div>
@@ -548,7 +548,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 @forelse($messages as $msg)
                 @php $isMine = $msg->sender_id === $user->id; @endphp
                 <div class="msg {{ $isMine ? 'mine' : 'theirs' }}">
-                    @if(!$isMine)<div class="av" style="width:30px;height:30px;background:#6D28D9;border-radius:8px;font-size:11px;flex-shrink:0;">{{ substr($msg->sender->name,0,1) }}</div>@endif
+                    @if(!$isMine)<div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:11px;flex-shrink:0;">{{ substr($msg->sender->name,0,1) }}</div>@endif
                     <div>
                         <div class="msg-bubble">{{ $msg->body }}</div>
                         <div style="font-size:11px;color:var(--muted);margin-top:3px;{{ $isMine ? 'text-align:right;' : '' }}">{{ $msg->created_at->format('g:ia') }}</div>
@@ -586,8 +586,8 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
     {{-- Summary --}}
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;" class="pay-stats">
         <div class="stat">
-            <div class="stat-icon" style="background:rgba(109,40,217,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#6D28D9" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <div class="stat-icon" style="background:rgba(10,100,188,.1);">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
             </div>
             <div class="stat-lbl">Total Spent</div>
             <div class="stat-val" style="font-size:22px;">KSh {{ number_format($totalSpent) }}</div>
@@ -601,7 +601,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
         </div>
         <div class="stat">
             <div class="stat-icon" style="background:rgba(212,160,23,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#D4A017" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <div class="stat-lbl">This Month</div>
             <div class="stat-val" style="font-size:22px;">KSh {{ number_format($user->payments()->where('status','success')->whereMonth('paid_at',now()->month)->sum('amount')) }}</div>
@@ -623,7 +623,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                     <tr>
                         <td>
                             <div style="display:flex;align-items:center;gap:10px;">
-                                <div class="av" style="width:30px;height:30px;background:#6D28D9;border-radius:8px;font-size:12px;">{{ substr($payment->booking?->tutor->name ?? 'T',0,1) }}</div>
+                                <div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($payment->booking?->tutor->name ?? 'T',0,1) }}</div>
                                 {{ $payment->booking?->tutor->name ?? '—' }}
                             </div>
                         </td>
@@ -669,13 +669,13 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
     <div class="card">
         @forelse($notifications as $notif)
         @php $isUnread = is_null($notif->read_at); $data = $notif->data; @endphp
-        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(21,40,31,.05);background:{{ $isUnread ? 'rgba(109,40,217,.04)' : 'transparent' }};">
-            @php $icons=['new_booking'=>['📅','rgba(109,40,217,.1)'],'booking_confirmed'=>['✅','rgba(16,185,129,.1)'],'booking_cancelled'=>['❌','rgba(232,82,42,.1)']]; [$ic,$bg]=$icons[$data['type']??'']??['🔔','rgba(21,40,31,.05)']; @endphp
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(21,40,31,.05);background:{{ $isUnread ? 'rgba(10,100,188,.04)' : 'transparent' }};">
+            @php $icons=['new_booking'=>['📅','rgba(10,100,188,.1)'],'booking_confirmed'=>['✅','rgba(16,185,129,.1)'],'booking_cancelled'=>['❌','rgba(232,82,42,.1)']]; [$ic,$bg]=$icons[$data['type']??'']??['🔔','rgba(21,40,31,.05)']; @endphp
             <div style="width:44px;height:44px;border-radius:12px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">{{ $ic }}</div>
             <div style="flex:1;">
                 <div style="font-weight:{{ $isUnread?'700':'500' }};font-size:14px;color:var(--ink);">{{ $data['message'] ?? 'New notification' }}</div>
                 @if(!empty($data['code']))
-                <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(109,40,217,.08);border:1px solid rgba(109,40,217,.2);border-radius:8px;padding:4px 10px;margin-top:6px;">
+                <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:8px;padding:4px 10px;margin-top:6px;">
                     <span style="font-size:11px;color:var(--muted);">Your access code:</span>
                     <code style="font-size:14px;font-weight:800;color:var(--violet);">{{ $data['code'] }}</code>
                 </div>
@@ -767,7 +767,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
         @foreach($children as $child)
         <div class="card card-p">
             <div style="display:flex;align-items:center;gap:14px;">
-                <div style="width:52px;height:52px;border-radius:14px;background:rgba(109,40,217,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👦</div>
+                <div style="width:52px;height:52px;border-radius:14px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👦</div>
                 <div style="flex:1;">
                     <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">{{ $child->name }}</div>
                     <div style="font-size:13px;color:var(--muted);margin-top:3px;">

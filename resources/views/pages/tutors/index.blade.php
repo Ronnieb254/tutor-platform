@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -6,21 +6,21 @@
 <meta name="description" content="Browse TSC-registered tutors across all Kenyan curriculum subjects. Book sessions from KSh 300.">
 <style>
 .hero-band{background:var(--ink);padding:52px 0;position:relative;overflow:hidden;}
-.hero-band::after{content:'';position:absolute;bottom:-60px;right:-60px;width:280px;height:280px;background:rgba(109,40,217,.15);border-radius:50%;}
+.hero-band::after{content:'';position:absolute;bottom:-60px;right:-60px;width:280px;height:280px;background:rgba(10,100,188,.15);border-radius:50%;}
 .filter-card{background:#fff;border-radius:20px;border:1px solid var(--hair);padding:20px;margin-bottom:20px;box-shadow:0 2px 16px rgba(21,40,31,.06);}
 .f-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px;display:block;}
 .f-input{height:42px;padding:0 13px;border-radius:10px;border:1.5px solid var(--hair);background:#fff;font-size:13.5px;font-family:inherit;color:var(--ink);outline:none;transition:border-color .15s;width:100%;}
 .f-input:focus{border-color:var(--violet);}
 select.f-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
 .tc{background:#fff;border-radius:20px;border:1px solid var(--hair);padding:20px;transition:all .2s;}
-.tc:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(21,40,31,.1);border-color:rgba(109,40,217,.2);}
+.tc:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(21,40,31,.1);border-color:rgba(10,100,188,.2);}
 .level-tag{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(21,40,31,.06);color:var(--muted);}
 .dur-pills{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:12px 0;}
 .dp{text-align:center;border:1.5px solid var(--hair);border-radius:9px;padding:5px 3px;transition:all .15s;cursor:pointer;}
-.dp:hover{border-color:var(--violet);background:rgba(109,40,217,.04);}
+.dp:hover{border-color:var(--violet);background:rgba(10,100,188,.04);}
 .dp-min{font-size:11px;font-weight:700;color:var(--ink);}
 .dp-price{font-size:10px;color:var(--muted);}
-.filter-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(109,40,217,.1);color:var(--violet);padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;}
+.filter-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(10,100,188,.1);color:var(--violet);padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;}
 </style>
 </head>
 <body>
@@ -40,7 +40,7 @@ $q=TutorProfile::approved()->with(['user','subjects'])
     ->when($minR,fn($x)=>$x->where('rating_avg','>=',$minR));
 $q=$sort==='price_asc'?$q->orderBy('hourly_rate'):($sort==='sessions'?$q->orderByDesc('total_sessions'):$q->orderByDesc('rating_avg'));
 $tutors=$q->paginate(12)->withQueryString();
-$colors=['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899','#0EA5E9','#8B5CF6'];
+$colors=['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899','#0EA5E9','#8B5CF6'];
 $prices=[20=>300,40=>500,60=>700];
 $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 @endphp

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Dashboard')
 
 @section('content')
@@ -24,8 +24,8 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
 {{-- Stats --}}
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(109,40,217,0.1);">
-            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#6D28D9" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="stat-icon" style="background:rgba(10,100,188,0.1);">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <div class="stat-label">Total Users</div>
         <div class="stat-value">{{ number_format($totalUsers) }}</div>
@@ -57,7 +57,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
     </div>
     <div class="stat-card">
         <div class="stat-icon" style="background:rgba(212,160,23,0.1);">
-            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#D4A017" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
         <div class="stat-label">Pending Actions</div>
         <div class="stat-value">{{ $pendingTutors + $pendingPayouts }}</div>
@@ -70,8 +70,8 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
 {{-- Second row stats --}}
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
     <div style="background:#fff;border-radius:14px;border:1px solid var(--hairline);padding:16px 20px;display:flex;align-items:center;gap:16px;">
-        <div style="width:40px;height:40px;background:rgba(109,40,217,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#6D28D9" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <div style="width:40px;height:40px;background:rgba(10,100,188,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         </div>
         <div>
             <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Total Revenue</div>
@@ -126,7 +126,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                     <tr>
                         <td>
                             <div style="display:flex;align-items:center;gap:8px;">
-                                <div class="avatar" style="width:30px;height:30px;border-radius:8px;font-size:12px;background:#6D28D9;">{{ substr($booking->student->name,0,1) }}</div>
+                                <div class="avatar" style="width:30px;height:30px;border-radius:8px;font-size:12px;background:#0A64BC;">{{ substr($booking->student->name,0,1) }}</div>
                                 <span style="font-weight:500;">{{ $booking->student->name }}</span>
                             </div>
                         </td>
