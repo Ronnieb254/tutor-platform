@@ -12,7 +12,7 @@
 :root{
     --ink:#15281F;
     --cream:#FBF5E6;
-    --violet:#0A64BC;
+    --Trust Blue:#0A64BC;
     --coral:#E8522A;
     --mint:#10B981;
     --muted:rgba(21,40,31,.55);
@@ -222,7 +222,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 
 .form-input:focus{
     outline:none;
-    border-color:var(--violet);
+    border-color:var(--Trust Blue);
     box-shadow:0 0 0 4px rgba(10,100,188,.08);
 }
 
@@ -252,7 +252,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
     width:18px;
     height:18px;
     cursor:pointer;
-    accent-color:var(--violet);
+    accent-color:var(--Trust Blue);
 }
 
 .checkbox-wrapper label{
@@ -264,7 +264,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 
 .forgot-link{
     font-size:14px;
-    color:var(--violet);
+    color:var(--Trust Blue);
     font-weight:600;
     text-decoration:none;
     transition:color .2s;
@@ -278,7 +278,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 .btn-submit{
     width:100%;
     padding:16px;
-    background:linear-gradient(135deg,var(--violet) 0%,#5B21B6 100%);
+    background:linear-gradient(135deg,var(--Trust Blue) 0%,#5B21B6 100%);
     color:#fff;
     font-size:16px;
     font-weight:700;
@@ -332,7 +332,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 }
 
 .signup-link a{
-    color:var(--violet);
+    color:var(--Trust Blue);
     font-weight:700;
     text-decoration:none;
     transition:color .2s;

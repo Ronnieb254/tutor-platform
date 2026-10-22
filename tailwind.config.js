@@ -11,9 +11,9 @@ export default {
       colors: {
         ink:    '#15281F',
         cream:  '#FBF5E6',
-        violet: { DEFAULT: '#6D28D9', 50: '#f5f3ff', 100: '#ede9fe', 700: '#4C1D95' },
+        Trust Blue: { DEFAULT: '#0A64BC', 50: '#f5f3ff', 100: '#ede9fe', 700: '#120A8F' },
         coral:  '#E8522A',
-        gold:   '#D4A017',
+        electric-yellow:   '#EEBE15',
         mint:   '#10B981',
         muted:  'rgba(21,40,31,0.55)',
       },

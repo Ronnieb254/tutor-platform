@@ -161,7 +161,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
         <div style="padding:8px;">
             @forelse($pendingApprovals as $profile)
             <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;" onmouseover="this.style.background='#F4F6F4'" onmouseout="this.style.background='transparent'">
-                <div class="avatar" style="background:#{{ ['6D28D9','10B981','E8522A','D4A017'][$loop->index % 4] }};">{{ substr($profile->user->name,0,1) }}</div>
+                <div class="avatar" style="background:#{{ ['0A64BC','10B981','E8522A','EEBE15'][$loop->index % 4] }};">{{ substr($profile->user->name,0,1) }}</div>
                 <div style="flex:1;min-width:0;">
                     <div style="font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $profile->user->name }}</div>
                     <div style="font-size:11px;color:var(--muted);">{{ $profile->city }} · {{ $profile->documents->count() }} doc(s)</div>
@@ -177,7 +177,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
         </div>
         @if($pendingTutors > 5)
         <div style="padding:12px 20px;border-top:1px solid var(--hairline);text-align:center;">
-            <a href="{{ route('admin.tutors') }}" style="font-size:13px;color:var(--violet);font-weight:600;">View all {{ $pendingTutors }} pending →</a>
+            <a href="{{ route('admin.tutors') }}" style="font-size:13px;color:var(--Trust Blue);font-weight:600;">View all {{ $pendingTutors }} pending →</a>
         </div>
         @endif
     </div>

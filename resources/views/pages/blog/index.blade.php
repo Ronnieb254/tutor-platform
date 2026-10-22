@@ -78,9 +78,9 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
         {{-- SIDEBAR --}}
         <aside>
             <div class="card card-p" style="margin-bottom:16px;">
-                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:var(--ink);margin-bottom:14px;"><i class="fa-solid fa-layer-group fa-sm" style="color:var(--violet);margin-right:6px;"></i>Categories</h3>
+                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:var(--ink);margin-bottom:14px;"><i class="fa-solid fa-layer-group fa-sm" style="color:var(--Trust Blue);margin-right:6px;"></i>Categories</h3>
                 @forelse($cats as $cat)
-                <a href="{{ route('blog.index') }}?category={{ $cat->id }}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px;color:var(--ink);transition:color .15s;" onmouseover="this.style.color='var(--violet)'" onmouseout="this.style.color='var(--ink)'">
+                <a href="{{ route('blog.index') }}?category={{ $cat->id }}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px;color:var(--ink);transition:color .15s;" onmouseover="this.style.color='var(--Trust Blue)'" onmouseout="this.style.color='var(--ink)'">
                     <span>{{ $cat->name }}</span>
                     <span style="background:#F4F6F4;color:var(--muted);padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;">{{ $cat->posts_count }}</span>
                 </a>
@@ -89,10 +89,10 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                 @endforelse
             </div>
 
-            <div class="card card-p" style="background:var(--violet);border-color:var(--violet);">
-                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:#fff;margin-bottom:8px;"><i class="fa-solid fa-star" style="color:var(--gold);margin-right:6px;"></i>Examiner's Clinic</h3>
+            <div class="card card-p" style="background:var(--Trust Blue);border-color:var(--Trust Blue);">
+                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:#fff;margin-bottom:8px;"><i class="fa-solid fa-star" style="color:var(--electric-yellow);margin-right:6px;"></i>Examiner's Clinic</h3>
                 <p style="font-size:13px;color:rgba(255,255,255,.75);margin-bottom:14px;line-height:1.65;">Learn directly from the national examiners who set and mark KCSE papers. Only KSh 500 per session.</p>
-                <a href="{{ route('examiner-clinic') }}" class="btn btn-gold btn-sm" style="width:100%;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View Clinics</a>
+                <a href="{{ route('examiner-clinic') }}" class="btn btn-electric-yellow btn-sm" style="width:100%;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View Clinics</a>
             </div>
         </aside>
     </div>

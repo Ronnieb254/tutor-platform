@@ -4,7 +4,7 @@
 @include('partials.head')
 <title>My Clinic Bookings</title>
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--violet:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--electric-yellow:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}
@@ -13,17 +13,17 @@ a{color:inherit;text-decoration:none;}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:16px;}
 .title{font-family:'Fraunces',serif;font-size:32px;font-weight:700;}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s;}
-.btn-primary{background:var(--violet);color:#fff;}
+.btn-primary{background:var(--Trust Blue);color:#fff;}
 .btn-primary:hover{background:#120A8F;}
 
 .booking-card{background:#fff;border-radius:14px;border:1px solid var(--hair);padding:20px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
 .booking-icon{width:48px;height:48px;background:rgba(10,100,188,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.booking-icon i{color:var(--violet);font-size:22px;}
+.booking-icon i{color:var(--Trust Blue);font-size:22px;}
 
 .booking-info{flex:1;min-width:250px;}
 .booking-title{font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:6px;}
 .booking-meta{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
-.booking-meta i{margin-right:4px;color:var(--violet);}
+.booking-meta i{margin-right:4px;color:var(--Trust Blue);}
 
 .booking-status{display:flex;gap:10px;align-items:center;}
 .status-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;}
@@ -31,13 +31,13 @@ a{color:inherit;text-decoration:none;}
 .status-completed{background:rgba(16,185,129,.1);color:#10B981;}
 .status-past{background:rgba(21,40,31,.06);color:rgba(21,40,31,.5);}
 
-.code-box{background:#F9FAFB;border:1px solid var(--hair);border-radius:8px;padding:8px 12px;font-family:monospace;font-size:12px;font-weight:700;color:var(--violet);text-align:center;}
+.code-box{background:#F9FAFB;border:1px solid var(--hair);border-radius:8px;padding:8px 12px;font-family:monospace;font-size:12px;font-weight:700;color:var(--Trust Blue);text-align:center;}
 
 .booking-action{display:flex;gap:8px;}
 .btn-join{background:var(--mint);color:#fff;}
 .btn-join:hover{opacity:.9;}
 .btn-share{background:#F4F6F4;color:var(--muted);border:1px solid var(--hair);}
-.btn-share:hover{border-color:var(--violet);color:var(--violet);}
+.btn-share:hover{border-color:var(--Trust Blue);color:var(--Trust Blue);}
 
 .empty{text-align:center;padding:60px 20px;}
 .empty-icon{font-size:48px;margin-bottom:16px;opacity:.3;}
@@ -46,12 +46,12 @@ a{color:inherit;text-decoration:none;}
 
 .pagination{display:flex;justify-content:center;gap:6px;margin-top:32px;flex-wrap:wrap;}
 .page-link{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:#fff;border:1px solid var(--hair);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;}
-.page-link:hover{border-color:var(--violet);color:var(--violet);}
-.page-link.active{background:var(--violet);color:#fff;border-color:var(--violet);}
+.page-link:hover{border-color:var(--Trust Blue);color:var(--Trust Blue);}
+.page-link.active{background:var(--Trust Blue);color:#fff;border-color:var(--Trust Blue);}
 .page-link.disabled{opacity:.4;cursor:not-allowed;}
 
-.upcoming-section{background:rgba(10,100,188,.06);border-radius:12px;padding:16px;margin-bottom:24px;border-left:4px solid var(--violet);}
-.upcoming-count{font-size:32px;font-weight:700;color:var(--violet);}
+.upcoming-section{background:rgba(10,100,188,.06);border-radius:12px;padding:16px;margin-bottom:24px;border-left:4px solid var(--Trust Blue);}
+.upcoming-count{font-size:32px;font-weight:700;color:var(--Trust Blue);}
 </style>
 </head>
 <body>

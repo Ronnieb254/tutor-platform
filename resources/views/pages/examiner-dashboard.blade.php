@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--violet:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
+:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--electric-yellow:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
@@ -26,10 +26,10 @@ button{font-family:inherit;cursor:pointer;}
 .sb-nav{flex:1;padding:10px 8px;overflow-y:auto;}
 .sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.58);transition:all .15s;margin-bottom:1px;cursor:pointer;border:none;background:none;width:100%;text-align:left;}
 .sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
-.sb-item.active{background:var(--violet);color:#fff;}
+.sb-item.active{background:var(--Trust Blue);color:#fff;}
 .sb-footer{padding:14px;border-top:1px solid rgba(255,255,255,.06);}
 .sb-user{display:flex;align-items:center;gap:10px;}
-.sb-avatar{width:34px;height:34px;border-radius:10px;background:var(--violet);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;}
+.sb-avatar{width:34px;height:34px;border-radius:10px;background:var(--Trust Blue);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;}
 .sb-uname{font-size:13px;font-weight:600;color:#fff;}
 .sb-urole{font-size:11px;color:rgba(255,255,255,.35);}
 .sb-logout{width:28px;height:28px;border-radius:8px;border:none;background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -40,7 +40,7 @@ button{font-family:inherit;cursor:pointer;}
 .top-bar{background:#fff;border-bottom:1px solid var(--hair);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:40;}
 .top-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:all .15s;}
-.btn-primary{background:var(--violet);color:#fff;}
+.btn-primary{background:var(--Trust Blue);color:#fff;}
 .btn-primary:hover{background:#5B21B6;}
 .btn-outline{background:#fff;color:var(--ink);border:1px solid var(--hair);}
 .btn-outline:hover{background:#FAFCFA;}
@@ -71,7 +71,7 @@ button{font-family:inherit;cursor:pointer;}
 .clinic-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);transform:translateY(-2px);}
 .clinic-hdr{padding:12px 16px;border-bottom:1px solid var(--hair);display:flex;justify-content:space-between;align-items:center;background:#FAFCFA;}
 .badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
-.badge-primary{background:rgba(10,100,188,.1);color:var(--violet);}
+.badge-primary{background:rgba(10,100,188,.1);color:var(--Trust Blue);}
 .badge-success{background:rgba(16,185,129,.1);color:var(--mint);}
 .badge-warning{background:rgba(212,160,23,.1);color:#EEBE15;}
 .badge-secondary{background:var(--hair);color:var(--muted);}

@@ -21,7 +21,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
     @foreach([
         ['Pending','pending',PayoutRequest::where('status','pending')->count(),'#EEBE15','badge-amber'],
-        ['Approved','approved',PayoutRequest::where('status','approved')->count(),'#0A64BC','badge-violet'],
+        ['Approved','approved',PayoutRequest::where('status','approved')->count(),'#0A64BC','badge-Trust Blue'],
         ['Paid Out','paid',PayoutRequest::where('status','paid')->count(),'#10B981','badge-green'],
         ['Rejected','rejected',PayoutRequest::where('status','rejected')->count(),'#E8522A','badge-red'],
     ] as [$label,$st,$count,$color,$bc])
@@ -94,7 +94,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
                     </td>
                     <td style="color:var(--muted);font-size:13px;">{{ $payout->created_at->diffForHumans() }}</td>
                     <td>
-                        @php $pc=['pending'=>'badge-amber','approved'=>'badge-violet','paid'=>'badge-green','rejected'=>'badge-red'][$payout->status]??'badge-gray'; @endphp
+                        @php $pc=['pending'=>'badge-amber','approved'=>'badge-Trust Blue','paid'=>'badge-green','rejected'=>'badge-red'][$payout->status]??'badge-gray'; @endphp
                         <span class="badge {{ $pc }}">{{ ucfirst($payout->status) }}</span>
                     </td>
                     <td>

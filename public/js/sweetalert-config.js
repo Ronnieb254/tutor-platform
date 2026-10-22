@@ -46,7 +46,7 @@ window.showConfirm = function(title, message, confirmText = 'Yes', cancelText = 
         text: message,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#6D28D9',
+        confirmButtonColor: '#0A64BC',
         cancelButtonColor: '#6B7280',
         confirmButtonText: confirmText,
         cancelButtonText: cancelText,

@@ -56,7 +56,7 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                     <span><i class="fa-solid fa-play fa-xs"></i> {{ $course->total_lessons }} lessons</span>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;">
-                    <span style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:{{ $course->is_free?'var(--mint)':'var(--violet)' }};">
+                    <span style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:{{ $course->is_free?'var(--mint)':'var(--Trust Blue)' }};">
                         {{ $course->is_free ? 'Free' : 'KSh '.number_format($course->price) }}
                     </span>
                     <span class="btn btn-v btn-sm"><i class="fa-solid fa-arrow-right"></i> View Course</span>

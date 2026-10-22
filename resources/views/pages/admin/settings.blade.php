@@ -133,7 +133,7 @@ use App\Models\PlatformSetting;
                 @foreach([[15,'25%','KSh 500'],[30,'50%','KSh 1,000'],[45,'75%','KSh 1,500'],[60,'100%','KSh 2,000']] as [$m,$pct,$ex])
                 <tr style="border-bottom:1px solid rgba(21,40,31,0.05);">
                     <td style="padding:10px 0;font-weight:600;">{{ $m }} min</td>
-                    <td style="padding:10px 0;color:var(--violet);font-weight:600;">{{ $pct }}</td>
+                    <td style="padding:10px 0;color:var(--Trust Blue);font-weight:600;">{{ $pct }}</td>
                     <td style="padding:10px 0;color:var(--muted);">{{ $ex }}</td>
                 </tr>
                 @endforeach

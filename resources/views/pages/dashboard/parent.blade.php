@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50/30 to-slate-50 py-8">
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-Trust Blue-50/30 to-slate-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-8">
@@ -16,10 +16,10 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-slate-600">Total Children</p>
-                        <p class="text-3xl font-bold text-violet-600 mt-2">{{ $children->count() }}</p>
+                        <p class="text-3xl font-bold text-Trust Blue-600 mt-2">{{ $children->count() }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 bg-Trust Blue-100 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-Trust Blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </div>
@@ -64,7 +64,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-xl font-bold text-slate-900 font-['Fraunces']">My Children</h2>
-                        <button onclick="document.getElementById('addChildModal').classList.remove('hidden')" class="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors text-sm font-medium">
+                        <button onclick="document.getElementById('addChildModal').classList.remove('hidden')" class="px-4 py-2 bg-Trust Blue-600 text-white rounded-lg hover:bg-Trust Blue-700 transition-colors text-sm font-medium">
                             + Add Child
                         </button>
                     </div>
@@ -78,16 +78,16 @@
                             </div>
                             <h3 class="text-lg font-semibold text-slate-900 mb-2">No children added yet</h3>
                             <p class="text-slate-600 mb-4">Add your first child to start booking tutoring sessions</p>
-                            <button onclick="document.getElementById('addChildModal').classList.remove('hidden')" class="inline-flex items-center px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
+                            <button onclick="document.getElementById('addChildModal').classList.remove('hidden')" class="inline-flex items-center px-4 py-2 bg-Trust Blue-600 text-white rounded-lg hover:bg-Trust Blue-700 transition-colors">
                                 Add Child Profile
                             </button>
                         </div>
                     @else
                         <div class="space-y-4">
                             @foreach($children as $child)
-                                <div class="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-violet-300 transition-colors">
+                                <div class="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-Trust Blue-300 transition-colors">
                                     <div class="flex items-center space-x-4">
-                                        <div class="w-12 h-12 bg-gradient-to-br from-violet-400 to-violet-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-Trust Blue-400 to-Trust Blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
                                             {{ strtoupper(substr($child->name, 0, 1)) }}
                                         </div>
                                         <div>
@@ -99,7 +99,7 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center space-x-2">
-                                        <a href="{{ route('tutors.index') }}" class="px-3 py-2 text-sm bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
+                                        <a href="{{ route('tutors.index') }}" class="px-3 py-2 text-sm bg-Trust Blue-600 text-white rounded-lg hover:bg-Trust Blue-700 transition-colors">
                                             Book Session
                                         </a>
                                     </div>
@@ -126,26 +126,26 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Child's Name *</label>
-                                    <input type="text" name="name" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                                    <input type="text" name="name" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-Trust Blue-500 focus:border-transparent">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Age</label>
-                                    <input type="number" name="age" min="3" max="25" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                                    <input type="number" name="age" min="3" max="25" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-Trust Blue-500 focus:border-transparent">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Grade Level</label>
-                                    <input type="text" name="grade_level" placeholder="e.g., Grade 8, Form 3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                                    <input type="text" name="grade_level" placeholder="e.g., Grade 8, Form 3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-Trust Blue-500 focus:border-transparent">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Notes</label>
-                                    <textarea name="notes" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent" placeholder="Any special requirements or notes..."></textarea>
+                                    <textarea name="notes" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-Trust Blue-500 focus:border-transparent" placeholder="Any special requirements or notes..."></textarea>
                                 </div>
                             </div>
                             <div class="flex items-center justify-end space-x-3 mt-6">
                                 <button type="button" onclick="document.getElementById('addChildModal').classList.add('hidden')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
                                     Cancel
                                 </button>
-                                <button type="submit" class="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
+                                <button type="submit" class="px-4 py-2 bg-Trust Blue-600 text-white rounded-lg hover:bg-Trust Blue-700 transition-colors">
                                     Add Child
                                 </button>
                             </div>
@@ -166,21 +166,21 @@
                             </div>
                             <h3 class="text-lg font-semibold text-slate-900 mb-2">No upcoming sessions</h3>
                             <p class="text-slate-600 mb-4">Book a session to get started</p>
-                            <a href="{{ route('tutors.index') }}" class="inline-flex items-center px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
+                            <a href="{{ route('tutors.index') }}" class="inline-flex items-center px-4 py-2 bg-Trust Blue-600 text-white rounded-lg hover:bg-Trust Blue-700 transition-colors">
                                 Find a Tutor
                             </a>
                         </div>
                     @else
                         <div class="space-y-4">
                             @foreach($upcomingSessions as $session)
-                                <div class="border border-slate-200 rounded-xl p-4 hover:border-violet-300 transition-colors">
+                                <div class="border border-slate-200 rounded-xl p-4 hover:border-Trust Blue-300 transition-colors">
                                     <div class="flex items-start justify-between">
                                         <div class="flex-1">
                                             <div class="flex items-center space-x-3 mb-2">
                                                 <span class="px-3 py-1 bg-mint-100 text-mint-700 rounded-full text-xs font-medium">
                                                     {{ $session->subject->name ?? 'Subject' }}
                                                 </span>
-                                                <span class="px-3 py-1 bg-violet-100 text-violet-700 rounded-full text-xs font-medium">
+                                                <span class="px-3 py-1 bg-Trust Blue-100 text-Trust Blue-700 rounded-full text-xs font-medium">
                                                     {{ ucfirst($session->status) }}
                                                 </span>
                                             </div>
@@ -211,7 +211,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <a href="/sessions" class="px-4 py-2 text-sm text-violet-600 hover:bg-violet-50 rounded-lg transition-colors">
+                                        <a href="/sessions" class="px-4 py-2 text-sm text-Trust Blue-600 hover:bg-Trust Blue-50 rounded-lg transition-colors">
                                             View Details
                                         </a>
                                     </div>
@@ -228,9 +228,9 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                     <h2 class="text-lg font-bold text-slate-900 mb-4 font-['Fraunces']">Quick Actions</h2>
                     <div class="space-y-3">
-                        <a href="{{ route('tutors.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-violet-300 hover:bg-violet-50 transition-colors">
-                            <div class="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <a href="{{ route('tutors.index') }}" class="flex items-center p-3 border border-slate-200 rounded-lg hover:border-Trust Blue-300 hover:bg-Trust Blue-50 transition-colors">
+                            <div class="w-10 h-10 bg-Trust Blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-5 h-5 text-Trust Blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
                             </div>
@@ -282,9 +282,9 @@
                             </div>
                         </a>
 
-                        <button onclick="document.getElementById('addChildModal').classList.remove('hidden')" class="w-full flex items-center p-3 border border-slate-200 rounded-lg hover:border-violet-300 hover:bg-violet-50 transition-colors">
-                            <div class="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button onclick="document.getElementById('addChildModal').classList.remove('hidden')" class="w-full flex items-center p-3 border border-slate-200 rounded-lg hover:border-Trust Blue-300 hover:bg-Trust Blue-50 transition-colors">
+                            <div class="w-10 h-10 bg-Trust Blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-5 h-5 text-Trust Blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                                 </svg>
                             </div>
@@ -297,12 +297,12 @@
                 </div>
 
                 <!-- Help & Support -->
-                <div class="bg-gradient-to-br from-violet-600 to-violet-700 rounded-2xl shadow-sm p-6 text-white">
+                <div class="bg-gradient-to-br from-Trust Blue-600 to-Trust Blue-700 rounded-2xl shadow-sm p-6 text-white">
                     <h2 class="text-lg font-bold mb-2 font-['Fraunces']">Need Help?</h2>
-                    <p class="text-violet-100 text-sm mb-4">
+                    <p class="text-Trust Blue-100 text-sm mb-4">
                         Our support team is here to assist you with any questions.
                     </p>
-                    <a href="mailto:support@mwalimu.co.ke" class="inline-flex items-center px-4 py-2 bg-white text-violet-600 rounded-lg hover:bg-violet-50 transition-colors text-sm font-medium">
+                    <a href="mailto:support@mwalimu.co.ke" class="inline-flex items-center px-4 py-2 bg-white text-Trust Blue-600 rounded-lg hover:bg-Trust Blue-50 transition-colors text-sm font-medium">
                         Contact Support
                     </a>
                 </div>

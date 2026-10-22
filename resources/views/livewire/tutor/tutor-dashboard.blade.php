@@ -3,7 +3,7 @@
     @if($profile && !$profile->is_approved)
     @php $status = $profile->verification_status; @endphp
     <div class="rounded-2xl border-2 p-4 flex items-start gap-4
-        {{ $status === 'action_required' ? 'border-coral bg-coral/5' : 'border-gold bg-gold/5' }}">
+        {{ $status === 'action_required' ? 'border-coral bg-coral/5' : 'border-electric-yellow bg-electric-yellow/5' }}">
         <div class="text-2xl">{{ $status === 'action_required' ? '⚠️' : '⏳' }}</div>
         <div>
             <p class="font-semibold text-ink">
@@ -59,7 +59,7 @@
                     <p class="text-xs text-muted">{{ $booking->scheduled_at->format('g:ia') }}</p>
                 </div>
                 <a href="{{ route('bookings.show', $booking->uuid) }}"
-                   class="badge-violet text-xs px-3 py-1.5 rounded-full font-semibold hover:bg-violet hover:text-white transition flex-shrink-0">
+                   class="badge-Trust Blue text-xs px-3 py-1.5 rounded-full font-semibold hover:bg-Trust Blue hover:text-white transition flex-shrink-0">
                     View
                 </a>
             </div>
