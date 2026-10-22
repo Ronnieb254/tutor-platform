@@ -1,19 +1,42 @@
 ﻿<div class="space-y-6">
     {{-- Verification Status Banner --}}
     @if($profile && !$profile->is_approved)
-    @php $status = $profile->verification_status; @endphp
+    @php 
+        $status = $profile->verification_status;
+        $docs = $profile->documents;
+        $uploadedTypes = $docs->pluck('type')->toArray();
+        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate'];
+        $missingTypes = array_diff($requiredTypes, $uploadedTypes);
+        $missingCount = count($missingTypes);
+    @endphp
     <div class="rounded-2xl border-2 p-4 flex items-start gap-4
-        {{ $status === 'action_required' ? 'border-coral bg-coral/5' : 'border-gold bg-gold/5' }}">
-        <div class="text-2xl">{{ $status === 'action_required' ? '⚠️' : '⏳' }}</div>
+        {{ $status === 'action_required' ? 'border-coral bg-coral/5' : ($status === 'no_documents' ? 'border-gold bg-gold/5' : 'border-trust-blue bg-trust-blue/5') }}">
+        <div class="text-2xl">
+            @if($status === 'action_required')⚠️
+            @elseif($status === 'under_review')⏳
+            @else📄
+            @endif
+        </div>
         <div>
             <p class="font-semibold text-ink">
-                {{ $status === 'action_required' ? 'Action Required' : 'Profile Under Review' }}
+                @if($status === 'action_required')
+                    Action Required — Document Rejected
+                @elseif($status === 'under_review')
+                    Profile Under Review
+                @else
+                    Upload All Required Documents
+                @endif
             </p>
             <p class="text-sm text-muted mt-0.5">
                 @if($status === 'action_required')
-                    One or more of your documents were rejected. Please re-upload the required documents.
-                @else
+                    One or more documents were rejected. Please re-upload the required documents.
+                @elseif($status === 'under_review')
                     Our team is reviewing your profile and documents. You'll be notified once approved — usually within 24-48 hours.
+                @else
+                    You need to upload all 3 required documents before we can review your profile.
+                    @if($missingCount > 0)
+                        <span class="font-semibold text-coral">{{ $missingCount }} document(s) remaining.</span>
+                    @endif
                 @endif
             </p>
         </div>

@@ -107,10 +107,28 @@ class TutorProfile extends Model
     public function getVerificationStatusAttribute(): string
     {
         $docs = $this->documents;
+        
+        // Required document types
+        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate'];
+        
+        // Check if any documents are uploaded
         if ($docs->isEmpty()) return 'no_documents';
+        
+        // Check if any document is rejected
         if ($docs->where('status', 'rejected')->count() > 0) return 'action_required';
+        
+        // Check if all 3 required documents are uploaded
+        $uploadedTypes = $docs->pluck('type')->toArray();
+        $missingDocs = array_diff($requiredTypes, $uploadedTypes);
+        
+        if (count($missingDocs) > 0) return 'no_documents'; // Still need to upload all 3
+        
+        // All 3 docs uploaded, check if any are pending
         if ($docs->where('status', 'pending')->count() > 0) return 'under_review';
+        
+        // All approved
         if ($this->is_approved) return 'approved';
+        
         return 'under_review';
     }
 

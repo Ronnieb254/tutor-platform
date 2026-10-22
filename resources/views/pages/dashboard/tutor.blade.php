@@ -300,21 +300,34 @@ $activeTab = request('tab','overview');
 
     {{-- Verification Banner --}}
     @if(!$isApproved)
-    <div class="status-banner {{ $verificationStatus==='action_required' ? 'status-rejected' : 'status-pending' }}">
-        <div style="font-size:28px;flex-shrink:0;">{{ $verificationStatus==='action_required' ? '⚠️' : '⏳' }}</div>
+    @php
+        $uploadedTypes = $docs->pluck('type')->toArray();
+        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate'];
+        $missingTypes = array_diff($requiredTypes, $uploadedTypes);
+        $missingCount = count($missingTypes);
+        $docNames = ['national_id' => 'National ID', 'tsc_certificate' => 'TSC Certificate', 'degree_certificate' => 'Academic Certificate'];
+        $missingNames = array_map(fn($t) => $docNames[$t], $missingTypes);
+    @endphp
+    <div class="status-banner {{ $verificationStatus==='action_required' ? 'status-rejected' : ($verificationStatus==='under_review' ? 'status-pending' : 'status-pending') }}">
+        <div style="font-size:28px;flex-shrink:0;">
+            {{ $verificationStatus==='action_required' ? '⚠️' : ($verificationStatus==='under_review' ? '⏳' : '📄') }}
+        </div>
         <div>
             <div style="font-weight:700;font-size:15px;color:var(--ink);">
-                {{ $verificationStatus==='action_required' ? 'Action Required — Document Rejected' : 'Profile Under Review' }}
+                {{ $verificationStatus==='action_required' ? 'Action Required — Document Rejected' : ($verificationStatus==='under_review' ? 'Profile Under Review' : 'Upload All Required Documents') }}
             </div>
             <div style="font-size:13px;color:var(--muted);margin-top:3px;line-height:1.6;">
                 @if($verificationStatus==='action_required')
                     One or more documents were rejected. Please re-upload the required documents to continue.
                     <button @click="tab='documents'" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">View Documents →</button>
-                @elseif($verificationStatus==='no_documents')
-                    You haven't uploaded your verification documents yet. Upload them to get approved and go live.
-                    <button @click="tab='documents'" style="background:none;border:none;color:#92400E;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">Upload Now →</button>
-                @else
+                @elseif($verificationStatus==='under_review')
                     Our team is reviewing your profile and documents. You'll receive an email once approved — usually within 24–48 hours.
+                @else
+                    You need to upload <strong>all 3 required documents</strong> before we can review your profile.
+                    @if($missingCount > 0)
+                        <span style="color:var(--coral);font-weight:700;">{{ $missingCount }} remaining: {{ implode(', ', $missingNames) }}</span>
+                    @endif
+                    <button @click="tab='documents'" style="background:none;border:none;color:#92400E;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">Upload Now →</button>
                 @endif
             </div>
         </div>
@@ -434,6 +447,12 @@ $activeTab = request('tab','overview');
         'tsc_certificate'=>['TSC Certificate','📜','Required'],
         'degree_certificate'=>['Academic Certificate','🎓','Required']
     ];
+    
+    // Check which required docs are uploaded
+    $uploadedTypes = $docs->pluck('type')->toArray();
+    $requiredTypes = array_keys($docTypes);
+    $missingTypes = array_diff($requiredTypes, $uploadedTypes);
+    $allRequiredUploaded = count($missingTypes) === 0;
     @endphp
 
     <div style="margin-bottom:20px;">
@@ -448,6 +467,17 @@ $activeTab = request('tab','overview');
         <div>
             <div style="font-weight:700;color:#166534;font-size:15px;">Fully Verified</div>
             <div style="font-size:13px;color:#4ADE80;">All documents approved. Your profile is live and accepting bookings.</div>
+        </div>
+    </div>
+    @elseif(!$allRequiredUploaded)
+    <div class="status-banner status-pending" style="margin-bottom:24px;">
+        <span style="font-size:24px;">📄</span>
+        <div>
+            <div style="font-weight:700;color:#854D0E;font-size:15px;">Upload All Required Documents</div>
+            <div style="font-size:13px;color:#92400E;">
+                You must upload <strong>all 3 required documents</strong> before your profile can be reviewed.
+                <span style="font-weight:700;color:var(--coral);">{{ count($missingTypes) }} remaining</span>
+            </div>
         </div>
     </div>
     @elseif($verificationStatus==='under_review')
@@ -489,14 +519,20 @@ $activeTab = request('tab','overview');
     {{-- Document cards --}}
     <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px;">
         @foreach($docTypes as $type => [$label,$icon,$req])
-        @php $doc = $docs->where('type',$type)->first(); @endphp
-        <div class="doc-card {{ $doc ? ($doc->status === 'approved' ? 'approved' : ($doc->status === 'rejected' ? 'rejected' : 'uploaded')) : '' }}">
+        @php 
+            $doc = $docs->where('type',$type)->first();
+            $isMissing = !$doc && in_array($type, $missingTypes);
+        @endphp
+        <div class="doc-card {{ $doc ? ($doc->status === 'approved' ? 'approved' : ($doc->status === 'rejected' ? 'rejected' : 'uploaded')) : ($isMissing ? '' : '') }}" style="{{ $isMissing ? 'border-color:var(--coral);border-width:2px;' : '' }}">
             <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:0;">
-                <div style="width:48px;height:48px;border-radius:12px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">{{ $icon }}</div>
+                <div style="width:48px;height:48px;border-radius:12px;background:{{ $doc ? ($doc->status === 'approved' ? 'rgba(16,185,129,.15)' : ($doc->status === 'rejected' ? 'rgba(232,82,42,.15)' : 'rgba(10,100,188,.08)')) : 'rgba(232,82,42,.08)' }};display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">{{ $icon }}</div>
                 <div style="min-width:0;">
                     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                         <span style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</span>
                         <span style="font-size:11px;font-weight:600;color:{{ $req==='Required' ? 'var(--coral)' : 'var(--muted)' }};">{{ $req }}</span>
+                        @if($isMissing)
+                        <span style="font-size:11px;font-weight:700;color:var(--coral);background:rgba(232,82,42,.1);padding:2px 8px;border-radius:999px;">NOT UPLOADED</span>
+                        @endif
                     </div>
                     @if($doc)
                     <div style="font-size:12px;color:var(--muted);margin-top:3px;">{{ $doc->original_name ?? 'Uploaded file' }} · {{ $doc->created_at->format('M j, Y') }}</div>
@@ -504,7 +540,7 @@ $activeTab = request('tab','overview');
                     <div style="font-size:12px;color:var(--coral);margin-top:3px;font-weight:500;">Admin note: {{ $doc->admin_note }}</div>
                     @endif
                     @else
-                    <div style="font-size:12px;color:var(--muted);margin-top:3px;">No document uploaded yet</div>
+                    <div style="font-size:12px;color:{{ $isMissing ? 'var(--coral)' : 'var(--muted)' }};margin-top:3px;font-weight:{{ $isMissing ? '600' : '400' }};">{{ $isMissing ? '⚠️ Required - Please upload this document' : 'No document uploaded yet' }}</div>
                     @endif
                 </div>
             </div>
@@ -517,9 +553,9 @@ $activeTab = request('tab','overview');
                 <form method="POST" action="/tutor/documents/upload" enctype="multipart/form-data" style="display:flex;align-items:center;gap:6px;">
                     @csrf
                     <input type="hidden" name="type" value="{{ $type }}">
-                    <label style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;border:1.5px solid var(--hair);background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--trust-blue)'" onmouseout="this.style.borderColor='var(--hair)'">
+                    <label style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;border:1.5px solid {{ $isMissing ? 'var(--coral)' : 'var(--hair)' }};background:{{ $isMissing ? 'var(--coral)' : '#fff' }};color:{{ $isMissing ? '#fff' : 'inherit' }};font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                         <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-                        {{ $doc ? 'Re-upload' : 'Upload' }}
+                        {{ $doc ? 'Re-upload' : ($isMissing ? 'Upload Now' : 'Upload') }}
                         <input type="file" name="document" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="this.closest('form').submit()">
                     </label>
                 </form>
