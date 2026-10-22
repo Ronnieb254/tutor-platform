@@ -73,10 +73,10 @@
             <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="steps-grid">
                 @php $studentSteps = [
                     ['1','fa-magnifying-glass','#6D28D9','Find Your Tutor','Browse TSC-registered tutors by subject, price, and availability. Read real reviews from students and parents who have already booked.','Filter by Kenyan curriculum subject','View ratings, reviews and availability','Choose from 500+ verified tutors','Background-checked for your safety'],
-                    ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block — Quick Help (20min), Guided Practice (40min), or Deep Dive (60min). Fixed pricing, no surprises.','Quick Help – 20 min – KSh 300','Guided Practice – 40 min – KSh 500','Deep Dive – 60 min – KSh 700'],
+                    ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block — Quick Help (20min), Guided Practice (40min), or Deep Dive (60min). Fixed pricing, no surprises.','Quick Help – 20 min – KSh 300','Guided Practice – 40 min – KSh 500','Deep Dive – 60 min – KSh 700','Same price for every tutor'],
                     ['3','fa-mobile-screen-button','#E8522A','Pay via M-Pesa or Card','Complete your booking by paying through Paystack — Kenya\'s trusted payment gateway. Pay by M-Pesa, Visa, or Mastercard. Secure and instant.','M-Pesa, Visa & Mastercard accepted','Payment secured by Paystack','Full refund if tutor cancels','Booking confirmed instantly after payment'],
                     ['4','fa-envelope','#D4A017','Receive Your Session Code','Immediately after payment, you and the tutor both receive unique session access codes by email. Yours is STU-XXXXXX. The tutor\'s is TUT-XXXXXX.','Unique STU-XXXXXX code emailed to you','Tutor receives TUT-XXXXXX separately','Session date, time and duration confirmed','Reminder sent 1 hour before session'],
-                    ['5','fa-video','#3B82F6','Join Your Live Session','On session day, open your booking and enter your STU-XXXXXX code. Your private Jitsi classroom opens instantly in your browser — no download needed.','Enter STU-XXXXXX code to verify identity','Private Jitsi video room opens instantly','Screen sharing and whiteboard available','No app download required'],
+                    ['5','fa-video','#3B82F6','Join Your Live Session','On session day, open your booking and enter your STU-XXXXXX code. Your private classroom opens instantly in your browser — no download needed.','Enter STU-XXXXXX code to verify identity','Private video room opens instantly','Screen sharing and whiteboard available','No app download required'],
                     ['6','fa-star','#EC4899','Review & Rebook','After your session, leave a star rating and written review to help other students. Rebook your favourite tutor directly from your dashboard with one click.','Star rating + written review','Tutor appears in Saved for easy rebook','Session history tracked in dashboard','Message tutor directly for follow-up'],
                 ]; @endphp
                 @foreach($studentSteps as [$num,$icon,$color,$title,$desc,$p1,$p2,$p3,$p4])
@@ -151,7 +151,6 @@
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-grid">
             @foreach([
                 ['20','Quick Help','⚡','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week'],
-                
                 ['40','Guided Practice','🎯','KSh 500','Full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics'],
                 ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics'],
             ] as [$mins,$name,$icon,$price,$desc,$ideal])
