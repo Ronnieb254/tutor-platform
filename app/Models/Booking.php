@@ -13,7 +13,7 @@ class Booking extends Model
     protected $fillable = [
         'uuid', 'student_id', 'tutor_id', 'subject_id',
         'scheduled_at', 'duration_minutes', 'status',
-        'meeting_url', 'meeting_room',
+        'meeting_url', 'meeting_room', 'meeting_password', 'moderator_password',
         'total_amount', 'platform_fee', 'tutor_earning',
         'student_notes', 'cancellation_reason', 'cancelled_at', 'completed_at',
         'student_joined', 'tutor_joined',
