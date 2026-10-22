@@ -250,23 +250,23 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                         {{-- Degree / Academic --}}
                         <div>
                             <div class="flabel"><i class="fa-solid fa-graduation-cap"></i> Degree Certificate <span style="color:var(--coral);">*</span></div>
-                            <div class="upload-zone" :class="files.degree_certificate ? 'has-file' : ''"
+                            <div class="upload-zone" :class="files.academic_certificate ? 'has-file' : ''"
                                  @dragover.prevent="$el.classList.add('drag')"
                                  @dragleave="$el.classList.remove('drag')"
-                                 @drop.prevent="handleDrop($event,'degree_certificate')">
-                                <input type="file" @change="handleFile($event,'degree_certificate')" accept=".jpg,.jpeg,.png,.pdf">
-                                <template x-if="!files.degree_certificate">
+                                 @drop.prevent="handleDrop($event,'academic_certificate')">
+                                <input type="file" @change="handleFile($event,'academic_certificate')" accept=".jpg,.jpeg,.png,.pdf">
+                                <template x-if="!files.academic_certificate">
                                     <div>
                                         <div class="upload-icon">🎓</div>
                                         <div class="upload-title">Click to upload or drag & drop</div>
                                         <div class="upload-hint">Bachelor's degree or higher academic qualification</div>
                                     </div>
                                 </template>
-                                <template x-if="files.degree_certificate">
+                                <template x-if="files.academic_certificate">
                                     <div>
                                         <div class="upload-icon">✅</div>
-                                        <div class="upload-title" x-text="files.degree_certificate.name"></div>
-                                        <div class="upload-hint" x-text="formatSize(files.degree_certificate.size)"></div>
+                                        <div class="upload-title" x-text="files.academic_certificate.name"></div>
+                                        <div class="upload-hint" x-text="formatSize(files.academic_certificate.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
                                     </div>
                                 </template>
@@ -513,10 +513,8 @@ function tutorOnboarding() {
         },
         files: {
             national_id: null,
-            degree_certificate: null,
             tsc_certificate: null,
-            certificate_of_good_conduct: null,
-            passport_photo: null,
+            academic_certificate: null,
         },
         errors: {},
 
@@ -577,10 +575,10 @@ function tutorOnboarding() {
 
         validateStep3() {
             this.errors = {};
-            const required = ['national_id','degree_certificate','tsc_certificate','certificate_of_good_conduct','passport_photo'];
+            const required = ['national_id','tsc_certificate','academic_certificate'];
             const missing = required.filter(f => !this.files[f]);
             if (missing.length > 0) {
-                this.errors.documents = 'Please upload all required documents (' + missing.join(', ').replace(/_/g,' ') + ')';
+                this.errors.documents = 'Please upload all 3 required documents (' + missing.join(', ').replace(/_/g,' ') + ')';
                 return;
             }
             this.step = 4;
