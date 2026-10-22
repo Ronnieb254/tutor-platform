@@ -55,8 +55,8 @@ use App\Models\PlatformSetting;
 $categories    = Category::active()->with('subjects')->take(8)->get();
 $featuredTutors = TutorProfile::approved()->with(['user','subjects'])->orderByDesc('rating_avg')->take(6)->get();
 $upcomingClinics = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
-$prices = [15=>300,30=>500,45=>680,60=>800];
-$sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
+$prices = [20=>300,40=>500,60=>700];
+$sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 @endphp
 
 {{-- ANNOUNCEMENT BAR --}}
@@ -200,10 +200,10 @@ $sessionNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
             @foreach([
-                ['15','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.','KSh 300'],
-                ['30','Concept Check','📘','KSh 500','Targeted practice — work through a problem set or concept in depth.','KSh 500'],
-                ['45','Guided Practice','🎯','KSh 680','A full structured lesson with warm-up, teaching and Q&A.','KSh 680'],
-                ['60','Deep Dive','🏆','KSh 800','Maximum learning. Best value. Ideal for exam prep.','KSh 800'],
+                ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.','KSh 300'],
+               
+                ['40','Guided Practice','🎯','KSh 500','A full structured lesson with warm-up, teaching and Q&A.','KSh 680'],
+                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value. Ideal for exam prep.','KSh 800'],
             ] as [$mins,$title,$icon,$price,$desc,$from])
             <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--violet)'" onmouseout="this.style.borderColor='var(--hair)'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">

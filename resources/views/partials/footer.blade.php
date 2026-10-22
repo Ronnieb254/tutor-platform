@@ -108,7 +108,7 @@
             <!-- <div style="border-top:1px solid rgba(255,255,255,.07);padding:24px 0;margin-bottom:0;">
                 <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:12px;">Session Pricing</p>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;">
-                    @foreach([['⚡','Quick Help','15 min','KSh 300'],['📘','Concept Check','30 min','KSh 500'],['🎯','Guided Practice','45 min','KSh 680'],['🏆','Deep Dive','60 min','KSh 800']] as [$ic,$name,$dur,$price])
+                    @foreach([['⚡','Quick Help','20 min','KSh 300'],['🎯','Guided Practice','40 min','KSh 500'],['🏆','Deep Dive','60 min','KSh 700']] as [$ic,$name,$dur,$price])
                     <a href="{{ route('tutors.index') }}" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 14px;text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
                         <span style="font-size:14px;">{{ $ic }}</span>
                         <div>

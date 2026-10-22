@@ -41,8 +41,8 @@ $q=TutorProfile::approved()->with(['user','subjects'])
 $q=$sort==='price_asc'?$q->orderBy('hourly_rate'):($sort==='sessions'?$q->orderByDesc('total_sessions'):$q->orderByDesc('rating_avg'));
 $tutors=$q->paginate(12)->withQueryString();
 $colors=['#6D28D9','#10B981','#E8522A','#D4A017','#3B82F6','#EC4899','#0EA5E9','#8B5CF6'];
-$prices=[15=>300,30=>500,45=>680,60=>800];
-$sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
+$prices=[20=>300,40=>500,60=>700];
+$sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 @endphp
 
 @include('partials.nav')
@@ -195,7 +195,7 @@ $sessionNames=[15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'D
             <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $tutor->bio }}</p>
             @endif
             <!-- <div class="dur-pills">
-                @foreach([15=>['Quick Help',300],30=>['Concept Check',500],45=>['Guided Practice',680],60=>['Deep Dive',800]] as $mins=>[$name,$price])
+                @foreach([20=>['Quick Help',300],40=>['Guided Practice',500],60=>['Deep Dive',700]] as $mins=>[$name,$price])
                 @php
                 $isFreeForUser = $mins === 15 && auth()->check()
                     ? \App\Models\TutorProfile::isFreeFirstSession(auth()->id(), $tutor->user_id)

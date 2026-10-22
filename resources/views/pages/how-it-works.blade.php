@@ -73,7 +73,7 @@
             <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="steps-grid">
                 @php $studentSteps = [
                     ['1','fa-magnifying-glass','#6D28D9','Find Your Tutor','Browse TSC-registered tutors by subject, price, and availability. Read real reviews from students and parents who have already booked.','Filter by Kenyan curriculum subject','View ratings, reviews and availability','Choose from 500+ verified tutors','Background-checked for your safety'],
-                    ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block — Quick Help (15min), Concept Check (30min), Guided Practice (45min), or Deep Dive (60min). Fixed pricing, no surprises.','Quick Help – 15 min – KSh 300','Concept Check – 30 min – KSh 500','Guided Practice – 45 min – KSh 680','Deep Dive – 60 min – KSh 800'],
+                    ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block — Quick Help (20min), Guided Practice (40min), or Deep Dive (60min). Fixed pricing, no surprises.','Quick Help – 20 min – KSh 300','Guided Practice – 40 min – KSh 500','Deep Dive – 60 min – KSh 700'],
                     ['3','fa-mobile-screen-button','#E8522A','Pay via M-Pesa or Card','Complete your booking by paying through Paystack — Kenya\'s trusted payment gateway. Pay by M-Pesa, Visa, or Mastercard. Secure and instant.','M-Pesa, Visa & Mastercard accepted','Payment secured by Paystack','Full refund if tutor cancels','Booking confirmed instantly after payment'],
                     ['4','fa-envelope','#D4A017','Receive Your Session Code','Immediately after payment, you and the tutor both receive unique session access codes by email. Yours is STU-XXXXXX. The tutor\'s is TUT-XXXXXX.','Unique STU-XXXXXX code emailed to you','Tutor receives TUT-XXXXXX separately','Session date, time and duration confirmed','Reminder sent 1 hour before session'],
                     ['5','fa-video','#3B82F6','Join Your Live Session','On session day, open your booking and enter your STU-XXXXXX code. Your private Jitsi classroom opens instantly in your browser — no download needed.','Enter STU-XXXXXX code to verify identity','Private Jitsi video room opens instantly','Screen sharing and whiteboard available','No app download required'],
@@ -150,10 +150,10 @@
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-grid">
             @foreach([
-                ['15','Quick Help','⚡','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week'],
-                ['30','Concept Check','📘','KSh 500','Targeted practice — work through a problem set or concept clarity.','Homework help, concept explanations, KCSE prep'],
-                ['45','Guided Practice','🎯','KSh 680','Full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics'],
-                ['60','Deep Dive','🏆','KSh 800','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics'],
+                ['20','Quick Help','⚡','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week'],
+                
+                ['40','Guided Practice','🎯','KSh 500','Full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics'],
+                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics'],
             ] as [$mins,$name,$icon,$price,$desc,$ideal])
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px;transition:background .2s;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
@@ -288,7 +288,7 @@
             ['What if I\'m not happy with my session?','Contact our support team within 24 hours of your session. We review all disputes fairly. First-time bookings come with a 100% money-back guarantee — no questions asked.'],
             ['Do I need to download anything to join a session?','No. Sessions run in your browser using Jitsi Meet. Just enter your access code on the booking page and your session opens in a new browser tab. Works on mobile and desktop.'],
             ['Can parents book sessions for their children?','Yes. Select "Parent" when creating your account. You can add child profiles (name, age, grade level) and book sessions on their behalf. Your session code is sent to your email.'],
-            ['How are session prices calculated?','Mwalimu uses fixed pricing for all sessions: Quick Help (15min) = KSh 300, Concept Check (30min) = KSh 500, Guided Practice (45min) = KSh 680, Deep Dive (60min) = KSh 800. The same price applies regardless of which tutor you choose.'],
+            ['How are session prices calculated?','Mwalimu uses fixed pricing for all sessions: Quick Help (20min) = KSh 300, Guided Practice (40min) = KSh 500, Deep Dive (60min) = KSh 700. The same price applies regardless of which tutor you choose.'],
             ['How and when do tutors get paid?','After a session is completed, the tutor\'s earnings (85% of the session fee — Mwalimu keeps 15%) are credited to their in-app wallet. Tutors can request a payout to M-Pesa or bank at any time. Payouts are processed within 2–3 business days.'],
             ['What happens if a tutor cancels?','If a tutor cancels a confirmed session, you receive a full refund automatically. We flag repeated cancellations and may suspend tutors who cancel excessively.'],
             ['How does the Speedy Verification work for tutors?','New tutors can skip the standard 72-hour queue and receive verification within 24 hours by paying a one-time KSh 1,000 Speedy Verification fee during the onboarding process.'],

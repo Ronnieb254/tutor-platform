@@ -37,7 +37,7 @@ $sessionStart   = $booking->scheduled_at;
 $sessionEnd     = $sessionStart->copy()->addMinutes($booking->duration_minutes);
 $minutesUntil   = now()->diffInMinutes($sessionStart, false);
 $canJoin        = $booking->canJoin();
-$sessionPrices  = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
+$sessionPrices  = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 $sessionName    = $sessionPrices[$booking->duration_minutes] ?? 'Session';
 $jitsiRoom      = $roomName ?? $booking->meeting_room ?? ('Mwalimu-session-' . $booking->uuid);
 $jitsiDomain    = config('jitsi.domain','meet.jit.si');

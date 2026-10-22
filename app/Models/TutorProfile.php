@@ -63,10 +63,9 @@ class TutorProfile extends Model
     public static function sessionPrices(): array
     {
         return [
-            15 => ['name' => 'Quick Help',       'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question'],
-            30 => ['name' => 'Concept Check',    'price' => 500, 'icon' => '📘', 'desc' => 'Targeted practice or concept clarity'],
-            45 => ['name' => 'Guided Practice',  'price' => 680, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A'],
-            60 => ['name' => 'Deep Dive',        'price' => 800, 'icon' => '🏆', 'desc' => 'Maximum learning, best value'],
+            20 => ['name' => 'Quick Help',       'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question'],
+            40 => ['name' => 'Guided Practice',  'price' => 500, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A'],
+            60 => ['name' => 'Deep Dive',        'price' => 700, 'icon' => '🏆', 'desc' => 'Maximum learning, best value'],
         ];
     }
 

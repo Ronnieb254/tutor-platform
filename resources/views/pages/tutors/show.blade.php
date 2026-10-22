@@ -34,10 +34,10 @@
 </head>
 <body>
 @php
-$prices    = [15=>300,30=>500,45=>680,60=>800];
-$sessNames = [15=>'Quick Help',30=>'Concept Check',45=>'Guided Practice',60=>'Deep Dive'];
-$sessDesc  = [15=>'Rapid revision or a quick question',30=>'Targeted practice or concept clarity',45=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
-// Free first 15-min session check
+$prices    = [20=>300,40=>500,60=>700];
+$sessNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
+$sessDesc  = [20=>'Rapid revision or a quick question',40=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
+// Free first 20-min session check
 $isFreeFirstSession = auth()->check()
     ? \App\Models\TutorProfile::isFreeFirstSession(auth()->id(), $tutor->user_id)
     : true; // Show free badge to guests too to encourage signup
@@ -329,7 +329,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                     return base;
                 },
                 get isFree() { return this.price === 0; },
-                get name()  { return {15:'Quick Help',30:'Concept Check',45:'Guided Practice',60:'Deep Dive'}[this.dur] || 'Deep Dive'; }
+                get name()  { return {20:'Quick Help',40:'Guided Practice',60:'Deep Dive'}[this.dur] || 'Deep Dive'; }
             }">
 
                 {{-- Progress bar --}}
@@ -357,8 +357,8 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                             <i class="fa-solid fa-clock" style="color:#6D28D9;font-size:16px;"></i> 1. Choose Session Type
                         </h3>
                         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
-                            @foreach([15=>['⚡','Quick Help',300,'Rapid revision or a quick question'],30=>['📘','Concept Check',500,'Targeted practice or concept clarity'],45=>['🎯','Guided Practice',680,'Full structured lesson with Q&A'],60=>['🏆','Deep Dive',800,'Maximum learning, best value']] as $mins => [$icon,$tname,$tprice,$tdesc])
-                            @php $actualPrice = ($mins===15 && $isFreeFirstSession) ? 0 : $tprice; @endphp
+                            @foreach([20=>['⚡','Quick Help',300,'Rapid revision or a quick question'],40=>['🎯','Guided Practice',500,'Full structured lesson with Q&A'],60=>['🏆','Deep Dive',700,'Maximum learning, best value']] as $mins => [$icon,$tname,$tprice,$tdesc])
+                            @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $tprice; @endphp
                             <button @click="dur={{ $mins }}"
                                     :style="dur==={{ $mins }} ? 'border-color:#6D28D9;background:rgba(109,40,217,.05);' : ''"
                                     style="border:2px solid rgba(21,40,31,.12);border-radius:16px;padding:16px;text-align:left;cursor:pointer;font-family:inherit;background:#fff;transition:all .18s;position:relative;">
@@ -595,8 +595,8 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
 
                 {{-- Tier quick reference --}}
                 <!-- <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
-                    @foreach([15=>['⚡','Quick Help',300],30=>['📘','Concept Check',500],45=>['🎯','Guided Practice',680],60=>['🏆','Deep Dive',800]] as $mins=>[$ic,$n,$p])
-                    @php $sidePrice = ($mins===15 && $isFreeFirstSession) ? 0 : $p; @endphp
+                    @foreach([20=>['⚡','Quick Help',300],40=>['🎯','Guided Practice',500],60=>['🏆','Deep Dive',700]] as $mins=>[$ic,$n,$p])
+                    @php $sidePrice = ($mins===20 && $isFreeFirstSession) ? 0 : $p; @endphp
                     <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:{{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.06)':'#F9FAF9' }};border:1px solid {{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.2)':'rgba(21,40,31,.07)' }};position:relative;">
                         @if($mins===15 && $isFreeFirstSession)
                         <span style="position:absolute;top:-8px;right:8px;background:#10B981;color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:999px;letter-spacing:.04em;">FREE</span>

@@ -20,15 +20,13 @@ class PlatformSettingsSeeder extends Seeder
             ['key' => 'contact_website',           'value' => 'https://ovaldesk.co.ke',                     'group' => 'general'],
 
             // ── Session pricing tiers ──────────────────────────────────────
-            ['key' => 'price_15min',               'value' => '300',                                        'group' => 'payments'],
-            ['key' => 'price_30min',               'value' => '500',                                        'group' => 'payments'],
-            ['key' => 'price_45min',               'value' => '680',                                        'group' => 'payments'],
-            ['key' => 'price_60min',               'value' => '800',                                        'group' => 'payments'],
+            ['key' => 'price_20min',               'value' => '300',                                        'group' => 'payments'],
+            ['key' => 'price_40min',               'value' => '500',                                        'group' => 'payments'],
+            ['key' => 'price_60min',               'value' => '700',                                        'group' => 'payments'],
 
             // Session names
-            ['key' => 'session_name_15min',        'value' => 'Quick Help',                                 'group' => 'payments'],
-            ['key' => 'session_name_30min',        'value' => 'Concept Check',                              'group' => 'payments'],
-            ['key' => 'session_name_45min',        'value' => 'Guided Practice',                            'group' => 'payments'],
+            ['key' => 'session_name_20min',        'value' => 'Quick Help',                                 'group' => 'payments'],
+            ['key' => 'session_name_40min',        'value' => 'Guided Practice',                            'group' => 'payments'],
             ['key' => 'session_name_60min',        'value' => 'Deep Dive',                                  'group' => 'payments'],
 
             // Other
