@@ -429,7 +429,11 @@ $activeTab = request('tab','overview');
 <div x-show="tab==='documents'" x-cloak>
     @php
     $docs = $profile?->documents ?? collect();
-    $docTypes = ['national_id'=>['National ID / Passport','🪪','Required'],'certificate'=>['Teaching Certificate','📜','Optional'],'qualification'=>['Academic Qualification','🎓','Optional']];
+    $docTypes = [
+        'national_id'=>['National ID / Passport','🪪','Required'],
+        'tsc_certificate'=>['TSC Certificate','📜','Required'],
+        'academic_certificate'=>['Academic Certificate','🎓','Required']
+    ];
     @endphp
 
     <div style="margin-bottom:20px;">

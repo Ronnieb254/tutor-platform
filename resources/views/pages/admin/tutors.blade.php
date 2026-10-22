@@ -200,7 +200,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                                 @endif
                             </div>
                             <div style="font-size:13px;color:rgba(21,40,31,.5);margin-top:2px;">
-                                {{ $profile->user->email }} · {{ $profile->city ?? 'Kenya' }} · {{ $docCount }}/5 docs uploaded
+                                {{ $profile->user->email }} · {{ $profile->city ?? 'Kenya' }} · {{ $docCount }}/3 docs uploaded
                                 @if($profile->speedy_verification_paid)
                                 · <span style="color:#EEBE15;font-weight:600;"><i class="fa-solid fa-clock fa-xs"></i> Within 24hrs</span>
                                 @else
@@ -259,7 +259,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                         {{-- Right: Documents --}}
                         <div>
                             <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.4);margin-bottom:10px;">
-                                Uploaded Documents ({{ $docCount }}/5)
+                                Uploaded Documents ({{ $docCount }}/3)
                             </p>
                             @if($docs->isEmpty())
                             <div style="background:#FEF9C3;border:1px solid #FDE68A;border-radius:12px;padding:14px;font-size:13px;color:#92400E;">
@@ -271,7 +271,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                                 @php
                                 $ext = pathinfo($doc->file_path, PATHINFO_EXTENSION);
                                 $isPdf = strtolower($ext) === 'pdf';
-                                $docTypeLabels = ['national_id'=>'National ID','degree_certificate'=>'Degree Certificate','tsc_certificate'=>'TSC Certificate','certificate_of_good_conduct'=>'Good Conduct','passport_photo'=>'Passport Photo'];
+                                $docTypeLabels = ['national_id'=>'National ID','tsc_certificate'=>'TSC Certificate','academic_certificate'=>'Academic Certificate'];
                                 $docLabel = $docTypeLabels[$doc->type] ?? ucwords(str_replace('_',' ',$doc->type));
                                 @endphp
                                 <div class="doc-row" x-data="{ viewDoc: false }">
@@ -372,7 +372,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                             @endphp
                             <i class="fa-solid fa-info-circle fa-xs" style="color:#0A64BC;"></i>
                             {{ $approvedDocs }}/{{ $docCount }} documents approved.
-                            @if($approvedDocs === $docCount && $docCount === 5)
+                            @if($approvedDocs === $docCount && $docCount === 3)
                             <span style="color:#10B981;font-weight:600;">All documents approved — ready to activate.</span>
                             @else
                             Review and approve all documents before activating this tutor.
@@ -389,7 +389,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                             <form method="POST" action="/admin/tutors/{{ $profile->id }}/approve">
                                 @csrf @method('PATCH')
                                 <button type="submit" class="btn btn-success"
-                                        @if($docCount < 5) style="opacity:.5;" title="Upload all 5 documents first" @endif>
+                                        @if($docCount < 3) style="opacity:.5;" title="Upload all 3 documents first" @endif>
                                     <i class="fa-solid fa-circle-check fa-xs"></i> Approve & Go Live
                                 </button>
                             </form>
