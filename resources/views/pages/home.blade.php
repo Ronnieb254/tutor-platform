@@ -280,7 +280,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 </div>
                 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
                     <a href="/examiner-clinic" class="btn btn-w"><i class="fa-solid fa-calendar-check"></i> View Upcoming Clinics</a>
-                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 300</span> /session · 60 min</div>
+                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 500</span> /session · 60 min</div>
                 </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px;">

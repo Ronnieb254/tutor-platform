@@ -35,7 +35,7 @@ class ExaminerController extends Controller
         // Check if verified tutor
         if (!$user->profile || !$user->profile->tutor_verified) {
             return redirect()->back()
-                ->with('error', 'Only verified tutors can apply as examiners.');
+                ->with('error', 'Only verified KNEC Examiners can apply as examiners.');
         }
 
         return view('pages.examiner-apply');
