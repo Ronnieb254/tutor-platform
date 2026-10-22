@@ -4,7 +4,7 @@
 @include('partials.head')
 <title>Clinic Booking – Checkout</title>
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}
@@ -20,35 +20,35 @@ a{color:inherit;text-decoration:none;}
 .summary-label{color:var(--muted);}
 .summary-value{font-weight:600;color:var(--ink);}
 .divider{height:1px;background:var(--hair);margin:16px 0;}
-.total-row{font-size:18px!important;font-weight:700!important;color:var(--Trust Blue)!important;}
+.total-row{font-size:18px!important;font-weight:700!important;color:var(--trust-blue)!important;}
 
-.clinic-info{background:rgba(10,100,188,.06);border-radius:12px;padding:16px;margin-bottom:24px;border-left:4px solid var(--Trust Blue);}
+.clinic-info{background:rgba(10,100,188,.06);border-radius:12px;padding:16px;margin-bottom:24px;border-left:4px solid var(--trust-blue);}
 .clinic-title{font-weight:700;font-size:15px;color:var(--ink);margin-bottom:6px;}
 .clinic-detail{font-size:13px;color:var(--muted);margin-bottom:3px;}
-.clinic-detail i{color:var(--Trust Blue);margin-right:6px;width:14px;}
+.clinic-detail i{color:var(--trust-blue);margin-right:6px;width:14px;}
 
 .payment-method{background:#fff;border:1.5px solid var(--hair);border-radius:12px;padding:16px;margin-bottom:20px;cursor:pointer;transition:all .2s;}
-.payment-method:hover{border-color:var(--Trust Blue);background:rgba(10,100,188,.02);}
-.payment-method.selected{border-color:var(--Trust Blue);background:rgba(10,100,188,.08);}
+.payment-method:hover{border-color:var(--trust-blue);background:rgba(10,100,188,.02);}
+.payment-method.selected{border-color:var(--trust-blue);background:rgba(10,100,188,.08);}
 .payment-icon{font-size:24px;margin-bottom:8px;}
 .payment-name{font-weight:600;font-size:14px;margin-bottom:2px;}
 .payment-desc{font-size:12px;color:var(--muted);}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;width:100%;}
-.btn-primary{background:var(--Trust Blue);color:#fff;}
+.btn-primary{background:var(--trust-blue);color:#fff;}
 .btn-primary:hover{background:#120A8F;transform:translateY(-1px);}
 .btn-primary:disabled{background:rgba(21,40,31,.2);cursor:not-allowed;transform:none;}
 .btn-secondary{background:#F4F6F4;color:var(--ink);border:1.5px solid var(--hair);}
-.btn-secondary:hover{border-color:var(--Trust Blue);background:rgba(10,100,188,.02);}
+.btn-secondary:hover{border-color:var(--trust-blue);background:rgba(10,100,188,.02);}
 
 .terms{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
-.terms a{color:var(--Trust Blue);font-weight:600;}
+.terms a{color:var(--trust-blue);font-weight:600;}
 
 .error{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;}
 .success{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;}
 
 .loading{display:none;text-align:center;padding:40px;}
-.spinner{width:40px;height:40px;border:4px solid var(--hair);border-top-color:var(--Trust Blue);border-radius:50%;animation:spin .6s linear infinite;margin:0 auto;}
+.spinner{width:40px;height:40px;border:4px solid var(--hair);border-top-color:var(--trust-blue);border-radius:50%;animation:spin .6s linear infinite;margin:0 auto;}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
@@ -109,7 +109,7 @@ a{color:inherit;text-decoration:none;}
             <div style="background:#F9FAFB;border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;">
                 <div style="color:var(--muted);margin-bottom:6px;">Logged in as:</div>
                 <div style="font-weight:600;color:var(--ink);">{{ $user->name }} ({{ $user->email }})</div>
-                <div style="font-size:12px;color:var(--muted);margin-top:4px;"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();" style="color:var(--Trust Blue);">Sign out</a></div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px;"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();" style="color:var(--trust-blue);">Sign out</a></div>
             </div>
 
             {{-- Terms & Conditions --}}

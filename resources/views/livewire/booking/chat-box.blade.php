@@ -8,7 +8,7 @@
                 <p class="text-xs text-muted mb-1">{{ $message->sender->name }}</p>
                 @endif
                 <div class="px-4 py-2.5 rounded-2xl text-sm
-                    {{ $isMine ? 'bg-Trust Blue text-white rounded-br-sm' : 'bg-cream text-ink rounded-bl-sm border border-hairline' }}">
+                    {{ $isMine ? 'bg-trust-blue text-white rounded-br-sm' : 'bg-cream text-ink rounded-bl-sm border border-hairline' }}">
                     {{ $message->body }}
                 </div>
                 <p class="text-[10px] text-muted mt-1 {{ $isMine ? 'text-right' : '' }}">

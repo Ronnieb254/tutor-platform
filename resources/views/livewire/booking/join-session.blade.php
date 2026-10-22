@@ -9,7 +9,7 @@
         <p class="text-sm text-muted mt-1">The Join button becomes available 15 minutes before your session.</p>
         <div class="mt-4 bg-cream rounded-2xl p-4">
             <p class="text-xs text-muted">Time until session</p>
-            <p class="font-serif text-2xl font-bold text-Trust Blue mt-1" id="countdown"></p>
+            <p class="font-serif text-2xl font-bold text-trust-blue mt-1" id="countdown"></p>
         </div>
     </div>
     @elseif(!$codeVerified)

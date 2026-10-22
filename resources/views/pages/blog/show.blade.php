@@ -12,7 +12,7 @@
 .prose ul,.prose ol{margin:0 0 18px 24px;}
 .prose li{margin-bottom:8px;}
 .prose strong{font-weight:700;}
-.prose blockquote{border-left:4px solid var(--Trust Blue);padding:12px 20px;background:rgba(10,100,188,.05);border-radius:0 12px 12px 0;margin:20px 0;font-style:italic;color:var(--muted);}
+.prose blockquote{border-left:4px solid var(--trust-blue);padding:12px 20px;background:rgba(10,100,188,.05);border-radius:0 12px 12px 0;margin:20px 0;font-style:italic;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -22,7 +22,7 @@
     <div style="display:grid;grid-template-columns:1fr;gap:28px;" class="blog-show-g">
         <article>
             <div style="margin-bottom:20px;">
-                <a href="{{ route('blog.index') }}" style="font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;margin-bottom:16px;transition:color .15s;" onmouseover="this.style.color='var(--Trust Blue)'" onmouseout="this.style.color='var(--muted)'">
+                <a href="{{ route('blog.index') }}" style="font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;margin-bottom:16px;transition:color .15s;" onmouseover="this.style.color='var(--trust-blue)'" onmouseout="this.style.color='var(--muted)'">
                     <i class="fa-solid fa-arrow-left fa-xs"></i> Back to Blog
                 </a>
                 @if($post->category)
@@ -57,7 +57,7 @@
         <aside>
             @if($related->isNotEmpty())
             <div class="card card-p" style="margin-bottom:16px;">
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><i class="fa-solid fa-book-open fa-sm" style="color:var(--Trust Blue);margin-right:6px;"></i>Related Articles</h3>
+                <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><i class="fa-solid fa-book-open fa-sm" style="color:var(--trust-blue);margin-right:6px;"></i>Related Articles</h3>
                 @foreach($related as $r)
                 <a href="{{ route('blog.show', $r->slug) }}" style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);transition:opacity .15s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
                     <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📝</div>

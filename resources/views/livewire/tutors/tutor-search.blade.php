@@ -68,7 +68,7 @@
     <div class="flex-1">
         <div class="flex items-center justify-between mb-5">
             <p class="text-sm text-muted">{{ $tutors->total() }} tutor{{ $tutors->total() !== 1 ? 's' : '' }} found</p>
-            <div wire:loading class="text-xs text-Trust Blue flex items-center gap-1.5">
+            <div wire:loading class="text-xs text-trust-blue flex items-center gap-1.5">
                 <svg class="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"/><path d="M4 12a8 8 0 018-8" stroke="currentColor" stroke-width="3" stroke-linecap="round" class="opacity-75"/></svg>
                 Searching…
             </div>
@@ -106,7 +106,7 @@
 
                         <div class="flex flex-wrap gap-1 mt-2">
                             @foreach($tutor->subjects->take(3) as $subject)
-                            <span class="badge-Trust Blue text-[10px]">{{ $subject->name }}</span>
+                            <span class="badge-trust-blue text-[10px]">{{ $subject->name }}</span>
                             @endforeach
                             @if($tutor->subjects->count() > 3)
                             <span class="badge bg-ink/5 text-muted text-[10px]">+{{ $tutor->subjects->count() - 3 }}</span>
@@ -129,7 +129,7 @@
                 {{-- Duration blocks --}}
                 <div class="grid grid-cols-4 gap-1.5 mt-4">
                     @foreach([15, 30, 45, 60] as $mins)
-                    <div class="text-center rounded-xl border border-hairline py-1.5 hover:border-Trust Blue hover:bg-Trust Blue/5 cursor-pointer transition">
+                    <div class="text-center rounded-xl border border-hairline py-1.5 hover:border-trust-blue hover:bg-trust-blue/5 cursor-pointer transition">
                         <p class="text-[11px] font-bold text-ink">{{ $mins }}m</p>
                         <p class="text-[10px] text-muted">KSh {{ \App\Models\TutorProfile::sessionPrices()[$mins]['price'] ?? '' }}</p>
                     </div>

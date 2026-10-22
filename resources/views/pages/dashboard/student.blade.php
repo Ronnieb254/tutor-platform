@@ -11,7 +11,7 @@
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireStyles
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
+:root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
@@ -29,7 +29,7 @@ button{font-family:inherit;cursor:pointer;}
 .sb-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);padding:0 10px;margin-bottom:5px;}
 .sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.58);transition:all .15s;margin-bottom:1px;cursor:pointer;border:none;background:none;width:100%;text-align:left;}
 .sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
-.sb-item.active{background:var(--Trust Blue);color:#fff;}
+.sb-item.active{background:var(--trust-blue);color:#fff;}
 .sb-item svg{flex-shrink:0;}
 .sb-badge{margin-left:auto;background:var(--coral);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;}
 .sb-footer{padding:14px;border-top:1px solid rgba(255,255,255,.06);}
@@ -56,7 +56,7 @@ button{font-family:inherit;cursor:pointer;}
 .page-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .tb-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--hair);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;position:relative;}
-.tb-btn:hover{border-color:rgba(10,100,188,.4);color:var(--Trust Blue);}
+.tb-btn:hover{border-color:rgba(10,100,188,.4);color:var(--trust-blue);}
 .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--coral);border-radius:50%;border:2px solid #fff;}
 
 .content{flex:1;overflow-y:auto;padding:24px;}
@@ -77,15 +77,15 @@ button{font-family:inherit;cursor:pointer;}
 .bdg-green{background:#DCFCE7;color:#166534;}
 .bdg-amber{background:#FEF9C3;color:#854D0E;}
 .bdg-red{background:#FEE2E2;color:#991B1B;}
-.bdg-Trust Blue{background:rgba(10,100,188,.1);color:var(--Trust Blue);}
+.bdg-trust-blue{background:rgba(10,100,188,.1);color:var(--trust-blue);}
 .bdg-blue{background:#DBEAFE;color:#1E40AF;}
 .bdg-mint{background:rgba(16,185,129,.1);color:var(--mint);}
 .bdg-gray{background:#F3F4F6;color:#6B7280;}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;text-decoration:none;}
-.btn-v{background:var(--Trust Blue);color:#fff;}.btn-v:hover{background:#120A8F;}
-.btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--hair);}.btn-o:hover{border-color:var(--Trust Blue);color:var(--Trust Blue);}
+.btn-v{background:var(--trust-blue);color:#fff;}.btn-v:hover{background:#120A8F;}
+.btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--hair);}.btn-o:hover{border-color:var(--trust-blue);color:var(--trust-blue);}
 .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
 .btn-mint{background:var(--mint);color:#fff;}
 .btn-coral{background:var(--coral);color:#fff;}
@@ -108,14 +108,14 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 /* Session code */
 .code-box{background:rgba(10,100,188,.06);border:1.5px solid rgba(10,100,188,.2);border-radius:10px;padding:6px 12px;text-align:center;}
 .code-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
-.code-val{font-family:monospace;font-size:15px;font-weight:800;color:var(--Trust Blue);}
+.code-val{font-family:monospace;font-size:15px;font-weight:800;color:var(--trust-blue);}
 
 /* Chat */
 .msg{display:flex;gap:10px;margin-bottom:14px;}
 .msg.mine{flex-direction:row-reverse;}
 .msg-bubble{max-width:75%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.6;}
 .msg.theirs .msg-bubble{background:#F4F6F4;color:var(--ink);border-radius:4px 16px 16px 16px;}
-.msg.mine .msg-bubble{background:var(--Trust Blue);color:#fff;border-radius:16px 4px 16px 16px;}
+.msg.mine .msg-bubble{background:var(--trust-blue);color:#fff;border-radius:16px 4px 16px 16px;}
 
 /* Flash */
 .flash{padding:12px 16px;border-radius:12px;font-size:13.5px;font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
@@ -299,7 +299,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             </div>
             <div class="stat-lbl">Saved Tutors</div>
             <div class="stat-val">{{ $user->wishlist()->count() }}</div>
-            <div class="stat-sub"><button @click="tab='wishlist'" style="background:none;border:none;color:var(--Trust Blue);font-size:12px;cursor:pointer;font-family:inherit;">View wishlist →</button></div>
+            <div class="stat-sub"><button @click="tab='wishlist'" style="background:none;border:none;color:var(--trust-blue);font-size:12px;cursor:pointer;font-family:inherit;">View wishlist →</button></div>
         </div>
     </div>
     <style>.stats-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.stats-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
@@ -406,7 +406,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             @if($b->session_code_student)
             <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.2);border-radius:14px;padding:14px 18px;text-align:center;flex-shrink:0;">
                 <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;">Your Session Code</div>
-                <div style="font-family:monospace;font-size:22px;font-weight:800;color:var(--Trust Blue);">{{ $b->session_code_student }}</div>
+                <div style="font-family:monospace;font-size:22px;font-weight:800;color:var(--trust-blue);">{{ $b->session_code_student }}</div>
                 <div style="font-size:11px;color:var(--muted);margin-top:4px;">Enter this to join your session</div>
             </div>
             @endif
@@ -481,7 +481,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                                 @for($i=1;$i<=5;$i++)<span style="color:{{ $i<=$b->review->rating ? 'var(--gold)' : 'var(--hair)' }};font-size:13px;">★</span>@endfor
                             </div>
                             @elseif($b->status === 'completed')
-                            <a href="{{ route('bookings.show',$b->uuid) }}" style="font-size:12px;color:var(--Trust Blue);font-weight:600;">Leave review</a>
+                            <a href="{{ route('bookings.show',$b->uuid) }}" style="font-size:12px;color:var(--trust-blue);font-weight:600;">Leave review</a>
                             @else
                             <span style="color:var(--muted);">—</span>
                             @endif
@@ -519,7 +519,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                     <div style="flex:1;min-width:0;">
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;">
                             <span style="font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $cb->tutor->name }}</span>
-                            @if($unread > 0)<span class="bdg bdg-Trust Blue" style="font-size:10px;padding:2px 6px;flex-shrink:0;">{{ $unread }}</span>@endif
+                            @if($unread > 0)<span class="bdg bdg-trust-blue" style="font-size:10px;padding:2px 6px;flex-shrink:0;">{{ $unread }}</span>@endif
                         </div>
                         <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $lastMsg ? Str::limit($lastMsg->body,40) : 'No messages yet' }}</div>
                     </div>
@@ -560,7 +560,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             </div>
             <form method="POST" action="/bookings/{{ $fb->id }}/messages" style="padding:16px 20px;border-top:1px solid var(--hair);display:flex;gap:10px;">
                 @csrf
-                <input type="text" name="body" placeholder="Type a message…" required style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'">
+                <input type="text" name="body" placeholder="Type a message…" required style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 <button type="submit" class="btn btn-v" style="height:44px;padding:0 20px;">
                     <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Send
                 </button>
@@ -677,7 +677,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 @if(!empty($data['code']))
                 <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:8px;padding:4px 10px;margin-top:6px;">
                     <span style="font-size:11px;color:var(--muted);">Your access code:</span>
-                    <code style="font-size:14px;font-weight:800;color:var(--Trust Blue);">{{ $data['code'] }}</code>
+                    <code style="font-size:14px;font-weight:800;color:var(--trust-blue);">{{ $data['code'] }}</code>
                 </div>
                 @endif
                 @if(!empty($data['scheduled_at']))
@@ -688,7 +688,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 <a href="{{ $data['url'] }}" class="btn btn-mint btn-sm" style="margin-top:8px;">Join / View Session</a>
                 @endif
             </div>
-            @if($isUnread)<div style="width:8px;height:8px;background:var(--Trust Blue);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>@endif
+            @if($isUnread)<div style="width:8px;height:8px;background:var(--trust-blue);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>@endif
         </div>
         @empty
         <div style="padding:64px;text-align:center;">
@@ -722,7 +722,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">
                     @foreach($profile->subjects->take(3) as $s)
-                    <span class="bdg bdg-Trust Blue">{{ $s->name }}</span>
+                    <span class="bdg bdg-trust-blue">{{ $s->name }}</span>
                     @endforeach
                 </div>
                 <div style="display:flex;gap:12px;font-size:13px;color:var(--muted);">

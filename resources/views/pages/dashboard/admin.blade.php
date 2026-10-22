@@ -177,7 +177,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
         </div>
         @if($pendingTutors > 5)
         <div style="padding:12px 20px;border-top:1px solid var(--hairline);text-align:center;">
-            <a href="{{ route('admin.tutors') }}" style="font-size:13px;color:var(--Trust Blue);font-weight:600;">View all {{ $pendingTutors }} pending →</a>
+            <a href="{{ route('admin.tutors') }}" style="font-size:13px;color:var(--trust-blue);font-weight:600;">View all {{ $pendingTutors }} pending →</a>
         </div>
         @endif
     </div>

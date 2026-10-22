@@ -27,9 +27,9 @@ html,body{min-height:100%;}
 /* Fields */
 .field{margin-bottom:16px;}
 .flabel{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;}
-.flabel i{color:var(--Trust Blue);font-size:11px;}
+.flabel i{color:var(--trust-blue);font-size:11px;}
 .finput{width:100%;height:48px;padding:0 15px;border-radius:13px;border:1.5px solid rgba(21,40,31,.18);background:#fff;font-size:14px;font-family:inherit;color:var(--ink);outline:none;transition:all .18s;}
-.finput:focus{border-color:var(--Trust Blue);box-shadow:0 0 0 3px rgba(10,100,188,.1);}
+.finput:focus{border-color:var(--trust-blue);box-shadow:0 0 0 3px rgba(10,100,188,.1);}
 textarea.finput{height:auto;padding:12px 15px;resize:vertical;line-height:1.65;}
 select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
 .ferr{font-size:12px;color:var(--coral);margin-top:4px;display:flex;align-items:center;gap:4px;}
@@ -38,7 +38,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
 /* File upload zones */
 .upload-zone{border:2px dashed rgba(21,40,31,.2);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--Trust Blue);background:rgba(10,100,188,.04);}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--trust-blue);background:rgba(10,100,188,.04);}
 .upload-zone.has-file{border-style:solid;border-color:var(--mint);background:rgba(16,185,129,.04);}
 .upload-zone.rejected{border-color:var(--coral);background:rgba(232,82,42,.04);}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
@@ -56,11 +56,11 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 .subject-grid{display:flex;flex-wrap:wrap;gap:6px;}
 .s-chip{display:inline-flex;align-items:center;gap:5px;border:1.5px solid rgba(21,40,31,.15);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;background:#fff;}
 .s-chip:hover{border-color:rgba(10,100,188,.4);}
-.s-chip.sel{border-color:var(--Trust Blue);background:var(--Trust Blue);color:#fff;}
+.s-chip.sel{border-color:var(--trust-blue);background:var(--trust-blue);color:#fff;}
 .s-chip.sel input{display:none;}
 
 /* Buttons */
-.btn-next{width:100%;height:52px;border-radius:999px;background:var(--Trust Blue);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-next{width:100%;height:52px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .btn-next:hover{background:#120A8F;transform:translateY(-1px);box-shadow:0 8px 20px rgba(10,100,188,.3);}
 .btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
 .btn-back{background:none;border:1.5px solid rgba(21,40,31,.18);color:var(--ink);border-radius:999px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
@@ -104,7 +104,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             {{-- ── STEP 1: Profile ── --}}
             <div x-show="step === 1">
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-user" style="color:var(--Trust Blue);font-size:18px;margin-right:8px;"></i>Your Profile</h2>
+                    <h2><i class="fa-solid fa-user" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Your Profile</h2>
                     <p class="sub">Tell students about yourself. This will appear on your public tutor profile.</p>
 
                     <div class="row2">
@@ -162,7 +162,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                             <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--muted);">KSh</span>
                             <input type="number" x-model="form.hourly_rate" class="finput" style="padding-left:46px;" placeholder="e.g. 2000" min="500">
                         </div>
-                        <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-info-circle fa-xs" style="color:var(--Trust Blue);"></i> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
+                        <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-info-circle fa-xs" style="color:var(--trust-blue);"></i> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
                     </div>
                 </div>
                 <div style="display:flex;gap:12px;">
@@ -175,7 +175,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             {{-- ── STEP 2: Subjects ── --}}
             <div x-show="step === 2" x-cloak>
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-book-open" style="color:var(--Trust Blue);font-size:18px;margin-right:8px;"></i>Subjects You Teach</h2>
+                    <h2><i class="fa-solid fa-book-open" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Subjects You Teach</h2>
                     <p class="sub">Select up to 2 subjects. Students will be matched with you based on these.</p>
 
                     @php $subjectsByCategory = \App\Models\Subject::active()->with('category')->get()->groupBy('category.name'); @endphp
@@ -199,7 +199,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     </div>
 
                     <div style="margin-top:14px;padding:12px 14px;background:rgba(10,100,188,.05);border-radius:12px;border:1px solid rgba(10,100,188,.12);">
-                        <span style="font-size:13px;font-weight:600;color:var(--Trust Blue);">
+                        <span style="font-size:13px;font-weight:600;color:var(--trust-blue);">
                             <i class="fa-solid fa-circle-info fa-xs"></i>
                             <span x-text="form.subjects.length"></span>/2 subjects selected
                             <span x-show="form.subjects.length === 2" style="color:var(--mint);margin-left:8px;"><i class="fa-solid fa-check fa-xs"></i> Maximum reached</span>
@@ -216,7 +216,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             {{-- ── STEP 3: Documents ── --}}
             <div x-show="step === 3" x-cloak>
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-file-shield" style="color:var(--Trust Blue);font-size:18px;margin-right:8px;"></i>Verification Documents</h2>
+                    <h2><i class="fa-solid fa-file-shield" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Verification Documents</h2>
                     <p class="sub">Upload your documents so we can verify your credentials. All files are stored securely. Accepted: JPG, PNG, PDF — max 5MB each.</p>
 
                     <div style="display:flex;flex-direction:column;gap:16px;">
@@ -363,7 +363,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             {{-- ── STEP 4: Verification ── --}}
             <div x-show="step === 4" x-cloak>
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--Trust Blue);font-size:18px;margin-right:8px;"></i>Choose Verification Speed</h2>
+                    <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Choose Verification Speed</h2>
                     <p class="sub">Your documents will be reviewed by our academic team. Choose how quickly you want to get started.</p>
 
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;" class="ver-g">
@@ -420,7 +420,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                     {{-- What happens next --}}
                     <div style="margin-top:18px;padding:16px;background:#F9FAF9;border-radius:14px;">
-                        <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-list-check" style="color:var(--Trust Blue);"></i> What happens after submission</p>
+                        <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-list-check" style="color:var(--trust-blue);"></i> What happens after submission</p>
                         @foreach(['We review your profile, subjects and all uploaded documents','You receive an email when approved (or if action is required)','Your profile goes live and students can book sessions with you','Earnings are credited to your wallet after each completed session'] as $item)
                         <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
                             <i class="fa-solid fa-circle-check" style="color:var(--mint);margin-top:1px;flex-shrink:0;font-size:11px;"></i>{{ $item }}
@@ -431,7 +431,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                 {{-- Upload progress --}}
                 <div x-show="submitting" style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.1);padding:20px;margin-bottom:16px;text-align:center;">
-                    <div style="width:48px;height:48px;border:3px solid rgba(10,100,188,.2);border-top-color:var(--Trust Blue);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;"></div>
+                    <div style="width:48px;height:48px;border:3px solid rgba(10,100,188,.2);border-top-color:var(--trust-blue);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;"></div>
                     <p style="font-size:14px;font-weight:600;color:var(--ink);" x-text="uploadStatus"></p>
                     <p style="font-size:12px;color:var(--muted);margin-top:4px;">Please don't close this page</p>
                 </div>
@@ -481,8 +481,8 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     </div>
 
                     <a href="{{ route('tutor.dashboard') }}"
-                       style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:var(--Trust Blue);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .18s;"
-                       onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--Trust Blue)'">
+                       style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .18s;"
+                       onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
                         <i class="fa-solid fa-gauge-high fa-sm"></i> Go to Dashboard
                     </a>
                 </div>

@@ -80,7 +80,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                         </div>
                     </td>
                     <td>
-                        @php $rc=['student'=>'badge-blue','parent'=>'badge-Trust Blue','tutor'=>'badge-green','admin'=>'badge-amber'][$user->role]??'badge-gray'; @endphp
+                        @php $rc=['student'=>'badge-blue','parent'=>'badge-trust-blue','tutor'=>'badge-green','admin'=>'badge-amber'][$user->role]??'badge-gray'; @endphp
                         <span class="badge {{ $rc }}">{{ ucfirst($user->role) }}</span>
                     </td>
                     <td style="color:var(--muted);font-size:13px;">{{ $user->created_at->format('M j, Y') }}</td>

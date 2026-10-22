@@ -6,7 +6,7 @@
 <title>{{ $clinic->title ?? $clinic->name }} - Clinic Session</title>
 <script src="https://meet.jitsi.org/external_api.js"></script>
 <style>
-:root{--ink:#15281F;--Trust Blue:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--trust-blue:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var(--ink);}
 

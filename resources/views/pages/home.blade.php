@@ -15,7 +15,7 @@
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireStyles
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{background:var(--cream);scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;}
@@ -24,22 +24,22 @@ a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
 .w{max-width:1360px;margin:0 auto;padding:0 24px;}
 @media(min-width:1024px){.w{padding:0 48px;}}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 28px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer;transition:all .18s;border:none;font-family:inherit;text-decoration:none;}
-.btn-v{background:var(--Trust Blue);color:#fff;}.btn-v:hover{background:#120A8F;transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,100,188,.3);}
+.btn-v{background:var(--trust-blue);color:#fff;}.btn-v:hover{background:#120A8F;transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,100,188,.3);}
 .btn-o{background:transparent;color:var(--ink);border:2px solid var(--ink);}.btn-o:hover{background:var(--ink);color:var(--cream);}
 .btn-coral{background:var(--coral);color:#fff;}.btn-coral:hover{opacity:.9;transform:translateY(-1px);}
 .btn-mint{background:var(--mint);color:#fff;}.btn-mint:hover{background:#059669;}
-.btn-w{background:#fff;color:var(--Trust Blue);font-weight:700;}.btn-w:hover{background:var(--cream);}
+.btn-w{background:#fff;color:var(--trust-blue);font-weight:700;}.btn-w:hover{background:var(--cream);}
 .card{background:#fff;border-radius:22px;border:1px solid var(--hair);box-shadow:0 2px 16px rgba(21,40,31,.06);}
 .card-lift{transition:transform .2s,box-shadow .2s;}.card-lift:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(21,40,31,.12);}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:999px;font-size:12px;font-weight:600;}
-.bv{background:rgba(10,100,188,.1);color:var(--Trust Blue);}
+.bv{background:rgba(10,100,188,.1);color:var(--trust-blue);}
 .bm{background:rgba(16,185,129,.1);color:var(--mint);}
 .bc{background:rgba(232,82,42,.1);color:var(--coral);}
 /* NAV */
 nav.main{position:sticky;top:0;z-index:100;background:rgba(251,245,230,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--hair);}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px;}
 .logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--ink);}
-.logo em{font-style:normal;color:var(--Trust Blue);}
+.logo em{font-style:normal;color:var(--trust-blue);}
 .desk-links{display:none;align-items:center;gap:4px;}
 @media(min-width:1024px){.desk-links{display:flex;}}
 .desk-links a{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500;transition:background .15s;}
@@ -60,7 +60,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 @endphp
 
 {{-- ANNOUNCEMENT BAR --}}
-<!-- <div x-data="{ show: true }" x-show="show" x-cloak style="background:var(--Trust Blue);color:#fff;font-size:13px;padding:9px 24px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;">
+<!-- <div x-data="{ show: true }" x-show="show" x-cloak style="background:var(--trust-blue);color:#fff;font-size:13px;padding:9px 24px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;">
     <i class="fa-solid fa-shield-check"></i>
     <span>All tutors are TSC-registered and background-checked. <strong>100% money-back guarantee</strong> on your first lesson.</span>
     <button @click="show=false" style="position:absolute;right:16px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:18px;line-height:1;">&times;</button>
@@ -79,7 +79,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 </div>
                 <h1 style="font-size:clamp(40px,6vw,72px);color:var(--ink);margin-bottom:18px;letter-spacing:-.02em;">
                     Karibu Darasani.<br>
-                    <span style="color:var(--Trust Blue);">Learn with confidence,</span><br>every lesson.
+                    <span style="color:var(--trust-blue);">Learn with confidence,</span><br>every lesson.
                 </h1>
                 <p style="font-size:17px;color:var(--muted);margin-bottom:32px;max-width:540px;line-height:1.8;">
                     <strong style="color:var(--ink);">Instant 1-on-1 tutoring</strong> — tell us your subject and schedule. Mwalimu matches you with a vetted, TSC-registered expert teacher available right now or at your earliest convenience.
@@ -87,7 +87,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 
                 {{-- Quick booking CTA --}}
                 <div style="background:#fff;border-radius:20px;border:1px solid var(--hair);padding:20px;max-width:520px;margin-bottom:28px;box-shadow:0 4px 24px rgba(21,40,31,.08);">
-                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--Trust Blue);"></i> Book a session now</p>
+                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--trust-blue);"></i> Book a session now</p>
                     <form action="{{ route('tutors.index') }}" method="GET" style="display:flex;gap:8px;flex-wrap:wrap;">
                         <select name="category" style="flex:1;min-width:140px;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid var(--hair);background:#fff;font-size:14px;font-family:inherit;outline:none;" onchange="this.form.submit()">
                             <option value="">Choose Subject</option>
@@ -120,7 +120,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                     ] as [$ic,$title,$sub])
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div style="width:36px;height:36px;background:rgba(10,100,188,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="fa-solid {{ $ic }}" style="color:var(--Trust Blue);font-size:14px;"></i>
+                            <i class="fa-solid {{ $ic }}" style="color:var(--trust-blue);font-size:14px;"></i>
                         </div>
                         <div>
                             <div style="font-size:13px;font-weight:700;color:var(--ink);">{{ $title }}</div>
@@ -205,21 +205,21 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 ['40','Guided Practice','🎯','KSh 500','A full structured lesson with warm-up, teaching and Q&A.','KSh 680'],
                 ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value. Ideal for exam prep.','KSh 800'],
             ] as [$mins,$title,$icon,$price,$desc,$from])
-            <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--Trust Blue)'" onmouseout="this.style.borderColor='var(--hair)'">
+            <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--trust-blue)'" onmouseout="this.style.borderColor='var(--hair)'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                     <div style="font-size:32px;">{{ $icon }}</div>
-                    <span style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--Trust Blue);">{{ $price }}</span>
+                    <span style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--trust-blue);">{{ $price }}</span>
                 </div>
                 <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px;">{{ $mins }} min</div>
                 <div style="font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px;">{{ $title }}</div>
                 <p style="font-size:13px;color:var(--muted);line-height:1.65;">{{ $desc }}</p>
-                <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:var(--Trust Blue);">
+                <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:var(--trust-blue);">
                     Book now <i class="fa-solid fa-arrow-right fa-xs"></i>
                 </a>
             </div>
             @endforeach
         </div>
-        <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:20px;"><i class="fa-solid fa-circle-info fa-xs" style="color:var(--Trust Blue);"></i> Booking only completes after payment is made and a session code is sent to both student and tutor.</p>
+        <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:20px;"><i class="fa-solid fa-circle-info fa-xs" style="color:var(--trust-blue);"></i> Booking only completes after payment is made and a session code is sent to both student and tutor.</p>
     </div>
     <style>.price-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.price-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 </section>
@@ -328,7 +328,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:8px;">Browse by subject</h2>
                 <p style="color:var(--muted);font-size:16px;">Find a tutor who knows your curriculum inside out</p>
             </div>
-            <a href="{{ route('tutors.index') }}" style="font-size:14px;font-weight:600;color:var(--Trust Blue);display:flex;align-items:center;gap:4px;">
+            <a href="{{ route('tutors.index') }}" style="font-size:14px;font-weight:600;color:var(--trust-blue);display:flex;align-items:center;gap:4px;">
                 All subjects <i class="fa-solid fa-arrow-right fa-xs"></i>
             </a>
         </div>
@@ -352,7 +352,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     <style>.cat-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.cat-g{grid-template-columns:repeat(3,1fr)!important;}}@media(min-width:1024px){.cat-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 </section>
 {{-- FOR TUTORS CTA --}}
-<section style="background:var(--Trust Blue);padding:72px 0;">
+<section style="background:var(--trust-blue);padding:72px 0;">
     <div class="w">
         <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="tc-g">
             <div>
@@ -418,7 +418,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 <div style="color:var(--gold);font-size:16px;letter-spacing:3px;margin-bottom:14px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                 <p style="font-size:14px;color:var(--ink);line-height:1.85;margin-bottom:18px;font-style:italic;">"{{ $quote }}"</p>
                 <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid var(--hair);">
-                    <div style="width:38px;height:38px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--Trust Blue);font-size:15px;flex-shrink:0;">{{ $init }}</div>
+                    <div style="width:38px;height:38px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--trust-blue);font-size:15px;flex-shrink:0;">{{ $init }}</div>
                     <div>
                         <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $name }}</div>
                         <div style="font-size:12px;color:var(--muted);">{{ $role }} · {{ $note }}</div>

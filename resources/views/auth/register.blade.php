@@ -12,7 +12,7 @@
 :root{
     --ink:#15281F;
     --cream:#FBF5E6;
-    --Trust Blue:#0A64BC;
+    --trust-blue:#0A64BC;
     --coral:#E8522A;
     --mint:#10B981;
     --muted:rgba(21,40,31,.55);
@@ -232,7 +232,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 
 .form-input:focus,.form-select:focus{
     outline:none;
-    border-color:var(--Trust Blue);
+    border-color:var(--trust-blue);
     box-shadow:0 0 0 4px rgba(10,100,188,.08);
 }
 
@@ -255,7 +255,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
     width:18px;
     height:18px;
     cursor:pointer;
-    accent-color:var(--Trust Blue);
+    accent-color:var(--trust-blue);
     flex-shrink:0;
     margin-top:2px;
 }
@@ -268,7 +268,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 }
 
 .terms-wrapper label a{
-    color:var(--Trust Blue);
+    color:var(--trust-blue);
     font-weight:600;
     text-decoration:none;
 }
@@ -335,7 +335,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 }
 
 .login-link a{
-    color:var(--Trust Blue);
+    color:var(--trust-blue);
     font-weight:700;
     text-decoration:none;
     transition:color .2s;

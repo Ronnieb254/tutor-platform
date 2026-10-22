@@ -23,7 +23,7 @@
     <div class="card p-6">
         <div class="flex items-center justify-between mb-5">
             <h3 class="font-serif text-xl font-semibold text-ink">Upcoming Sessions</h3>
-            <a href="{{ route('tutors.index') }}" class="text-sm text-Trust Blue font-semibold hover:underline">+ Book a session</a>
+            <a href="{{ route('tutors.index') }}" class="text-sm text-trust-blue font-semibold hover:underline">+ Book a session</a>
         </div>
         @if($upcoming->isEmpty())
         <div class="text-center py-8">
@@ -35,12 +35,12 @@
         @else
         <div class="space-y-3">
             @foreach($upcoming as $booking)
-            <div class="flex items-center gap-4 p-4 rounded-2xl bg-Trust Blue/5 border border-Trust Blue/15 hover:bg-Trust Blue/10 transition">
+            <div class="flex items-center gap-4 p-4 rounded-2xl bg-trust-blue/5 border border-trust-blue/15 hover:bg-trust-blue/10 transition">
                 <img src="{{ $booking->tutor->avatar_url }}" class="w-12 h-12 rounded-2xl object-cover flex-shrink-0">
                 <div class="flex-1 min-w-0">
                     <p class="font-semibold text-ink">{{ $booking->tutor->name }}</p>
                     <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->duration_minutes }} min</p>
-                    <p class="text-xs text-Trust Blue font-semibold mt-1">{{ $booking->scheduled_at->format('D, M j \a\t g:ia') }}</p>
+                    <p class="text-xs text-trust-blue font-semibold mt-1">{{ $booking->scheduled_at->format('D, M j \a\t g:ia') }}</p>
                 </div>
                 <div class="flex flex-col items-end gap-2 flex-shrink-0">
                     @if($booking->canJoin())
@@ -48,7 +48,7 @@
                         Join Now
                     </a>
                     @else
-                    <a href="{{ route('bookings.show', $booking->uuid) }}" class="badge-Trust Blue text-xs px-3 py-1.5 rounded-full font-semibold">
+                    <a href="{{ route('bookings.show', $booking->uuid) }}" class="badge-trust-blue text-xs px-3 py-1.5 rounded-full font-semibold">
                         View
                     </a>
                     @endif

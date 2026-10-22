@@ -8,7 +8,7 @@
 <body>
 @include('partials.nav')
 <div class="w" style="padding-top:32px;padding-bottom:64px;">
-    <a href="{{ route('courses.index') }}" style="font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;margin-bottom:20px;transition:color .15s;" onmouseover="this.style.color='var(--Trust Blue)'" onmouseout="this.style.color='var(--muted)'">
+    <a href="{{ route('courses.index') }}" style="font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;margin-bottom:20px;transition:color .15s;" onmouseover="this.style.color='var(--trust-blue)'" onmouseout="this.style.color='var(--muted)'">
         <i class="fa-solid fa-arrow-left fa-xs"></i> All Courses
     </a>
     <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="cshow-g">
@@ -34,11 +34,11 @@
             @if($course->lessons->isNotEmpty())
             <div class="card" style="margin-top:20px;overflow:hidden;">
                 <div style="padding:18px 22px;border-bottom:1px solid var(--hair);">
-                    <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);"><i class="fa-solid fa-list-check fa-sm" style="color:var(--Trust Blue);margin-right:8px;"></i>Course Lessons</h3>
+                    <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);"><i class="fa-solid fa-list-check fa-sm" style="color:var(--trust-blue);margin-right:8px;"></i>Course Lessons</h3>
                 </div>
                 @foreach($course->lessons as $lesson)
                 <div style="display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid rgba(21,40,31,.05);">
-                    <div style="width:32px;height:32px;border-radius:9px;background:{{ $enrolled || $lesson->is_free_preview ? 'var(--Trust Blue)' : '#F4F6F4' }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <div style="width:32px;height:32px;border-radius:9px;background:{{ $enrolled || $lesson->is_free_preview ? 'var(--trust-blue)' : '#F4F6F4' }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <i class="fa-solid {{ $enrolled || $lesson->is_free_preview ? 'fa-play' : 'fa-lock' }}" style="color:{{ $enrolled || $lesson->is_free_preview ? '#fff' : 'var(--muted)' }};font-size:11px;"></i>
                     </div>
                     <div style="flex:1;">
@@ -55,7 +55,7 @@
         <div>
             <div class="card card-p" style="position:sticky;top:88px;">
                 <div style="text-align:center;margin-bottom:20px;">
-                    <div style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:{{ $course->is_free?'var(--mint)':'var(--Trust Blue)' }};">
+                    <div style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:{{ $course->is_free?'var(--mint)':'var(--trust-blue)' }};">
                         {{ $course->is_free ? 'Free' : 'KSh '.number_format($course->price) }}
                     </div>
                 </div>

@@ -59,7 +59,7 @@
                     <p class="text-xs text-muted">{{ $booking->scheduled_at->format('g:ia') }}</p>
                 </div>
                 <a href="{{ route('bookings.show', $booking->uuid) }}"
-                   class="badge-Trust Blue text-xs px-3 py-1.5 rounded-full font-semibold hover:bg-Trust Blue hover:text-white transition flex-shrink-0">
+                   class="badge-trust-blue text-xs px-3 py-1.5 rounded-full font-semibold hover:bg-trust-blue hover:text-white transition flex-shrink-0">
                     View
                 </a>
             </div>

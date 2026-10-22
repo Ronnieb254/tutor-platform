@@ -39,7 +39,7 @@ html,body{height:100%;background:#F2F5F2;}
 .bdg-red{background:#FEE2E2;color:#991B1B;}
 .bdg-blue{background:#DBEAFE;color:#1E40AF;}
 .bdg-gray{background:#F3F4F6;color:#6B7280;}
-.bdg-Trust Blue{background:rgba(10,100,188,.1);color:#0A64BC;}
+.bdg-trust-blue{background:rgba(10,100,188,.1);color:#0A64BC;}
 /* Doc viewer modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
 .modal-box{background:#fff;border-radius:20px;width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
@@ -209,7 +209,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                             </div>
                             <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;">
                                 @foreach($profile->subjects->take(3) as $s)
-                                <span class="bdg bdg-Trust Blue" style="font-size:10px;">{{ $s->name }}</span>
+                                <span class="bdg bdg-trust-blue" style="font-size:10px;">{{ $s->name }}</span>
                                 @endforeach
                             </div>
                         </div>
@@ -250,7 +250,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                                 <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.4);margin-bottom:8px;">Subjects</p>
                                 <div style="display:flex;flex-wrap:wrap;gap:5px;">
                                     @foreach($profile->subjects as $s)
-                                    <span class="bdg bdg-Trust Blue">{{ $s->name }}</span>
+                                    <span class="bdg bdg-trust-blue">{{ $s->name }}</span>
                                     @endforeach
                                 </div>
                             </div>

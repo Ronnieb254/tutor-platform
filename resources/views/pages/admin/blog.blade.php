@@ -59,7 +59,7 @@ $categories = BlogCategory::all();
                     </td>
                     <td>
                         @if($post->category)
-                        <span class="badge badge-Trust Blue">{{ $post->category->name }}</span>
+                        <span class="badge badge-trust-blue">{{ $post->category->name }}</span>
                         @else
                         <span style="color:var(--muted);font-size:13px;">—</span>
                         @endif
@@ -134,7 +134,7 @@ $categories = BlogCategory::all();
                 <input type="file" name="thumbnail" accept="image/*" style="font-size:13px;color:var(--muted);">
             </div>
             <div style="margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-                <input type="checkbox" name="is_published" id="publish_now" value="1" style="width:16px;height:16px;accent-color:var(--Trust Blue);">
+                <input type="checkbox" name="is_published" id="publish_now" value="1" style="width:16px;height:16px;accent-color:var(--trust-blue);">
                 <label for="publish_now" style="font-size:14px;font-weight:500;">Publish immediately</label>
             </div>
             <div style="display:flex;gap:10px;">

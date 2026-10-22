@@ -11,7 +11,7 @@
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireStyles
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
+:root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
@@ -30,7 +30,7 @@ button{font-family:inherit;cursor:pointer;}
 .sb-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);padding:0 10px;margin-bottom:5px;}
 .sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.58);transition:all .15s;margin-bottom:1px;cursor:pointer;border:none;background:none;width:100%;text-align:left;}
 .sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
-.sb-item.active{background:var(--Trust Blue);color:#fff;}
+.sb-item.active{background:var(--trust-blue);color:#fff;}
 .sb-item svg{flex-shrink:0;opacity:.75;}
 .sb-item.active svg{opacity:1;}
 .sb-badge{margin-left:auto;background:var(--coral);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;min-width:18px;text-align:center;}
@@ -59,7 +59,7 @@ button{font-family:inherit;cursor:pointer;}
 .page-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .tb-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--hair);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;position:relative;}
-.tb-btn:hover{border-color:rgba(10,100,188,.4);color:var(--Trust Blue);}
+.tb-btn:hover{border-color:rgba(10,100,188,.4);color:var(--trust-blue);}
 .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--coral);border-radius:50%;border:2px solid #fff;}
 
 /* Content */
@@ -87,15 +87,15 @@ button{font-family:inherit;cursor:pointer;}
 .bdg-green{background:#DCFCE7;color:#166534;}
 .bdg-amber{background:#FEF9C3;color:#854D0E;}
 .bdg-red{background:#FEE2E2;color:#991B1B;}
-.bdg-Trust Blue{background:rgba(10,100,188,.1);color:var(--Trust Blue);}
+.bdg-trust-blue{background:rgba(10,100,188,.1);color:var(--trust-blue);}
 .bdg-blue{background:#DBEAFE;color:#1E40AF;}
 .bdg-gray{background:#F3F4F6;color:#6B7280;}
 .bdg-mint{background:rgba(16,185,129,.1);color:var(--mint);}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;}
-.btn-v{background:var(--Trust Blue);color:#fff;}.btn-v:hover{background:#120A8F;}
-.btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--hair);}.btn-o:hover{border-color:var(--Trust Blue);color:var(--Trust Blue);}
+.btn-v{background:var(--trust-blue);color:#fff;}.btn-v:hover{background:#120A8F;}
+.btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--hair);}.btn-o:hover{border-color:var(--trust-blue);color:var(--trust-blue);}
 .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
 .btn-danger{background:#FEE2E2;color:#991B1B;}
 .btn-mint{background:var(--mint);color:#fff;}
@@ -128,7 +128,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 .msg.mine{flex-direction:row-reverse;}
 .msg-bubble{max-width:75%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.6;}
 .msg.theirs .msg-bubble{background:#F4F6F4;color:var(--ink);border-radius:4px 16px 16px 16px;}
-.msg.mine .msg-bubble{background:var(--Trust Blue);color:#fff;border-radius:16px 4px 16px 16px;}
+.msg.mine .msg-bubble{background:var(--trust-blue);color:#fff;border-radius:16px 4px 16px 16px;}
 .msg-time{font-size:11px;color:var(--muted);margin-top:3px;}
 
 /* Flash */
@@ -473,7 +473,7 @@ $activeTab = request('tab','overview');
             $stepActive = ($isApproved && $i === 3) || (!$isApproved && $verificationStatus === 'under_review' && $i === 1) || (!$isApproved && $verificationStatus === 'no_documents' && $i === 0);
             @endphp
             <div style="flex:1;padding:12px 8px;text-align:center;font-size:12px;font-weight:600;
-                background:{{ $stepDone ? 'var(--mint)' : ($stepActive ? 'var(--Trust Blue)' : '#fff') }};
+                background:{{ $stepDone ? 'var(--mint)' : ($stepActive ? 'var(--trust-blue)' : '#fff') }};
                 color:{{ ($stepDone || $stepActive) ? '#fff' : 'var(--muted)' }};
                 border-right:{{ !$loop->last ? '1px solid var(--hair)' : 'none' }};">
                 {{ $num }}. {{ $step }}
@@ -513,7 +513,7 @@ $activeTab = request('tab','overview');
                 <form method="POST" action="/tutor/documents/upload" enctype="multipart/form-data" style="display:flex;align-items:center;gap:6px;">
                     @csrf
                     <input type="hidden" name="type" value="{{ $type }}">
-                    <label style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;border:1.5px solid var(--hair);background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--Trust Blue)'" onmouseout="this.style.borderColor='var(--hair)'">
+                    <label style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;border:1.5px solid var(--hair);background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--trust-blue)'" onmouseout="this.style.borderColor='var(--hair)'">
                         <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
                         {{ $doc ? 'Re-upload' : 'Upload' }}
                         <input type="file" name="document" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="this.closest('form').submit()">
@@ -525,7 +525,7 @@ $activeTab = request('tab','overview');
     </div>
 
     <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:16px 20px;">
-        <p style="font-size:13px;font-weight:700;color:var(--Trust Blue);margin-bottom:6px;">📋 Accepted formats</p>
+        <p style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-bottom:6px;">📋 Accepted formats</p>
         <p style="font-size:13px;color:var(--muted);line-height:1.6;">JPG, PNG or PDF · Max 5MB per file · Must be clear and legible · National ID must show both sides if applicable</p>
     </div>
 </div>
@@ -571,7 +571,7 @@ $activeTab = request('tab','overview');
             @if($b->session_code_tutor)
             <div style="background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:10px;padding:6px 12px;text-align:center;">
                 <div style="font-size:10px;color:var(--muted);font-weight:600;">SESSION CODE</div>
-                <div style="font-family:monospace;font-size:14px;font-weight:800;color:var(--Trust Blue);">{{ $b->session_code_tutor }}</div>
+                <div style="font-family:monospace;font-size:14px;font-weight:800;color:var(--trust-blue);">{{ $b->session_code_tutor }}</div>
             </div>
             @endif
             @if($b->status === 'confirmed')
@@ -610,7 +610,7 @@ $activeTab = request('tab','overview');
                         <td style="font-weight:600;color:var(--mint);">KSh {{ number_format($b->tutor_earning) }}</td>
                         <td>
                             @if($b->session_code_tutor)
-                            <code style="background:rgba(10,100,188,.08);color:var(--Trust Blue);padding:2px 7px;border-radius:6px;font-size:12px;font-weight:700;">{{ $b->session_code_tutor }}</code>
+                            <code style="background:rgba(10,100,188,.08);color:var(--trust-blue);padding:2px 7px;border-radius:6px;font-size:12px;font-weight:700;">{{ $b->session_code_tutor }}</code>
                             @else
                             <span style="color:var(--muted);font-size:12px;">—</span>
                             @endif
@@ -665,7 +665,7 @@ $activeTab = request('tab','overview');
                     <div style="flex:1;min-width:0;">
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;">
                             <span style="font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $cb->student->name }}</span>
-                            @if($unread > 0)<span class="bdg bdg-Trust Blue" style="font-size:10px;padding:2px 6px;flex-shrink:0;">{{ $unread }}</span>@endif
+                            @if($unread > 0)<span class="bdg bdg-trust-blue" style="font-size:10px;padding:2px 6px;flex-shrink:0;">{{ $unread }}</span>@endif
                         </div>
                         <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
                             {{ $lastMsg ? Str::limit($lastMsg->body, 40) : $cb->subject?->name.' session' }}
@@ -716,7 +716,7 @@ $activeTab = request('tab','overview');
                 @csrf
                 <input type="text" name="body" placeholder="Type a message…" required
                        style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);background:#fff;font-size:14px;font-family:inherit;outline:none;"
-                       onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'">
+                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 <button type="submit" class="btn btn-v" style="height:44px;padding:0 20px;">
                     <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                     Send
@@ -818,26 +818,26 @@ $activeTab = request('tab','overview');
                         <input type="number" name="amount" min="500" max="{{ $wallet?->balance ?? 0 }}"
                                placeholder="Min KSh 500"
                                style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                               onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'" required>
+                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'" required>
                         <p style="font-size:11px;color:var(--muted);margin-top:4px;">Available: KSh {{ number_format($wallet?->balance ?? 0) }}</p>
                     </div>
                     <div style="margin-bottom:12px;">
                         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Bank Name</label>
                         <input type="text" name="bank_name" placeholder="e.g. KCB, Equity, M-Pesa"
                                style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                               onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'" required>
+                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'" required>
                     </div>
                     <div style="margin-bottom:12px;">
                         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Account / Phone Number</label>
                         <input type="text" name="account_number" placeholder="e.g. 0712345678"
                                style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                               onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'" required>
+                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'" required>
                     </div>
                     <div style="margin-bottom:16px;">
                         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Account Name</label>
                         <input type="text" name="account_name" placeholder="Name on account"
                                style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                               onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'" required>
+                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'" required>
                     </div>
                     <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;padding:12px;">Submit Payout Request</button>
                 </form>
@@ -854,7 +854,7 @@ $activeTab = request('tab','overview');
                         <div style="font-weight:600;font-size:13px;">KSh {{ number_format($pr->amount) }}</div>
                         <div style="font-size:11px;color:var(--muted);">{{ $pr->created_at->format('M j, Y') }}</div>
                     </div>
-                    @php $pc=['pending'=>'bdg-amber','approved'=>'bdg-Trust Blue','paid'=>'bdg-green','rejected'=>'bdg-red'][$pr->status]??'bdg-gray'; @endphp
+                    @php $pc=['pending'=>'bdg-amber','approved'=>'bdg-trust-blue','paid'=>'bdg-green','rejected'=>'bdg-red'][$pr->status]??'bdg-gray'; @endphp
                     <span class="bdg {{ $pc }}">{{ ucfirst($pr->status) }}</span>
                 </div>
                 @endforeach
@@ -902,7 +902,7 @@ $activeTab = request('tab','overview');
                         @if(!empty($data['code']))
                         <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:8px;padding:4px 10px;margin-top:6px;">
                             <span style="font-size:11px;color:var(--muted);">Session code:</span>
-                            <code style="font-size:13px;font-weight:800;color:var(--Trust Blue);">{{ $data['code'] }}</code>
+                            <code style="font-size:13px;font-weight:800;color:var(--trust-blue);">{{ $data['code'] }}</code>
                         </div>
                         @endif
                         @if(!empty($data['scheduled_at']))
@@ -911,7 +911,7 @@ $activeTab = request('tab','overview');
                     </div>
                     <div style="text-align:right;flex-shrink:0;">
                         <div style="font-size:11px;color:var(--muted);white-space:nowrap;">{{ $notif->created_at->diffForHumans() }}</div>
-                        @if($isUnread)<div style="width:8px;height:8px;background:var(--Trust Blue);border-radius:50%;margin:4px 0 0 auto;"></div>@endif
+                        @if($isUnread)<div style="width:8px;height:8px;background:var(--trust-blue);border-radius:50%;margin:4px 0 0 auto;"></div>@endif
                         @if(!empty($data['url']))
                         <a href="{{ $data['url'] }}" class="btn btn-mint btn-sm" style="margin-top:8px;">Join / View</a>
                         @endif
@@ -949,7 +949,7 @@ $activeTab = request('tab','overview');
                 <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;background:{{ $isActive ? 'rgba(10,100,188,.05)' : '#F9FAF9' }};border:1px solid {{ $isActive ? 'rgba(10,100,188,.2)' : 'var(--hair)' }};">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer;width:120px;flex-shrink:0;">
                         <input type="checkbox" name="days[{{ $i }}][active]" value="1" {{ $isActive ? 'checked' : '' }}
-                               style="width:16px;height:16px;accent-color:var(--Trust Blue);cursor:pointer;"
+                               style="width:16px;height:16px;accent-color:var(--trust-blue);cursor:pointer;"
                                onchange="let row=this.closest('div');row.style.background=this.checked?'rgba(10,100,188,.05)':'#F9FAF9';row.style.borderColor=this.checked?'rgba(10,100,188,.2)':'var(--hair)'">
                         <span style="font-weight:600;font-size:14px;color:var(--ink);">{{ $day }}</span>
                     </label>
@@ -990,7 +990,7 @@ $activeTab = request('tab','overview');
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Full Name</label>
                     <input type="text" name="name" value="{{ $user->name }}"
                            style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                           onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'">
+                           onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 </div>
                 <div style="margin-bottom:12px;">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Email</label>
@@ -1001,13 +1001,13 @@ $activeTab = request('tab','overview');
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Phone</label>
                     <input type="tel" name="phone" value="{{ $user->phone }}" placeholder="+254 7XX XXX XXX"
                            style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                           onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'">
+                           onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 </div>
                 <div style="margin-bottom:16px;">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">City</label>
                     <input type="text" name="city" value="{{ $profile?->city }}" placeholder="e.g. Nairobi"
                            style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                           onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'">
+                           onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 </div>
                 <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;">Save Changes</button>
             </form>
@@ -1022,20 +1022,20 @@ $activeTab = request('tab','overview');
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Bio</label>
                     <textarea name="bio" rows="4" placeholder="Tell students about your experience and teaching style…"
                               style="width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:vertical;line-height:1.6;"
-                              onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'">{{ $profile?->bio }}</textarea>
+                              onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">{{ $profile?->bio }}</textarea>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
                     <div>
                         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Hourly Rate (KSh)</label>
                         <input type="number" name="hourly_rate" value="{{ $profile?->hourly_rate }}" min="500"
                                style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                               onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'">
+                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                     </div>
                     <div>
                         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Exp. Years</label>
                         <input type="number" name="experience_years" value="{{ $profile?->experience_years }}" min="0"
                                style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                               onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='var(--hair)'">
+                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                     </div>
                 </div>
                 @if($profile)
@@ -1045,7 +1045,7 @@ $activeTab = request('tab','overview');
                         @foreach([15,30,45,60] as $mins)
                         <div style="text-align:center;background:#fff;border-radius:9px;border:1px solid var(--hair);padding:8px 4px;">
                             <div style="font-size:11px;font-weight:700;color:var(--ink);">{{ $mins }}min</div>
-                            <div style="font-size:13px;font-weight:700;color:var(--Trust Blue);margin-top:2px;">KSh {{ \App\Models\TutorProfile::sessionPrices()[$mins]['price'] ?? '' }}</div>
+                            <div style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-top:2px;">KSh {{ \App\Models\TutorProfile::sessionPrices()[$mins]['price'] ?? '' }}</div>
                         </div>
                         @endforeach
                     </div>

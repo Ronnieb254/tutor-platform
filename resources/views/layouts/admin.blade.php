@@ -12,7 +12,7 @@
     @livewireStyles
     <style>
         :root {
-            --ink:#15281F; --cream:#FBF5E6; --Trust Blue:#0A64BC; --coral:#E8522A;
+            --ink:#15281F; --cream:#FBF5E6; --trust-blue:#0A64BC; --coral:#E8522A;
             --gold:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.5);
             --hairline:rgba(21,40,31,0.1); --sidebar:#111C16; --sidebar-w:260px;
         }
@@ -35,7 +35,7 @@
         .nav-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.3);padding:0 12px;margin-bottom:6px;}
         .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.6);transition:all .15s;margin-bottom:2px;}
         .nav-item:hover{background:rgba(255,255,255,0.07);color:#fff;}
-        .nav-item.active{background:var(--Trust Blue);color:#fff;}
+        .nav-item.active{background:var(--trust-blue);color:#fff;}
         .nav-item svg{flex-shrink:0;opacity:.7;}
         .nav-item.active svg{opacity:1;}
         .nav-badge{margin-left:auto;background:var(--coral);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;}
@@ -58,7 +58,7 @@
         .topbar-breadcrumb{font-size:13px;color:var(--muted);}
         .topbar-right{display:flex;align-items:center;gap:12px;}
         .topbar-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--hairline);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;position:relative;}
-        .topbar-btn:hover{border-color:rgba(10,100,188,0.4);color:var(--Trust Blue);}
+        .topbar-btn:hover{border-color:rgba(10,100,188,0.4);color:var(--trust-blue);}
         .topbar-notif-badge{position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:var(--coral);border-radius:999px;font-size:8px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
 
         /* Page content */
@@ -95,16 +95,16 @@
         .badge-amber{background:#FEF9C3;color:#854D0E;}
         .badge-red{background:#FEE2E2;color:#991B1B;}
         .badge-blue{background:#DBEAFE;color:#1E40AF;}
-        .badge-Trust Blue{background:rgba(10,100,188,0.1);color:var(--Trust Blue);}
+        .badge-trust-blue{background:rgba(10,100,188,0.1);color:var(--trust-blue);}
         .badge-gray{background:#F3F4F6;color:#6B7280;}
 
         /* Buttons */
         .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;}
-        .btn-primary{background:var(--Trust Blue);color:#fff;}
+        .btn-primary{background:var(--trust-blue);color:#fff;}
         .btn-primary:hover{background:#120A8F;}
         .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
         .btn-outline{background:#fff;color:var(--ink);border:1.5px solid var(--hairline);}
-        .btn-outline:hover{border-color:var(--Trust Blue);color:var(--Trust Blue);}
+        .btn-outline:hover{border-color:var(--trust-blue);color:var(--trust-blue);}
         .btn-danger{background:#FEE2E2;color:#991B1B;}
         .btn-danger:hover{background:#FECACA;}
         .btn-success{background:#DCFCE7;color:#166534;}
@@ -112,7 +112,7 @@
 
         /* Form elements */
         .form-input{width:100%;height:40px;padding:0 12px;border-radius:10px;border:1.5px solid rgba(21,40,31,0.15);background:#fff;font-size:13.5px;font-family:inherit;color:var(--ink);outline:none;transition:border-color .15s;}
-        .form-input:focus{border-color:var(--Trust Blue);box-shadow:0 0 0 3px rgba(10,100,188,0.1);}
+        .form-input:focus{border-color:var(--trust-blue);box-shadow:0 0 0 3px rgba(10,100,188,0.1);}
         .form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2315281F' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
         .form-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;}
 

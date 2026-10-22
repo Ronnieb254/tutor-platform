@@ -11,10 +11,10 @@ $sessionTiers = [
     <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px;">
         @foreach(['Pick Session','Review','Confirmed'] as $i => $label)
         <div style="display:flex;align-items:center;gap:6px;">
-            @if(!$loop->first)<div style="width:24px;height:1px;background:{{ $step > $i ? 'var(--Trust Blue)' : 'rgba(21,40,31,.12)' }};"></div>@endif
+            @if(!$loop->first)<div style="width:24px;height:1px;background:{{ $step > $i ? 'var(--trust-blue)' : 'rgba(21,40,31,.12)' }};"></div>@endif
             <div style="display:flex;align-items:center;gap:5px;">
                 <div style="width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
-                    background:{{ $step > $i+1 ? 'var(--mint)' : ($step === $i+1 ? 'var(--Trust Blue)' : 'rgba(21,40,31,.08)') }};
+                    background:{{ $step > $i+1 ? 'var(--mint)' : ($step === $i+1 ? 'var(--trust-blue)' : 'rgba(21,40,31,.08)') }};
                     color:{{ ($step > $i+1 || $step === $i+1) ? '#fff' : 'var(--muted)' }};">
                     {{ $step > $i+1 ? '✓' : $i+1 }}
                 </div>
@@ -31,13 +31,13 @@ $sessionTiers = [
         {{-- Duration selector --}}
         <div>
             <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;">
-                <i class="fa-solid fa-clock fa-xs" style="color:var(--Trust Blue);margin-right:4px;"></i> Choose Session Type
+                <i class="fa-solid fa-clock fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Choose Session Type
             </p>
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
                 @foreach($sessionTiers as $mins => $tier)
                 <label style="cursor:pointer;">
                     <input type="radio" wire:model.live="duration" value="{{ $mins }}" style="display:none;">
-                    <div style="border:2px solid {{ $duration == $mins ? 'var(--Trust Blue)' : 'rgba(21,40,31,.12)' }};
+                    <div style="border:2px solid {{ $duration == $mins ? 'var(--trust-blue)' : 'rgba(21,40,31,.12)' }};
                                 background:{{ $duration == $mins ? 'rgba(10,100,188,.05)' : '#fff' }};
                                 border-radius:14px;padding:14px 12px;transition:all .18s;text-align:left;">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
@@ -45,7 +45,7 @@ $sessionTiers = [
                                 <span style="font-size:18px;">{{ $tier['icon'] }}</span>
                                 <span style="font-size:14px;font-weight:700;color:var(--ink);">{{ $tier['name'] }}</span>
                             </div>
-                            <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:{{ $duration == $mins ? 'var(--Trust Blue)' : 'var(--ink)' }};">KSh {{ $tier['price'] }}</span>
+                            <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:{{ $duration == $mins ? 'var(--trust-blue)' : 'var(--ink)' }};">KSh {{ $tier['price'] }}</span>
                         </div>
                         <div style="font-size:11px;color:var(--muted);">{{ $mins }} min — {{ $tier['desc'] }}</div>
                     </div>
@@ -59,21 +59,21 @@ $sessionTiers = [
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div>
                 <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                    <i class="fa-regular fa-calendar fa-xs" style="color:var(--Trust Blue);margin-right:4px;"></i> Date
+                    <i class="fa-regular fa-calendar fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Date
                 </p>
                 <input type="date" wire:model="scheduledDate"
                        min="{{ now()->addDay()->format('Y-m-d') }}"
                        style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
-                       onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
                 @error('scheduledDate')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
             </div>
             <div>
                 <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                    <i class="fa-regular fa-clock fa-xs" style="color:var(--Trust Blue);margin-right:4px;"></i> Time
+                    <i class="fa-regular fa-clock fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Time
                 </p>
                 <input type="time" wire:model="scheduledTime"
                        style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
-                       onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
                 @error('scheduledTime')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
             </div>
         </div>
@@ -82,11 +82,11 @@ $sessionTiers = [
         @if($subjects->isNotEmpty())
         <div>
             <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                <i class="fa-solid fa-book-open fa-xs" style="color:var(--Trust Blue);margin-right:4px;"></i> Subject <span style="font-weight:400;text-transform:none;">(optional)</span>
+                <i class="fa-solid fa-book-open fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Subject <span style="font-weight:400;text-transform:none;">(optional)</span>
             </p>
             <select wire:model="subjectId"
                     style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
-                    onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                    onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
                 <option value="">Select a subject…</option>
                 @foreach($subjects as $subject)
                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
@@ -98,17 +98,17 @@ $sessionTiers = [
         {{-- Notes --}}
         <div>
             <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                <i class="fa-solid fa-note-sticky fa-xs" style="color:var(--Trust Blue);margin-right:4px;"></i> Notes for tutor <span style="font-weight:400;text-transform:none;">(optional)</span>
+                <i class="fa-solid fa-note-sticky fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Notes for tutor <span style="font-weight:400;text-transform:none;">(optional)</span>
             </p>
             <textarea wire:model="notes" rows="2"
                       placeholder="Topics to cover, past exam areas, specific questions…"
                       style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
-                      onfocus="this.style.borderColor='var(--Trust Blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
+                      onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
         </div>
 
         <button wire:click="nextStep"
-                style="width:100%;height:50px;border-radius:999px;background:var(--Trust Blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
-                onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--Trust Blue)'">
+                style="width:100%;height:50px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
+                onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
             Continue to Review
             <i class="fa-solid fa-arrow-right fa-sm"></i>
         </button>
@@ -138,14 +138,14 @@ $sessionTiers = [
                 @endforeach
                 <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;">
                     <span style="font-size:15px;font-weight:700;color:var(--ink);">Total</span>
-                    <span style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--Trust Blue);">KSh {{ $tier['price'] }}</span>
+                    <span style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--trust-blue);">KSh {{ $tier['price'] }}</span>
                 </div>
             </div>
         </div>
 
         {{-- Code notice --}}
         <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:14px 16px;">
-            <p style="font-size:13px;font-weight:700;color:var(--Trust Blue);margin-bottom:4px;">
+            <p style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-bottom:4px;">
                 <i class="fa-solid fa-key fa-xs" style="margin-right:5px;"></i> After payment
             </p>
             <p style="font-size:12px;color:var(--muted);line-height:1.65;">You'll receive a unique <strong style="color:var(--ink);">STU-XXXXXX</strong> session access code by email and SMS. Use it to enter your live class on session day.</p>
@@ -158,8 +158,8 @@ $sessionTiers = [
             </button>
             <button wire:click="initPayment"
                     wire:loading.attr="disabled"
-                    style="flex:2;height:48px;border-radius:999px;background:var(--Trust Blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;"
-                    onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--Trust Blue)'">
+                    style="flex:2;height:48px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;"
+                    onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
                 <span wire:loading.remove wire:target="initPayment">
                     <i class="fa-solid fa-credit-card fa-sm"></i>
                     Pay KSh {{ $tier['price'] }}
@@ -188,14 +188,14 @@ $sessionTiers = [
         {{-- Session code --}}
         <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.25);border-radius:18px;padding:20px;margin-bottom:18px;">
             <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">
-                <i class="fa-solid fa-key" style="color:var(--Trust Blue);margin-right:4px;"></i> Your Session Access Code
+                <i class="fa-solid fa-key" style="color:var(--trust-blue);margin-right:4px;"></i> Your Session Access Code
             </p>
-            <p style="font-family:monospace;font-size:32px;font-weight:800;color:var(--Trust Blue);letter-spacing:.12em;line-height:1;">{{ $studentCode }}</p>
+            <p style="font-family:monospace;font-size:32px;font-weight:800;color:var(--trust-blue);letter-spacing:.12em;line-height:1;">{{ $studentCode }}</p>
             <p style="font-size:12px;color:var(--muted);margin-top:8px;">Enter this code to join your live session on the day</p>
         </div>
 
         <a href="{{ route('bookings.show', $bookingUuid) }}"
-           style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;border-radius:999px;background:var(--Trust Blue);color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
+           style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
             <i class="fa-solid fa-calendar-check fa-sm"></i> View Booking Details
         </a>
     </div>

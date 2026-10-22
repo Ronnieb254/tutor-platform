@@ -11,7 +11,7 @@
     <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     @livewireStyles
     <style>
-        :root { --ink:#15281F; --cream:#FBF5E6; --Trust Blue:#0A64BC; --coral:#E8522A; --gold:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.55); --hairline:rgba(21,40,31,0.1); }
+        :root { --ink:#15281F; --cream:#FBF5E6; --trust-blue:#0A64BC; --coral:#E8522A; --gold:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.55); --hairline:rgba(21,40,31,0.1); }
         *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
         html { background:var(--cream); }
         body { font-family:'DM Sans',sans-serif; color:var(--ink); background:var(--cream); line-height:1.6; min-height:100vh; display:flex; flex-direction:column; }
@@ -23,7 +23,7 @@
         .guest-logo { display:inline-flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:var(--ink); }
         .guest-main { flex:1; display:flex; align-items:center; justify-content:center; padding:20px 16px 40px; }
         .guest-footer { text-align:center; padding:20px; font-size:12px; color:var(--muted); }
-        .guest-footer a { color:var(--Trust Blue); }
+        .guest-footer a { color:var(--trust-blue); }
 
         /* Auth card */
         .auth-card { background:#fff; border-radius:24px; border:1px solid var(--hairline); box-shadow:0 4px 32px rgba(21,40,31,0.08); padding:40px; width:100%; max-width:440px; }
@@ -45,26 +45,26 @@
         .field { margin-bottom:16px; }
         .field label { display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px; }
         .field input, .field select, .field textarea { width:100%; height:48px; padding:0 16px; border-radius:14px; border:1.5px solid rgba(21,40,31,0.2); background:#fff; font-size:14px; font-family:inherit; color:var(--ink); outline:none; transition:border-color .15s; }
-        .field input:focus, .field select:focus { border-color:var(--Trust Blue); box-shadow:0 0 0 3px rgba(10,100,188,0.1); }
+        .field input:focus, .field select:focus { border-color:var(--trust-blue); box-shadow:0 0 0 3px rgba(10,100,188,0.1); }
         .field-error { font-size:12px; color:var(--coral); margin-top:4px; }
         .field-note { font-size:12px; color:var(--muted); margin-top:4px; }
 
         /* Submit button */
-        .btn-submit { width:100%; height:50px; border-radius:999px; background:var(--Trust Blue); color:#fff; font-size:15px; font-weight:700; font-family:inherit; border:none; cursor:pointer; transition:background .15s; margin-top:8px; }
+        .btn-submit { width:100%; height:50px; border-radius:999px; background:var(--trust-blue); color:#fff; font-size:15px; font-weight:700; font-family:inherit; border:none; cursor:pointer; transition:background .15s; margin-top:8px; }
         .btn-submit:hover { background:#120A8F; }
 
         /* Role selector */
         .role-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
         .role-option input { display:none; }
         .role-label { display:flex; flex-direction:column; align-items:center; gap:4px; padding:14px 8px; border-radius:16px; border:2px solid var(--hairline); cursor:pointer; transition:all .15s; }
-        .role-option input:checked + .role-label { border-color:var(--Trust Blue); background:rgba(10,100,188,0.06); }
+        .role-option input:checked + .role-label { border-color:var(--trust-blue); background:rgba(10,100,188,0.06); }
         .role-label span { font-size:24px; }
         .role-label em { font-size:12px; font-weight:600; font-style:normal; color:var(--ink); }
-        .role-info { background:rgba(10,100,188,0.06); border:1px solid rgba(10,100,188,0.2); border-radius:14px; padding:14px; font-size:13px; color:var(--Trust Blue); margin-bottom:12px; display:none; }
+        .role-info { background:rgba(10,100,188,0.06); border:1px solid rgba(10,100,188,0.2); border-radius:14px; padding:14px; font-size:13px; color:var(--trust-blue); margin-bottom:12px; display:none; }
         .role-info.show { display:block; }
 
         .auth-footer-text { text-align:center; font-size:14px; color:var(--muted); margin-top:20px; }
-        .auth-footer-text a { color:var(--Trust Blue); font-weight:600; }
+        .auth-footer-text a { color:var(--trust-blue); font-weight:600; }
     </style>
 </head>
 <body>
