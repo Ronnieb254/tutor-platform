@@ -67,6 +67,43 @@ class Booking extends Model
         return now()->between($opensAt, $closesAt);
     }
 
+    /**
+     * Get BigBlueButton join URL for a user
+     * 
+     * @param User $user The user joining the meeting
+     * @return string The BBB join URL
+     */
+    public function getBBBJoinUrl(User $user): string
+    {
+        $bbb = app(\App\Services\BigBlueButtonService::class);
+        
+        $isModerator = $user->id === $this->tutor_id;
+        $password = $isModerator ? $this->moderator_password : $this->meeting_password;
+        
+        return $bbb->getJoinUrl(
+            $this->meeting_room,
+            $user->name,
+            $password,
+            $isModerator,
+            ($isModerator ? 'tutor-' : 'student-') . $user->id
+        );
+    }
+
+    /**
+     * Check if the BigBlueButton meeting is currently running
+     * 
+     * @return bool
+     */
+    public function isBBBMeetingRunning(): bool
+    {
+        if (!$this->meeting_room) {
+            return false;
+        }
+
+        $bbb = app(\App\Services\BigBlueButtonService::class);
+        return $bbb->isMeetingRunning($this->meeting_room);
+    }
+
     public function scopeHistory($q)
     {
         return $q->where(function ($inner) {
