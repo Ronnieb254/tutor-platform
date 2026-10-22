@@ -15,7 +15,7 @@ class TutorController extends Controller
     public function uploadDocument(Request $request)
     {
         $request->validate([
-            'type'     => 'required|in:national_id,tsc_certificate,academic_certificate',
+            'type'     => 'required|in:national_id,tsc_certificate,degree_certificate',
             'document' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 

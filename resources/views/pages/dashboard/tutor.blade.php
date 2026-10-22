@@ -432,7 +432,7 @@ $activeTab = request('tab','overview');
     $docTypes = [
         'national_id'=>['National ID / Passport','🪪','Required'],
         'tsc_certificate'=>['TSC Certificate','📜','Required'],
-        'academic_certificate'=>['Academic Certificate','🎓','Required']
+        'degree_certificate'=>['Academic Certificate','🎓','Required']
     ];
     @endphp
 
