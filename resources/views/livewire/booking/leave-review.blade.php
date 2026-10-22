@@ -16,7 +16,7 @@
                         @mouseenter="hovered = {{ $i }}"
                         @mouseleave="hovered = 0"
                         class="text-3xl transition"
-                        :class="(hovered >= {{ $i }} || (@js($rating) >= {{ $i }} && hovered === 0)) ? 'text-electric-yellow' : 'text-hairline'">
+                        :class="(hovered >= {{ $i }} || (@js($rating) >= {{ $i }} && hovered === 0)) ? 'text-gold' : 'text-hairline'">
                     ★
                 </button>
                 @endfor

@@ -10,7 +10,7 @@
 /* ── MWALIMU DESIGN SYSTEM ─────────────────────────────────────────── */
 :root{
   --ink:#15281F; --cream:#FBF5E6; --Trust Blue:#0A64BC;
-  --coral:#E8522A; --electric-yellow:#EEBE15; --mint:#10B981;
+  --coral:#E8522A; --gold:#EEBE15; --mint:#10B981;
   --muted:rgba(21,40,31,.55); --hair:rgba(21,40,31,.1);
   --sidebar:#111C16;
 }
@@ -33,7 +33,7 @@ a{color:inherit;text-decoration:none;} img{max-width:100%;display:block;}
 .btn-o{background:transparent;color:var(--ink);border:2px solid var(--ink);} .btn-o:hover{background:var(--ink);color:var(--cream);}
 .btn-coral{background:var(--coral);color:#fff;} .btn-coral:hover{opacity:.9;transform:translateY(-1px);}
 .btn-mint{background:var(--mint);color:#fff;} .btn-mint:hover{background:#059669;}
-.btn-electric-yellow{background:var(--electric-yellow);color:var(--ink);font-weight:700;} .btn-electric-yellow:hover{opacity:.9;transform:translateY(-1px);}
+.btn-gold{background:var(--gold);color:var(--ink);font-weight:700;} .btn-gold:hover{opacity:.9;transform:translateY(-1px);}
 .btn-w{background:#fff;color:var(--Trust Blue);font-weight:700;} .btn-w:hover{background:var(--cream);}
 .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25);} .btn-ghost:hover{background:rgba(255,255,255,.2);}
 .btn-sm{padding:8px 18px;font-size:13px;}
@@ -75,7 +75,7 @@ select.input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xml
 /* ── SECTION HEADINGS ── */
 .sec-eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;}
 .sec-eyebrow-v{color:var(--Trust Blue);}
-.sec-eyebrow-electric-yellow{color:var(--electric-yellow);}
+.sec-eyebrow-gold{color:var(--gold);}
 .sec-title{font-size:clamp(26px,4vw,42px);color:var(--ink);margin-bottom:10px;}
 .sec-title-white{color:#fff;}
 .sec-sub{font-size:17px;color:var(--muted);line-height:1.7;}

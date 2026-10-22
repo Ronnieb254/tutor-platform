@@ -114,7 +114,7 @@
                         </div>
 
                         <div class="flex items-center gap-2 mt-2 text-xs text-muted">
-                            <span class="text-electric-yellow font-bold">★ {{ number_format($tutor->rating_avg, 1) }}</span>
+                            <span class="text-gold font-bold">★ {{ number_format($tutor->rating_avg, 1) }}</span>
                             <span>({{ $tutor->total_reviews }} reviews)</span>
                             <span>·</span>
                             <span>{{ $tutor->total_sessions }} sessions</span>

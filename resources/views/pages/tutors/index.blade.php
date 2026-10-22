@@ -184,7 +184,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                         @if($tutor->subjects->count()>3)<span class="badge badge-dark" style="font-size:10px;">+{{ $tutor->subjects->count()-3 }}</span>@endif
                     </div>
                     <div style="display:flex;align-items:center;gap:10px;margin-top:7px;font-size:12px;color:var(--muted);">
-                        <span style="color:var(--electric-yellow);font-weight:700;"><i class="fa-solid fa-star fa-xs"></i> {{ number_format($tutor->rating_avg,1) }}</span>
+                        <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star fa-xs"></i> {{ number_format($tutor->rating_avg,1) }}</span>
                         <span>({{ $tutor->total_reviews }})</span>
                         <span>·</span><span>{{ $tutor->total_sessions }} sessions</span>
                         <!-- @if($tutor->city)<span>·</span><span><i class="fa-solid fa-location-dot fa-xs"></i> {{ $tutor->city }}</span>@endif -->

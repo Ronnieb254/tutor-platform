@@ -11,7 +11,7 @@
     <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     @livewireStyles
     <style>
-        :root { --ink:#15281F; --cream:#FBF5E6; --Trust Blue:#0A64BC; --coral:#E8522A; --electric-yellow:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.55); --hairline:rgba(21,40,31,0.1); }
+        :root { --ink:#15281F; --cream:#FBF5E6; --Trust Blue:#0A64BC; --coral:#E8522A; --gold:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.55); --hairline:rgba(21,40,31,0.1); }
         *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
         html { background:var(--cream); }
         body { font-family:'DM Sans',sans-serif; color:var(--ink); background:var(--cream); line-height:1.6; min-height:100vh; display:flex; flex-direction:column; }

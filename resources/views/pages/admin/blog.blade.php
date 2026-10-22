@@ -30,7 +30,7 @@ $categories = BlogCategory::all();
         <div style="font-size:12px;color:var(--muted);">Published</div>
     </div>
     <div style="background:#fff;border:1px solid var(--hairline);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--electric-yellow);">{{ BlogPost::where('is_published',false)->count() }}</div>
+        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--gold);">{{ BlogPost::where('is_published',false)->count() }}</div>
         <div style="font-size:12px;color:var(--muted);">Drafts</div>
     </div>
 </div>

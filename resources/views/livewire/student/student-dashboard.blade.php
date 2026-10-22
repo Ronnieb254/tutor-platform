@@ -73,9 +73,9 @@
                 </div>
                 <div class="flex items-center gap-2 flex-shrink-0">
                     @if(!$booking->review)
-                    <a href="{{ route('bookings.show', $booking->uuid) }}" class="text-xs text-electric-yellow font-semibold hover:underline">Leave review</a>
+                    <a href="{{ route('bookings.show', $booking->uuid) }}" class="text-xs text-gold font-semibold hover:underline">Leave review</a>
                     @else
-                    <div class="text-electric-yellow text-xs">★ {{ $booking->review->rating }}</div>
+                    <div class="text-gold text-xs">★ {{ $booking->review->rating }}</div>
                     @endif
                 </div>
             </div>

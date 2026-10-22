@@ -13,7 +13,7 @@ export default {
         cream:  '#FBF5E6',
         Trust Blue: { DEFAULT: '#0A64BC', 50: '#f5f3ff', 100: '#ede9fe', 700: '#120A8F' },
         coral:  '#E8522A',
-        electric-yellow:   '#EEBE15',
+        gold:   '#EEBE15',
         mint:   '#10B981',
         muted:  'rgba(21,40,31,0.55)',
       },

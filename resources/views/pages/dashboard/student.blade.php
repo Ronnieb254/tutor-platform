@@ -11,7 +11,7 @@
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireStyles
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--electric-yellow:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
+:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
 a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
@@ -478,7 +478,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                         <td>
                             @if($b->status === 'completed' && $b->review)
                             <div style="display:flex;gap:1px;">
-                                @for($i=1;$i<=5;$i++)<span style="color:{{ $i<=$b->review->rating ? 'var(--electric-yellow)' : 'var(--hair)' }};font-size:13px;">★</span>@endfor
+                                @for($i=1;$i<=5;$i++)<span style="color:{{ $i<=$b->review->rating ? 'var(--gold)' : 'var(--hair)' }};font-size:13px;">★</span>@endfor
                             </div>
                             @elseif($b->status === 'completed')
                             <a href="{{ route('bookings.show',$b->uuid) }}" style="font-size:12px;color:var(--Trust Blue);font-weight:600;">Leave review</a>

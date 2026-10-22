@@ -10,7 +10,7 @@
     --cream:   #FBF5E6;
     --trust-blue:  #0A64BC;
     --coral:   #E8522A;
-    --electric-yellow:    #EEBE15;
+    --gold:    #EEBE15;
     --mint:    #10B981;
     --muted:   rgba(21,40,31,0.55);
     --hairline: rgba(21,40,31,0.12);
@@ -66,9 +66,9 @@
   .badge-trust-blue { @apply badge bg-trust-blue/10 text-trust-blue; }
   .badge-mint   { @apply badge bg-mint/10 text-mint; }
   .badge-coral  { @apply badge bg-coral/10 text-coral; }
-  .badge-electric-yellow   { @apply badge bg-electric-yellow/10 text-[#B8920F]; }
+  .badge-gold   { @apply badge bg-gold/10 text-[#B8920F]; }
 
-  .star-rating { @apply flex items-center gap-0.5 text-electric-yellow text-sm; }
+  .star-rating { @apply flex items-center gap-0.5 text-gold text-sm; }
 
   /* Session code box */
   .session-code-box {

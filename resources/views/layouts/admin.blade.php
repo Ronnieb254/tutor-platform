@@ -13,7 +13,7 @@
     <style>
         :root {
             --ink:#15281F; --cream:#FBF5E6; --Trust Blue:#0A64BC; --coral:#E8522A;
-            --electric-yellow:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.5);
+            --gold:#EEBE15; --mint:#10B981; --muted:rgba(21,40,31,0.5);
             --hairline:rgba(21,40,31,0.1); --sidebar:#111C16; --sidebar-w:260px;
         }
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}

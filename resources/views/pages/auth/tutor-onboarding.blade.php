@@ -48,9 +48,9 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 .upload-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;margin-top:8px;}
 
 /* Speedy verification */
-.speedy-card{border:2px solid var(--electric-yellow);border-radius:18px;padding:22px;background:rgba(212,160,23,.05);position:relative;overflow:hidden;}
+.speedy-card{border:2px solid var(--gold);border-radius:18px;padding:22px;background:rgba(212,160,23,.05);position:relative;overflow:hidden;}
 .speedy-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(212,160,23,.1);border-radius:50%;}
-.speedy-badge{display:inline-flex;align-items:center;gap:6px;background:var(--electric-yellow);color:var(--ink);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:12px;}
+.speedy-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--ink);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:12px;}
 
 /* Subject chips */
 .subject-grid{display:flex;flex-wrap:wrap;gap:6px;}
@@ -385,17 +385,17 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                         {{-- Speedy --}}
                         <div class="speedy-card" style="cursor:pointer;transition:all .2s;"
-                             :style="form.speedy ? 'border-color:var(--electric-yellow);' : 'border-color:rgba(212,160,23,.4);'"
+                             :style="form.speedy ? 'border-color:var(--gold);' : 'border-color:rgba(212,160,23,.4);'"
                              @click="form.speedy=true">
                             <div style="position:relative;z-index:1;">
                                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                                    <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="form.speedy ? 'border-color:var(--electric-yellow);background:var(--electric-yellow);' : 'border-color:rgba(21,40,31,.3);'">
+                                    <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="form.speedy ? 'border-color:var(--gold);background:var(--gold);' : 'border-color:rgba(21,40,31,.3);'">
                                         <div x-show="form.speedy" style="width:100%;height:100%;border-radius:50%;background:#fff;transform:scale(.45);"></div>
                                     </div>
                                     <span class="speedy-badge"><i class="fa-solid fa-bolt fa-xs"></i> Priority Queue</span>
                                 </div>
                                 <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--ink);margin-bottom:6px;">KSh 1,000</div>
-                                <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fa-solid fa-rocket fa-xs" style="color:var(--electric-yellow);margin-right:4px;"></i> Within 24 hours</div>
+                                <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fa-solid fa-rocket fa-xs" style="color:var(--gold);margin-right:4px;"></i> Within 24 hours</div>
                                 <p style="font-size:13px;color:rgba(21,40,31,.65);line-height:1.6;">Skip the queue. Your application is prioritised and reviewed within 24 hours by a senior verifier.</p>
                             </div>
                         </div>
@@ -405,13 +405,13 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     {{-- Speedy payment form --}}
                     <div x-show="form.speedy" x-cloak style="background:rgba(212,160,23,.08);border:1px solid rgba(212,160,23,.3);border-radius:16px;padding:20px;margin-bottom:0;">
                         <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-                            <i class="fa-solid fa-credit-card" style="color:var(--electric-yellow);"></i>
+                            <i class="fa-solid fa-credit-card" style="color:var(--gold);"></i>
                             Pay KSh 1,000 via M-Pesa or card to activate priority verification
                         </p>
                         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
                             @foreach(['M-Pesa','Visa','Mastercard'] as $pm)
                             <span style="background:#fff;border:1px solid rgba(21,40,31,.12);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:5px;">
-                                <i class="fa-solid {{ $pm==='M-Pesa'?'fa-mobile-screen-button':'fa-credit-card' }}" style="color:var(--electric-yellow);font-size:11px;"></i>{{ $pm }}
+                                <i class="fa-solid {{ $pm==='M-Pesa'?'fa-mobile-screen-button':'fa-credit-card' }}" style="color:var(--gold);font-size:11px;"></i>{{ $pm }}
                             </span>
                             @endforeach
                         </div>

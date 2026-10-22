@@ -3,7 +3,7 @@
     @if($profile && !$profile->is_approved)
     @php $status = $profile->verification_status; @endphp
     <div class="rounded-2xl border-2 p-4 flex items-start gap-4
-        {{ $status === 'action_required' ? 'border-coral bg-coral/5' : 'border-electric-yellow bg-electric-yellow/5' }}">
+        {{ $status === 'action_required' ? 'border-coral bg-coral/5' : 'border-gold bg-gold/5' }}">
         <div class="text-2xl">{{ $status === 'action_required' ? '⚠️' : '⏳' }}</div>
         <div>
             <p class="font-semibold text-ink">

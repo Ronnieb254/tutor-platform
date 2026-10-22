@@ -15,7 +15,7 @@
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireStyles
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--electric-yellow:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+:root{--ink:#15281F;--cream:#FBF5E6;--Trust Blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{background:var(--cream);scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;}
@@ -151,7 +151,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;justify-content:space-between;">
-                        <span style="font-size:12px;font-weight:600;color:var(--electric-yellow);"><i class="fa-solid fa-star fa-xs"></i> {{ $rating }}</span>
+                        <span style="font-size:12px;font-weight:600;color:var(--gold);"><i class="fa-solid fa-star fa-xs"></i> {{ $rating }}</span>
                         <span style="background:rgba(16,185,129,.1);color:var(--mint);padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;"><i class="fa-solid fa-check fa-xs"></i> {{ $badge }}</span>
                     </div>
                 </div>
@@ -263,7 +263,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     <div class="w">
         <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="ec-g">
             <div>
-                <div class="badge" style="background:rgba(212,160,23,.2);color:var(--electric-yellow);margin-bottom:20px;font-size:13px;">
+                <div class="badge" style="background:rgba(212,160,23,.2);color:var(--gold);margin-bottom:20px;font-size:13px;">
                     <i class="fa-solid fa-star"></i> The Examiner's Clinic
                 </div>
                 <h2 style="font-size:clamp(28px,4vw,44px);color:#fff;margin-bottom:14px;">Learn directly from national examiners.</h2>
@@ -280,7 +280,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 </div>
                 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
                     <a href="/examiner-clinic" class="btn btn-w"><i class="fa-solid fa-calendar-check"></i> View Upcoming Clinics</a>
-                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--electric-yellow);">KSh 500</span> /session · 60 min</div>
+                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 500</span> /session · 60 min</div>
                 </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px;">
@@ -288,15 +288,15 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 @foreach($upcomingClinics as $clinic)
                 <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;">
                     <div style="width:50px;height:50px;background:rgba(212,160,23,.25);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                        <i class="fa-solid fa-chalkboard-user" style="color:var(--electric-yellow);font-size:20px;"></i>
+                        <i class="fa-solid fa-chalkboard-user" style="color:var(--gold);font-size:20px;"></i>
                     </div>
                     <div style="flex:1;min-width:0;">
                         <div style="font-weight:700;font-size:14px;color:#fff;">{{ $clinic->title }}</div>
                         <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;">{{ $clinic->tutor->name }} · {{ $clinic->subject?->name }}</div>
-                        <div style="font-size:12px;color:var(--electric-yellow);margin-top:3px;"><i class="fa-regular fa-calendar fa-xs"></i> {{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</div>
+                        <div style="font-size:12px;color:var(--gold);margin-top:3px;"><i class="fa-regular fa-calendar fa-xs"></i> {{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</div>
                     </div>
                     <div style="text-align:right;flex-shrink:0;">
-                        <div style="font-weight:700;font-size:14px;color:var(--electric-yellow);">KSh {{ number_format($clinic->price) }}</div>
+                        <div style="font-weight:700;font-size:14px;color:var(--gold);">KSh {{ number_format($clinic->price) }}</div>
                         <div style="font-size:11px;color:rgba(255,255,255,.4);">{{ $clinic->spotsLeft() }} spots left</div>
                     </div>
                 </div>
@@ -305,13 +305,13 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 @foreach([['Advanced Mathematics – Paper 2 Strategy','Dr. Amara K.','Mathematics'],['KCSE English – Comprehension & Writing','Ms. Sarah N.','English'],['Physics – Paper 1 Examiner Traps','Prof. James M.','Physics']] as [$t,$name,$subj])
                 <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;">
                     <div style="width:50px;height:50px;background:rgba(212,160,23,.25);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                        <i class="fa-solid fa-chalkboard-user" style="color:var(--electric-yellow);font-size:20px;"></i>
+                        <i class="fa-solid fa-chalkboard-user" style="color:var(--gold);font-size:20px;"></i>
                     </div>
                     <div style="flex:1;">
                         <div style="font-weight:700;font-size:14px;color:#fff;">{{ $t }}</div>
                         <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;">{{ $name }} · {{ $subj }}</div>
                     </div>
-                    <span style="background:rgba(212,160,23,.2);color:var(--electric-yellow);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;">Upcoming</span>
+                    <span style="background:rgba(212,160,23,.2);color:var(--gold);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;">Upcoming</span>
                 </div>
                 @endforeach
                 @endif
@@ -415,7 +415,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 ['M','Mercy N.','Parent, Mombasa','The one-time session code is genius — my son enters the code and the class opens. No sharing of numbers. No chatting outside. Very safe for a teenage learner.','after sessions with Ms. Fatuma'],
             ] as [$init,$name,$role,$quote,$note])
             <div class="card" style="padding:26px;">
-                <div style="color:var(--electric-yellow);font-size:16px;letter-spacing:3px;margin-bottom:14px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <div style="color:var(--gold);font-size:16px;letter-spacing:3px;margin-bottom:14px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                 <p style="font-size:14px;color:var(--ink);line-height:1.85;margin-bottom:18px;font-style:italic;">"{{ $quote }}"</p>
                 <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid var(--hair);">
                     <div style="width:38px;height:38px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--Trust Blue);font-size:15px;flex-shrink:0;">{{ $init }}</div>
