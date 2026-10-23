@@ -108,8 +108,8 @@ class TutorProfile extends Model
     {
         $docs = $this->documents;
         
-        // Required document types
-        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate'];
+        // Required document types (4 documents now)
+        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
         
         // Check if any documents are uploaded
         if ($docs->isEmpty()) return 'no_documents';
@@ -117,13 +117,13 @@ class TutorProfile extends Model
         // Check if any document is rejected
         if ($docs->where('status', 'rejected')->count() > 0) return 'action_required';
         
-        // Check if all 3 required documents are uploaded
+        // Check if all 4 required documents are uploaded
         $uploadedTypes = $docs->pluck('type')->toArray();
         $missingDocs = array_diff($requiredTypes, $uploadedTypes);
         
-        if (count($missingDocs) > 0) return 'no_documents'; // Still need to upload all 3
+        if (count($missingDocs) > 0) return 'no_documents'; // Still need to upload all 4
         
-        // All 3 docs uploaded, check if any are pending
+        // All 4 docs uploaded, check if any are pending
         if ($docs->where('status', 'pending')->count() > 0) return 'under_review';
         
         // All approved

@@ -11,6 +11,7 @@
         'national_id'        => ['National ID / Passport', '🪪', 'Required'],
         'tsc_certificate'    => ['TSC Certificate',        '📜', 'Required'],
         'degree_certificate' => ['Academic Certificate',   '🎓', 'Required'],
+        'passport_photo'     => ['Passport Photo',         '📸', 'Required'],
     ];
 
     // Check which required docs are uploaded
@@ -27,7 +28,7 @@
         </h2>
         <p style="font-size:14px;color:var(--muted);">
             Upload your documents below. Our team reviews them within 24–48 hours.
-            Once <strong>all 3</strong> required documents are approved, your profile goes live.
+            Once <strong>all 4</strong> required documents are approved, your profile goes live.
         </p>
     </div>
 
@@ -49,7 +50,7 @@
             <div>
                 <div style="font-weight:700;color:#854D0E;font-size:15px;">Upload All Required Documents</div>
                 <div style="font-size:13px;color:#92400E;">
-                    You must upload <strong>all 3 required documents</strong> before your profile can be reviewed.
+                    You must upload <strong>all 4 required documents</strong> before your profile can be reviewed.
                     <span style="font-weight:700;color:var(--coral);">
                         {{ count($missingTypes) }} remaining
                     </span>

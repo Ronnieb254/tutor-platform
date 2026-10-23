@@ -14,8 +14,18 @@ class TutorController extends Controller
 {
     public function uploadDocument(Request $request)
     {
+        // All types that match the DB enum in tutor_documents.type
+        $allowedTypes = [
+            'national_id',
+            'tsc_certificate',
+            'degree_certificate',
+            'passport_photo',
+            'certificate_of_good_conduct',
+            'other',
+        ];
+
         $request->validate([
-            'type'     => 'required|in:national_id,tsc_certificate,degree_certificate',
+            'type'     => 'required|in:' . implode(',', $allowedTypes),
             'document' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
