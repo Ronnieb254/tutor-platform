@@ -320,37 +320,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     </div>
     <style>.ec-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.ec-g{grid-template-columns:1fr 1fr!important;}}</style>
 </section>
-{{-- SUBJECT CATEGORIES --}}
-<section style="padding:72px 0;">
-    <div class="w">
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:16px;flex-wrap:wrap;">
-            <div>
-                <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:8px;">Browse by subject</h2>
-                <p style="color:var(--muted);font-size:16px;">Find a tutor who knows your curriculum inside out</p>
-            </div>
-            <a href="{{ route('tutors.index') }}" style="font-size:14px;font-weight:600;color:var(--trust-blue);display:flex;align-items:center;gap:4px;">
-                All subjects <i class="fa-solid fa-arrow-right fa-xs"></i>
-            </a>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;" class="cat-g">
-            @forelse($categories as $cat)
-            <a href="{{ route('tutors.index') }}?category={{ $cat->id }}" class="card card-lift" style="padding:22px;display:block;">
-                <div style="font-size:34px;margin-bottom:10px;">{{ $cat->icon ?? '📚' }}</div>
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);transition:color .15s;">{{ $cat->name }}</h3>
-                <p style="font-size:12px;color:var(--muted);margin-top:3px;">{{ $cat->subjects->count() }} topics</p>
-            </a>
-            @empty
-            @foreach([['📐','Mathematics'],['🔬','Sciences'],['🌍','Languages'],['💻','Programming'],['📊','Business'],['🎨','Arts'],['📚','Humanities'],['📝','Test Prep']] as [$ic,$nm])
-            <a href="{{ route('tutors.index') }}" class="card card-lift" style="padding:22px;display:block;">
-                <div style="font-size:34px;margin-bottom:10px;">{{ $ic }}</div>
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">{{ $nm }}</h3>
-            </a>
-            @endforeach
-            @endforelse
-        </div>
-    </div>
-    <style>.cat-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.cat-g{grid-template-columns:repeat(3,1fr)!important;}}@media(min-width:1024px){.cat-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
-</section>
+
 {{-- FOR TUTORS CTA --}}
 <section style="background:var(--trust-blue);padding:72px 0;">
     <div class="w">
