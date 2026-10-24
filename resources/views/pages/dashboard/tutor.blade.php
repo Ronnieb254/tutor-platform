@@ -302,11 +302,12 @@ $activeTab = request('tab','overview');
     {{-- Verification Banner --}}
     @if(!$isApproved)
     @php
+        $docs = $profile?->documents ?? collect();
         $uploadedTypes = $docs->pluck('type')->toArray();
-        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate'];
+        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
         $missingTypes = array_diff($requiredTypes, $uploadedTypes);
         $missingCount = count($missingTypes);
-        $docNames = ['national_id' => 'National ID', 'tsc_certificate' => 'TSC Certificate', 'degree_certificate' => 'Academic Certificate'];
+        $docNames = ['national_id' => 'National ID', 'tsc_certificate' => 'TSC Certificate', 'degree_certificate' => 'Academic Certificate', 'passport_photo' => 'Passport Photo'];
         $missingNames = array_map(fn($t) => $docNames[$t], $missingTypes);
     @endphp
     <div class="status-banner {{ $verificationStatus==='action_required' ? 'status-rejected' : ($verificationStatus==='under_review' ? 'status-pending' : 'status-pending') }}">
