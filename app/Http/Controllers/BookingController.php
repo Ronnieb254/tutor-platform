@@ -48,7 +48,7 @@ class BookingController extends Controller
             'subject_id'       => 'nullable|exists:subjects,id',
             'scheduled_at'     => 'required|date|after:now',
             'duration_minutes' => 'required|in:20,40,60',
-            'session_type'     => 'required|in:individual,group',
+            'session_type'     => 'nullable|in:individual,group',
             'booking_for'      => 'nullable|in:self,child',
             'child_profile_id' => 'nullable|exists:child_profiles,id',
             'notes'            => 'nullable|string|max:500',
