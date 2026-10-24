@@ -128,10 +128,14 @@
 
                 {{-- Duration blocks --}}
                 <div class="grid grid-cols-4 gap-1.5 mt-4">
-                    @foreach([15, 30, 45, 60] as $mins)
-                    <div class="text-center rounded-xl border border-hairline py-1.5 hover:border-trust-blue hover:bg-trust-blue/5 cursor-pointer transition">
-                        <p class="text-[11px] font-bold text-ink">{{ $mins }}m</p>
-                        <p class="text-[10px] text-muted">KSh {{ \App\Models\TutorProfile::sessionPrices()[$mins]['price'] ?? '' }}</p>
+                    @foreach(['20_individual', '40_individual', '60_individual', '60_group'] as $key)
+                    @php
+                        $session = \App\Models\TutorProfile::sessionPrices()[$key];
+                    @endphp
+                    <div class="text-center rounded-xl border border-hairline py-1.5 hover:border-trust-blue hover:bg-trust-blue/5 cursor-pointer transition"
+                         title="{{ $session['desc'] }}">
+                        <p class="text-[11px] font-bold text-ink">{{ $session['icon'] }} {{ $session['duration'] }}m</p>
+                        <p class="text-[10px] text-muted">KSh {{ $session['price'] }}</p>
                     </div>
                     @endforeach
                 </div>

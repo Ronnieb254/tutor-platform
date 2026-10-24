@@ -63,9 +63,10 @@ class TutorProfile extends Model
     public static function sessionPrices(): array
     {
         return [
-            20 => ['name' => 'Quick Help',       'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question'],
-            40 => ['name' => 'Guided Practice',  'price' => 500, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A'],
-            60 => ['name' => 'Deep Dive',        'price' => 700, 'icon' => '🏆', 'desc' => 'Maximum learning, best value'],
+            '20_individual' => ['name' => 'Quick Help',       'duration' => 20, 'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question', 'type' => 'individual'],
+            '40_individual' => ['name' => 'Guided Practice',  'duration' => 40, 'price' => 500, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A', 'type' => 'individual'],
+            '60_individual' => ['name' => 'Deep Dive',        'duration' => 60, 'price' => 700, 'icon' => '🏆', 'desc' => 'Maximum learning, best value', 'type' => 'individual'],
+            '60_group'      => ['name' => 'Group Session',    'duration' => 60, 'price' => 500, 'icon' => '👥', 'desc' => 'Learn together, share the cost', 'type' => 'group'],
         ];
     }
 
@@ -91,17 +92,35 @@ class TutorProfile extends Model
                 return 0.00; // FREE first 15-min session
             }
         }
-        return self::sessionPrices()[$minutes]['price'] ?? 300;
+        return $this->getPriceForDuration($minutes);
+    }
+
+    /**
+     * Get the price for a specific session duration and type.
+     */
+    public function getPriceForSession(int $minutes, string $type = 'individual'): float
+    {
+        $key = "{$minutes}_{$type}";
+        return self::sessionPrices()[$key]['price'] ?? 300;
+    }
+
+    /**
+     * Get the session name for a duration and type.
+     */
+    public function getSessionNameForSession(int $minutes, string $type = 'individual'): string
+    {
+        $key = "{$minutes}_{$type}";
+        return self::sessionPrices()[$key]['name'] ?? 'Session';
     }
 
     public function getPriceForDuration(int $minutes): float
     {
-        return self::sessionPrices()[$minutes]['price'] ?? 300;
+        return $this->getPriceForSession($minutes, 'individual');
     }
 
     public function getSessionNameForDuration(int $minutes): string
     {
-        return self::sessionPrices()[$minutes]['name'] ?? 'Session';
+        return $this->getSessionNameForSession($minutes, 'individual');
     }
 
     public function getVerificationStatusAttribute(): string

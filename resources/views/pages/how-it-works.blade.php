@@ -73,7 +73,7 @@
             <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="steps-grid">
                 @php $studentSteps = [
                     ['1','fa-magnifying-glass','#0A64BC','Find Your Tutor','Browse TSC-registered tutors by subject, price, and availability. Read real reviews from students and parents who have already booked.','Filter by Kenyan curriculum subject','View ratings, reviews and availability','Choose from 500+ verified tutors','Background-checked for your safety'],
-                    ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block — Quick Help (20min), Guided Practice (40min), or Deep Dive (60min). Fixed pricing, no surprises.','Quick Help – 20 min – KSh 300','Guided Practice – 40 min – KSh 500','Deep Dive – 60 min – KSh 700','Same price for every tutor'],
+                    ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block — Quick Help (20min), Guided Practice (40min), Deep Dive (60min), or Group Session (60min). Fixed pricing, no surprises.','Quick Help – 20 min – KSh 300','Guided Practice – 40 min – KSh 500','Deep Dive – 60 min – KSh 700','Group Session 👥 – 60 min – KSh 500'],
                     ['3','fa-mobile-screen-button','#E8522A','Pay via M-Pesa or Card','Complete your booking by paying through Paystack — Kenya\'s trusted payment gateway. Pay by M-Pesa, Visa, or Mastercard. Secure and instant.','M-Pesa, Visa & Mastercard accepted','Payment secured by Paystack','Full refund if tutor cancels','Booking confirmed instantly after payment'],
                     ['4','fa-envelope','#EEBE15','Receive Your Session Code','Immediately after payment, you and the tutor both receive unique session access codes by email. Yours is STU-XXXXXX. The tutor\'s is TUT-XXXXXX.','Unique STU-XXXXXX code emailed to you','Tutor receives TUT-XXXXXX separately','Session date, time and duration confirmed','Reminder sent 1 hour before session'],
                     ['5','fa-video','#3B82F6','Join Your Live Session','On session day, open your booking and enter your STU-XXXXXX code. Your private classroom opens instantly in your browser — no download needed.','Enter STU-XXXXXX code to verify identity','Private video room opens instantly','Screen sharing and whiteboard available','No app download required'],
@@ -150,10 +150,11 @@
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-grid">
             @foreach([
-                ['20','Quick Help','⚡','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week'],
-                ['40','Guided Practice','🎯','KSh 500','Full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics'],
-                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics'],
-            ] as [$mins,$name,$icon,$price,$desc,$ideal])
+                ['20','Quick Help','⚡','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week','individual'],
+                ['40','Guided Practice','🎯','KSh 500','Full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics','individual'],
+                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics','individual'],
+                ['60','Group Session','👥','KSh 500','Learn together with other students. Share the cost, maximize value.','Group revision, study buddies, exam prep','group'],
+            ] as [$mins,$name,$icon,$price,$desc,$ideal,$type])
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px;transition:background .2s;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                     <div style="display:flex;align-items:center;gap:10px;">

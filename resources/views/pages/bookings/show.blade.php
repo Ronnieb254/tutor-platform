@@ -37,8 +37,8 @@ $sessionStart   = $booking->scheduled_at;
 $sessionEnd     = $sessionStart->copy()->addMinutes($booking->duration_minutes);
 $minutesUntil   = now()->diffInMinutes($sessionStart, false);
 $canJoin        = $booking->canJoin();
-$sessionPrices  = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
-$sessionName    = $sessionPrices[$booking->duration_minutes] ?? 'Session';
+$tutorProfile   = $booking->tutor?->tutorProfile;
+$sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking->duration_minutes, $booking->session_type ?? 'individual') : 'Session';
 $jitsiRoom      = $roomName ?? $booking->meeting_room ?? ('Mwalimu-session-' . $booking->uuid);
 $jitsiDomain    = config('jitsi.domain','meet.jit.si');
 @endphp
@@ -85,6 +85,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                     <span><i class="fa-solid fa-calendar fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ $sessionStart->format('D, M j, Y') }}</span>
                     <span><i class="fa-solid fa-clock fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ $sessionStart->format('g:i a') }} – {{ $sessionEnd->format('g:i a') }} EAT</span>
                     <span><i class="fa-solid fa-hourglass-half fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ $booking->duration_minutes }} minutes</span>
+                    <span><i class="fa-solid fa-{{ ($booking->session_type ?? 'individual') === 'group' ? 'users' : 'user' }} fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ ucfirst($booking->session_type ?? 'individual') }} Session</span>
                     @if($booking->subject)<span><i class="fa-solid fa-book-open fa-xs" style="color:#0A64BC;margin-right:5px;"></i>{{ $booking->subject->name }}</span>@endif
                     <span><i class="fa-solid fa-money-bill fa-xs" style="color:#EEBE15;margin-right:5px;"></i>KSh {{ number_format($booking->total_amount) }}</span>
                 </div>

@@ -55,8 +55,8 @@ use App\Models\PlatformSetting;
 $categories    = Category::active()->with('subjects')->take(8)->get();
 $featuredTutors = TutorProfile::approved()->with(['user','subjects'])->orderByDesc('rating_avg')->take(6)->get();
 $upcomingClinics = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
-$prices = [20=>300,40=>500,60=>700];
-$sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
+$prices = [20=>300,40=>500,60=>700,'60_group'=>500];
+$sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_group'=>'Group Session'];
 @endphp
 
 {{-- ANNOUNCEMENT BAR --}}
@@ -200,11 +200,11 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
             @foreach([
-                ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.','KSh 300'],
-               
-                ['40','Guided Practice','🎯','KSh 500','A full structured lesson with warm-up, teaching and Q&A.','KSh 680'],
-                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value. Ideal for exam prep.','KSh 800'],
-            ] as [$mins,$title,$icon,$price,$desc,$from])
+                ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.'],
+                ['40','Guided Practice','🎯','KSh 500','A full structured lesson with warm-up, teaching and Q&A.'],
+                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value. Ideal for exam prep.'],
+                ['60','Group Session','👥','KSh 500','Learn together with other students. Share the cost, maximize value.'],
+            ] as [$mins,$title,$icon,$price,$desc])
             <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--trust-blue)'" onmouseout="this.style.borderColor='var(--hair)'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                     <div style="font-size:32px;">{{ $icon }}</div>

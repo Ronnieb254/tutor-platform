@@ -48,12 +48,13 @@
             {{-- Session pricing preview --}}
             @if($hourlyRate >= 500)
             <div class="rounded-2xl bg-trust-blue/5 border border-trust-blue/15 p-4">
-                <p class="text-sm font-semibold text-trust-blue mb-3">Your session prices</p>
+                <p class="text-sm font-semibold text-trust-blue mb-3">Platform session prices (fixed for all tutors)</p>
                 <div class="grid grid-cols-4 gap-2">
-                    @foreach([15 => 0.25, 30 => 0.50, 45 => 0.75, 60 => 1.00] as $mins => $mult)
+                    @foreach(\App\Models\TutorProfile::sessionPrices() as $key => $session)
                     <div class="text-center rounded-xl bg-white border border-hairline p-2">
-                        <p class="text-xs font-bold text-ink">{{ $mins }}min</p>
-                        <p class="text-xs text-trust-blue font-semibold mt-0.5">KSh {{ number_format($hourlyRate * $mult, 0) }}</p>
+                        <p class="text-xs font-bold text-ink">{{ $session['icon'] }} {{ $session['duration'] }}min</p>
+                        <p class="text-[10px] text-muted">{{ $session['name'] }}</p>
+                        <p class="text-xs text-trust-blue font-semibold mt-0.5">KSh {{ number_format($session['price'], 0) }}</p>
                     </div>
                     @endforeach
                 </div>
