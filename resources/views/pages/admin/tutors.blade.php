@@ -282,7 +282,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                                         <i class="fa-solid fa-file-pdf" style="color:#E8522A;font-size:22px;"></i>
                                     </div>
                                     @else
-                                    <img src="{{ asset('storage/'.$doc->file_path) }}"
+                                    <img src="{{ route('tutor.documents.view', $doc->id) }}"
                                          class="doc-thumb" @click="viewDoc=true" title="Click to view"
                                          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                                     <div class="doc-thumb-placeholder" style="display:none;" @click="viewDoc=true">
@@ -314,7 +314,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                                                 title="Reject document">
                                             <i class="fa-solid fa-xmark fa-xs"></i>
                                         </button>
-                                        <a href="{{ asset('storage/'.$doc->file_path) }}" target="_blank" class="btn btn-sm btn-o" title="Open in new tab">
+                                        <a href="{{ route('tutor.documents.view', $doc->id) }}" target="_blank" class="btn btn-sm btn-o" title="Open in new tab">
                                             <i class="fa-solid fa-arrow-up-right-from-square fa-xs"></i>
                                         </a>
                                     </div>
@@ -328,7 +328,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                                                     <span style="font-size:12px;color:rgba(21,40,31,.45);margin-left:8px;">{{ $profile->user->name }}</span>
                                                 </div>
                                                 <div style="display:flex;gap:8px;align-items:center;">
-                                                    <a href="{{ asset('storage/'.$doc->file_path) }}" target="_blank" class="btn btn-sm btn-o">
+                                                    <a href="{{ route('tutor.documents.view', $doc->id) }}" target="_blank" class="btn btn-sm btn-o">
                                                         <i class="fa-solid fa-download fa-xs"></i> Download
                                                     </a>
                                                     <button @click="viewDoc=false" style="width:30px;height:30px;border-radius:8px;border:none;background:#F4F6F4;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(21,40,31,.5);">
@@ -338,9 +338,9 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                                             </div>
                                             <div class="modal-body" style="text-align:center;">
                                                 @if($isPdf)
-                                                <iframe src="{{ asset('storage/'.$doc->file_path) }}" style="width:100%;height:500px;border:none;border-radius:12px;"></iframe>
+                                                <iframe src="{{ route('tutor.documents.view', $doc->id) }}" style="width:100%;height:500px;border:none;border-radius:12px;"></iframe>
                                                 @else
-                                                <img src="{{ asset('storage/'.$doc->file_path) }}" alt="{{ $docLabel }}" style="max-width:100%;border-radius:12px;border:1px solid rgba(21,40,31,.08);">
+                                                <img src="{{ route('tutor.documents.view', $doc->id) }}" alt="{{ $docLabel }}" style="max-width:100%;border-radius:12px;border:1px solid rgba(21,40,31,.08);">
                                                 @endif
                                             </div>
                                             <div style="padding:14px 20px;border-top:1px solid rgba(21,40,31,.08);display:flex;gap:8px;justify-content:flex-end;">
