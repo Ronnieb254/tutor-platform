@@ -560,7 +560,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         {{-- What happens next --}}
                         <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;margin-bottom:24px;">
                             <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;"><i class="fa-solid fa-list-check" style="color:#0A64BC;margin-right:5px;"></i> What happens next</p>
-                            @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard → click Join Session → enter your code','Your private Jitsi classroom opens instantly — no download required'] as $step)
+                            @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard → click Join Session → enter your code','Your private classroom opens instantly in your browser — no download required'] as $step)
                             <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
                                 <i class="fa-solid fa-circle-check" style="color:#10B981;margin-top:2px;flex-shrink:0;font-size:11px;"></i>{{ $step }}
                             </div>

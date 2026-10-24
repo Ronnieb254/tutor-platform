@@ -12,9 +12,6 @@
 .join-btn-live{background:#10B981;color:#fff;box-shadow:0 0 0 0 rgba(16,185,129,.4);animation:pulse-green 2s infinite;}
 @keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.4);}50%{box-shadow:0 0 0 14px rgba(16,185,129,0);}}
 .status-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:700;}
-/* Jitsi container */
-#jitsi-container{width:100%;border-radius:20px;overflow:hidden;background:#111C16;position:relative;}
-.jitsi-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;}
 /* Chat */
 .chat-bubble{max-width:75%;padding:10px 15px;border-radius:16px;font-size:14px;line-height:1.6;}
 .chat-mine{background:#0A64BC;color:#fff;border-radius:16px 4px 16px 16px;margin-left:auto;}
@@ -39,8 +36,6 @@ $minutesUntil   = now()->diffInMinutes($sessionStart, false);
 $canJoin        = $booking->canJoin();
 $tutorProfile   = $booking->tutor?->tutorProfile;
 $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking->duration_minutes, $booking->session_type ?? 'individual') : 'Session';
-$jitsiRoom      = $roomName ?? $booking->meeting_room ?? ('Mwalimu-session-' . $booking->uuid);
-$jitsiDomain    = config('jitsi.domain','meet.jit.si');
 @endphp
 
 @include('partials.nav')
@@ -107,96 +102,18 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
 
             {{-- ── SESSION JOIN PANEL ── --}}
             @if($booking->status === 'confirmed')
-            <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);overflow:hidden;box-shadow:0 4px 24px rgba(21,40,31,.06);" x-data="{
-                codeInput: '{{ $myCode }}',
-                codeError: '',
-                verified: false,
-                jitsiLoaded: false,
-                launching: false,
-                myCode: '{{ $myCode }}',
-                verify() {
-                    const entered = this.codeInput.trim().toUpperCase();
-                    if (!entered) { this.codeError = 'Please enter your session code'; return; }
-                    if (entered !== this.myCode.toUpperCase()) {
-                        this.codeError = 'Incorrect code. Check your confirmation email.';
-                        return;
-                    }
-                    this.codeError = '';
-                    this.verified = true;
-                    this.$nextTick(() => this.launchJitsi());
-                },
-                launchJitsi() {
-                    this.launching = true;
-                    setTimeout(() => {
-                        const domain = '{{ $jitsiDomain }}';
-                        const room   = '{{ $jitsiRoom }}';
-                        const container = document.getElementById('jitsi-container');
-                        if (!container) return;
-
-                        // Remove placeholder
-                        const placeholder = document.getElementById('jitsi-placeholder');
-                        if (placeholder) placeholder.remove();
-
-                        const options = {
-                            roomName: room,
-                            parentNode: container,
-                            width: '100%',
-                            height: 600,
-                            userInfo: {
-                                displayName: '{{ auth()->user()->name }}',
-                                email: '{{ auth()->user()->email }}'
-                            },
-                            configOverwrite: {
-                                startWithAudioMuted: false,
-                                startWithVideoMuted: false,
-                                disableDeepLinking: true,
-                                prejoinPageEnabled: false,
-                                enableWelcomePage: false,
-                                subject: '{{ $sessionName }} – Mwalimu Session',
-                            },
-                            interfaceConfigOverwrite: {
-                                SHOW_JITSI_WATERMARK: false,
-                                SHOW_BRAND_WATERMARK: false,
-                                SHOW_WATERMARK_FOR_GUESTS: false,
-                                TOOLBAR_BUTTONS: [
-                                    'microphone','camera','closedcaptions','desktop',
-                                    'fullscreen','fodeviceselection','hangup','chat',
-                                    'recording','raisehand','videoquality','filmstrip',
-                                    'tileview','shortcuts','mute-everyone','security'
-                                ],
-                                MOBILE_APP_PROMO: false,
-                                DEFAULT_BACKGROUND: '#111C16',
-                            }
-                        };
-
-                        @if(!empty(config('jitsi.app_id')) && !empty(config('jitsi.app_secret')))
-                        {{-- JWT token already generated server-side --}}
-                        options.jwt = '{{ $jwtToken ?? '' }}';
-                        @endif
-
-                        const api = new JitsiMeetExternalAPI(domain, options);
-
-                        api.addEventListener('readyToClose', () => {
-                            container.innerHTML = '<div style=\'padding:48px;text-align:center;color:rgba(255,255,255,.6);\'><i class=\'fa-solid fa-flag-checkered\' style=\'font-size:40px;display:block;margin-bottom:14px;\'></i><p style=\'font-size:16px;\'>Session ended. Thank you!</p></div>';
-                        });
-
-                        api.addEventListener('participantJoined', () => {
-                            console.log('Participant joined the session');
-                        });
-
-                        this.jitsiLoaded = true;
-                        this.launching = false;
-
-                        // Mark joined in backend
-                        fetch('/bookings/{{ $booking->uuid }}/joined', {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                    }, 500);
-                }
+            <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);overflow:hidden;box-shadow:0 4px 24px rgba(21,40,31,.06);"
+                 x-data="{ codeInput: '{{$myCode}}', codeError: '', verified: false, myCode: '{{$myCode}}',
+                 verify() {
+                     const entered = this.codeInput.trim().toUpperCase();
+                     if (!entered) { this.codeError = 'Please enter your session code'; return; }
+                     if (entered !== this.myCode.toUpperCase()) {
+                         this.codeError = 'Incorrect code. Check your confirmation email.';
+                         return;
+                     }
+                     this.codeError = '';
+                     this.verified = true;
+                 }
             }">
                 {{-- Header --}}
                 <div style="padding:20px 24px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
@@ -205,7 +122,7 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                             <i class="fa-solid fa-video" style="color:#0A64BC;margin-right:8px;font-size:16px;"></i>Live Session Room
                         </h2>
                         <p style="font-size:13px;color:rgba(21,40,31,.5);margin-top:2px;">
-                            Powered by Jitsi Meet · Private · Encrypted · No download needed
+                            Powered by BigBlueButton &middot; Private &middot; Encrypted &middot; No download needed
                         </p>
                     </div>
                     @if($canJoin)
@@ -216,83 +133,83 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                     @else
                     <span style="display:flex;align-items:center;gap:7px;background:rgba(21,40,31,.06);color:rgba(21,40,31,.5);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;">
                         <i class="fa-solid fa-clock fa-xs"></i>
-                        Opens {{ $minutesUntil > 0 ? 'in '.$minutesUntil.' min' : 'shortly' }}
+                        Opens {{$minutesUntil > 0 ? 'in '.$minutesUntil.' min' : 'shortly'}}
                     </span>
                     @endif
                 </div>
 
-                {{-- Code entry or Jitsi container --}}
-                <div>
-                    {{-- Before code is verified --}}
+                {{-- Code entry then Join button --}}
+                <div style="padding:32px;text-align:center;">
+                    @if($canJoin)
                     <div x-show="!verified">
-                        @if($canJoin)
-                        {{-- Session is open — show code entry --}}
-                        <div style="padding:32px;text-align:center;">
-                            <div style="width:72px;height:72px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
-                                <i class="fa-solid fa-key" style="font-size:28px;color:#0A64BC;"></i>
-                            </div>
-                            <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:6px;">Enter Your Session Code</h3>
-                            <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;">
-                                You're logged in for this booking. Confirm your session code below, then join the classroom.
-                                {{ $isTutor ? 'Your tutor code starts with TUT-.' : 'Your student code starts with STU-.' }}
-                            </p>
-                            <div style="max-width:320px;margin:0 auto;">
-                                <input type="text"
-                                       x-model="codeInput"
-                                       @keydown.enter="verify()"
-                                       placeholder="{{ $isTutor ? 'TUT-XXXXXX' : 'STU-XXXXXX' }}"
-                                       style="width:100%;height:56px;text-align:center;font-family:monospace;font-size:22px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:16px;border:2px solid rgba(21,40,31,.18);background:#fff;outline:none;transition:all .18s;color:#15281F;margin-bottom:10px;"
-                                       onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 3px rgba(10,100,188,.1)'"
-                                       onblur="this.style.borderColor='rgba(21,40,31,.18)';this.style.boxShadow='none'">
-                                <p x-show="codeError" x-text="codeError" style="font-size:13px;color:#E8522A;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-triangle-exclamation fa-xs"></i></p>
-                                <button @click="verify()"
-                                        style="width:100%;height:52px;border-radius:999px;background:#10B981;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;"
-                                        onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10B981'">
-                                    <i class="fa-solid fa-video fa-sm"></i> Join Live Session
-                                </button>
-                            </div>
-
-                            {{-- Demo: show code hint --}}
-                            <div style="margin-top:20px;padding:14px;background:#F9FAF9;border-radius:14px;display:inline-block;text-align:left;">
-                                <p style="font-size:12px;color:rgba(21,40,31,.5);margin-bottom:5px;"><i class="fa-solid fa-envelope fa-xs" style="color:#0A64BC;"></i> Your code was emailed to <strong>{{ auth()->user()->email }}</strong></p>
-                                <p style="font-size:12px;color:rgba(21,40,31,.4);">Can't find it? Check your spam folder or contact support.</p>
-                            </div>
+                        <div style="width:72px;height:72px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+                            <i class="fa-solid fa-key" style="font-size:28px;color:#0A64BC;"></i>
                         </div>
+                        <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:6px;">Enter Your Session Code</h3>
+                        <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;">
+                            Confirm your session code below, then join the live classroom.
+                            {{$isTutor ? 'Your tutor code starts with TUT-.' : 'Your student code starts with STU-.'}}
+                        </p>
+                        <div style="max-width:320px;margin:0 auto;">
+                            <input type="text"
+                                   x-model="codeInput"
+                                   @keydown.enter="verify()"
+                                   placeholder="{{$isTutor ? 'TUT-XXXXXX' : 'STU-XXXXXX'}}"
+                                   style="width:100%;height:56px;text-align:center;font-family:monospace;font-size:22px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:16px;border:2px solid rgba(21,40,31,.18);background:#fff;outline:none;transition:all .18s;color:#15281F;margin-bottom:10px;"
+                                   onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 3px rgba(10,100,188,.1)'"
+                                   onblur="this.style.borderColor='rgba(21,40,31,.18)';this.style.boxShadow='none'">
+                            <p x-show="codeError" x-text="codeError" style="font-size:13px;color:#E8522A;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-triangle-exclamation fa-xs"></i></p>
+                            <button @click="verify()"
+                                    style="width:100%;height:52px;border-radius:999px;background:#10B981;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;"
+                                    onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10B981'">
+                                <i class="fa-solid fa-arrow-right-to-bracket fa-sm"></i> Verify Code
+                            </button>
+                        </div>
+                        <div style="margin-top:20px;padding:14px;background:#F9FAF9;border-radius:14px;display:inline-block;text-align:left;">
+                            <p style="font-size:12px;color:rgba(21,40,31,.5);margin-bottom:5px;"><i class="fa-solid fa-envelope fa-xs" style="color:#0A64BC;"></i> Your code was emailed to <strong>{{auth()->user()->email}}</strong></p>
+                            <p style="font-size:12px;color:rgba(21,40,31,.4);">Can't find it? Check your spam folder or contact support.</p>
+                        </div>
+                    </div>
+                    <div x-show="verified" x-cloak style="padding:20px 0;">
+                        <div style="width:72px;height:72px;border-radius:999px;background:rgba(16,185,129,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+                            <i class="fa-solid fa-circle-check" style="font-size:32px;color:#10B981;"></i>
+                        </div>
+                        <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">Code Verified — You're In!</h3>
+                        <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;">Your classroom is ready. Click below to join the live session.</p>
+                        @if($joinUrl)
+                        <a href="{{$joinUrl}}" target="_blank" rel="noopener noreferrer"
+                           onclick="fetch('/bookings/{{$booking->uuid}}/joined',{method:'POST',headers:{'X-CSRF-TOKEN':document.querySelector('meta[name=csrf-token]').content,'Content-Type':'application/json'}})"
+                           class="join-btn join-btn-live"
+                           style="display:inline-flex;align-items:center;gap:10px;padding:16px 40px;border-radius:999px;font-size:16px;font-weight:700;text-decoration:none;background:#10B981;color:#fff;box-shadow:0 0 0 0 rgba(16,185,129,.4);animation:pulse-green 2s infinite;">
+                            <i class="fa-solid fa-video fa-sm"></i> Join Live Session
+                        </a>
                         @else
-                        {{-- Session not yet open --}}
-                        <div id="jitsi-container" style="min-height:420px;background:#111C16;border-radius:0 0 22px 22px;">
-                            <div id="jitsi-placeholder" class="jitsi-placeholder">
-                                <i class="fa-solid fa-satellite-dish" style="font-size:48px;color:rgba(255,255,255,.15);margin-bottom:18px;"></i>
-                                <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#fff;margin-bottom:8px;">Session Room Waiting</h3>
-                                <p style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;max-width:380px;">This room opens 60 minutes before your session starts. Your access code is already on this page.</p>
-                                <div style="background:rgba(255,255,255,.08);border-radius:16px;padding:16px 24px;display:inline-block;">
-                                    <p style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:6px;">Time until session</p>
-                                    <div id="countdown">--:--:--</div>
-                                </div>
-                                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;justify-content:center;">
-                                    @foreach([
-                                        ['fa-video','Join 60 min before'],
-                                        ['fa-key','Enter your '.($isTutor?'TUT':'STU').'-XXXXXX code'],
-                                        ['fa-globe','No download required'],
-                                    ] as [$ic,$tip])
-                                    <span style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);padding:7px 14px;border-radius:999px;font-size:12px;color:rgba(255,255,255,.6);">
-                                        <i class="fa-solid {{ $ic }} fa-xs"></i>{{ $tip }}
-                                    </span>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
+                        <p style="color:#E8522A;font-size:14px;">Session link is not available yet. Please refresh or contact support.</p>
                         @endif
                     </div>
-
-                    {{-- Jitsi launching --}}
-                    <div x-show="launching" x-cloak style="background:#111C16;padding:60px;text-align:center;border-radius:0 0 22px 22px;">
-                        <div style="width:52px;height:52px;border:3px solid rgba(10,100,188,.2);border-top-color:#0A64BC;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
-                        <p style="font-size:15px;color:rgba(255,255,255,.7);">Launching your private classroom…</p>
+                    @else
+                    {{-- Session not yet open --}}
+                    <div style="min-height:280px;background:#111C16;border-radius:16px;padding:48px 20px;text-align:center;">
+                        <i class="fa-solid fa-satellite-dish" style="font-size:48px;color:rgba(255,255,255,.15);margin-bottom:18px;"></i>
+                        <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#fff;margin-bottom:8px;">Session Room Waiting</h3>
+                        <p style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">This room opens 60 minutes before your session starts. Your access code is already on this page.</p>
+                        <div style="background:rgba(255,255,255,.08);border-radius:16px;padding:16px 24px;display:inline-block;">
+                            <p style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:6px;">Time until session</p>
+                            <div id="countdown">--:--:--</div>
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;justify-content:center;">
+                            @foreach([
+                                ['fa-video','Join 60 min before'],
+                                ['fa-key','Enter your '.($isTutor?'TUT':'STU').'-XXXXXX code'],
+                                ['fa-globe','No download required'],
+                            ] as [$ic,$tip])
+                            <span style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);padding:7px 14px;border-radius:999px;font-size:12px;color:rgba(255,255,255,.6);">
+                                <i class="fa-solid {{$ic}} fa-xs"></i>{{$tip}}
+                            </span>
+                            @endforeach
+                        </div>
                     </div>
-
-                    {{-- Jitsi container (loads after code verified) --}}
-                    <div id="jitsi-container" x-show="verified" x-cloak style="border-radius:0 0 22px 22px;overflow:hidden;"></div>
+                    @endif
                 </div>
             </div>
 
@@ -322,8 +239,8 @@ $jitsiDomain    = config('jitsi.domain','meet.jit.si');
                         '1. Come back to this page when your session starts',
                         '2. Click the "Enter Your Session Code" field',
                         '3. Type your '.($isTutor?'TUT':'STU').'-XXXXXX code',
-                        '4. Click "Join Live Session"',
-                        '5. Your private Jitsi classroom opens instantly',
+                        '4. Click "Verify Code"',
+                        '5. Your private classroom opens instantly in your browser',
                     ] as $s)
                     <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:5px;display:flex;align-items:flex-start;gap:7px;">
                         <i class="fa-solid fa-circle-dot fa-xs" style="color:#0A64BC;margin-top:3px;flex-shrink:0;"></i>{{ $s }}
