@@ -355,8 +355,8 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             </div>
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
                 @foreach([
-                    ['fa-bolt','Instant Payouts','M-Pesa payments processed immediately after each completed lesson.'],
-                    ['fa-share-nodes','Referral Earnings','Earn commission for every verified tutor you refer with your code.'],
+                    ['fa-bolt','Weekly Payouts','Enjoy the convenience of flexible weekly payouts, issued immediately upon your request via M-Pesa. No rigid monthly waiting periods—you control when you get paid each week.'],
+                     ['fa-share-nodes','Referral Earnings','Earn commission for every verified tutor you refer with your code.'],
                     ['fa-star','Build Reputation','Featured clinic sessions put you in front of hundreds of parents & learners.'],
                     ['fa-headset','Zero Admin','Mwalimu handles student acquisition, payments, reminders and classroom setup.'],
                 ] as [$icon,$title,$desc])
