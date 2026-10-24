@@ -146,9 +146,33 @@ Route::middleware('auth')->group(function () {
             return back()->with('success', 'All notifications marked as read.');
         })->name('student.notifications.read');
         Route::post('/student/children', function (\Illuminate\Http\Request $request) {
-            $request->validate(['name' => 'required|string|max:100', 'age' => 'nullable|integer|min:3|max:25', 'grade_level' => 'nullable|string|max:50', 'notes' => 'nullable|string|max:500']);
-            auth()->user()->childProfiles()->create($request->only('name','age','grade_level','notes'));
-            return back()->with('success', 'Child profile added.');
+            $request->validate([
+                'name' => 'required|string|max:100',
+                'email' => 'nullable|email|unique:users,email',
+                'age' => 'nullable|integer|min:3|max:25',
+                'grade_level' => 'nullable|string|max:50',
+            ]);
+            
+            // Generate a unique email if not provided
+            $email = $request->email;
+            if (!$email) {
+                $slug = \Illuminate\Support\Str::slug($request->name);
+                $random = \Illuminate\Support\Str::random(6);
+                $email = strtolower($slug . '_' . $random . '@child.mwalimu.local');
+            }
+            
+            // Create child as a User
+            auth()->user()->children()->create([
+                'name' => $request->name,
+                'email' => $email,
+                'password' => bcrypt(\Illuminate\Support\Str::random(32)), // Random password
+                'role' => 'student',
+                'age' => $request->age,
+                'grade_level' => $request->grade_level,
+                'is_active' => true,
+            ]);
+            
+            return back()->with('success', 'Child added successfully.');
         })->name('student.children.store');
     });
 
@@ -169,6 +193,9 @@ Route::middleware('auth')->group(function () {
 
         // Document upload
         Route::post('/tutor/documents/upload', [App\Http\Controllers\TutorController::class, 'uploadDocument'])->name('tutor.documents.upload');
+        
+        // Document view (secure)
+        Route::get('/tutor/documents/{document}/view', [App\Http\Controllers\TutorController::class, 'viewDocument'])->name('tutor.documents.view');
 
         // Availability
         Route::post('/tutor/availability', [App\Http\Controllers\TutorController::class, 'updateAvailability'])->name('tutor.availability.update');

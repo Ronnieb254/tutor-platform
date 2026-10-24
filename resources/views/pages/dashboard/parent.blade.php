@@ -96,10 +96,10 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 @php
 $user = auth()->user();
 $unreadNotifs = $user->unreadNotifications()->count();
-$children = $user->childProfiles()->get();
+$children = $user->children()->get();
 $childIds = $children->pluck('id');
-$upcomingBookings = $user->bookingsAsStudent()->with(['tutor','subject','childProfile'])->upcoming()->orderBy('scheduled_at')->get();
-$pastBookings = $user->bookingsAsStudent()->with(['tutor','subject','review','childProfile'])->history()->latest('scheduled_at')->take(50)->get();
+$upcomingBookings = $user->bookingsAsStudent()->with(['tutor','subject'])->upcoming()->orderBy('scheduled_at')->get();
+$pastBookings = $user->bookingsAsStudent()->with(['tutor','subject','review'])->history()->latest('scheduled_at')->take(50)->get();
 $totalSpent = $user->payments()->where('status','success')->sum('amount');
 $totalSessions = $user->bookingsAsStudent()->where('status','completed')->count();
 $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
@@ -221,7 +221,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
             <div style="flex:1;min-width:0;">
                 <div style="font-weight:600;font-size:14px;">{{ $b->tutor->name }}</div>
-                <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} · {{ $b->duration_minutes }}min@if($b->childProfile) · For: {{ $b->childProfile->name }}@endif</div>
+                <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} · {{ $b->duration_minutes }}min@if($b->student && $b->student->parent_id) · For: {{ $b->student->name }}@endif</div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
                 <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $b->scheduled_at->format('M j') }}</div>
@@ -266,7 +266,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                     <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
                     @if($b->canJoin())<span class="bdg bdg-mint">🔴 Live Now</span>@endif
                 </div>
-                <div style="font-size:13px;color:var(--muted);">{{ $b->subject?->name ?? 'General Session' }} · {{ $b->duration_minutes }} minutes@if($b->childProfile) · For: {{ $b->childProfile->name }}@endif</div>
+                <div style="font-size:13px;color:var(--muted);">{{ $b->subject?->name ?? 'General Session' }} · {{ $b->duration_minutes }} minutes@if($b->student && $b->student->parent_id) · For: {{ $b->student->name }}@endif</div>
                 <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;">
                     <div style="display:flex;align-items:center;gap:6px;font-size:13px;"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span style="color:var(--ink);font-weight:500;">{{ $b->scheduled_at->format('D, M j, Y') }}</span></div>
                     <div style="display:flex;align-items:center;gap:6px;font-size:13px;"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="color:var(--ink);font-weight:500;">{{ $b->scheduled_at->format('g:i a') }}</span></div>
@@ -316,7 +316,7 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                     @forelse($pastBookings as $b)
                     <tr>
                         <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:32px;height:32px;background:#0A64BC;border-radius:9px;font-size:13px;">{{ substr($b->tutor->name,0,1) }}</div><div><div style="font-weight:600;font-size:13.5px;">{{ $b->tutor->name }}</div></div></div></td>
-                        <td style="color:var(--muted);">{{ $b->childProfile?->name ?? '—' }}</td>
+                        <td style="color:var(--muted);">{{ $b->student && $b->student->parent_id ? $b->student->name : '—' }}</td>
                         <td style="color:var(--muted);">{{ $b->subject?->name ?? 'General' }}</td>
                         <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y g:ia') }}</td>
                         <td>{{ $b->duration_minutes }}min</td>
@@ -522,12 +522,10 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                     <div style="font-size:13px;color:var(--muted);margin-top:3px;">
                         @if($child->age) Age {{ $child->age }} @endif
                         @if($child->grade_level) · {{ $child->grade_level }} @endif
+                        @if($child->email && !str_contains($child->email, '@child.mwalimu.local')) · {{ $child->email }} @endif
                     </div>
                 </div>
             </div>
-            @if($child->notes)
-            <p style="font-size:13px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--hair);">{{ $child->notes }}</p>
-            @endif
             <div style="margin-top:12px;">
                 <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm" style="width:100%;justify-content:center;">Book Session for {{ explode(' ',$child->name)[0] }}</a>
             </div>
@@ -546,10 +544,15 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
             <form method="POST" action="/student/children">
                 @csrf
                 <div style="margin-bottom:12px;">
-                    <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Child's Name</label>
+                    <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Child's Name *</label>
                     <input type="text" name="name" required placeholder="e.g. James Kamau" style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;">
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Email (Optional)</label>
+                    <input type="email" name="email" placeholder="e.g. james@example.com" style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;">
+                    <div style="font-size:11px;color:var(--muted);margin-top:4px;">If left empty, a unique email will be generated automatically</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
                     <div>
                         <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Age</label>
                         <input type="number" name="age" min="3" max="25" placeholder="e.g. 12" style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;">
@@ -559,13 +562,9 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                         <input type="text" name="grade_level" placeholder="e.g. Form 3" style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;">
                     </div>
                 </div>
-                <div style="margin-bottom:20px;">
-                    <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Notes (optional)</label>
-                    <textarea name="notes" rows="2" placeholder="Learning goals, subjects they need help with…" style="width:100%;padding:10px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;"></textarea>
-                </div>
                 <div style="display:flex;gap:10px;">
                     <button type="button" onclick="document.getElementById('add-child-modal').style.display='none'" class="btn btn-o" style="flex:1;">Cancel</button>
-                    <button type="submit" class="btn btn-v" style="flex:1;">Add Profile</button>
+                    <button type="submit" class="btn btn-v" style="flex:1;">Add Child</button>
                 </div>
             </form>
         </div>

@@ -14,6 +14,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name', 'email', 'password', 'role', 'avatar',
         'provider', 'provider_id', 'phone', 'timezone', 'is_active',
+        'parent_id', 'age', 'grade_level',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -71,6 +72,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function childProfiles()
     {
         return $this->hasMany(ChildProfile::class, 'parent_id');
+    }
+
+    // New: Children as Users
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent_id')->where('role', 'student');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
     }
 
     public function courses()

@@ -109,13 +109,13 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $children = $user->childProfiles;
+        $children = $user->children;
 
         $childIds = $children->pluck('id');
 
-        $upcomingSessions = Booking::whereIn('child_profile_id', $childIds)
+        $upcomingSessions = Booking::whereIn('student_id', $childIds)
             ->upcoming()
-            ->with(['tutor', 'subject', 'childProfile'])
+            ->with(['tutor', 'subject', 'student'])
             ->orderBy('scheduled_at')
             ->limit(10)
             ->get();

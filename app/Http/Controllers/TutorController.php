@@ -57,6 +57,30 @@ class TutorController extends Controller
         return back()->with('success', 'Document uploaded successfully. Our team will review it within 24–48 hours.');
     }
 
+    public function viewDocument(TutorDocument $document)
+    {
+        $user = auth()->user();
+        
+        // Authorization: Owner (tutor) or Admin can view
+        if (!$user->isAdmin() && $document->tutorProfile->user_id !== $user->id) {
+            abort(403, 'Unauthorized access to this document.');
+        }
+
+        // Check if file exists
+        if (!Storage::disk('public')->exists($document->file_path)) {
+            abort(404, 'Document file not found.');
+        }
+
+        // Get file content and mime type
+        $file = Storage::disk('public')->get($document->file_path);
+        $mimeType = Storage::disk('public')->mimeType($document->file_path);
+
+        // Return file response
+        return response($file, 200)
+            ->header('Content-Type', $mimeType)
+            ->header('Content-Disposition', 'inline; filename="' . $document->original_name . '"');
+    }
+
     public function updateAvailability(Request $request)
     {
         $profile = auth()->user()->tutorProfile;

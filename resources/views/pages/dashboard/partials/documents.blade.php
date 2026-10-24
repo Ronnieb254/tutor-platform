@@ -177,7 +177,7 @@
                 @if($doc)
                     @php $bc = ['pending'=>'bdg-amber','approved'=>'bdg-green','rejected'=>'bdg-red'][$doc->status] ?? 'bdg-gray'; @endphp
                     <span class="bdg {{ $bc }}">{{ ucfirst($doc->status) }}</span>
-                    <a href="{{ asset('storage/' . $doc->file_path) }}"
+                    <a href="{{ route('tutor.documents.view', $doc->id) }}"
                        target="_blank"
                        class="btn btn-o btn-sm">
                         View
