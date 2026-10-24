@@ -6,7 +6,6 @@ use App\Models\Booking;
 use App\Models\Payment;
 use App\Services\BookingService;
 use App\Services\PaystackService;
-use App\Services\JitsiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -14,8 +13,7 @@ class BookingController extends Controller
 {
     public function __construct(
         protected BookingService  $bookingService,
-        protected PaystackService $paystack,
-        protected JitsiService    $jitsi
+        protected PaystackService $paystack
     ) {}
 
     public function show(Booking $booking)
@@ -37,16 +35,10 @@ class BookingController extends Controller
             'payment',
         ]);
 
-        $jwtToken = null;
-        $roomName = $booking->meeting_room ?: $this->jitsi->generateRoomName($booking);
-        if ($booking->status === 'confirmed') {
-            $isTutor  = $user->id === $booking->tutor_id;
-            $jwtToken = $this->jitsi->generateToken($user, $roomName, $isTutor);
-        }
+        $roomName = $booking->meeting_room;
+        $joinUrl  = $booking->getBBBJoinUrl($user);
 
-        $joinUrl = $this->jitsi->getMeetingUrl($booking, $user);
-
-        return view('pages.bookings.show', compact('booking', 'jwtToken', 'roomName', 'joinUrl'));
+        return view('pages.bookings.show', compact('booking', 'roomName', 'joinUrl'));
     }
 
     public function store(Request $request)
