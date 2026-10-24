@@ -955,10 +955,10 @@ $activeTab = request('tab','overview');
                 <div style="margin-bottom:16px;padding:12px 14px;background:#F9FAF9;border-radius:11px;border:1px solid var(--hair);">
                     <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Session Pricing</div>
                     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
-                        @foreach([15,30,45,60] as $mins)
+                        @foreach(\App\Models\TutorProfile::sessionPrices() as $key => $session)
                         <div style="text-align:center;background:#fff;border-radius:9px;border:1px solid var(--hair);padding:8px 4px;">
-                            <div style="font-size:11px;font-weight:700;color:var(--ink);">{{ $mins }}min</div>
-                            <div style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-top:2px;">KSh {{ \App\Models\TutorProfile::sessionPrices()[$mins]['price'] ?? '' }}</div>
+                            <div style="font-size:11px;font-weight:700;color:var(--ink);">{{ $session['icon'] }} {{ $session['duration'] }}min</div>
+                            <div style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-top:2px;">KSh {{ $session['price'] }}</div>
                         </div>
                         @endforeach
                     </div>

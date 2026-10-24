@@ -15,6 +15,7 @@ class BookingWizard extends Component
     public TutorProfile $tutorProfile;
     public int    $step             = 1;
     public int    $duration         = 60;
+    public string $sessionType     = 'individual';
     public string $scheduledDate    = '';
     public string $scheduledTime    = '';
     public ?int   $subjectId        = null;
@@ -39,20 +40,30 @@ class BookingWizard extends Component
     public function getSessionPriceProperty(): float
     {
         $prices = \App\Models\TutorProfile::sessionPrices();
-        return (float) ($prices[$this->duration]['price'] ?? 300);
+        $key = "{$this->duration}_{$this->sessionType}";
+        // Fallback: try individual for this duration
+        if (!isset($prices[$key])) {
+            $key = "{$this->duration}_individual";
+        }
+        return (float) ($prices[$key]['price'] ?? 300);
     }
 
     public function getSessionNameProperty(): string
     {
         $prices = \App\Models\TutorProfile::sessionPrices();
-        return $prices[$this->duration]['name'] ?? 'Session';
+        $key = "{$this->duration}_{$this->sessionType}";
+        if (!isset($prices[$key])) {
+            $key = "{$this->duration}_individual";
+        }
+        return $prices[$key]['name'] ?? 'Session';
     }
 
     public function nextStep()
     {
         if ($this->step === 1) {
             $this->validate([
-                'duration'      => 'required|in:15,30,45,60',
+                'duration'      => 'required|in:20,40,60',
+                'sessionType'   => 'required|in:individual,group',
                 'scheduledDate' => 'required|date|after:today',
                 'scheduledTime' => 'required',
             ]);
@@ -65,7 +76,8 @@ class BookingWizard extends Component
     public function initPayment(PaystackService $paystack, BookingService $bookingService)
     {
         $this->validate([
-            'duration'      => 'required|in:15,30,45,60',
+            'duration'      => 'required|in:20,40,60',
+            'sessionType'   => 'required|in:individual,group',
             'scheduledDate' => 'required|date|after:today',
             'scheduledTime' => 'required',
         ]);
@@ -78,6 +90,7 @@ class BookingWizard extends Component
             'subject_id'       => $this->subjectId,
             'scheduled_at'     => $scheduledAt,
             'duration_minutes' => $this->duration,
+            'session_type'     => $this->sessionType,
             'booking_for'      => $this->bookingFor,
             'child_profile_id' => $this->childProfileId,
             'notes'            => $this->notes,
