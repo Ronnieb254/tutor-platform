@@ -176,6 +176,9 @@ Route::middleware('auth')->group(function () {
         })->name('student.children.store');
     });
 
+    // Document view (secure) - accessible by tutors (own docs) and admins (all docs)
+    Route::get('/tutor/documents/{document}/view', [App\Http\Controllers\TutorController::class, 'viewDocument'])->name('tutor.documents.view');
+
     // Tutor dashboard & onboarding
     Route::middleware('role:tutor')->group(function () {
         Route::get('/dashboard/tutor', function () {
@@ -193,9 +196,6 @@ Route::middleware('auth')->group(function () {
 
         // Document upload
         Route::post('/tutor/documents/upload', [App\Http\Controllers\TutorController::class, 'uploadDocument'])->name('tutor.documents.upload');
-        
-        // Document view (secure)
-        Route::get('/tutor/documents/{document}/view', [App\Http\Controllers\TutorController::class, 'viewDocument'])->name('tutor.documents.view');
 
         // Availability
         Route::post('/tutor/availability', [App\Http\Controllers\TutorController::class, 'updateAvailability'])->name('tutor.availability.update');

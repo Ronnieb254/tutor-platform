@@ -59,21 +59,42 @@ class TutorController extends Controller
 
     public function viewDocument(TutorDocument $document)
     {
+        \Log::info('viewDocument called', [
+            'document_id' => $document->id,
+            'user_id' => auth()->id(),
+            'is_admin' => auth()->user()->isAdmin(),
+            'file_path' => $document->file_path,
+        ]);
+
         $user = auth()->user();
         
         // Authorization: Owner (tutor) or Admin can view
         if (!$user->isAdmin() && $document->tutorProfile->user_id !== $user->id) {
+            \Log::warning('Unauthorized document access attempt', [
+                'user_id' => $user->id,
+                'document_id' => $document->id,
+                'tutor_user_id' => $document->tutorProfile->user_id,
+            ]);
             abort(403, 'Unauthorized access to this document.');
         }
 
         // Check if file exists
         if (!Storage::disk('public')->exists($document->file_path)) {
+            \Log::error('Document file not found', [
+                'file_path' => $document->file_path,
+                'full_path' => Storage::disk('public')->path($document->file_path),
+            ]);
             abort(404, 'Document file not found.');
         }
 
         // Get file content and mime type
         $file = Storage::disk('public')->get($document->file_path);
         $mimeType = Storage::disk('public')->mimeType($document->file_path);
+
+        \Log::info('Document served successfully', [
+            'document_id' => $document->id,
+            'mime_type' => $mimeType,
+        ]);
 
         // Return file response
         return response($file, 200)
