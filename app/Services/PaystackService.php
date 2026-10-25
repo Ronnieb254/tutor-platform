@@ -22,6 +22,20 @@ class PaystackService
 
     public function initializeTransaction(string $email, float $amount, string $reference, array $metadata = []): array
     {
+        // Check if we're in test mode with placeholder keys
+        if ($this->isTestMode()) {
+            \Log::info('Paystack test mode - using mock response');
+            return [
+                'status' => true,
+                'message' => 'Test mode authorization',
+                'data' => [
+                    'authorization_url' => route('paystack.callback') . '?reference=' . $reference,
+                    'access_code' => 'TEST_' . strtoupper(\Illuminate\Support\Str::random(10)),
+                    'reference' => $reference,
+                ],
+            ];
+        }
+
         $response = Http::withToken($this->secretKey)
             ->post("{$this->baseUrl}/transaction/initialize", [
                 'email'     => $email,
@@ -37,10 +51,35 @@ class PaystackService
 
     public function verifyTransaction(string $reference): array
     {
+        // Check if we're in test mode
+        if ($this->isTestMode()) {
+            \Log::info('Paystack test mode - auto-verifying transaction');
+            return [
+                'status' => true,
+                'message' => 'Verification successful',
+                'data' => [
+                    'status' => 'success',
+                    'reference' => $reference,
+                    'amount' => 30000, // Mock amount
+                    'currency' => 'KES',
+                ],
+            ];
+        }
+
         $response = Http::withToken($this->secretKey)
             ->get("{$this->baseUrl}/transaction/verify/{$reference}");
 
         return $response->json();
+    }
+
+    /**
+     * Check if we're using placeholder/test keys
+     */
+    protected function isTestMode(): bool
+    {
+        return str_contains($this->secretKey, 'xxxxxxxxxxxx') 
+            || empty($this->secretKey) 
+            || $this->secretKey === 'sk_test_xxxxxxxxxxxx';
     }
 
     public function verifyWebhookSignature(string $payload, string $signature): bool

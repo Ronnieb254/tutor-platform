@@ -174,6 +174,10 @@ Route::middleware('auth')->group(function () {
             
             return back()->with('success', 'Child added successfully.');
         })->name('student.children.store');
+        
+        // Refund requests (student/parent only)
+        Route::post('/bookings/{booking}/refund/first-20min', [App\Http\Controllers\RefundController::class, 'requestFirst20MinRefund'])->name('bookings.refund.first20min');
+        Route::post('/bookings/{booking}/refund', [App\Http\Controllers\RefundController::class, 'requestRefund'])->name('bookings.refund.request');
     });
 
     // Document view (secure) - accessible by tutors (own docs) and admins (all docs)
@@ -231,6 +235,10 @@ Route::middleware('auth')->group(function () {
 
         // User toggle active
         Route::patch('/users/{user}/toggle-active', [App\Http\Controllers\Admin\TutorApprovalController::class, 'toggleUser'])->name('users.toggle');
+        
+        // Refund management
+        Route::post('/refunds/{refund}/approve', [App\Http\Controllers\RefundController::class, 'approve'])->name('refunds.approve');
+        Route::post('/refunds/{refund}/reject', [App\Http\Controllers\RefundController::class, 'reject'])->name('refunds.reject');
     });
 });
 

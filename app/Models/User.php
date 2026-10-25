@@ -115,6 +115,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Message::class, 'receiver_id');
     }
 
+    public function refunds()
+    {
+        return $this->hasMany(Refund::class);
+    }
+
     // Helpers
     public function isAdmin(): bool   { return $this->role === 'admin'; }
     public function isTutor(): bool   { return $this->role === 'tutor'; }

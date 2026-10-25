@@ -49,6 +49,7 @@ class Booking extends Model
     public function review()     { return $this->hasOne(Review::class); }
     public function messages()   { return $this->hasMany(Message::class); }
     public function childProfile() { return $this->belongsTo(ChildProfile::class); }
+    public function refund()     { return $this->hasOne(Refund::class); }
 
     public function isUpcoming(): bool
     {

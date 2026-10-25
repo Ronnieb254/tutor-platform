@@ -86,34 +86,63 @@ class BookingController extends Controller
 
         // Initialize Paystack transaction
         $reference = $this->paystack->generateReference();
-        $result    = $this->paystack->initializeTransaction(
-            auth()->user()->email,
-            $booking->total_amount,
-            $reference,
-            ['booking_id' => $booking->id]
-        );
+        
+        try {
+            $result = $this->paystack->initializeTransaction(
+                auth()->user()->email,
+                $booking->total_amount,
+                $reference,
+                ['booking_id' => $booking->id]
+            );
 
-        if ($result['status'] ?? false) {
-            Payment::create([
-                'booking_id'           => $booking->id,
-                'user_id'              => auth()->id(),
-                'amount'               => $booking->total_amount,
-                'currency'             => 'KES',
-                'paystack_reference'   => $reference,
-                'paystack_access_code' => $result['data']['access_code'] ?? null,
-                'status'               => 'pending',
+            \Log::info('Paystack initialization response', ['result' => $result]);
+
+            if ($result['status'] ?? false) {
+                Payment::create([
+                    'booking_id'           => $booking->id,
+                    'user_id'              => auth()->id(),
+                    'amount'               => $booking->total_amount,
+                    'currency'             => 'KES',
+                    'paystack_reference'   => $reference,
+                    'paystack_access_code' => $result['data']['access_code'] ?? null,
+                    'status'               => 'pending',
+                ]);
+
+                return response()->json([
+                    'status'      => 'ok',
+                    'access_code' => $result['data']['access_code'],
+                    'reference'   => $reference,
+                    'booking_id'  => $booking->id,
+                ]);
+            }
+
+            $errorMessage = $result['message'] ?? 'Could not initialize payment.';
+            \Log::error('Paystack initialization failed', [
+                'result' => $result,
+                'booking_id' => $booking->id,
+                'user_email' => auth()->user()->email,
+                'amount' => $booking->total_amount,
             ]);
 
+            $booking->delete();
             return response()->json([
-                'status'      => 'ok',
-                'access_code' => $result['data']['access_code'],
-                'reference'   => $reference,
-                'booking_id'  => $booking->id,
+                'status' => 'error', 
+                'message' => $errorMessage,
+                'debug' => config('app.debug') ? $result : null
+            ], 422);
+            
+        } catch (\Exception $e) {
+            \Log::error('Paystack exception', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
+            
+            $booking->delete();
+            return response()->json([
+                'status' => 'error', 
+                'message' => 'Payment gateway error: ' . $e->getMessage(),
+            ], 422);
         }
-
-        $booking->delete();
-        return response()->json(['status' => 'error', 'message' => 'Could not initialize payment.'], 422);
     }
 
     public function confirm(Request $request)

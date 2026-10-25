@@ -314,18 +314,43 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
                 <thead><tr><th>Tutor</th><th>Child</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Status</th><th>Review</th><th></th></tr></thead>
                 <tbody>
                     @forelse($pastBookings as $b)
+                    @php
+                        $refundService = app(\App\Services\RefundService::class);
+                        $canRequestRefund = $refundService->isEligibleForFirst20MinRefund($b);
+                        $hasRefund = $b->refund()->exists();
+                    @endphp
                     <tr>
                         <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:32px;height:32px;background:#0A64BC;border-radius:9px;font-size:13px;">{{ substr($b->tutor->name,0,1) }}</div><div><div style="font-weight:600;font-size:13.5px;">{{ $b->tutor->name }}</div></div></div></td>
                         <td style="color:var(--muted);">{{ $b->student && $b->student->parent_id ? $b->student->name : '—' }}</td>
                         <td style="color:var(--muted);">{{ $b->subject?->name ?? 'General' }}</td>
                         <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y g:ia') }}</td>
                         <td>{{ $b->duration_minutes }}min</td>
-                        <td style="font-weight:600;">KSh {{ number_format($b->total_amount) }}</td>
+                        <td>
+                            <div style="font-weight:600;">KSh {{ number_format($b->total_amount) }}</div>
+                            @if($hasRefund)
+                                @php $refund = $b->refund; @endphp
+                                <div style="font-size:11px;color:{{ $refund->isCompleted() ? '#10B981' : '#EEBE15' }};margin-top:2px;">
+                                    💰 {{ $refund->isCompleted() ? 'Refunded' : ucfirst($refund->status) }}
+                                </div>
+                            @endif
+                        </td>
                         <td>@php $sc=['pending'=>'bdg-amber','confirmed'=>'bdg-blue','completed'=>'bdg-green','cancelled'=>'bdg-red','no_show'=>'bdg-gray'][$b->status]??'bdg-gray'; @endphp<span class="bdg {{ $sc }}">{{ ucfirst(str_replace('_',' ',$b->status)) }}</span></td>
                         <td>
                             @if($b->status === 'completed' && $b->review)<div style="display:flex;gap:1px;">@for($i=1;$i<=5;$i++)<span style="color:{{ $i<=$b->review->rating ? 'var(--gold)' : 'var(--hair)' }};font-size:13px;">★</span>@endfor</div>@elseif($b->status === 'completed')<a href="{{ route('bookings.show',$b->uuid) }}" style="font-size:12px;color:var(--trust-blue);font-weight:600;">Leave review</a>@else<span style="color:var(--muted);">—</span>@endif
                         </td>
-                        <td><a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a></td>
+                        <td>
+                            <div style="display:flex;gap:6px;align-items:center;">
+                                <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a>
+                                @if($canRequestRefund && !$hasRefund)
+                                <form method="POST" action="{{ route('bookings.refund.first20min', $b->id) }}" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm" style="background:rgba(236,72,153,.1);color:#EC4899;border:1px solid rgba(236,72,153,.2);font-weight:600;" onclick="return confirm('Request a 100% refund for this session? The amount will be added to your wallet immediately.')">
+                                        💰 Refund
+                                    </button>
+                                </form>
+                                @endif
+                            </div>
+                        </td>
                     </tr>
                     @empty
                     <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted);">No session history yet</td></tr>
@@ -394,13 +419,72 @@ $pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
 </div>
 {{-- ══════════════ PAYMENTS ══════════════ --}}
 <div x-show="tab==='payments'" x-cloak>
-    @php $payments = $user->payments()->with('booking.tutor')->where('status','success')->latest('paid_at')->paginate(20); @endphp
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;" class="pay-stats">
+    @php 
+        $payments = $user->payments()->with('booking.tutor')->where('status','success')->latest('paid_at')->paginate(20, ['*'], 'payments_page'); 
+        $refunds = $user->refunds()->with('booking.tutor')->latest()->paginate(10, ['*'], 'refunds_page');
+        $totalRefunded = $user->refunds()->where('status', 'completed')->sum('amount');
+    @endphp
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;" class="pay-stats">
         <div class="stat"><div class="stat-icon" style="background:rgba(10,100,188,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="stat-lbl">Total Spent</div><div class="stat-val" style="font-size:22px;">KSh {{ number_format($totalSpent) }}</div></div>
         <div class="stat"><div class="stat-icon" style="background:rgba(16,185,129,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="stat-lbl">Successful Payments</div><div class="stat-val">{{ $payments->total() }}</div></div>
+        <div class="stat"><div class="stat-icon" style="background:rgba(236,72,153,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EC4899" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></div><div class="stat-lbl">Total Refunded</div><div class="stat-val" style="font-size:22px;">KSh {{ number_format($totalRefunded) }}</div></div>
         <div class="stat"><div class="stat-icon" style="background:rgba(212,160,23,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-lbl">This Month</div><div class="stat-val" style="font-size:22px;">KSh {{ number_format($user->payments()->where('status','success')->whereMonth('paid_at',now()->month)->sum('amount')) }}</div></div>
     </div>
-    <style>.pay-stats{grid-template-columns:1fr!important;}@media(min-width:768px){.pay-stats{grid-template-columns:repeat(3,1fr)!important;}}</style>
+    <style>.pay-stats{grid-template-columns:1fr!important;}@media(min-width:640px){.pay-stats{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.pay-stats{grid-template-columns:repeat(4,1fr)!important;}}</style>
+    
+    {{-- Refunds Section --}}
+    @if($refunds->isNotEmpty())
+    <div class="card" style="margin-bottom:20px;">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;">
+            <div class="sec-title">💰 Refunds</div>
+            <span class="bdg bdg-trust-blue">{{ $refunds->total() }} total</span>
+        </div>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead><tr><th>Booking</th><th>Tutor</th><th>Reason</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody>
+                    @foreach($refunds as $refund)
+                    <tr>
+                        <td><a href="{{ route('bookings.show', $refund->booking->uuid) }}" style="color:var(--trust-blue);font-weight:600;text-decoration:none;">#{{ $refund->booking->id }}</a></td>
+                        <td>{{ $refund->booking->tutor->name }}</td>
+                        <td>
+                            @php
+                                $reasonLabels = [
+                                    'first_20min_guarantee' => '100% Guarantee',
+                                    'tutor_cancelled' => 'Tutor Cancelled',
+                                    'technical_issue' => 'Technical Issue',
+                                    'quality_issue' => 'Quality Issue',
+                                    'other' => 'Other'
+                                ];
+                            @endphp
+                            <span style="font-size:13px;">{{ $reasonLabels[$refund->reason] ?? ucfirst($refund->reason) }}</span>
+                            @if($refund->description)
+                            <div style="font-size:11px;color:var(--muted);margin-top:2px;">{{ Str::limit($refund->description, 50) }}</div>
+                            @endif
+                        </td>
+                        <td><span style="font-weight:700;color:var(--trust-blue);">KSh {{ number_format($refund->amount, 2) }}</span></td>
+                        <td>
+                            @php
+                                $statusColors = [
+                                    'pending' => 'bdg-amber',
+                                    'approved' => 'bdg-trust-blue',
+                                    'completed' => 'bdg-green',
+                                    'rejected' => 'bdg-red'
+                                ];
+                            @endphp
+                            <span class="bdg {{ $statusColors[$refund->status] ?? 'bdg-gray' }}">{{ ucfirst($refund->status) }}</span>
+                        </td>
+                        <td>{{ $refund->created_at->format('M j, Y') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div style="padding:16px 20px;border-top:1px solid var(--hair);">{{ $refunds->links() }}</div>
+    </div>
+    @endif
+    
+    {{-- Payment History --}}
     <div class="card">
         <div style="padding:16px 20px;border-bottom:1px solid var(--hair);"><div class="sec-title">Payment History</div></div>
         <div style="overflow-x:auto;">
