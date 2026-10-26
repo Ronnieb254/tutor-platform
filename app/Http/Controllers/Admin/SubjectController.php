@@ -10,9 +10,33 @@ use Illuminate\Support\Str;
 
 class SubjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = Subject::with('category')->orderBy('name')->paginate(50);
+        $query = Subject::with('category');
+        
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('slug', 'like', "%{$search}%")
+                  ->orWhereHas('category', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        // Filter by category
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+        
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('is_active', $request->status === 'active');
+        }
+        
+        $subjects = $query->orderBy('name')->paginate(25)->withQueryString();
         $categories = Category::where('is_active', true)->orderBy('sort_order')->get();
         
         return view('pages.admin.subjects', compact('subjects', 'categories'));

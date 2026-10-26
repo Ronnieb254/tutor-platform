@@ -173,12 +173,15 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
         </div>
         
         {{-- Actions --}}
-        <div style="padding:16px 20px;display:flex;gap:8px;">
+        <div style="padding:16px 20px;display:flex;gap:8px;flex-wrap:wrap;">
             @if($docCount === 0)
             <div style="flex:1;text-align:center;padding:8px;font-size:12px;color:var(--muted);">
                 Waiting for document upload...
             </div>
             @else
+            <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline" style="flex:1;font-size:13px;justify-content:center;text-decoration:none;">
+                <i class="fa-solid fa-book-open"></i> Subjects ({{ $profile->subjects->count() }})
+            </a>
             <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='block'" class="btn btn-outline" style="flex:1;font-size:13px;">
                 <i class="fa-solid fa-eye"></i> Review
             </button>
@@ -229,13 +232,25 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 </div>
                 
                 <div style="margin-bottom:20px;">
-                    <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600;">Subjects ({{ $profile->subjects->count() }})</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                        <div style="font-size:12px;color:var(--muted);font-weight:600;">Subjects ({{ $profile->subjects->count() }})</div>
+                        <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline btn-sm" style="text-decoration:none;">
+                            <i class="fa-solid fa-pencil fa-xs"></i> Manage
+                        </a>
+                    </div>
                     <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                        @forelse($profile->subjects as $subj)
+                        @forelse($profile->subjects->take(10) as $subj)
                         <span class="badge badge-blue">{{ $subj->name }}</span>
                         @empty
-                        <span style="font-size:13px;color:var(--muted);">No subjects selected</span>
+                        <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:12px;width:100%;">
+                            <p style="font-size:13px;color:#991B1B;margin:0;">
+                                <i class="fa-solid fa-triangle-exclamation fa-xs"></i> No subjects selected. Click "Manage" to add subjects.
+                            </p>
+                        </div>
                         @endforelse
+                        @if($profile->subjects->count() > 10)
+                        <span class="badge badge-gray">+{{ $profile->subjects->count() - 10 }} more</span>
+                        @endif
                     </div>
                 </div>
                 
@@ -293,14 +308,17 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 @endif
                 
                 {{-- Final Actions --}}
-                <div style="display:flex;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--hairline);">
+                <div style="display:flex;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--hairline);flex-wrap:wrap;">
+                    <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline" style="flex:1;justify-content:center;text-decoration:none;">
+                        <i class="fa-solid fa-book-open"></i> Manage Subjects ({{ $profile->subjects->count() }})
+                    </a>
                     <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;">
                         @csrf @method('PATCH')
                         <button type="submit" class="btn btn-danger" style="width:100%;" onclick="return confirm('Suspend this tutor?')">
                             <i class="fa-solid fa-ban"></i> Suspend
                         </button>
                     </form>
-                    <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:2;">
+                    <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
                         @csrf @method('PATCH')
                         <button type="submit" class="btn btn-primary" style="width:100%;" {{ $approvedDocs < 3 ? 'disabled' : '' }} onclick="return confirm('Approve and make this tutor live?')">
                             <i class="fa-solid fa-circle-check"></i> {{ $approvedDocs === 3 ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/3 docs)' }}

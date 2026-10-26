@@ -27,6 +27,57 @@
     </div>
     @endif
 
+    {{-- Search & Filters --}}
+    <div class="card" style="margin-bottom:20px;">
+        <form method="GET" action="{{ route('admin.subjects') }}" style="padding:20px;">
+            <div style="display:grid;grid-template-columns:1fr 200px 180px auto;gap:12px;align-items:end;">
+                <div>
+                    <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Search</label>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search subjects or categories..."
+                           style="width:100%;height:42px;padding:0 14px;border:1.5px solid var(--hair);border-radius:10px;font-size:14px;outline:none;"
+                           onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='var(--hair)'">
+                </div>
+                <div>
+                    <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Category</label>
+                    <select name="category_id" style="width:100%;height:42px;padding:0 12px;border:1.5px solid var(--hair);border-radius:10px;font-size:14px;outline:none;background:#fff;">
+                        <option value="">All Categories</option>
+                        @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Status</label>
+                    <select name="status" style="width:100%;height:42px;padding:0 12px;border:1.5px solid var(--hair);border-radius:10px;font-size:14px;outline:none;background:#fff;">
+                        <option value="">All Status</option>
+                        <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <button type="submit" class="btn btn-v" style="height:42px;">
+                        <i class="fa-solid fa-magnifying-glass fa-xs"></i> Search
+                    </button>
+                    @if(request()->hasAny(['search', 'category_id', 'status']))
+                    <a href="{{ route('admin.subjects') }}" class="btn btn-o" style="height:42px;">
+                        <i class="fa-solid fa-xmark fa-xs"></i> Clear
+                    </a>
+                    @endif
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {{-- Results Summary --}}
+    <div style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;">
+        <p style="font-size:14px;color:var(--muted);">
+            Showing <strong>{{ $subjects->firstItem() ?? 0 }}</strong> to <strong>{{ $subjects->lastItem() ?? 0 }}</strong> of <strong>{{ $subjects->total() }}</strong> subjects
+        </p>
+        <p style="font-size:13px;color:var(--muted);">
+            Page {{ $subjects->currentPage() }} of {{ $subjects->lastPage() }}
+        </p>
+    </div>
+
     <div class="card">
         <div style="overflow-x:auto;">
             <table>
@@ -77,8 +128,13 @@
             </table>
         </div>
         @if($subjects->hasPages())
-        <div style="padding:16px 20px;border-top:1px solid var(--hair);">
-            {{ $subjects->links() }}
+        <div style="padding:20px;border-top:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <div style="font-size:13px;color:var(--muted);">
+                Showing {{ $subjects->firstItem() }} to {{ $subjects->lastItem() }} of {{ $subjects->total() }} results
+            </div>
+            <div>
+                {{ $subjects->links() }}
+            </div>
         </div>
         @endif
     </div>

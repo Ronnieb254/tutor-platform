@@ -252,6 +252,36 @@ Route::middleware('auth')->group(function () {
         // Refund management
         Route::post('/refunds/{refund}/approve', [App\Http\Controllers\RefundController::class, 'approve'])->name('refunds.approve');
         Route::post('/refunds/{refund}/reject', [App\Http\Controllers\RefundController::class, 'reject'])->name('refunds.reject');
+        
+        // Tutor subjects management (admin can manage any tutor's subjects)
+        Route::get('/tutors/{tutorProfile}/subjects', [App\Http\Controllers\TutorSubjectController::class, 'index'])->name('tutors.subjects');
+        Route::post('/tutors/{tutorProfile}/subjects', [App\Http\Controllers\TutorSubjectController::class, 'store'])->name('tutors.subjects.store');
+        Route::post('/tutors/{tutorProfile}/subjects/attach', [App\Http\Controllers\TutorSubjectController::class, 'attach'])->name('tutors.subjects.attach');
+        Route::post('/tutors/{tutorProfile}/subjects/detach', [App\Http\Controllers\TutorSubjectController::class, 'detach'])->name('tutors.subjects.detach');
+    });
+    
+    // Tutor can manage their own subjects
+    Route::middleware('role:tutor')->group(function () {
+        Route::get('/my-subjects', function() {
+            $tutorProfile = auth()->user()->tutorProfile;
+            if (!$tutorProfile) abort(404, 'Tutor profile not found');
+            return app(App\Http\Controllers\TutorSubjectController::class)->index($tutorProfile);
+        })->name('tutor.subjects');
+        Route::post('/my-subjects', function(\Illuminate\Http\Request $request) {
+            $tutorProfile = auth()->user()->tutorProfile;
+            if (!$tutorProfile) abort(404, 'Tutor profile not found');
+            return app(App\Http\Controllers\TutorSubjectController::class)->store($request, $tutorProfile);
+        })->name('tutor.subjects.store');
+        Route::post('/my-subjects/attach', function(\Illuminate\Http\Request $request) {
+            $tutorProfile = auth()->user()->tutorProfile;
+            if (!$tutorProfile) abort(404, 'Tutor profile not found');
+            return app(App\Http\Controllers\TutorSubjectController::class)->attach($request, $tutorProfile);
+        })->name('tutor.subjects.attach');
+        Route::post('/my-subjects/detach', function(\Illuminate\Http\Request $request) {
+            $tutorProfile = auth()->user()->tutorProfile;
+            if (!$tutorProfile) abort(404, 'Tutor profile not found');
+            return app(App\Http\Controllers\TutorSubjectController::class)->detach($request, $tutorProfile);
+        })->name('tutor.subjects.detach');
     });
 });
 
