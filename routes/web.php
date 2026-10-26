@@ -221,9 +221,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/tutors',     fn() => view('pages.admin.tutors'))->name('tutors');
         Route::get('/users',      fn() => view('pages.admin.users'))->name('users');
         Route::get('/payouts',    fn() => view('pages.admin.payouts'))->name('payouts');
-        Route::get('/categories', fn() => view('pages.admin.categories'))->name('categories');
         Route::get('/settings',   fn() => view('pages.admin.settings'))->name('settings');
         Route::get('/blog',       fn() => view('pages.admin.blog'))->name('blog');
+
+        // Categories management
+        Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories');
+        Route::post('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('categories.store');
+        Route::patch('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
+        Route::post('/categories/{category}/toggle', [App\Http\Controllers\Admin\CategoryController::class, 'toggle'])->name('categories.toggle');
+
+        // Subjects management
+        Route::get('/subjects', [App\Http\Controllers\Admin\SubjectController::class, 'index'])->name('subjects');
+        Route::post('/subjects', [App\Http\Controllers\Admin\SubjectController::class, 'store'])->name('subjects.store');
+        Route::patch('/subjects/{subject}', [App\Http\Controllers\Admin\SubjectController::class, 'update'])->name('subjects.update');
+        Route::delete('/subjects/{subject}', [App\Http\Controllers\Admin\SubjectController::class, 'destroy'])->name('subjects.destroy');
+        Route::post('/subjects/{subject}/toggle', [App\Http\Controllers\Admin\SubjectController::class, 'toggle'])->name('subjects.toggle');
 
         // Tutor approve / suspend
         Route::patch('/tutors/{profile}/approve',  [App\Http\Controllers\Admin\TutorApprovalController::class, 'approve'])->name('tutors.approve');
