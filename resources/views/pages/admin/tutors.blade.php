@@ -1,45 +1,17 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-@include('partials.head')
-<title>Tutor Approvals – Admin | Mwalimu</title>
+﻿@extends('layouts.admin')
+@section('title', 'Tutor Approvals')
+
+@section('content')
+@php
+use App\Models\TutorProfile;
+use App\Models\User;
+$pending   = TutorProfile::where('is_approved',false)->with(['user','subjects','documents'])->latest()->paginate(20);
+$approved  = TutorProfile::where('is_approved',true)->count();
+$totalTutors = TutorProfile::count();
+$speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_approved',false)->count();
+@endphp
+
 <style>
-html,body{height:100%;background:#F2F5F2;}
-.layout{display:flex;height:100vh;overflow:hidden;}
-/* Sidebar */
-.sidebar{width:240px;background:#111C16;display:flex;flex-direction:column;flex-shrink:0;}
-.sb-logo{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px;}
-.sb-logo-text{font-family:'Fraunces',serif;font-size:18px;font-weight:800;color:#fff;}
-.sb-logo-text em{font-style:normal;color:#60a5fa;}
-.sb-nav{flex:1;padding:8px;overflow-y:auto;}
-.sb-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;font-size:13px;font-weight:500;color:rgba(255,255,255,.55);transition:all .15s;margin-bottom:1px;cursor:pointer;text-decoration:none;}
-.sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
-.sb-item.active{background:#0A64BC;color:#fff;}
-.sb-badge{margin-left:auto;background:#E8522A;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;}
-.sb-footer{padding:12px;border-top:1px solid rgba(255,255,255,.06);}
-.sb-user{display:flex;align-items:center;gap:8px;}
-.sb-avatar{width:32px;height:32px;border-radius:9px;object-fit:cover;flex-shrink:0;}
-/* Main */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.topbar{height:58px;background:#fff;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
-.content{flex:1;overflow-y:auto;padding:24px;}
-/* Cards / Tables */
-.card{background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);}
-.card-p{padding:20px;}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;}
-.btn-v{background:#0A64BC;color:#fff;}.btn-v:hover{background:#120A8F;}
-.btn-o{background:#fff;color:#15281F;border:1.5px solid rgba(21,40,31,.15);}.btn-o:hover{border-color:#0A64BC;color:#0A64BC;}
-.btn-success{background:#DCFCE7;color:#166534;}.btn-success:hover{background:#BBF7D0;}
-.btn-danger{background:#FEE2E2;color:#991B1B;}.btn-danger:hover{background:#FECACA;}
-.btn-amber{background:#FEF9C3;color:#854D0E;}.btn-amber:hover{background:#FDE68A;}
-.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
-.bdg{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;}
-.bdg-amber{background:#FEF9C3;color:#854D0E;}
-.bdg-green{background:#DCFCE7;color:#166534;}
-.bdg-red{background:#FEE2E2;color:#991B1B;}
-.bdg-blue{background:#DBEAFE;color:#1E40AF;}
-.bdg-gray{background:#F3F4F6;color:#6B7280;}
-.bdg-trust-blue{background:rgba(10,100,188,.1);color:#0A64BC;}
 /* Doc viewer modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
 .modal-box{background:#fff;border-radius:20px;width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
@@ -53,95 +25,40 @@ html,body{height:100%;background:#F2F5F2;}
 .doc-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:#F9FAF9;border:1px solid rgba(21,40,31,.06);margin-bottom:8px;}
 .doc-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;border:1px solid rgba(21,40,31,.08);flex-shrink:0;cursor:pointer;}
 .doc-thumb-placeholder{width:48px;height:48px;border-radius:10px;background:rgba(21,40,31,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;cursor:pointer;}
-/* Flash */
-.flash{padding:12px 16px;border-radius:12px;font-size:13.5px;font-weight:500;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.flash-ok{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;}
-.flash-err{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;}
 </style>
-</head>
-<body>
-@php
-use App\Models\TutorProfile;
-use App\Models\User;
-$pending   = TutorProfile::where('is_approved',false)->with(['user','subjects','documents'])->latest()->paginate(20);
-$approved  = TutorProfile::where('is_approved',true)->count();
-$totalTutors = TutorProfile::count();
-$speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_approved',false)->count();
-@endphp
 
-<div class="layout">
+<div class="page-header">
+    <div>
+        <h1>Tutor Approvals</h1>
+        <p>Review and approve tutor applications</p>
+    </div>
+</div>
 
-    {{-- Sidebar --}}
-    <aside class="sidebar">
-        <div class="sb-logo">
-            <svg width="28" height="28" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-            <span class="sb-logo-text"><em>Mw</em>alimu</span>
-        </div>
-        <nav class="sb-nav">
-            @foreach([
-                ['admin.dashboard','fa-gauge-high','Dashboard'],
-                ['admin.tutors','fa-user-check','Tutor Approvals'],
-                ['admin.users','fa-users','All Users'],
-                ['admin.payouts','fa-credit-card','Payouts'],
-                ['admin.categories','fa-layer-group','Categories'],
-                ['admin.blog','fa-newspaper','Blog'],
-                ['admin.settings','fa-gear','Settings'],
-            ] as [$route,$icon,$label])
-            <a href="{{ route($route) }}" class="sb-item {{ request()->routeIs($route)?'active':'' }}">
-                <i class="fa-solid fa-{{ $icon }}" style="font-size:13px;width:14px;text-align:center;"></i>
-                {{ $label }}
-                @if($route==='admin.tutors' && $pending->total() > 0)<span class="sb-badge">{{ $pending->total() }}</span>@endif
-            </a>
-            @endforeach
-            <a href="{{ route('home') }}" target="_blank" class="sb-item" style="margin-top:8px;">
-                <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:13px;width:14px;text-align:center;"></i> View Site
-            </a>
-        </nav>
-        <div class="sb-footer">
-            <div class="sb-user">
-                <img src="{{ auth()->user()->avatar_url }}" class="sb-avatar" alt="">
-                <div style="flex:1;min-width:0;">
-                    <div style="font-size:12px;font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ auth()->user()->name }}</div>
-                    <div style="font-size:10px;color:rgba(255,255,255,.35);">Administrator</div>
-                </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" style="width:26px;height:26px;border-radius:8px;border:none;background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Sign out">
-                        <i class="fa-solid fa-right-from-bracket" style="font-size:11px;"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </aside>
+@if(session('success'))
+<div class="alert alert-success">{{ session('success') }}</div>
+@endif
+@if(session('error'))
+<div class="alert alert-danger">{{ session('error') }}</div>
+@endif
 
-    {{-- Main --}}
-    <div class="main">
-        {{-- Topbar --}}
-        <header class="topbar">
-            <div style="display:flex;align-items:center;gap:12px;">
-                <h1 style="font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:#15281F;">Tutor Approvals</h1>
-                @if($speedy > 0)
-                <span class="bdg" style="background:rgba(212,160,23,.15);color:#EEBE15;border:1px solid rgba(212,160,23,.3);">
-                    <i class="fa-solid fa-bolt fa-xs"></i> {{ $speedy }} priority
-                </span>
-                @endif
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(21,40,31,.55);">
-                <i class="fa-solid fa-circle" style="color:#10B981;font-size:8px;"></i>
-                {{ $approved }} approved · {{ $pending->total() }} pending · {{ $totalTutors }} total
-            </div>
-        </header>
-
-        {{-- Content --}}
-        <div class="content">
-            @if(session('success'))
-            <div class="flash flash-ok"><i class="fa-solid fa-circle-check"></i>{{ session('success') }}</div>
-            @endif
-            @if(session('error'))
-            <div class="flash flash-err"><i class="fa-solid fa-circle-exclamation"></i>{{ session('error') }}</div>
-            @endif
-
-            {{-- Summary cards --}}
+{{-- Stats --}}
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+    <div class="stat-card">
+        <div class="stat-value" style="color:#E8522A;">{{ $pending->total() }}</div>
+        <div class="stat-label">Pending Review</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" style="color:#EEBE15;">{{ $speedy }}</div>
+        <div class="stat-label">Speedy Queue</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" style="color:#10B981;">{{ $approved }}</div>
+        <div class="stat-label">Approved</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" style="color:#0A64BC;">{{ $totalTutors }}</div>
+        <div class="stat-label">Total Tutors</div>
+{{-- Pending applications list --}}
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:22px;" class="sum-g">
                 @foreach([
                     ['Pending Review',$pending->total(),'#EEBE15','fa-clock','rgba(212,160,23,.1)'],
@@ -160,15 +77,14 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 </div>
                 @endforeach
             </div>
-            <style>.sum-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:1200px){.sum-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
-
-            @if($pending->isEmpty())
-            <div class="card card-p" style="text-align:center;padding:56px;">
-                <i class="fa-solid fa-party-horn" style="font-size:40px;color:rgba(21,40,31,.15);margin-bottom:12px;display:block;"></i>
-                <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;">All caught up!</h3>
-                <p style="color:rgba(21,40,31,.5);font-size:14px;">No pending tutor applications right now.</p>
-            </div>
-            @else
+{{-- Pending applications list --}}
+@if($pending->isEmpty())
+<div class="card card-p" style="text-align:center;padding:56px;">
+    <i class="fa-solid fa-party-horn" style="font-size:40px;color:rgba(21,40,31,.15);margin-bottom:12px;display:block;"></i>
+    <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;">All caught up!</h3>
+    <p style="color:rgba(21,40,31,.5);font-size:14px;">No pending tutor applications right now.</p>
+</div>
+@else
             <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
                 <p style="font-size:14px;color:rgba(21,40,31,.55);">{{ $pending->total() }} application{{ $pending->total()!==1?'s':'' }} awaiting review</p>
                 <p style="font-size:12px;color:rgba(21,40,31,.4);"><i class="fa-solid fa-bolt" style="color:#EEBE15;"></i> Priority applications are marked with a gold badge</p>
@@ -452,5 +368,4 @@ function rejectDocModal(docId, docName) {
 }
 </script>
 @livewireScripts
-</body>
-</html>
+@endsection
