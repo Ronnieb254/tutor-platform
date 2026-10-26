@@ -85,19 +85,261 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
     <p style="color:rgba(21,40,31,.5);font-size:14px;">No pending tutor applications right now.</p>
 </div>
 @else
+<div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <p style="font-size:14px;color:rgba(21,40,31,.55);font-weight:600;">{{ $pending->total() }} application{{ $pending->total()!==1?'s':'' }} awaiting review</p>
+    <p style="font-size:12px;color:rgba(21,40,31,.4);display:flex;align-items:center;gap:6px;">
+        <i class="fa-solid fa-bolt" style="color:#EEBE15;"></i> Priority applications are marked with a gold badge
+    </p>
+</div>
+
+{{-- Card Grid --}}
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px;">
+    @foreach($pending as $profile)
+    @php
+    $docs = $profile->documents;
+    $docCount = $docs->count();
+    $approvedDocs = $docs->where('status', 'approved')->count();
+    $pendingDocs = $docs->where('status', 'pending')->count();
+    $rejectedDocs = $docs->where('status', 'rejected')->count();
+    $isSpeedy = $profile->speedy_verification_paid;
+    @endphp
+    
+    <div class="card" style="overflow:hidden;transition:all .2s;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 16px rgba(0,0,0,.08)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+        {{-- Speedy Badge --}}
+        @if($isSpeedy)
+        <div style="position:absolute;top:12px;right:12px;z-index:10;">
+            <span class="badge" style="background:linear-gradient(135deg,#FEF9C3,#FDE68A);color:#854D0E;border:1px solid #FBBF24;font-weight:700;font-size:11px;padding:4px 10px;box-shadow:0 2px 4px rgba(0,0,0,.1);">
+                <i class="fa-solid fa-bolt"></i> SPEEDY
+            </span>
+        </div>
+        @endif
+        
+        {{-- Card Header --}}
+        <div style="padding:20px 24px;border-bottom:1px solid var(--hairline);">
+            <div style="display:flex;align-items:flex-start;gap:14px;">
+                <div class="avatar" style="width:52px;height:52px;font-size:20px;flex-shrink:0;background:#{{ substr(md5($profile->user->email),0,6) }};">
+                    {{ substr($profile->user->name,0,1) }}
+                </div>
+                <div style="flex:1;min-width:0;">
+                    <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:4px;">
+                        {{ $profile->user->name }}
+                    </h3>
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">
+                        <i class="fa-solid fa-envelope fa-xs"></i> {{ $profile->user->email }}
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                        <span class="badge badge-amber">
+                            <i class="fa-solid fa-clock"></i> Pending
+                        </span>
+                        <span style="font-size:11px;color:var(--muted);">
+                            Applied {{ $profile->created_at->diffForHumans() }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {{-- Quick Stats --}}
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--hairline);">
+            <div style="padding:14px;text-align:center;border-right:1px solid var(--hairline);">
+                <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">
+                    {{ $profile->hourly_rate ? 'KSh '.number_format($profile->hourly_rate) : '—' }}
+                </div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px;">Hourly Rate</div>
+            </div>
+            <div style="padding:14px;text-align:center;border-right:1px solid var(--hairline);">
+                <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#10B981;">
+                    {{ $profile->years_experience ?? 0 }}yr
+                </div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px;">Experience</div>
+            </div>
+            <div style="padding:14px;text-align:center;">
+                <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#EEBE15;">
+                    {{ $profile->subjects->count() }}
+                </div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px;">Subjects</div>
+            </div>
+        </div>
+        
+        {{-- Documents Status --}}
+        <div style="padding:16px 20px;border-bottom:1px solid var(--hairline);background:{{ $approvedDocs === 3 ? 'rgba(16,185,129,.05)' : ($rejectedDocs > 0 ? 'rgba(239,68,68,.05)' : 'rgba(251,191,36,.05)') }};">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <span style="font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;">Documents</span>
+                <span class="badge {{ $approvedDocs === 3 ? 'badge-green' : ($pendingDocs > 0 ? 'badge-amber' : 'badge-gray') }}" style="font-size:10px;">
+                    {{ $approvedDocs }}/{{ max(3, $docCount) }} Approved
+                </span>
+            </div>
+            
+            @if($docCount === 0)
+            <div style="font-size:12px;color:var(--muted);text-align:center;padding:8px;">
+                <i class="fa-solid fa-inbox"></i> No documents uploaded yet
+            </div>
+            @else
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                @foreach($docs as $doc)
+                @php
+                    $docLabels = ['id_document'=>'ID','certificate'=>'Certificate','proof_of_qualification'=>'Qualification'];
+                    $statusColors = ['pending'=>'badge-amber','approved'=>'badge-green','rejected'=>'badge-red'];
+                @endphp
+                <span class="badge {{ $statusColors[$doc->status] ?? 'badge-gray' }}" style="font-size:10px;">
+                    {{ $docLabels[$doc->document_type] ?? ucfirst($doc->document_type) }}
+                </span>
+                @endforeach
+            </div>
+            @endif
+        </div>
+        
+        {{-- Actions --}}
+        <div style="padding:16px 20px;display:flex;gap:8px;">
+            @if($docCount === 0)
+            <div style="flex:1;text-align:center;padding:8px;font-size:12px;color:var(--muted);">
+                Waiting for document upload...
+            </div>
+            @else
+            <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='block'" class="btn btn-outline" style="flex:1;font-size:13px;">
+                <i class="fa-solid fa-eye"></i> Review
+            </button>
+            @if($approvedDocs === 3)
+            <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
+                @csrf @method('PATCH')
+                <button type="submit" class="btn btn-primary" style="width:100%;font-size:13px;" onclick="return confirm('Approve {{ $profile->user->name }} and make them live?')">
+                    <i class="fa-solid fa-circle-check"></i> Approve
+                </button>
+            </form>
+            @else
+            <button disabled class="btn" style="flex:1;background:rgba(0,0,0,.05);color:var(--muted);cursor:not-allowed;font-size:13px;">
+                <i class="fa-solid fa-lock"></i> Approve
+            </button>
+            @endif
+            @endif
+        </div>
+    </div>
+    
+    {{-- Full Review Modal (Keep existing modal) --}}
+    <div id="tutor-{{ $profile->id }}" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;" onclick="if(event.target===this) this.style.display='none'">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width:900px;">
+            <div class="modal-head">
+                <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;">Review: {{ $profile->user->name }}</h3>
+                <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='none'" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{-- Keep existing detailed review content here --}}
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px;">
+                    <div>
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Email</div>
+                        <div style="font-size:14px;">{{ $profile->user->email }}</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Phone</div>
+                        <div style="font-size:14px;">{{ $profile->phone ?? '—' }}</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Hourly Rate</div>
+                        <div style="font-size:14px;">{{ $profile->hourly_rate ? 'KSh '.number_format($profile->hourly_rate) : '—' }}</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Experience</div>
+                        <div style="font-size:14px;">{{ $profile->years_experience ?? 0 }} years</div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600;">Subjects ({{ $profile->subjects->count() }})</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                        @forelse($profile->subjects as $subj)
+                        <span class="badge badge-blue">{{ $subj->name }}</span>
+                        @empty
+                        <span style="font-size:13px;color:var(--muted);">No subjects selected</span>
+                        @endforelse
+                    </div>
+                </div>
+                
+                <div style="margin-bottom:20px;">
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600;">Bio</div>
+                    <div style="font-size:14px;line-height:1.6;">{{ $profile->bio ?? 'No bio provided' }}</div>
+                </div>
+                
+                {{-- Documents for approval --}}
+                @if($docs->isNotEmpty())
+                <div style="border-top:1px solid var(--hairline);padding-top:20px;">
+                    <h4 style="font-size:14px;font-weight:700;margin-bottom:12px;">Uploaded Documents</h4>
+                    @foreach($docs as $doc)
+                    <div class="doc-row">
+                        @php
+                            $isPdf = str_ends_with(strtolower($doc->file_path), '.pdf');
+                            $docLabel = ['id_document'=>'ID Document','certificate'=>'Certificate','proof_of_qualification'=>'Proof of Qualification'][$doc->document_type] ?? ucfirst($doc->document_type);
+                        @endphp
+                        
+                        @if($isPdf)
+                        <div class="doc-thumb-placeholder" onclick="window.open('{{ route('tutor.documents.view', $doc->id) }}', '_blank')">
+                            <i class="fa-solid fa-file-pdf" style="color:#dc2626;"></i>
+                        </div>
+                        @else
+                        <img src="{{ route('tutor.documents.view', $doc->id) }}" class="doc-thumb" onclick="window.open('{{ route('tutor.documents.view', $doc->id) }}', '_blank')" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="doc-thumb-placeholder" style="display:none;" onclick="window.open('{{ route('tutor.documents.view', $doc->id) }}', '_blank')">
+                            <i class="fa-solid fa-file"></i>
+                        </div>
+                        @endif
+                        
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-weight:600;font-size:13px;margin-bottom:2px;">{{ $docLabel }}</div>
+                            <div style="font-size:11px;color:var(--muted);">{{ $doc->original_name }}</div>
+                        </div>
+                        
+                        @php $sc = ['pending'=>'badge-amber','approved'=>'badge-green','rejected'=>'badge-red'][$doc->status]??'badge-gray'; @endphp
+                        <span class="badge {{ $sc }}">{{ ucfirst($doc->status) }}</span>
+                        
+                        @if($doc->status === 'pending')
+                        <div style="display:flex;gap:6px;">
+                            <form method="POST" action="{{ route('admin.documents.approve', $doc->id) }}" style="display:inline;">
+                                @csrf @method('PATCH')
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </form>
+                            <button type="button" onclick="rejectDoc({{ $doc->id }}, '{{ addslashes($docLabel) }}')" class="btn btn-danger btn-sm">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                
+                {{-- Final Actions --}}
+                <div style="display:flex;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--hairline);">
+                    <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;">
+                        @csrf @method('PATCH')
+                        <button type="submit" class="btn btn-danger" style="width:100%;" onclick="return confirm('Suspend this tutor?')">
+                            <i class="fa-solid fa-ban"></i> Suspend
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:2;">
+                        @csrf @method('PATCH')
+                        <button type="submit" class="btn btn-primary" style="width:100%;" {{ $approvedDocs < 3 ? 'disabled' : '' }} onclick="return confirm('Approve and make this tutor live?')">
+                            <i class="fa-solid fa-circle-check"></i> {{ $approvedDocs === 3 ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/3 docs)' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
             <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
                 <p style="font-size:14px;color:rgba(21,40,31,.55);">{{ $pending->total() }} application{{ $pending->total()!==1?'s':'' }} awaiting review</p>
                 <p style="font-size:12px;color:rgba(21,40,31,.4);"><i class="fa-solid fa-bolt" style="color:#EEBE15;"></i> Priority applications are marked with a gold badge</p>
             </div>
 
-            @foreach($pending as $profile)
-            @php
-            $docs = $profile->documents;
-            $docCount = $docs->count();
-            $allPending = $docs->every(fn($d) => $d->status === 'pending');
-            $hasRejected = $docs->contains(fn($d) => $d->status === 'rejected');
-            @endphp
-            <div class="review-panel" x-data="{ open: false }">
+@endif
+
+{{-- Pagination --}}
+@if($pending->hasPages())
+<div style="margin-top:20px;">{{ $pending->links() }}</div>
+@endif
 
                 {{-- Header row --}}
                 <div class="review-head">
