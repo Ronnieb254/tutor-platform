@@ -29,7 +29,7 @@ use Carbon\Carbon;
 $isStudent = auth()->id() === $booking->student_id;
 $isTutor   = auth()->id() === $booking->tutor_id;
 $myCode    = $isTutor ? $booking->session_code_tutor : $booking->session_code_student;
-$otherName = $isTutor ? $booking->student->name : $booking->tutor->name;
+$otherName = $isTutor ? ($booking->student?->name ?? 'Student') : ($booking->tutor?->name ?? 'Tutor');
 $sessionStart   = $booking->scheduled_at;
 $sessionEnd     = $sessionStart->copy()->addMinutes($booking->duration_minutes);
 $minutesUntil   = now()->diffInMinutes($sessionStart, false);
@@ -277,7 +277,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
             @if(in_array($booking->status, ['confirmed','completed']))
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);overflow:hidden;" x-data="chatRoom()">
                 <div style="padding:18px 22px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;gap:12px;">
-                    <div style="width:38px;height:38px;border-radius:11px;background:#{{ substr(md5(($isStudent ? $booking->tutor : $booking->student)->email),0,6) }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;">{{ strtoupper(substr($otherName,0,1)) }}</div>
+                    <div style="width:38px;height:38px;border-radius:11px;background:#{{ substr(md5(($isStudent ? ($booking->tutor?->email ?? 'tutor') : ($booking->student?->email ?? 'student'))),0,6) }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;">{{ strtoupper(substr($otherName,0,1)) }}</div>
                     <div>
                         <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:#15281F;">{{ $otherName }}</div>
                         <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $isTutor ? 'Student' : 'Tutor' }} · Session messages</div>
@@ -331,7 +331,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                             @endfor
                             <span style="font-size:14px;color:rgba(21,40,31,.5);align-self:center;margin-left:8px;" x-text="rating+'/5'"></span>
                         </div>
-                        <textarea x-model="comment" rows="3" placeholder="Share your experience with {{ $booking->tutor->name }}…"
+                        <textarea x-model="comment" rows="3" placeholder="Share your experience with {{ $otherName }}…"
                                   style="width:100%;padding:12px 14px;border-radius:13px;border:1.5px solid rgba(21,40,31,.15);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.65;margin-bottom:14px;"
                                   onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.15)'"></textarea>
                         <button type="submit" style="padding:12px 28px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">

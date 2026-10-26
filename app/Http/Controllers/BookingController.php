@@ -28,12 +28,17 @@ class BookingController extends Controller
 
         $booking->load([
             'student',
-            'tutor.tutorProfile.subjects',
+            'tutor.tutorProfile',
             'subject',
             'messages.sender',
             'review',
             'payment',
         ]);
+
+        // Load subjects only if tutorProfile exists
+        if ($booking->tutor && $booking->tutor->tutorProfile) {
+            $booking->tutor->tutorProfile->load('subjects');
+        }
 
         $roomName = $booking->meeting_room;
         $joinUrl  = $booking->getBBBJoinUrl($user);
