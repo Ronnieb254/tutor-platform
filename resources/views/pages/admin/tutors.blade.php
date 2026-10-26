@@ -314,7 +314,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
 </div>
             <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
                 <p style="font-size:14px;color:rgba(21,40,31,.55);">{{ $pending->total() }} application{{ $pending->total()!==1?'s':'' }} awaiting review</p>
-                <p style="font-size:12px;color:rgba(21,40,31,.4);"><i class="fa-solid fa-bolt" style="color:#EEBE15;"></i> Priority applications are marked with a gold badge</p>
+                <!-- <p style="font-size:12px;color:rgba(21,40,31,.4);"><i class="fa-solid fa-bolt" style="color:#EEBE15;"></i> Priority applications are marked with a gold badge</p> -->
             </div>
 
 @endif
