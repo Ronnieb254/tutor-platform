@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class BookingService
 {
-    public function __construct(protected BigBlueButtonService $bbb) {}
+    public function __construct(protected JitsiService $jitsi) {}
 
     public function calculateFees(float $amount): array
     {
@@ -77,49 +77,39 @@ class BookingService
             $tutorCode   = 'TUT-' . strtoupper(Str::random(6));
             $studentCode = 'STU-' . strtoupper(Str::random(6));
 
-            // Generate meeting room name and passwords
-            $meetingID = 'mwalimu-' . $booking->uuid;
-            $attendeePW = $this->bbb->generatePassword(8);
-            $moderatorPW = $this->bbb->generatePassword(8);
+            // Generate Jitsi meeting room name (no passwords needed for Jitsi)
+            $meetingID = 'Mwalimu-session-' . $booking->uuid;
 
-            // Create BigBlueButton meeting
-            $meetingName = "Session with " . $booking->tutor->name;
-            $this->bbb->createMeeting(
+            // Note: Jitsi meetings don't need to be "created" - they exist when someone joins
+            // The room is secured by the unique UUID in the room name
+            
+            // Generate join URLs
+            $tutorJoinUrl = $this->jitsi->getJoinUrl(
                 $meetingID,
-                $meetingName,
-                $attendeePW,
-                $moderatorPW,
+                $booking->tutor->name,
+                true, // isModerator
                 [
-                    'welcome' => 'Welcome to your Mwalimu tutoring session!',
-                    'logoutURL' => route('dashboard'),
-                    'record' => 'true',
-                    'autoStartRecording' => 'false',
+                    'email' => $booking->tutor->email,
+                    'recording' => true,
                 ]
             );
 
-            // Generate join URLs (students use attendee password, tutors use moderator password)
-            $tutorJoinUrl = $this->bbb->getJoinUrl(
-                $meetingID,
-                $booking->tutor->name,
-                $moderatorPW,
-                true,
-                'tutor-' . $booking->tutor_id
-            );
-
-            $studentJoinUrl = $this->bbb->getJoinUrl(
+            $studentJoinUrl = $this->jitsi->getJoinUrl(
                 $meetingID,
                 $booking->student->name,
-                $attendeePW,
-                false,
-                'student-' . $booking->student_id
+                false, // not moderator
+                [
+                    'email' => $booking->student->email,
+                    'restrictGuests' => true,
+                ]
             );
 
             $booking->update([
                 'status'               => 'confirmed',
                 'meeting_room'         => $meetingID,
-                'meeting_url'          => $studentJoinUrl, // Store student URL (or we can dynamically generate)
-                'meeting_password'     => $attendeePW, // Store for regenerating join URLs
-                'moderator_password'   => $moderatorPW, // For tutor
+                'meeting_url'          => $studentJoinUrl,
+                'meeting_password'     => null, // Jitsi doesn't use passwords
+                'moderator_password'   => null, // Jitsi uses moderator flag instead
                 'session_code_tutor'   => $tutorCode,
                 'session_code_student' => $studentCode,
             ]);

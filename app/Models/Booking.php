@@ -69,40 +69,57 @@ class Booking extends Model
     }
 
     /**
-     * Get BigBlueButton join URL for a user
+     * Get Jitsi join URL for a user
      * 
      * @param User $user The user joining the meeting
-     * @return string The BBB join URL
+     * @return string The Jitsi join URL
      */
-    public function getBBBJoinUrl(User $user): string
+    public function getJitsiJoinUrl(User $user): string
     {
-        $bbb = app(\App\Services\BigBlueButtonService::class);
+        $jitsi = app(\App\Services\JitsiService::class);
         
         $isModerator = $user->id === $this->tutor_id;
-        $password = $isModerator ? $this->moderator_password : $this->meeting_password;
         
-        return $bbb->getJoinUrl(
+        $options = [
+            'email' => $user->email,
+            'recording' => $isModerator, // Only moderators can record
+            'restrictGuests' => true,
+        ];
+        
+        return $jitsi->getJoinUrl(
             $this->meeting_room,
             $user->name,
-            $password,
             $isModerator,
-            ($isModerator ? 'tutor-' : 'student-') . $user->id
+            $options
         );
     }
 
     /**
-     * Check if the BigBlueButton meeting is currently running
+     * Alias for backward compatibility
+     */
+    public function getBBBJoinUrl(User $user): string
+    {
+        return $this->getJitsiJoinUrl($user);
+    }
+
+    /**
+     * Check if the Jitsi meeting is accessible
+     * Note: Jitsi doesn't have a "running" state like BBB, 
+     * meetings are always accessible once created
      * 
      * @return bool
      */
+    public function isJitsiMeetingRunning(): bool
+    {
+        return !empty($this->meeting_room);
+    }
+
+    /**
+     * Alias for backward compatibility
+     */
     public function isBBBMeetingRunning(): bool
     {
-        if (!$this->meeting_room) {
-            return false;
-        }
-
-        $bbb = app(\App\Services\BigBlueButtonService::class);
-        return $bbb->isMeetingRunning($this->meeting_room);
+        return $this->isJitsiMeetingRunning();
     }
 
     public function scopeHistory($q)

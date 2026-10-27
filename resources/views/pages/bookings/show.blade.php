@@ -122,7 +122,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                             <i class="fa-solid fa-video" style="color:#0A64BC;margin-right:8px;font-size:16px;"></i>Live Session Room
                         </h2>
                         <p style="font-size:13px;color:rgba(21,40,31,.5);margin-top:2px;">
-                            Powered by BigBlueButton &middot; Private &middot; Encrypted &middot; No download needed
+                            Powered by Jitsi Meet &middot; Private &middot; Encrypted &middot; No download needed
                         </p>
                     </div>
                     @if($canJoin)
