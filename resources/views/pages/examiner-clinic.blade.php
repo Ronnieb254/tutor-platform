@@ -33,7 +33,7 @@
                     </a>
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:20px;">
-                    @foreach([['fa-sterling-sign','KSh 500','Per 60-min session'],['fa-users','Max 30','Learners per session'],['fa-calendar-week','Weekly','Every subject'],['fa-shield-check','Secure','All sessions']] as [$ic,$val,$lbl])
+                    @foreach([['fa-sterling-sign','KSh 500','Per 60-min session'],['fa-users','Max 30','Learners per session'],['fa-calendar-week','Daily','Every subject'],['fa-shield-check','Secure','All sessions']] as [$ic,$val,$lbl])
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div style="width:34px;height:34px;background:rgba(212,160,23,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                             <i class="fa-solid {{ $ic }}" style="color:#EEBE15;font-size:13px;"></i>

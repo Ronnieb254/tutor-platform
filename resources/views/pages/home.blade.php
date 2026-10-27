@@ -208,7 +208,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--trust-blue)'" onmouseout="this.style.borderColor='var(--hair)'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                     <div style="font-size:32px;">{{ $icon }}</div>
-                    <span style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--trust-blue);">{{ $price }}</span>
+                    <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:var(--trust-blue);">{{ $price }}</span>
                 </div>
                 <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px;">{{ $mins }} min</div>
                 <div style="font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px;">{{ $title }}</div>
@@ -300,10 +300,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                         <div style="font-size:11px;color:rgba(255,255,255,.4);">{{ $clinic->spotsLeft() }} spots left</div>
                     </div>
                 </div>
-                @endforeach
-                @else
-                @foreach([['Advanced Mathematics – Paper 2 Strategy','Dr. Amara K.','Mathematics'],['KCSE English – Comprehension & Writing','Ms. Sarah N.','English'],['Physics – Paper 1 Examiner Traps','Prof. James M.','Physics']] as [$t,$name,$subj])
-                <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;">
+                <!-- @endforeach
+                @else -->
+                <!-- @foreach([['Advanced Mathematics – Paper 2 Strategy','Dr. Amara K.','Mathematics'],['KCSE English – Comprehension & Writing','Ms. Sarah N.','English'],['Physics – Paper 1 Examiner Traps','Prof. James M.','Physics']] as [$t,$name,$subj]) -->
+                <!-- <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;">
                     <div style="width:50px;height:50px;background:rgba(212,160,23,.25);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <i class="fa-solid fa-chalkboard-user" style="color:var(--gold);font-size:20px;"></i>
                     </div>
@@ -312,7 +312,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                         <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;">{{ $name }} · {{ $subj }}</div>
                     </div>
                     <span style="background:rgba(212,160,23,.2);color:var(--gold);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;">Upcoming</span>
-                </div>
+                </div> -->
                 @endforeach
                 @endif
             </div>
@@ -356,7 +356,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
                 @foreach([
                     ['fa-bolt','Weekly Payouts','Enjoy the convenience of flexible weekly payouts, issued immediately upon your request via M-Pesa. No rigid monthly waiting periods—you control when you get paid each week.'],
-                     ['fa-share-nodes','Referral Earnings','Earn commission for every verified tutor you refer with your code.'],
+                     <!-- ['fa-share-nodes','Referral Earnings','Earn commission for every verified tutor you refer with your code.'], -->
                     ['fa-star','Build Reputation','Featured clinic sessions put you in front of hundreds of parents & learners.'],
                     ['fa-headset','Zero Admin','Mwalimu handles student acquisition, payments, reminders and classroom setup.'],
                 ] as [$icon,$title,$desc])

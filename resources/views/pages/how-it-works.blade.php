@@ -164,7 +164,7 @@
                             <div style="font-size:12px;color:rgba(255,255,255,.4);">{{ $mins }} minutes</div>
                         </div>
                     </div>
-                    <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
+                    <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
                 </div>
                 <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:10px;">{{ $desc }}</p>
                 <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fa-solid fa-check fa-xs" style="color:#10B981;margin-right:4px;"></i>{{ $ideal }}</p>
