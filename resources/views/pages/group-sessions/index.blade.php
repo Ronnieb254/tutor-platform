@@ -61,7 +61,7 @@
                 </div>
                 @endforeach
                 <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);text-align:center;">
-                    <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">From KSh 300</span>
+                    <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">From KSh 500</span>
                     <span style="font-size:14px;color:rgba(255,255,255,.45);margin-left:8px;">/ per session</span>
                 </div>
             </div>

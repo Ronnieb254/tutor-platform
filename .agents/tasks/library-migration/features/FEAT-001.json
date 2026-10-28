@@ -1,0 +1,32 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Backend data and controller layer: idempotent migration, model updates, three controllers (public LibraryController, Tutor\\LibraryController, Admin\\LibraryController), BlogController redirect shim, and all route registrations in web.php.",
+  "status": "pending",
+  "steps": [
+    "Create database/migrations/2024_XX_XX_add_library_columns_to_blog_tables.php (use actual current date+time in filename). Use Schema::hasColumn() guards for idempotency. Add to blog_posts: resource_type ENUM('article','pdf','video','notes','past_paper') DEFAULT 'article', file_path VARCHAR nullable, file_size BIGINT UNSIGNED nullable, subject_id FK→subjects.id nullable nullOnDelete, grade_level VARCHAR(20) nullable, download_count UNSIGNEDINTEGER DEFAULT 0, is_approved BOOLEAN DEFAULT true. Add to blog_categories: description TEXT nullable, icon VARCHAR(50) nullable.",
+    "Update app/Models/BlogPost.php: add new columns to $fillable; add casts for is_approved (boolean) and download_count (integer); add subject() relationship (belongsTo Subject::class via subject_id); add scopeApproved; extend scopePublished to also require is_approved=true; add const RESOURCE_TYPES = ['article','pdf','video','notes','past_paper'].",
+    "Update app/Models/BlogCategory.php: add 'description' and 'icon' to $fillable.",
+    "Create app/Http/Controllers/LibraryController.php (namespace App\\Http\\Controllers). index() method: filter by ?category, ?type, ?search, ?grade using query scopes; paginate(12)->withQueryString(); pass $resources, $categories, $resourceTypes=BlogPost::RESOURCE_TYPES to view pages.library.index. show($slug) method: find published+approved resource by slug; increment download_count for non-article types; return view pages.library.show with $resource and $related. download($slug) method: gate with Auth::check() guard (redirect to login if guest); find resource; abort 404 if no file_path; increment download_count; return Storage::disk('public')->download($resource->file_path, $resource->title.'.'.pathinfo($resource->file_path,PATHINFO_EXTENSION)).",
+    "Replace app/Http/Controllers/BlogController.php with a redirect shim: index() returns redirect()->route('library.index', [], 301); show($slug) returns redirect()->route('library.show', $slug, 301).",
+    "Create app/Http/Controllers/Tutor/LibraryController.php (namespace App\\Http\\Controllers\\Tutor). index(): get auth user's own BlogPosts paginate(15); stats (total, published, download_count sum); return view pages.tutor.library.index. create(): pass $categories = BlogCategory::all(), $subjects = Subject::active()->orderBy('name')->get(), $resourceTypes = BlogPost::RESOURCE_TYPES; return view pages.tutor.library.create. store(Request): validate title|max:255, resource_type|in:RESOURCE_TYPES, blog_category_id nullable|exists, subject_id nullable|exists:subjects, grade_level nullable|max:20, excerpt nullable, content nullable, file nullable|file|max:51200, thumbnail nullable|image|max:5120. If file: store to 'library' disk public, set file_path + file_size. If thumbnail: store to 'thumbnails'. Create BlogPost with author_id=auth()->id(), is_published=true, published_at=now(), is_approved=true, slug=Str::slug($title).'-'.Str::random(5). Redirect to tutor.library.index with success flash. destroy(BlogPost $post): abort 403 if $post->author_id !== auth()->id(); delete file from storage if exists; $post->delete(); redirect back with success.",
+    "Create app/Http/Controllers/Admin/LibraryController.php (namespace App\\Http\\Controllers\\Admin). index(): all BlogPosts with filters (category, type, status, search), paginate(15); stats (total, published count, pending approval count, total download_count); return view pages.admin.library. store(Request): same validation as tutor store + is_published checkbox; author_id=auth()->id(). toggle(BlogPost $post): flip is_published. approve(BlogPost $post): set is_approved=true. destroy(BlogPost $post): delete file; delete record. storeCategory(Request): validate name|max:100, description nullable, icon nullable|max:50; create BlogCategory with slug=Str::slug(name). destroyCategory(BlogCategory $category): $category->delete().",
+    "Register routes in routes/web.php. Add 'use App\\Http\\Controllers\\LibraryController;' to imports. Public routes (outside any middleware): GET /library → library.index, GET /library/{slug} → library.show. Auth-only route: GET /library/{slug}/download → library.download. Inside role:tutor group: GET /tutor/library (tutor.library.index), GET /tutor/library/create (tutor.library.create), POST /tutor/library (tutor.library.store), DELETE /tutor/library/{post} (tutor.library.destroy). Inside role:admin prefix group: GET /library (admin.library), POST /library (admin.library.store), POST /library/{post}/toggle (admin.library.toggle), POST /library/{post}/approve (admin.library.approve), DELETE /library/{post} (admin.library.destroy), POST /library/categories (admin.library.categories.store), DELETE /library/categories/{category} (admin.library.categories.destroy). Keep existing /blog and /blog/{slug} routes (they now point to the redirect shim)."
+  ],
+  "acceptance_criteria": [
+    "php artisan migrate runs without error and is idempotent (safe to run twice)",
+    "php artisan route:list shows all 14 library routes (public, tutor, admin)",
+    "GET /blog returns HTTP 301 redirect to /library",
+    "GET /library returns HTTP 200",
+    "BlogPost::RESOURCE_TYPES constant exists and has 5 values",
+    "BlogPost::published()->approved() scope works without SQL error"
+  ],
+  "verification": [
+    "cd c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform && php artisan migrate",
+    "php artisan migrate (run a second time — must exit cleanly)",
+    "php artisan route:list | findstr library",
+    "php artisan tinker --execute=\"echo App\\Models\\BlogPost::count();\""
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

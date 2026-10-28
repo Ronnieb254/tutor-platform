@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BlogPost;
-use App\Models\BlogCategory;
-
+/**
+ * Redirect shim — /blog has been renamed to /library.
+ * All requests are permanently redirected (301) to the new URLs.
+ */
 class BlogController extends Controller
 {
     public function index()
     {
-        $posts      = BlogPost::published()->with(['author','category'])->latest('published_at')->paginate(12);
-        $categories = BlogCategory::withCount(['posts' => fn($q) => $q->published()])->get();
-        return view('pages.blog.index', compact('posts', 'categories'));
+        return redirect()->route('library.index', [], 301);
     }
 
     public function show(string $slug)
     {
-        $post    = BlogPost::published()->where('slug', $slug)->with(['author','category'])->firstOrFail();
-        $related = BlogPost::published()->where('blog_category_id', $post->blog_category_id)
-            ->where('id', '!=', $post->id)->latest('published_at')->take(3)->get();
-        return view('pages.blog.show', compact('post', 'related'));
+        return redirect()->route('library.show', $slug, 301);
     }
 }

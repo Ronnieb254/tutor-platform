@@ -1,0 +1,7 @@
+{
+  "task_id": "task-library-migration",
+  "task_description": "Convert the blog into a Library — learning resource hub where students browse/download resources (PDFs, videos, notes, past papers), tutors post resources, and admins manage/approve them.",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}

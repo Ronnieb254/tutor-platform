@@ -1,0 +1,32 @@
+{
+  "project_type": "Laravel 11 tutor marketplace, no frontend build step — vanilla CSS/JS inline in Blade views, Alpine.js from CDN",
+  "language": "PHP 8.2 / Laravel 11",
+  "build_system": "Composer. No webpack/vite. CSS is inline <style> per view. Assets served from /public/storage via symlink.",
+  "test_framework": "None configured. Manual browser verification is the test method.",
+  "build_command": "php artisan migrate",
+  "test_command": "php artisan route:list | findstr library",
+  "verification_instructions": "1) php artisan migrate  2) php artisan route:list | findstr library  3) php artisan view:clear && php artisan config:clear  4) Load /library in browser  5) Load /blog — should 301 to /library  6) Load /admin/library  7) Load /tutor/library as tutor",
+  "snapshot_or_generated_files": null,
+  "environment_constraints": "Windows PowerShell environment. Use findstr not grep. All artisan commands run from the tutor-platform directory: c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform",
+  "contribution_requirements": "No AGENTS.md or CONTRIBUTING.md found. Match existing code style: inline CSS per view, no Blade components, no service layer — direct Eloquent queries in controllers are the pattern used throughout.",
+  "key_patterns": "1) Tutor dashboard views are standalone HTML files with a duplicated inline sidebar (no layout file) — copy sidebar block from pages/tutor/group-sessions/index.blade.php. 2) Admin views use @extends('layouts.admin'). 3) Public views use @include('partials.nav') + @include('partials.footer'). 4) CSS variables: --ink:#15281F, --trust-blue:#0A64BC, --coral:#E8522A, --gold:#EEBE15, --mint:#10B981, --muted:rgba(21,40,31,.55), --hair:rgba(21,40,31,.1), --sidebar:#111C16. 5) Sidebar items use class sb-item / sb-item active. 6) Route names follow pattern: admin.X, tutor.X, X.index/show/create/store/destroy.",
+  "relevant_files": [
+    "app/Models/BlogPost.php",
+    "app/Models/BlogCategory.php",
+    "app/Models/Subject.php",
+    "app/Http/Controllers/BlogController.php",
+    "app/Http/Controllers/Tutor/GroupSessionController.php",
+    "database/migrations/2024_01_01_000012_create_blog_table.php",
+    "routes/web.php",
+    "resources/views/pages/blog/index.blade.php",
+    "resources/views/pages/blog/show.blade.php",
+    "resources/views/pages/admin/blog.blade.php",
+    "resources/views/pages/tutor/group-sessions/index.blade.php",
+    "resources/views/pages/tutor/group-sessions/create.blade.php",
+    "resources/views/pages/tutor/group-sessions/show.blade.php",
+    "resources/views/pages/tutor-subjects/index.blade.php",
+    "resources/views/partials/nav.blade.php",
+    "resources/views/layouts/admin.blade.php"
+  ],
+  "directory_structure": "tutor-platform/ — app/Http/Controllers/{Admin,Tutor}/ for namespaced controllers; app/Models/; database/migrations/; resources/views/pages/{admin,blog,tutor/group-sessions,tutor-subjects}/; resources/views/partials/; resources/views/layouts/; routes/web.php (single flat file)"
+}

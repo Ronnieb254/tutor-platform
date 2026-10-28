@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,11 @@ Route::get('/courses', [CourseController::class, 'index'])->name('courses.index'
 Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+
+// ─── Library (replaces Blog) ──────────────────────────────────────────────────
+Route::get('/library', [LibraryController::class, 'index'])->name('library.index');
+Route::get('/library/{slug}', [LibraryController::class, 'show'])->name('library.show');
+Route::middleware('auth')->get('/library/{slug}/download', [LibraryController::class, 'download'])->name('library.download');
 
 // ─── Auth ──────────────────────────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
@@ -147,7 +153,7 @@ Route::middleware('auth')->group(function () {
 
     // Student dashboard
     Route::middleware('role:student,parent')->group(function () {
-        Route::get('/dashboard/student', fn() => view('pages.dashboard.student'))->name('student.dashboard');
+        Route::get('/dashboard/student', [App\Http\Controllers\StudentDashboardController::class, 'index'])->name('student.dashboard');
         Route::post('/student/notifications/mark-all-read', function () {
             auth()->user()->unreadNotifications()->update(['read_at' => now()]);
             return back()->with('success', 'All notifications marked as read.');
@@ -227,6 +233,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/tutor/group-sessions',                         [App\Http\Controllers\Tutor\GroupSessionController::class, 'store'])->name('tutor.group-sessions.store');
         Route::get('/tutor/group-sessions/{groupSession}',          [App\Http\Controllers\Tutor\GroupSessionController::class, 'show'])->name('tutor.group-sessions.show')->whereNumber('groupSession');
         Route::post('/tutor/group-sessions/{groupSession}/cancel', [App\Http\Controllers\Tutor\GroupSessionController::class, 'cancel'])->name('tutor.group-sessions.cancel')->whereNumber('groupSession');
+
+        // Library resources (tutor uploads & manages their own resources)
+        Route::get('/tutor/library',          [App\Http\Controllers\Tutor\LibraryController::class, 'index'])->name('tutor.library.index');
+        Route::get('/tutor/library/create',   [App\Http\Controllers\Tutor\LibraryController::class, 'create'])->name('tutor.library.create');
+        Route::post('/tutor/library',         [App\Http\Controllers\Tutor\LibraryController::class, 'store'])->name('tutor.library.store');
+        Route::delete('/tutor/library/{post}', [App\Http\Controllers\Tutor\LibraryController::class, 'destroy'])->name('tutor.library.destroy');
     });
 
     // Admin
@@ -237,6 +249,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/payouts',    fn() => view('pages.admin.payouts'))->name('payouts');
         Route::get('/settings',   fn() => view('pages.admin.settings'))->name('settings');
         Route::get('/blog',       fn() => view('pages.admin.blog'))->name('blog');
+
+        // Library management (replaces blog admin)
+        Route::get('/library',                                           [App\Http\Controllers\Admin\LibraryController::class, 'index'])->name('library');
+        Route::post('/library',                                          [App\Http\Controllers\Admin\LibraryController::class, 'store'])->name('library.store');
+        Route::post('/library/{post}/toggle',                            [App\Http\Controllers\Admin\LibraryController::class, 'toggle'])->name('library.toggle');
+        Route::post('/library/{post}/approve',                           [App\Http\Controllers\Admin\LibraryController::class, 'approve'])->name('library.approve');
+        Route::delete('/library/{post}',                                 [App\Http\Controllers\Admin\LibraryController::class, 'destroy'])->name('library.destroy');
+        Route::post('/library/categories',                               [App\Http\Controllers\Admin\LibraryController::class, 'storeCategory'])->name('library.categories.store');
+        Route::delete('/library/categories/{category}',                  [App\Http\Controllers\Admin\LibraryController::class, 'destroyCategory'])->name('library.categories.destroy');
 
         // Categories management
         Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories');
