@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, Booking, Message};
+use App\Models\{User, Booking, Message, Payment};
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller

@@ -93,17 +93,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 </style>
 </head>
 <body>
-@php
-$user = auth()->user();
-$unreadNotifs = $user->unreadNotifications()->count();
-$children = $user->children()->get();
-$childIds = $children->pluck('id');
-$upcomingBookings = $user->bookingsAsStudent()->with(['tutor','subject'])->upcoming()->orderBy('scheduled_at')->get();
-$pastBookings = $user->bookingsAsStudent()->with(['tutor','subject','review'])->history()->latest('scheduled_at')->take(50)->get();
-$totalSpent = $user->payments()->where('status','success')->sum('amount');
-$totalSessions = $user->bookingsAsStudent()->where('status','completed')->count();
-$pendingCount = $user->bookingsAsStudent()->where('status','pending')->count();
-@endphp
+{{-- Data provided by DashboardController::parentDashboard() --}}
 <div class="layout" x-data="{ sidebarOpen: false, tab: '{{ request('tab','overview') }}' }">
 <div class="mob-overlay" :class="sidebarOpen ? 'show' : ''" @click="sidebarOpen=false"></div>
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
