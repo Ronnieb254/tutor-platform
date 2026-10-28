@@ -28,7 +28,7 @@ class ClinicController extends Controller
         $clinics = ExaminerClinic::upcoming()
             ->with(['tutor', 'subject', 'enrollments'])
             ->when($subjectId, fn($q) => $q->where('subject_id', $subjectId))
-            ->when($paperType, fn($q) => $q->where('paper_type', $paperType))
+            ->when($paperType && \Schema::hasColumn('examiner_clinics', 'paper_type'), fn($q) => $q->where('paper_type', $paperType))
             ->when($search, function ($q) use ($search) {
                 $q->whereHas('subject', fn($s) => $s->where('name', 'like', "%{$search}%"))
                   ->orWhere('title', 'like', "%{$search}%");

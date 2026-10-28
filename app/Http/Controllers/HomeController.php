@@ -24,6 +24,15 @@ class HomeController extends Controller
         return view('pages.home', compact('categories', 'featuredTutors', 'recentPosts', 'upcomingClinics'));
     }
 
+    /**
+     * How It Works page — uses a controller method (not a closure)
+     * so that route:cache doesn't break.
+     */
+    public function howItWorks()
+    {
+        return view('pages.how-it-works');
+    }
+
     public function tutors(Request $request)
     {
         return view('pages.tutors.index');
