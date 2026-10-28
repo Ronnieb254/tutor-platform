@@ -305,9 +305,9 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 <tbody>
                     @forelse($pastBookings as $b)
                     @php
-                        $refundService = app(\App\Services\RefundService::class);
-                        $canRequestRefund = $refundService->isEligibleForFirst20MinRefund($b);
-                        $hasRefund = $b->refund()->exists();
+                        // Data preloaded from controller to avoid N+1 queries
+                        $canRequestRefund = $b->canRequestRefund ?? false;
+                        $hasRefund = $b->hasRefund ?? false;
                     @endphp
                     <tr>
                         <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:32px;height:32px;background:#0A64BC;border-radius:9px;font-size:13px;">{{ substr($b->tutor->name,0,1) }}</div><div><div style="font-weight:600;font-size:13.5px;">{{ $b->tutor->name }}</div></div></div></td>

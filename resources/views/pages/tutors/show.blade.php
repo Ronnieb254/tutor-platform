@@ -313,7 +313,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
             {{-- ── BOOK SESSION TAB ── --}}
             <div id="tab-book" style="display:none;" x-data="{
                 step: 1,
-                dur: 60,
+                dur: 20,
                 date: '',
                 time: '',
                 subject: '',
@@ -322,14 +322,18 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 confirmed: false,
                 studentCode: '',
                 bookingRef: '',
+                prices: {{ json_encode($prices) }},
                 get price() {
-                    const base = {15:300,30:500,45:680,60:800}[this.dur] || 800;
-                    // Free first 15-min session
-                    if (this.dur === 15 && {{ $isFreeFirstSession ? 'true' : 'false' }}) return 0;
+                    const base = this.prices[this.dur] || 300;
+                    // Free first 20-min session
+                    if (this.dur === 20 && {{ $isFreeFirstSession ? 'true' : 'false' }}) return 0;
                     return base;
                 },
                 get isFree() { return this.price === 0; },
-                get name()  { return {20:'Quick Help',40:'Guided Practice',60:'Deep Dive'}[this.dur] || 'Deep Dive'; }
+                get sessionName() {
+                    const names = {{ json_encode($sessNames) }};
+                    return names[this.dur] || 'Quick Help';
+                }
             }">
 
                 {{-- Progress bar --}}
@@ -356,13 +360,13 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
                             <i class="fa-solid fa-clock" style="color:#0A64BC;font-size:16px;"></i> 1. Choose Session Type
                         </h3>
-                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
-                            @foreach([20=>['⚡','Quick Help',300,'Rapid revision or a quick question'],40=>['🎯','Guided Practice',500,'Full structured lesson with Q&A'],60=>['🏆','Deep Dive',700,'Maximum learning, best value']] as $mins => [$icon,$tname,$tprice,$tdesc])
-                            @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $tprice; @endphp
+                        <div style="display:grid;grid-template-columns:1fr;gap:10px;" class="tier-grid">
+                            @foreach([20=>['⚡','Quick Help'],40=>['🎯','Guided Practice'],60=>['🏆','Deep Dive']] as $mins => [$icon,$tname])
+                            @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $prices[$mins]; @endphp
                             <button @click="dur={{ $mins }}"
-                                    :style="dur==={{ $mins }} ? 'border-color:#0A64BC;background:rgba(10,100,188,.05);' : ''"
-                                    style="border:2px solid rgba(21,40,31,.12);border-radius:16px;padding:16px;text-align:left;cursor:pointer;font-family:inherit;background:#fff;transition:all .18s;position:relative;">
-                                @if($mins===15 && $isFreeFirstSession)
+                                    :class="dur==={{ $mins }} ? 'tier-card selected' : 'tier-card'"
+                                    style="position:relative;">
+                                @if($mins===20 && $isFreeFirstSession)
                                 <span style="position:absolute;top:-10px;right:10px;background:#10B981;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:999px;letter-spacing:.05em;">FREE FIRST SESSION</span>
                                 @endif
                                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
@@ -376,16 +380,17 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                                     <div :style="dur==={{ $mins }} ? 'color:#0A64BC;' : 'color:#15281F;'" style="font-family:'Fraunces',serif;font-weight:800;text-align:right;">
                                         @if($actualPrice === 0)
                                         <span style="font-size:20px;color:#10B981;">FREE</span>
-                                        <div style="font-size:11px;text-decoration:line-through;color:rgba(21,40,31,.35);">KSh {{ $tprice }}</div>
+                                        <div style="font-size:11px;text-decoration:line-through;color:rgba(21,40,31,.35);">KSh {{ $prices[$mins] }}</div>
                                         @else
                                         <span style="font-size:18px;">KSh {{ $actualPrice }}</span>
                                         @endif
                                     </div>
                                 </div>
-                                <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $tdesc }}</div>
+                                <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $sessDesc[$mins] }}</div>
                             </button>
                             @endforeach
                         </div>
+                        <style>.tier-grid{grid-template-columns:1fr!important;}@media(min-width:640px){.tier-grid{grid-template-columns:repeat(3,1fr)!important;}}</style>
                     </div>
 
                     <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
@@ -453,7 +458,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         <div style="background:#F9FAF9;border-radius:14px;padding:18px;margin-bottom:18px;">
                             @foreach([
                                 ['fa-user','Tutor',$tutor->user->name],
-                                ['fa-clock','Session','<span x-text="dur+\'min — \'+name"></span>'],
+                                ['fa-clock','Session','<span x-text="dur+\' min — \'+sessionName"></span>'],
                                 ['fa-calendar','Date','<span x-text="date ? new Date(date).toDateString() : \'—\'"></span>'],
                                 ['fa-clock','Time','<span x-text="time || \'—\'"></span> EAT'],
                             ] as [$ic,$label,$val])

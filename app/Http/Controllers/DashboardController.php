@@ -157,6 +157,13 @@ class DashboardController extends Controller
             ->latest('scheduled_at')
             ->take(50)
             ->get();
+        
+        // Preload refund service eligibility to avoid N+1 queries in view
+        $refundService = app(\App\Services\RefundService::class);
+        foreach ($pastBookings as $booking) {
+            $booking->canRequestRefund = $refundService->isEligibleForFirst20MinRefund($booking);
+            $booking->hasRefund = $booking->relationLoaded('refund') && $booking->refund !== null;
+        }
 
         $totalSpent = \App\Models\Payment::whereIn('user_id', $allStudentIds)
             ->where('status', 'success')
