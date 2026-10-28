@@ -82,7 +82,7 @@ a{color:inherit;text-decoration:none;}
             $isPast = $booking->clinic->scheduled_at->isPast();
             $canJoin = $isUpcoming && $booking->clinic->scheduled_at->diffInMinutes(now(), false) <= 15;
         @endphp
-        <div class="booking-card">
+        <div class="booking-card" data-scheduled-at="{{ $booking->clinic->scheduled_at->toIso8601String() }}">
             <div class="booking-icon">
                 <i class="fa-solid fa-chalkboard-user"></i>
             </div>
@@ -113,8 +113,9 @@ a{color:inherit;text-decoration:none;}
                     <i class="fa-solid fa-circle fa-xs"></i> LIVE NOW
                 </span>
                 @elseif($isUpcoming)
-                <span class="status-badge status-upcoming">
-                    <i class="fa-solid fa-clock fa-xs"></i> Upcoming
+                <span class="status-badge status-upcoming" id="badge-{{ $booking->id }}">
+                    <i class="fa-solid fa-clock fa-xs"></i>
+                    <span id="countdown-{{ $booking->id }}">{{ $booking->clinic->scheduled_at->diffForHumans() }}</span>
                 </span>
                 @elseif($booking->attended)
                 <span class="status-badge status-completed">
@@ -130,7 +131,7 @@ a{color:inherit;text-decoration:none;}
                 <div class="booking-action">
                     @if($canJoin || $isUpcoming)
                     <a href="{{ route('clinic.join', $booking->clinic) }}" class="btn btn-join" style="font-size:12px;padding:8px 14px;">
-                        <i class="fa-solid fa-video"></i> Join Session
+                        <i class="fa-solid fa-video"></i> {{ $canJoin ? 'Join Session' : 'Join Early' }}
                     </a>
                     @endif
                     <button onclick="copyCode('{{ $booking->session_code }}')" class="btn btn-share" style="font-size:12px;padding:8px 14px;">
@@ -193,6 +194,39 @@ function copyCode(code) {
         }, 2000);
     });
 }
+
+// Live countdown timers
+document.querySelectorAll('[id^="countdown-"]').forEach(function(el) {
+    var id = el.id.replace('countdown-', '');
+    var badge = document.getElementById('badge-' + id);
+    var targetAttr = el.closest('.booking-card')?.dataset?.scheduledAt;
+    if (!targetAttr) return;
+
+    var target = new Date(targetAttr).getTime();
+
+    function tick() {
+        var diff = target - Date.now();
+        if (diff <= -900000) { // 15 min past start
+            // Auto-reload to show LIVE NOW badge
+            window.location.reload();
+            return;
+        }
+        if (diff <= 0) {
+            el.textContent = 'Starting now';
+            if (badge) {
+                badge.style.background = 'rgba(16,185,129,.2)';
+                badge.style.color = '#10B981';
+            }
+            return;
+        }
+        var h = Math.floor(diff / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        el.textContent = h > 0 ? (h + 'h ' + m + 'm') : (m + 'm ' + s + 's');
+        setTimeout(tick, 1000);
+    }
+    tick();
+});
 </script>
 
 @include('partials.footer')

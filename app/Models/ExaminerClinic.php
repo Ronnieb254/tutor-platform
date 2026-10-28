@@ -12,7 +12,7 @@ class ExaminerClinic extends Model
         'title','name','description','topics_covered',
         'scheduled_at','duration_minutes','price','max_students','status','meeting_room',
         'created_by','session_code','recording_url',
-        'bbb_meeting_id','bbb_attendee_pw','bbb_moderator_pw',
+        'is_auto_created',
     ];
 
     protected function casts(): array
@@ -27,14 +27,16 @@ class ExaminerClinic extends Model
     protected static function booted(): void
     {
         static::creating(function ($clinic) {
-            $clinic->meeting_room = $clinic->meeting_room ?? 'mwalimu-clinic-' . Str::uuid();
+            $clinic->meeting_room = $clinic->meeting_room ?? 'MwalimuClinic-' . Str::uuid();
             $clinic->batch_number = $clinic->batch_number ?? 1;
+            $clinic->session_code = $clinic->session_code ?? 'CLINIC-' . strtoupper(Str::random(6));
+            $clinic->max_students = $clinic->max_students ?? 30; // Default 30 slots
         });
 
-        // Auto-create the next session when a clinic becomes full
+        // Auto-create overflow clinic when reaching 30 students
         static::updated(function ($clinic) {
-            if ($clinic->isFull() && $clinic->parent_clinic_id === null) {
-                $clinic->autoCreateNextSession();
+            if ($clinic->isFull() && !$clinic->hasOverflowClinic()) {
+                $clinic->createOverflowClinic();
             }
         });
     }
@@ -93,43 +95,121 @@ class ExaminerClinic extends Model
     }
 
     /**
-     * Auto-create a new session for the same subject + paper when this one fills up.
-     * The new session is scheduled one week later at the same time.
+     * Check if this clinic has an overflow clinic already created
      */
-    public function autoCreateNextSession(): ?self
+    public function hasOverflowClinic(): bool
     {
-        // Don't create duplicates if a non-full child already exists
-        $existingChild = self::where('parent_clinic_id', $this->id)
-            ->where('status', 'scheduled')
-            ->whereDoesntHave('enrollments', function ($q) {
-                $q->havingRaw('count(*) >= ' . $this->max_students);
-            })
+        return self::where('parent_clinic_id', $this->id)
+            ->where('is_auto_created', true)
             ->exists();
+    }
 
-        if ($existingChild) {
+    /**
+     * Create an overflow clinic automatically when this one fills up (30 students)
+     * New clinic starts 30 minutes after the previous one ends
+     */
+    public function createOverflowClinic(): ?self
+    {
+        // Don't create if this is already an overflow clinic
+        if ($this->is_auto_created) {
             return null;
         }
 
+        // Don't create if overflow already exists
+        if ($this->hasOverflowClinic()) {
+            return null;
+        }
+
+        // Calculate next clinic start time: previous end + 30 minutes
+        $previousEnd = $this->scheduled_at->copy()->addMinutes($this->duration_minutes);
+        $nextStart = $previousEnd->addMinutes(30); // 30-minute break
+
         // Count existing batches to determine the next batch number
         $nextBatch = self::where(function ($q) {
-            $q->where('id', $this->id)->orWhere('parent_clinic_id', $this->id);
+            $q->where('id', $this->id)
+              ->orWhere('parent_clinic_id', $this->id);
         })->max('batch_number') + 1;
 
-        return self::create([
-            'tutor_id'        => $this->tutor_id,
+        $overflow = self::create([
+            'tutor_id'         => $this->tutor_id,
             'subject_id'       => $this->subject_id,
             'paper_type'       => $this->paper_type,
             'parent_clinic_id' => $this->id,
-            'batch_number'    => $nextBatch,
-            'title'           => $this->paperLabel() . ' – Session ' . $nextBatch,
+            'batch_number'     => $nextBatch,
+            'title'            => $this->title . ' – Batch ' . $nextBatch,
             'description'      => $this->description,
-            'topics_covered'  => $this->topics_covered,
-            'scheduled_at'    => $this->scheduled_at->copy()->addWeek(),
+            'topics_covered'   => $this->topics_covered,
+            'scheduled_at'     => $nextStart,
             'duration_minutes' => $this->duration_minutes,
-            'price'           => $this->price,
-            'max_students'    => $this->max_students,
-            'status'          => 'scheduled',
+            'price'            => $this->price,
+            'max_students'     => 30, // Always 30 slots
+            'status'           => 'scheduled',
+            'created_by'       => $this->created_by,
+            'is_auto_created'  => true,
         ]);
+
+        \Log::info("Auto-created overflow clinic #{$overflow->id} for clinic #{$this->id}", [
+            'original_start' => $this->scheduled_at,
+            'overflow_start' => $nextStart,
+            'batch_number'   => $nextBatch,
+        ]);
+
+        return $overflow;
+    }
+
+    /**
+     * Get Jitsi join URL for this clinic
+     */
+    public function getJitsiJoinUrl(User $user): string
+    {
+        $jitsi = app(\App\Services\JitsiService::class);
+        
+        $isModerator = $user->id === $this->tutor_id || $user->isAdmin();
+        
+        $options = [
+            'email' => $user->email,
+            'recording' => $isModerator,
+            'restrictGuests' => false, // Allow all enrolled students
+        ];
+        
+        return $jitsi->getJoinUrl(
+            $this->meeting_room,
+            $user->name,
+            $isModerator,
+            $options
+        );
+    }
+
+    /**
+     * Check if user can join this clinic session
+     */
+    public function canJoin(User $user): bool
+    {
+        // Tutors and admins can always join
+        if ($user->id === $this->tutor_id || $user->isAdmin()) {
+            return true;
+        }
+
+        // Students must be enrolled
+        if (!$this->isEnrolledBy($user)) {
+            return false;
+        }
+
+        // Check if clinic has started (allow joining 15 minutes before)
+        $canJoinFrom = $this->scheduled_at->copy()->subMinutes(15);
+        
+        return now()->gte($canJoinFrom);
+    }
+
+    /**
+     * Auto-create a new session for the same subject + paper when this one fills up.
+     * The new session is scheduled one week later at the same time.
+     * 
+     * @deprecated Use createOverflowClinic() instead
+     */
+    public function autoCreateNextSession(): ?self
+    {
+        return $this->createOverflowClinic();
     }
 
     /**

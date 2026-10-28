@@ -203,68 +203,54 @@ class ClinicBookingController extends Controller
     }
 
     /**
-     * Join clinic session - verify user has access.
-     * Redirects to BigBlueButton if properly enrolled.
+     * Join clinic session via Jitsi.
+     * Checks enrollment and generates a secure time-limited token.
      */
     public function joinSession(Request $request, ExaminerClinic $clinic)
     {
         $user = $request->user();
 
-        // Verify enrollment
-        $enrollment = ClinicEnrollment::where('clinic_id', $clinic->id)
-            ->where('student_id', $user->id)
-            ->first();
+        // Admins and the clinic tutor can join as moderator without enrollment
+        $isModerator = $user->isAdmin() || $user->id === $clinic->tutor_id || $user->id === $clinic->created_by;
 
-        if (!$enrollment) {
-            return redirect()->route('clinic.my-bookings')
-                ->with('error', 'You are not enrolled in this clinic session. Please book first.');
+        if (!$isModerator) {
+            // Verify enrollment for students
+            $enrollment = ClinicEnrollment::where('clinic_id', $clinic->id)
+                ->where('student_id', $user->id)
+                ->first();
+
+            if (!$enrollment) {
+                return redirect()->route('clinic.my-bookings')
+                    ->with('error', 'You are not enrolled in this clinic session. Please book a spot first.');
+            }
+
+            // Allow joining 15 minutes before session starts
+            $canJoinFrom = $clinic->scheduled_at->copy()->subMinutes(15);
+            if (now()->lt($canJoinFrom)) {
+                return back()->with('error', "This clinic starts at {$clinic->scheduled_at->format('g:ia')}. You can join from " . $canJoinFrom->format('g:ia') . '.');
+            }
+
+            // Mark attendance
+            if (!$enrollment->attended) {
+                $enrollment->update(['attended' => true]);
+            }
         }
 
-        // Check if session time is appropriate
-        if ($clinic->scheduled_at->isFuture(Carbon::now()->subMinutes(15))) {
-            // Too early, session not ready yet
-            return back()->with('error', "The clinic will start at {$clinic->scheduled_at->format('g:ia')}. Please join 5 minutes before.");
-        }
-
-        // Initialize BBB service
-        $bbb = new \App\Services\BigBlueButtonService();
-
-        // Create/ensure meeting exists (in case moderator hasn't joined yet)
-        $meetingOptions = [
-            'welcome' => "Welcome to {$clinic->name}!",
-            'record' => 'true',
-            'autoStartRecording' => 'false', // Only moderator starts recording
-            'allowStartStopRecording' => 'false', // Students can't control recording
-            'maxParticipants' => $clinic->max_students + 5,
-            'logoutURL' => route('clinic.my-bookings'),
-            'lockSettingsDisableCam' => 'false',
-            'lockSettingsDisableMic' => 'true', // Students join muted
-            'muteOnStart' => 'true',
+        // Build secure token
+        $tokenData = [
+            'clinic_id'    => $clinic->id,
+            'user_id'      => $user->id,
+            'is_moderator' => $isModerator,
+            'examiner_id'  => $isModerator ? $user->id : null,
+            'enrollment_id'=> isset($enrollment) ? $enrollment->id : null,
+            'session_code' => $clinic->session_code ?? ('MwalimuClinic-' . $clinic->id),
+            'issued_at'    => now()->timestamp,
+            'expires_at'   => now()->addHours(3)->timestamp,
         ];
 
-        $bbb->createMeeting(
-            $clinic->bbb_meeting_id,
-            $clinic->name ?? $clinic->title,
-            $clinic->bbb_attendee_pw,
-            $clinic->bbb_moderator_pw,
-            $meetingOptions
-        );
+        $token = encrypt($tokenData);
 
-        // Mark as attended
-        if (!$enrollment->attended) {
-            $enrollment->update(['attended' => true]);
-        }
-
-        // Generate join URL for student
-        $joinUrl = $bbb->getJoinUrl(
-            $clinic->bbb_meeting_id,
-            $user->name,
-            $clinic->bbb_attendee_pw,
-            false, // Not moderator
-            (string) $user->id
-        );
-
-        return redirect($joinUrl);
+        return redirect()->route('clinic.session-room', ['token' => $token]);
     }
 
     /**
@@ -310,27 +296,20 @@ class ClinicBookingController extends Controller
                 abort(403, 'Session token expired. Please rejoin from the platform.');
             }
 
-            // Check if moderator token
+            // Verify token belongs to the authenticated user
+            $userId = $data['user_id'] ?? $data['examiner_id'] ?? null;
+            if ($userId !== auth()->id()) {
+                abort(403, 'Token mismatch. Please rejoin from the platform.');
+            }
+
             $isModerator = isset($data['is_moderator']) && $data['is_moderator'] === true;
 
+            $clinic = ExaminerClinic::findOrFail($data['clinic_id']);
+
             if ($isModerator) {
-                // Moderator token verification
-                if ($data['examiner_id'] !== auth()->id()) {
-                    abort(403, 'Token mismatch. Please rejoin from the platform.');
-                }
-
-                $clinic = ExaminerClinic::findOrFail($data['clinic_id']);
-                $roomId = $data['session_code'];
-                $displayName = auth()->user()->name . ' (Examiner)';
-                $sessionCode = null;
-
+                $displayName  = auth()->user()->name . ' (Examiner)';
+                $sessionCode  = null;
             } else {
-                // Student token verification
-                if ($data['user_id'] !== auth()->id()) {
-                    abort(403, 'Token mismatch. Please rejoin from the platform.');
-                }
-
-                $clinic = ExaminerClinic::findOrFail($data['clinic_id']);
                 $enrollment = ClinicEnrollment::findOrFail($data['enrollment_id']);
 
                 // Mark as attended
@@ -338,14 +317,15 @@ class ClinicBookingController extends Controller
                     $enrollment->update(['attended' => true]);
                 }
 
-                $roomId = $data['session_code'];
                 $displayName = auth()->user()->name;
                 $sessionCode = $enrollment->session_code;
             }
 
+            $roomId = $data['session_code'] ?? $clinic->session_code ?? ('MwalimuClinic-' . $clinic->id);
+
             return view('pages.clinic-jitsi-room', [
-                'clinic' => $clinic,
-                'roomId' => $roomId,
+                'clinic'      => $clinic,
+                'roomId'      => $roomId,
                 'displayName' => $displayName,
                 'isModerator' => $isModerator,
                 'sessionCode' => $sessionCode,

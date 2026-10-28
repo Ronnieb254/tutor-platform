@@ -258,6 +258,27 @@ Route::middleware('auth')->group(function () {
         Route::post('/tutors/{tutorProfile}/subjects', [App\Http\Controllers\TutorSubjectController::class, 'store'])->name('tutors.subjects.store');
         Route::post('/tutors/{tutorProfile}/subjects/attach', [App\Http\Controllers\TutorSubjectController::class, 'attach'])->name('tutors.subjects.attach');
         Route::post('/tutors/{tutorProfile}/subjects/detach', [App\Http\Controllers\TutorSubjectController::class, 'detach'])->name('tutors.subjects.detach');
+
+        // Clinic management (admin creates / manages daily clinics)
+        Route::get('/clinics',                             [App\Http\Controllers\Admin\ClinicController::class, 'index'])->name('clinics');
+        Route::get('/clinics/create',                      [App\Http\Controllers\Admin\ClinicController::class, 'create'])->name('clinics.create');
+        Route::post('/clinics',                            [App\Http\Controllers\Admin\ClinicController::class, 'store'])->name('clinics.store');
+        Route::get('/clinics/{clinic}',                    [App\Http\Controllers\Admin\ClinicController::class, 'show'])->name('clinics.show');
+        Route::post('/clinics/{clinic}/cancel',            [App\Http\Controllers\Admin\ClinicController::class, 'cancel'])->name('clinics.cancel');
+        Route::post('/clinics/{clinic}/create-overflow',   [App\Http\Controllers\Admin\ClinicController::class, 'createOverflow'])->name('clinics.overflow');
+        Route::delete('/clinics/{clinic}',                 [App\Http\Controllers\Admin\ClinicController::class, 'destroy'])->name('clinics.destroy');
+        
+        // Examiner Clinics management
+        Route::get('/examiner-clinics', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'index'])->name('examiner-clinics.index');
+        Route::get('/examiner-clinics/create', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'create'])->name('examiner-clinics.create');
+        Route::post('/examiner-clinics', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'store'])->name('examiner-clinics.store');
+        Route::get('/examiner-clinics/{examinerClinic}', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'show'])->name('examiner-clinics.show');
+        Route::get('/examiner-clinics/{examinerClinic}/edit', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'edit'])->name('examiner-clinics.edit');
+        Route::patch('/examiner-clinics/{examinerClinic}', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'update'])->name('examiner-clinics.update');
+        Route::delete('/examiner-clinics/{examinerClinic}', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'destroy'])->name('examiner-clinics.destroy');
+        Route::post('/examiner-clinics/{examinerClinic}/cancel', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'cancel'])->name('examiner-clinics.cancel');
+        Route::post('/examiner-clinics/{examinerClinic}/start', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'start'])->name('examiner-clinics.start');
+        Route::post('/examiner-clinics/{examinerClinic}/complete', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'complete'])->name('examiner-clinics.complete');
     });
     
     // Tutor can manage their own subjects
@@ -283,6 +304,14 @@ Route::middleware('auth')->group(function () {
             return app(App\Http\Controllers\TutorSubjectController::class)->detach($request, $tutorProfile);
         })->name('tutor.subjects.detach');
     });
+    
+    // Examiner Clinic Enrollment (student-facing)
+    Route::get('/examiner-clinics', [App\Http\Controllers\ExaminerClinicEnrollmentController::class, 'index'])->name('examiner-clinics.index');
+    Route::get('/examiner-clinics/my-enrollments', [App\Http\Controllers\ExaminerClinicEnrollmentController::class, 'myEnrollments'])->name('examiner-clinics.my-enrollments');
+    Route::get('/examiner-clinics/{examinerClinic}', [App\Http\Controllers\ExaminerClinicEnrollmentController::class, 'show'])->name('examiner-clinics.show');
+    Route::post('/examiner-clinics/{examinerClinic}/enroll', [App\Http\Controllers\ExaminerClinicEnrollmentController::class, 'enroll'])->name('examiner-clinics.enroll');
+    Route::post('/examiner-clinics/{examinerClinic}/unenroll', [App\Http\Controllers\ExaminerClinicEnrollmentController::class, 'unenroll'])->name('examiner-clinics.unenroll');
+    Route::get('/examiner-clinics/{examinerClinic}/join', [App\Http\Controllers\ExaminerClinicEnrollmentController::class, 'join'])->name('examiner-clinics.join');
 });
 
 // ─── Paystack Callback (redirected from Paystack, not a webhook) ──────────────

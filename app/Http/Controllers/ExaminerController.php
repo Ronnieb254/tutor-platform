@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\ClinicEnrollment;
 use App\Models\ExaminerClinic;
 use App\Models\ExaminerRegistration;
+use App\Models\Subject;
+use App\Services\JitsiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -23,10 +24,10 @@ class ExaminerController extends Controller
     public function showApplyForm()
     {
         $user = Auth::user();
-        
+
         // Check if already applied
         $registration = ExaminerRegistration::where('tutor_id', $user->id)->first();
-        
+
         if ($registration) {
             return redirect()->route('examiner.dashboard')
                 ->with('info', 'You have already applied as an examiner.');
@@ -63,7 +64,7 @@ class ExaminerController extends Controller
         // Auto-approve verified tutors
         ExaminerRegistration::create([
             'tutor_id' => $user->id,
-            'status' => 'approved',
+            'status'   => 'approved',
         ]);
 
         return redirect()->route('examiner.dashboard')
@@ -76,10 +77,10 @@ class ExaminerController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        
+
         // Check if registered examiner
         $registration = ExaminerRegistration::where('tutor_id', $user->id)->first();
-        
+
         if (!$registration || !$registration->isApproved()) {
             return redirect()->route('examiner.apply')
                 ->with('error', 'You must be an approved examiner to access this page.');
@@ -94,9 +95,9 @@ class ExaminerController extends Controller
 
         // Calculate earnings
         $earningsService = new \App\Services\EarningsService();
-        $allEarnings = $earningsService->calculateTutorEarnings($user);
-        $recentEarnings = $earningsService->getRecentEarnings($user);
-        $earnings = array_merge($allEarnings, $recentEarnings);
+        $allEarnings     = $earningsService->calculateTutorEarnings($user);
+        $recentEarnings  = $earningsService->getRecentEarnings($user);
+        $earnings        = array_merge($allEarnings, $recentEarnings);
 
         return view('pages.examiner-dashboard', compact('clinics', 'earnings'));
     }
@@ -107,18 +108,18 @@ class ExaminerController extends Controller
     public function showCreateForm()
     {
         $user = Auth::user();
-        
+
         // Check examiner status
         $registration = ExaminerRegistration::where('tutor_id', $user->id)->first();
-        
+
         if (!$registration || !$registration->isApproved()) {
             return redirect()->route('examiner.apply')
                 ->with('error', 'You must be an approved examiner.');
         }
 
-        $categories = Category::orderBy('name')->get();
+        $subjects = Subject::active()->orderBy('name')->get();
 
-        return view('pages.examiner-create-clinic', compact('categories'));
+        return view('pages.examiner-create-clinic', compact('subjects'));
     }
 
     /**
@@ -127,50 +128,45 @@ class ExaminerController extends Controller
     public function createClinic(Request $request)
     {
         $user = Auth::user();
-        
+
         // Verify examiner status
         $registration = ExaminerRegistration::where('tutor_id', $user->id)->first();
-        
+
         if (!$registration || !$registration->isApproved()) {
             return redirect()->route('examiner.apply')
                 ->with('error', 'You must be an approved examiner.');
         }
 
         $validated = $request->validate([
-            'subject_id' => 'required|exists:categories,id',
-            'paper_type' => 'required|in:PP1,PP2,PP3',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'max_students' => 'required|integer|min:1|max:50',
-            'scheduled_at' => 'required|date|after:now',
+            'subject_id'    => 'required|exists:subjects,id',
+            'paper_type'    => 'required|in:PP1,PP2,PP3',
+            'title'         => 'required|string|max:255',
+            'description'   => 'nullable|string',
+            'topics_covered'=> 'nullable|array',
+            'price'         => 'required|numeric|min:0',
+            'duration_minutes' => 'required|integer|min:30|max:180',
+            'scheduled_at'  => 'required|date|after:now',
         ]);
 
-        // Generate BBB credentials
-        $bbb = new \App\Services\BigBlueButtonService();
-        $sessionCode = 'clinic-' . Str::random(12);
-        $meetingID = 'clinic-' . time() . '-' . Str::random(8);
-        $attendeePW = $bbb->generatePassword(12);
-        $moderatorPW = $bbb->generatePassword(12);
-
         $clinic = ExaminerClinic::create([
-            'subject_id' => $validated['subject_id'],
-            'paper_type' => $validated['paper_type'],
-            'name' => $validated['name'],
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'max_students' => $validated['max_students'],
-            'scheduled_at' => $validated['scheduled_at'],
-            'created_by' => $user->id,
-            'session_code' => $sessionCode,
-            'bbb_meeting_id' => $meetingID,
-            'bbb_attendee_pw' => $attendeePW,
-            'bbb_moderator_pw' => $moderatorPW,
-            'batch_number' => 1,
+            'subject_id'       => $validated['subject_id'],
+            'paper_type'       => $validated['paper_type'],
+            'title'            => $validated['title'],
+            'name'             => $validated['title'],
+            'description'      => $validated['description'] ?? null,
+            'topics_covered'   => $validated['topics_covered'] ?? null,
+            'price'            => $validated['price'],
+            'max_students'     => 30,  // Always 30 slots
+            'duration_minutes' => $validated['duration_minutes'] ?? 60,
+            'scheduled_at'     => $validated['scheduled_at'],
+            'created_by'       => $user->id,
+            'tutor_id'         => $user->id,
+            'status'           => 'scheduled',
+            'batch_number'     => 1,
         ]);
 
         return redirect()->route('examiner.dashboard')
-            ->with('success', 'Clinic created successfully!');
+            ->with('success', 'Clinic created successfully! Students can now book slots.');
     }
 
     /**
@@ -179,59 +175,38 @@ class ExaminerController extends Controller
     public function showClinic($id)
     {
         $user = Auth::user();
-        
+
         $clinic = ExaminerClinic::where('id', $id)
             ->where('created_by', $user->id)
-            ->with(['subject', 'enrollments.user'])
+            ->with(['subject', 'enrollments.student'])
             ->firstOrFail();
 
         return view('pages.examiner-clinic-details', compact('clinic'));
     }
 
     /**
-     * Join clinic as examiner/moderator
+     * Join clinic as examiner/moderator via Jitsi
      */
-    public function joinAsExaminer($id)
+    public function joinAsExaminer(ExaminerClinic $clinic)
     {
         $user = Auth::user();
-        
-        $clinic = ExaminerClinic::where('id', $id)
-            ->where('created_by', $user->id)
-            ->firstOrFail();
 
-        // Initialize BBB service
-        $bbb = new \App\Services\BigBlueButtonService();
+        // Admin can join any clinic; examiner can only join their own
+        if (!$user->isAdmin() && $clinic->created_by !== $user->id && $clinic->tutor_id !== $user->id) {
+            abort(403, 'You are not the host of this clinic.');
+        }
 
-        // Create/ensure meeting exists
-        $meetingOptions = [
-            'welcome' => "Welcome to {$clinic->name}! You are the moderator.",
-            'record' => 'true',
-            'autoStartRecording' => 'true',
-            'allowStartStopRecording' => 'true',
-            'maxParticipants' => $clinic->max_students + 5, // Students + buffer
-            'logoutURL' => route('examiner.dashboard'),
-            'lockSettingsDisableCam' => 'false',
-            'lockSettingsDisableMic' => 'false',
-            'muteOnStart' => 'false',
+        // Build a secure, time-limited moderator token
+        $tokenData = [
+            'clinic_id'    => $clinic->id,
+            'examiner_id'  => $user->id,
+            'is_moderator' => true,
+            'issued_at'    => now()->timestamp,
+            'expires_at'   => now()->addHours(3)->timestamp,
         ];
 
-        $bbb->createMeeting(
-            $clinic->bbb_meeting_id,
-            $clinic->name ?? $clinic->title,
-            $clinic->bbb_attendee_pw,
-            $clinic->bbb_moderator_pw,
-            $meetingOptions
-        );
+        $token = encrypt($tokenData);
 
-        // Generate join URL for moderator
-        $joinUrl = $bbb->getJoinUrl(
-            $clinic->bbb_meeting_id,
-            $user->name . ' (Examiner)',
-            $clinic->bbb_moderator_pw,
-            true, // isModerator
-            (string) $user->id
-        );
-
-        return redirect($joinUrl);
+        return redirect()->route('clinic.session-room', ['token' => $token]);
     }
 }
