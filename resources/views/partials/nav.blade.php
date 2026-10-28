@@ -34,11 +34,12 @@
             {{-- Desktop Links --}}
             <div style="display:none;align-items:center;gap:2px;" class="mw-desklinks">
                 @foreach([
-                    ['tutors.index',   'fa-magnifying-glass', 'Find a Tutor'],
-                    ['how-it-works',   'fa-circle-info',      'How It Works'],
-                    ['examiner-clinic','fa-star',             'Examiner\'s Clinic'],
-                    ['blog.index',     'fa-newspaper',        'Blog'],
-                    ['contact',        'fa-envelope',         'Contact'],
+                    ['tutors.index',       'fa-magnifying-glass', 'Find a Tutor'],
+                    ['how-it-works',       'fa-circle-info',      'How It Works'],
+                    ['examiner-clinic',    'fa-star',             'Examiner\'s Clinic'],
+                    ['group-sessions.index','fa-users',           'Group Sessions'],
+                    ['blog.index',         'fa-newspaper',        'Blog'],
+                    ['contact',            'fa-envelope',         'Contact'],
                 ] as [$route, $icon, $label])
                 <a href="{{ route($route) }}"
                    style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-size:14px;font-weight:500;color:{{ Str::startsWith($cr,$route)||$cr===$route ? '#0A64BC' : '#15281F' }};background:{{ Str::startsWith($cr,$route)||$cr===$route ? 'rgba(10,100,188,.08)' : 'transparent' }};font-weight:{{ Str::startsWith($cr,$route)||$cr===$route ? '700' : '500' }};transition:all .15s;text-decoration:none;"
@@ -136,11 +137,12 @@
              x-transition:enter-end="opacity-100 translate-y-0"
              style="position:absolute;left:0;right:0;top:100%;background:rgba(251,245,230,.98);backdrop-filter:blur(20px);border-bottom:1.5px solid rgba(21,40,31,.08);padding:12px 20px 16px;z-index:99;box-shadow:0 12px 36px rgba(21,40,31,.12);">
             @foreach([
-                ['tutors.index',   'fa-magnifying-glass', 'Find a Tutor'],
-                ['how-it-works',   'fa-circle-info',      'How It Works'],
-                ['examiner-clinic','fa-star',             'Examiner\'s Clinic'],
-                ['blog.index',     'fa-newspaper',        'Blog'],
-                ['contact',        'fa-envelope',         'Contact'],
+                ['tutors.index',       'fa-magnifying-glass', 'Find a Tutor'],
+                ['how-it-works',       'fa-circle-info',      'How It Works'],
+                ['examiner-clinic',    'fa-star',             'Examiner\'s Clinic'],
+                ['group-sessions.index','fa-users',           'Group Sessions'],
+                ['blog.index',         'fa-newspaper',        'Blog'],
+                ['contact',            'fa-envelope',         'Contact'],
             ] as [$route, $icon, $label])
             <a href="{{ route($route) }}"
                style="display:flex;align-items:center;gap:10px;padding:12px 0;font-size:15px;font-weight:500;color:#15281F;border-bottom:1px solid rgba(21,40,31,.07);text-decoration:none;">

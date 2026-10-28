@@ -13,7 +13,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/how-it-works', [HomeController::class, 'howItWorks'])->name('how-it-works');
 Route::get('/examiner-clinic', [App\Http\Controllers\ClinicController::class, 'index'])->name('examiner-clinic');
 Route::get('/group-sessions', [App\Http\Controllers\GroupSessionController::class, 'index'])->name('group-sessions.index');
-Route::get('/group-sessions/{groupSession}', [App\Http\Controllers\GroupSessionController::class, 'show'])->name('group-sessions.show');
+// Constrain to numeric IDs so the static /my-sessions route is never swallowed by this wildcard
+Route::get('/group-sessions/{groupSession}', [App\Http\Controllers\GroupSessionController::class, 'show'])->name('group-sessions.show')->whereNumber('groupSession');
 Route::get('/contact', fn() => view('pages.contact'))->name('contact');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
 
@@ -224,8 +225,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/tutor/group-sessions',                          [App\Http\Controllers\Tutor\GroupSessionController::class, 'index'])->name('tutor.group-sessions.index');
         Route::get('/tutor/group-sessions/create',                   [App\Http\Controllers\Tutor\GroupSessionController::class, 'create'])->name('tutor.group-sessions.create');
         Route::post('/tutor/group-sessions',                         [App\Http\Controllers\Tutor\GroupSessionController::class, 'store'])->name('tutor.group-sessions.store');
-        Route::get('/tutor/group-sessions/{groupSession}',           [App\Http\Controllers\Tutor\GroupSessionController::class, 'show'])->name('tutor.group-sessions.show');
-        Route::post('/tutor/group-sessions/{groupSession}/cancel',  [App\Http\Controllers\Tutor\GroupSessionController::class, 'cancel'])->name('tutor.group-sessions.cancel');
+        Route::get('/tutor/group-sessions/{groupSession}',          [App\Http\Controllers\Tutor\GroupSessionController::class, 'show'])->name('tutor.group-sessions.show')->whereNumber('groupSession');
+        Route::post('/tutor/group-sessions/{groupSession}/cancel', [App\Http\Controllers\Tutor\GroupSessionController::class, 'cancel'])->name('tutor.group-sessions.cancel')->whereNumber('groupSession');
     });
 
     // Admin
