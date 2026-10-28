@@ -23,33 +23,46 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $upcomingSessions = Booking::where('student_id', $user->id)
+        $upcomingBookings = Booking::where('student_id', $user->id)
             ->upcoming()
-            ->with(['tutor.tutorProfile', 'subject'])
+            ->with(['tutor', 'subject'])
             ->orderBy('scheduled_at')
-            ->limit(5)
             ->get();
 
-        $recentSessions = Booking::where('student_id', $user->id)
+        $pastBookings = Booking::where('student_id', $user->id)
             ->history()
             ->with(['tutor', 'subject', 'review'])
-            ->orderByDesc('scheduled_at')
-            ->limit(5)
+            ->latest('scheduled_at')
+            ->take(50)
             ->get();
 
         $unreadMessages = Message::where('receiver_id', $user->id)
             ->whereNull('read_at')
             ->count();
 
+        $unreadNotifs = $user->unreadNotifications()->count();
+
         $totalSessions = Booking::where('student_id', $user->id)
             ->completed()
             ->count();
 
+        $pendingCount = Booking::where('student_id', $user->id)
+            ->where('status', 'pending')
+            ->count();
+
+        $totalSpent = Payment::where('user_id', $user->id)
+            ->where('status', 'success')
+            ->sum('amount');
+
         return view('pages.dashboard.student', compact(
-            'upcomingSessions',
-            'recentSessions',
+            'user',
+            'upcomingBookings',
+            'pastBookings',
             'unreadMessages',
-            'totalSessions'
+            'unreadNotifs',
+            'totalSessions',
+            'pendingCount',
+            'totalSpent'
         ));
     }
 

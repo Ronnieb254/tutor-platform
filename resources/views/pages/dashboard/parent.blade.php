@@ -352,7 +352,12 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 </div>
 {{-- ══════════════ CHATS ══════════════ --}}
 <div x-show="tab==='chats'" x-cloak>
-    @php $chatBookings = $user->bookingsAsStudent()->with(['tutor','messages' => fn($q) => $q->latest()->limit(1)])->whereIn('status',['confirmed','completed'])->latest()->get(); @endphp
+    @php
+        $allStudentIds = $children->pluck('id')->push($user->id)->unique();
+        $chatBookings = \App\Models\Booking::whereIn('student_id', $allStudentIds)
+            ->with(['tutor','messages' => fn($q) => $q->latest()->limit(1)])
+            ->whereIn('status',['confirmed','completed'])->latest()->get();
+    @endphp
     <div style="display:grid;grid-template-columns:300px 1fr;gap:16px;height:calc(100vh - 160px);min-height:500px;" class="chat-layout">
         <div class="card" style="display:flex;flex-direction:column;overflow:hidden;">
             <div style="padding:14px 16px;border-bottom:1px solid var(--hair);"><div class="sec-title">Conversations</div><div style="font-size:12px;color:var(--muted);">{{ $chatBookings->count() }} chats</div></div>
