@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/how-it-works', [HomeController::class, 'howItWorks'])->name('how-it-works');
 Route::get('/examiner-clinic', [App\Http\Controllers\ClinicController::class, 'index'])->name('examiner-clinic');
+Route::get('/group-sessions', [App\Http\Controllers\GroupSessionController::class, 'index'])->name('group-sessions.index');
+Route::get('/group-sessions/{groupSession}', [App\Http\Controllers\GroupSessionController::class, 'show'])->name('group-sessions.show');
 Route::get('/contact', fn() => view('pages.contact'))->name('contact');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
 
@@ -45,6 +47,10 @@ Route::middleware('auth')->group(function () {
 
     // Clinic enrollment (KSh 300 per session, 30 students max)
     Route::post('/clinic/{clinic}/enroll', [App\Http\Controllers\ClinicController::class, 'enroll'])->name('clinic.enroll');
+
+    // Group session enrollment (multi-student classes)
+    Route::post('/group-sessions/{groupSession}/enroll', [App\Http\Controllers\GroupSessionController::class, 'enroll'])->name('group-sessions.enroll');
+    Route::get('/group-sessions/my-sessions', [App\Http\Controllers\GroupSessionController::class, 'mySessions'])->name('group-sessions.my-sessions');
 
     // Clinic booking & payment flow
     Route::get('/clinic/{clinic}/checkout', [App\Http\Controllers\ClinicBookingController::class, 'checkout'])->name('clinic.checkout');
@@ -213,6 +219,13 @@ Route::middleware('auth')->group(function () {
 
         // Notifications mark read
         Route::post('/tutor/notifications/mark-all-read', [App\Http\Controllers\TutorController::class, 'markNotificationsRead'])->name('tutor.notifications.read');
+
+        // Group sessions (tutor creates & manages multi-student classes)
+        Route::get('/tutor/group-sessions',                          [App\Http\Controllers\Tutor\GroupSessionController::class, 'index'])->name('tutor.group-sessions.index');
+        Route::get('/tutor/group-sessions/create',                   [App\Http\Controllers\Tutor\GroupSessionController::class, 'create'])->name('tutor.group-sessions.create');
+        Route::post('/tutor/group-sessions',                         [App\Http\Controllers\Tutor\GroupSessionController::class, 'store'])->name('tutor.group-sessions.store');
+        Route::get('/tutor/group-sessions/{groupSession}',           [App\Http\Controllers\Tutor\GroupSessionController::class, 'show'])->name('tutor.group-sessions.show');
+        Route::post('/tutor/group-sessions/{groupSession}/cancel',  [App\Http\Controllers\Tutor\GroupSessionController::class, 'cancel'])->name('tutor.group-sessions.cancel');
     });
 
     // Admin

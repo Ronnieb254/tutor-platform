@@ -13,6 +13,7 @@ class ExaminerClinic extends Model
         'scheduled_at','duration_minutes','price','max_students','status','meeting_room',
         'created_by','session_code','recording_url',
         'is_auto_created',
+        'is_group_session','series_id','session_number','total_sessions',
     ];
 
     protected function casts(): array
@@ -81,6 +82,66 @@ class ExaminerClinic extends Model
     public function scopeUpcoming($q)
     {
         return $q->where('scheduled_at', '>', now())->where('status', 'scheduled');
+    }
+
+    /**
+     * Scope: only group sessions (multi-student classes).
+     * Guarded with Schema::hasColumn so the app keeps working before the
+     * is_group_session migration has run on production.
+     */
+    public function scopeGroupSessions($q)
+    {
+        if (!\Schema::hasColumn('examiner_clinics', 'is_group_session')) {
+            // Column doesn't exist yet — return everything, filter in PHP if needed
+            return $q;
+        }
+        return $q->where('is_group_session', true);
+    }
+
+    /**
+     * Scope: only examiner clinics (1-to-1 / default clinics).
+     */
+    public function scopeClinics($q)
+    {
+        if (!\Schema::hasColumn('examiner_clinics', 'is_group_session')) {
+            return $q;
+        }
+        return $q->where('is_group_session', false);
+    }
+
+    /**
+     * Scope: filter by series id (multi-session series).
+     */
+    public function scopeInSeries($q, string $seriesId)
+    {
+        if (!\Schema::hasColumn('examiner_clinics', 'series_id')) {
+            return $q;
+        }
+        return $q->where('series_id', $seriesId);
+    }
+
+    /**
+     * True if this record is a group session. Defensive against missing column.
+     */
+    public function isGroupSession(): bool
+    {
+        if (!\Schema::hasColumn('examiner_clinics', 'is_group_session')) {
+            return false;
+        }
+        return (bool) $this->is_group_session;
+    }
+
+    /**
+     * Get all sessions in the same series (including this one), ordered by number.
+     */
+    public function seriesSessions()
+    {
+        if (!\Schema::hasColumn('examiner_clinics', 'series_id') || !$this->series_id) {
+            return self::where('id', $this->id)->get();
+        }
+        return self::where('series_id', $this->series_id)
+            ->orderBy('session_number')
+            ->get();
     }
 
     public function scopeNotFull($q)
