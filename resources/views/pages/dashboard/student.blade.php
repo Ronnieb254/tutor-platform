@@ -290,7 +290,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </div>
             <div class="stat-lbl">Saved Tutors</div>
-            <div class="stat-val">{{ $user->wishlist()->count() }}</div>
+            <div class="stat-val">{{ $wishlistCount }}</div>
             <div class="stat-sub"><button @click="tab='wishlist'" style="background:none;border:none;color:var(--trust-blue);font-size:12px;cursor:pointer;font-family:inherit;">View wishlist →</button></div>
         </div>
     </div>
@@ -572,7 +572,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 {{-- ══════════════ PAYMENTS ══════════════ --}}
 <div x-show="tab==='payments'" x-cloak>
     @php
-    $payments = $user->payments()->with('booking.tutor')->where('status','success')->latest('paid_at')->paginate(20);
+    $payments = \App\Models\Payment::where('user_id', $user->id)->with('booking.tutor')->where('status','success')->latest('paid_at')->paginate(20);
     @endphp
 
     {{-- Summary --}}
@@ -596,7 +596,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <div class="stat-lbl">This Month</div>
-            <div class="stat-val" style="font-size:22px;">KSh {{ number_format($user->payments()->where('status','success')->whereMonth('paid_at',now()->month)->sum('amount')) }}</div>
+            <div class="stat-val" style="font-size:22px;">KSh {{ number_format($spentThisMonth) }}</div>
         </div>
     </div>
     <style>.pay-stats{grid-template-columns:1fr!important;}@media(min-width:768px){.pay-stats{grid-template-columns:repeat(3,1fr)!important;}}</style>
@@ -694,7 +694,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
 {{-- ══════════════ SAVED TUTORS (WISHLIST) ══════════════ --}}
 <div x-show="tab==='wishlist'" x-cloak>
-    @php $wishlist = $user->wishlist()->with(['user','subjects'])->get(); @endphp
+{{-- Wishlist data provided by DashboardController --}}
     @if($wishlist->isEmpty())
     <div class="card card-p" style="text-align:center;padding:64px;">
         <div style="font-size:48px;margin-bottom:12px;">❤️</div>

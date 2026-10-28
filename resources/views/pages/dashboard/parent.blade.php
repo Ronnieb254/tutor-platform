@@ -414,16 +414,12 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 </div>
 {{-- ══════════════ PAYMENTS ══════════════ --}}
 <div x-show="tab==='payments'" x-cloak>
-    @php 
-        $payments = $user->payments()->with('booking.tutor')->where('status','success')->latest('paid_at')->paginate(20, ['*'], 'payments_page'); 
-        $refunds = $user->refunds()->with('booking.tutor')->latest()->paginate(10, ['*'], 'refunds_page');
-        $totalRefunded = $user->refunds()->where('status', 'completed')->sum('amount');
-    @endphp
+{{-- Payments data provided by DashboardController --}}
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;" class="pay-stats">
         <div class="stat"><div class="stat-icon" style="background:rgba(10,100,188,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="stat-lbl">Total Spent</div><div class="stat-val" style="font-size:22px;">KSh {{ number_format($totalSpent) }}</div></div>
         <div class="stat"><div class="stat-icon" style="background:rgba(16,185,129,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="stat-lbl">Successful Payments</div><div class="stat-val">{{ $payments->total() }}</div></div>
         <div class="stat"><div class="stat-icon" style="background:rgba(236,72,153,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EC4899" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></div><div class="stat-lbl">Total Refunded</div><div class="stat-val" style="font-size:22px;">KSh {{ number_format($totalRefunded) }}</div></div>
-        <div class="stat"><div class="stat-icon" style="background:rgba(212,160,23,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-lbl">This Month</div><div class="stat-val" style="font-size:22px;">KSh {{ number_format($user->payments()->where('status','success')->whereMonth('paid_at',now()->month)->sum('amount')) }}</div></div>
+        <div class="stat"><div class="stat-icon" style="background:rgba(212,160,23,.1);"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-lbl">This Month</div><div class="stat-val" style="font-size:22px;">KSh {{ number_format($spentThisMonth) }}</div></div>
     </div>
     <style>.pay-stats{grid-template-columns:1fr!important;}@media(min-width:640px){.pay-stats{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.pay-stats{grid-template-columns:repeat(4,1fr)!important;}}</style>
     
@@ -507,7 +503,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 </div>
 {{-- ══════════════ NOTIFICATIONS ══════════════ --}}
 <div x-show="tab==='notifications'" x-cloak>
-    @php $notifications = $user->notifications()->latest()->paginate(20); @endphp
+{{-- Notifications data provided by DashboardController --}}
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
         <div><h2 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--ink);">Notifications</h2><p style="font-size:13px;color:var(--muted);">{{ $user->unreadNotifications()->count() }} unread</p></div>
         @if($user->unreadNotifications()->count() > 0)<form method="POST" action="/student/notifications/mark-all-read">@csrf<button class="btn btn-o btn-sm">Mark all read</button></form>@endif
@@ -534,7 +530,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 </div>
 {{-- ══════════════ SAVED TUTORS (WISHLIST) ══════════════ --}}
 <div x-show="tab==='wishlist'" x-cloak>
-    @php $wishlist = $user->wishlist()->with(['user','subjects'])->get(); @endphp
+{{-- Wishlist data provided by DashboardController --}}
     @if($wishlist->isEmpty())
     <div class="card card-p" style="text-align:center;padding:64px;">
         <div style="font-size:48px;margin-bottom:12px;">❤️</div>

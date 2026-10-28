@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, Booking, Message, Payment};
+use App\Models\{User, Booking, Message, Payment, Refund};
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -54,6 +54,18 @@ class DashboardController extends Controller
             ->where('status', 'success')
             ->sum('amount');
 
+        $spentThisMonth = Payment::where('user_id', $user->id)
+            ->where('status', 'success')
+            ->whereMonth('paid_at', now()->month)
+            ->whereYear('paid_at', now()->year)
+            ->sum('amount');
+
+        $wishlistCount = $user->wishlist()->count();
+
+        $wishlist = $user->wishlist()->with(['user', 'subjects'])->get();
+
+        $notifications = $user->notifications()->latest()->paginate(20);
+
         return view('pages.dashboard.student', compact(
             'user',
             'upcomingBookings',
@@ -62,7 +74,11 @@ class DashboardController extends Controller
             'unreadNotifs',
             'totalSessions',
             'pendingCount',
-            'totalSpent'
+            'totalSpent',
+            'spentThisMonth',
+            'wishlistCount',
+            'wishlist',
+            'notifications'
         ));
     }
 
@@ -160,6 +176,31 @@ class DashboardController extends Controller
             ->whereNull('read_at')
             ->count();
 
+        $payments = \App\Models\Payment::where('user_id', $user->id)
+            ->with(['booking.tutor'])
+            ->where('status', 'success')
+            ->latest('paid_at')
+            ->paginate(20, ['*'], 'payments_page');
+
+        $refunds = \App\Models\Refund::where('user_id', $user->id)
+            ->with(['booking.tutor'])
+            ->latest()
+            ->paginate(10, ['*'], 'refunds_page');
+
+        $totalRefunded = \App\Models\Refund::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->sum('amount');
+
+        $spentThisMonth = \App\Models\Payment::where('user_id', $user->id)
+            ->where('status', 'success')
+            ->whereMonth('paid_at', now()->month)
+            ->whereYear('paid_at', now()->year)
+            ->sum('amount');
+
+        $wishlist = $user->wishlist()->with(['user', 'subjects'])->get();
+
+        $notifications = $user->notifications()->latest()->paginate(20);
+
         return view('pages.dashboard.parent', compact(
             'user',
             'children',
@@ -169,7 +210,13 @@ class DashboardController extends Controller
             'totalSessions',
             'pendingCount',
             'unreadNotifs',
-            'unreadMessages'
+            'unreadMessages',
+            'payments',
+            'refunds',
+            'totalRefunded',
+            'spentThisMonth',
+            'wishlist',
+            'notifications'
         ));
     }
 
