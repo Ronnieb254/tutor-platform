@@ -251,7 +251,7 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr;gap:14px;" class="ex-g">
             @foreach([
-                ['fa-bolt','Instant M-Pesa Payouts','Payments are processed immediately upon completing your clinic session directly to your M-Pesa account. No delays, no follow-ups.'],
+                ['fa-bolt','Weekly Payouts on Request','Earnings from your clinic sessions are paid out weekly via M-Pesa. Simply request your payout from your dashboard — no delays, no follow-ups.'],
                 ['fa-arrow-trend-up','Build Authority & Reputation','Hosting featured clinics puts your professional profile in front of hundreds of parents and learners, positioning you as a top-tier tutor for 1-on-1 bookings.'],
                 ['fa-headset','Zero Administrative Overhead','You bring the expertise. Mwalimu handles student acquisition, M-Pesa ticketing, automated reminders, and classroom setup.'],
             ] as [$icon,$title,$desc])
