@@ -109,24 +109,53 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $children = $user->children;
-
+        // Children linked via parent_id on the users table
+        $children = $user->children()->get();
         $childIds = $children->pluck('id');
 
-        $upcomingSessions = Booking::whereIn('student_id', $childIds)
+        // Sessions booked by the parent themselves OR on behalf of their children
+        $allStudentIds = $childIds->push($user->id)->unique();
+
+        $upcomingBookings = Booking::whereIn('student_id', $allStudentIds)
             ->upcoming()
             ->with(['tutor', 'subject', 'student'])
             ->orderBy('scheduled_at')
-            ->limit(10)
             ->get();
+
+        $pastBookings = Booking::whereIn('student_id', $allStudentIds)
+            ->history()
+            ->with(['tutor', 'subject', 'student', 'review', 'refund'])
+            ->latest('scheduled_at')
+            ->take(50)
+            ->get();
+
+        $totalSpent = \App\Models\Payment::whereIn('user_id', $allStudentIds)
+            ->where('status', 'success')
+            ->sum('amount');
+
+        $totalSessions = Booking::whereIn('student_id', $allStudentIds)
+            ->where('status', 'completed')
+            ->count();
+
+        $pendingCount = Booking::whereIn('student_id', $allStudentIds)
+            ->where('status', 'pending')
+            ->count();
+
+        $unreadNotifs = $user->unreadNotifications()->count();
 
         $unreadMessages = Message::where('receiver_id', $user->id)
             ->whereNull('read_at')
             ->count();
 
         return view('pages.dashboard.parent', compact(
+            'user',
             'children',
-            'upcomingSessions',
+            'upcomingBookings',
+            'pastBookings',
+            'totalSpent',
+            'totalSessions',
+            'pendingCount',
+            'unreadNotifs',
             'unreadMessages'
         ));
     }
