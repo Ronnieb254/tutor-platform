@@ -355,7 +355,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
     @php
         $allStudentIds = $children->pluck('id')->push($user->id)->unique();
         $chatBookings = \App\Models\Booking::whereIn('student_id', $allStudentIds)
-            ->with(['tutor','messages' => fn($q) => $q->latest()->limit(1)])
+            ->with(['tutor','messages.sender' => fn($q) => $q->select('id','name','email')])
             ->whereIn('status',['confirmed','completed'])->latest()->get();
     @endphp
     <div style="display:grid;grid-template-columns:300px 1fr;gap:16px;height:calc(100vh - 160px);min-height:500px;" class="chat-layout">
@@ -363,7 +363,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div style="padding:14px 16px;border-bottom:1px solid var(--hair);"><div class="sec-title">Conversations</div><div style="font-size:12px;color:var(--muted);">{{ $chatBookings->count() }} chats</div></div>
             <div style="flex:1;overflow-y:auto;">
                 @forelse($chatBookings as $cb)
-                @php $lastMsg = $cb->messages->first(); $unread = $cb->messages()->where('receiver_id',$user->id)->whereNull('read_at')->count(); @endphp
+                @php $lastMsg = $cb->messages->first(); $unread = $cb->messages->where('receiver_id',$user->id)->whereNull('read_at')->count(); @endphp
                 <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(21,40,31,.04);transition:background .1s;" onmouseover="this.style.background='#F9FAF9'" onmouseout="this.style.background='transparent'">
                     <div class="av" style="width:40px;height:40px;background:#0A64BC;border-radius:11px;font-size:15px;flex-shrink:0;">{{ substr($cb->tutor->name,0,1) }}</div>
                     <div style="flex:1;min-width:0;">
@@ -381,13 +381,12 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
         </div>
         <div class="card" style="display:flex;flex-direction:column;overflow:hidden;">
             @if($chatBookings->isNotEmpty())
-            @php $fb = $chatBookings->first(); @endphp
+            @php $fb = $chatBookings->first(); $messages = $fb->messages->sortBy('created_at'); @endphp
             <div style="padding:14px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;gap:12px;">
                 <div class="av" style="width:36px;height:36px;background:#0A64BC;border-radius:10px;font-size:13px;">{{ substr($fb->tutor->name,0,1) }}</div>
                 <div><div style="font-weight:700;font-size:14px;">{{ $fb->tutor->name }}</div><div style="font-size:12px;color:var(--muted);">{{ $fb->subject?->name ?? 'General' }}</div></div>
                 <a href="{{ route('bookings.show',$fb->uuid) }}" class="btn btn-o btn-sm" style="margin-left:auto;">View Booking</a>
             </div>
-            @php $messages = $fb->messages()->with('sender')->oldest()->get(); @endphp
             <div style="flex:1;overflow-y:auto;padding:20px;" id="chat-messages">
                 @forelse($messages as $msg)
                 @php $isMine = $msg->sender_id === $user->id; @endphp
@@ -503,7 +502,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 </div>
 {{-- ══════════════ NOTIFICATIONS ══════════════ --}}
 <div x-show="tab==='notifications'" x-cloak>
-{{-- Notifications data provided by DashboardController --}}
+    @php /* $notifications already provided by DashboardController::parentDashboard() */ @endphp
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
         <div><h2 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--ink);">Notifications</h2><p style="font-size:13px;color:var(--muted);">{{ $user->unreadNotifications()->count() }} unread</p></div>
         @if($user->unreadNotifications()->count() > 0)<form method="POST" action="/student/notifications/mark-all-read">@csrf<button class="btn btn-o btn-sm">Mark all read</button></form>@endif
@@ -530,7 +529,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 </div>
 {{-- ══════════════ SAVED TUTORS (WISHLIST) ══════════════ --}}
 <div x-show="tab==='wishlist'" x-cloak>
-{{-- Wishlist data provided by DashboardController --}}
+    @php /* $wishlist already provided by DashboardController::parentDashboard() */ @endphp
     @if($wishlist->isEmpty())
     <div class="card card-p" style="text-align:center;padding:64px;">
         <div style="font-size:48px;margin-bottom:12px;">❤️</div>
