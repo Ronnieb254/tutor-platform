@@ -208,9 +208,9 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
         </div>
         @foreach($upcomingBookings->take(4) as $b)
         <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid rgba(21,40,31,.05);">
-            <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
+            <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($b->tutor?->name ?? '?',0,1) }}</div>
             <div style="flex:1;min-width:0;">
-                <div style="font-weight:600;font-size:14px;">{{ $b->tutor->name }}</div>
+                <div style="font-weight:600;font-size:14px;">{{ $b->tutor?->name ?? '—' }}</div>
                 <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} · {{ $b->duration_minutes }}min@if($b->student && $b->student->parent_id) · For: {{ $b->student->name }}@endif</div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
@@ -248,10 +248,10 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
     @forelse($upcomingBookings as $b)
     <div class="card" style="margin-bottom:14px;padding:20px;">
         <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
-            <div class="av" style="width:52px;height:52px;background:#0A64BC;border-radius:14px;font-size:20px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
+            <div class="av" style="width:52px;height:52px;background:#0A64BC;border-radius:14px;font-size:20px;flex-shrink:0;">{{ substr($b->tutor?->name ?? '?',0,1) }}</div>
             <div style="flex:1;min-width:180px;">
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
-                    <span style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);">{{ $b->tutor->name }}</span>
+                    <span style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);">{{ $b->tutor?->name ?? '—' }}</span>
                     @php $sc=['pending'=>'bdg-amber','confirmed'=>'bdg-blue','completed'=>'bdg-green','cancelled'=>'bdg-gray'][$b->status]??'bdg-gray'; @endphp
                     <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
                     @if($b->canJoin())<span class="bdg bdg-mint">🔴 Live Now</span>@endif
@@ -310,8 +310,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                         $hasRefund = $b->hasRefund ?? false;
                     @endphp
                     <tr>
-                        <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:32px;height:32px;background:#0A64BC;border-radius:9px;font-size:13px;">{{ substr($b->tutor->name,0,1) }}</div><div><div style="font-weight:600;font-size:13.5px;">{{ $b->tutor->name }}</div></div></div></td>
-                        <td style="color:var(--muted);">{{ $b->student && $b->student->parent_id ? $b->student->name : '—' }}</td>
+                        <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:32px;height:32px;background:#0A64BC;border-radius:9px;font-size:13px;">{{ substr($b->tutor?->name ?? '?',0,1) }}</div><div><div style="font-weight:600;font-size:13.5px;">{{ $b->tutor?->name ?? '—' }}</div></div></div></td>
+                        <td style="color:var(--muted);">{{ ($b->student && $b->student->parent_id) ? $b->student->name : '—' }}</td>
                         <td style="color:var(--muted);">{{ $b->subject?->name ?? 'General' }}</td>
                         <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y g:ia') }}</td>
                         <td>{{ $b->duration_minutes }}min</td>
@@ -365,10 +365,10 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 @forelse($chatBookings as $cb)
                 @php $lastMsg = $cb->messages->first(); $unread = $cb->messages->where('receiver_id',$user->id)->whereNull('read_at')->count(); @endphp
                 <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(21,40,31,.04);transition:background .1s;" onmouseover="this.style.background='#F9FAF9'" onmouseout="this.style.background='transparent'">
-                    <div class="av" style="width:40px;height:40px;background:#0A64BC;border-radius:11px;font-size:15px;flex-shrink:0;">{{ substr($cb->tutor->name,0,1) }}</div>
+                    <div class="av" style="width:40px;height:40px;background:#0A64BC;border-radius:11px;font-size:15px;flex-shrink:0;">{{ substr($cb->tutor?->name ?? '?',0,1) }}</div>
                     <div style="flex:1;min-width:0;">
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;">
-                            <span style="font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $cb->tutor->name }}</span>
+                            <span style="font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $cb->tutor?->name ?? '—' }}</span>
                             @if($unread > 0)<span class="bdg bdg-trust-blue" style="font-size:10px;padding:2px 6px;flex-shrink:0;">{{ $unread }}</span>@endif
                         </div>
                         <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $lastMsg ? Str::limit($lastMsg->body,40) : 'No messages yet' }}</div>
@@ -383,8 +383,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             @if($chatBookings->isNotEmpty())
             @php $fb = $chatBookings->first(); $messages = $fb->messages->sortBy('created_at'); @endphp
             <div style="padding:14px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;gap:12px;">
-                <div class="av" style="width:36px;height:36px;background:#0A64BC;border-radius:10px;font-size:13px;">{{ substr($fb->tutor->name,0,1) }}</div>
-                <div><div style="font-weight:700;font-size:14px;">{{ $fb->tutor->name }}</div><div style="font-size:12px;color:var(--muted);">{{ $fb->subject?->name ?? 'General' }}</div></div>
+                <div class="av" style="width:36px;height:36px;background:#0A64BC;border-radius:10px;font-size:13px;">{{ substr($fb->tutor?->name ?? '?',0,1) }}</div>
+                <div><div style="font-weight:700;font-size:14px;">{{ $fb->tutor?->name ?? '—' }}</div><div style="font-size:12px;color:var(--muted);">{{ $fb->subject?->name ?? 'General' }}</div></div>
                 <a href="{{ route('bookings.show',$fb->uuid) }}" class="btn btn-o btn-sm" style="margin-left:auto;">View Booking</a>
             </div>
             <div style="flex:1;overflow-y:auto;padding:20px;" id="chat-messages">
@@ -434,9 +434,10 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 <thead><tr><th>Booking</th><th>Tutor</th><th>Reason</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
                 <tbody>
                     @foreach($refunds as $refund)
+                    @php $rb = $refund->booking; @endphp
                     <tr>
-                        <td><a href="{{ route('bookings.show', $refund->booking->uuid) }}" style="color:var(--trust-blue);font-weight:600;text-decoration:none;">#{{ $refund->booking->id }}</a></td>
-                        <td>{{ $refund->booking->tutor->name }}</td>
+                        <td>@if($rb)<a href="{{ route('bookings.show', $rb->uuid) }}" style="color:var(--trust-blue);font-weight:600;text-decoration:none;">#{{ $rb->id }}</a>@else<span style="color:var(--muted);">—</span>@endif</td>
+                        <td>{{ $rb?->tutor?->name ?? '—' }}</td>
                         <td>
                             @php
                                 $reasonLabels = [
@@ -482,14 +483,15 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 <thead><tr><th>Tutor</th><th>Reference</th><th>Date</th><th>Session</th><th>Amount</th><th>Status</th><th></th></tr></thead>
                 <tbody>
                     @forelse($payments as $payment)
+                    @php $pb = $payment->booking; @endphp
                     <tr>
-                        <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($payment->booking?->tutor->name ?? 'T',0,1) }}</div>{{ $payment->booking?->tutor->name ?? '—' }}</div></td>
+                        <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($pb?->tutor?->name ?? 'T',0,1) }}</div>{{ $pb?->tutor?->name ?? '—' }}</div></td>
                         <td><code style="background:#F4F6F4;padding:2px 8px;border-radius:6px;font-size:11px;">{{ Str::limit($payment->paystack_reference,18) }}</code></td>
                         <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? '—' }}</td>
-                        <td style="font-size:13px;color:var(--muted);">{{ $payment->booking?->duration_minutes }}min · {{ $payment->booking?->subject?->name ?? 'General' }}</td>
+                        <td style="font-size:13px;color:var(--muted);">{{ $pb?->duration_minutes }}min · {{ $pb?->subject?->name ?? 'General' }}</td>
                         <td style="font-weight:700;color:var(--ink);">KSh {{ number_format($payment->amount) }}</td>
                         <td><span class="bdg bdg-green">✓ Paid</span></td>
-                        <td>@if($payment->booking)<a href="{{ route('bookings.show',$payment->booking->uuid) }}" class="btn btn-o btn-sm">View</a>@endif</td>
+                        <td>@if($pb)<a href="{{ route('bookings.show',$pb->uuid) }}" class="btn btn-o btn-sm">View</a>@endif</td>
                     </tr>
                     @empty
                     <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No payments yet</td></tr>
