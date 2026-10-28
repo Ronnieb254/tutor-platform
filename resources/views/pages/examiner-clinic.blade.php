@@ -135,8 +135,8 @@
             </div>
         </form> -->
 
-        {{-- RESULTS COUNT --}}
-        <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:16px;"><strong style="color:#15281F;">{{ $clinics->total() }}</strong> clinic{{ $clinics->total() != 1 ? 's' : '' }} found</p>
+        <!-- {{-- RESULTS COUNT --}}
+        <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:16px;"><strong style="color:#15281F;">{{ $clinics->total() }}</strong> clinic{{ $clinics->total() != 1 ? 's' : '' }} found</p> -->
 
         @if($clinics->isEmpty())
         <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:64px;text-align:center;">
