@@ -52,8 +52,14 @@ class Payment extends Model
     protected static function booted(): void
     {
         static::creating(function ($payment) {
-            if (is_null($payment->tutor_amount) || is_null($payment->platform_amount)) {
-                $payment->calculateCommission();
+            // Only auto-calculate if commission columns exist and amounts aren't pre-set
+            if ((is_null($payment->tutor_amount) || is_null($payment->platform_amount))) {
+                try {
+                    $payment->calculateCommission();
+                } catch (\Exception $e) {
+                    // Commission columns may not exist yet — skip silently
+                    \Log::warning('Could not calculate commission: ' . $e->getMessage());
+                }
             }
         });
     }

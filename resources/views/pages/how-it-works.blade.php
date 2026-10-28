@@ -113,7 +113,7 @@
                     ['4','fa-calendar-check','#E8522A','Profile Goes Live','Once approved, your profile is visible to thousands of students and parents searching for tutors. Students can book sessions with you instantly.','Profile listed in search results','Students can book & pay instantly','You receive booking notifications','Dashboard to manage all sessions'],
                     ['5','fa-bell','#3B82F6','Receive Bookings & Codes','When a student books and pays, you receive an email notification with session details, your earnings, and your unique TUT-XXXXXX session access code.','Email: "New Session Booked"','Your TUT-XXXXXX code included','Session details and date/time shown','Also visible in your dashboard'],
                     ['6','fa-video','#EC4899','Host Your Session','On session day, enter your TUT-XXXXXX code to open the private BigBlueButton classroom as the moderator. You control recording and screen sharing.','Enter TUT-XXXXXX to join as moderator','Full video, audio, screen share','Earnings credited after completion','Request payout via M-Pesa anytime'],
-                    ['7','fa-money-bill-wave','#10B981','Get Paid','After each completed session, your earnings are automatically credited to your Mwalimu wallet (platform keeps 15%). Request payout to M-Pesa or bank anytime.','Earnings credited post-session','Platform fee: 15% — you keep 85%','Request payout to M-Pesa or bank','Processed within 2–3 business days'],
+                    ['7','fa-money-bill-wave','#10B981','Get Paid','After each completed session, your earnings are automatically credited to your Mwalimu wallet. Request payout to M-Pesa or bank anytime.','Earnings credited post-session','Request payout to M-Pesa or bank','Processed within 2–3 business days'],
                 ]; @endphp
                 @foreach($tutorSteps as [$num,$icon,$color,$title,$desc,$p1,$p2,$p3,$p4])
                 <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;display:flex;gap:20px;align-items:flex-start;box-shadow:0 2px 16px rgba(21,40,31,.04);">
@@ -146,7 +146,7 @@
     <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
         <div style="text-align:center;margin-bottom:44px;">
             <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#fff;margin-bottom:10px;">Simple, fixed pricing</h2>
-            <p style="font-size:17px;color:rgba(255,255,255,.5);">No negotiation, no surprises. Same price for every tutor.</p>
+            <!-- <p style="font-size:17px;color:rgba(255,255,255,.5);">No negotiation, no surprises. Same price for every tutor.</p> -->
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-grid">
             @foreach([
@@ -164,10 +164,11 @@
                             <div style="font-size:12px;color:rgba(255,255,255,.4);">{{ $mins }} minutes</div>
                         </div>
                     </div>
-                    <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
+                   
                 </div>
                 <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:10px;">{{ $desc }}</p>
                 <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fa-solid fa-check fa-xs" style="color:#10B981;margin-right:4px;"></i>{{ $ideal }}</p>
+            <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
             </div>
             @endforeach
         </div>
@@ -289,7 +290,7 @@
             ['Do I need to download anything to join a session?','No. Sessions run in your browser using BigBlueButton. Just enter your access code on the booking page and your session opens in a new browser tab. Works on mobile and desktop.'],
             ['Can parents book sessions for their children?','Yes. Select "Parent" when creating your account. You can add child profiles (name, age, grade level) and book sessions on their behalf. Your session code is sent to your email.'],
             ['How are session prices calculated?','Mwalimu uses fixed pricing for all sessions: Quick Help (20min) = KSh 300, Guided Practice (40min) = KSh 500, Deep Dive (60min) = KSh 700. The same price applies regardless of which tutor you choose.'],
-            ['How and when do tutors get paid?','After a session is completed, the tutor\'s earnings (85% of the session fee — Mwalimu keeps 15%) are credited to their in-app wallet. Tutors can request a payout to M-Pesa or bank at any time. Payouts are processed within 2–3 business days.'],
+            ['How and when do tutors get paid?','After a session is completed, the tutor\'s earnings are credited to their in-app wallet. Tutors can request a payout to M-Pesa or bank at any time. Payouts are processed within 2–3 business days.'],
             ['What happens if a tutor cancels?','If a tutor cancels a confirmed session, you receive a full refund automatically. We flag repeated cancellations and may suspend tutors who cancel excessively.'],
             ['How does the Speedy Verification work for tutors?','New tutors can skip the standard 72-hour queue and receive verification within 24 hours by paying a one-time KSh 1,000 Speedy Verification fee during the onboarding process.'],
         ] as [$q,$a])

@@ -27,16 +27,26 @@ class ExaminerClinic extends Model
     protected static function booted(): void
     {
         static::creating(function ($clinic) {
-            $clinic->meeting_room = $clinic->meeting_room ?? 'MwalimuClinic-' . Str::uuid();
-            $clinic->batch_number = $clinic->batch_number ?? 1;
-            $clinic->session_code = $clinic->session_code ?? 'CLINIC-' . strtoupper(Str::random(6));
-            $clinic->max_students = $clinic->max_students ?? 30; // Default 30 slots
+            // Set defaults only for columns that exist in the DB
+            $clinic->meeting_room = $clinic->meeting_room ?? ('MwalimuClinic-' . Str::uuid());
+            $clinic->max_students = $clinic->max_students ?? 30;
+
+            if (\Schema::hasColumn('examiner_clinics', 'batch_number')) {
+                $clinic->batch_number = $clinic->batch_number ?? 1;
+            }
+            if (\Schema::hasColumn('examiner_clinics', 'session_code')) {
+                $clinic->session_code = $clinic->session_code ?? ('CLINIC-' . strtoupper(Str::random(6)));
+            }
         });
 
         // Auto-create overflow clinic when reaching 30 students
         static::updated(function ($clinic) {
-            if ($clinic->isFull() && !$clinic->hasOverflowClinic()) {
-                $clinic->createOverflowClinic();
+            try {
+                if ($clinic->isFull() && !$clinic->hasOverflowClinic()) {
+                    $clinic->createOverflowClinic();
+                }
+            } catch (\Exception $e) {
+                \Log::warning('Could not auto-create overflow clinic: ' . $e->getMessage());
             }
         });
     }
@@ -99,6 +109,9 @@ class ExaminerClinic extends Model
      */
     public function hasOverflowClinic(): bool
     {
+        if (!\Schema::hasColumn('examiner_clinics', 'parent_clinic_id')) {
+            return false;
+        }
         return self::where('parent_clinic_id', $this->id)
             ->where('is_auto_created', true)
             ->exists();
@@ -125,28 +138,48 @@ class ExaminerClinic extends Model
         $nextStart = $previousEnd->addMinutes(30); // 30-minute break
 
         // Count existing batches to determine the next batch number
-        $nextBatch = self::where(function ($q) {
-            $q->where('id', $this->id)
-              ->orWhere('parent_clinic_id', $this->id);
-        })->max('batch_number') + 1;
+        $nextBatch = 1;
+        if (\Schema::hasColumn('examiner_clinics', 'batch_number')) {
+            $nextBatch = self::where(function ($q) {
+                $q->where('id', $this->id)
+                  ->orWhere('parent_clinic_id', $this->id);
+            })->max('batch_number') + 1;
+        }
 
-        $overflow = self::create([
+        $overflowData = [
             'tutor_id'         => $this->tutor_id,
             'subject_id'       => $this->subject_id,
-            'paper_type'       => $this->paper_type,
-            'parent_clinic_id' => $this->id,
-            'batch_number'     => $nextBatch,
             'title'            => $this->title . ' – Batch ' . $nextBatch,
             'description'      => $this->description,
             'topics_covered'   => $this->topics_covered,
             'scheduled_at'     => $nextStart,
             'duration_minutes' => $this->duration_minutes,
             'price'            => $this->price,
-            'max_students'     => 30, // Always 30 slots
+            'max_students'     => 30,
             'status'           => 'scheduled',
-            'created_by'       => $this->created_by,
-            'is_auto_created'  => true,
-        ]);
+        ];
+
+        // Only set columns that exist in the DB
+        if (\Schema::hasColumn('examiner_clinics', 'paper_type')) {
+            $overflowData['paper_type'] = $this->paper_type;
+        }
+        if (\Schema::hasColumn('examiner_clinics', 'parent_clinic_id')) {
+            $overflowData['parent_clinic_id'] = $this->id;
+        }
+        if (\Schema::hasColumn('examiner_clinics', 'batch_number')) {
+            $overflowData['batch_number'] = $nextBatch;
+        }
+        if (\Schema::hasColumn('examiner_clinics', 'name')) {
+            $overflowData['name'] = $this->title . ' – Batch ' . $nextBatch;
+        }
+        if (\Schema::hasColumn('examiner_clinics', 'created_by')) {
+            $overflowData['created_by'] = $this->created_by;
+        }
+        if (\Schema::hasColumn('examiner_clinics', 'is_auto_created')) {
+            $overflowData['is_auto_created'] = true;
+        }
+
+        $overflow = self::create($overflowData);
 
         \Log::info("Auto-created overflow clinic #{$overflow->id} for clinic #{$this->id}", [
             'original_start' => $this->scheduled_at,
@@ -217,13 +250,15 @@ class ExaminerClinic extends Model
      */
     public static function findNextAvailable(?int $subjectId, ?string $paperType = null): ?self
     {
-        return self::upcoming()
-            ->where('subject_id', $subjectId)
-            ->when($paperType, fn($q) => $q->where('paper_type', $paperType))
-            ->whereDoesntHave('enrollments', function ($q) {
-                // Only exclude clinics that are actually full
-            })
-            ->get()
+        $query = self::upcoming()
+            ->where('subject_id', $subjectId);
+
+        // Only filter by paper_type if the column exists and a value is provided
+        if ($paperType && \Schema::hasColumn('examiner_clinics', 'paper_type')) {
+            $query->where('paper_type', $paperType);
+        }
+
+        return $query->get()
             ->filter(fn($c) => !$c->isFull())
             ->sortBy('scheduled_at')
             ->first();

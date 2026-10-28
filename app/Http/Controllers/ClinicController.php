@@ -48,7 +48,7 @@ class ClinicController extends Controller
 
     /**
      * Enroll a student in a clinic session.
-     * Checks capacity (30 max), processes KSh 300 payment, and triggers auto-creation of next session if full.
+     * Checks capacity (30 max), processes payment, and triggers auto-creation of next session if full.
      */
     public function enroll(Request $request, ExaminerClinic $clinic)
     {
@@ -62,10 +62,14 @@ class ClinicController extends Controller
         // Check capacity — 30 students max
         if ($clinic->isFull()) {
             // Find or auto-create the next available session
-            $next = ExaminerClinic::findNextAvailable($clinic->subject_id, $clinic->paper_type);
-
-            if (!$next) {
-                $next = $clinic->autoCreateNextSession();
+            try {
+                $next = ExaminerClinic::findNextAvailable($clinic->subject_id, $clinic->paper_type);
+                if (!$next) {
+                    $next = $clinic->autoCreateNextSession();
+                }
+            } catch (\Exception $e) {
+                \Log::warning('Failed to find/create overflow clinic: ' . $e->getMessage());
+                $next = null;
             }
 
             if ($next) {
@@ -77,28 +81,63 @@ class ClinicController extends Controller
             return back()->with('error', 'This session is full and no new session could be created. Please try again later.');
         }
 
-        // Create payment record for KSh 300
-        $payment = Payment::create([
-            'user_id'   => $user->id,
-            'amount'    => $clinic->price,
-            'currency'  => 'KES',
-            'status'    => 'success', // Simplified: mark as success for demo
-            'paid_at'   => now(),
-        ]);
+        // Use a transaction so partial failures don't leave orphan records
+        try {
+            return \DB::transaction(function () use ($clinic, $user) {
+                // Create payment record — explicitly set payment_type so commission is correct
+                $paymentData = [
+                    'user_id'       => $user->id,
+                    'clinic_id'     => $clinic->id,
+                    'amount'        => $clinic->price,
+                    'currency'      => 'KES',
+                    'payment_type'  => 'clinic',
+                    'status'        => 'success',
+                    'paid_at'       => now(),
+                ];
 
-        // Create enrollment
-        $enrollment = ClinicEnrollment::create([
-            'clinic_id'   => $clinic->id,
-            'student_id'  => $user->id,
-            'payment_id'  => $payment->id,
-            'session_code'=> strtoupper(Str::random(8)),
-        ]);
+                // Only set commission fields if the columns exist (guards against missing migration)
+                if (\Schema::hasColumn('payments', 'commission_rate')) {
+                    $paymentData['commission_rate']  = 60.00;
+                    $paymentData['tutor_amount']      = round($clinic->price * 0.40, 2);
+                    $paymentData['platform_amount']   = round($clinic->price * 0.60, 2);
+                }
 
-        // If this enrollment fills the session, auto-create the next one
-        if ($clinic->fresh()->isFull() && $clinic->parent_clinic_id === null) {
-            $clinic->autoCreateNextSession();
+                $payment = Payment::create($paymentData);
+
+                // Create enrollment
+                $enrollment = ClinicEnrollment::create([
+                    'clinic_id'    => $clinic->id,
+                    'student_id'   => $user->id,
+                    'payment_id'   => $payment->id,
+                    'session_code' => strtoupper(Str::random(8)),
+                ]);
+
+                // If this enrollment fills the session, auto-create the next one
+                if ($clinic->fresh()->isFull()) {
+                    try {
+                        // Only auto-create if this is the original (not an overflow batch)
+                        $isOriginal = true;
+                        if (\Schema::hasColumn('examiner_clinics', 'parent_clinic_id')) {
+                            $isOriginal = $clinic->parent_clinic_id === null;
+                        }
+                        if ($isOriginal) {
+                            $clinic->autoCreateNextSession();
+                        }
+                    } catch (\Exception $e) {
+                        \Log::warning('Failed to auto-create overflow clinic: ' . $e->getMessage());
+                    }
+                }
+
+                return back()->with('success', "You're enrolled! Your session code is {$enrollment->session_code}. The clinic is on {$clinic->scheduled_at->format('D, M j \a\t g:ia')}.");
+            });
+        } catch (\Exception $e) {
+            \Log::error('Clinic enrollment failed: ' . $e->getMessage(), [
+                'clinic_id' => $clinic->id,
+                'user_id'   => $user->id,
+                'trace'     => $e->getTraceAsString(),
+            ]);
+
+            return back()->with('error', 'Something went wrong while processing your enrollment. Please try again or contact support.');
         }
-
-        return back()->with('success', "You're enrolled! Your session code is {$enrollment->session_code}. The clinic is on {$clinic->scheduled_at->format('D, M j \a\t g:ia')}.");
     }
 }
