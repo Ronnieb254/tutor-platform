@@ -86,13 +86,14 @@ class ClinicController extends Controller
             return \DB::transaction(function () use ($clinic, $user) {
                 // Create payment record — explicitly set payment_type so commission is correct
                 $paymentData = [
-                    'user_id'       => $user->id,
-                    'clinic_id'     => $clinic->id,
-                    'amount'        => $clinic->price,
-                    'currency'      => 'KES',
-                    'payment_type'  => 'clinic',
-                    'status'        => 'success',
-                    'paid_at'       => now(),
+                    'user_id'             => $user->id,
+                    'clinic_id'           => $clinic->id,
+                    'amount'              => $clinic->price,
+                    'currency'            => 'KES',
+                    'payment_type'        => 'clinic',
+                    'status'              => 'success',
+                    'paid_at'             => now(),
+                    'paystack_reference'  => 'CLINIC-' . strtoupper(Str::random(12)),
                 ];
 
                 // Only set commission fields if the columns exist (guards against missing migration)

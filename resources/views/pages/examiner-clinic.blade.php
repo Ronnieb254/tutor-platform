@@ -205,12 +205,10 @@
                         <i class="fa-solid fa-lock fa-xs"></i> Session Full
                     </span>
                     @else
-                    <form method="POST" action="{{ route('clinic.enroll', $clinic) }}">
-                        @csrf
-                        <button type="submit" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
-                            <i class="fa-solid fa-ticket fa-sm"></i> Book Spot — KSh {{ number_format($clinic->price) }}
-                        </button>
-                    </form>
+                    <a href="{{ route('clinic.checkout', $clinic) }}"
+                       style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+                        <i class="fa-solid fa-ticket fa-sm"></i> Book Spot — KSh {{ number_format($clinic->price) }}
+                    </a>
                     @endif
                     @else
                     <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;text-decoration:none;">

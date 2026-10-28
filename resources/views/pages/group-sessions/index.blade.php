@@ -235,51 +235,6 @@
     </div>
 </section>
 
-{{-- FOR TUTORS --}}
-<section style="padding:72px 0;background:rgba(21,40,31,.03);">
-    <div style="max-width:960px;margin:0 auto;padding:0 24px;">
-        <div style="text-align:center;margin-bottom:40px;">
-            <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,38px);color:#15281F;margin-bottom:10px;">Host a Group Session</h2>
-            <p style="font-size:16px;color:rgba(21,40,31,.55);">Create a single class or a multi-week series. Set your price, capacity, and schedule — we handle the rest.</p>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr;gap:14px;" class="ex-g">
-            @foreach([
-                ['fa-bolt','Instant M-Pesa Payouts','Payments are processed immediately upon completing your session directly to your M-Pesa account. No delays, no follow-ups.'],
-                ['fa-layer-group','Single or Series','Host a one-off class or build a multi-week series. Students enroll per session — flexible for everyone.'],
-                ['fa-headset','Zero Administrative Overhead','You bring the expertise. Mwalimu handles student acquisition, M-Pesa ticketing, automated reminders, and Jitsi room setup.'],
-            ] as [$icon,$title,$desc])
-            <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;display:flex;gap:16px;align-items:flex-start;">
-                <div style="width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i class="fa-solid {{ $icon }}" style="color:#0A64BC;font-size:18px;"></i>
-                </div>
-                <div>
-                    <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:6px;">{{ $title }}</h3>
-                    <p style="font-size:14px;color:rgba(21,40,31,.6);line-height:1.75;">{{ $desc }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        <div style="text-align:center;margin-top:28px;">
-            @auth
-            @if(auth()->user()->role === 'tutor')
-            <a href="{{ route('tutor.group-sessions.create') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
-                <i class="fa-solid fa-plus fa-sm"></i> Create a Group Session
-            </a>
-            @else
-            <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
-                <i class="fa-solid fa-chalkboard-user fa-sm"></i> Register as a Tutor
-            </a>
-            @endif
-            @else
-            <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
-                <i class="fa-solid fa-chalkboard-user fa-sm"></i> Register as a Tutor
-            </a>
-            @endauth
-        </div>
-        <style>.ex-g{grid-template-columns:1fr!important;}@media(min-width:768px){.ex-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
-    </div>
-</section>
-
 @include('partials.footer')
 @livewireScripts
 </body>
