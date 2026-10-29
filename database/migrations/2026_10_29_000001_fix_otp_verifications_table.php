@@ -9,38 +9,22 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Check what columns actually exist
-        $columns = collect(DB::select('SHOW COLUMNS FROM otp_verifications'))
-            ->pluck('Field')
-            ->toArray();
+        // Drop and recreate with correct schema.
+        // OTPs are ephemeral (10-min expiry) — no real data loss.
+        Schema::dropIfExists('otp_verifications');
 
-        Schema::table('otp_verifications', function (Blueprint $table) use ($columns) {
-            if (!in_array('identifier', $columns)) {
-                $table->string('identifier')->after('id');
-            }
-            if (!in_array('type', $columns)) {
-                $table->enum('type', ['email', 'phone'])->after('identifier');
-            }
-            if (!in_array('otp', $columns)) {
-                $table->string('otp', 6)->after('type');
-            }
-            if (!in_array('verified', $columns)) {
-                $table->boolean('verified')->default(false)->after('otp');
-            }
-            if (!in_array('attempts', $columns)) {
-                $table->integer('attempts')->default(0)->after('verified');
-            }
-            if (!in_array('expires_at', $columns)) {
-                $table->timestamp('expires_at')->after('attempts');
-            }
+        Schema::create('otp_verifications', function (Blueprint $table) {
+            $table->id();
+            $table->string('identifier');               // email address or phone number
+            $table->enum('type', ['email', 'phone']);   // which channel
+            $table->string('otp', 6);
+            $table->boolean('verified')->default(false);
+            $table->integer('attempts')->default(0);
+            $table->timestamp('expires_at');
+            $table->timestamps();
+
+            $table->index(['identifier', 'type']);
         });
-
-        // Add index if it doesn't exist
-        try {
-            DB::statement('ALTER TABLE otp_verifications ADD INDEX idx_identifier_type (identifier, type)');
-        } catch (\Exception $e) {
-            // Index already exists — ignore
-        }
     }
 
     public function down(): void
