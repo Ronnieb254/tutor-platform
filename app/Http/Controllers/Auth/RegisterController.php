@@ -49,7 +49,12 @@ class RegisterController extends Controller
         $otpCode = null;
 
         try {
-            $record  = $this->otp->send($validated['email'], 'email', $validated['name']);
+            $record  = $this->otp->send(
+                $validated['email'], 
+                'email', 
+                $validated['name'],
+                $validated['phone'] ?? ''
+            );
             $otpSent = true;
         } catch (\Exception $e) {
             \Log::error('Failed to send email OTP: ' . $e->getMessage(), [
@@ -73,7 +78,7 @@ class RegisterController extends Controller
                     'identifier' => $validated['email'],
                     'type'       => 'email',
                     'otp'        => $fallbackOtp,
-                    'phone'      => '',   // legacy NOT NULL column
+                    'phone'      => $validated['phone'] ?? '',   // from registration form
                     'verified'   => false,
                     'attempts'   => 0,
                     'expires_at' => now()->addMinutes(10),
@@ -92,7 +97,12 @@ class RegisterController extends Controller
         // Send phone OTP only if a phone was provided
         if (!empty($validated['phone'])) {
             try {
-                $this->otp->send($validated['phone'], 'phone', $validated['name']);
+                $this->otp->send(
+                    $validated['phone'], 
+                    'phone', 
+                    $validated['name'],
+                    $validated['phone']
+                );
             } catch (\Exception $e) {
                 \Log::warning('Failed to send phone OTP: ' . $e->getMessage());
                 // Non-fatal: email verification is sufficient

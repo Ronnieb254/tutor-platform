@@ -184,7 +184,7 @@ h1{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);
             <div style="margin-bottom:8px;">
                 <div class="section-label">
                     <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 15.1 19.79 19.79 0 0 1 1.62 6.47 2 2 0 0 1 3.6 4h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 11.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    Phone Code — {{ $phone }}
+                    Phone Code (Optional) — {{ $phone }}
                 </div>
                 <div class="otp-group" id="phone-otp-group">
                     @for($i = 0; $i < 6; $i++)
@@ -284,10 +284,9 @@ function setupOtpInputs(group) {
 
 function checkSubmitReady() {
     const emailVal = document.getElementById('email_otp_value').value;
-    const phoneInput = document.getElementById('phone_otp_value');
     const emailReady = emailVal.length === 6;
-    const phoneReady = !phoneInput || document.getElementById('phone_otp_value').value.length === 6;
-    document.getElementById('submit-btn').disabled = !(emailReady && phoneReady);
+    // Email code is sufficient — phone code is optional
+    document.getElementById('submit-btn').disabled = !emailReady;
 }
 
 setupOtpInputs('email');

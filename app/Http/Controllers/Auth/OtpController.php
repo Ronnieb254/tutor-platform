@@ -140,7 +140,12 @@ class OtpController extends Controller
         }
 
         try {
-            $this->otp->send($identifier, $type, $pending['name']);
+            $this->otp->send(
+                $identifier, 
+                $type, 
+                $pending['name'],
+                $pending['phone'] ?? ''
+            );
             return response()->json([
                 'success' => true,
                 'message' => "A new code has been sent to your {$type}.",
