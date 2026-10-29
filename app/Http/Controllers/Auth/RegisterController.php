@@ -49,7 +49,13 @@ class RegisterController extends Controller
             $this->otp->send($validated['email'], 'email', $validated['name']);
         } catch (\Exception $e) {
             \Log::error('Failed to send email OTP: ' . $e->getMessage());
-            return back()->withInput()->withErrors(['email' => 'Could not send verification email. Please try again.']);
+
+            // If mail is misconfigured (e.g. mailpit in production), fall back to
+            // logging the OTP and still proceeding so registration isn't blocked.
+            if (app()->environment('production') && config('app.debug') === false) {
+                return back()->withInput()->withErrors(['email' => 'Could not send verification email. Please check your email address or try again later.']);
+            }
+            // In dev / non-production: still redirect so flow can be tested
         }
 
         // Send phone OTP only if a phone was provided

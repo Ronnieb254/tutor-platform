@@ -103,8 +103,11 @@ class OtpService
                     ->subject("{$otp} is your {$appName} verification code")
                     ->html($this->emailTemplate($otp, $name, $appName));
             });
+
+            Log::info("OTP email sent to {$email}");
         } catch (\Exception $e) {
-            Log::error('OTP email failed', ['email' => $email, 'error' => $e->getMessage()]);
+            // Always log the OTP so it can be retrieved during debugging
+            Log::error("OTP email FAILED for {$email} — OTP was: {$otp}", ['error' => $e->getMessage()]);
             throw $e;
         }
     }
