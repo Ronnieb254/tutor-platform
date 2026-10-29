@@ -112,7 +112,7 @@
                     ['3','fa-clock','#EEBE15','Get Verified','Standard verification takes up to 72 hours. Need it faster? Pay KSh 1,000 for Speedy Verification — approved within 24 hours.','Standard: up to 72 hours','Speedy: 24 hours (KSh 1,000 fee)','Email notification when approved','Action required if any doc rejected'],
                     ['4','fa-calendar-check','#E8522A','Profile Goes Live','Once approved, your profile is visible to thousands of students and parents searching for tutors. Students can book sessions with you instantly.','Profile listed in search results','Students can book & pay instantly','You receive booking notifications','Dashboard to manage all sessions'],
                     ['5','fa-bell','#3B82F6','Receive Bookings & Codes','When a student books and pays, you receive an email notification with session details, your earnings, and your unique TUT-XXXXXX session access code.','Email: "New Session Booked"','Your TUT-XXXXXX code included','Session details and date/time shown','Also visible in your dashboard'],
-                    ['6','fa-video','#EC4899','Host Your Session','On session day, enter your TUT-XXXXXX code to open the private BigBlueButton classroom as the moderator. You control recording and screen sharing.','Enter TUT-XXXXXX to join as moderator','Full video, audio, screen share','Earnings credited after completion','Request payout via M-Pesa anytime'],
+                    ['6','fa-video','#EC4899','Host Your Session','On session day, enter your TUT-XXXXXX code to open the private Jitsi classroom as the moderator. You control recording and screen sharing.','Enter TUT-XXXXXX to join as moderator','Full video, audio, screen share','Earnings credited after completion','Request payout via M-Pesa anytime'],
                     ['7','fa-money-bill-wave','#10B981','Get Paid','After each completed session, your earnings are automatically credited to your Mwalimu wallet. Request payout to M-Pesa or bank anytime.','Earnings credited post-session','Request payout to M-Pesa or bank','Processed within 2–3 business days','No minimum payout threshold'],
                 ]; @endphp
                 @foreach($tutorSteps as [$num,$icon,$color,$title,$desc,$p1,$p2,$p3,$p4])
@@ -195,7 +195,7 @@
                     @foreach([
                         ['fa-envelope','Sent instantly by email','Codes arrive in your inbox immediately after payment confirmation.'],
                         ['fa-lock','Unique per booking','Each session generates a fresh STU-XXXXXX (student) and TUT-XXXXXX (tutor) code.'],
-                        ['fa-video','Opens private BigBlueButton room','Enter your code on the booking page to launch a private, encrypted video classroom.'],
+                        ['fa-video','Opens private Jitsi room','Enter your code on the booking page to launch a private, encrypted video classroom.'],
                         ['fa-shield-halved','Prevents unauthorised access','Only the code holder can enter. No public links. No sharing of contacts.'],
                     ] as [$icon,$title,$desc])
                     <div style="display:flex;align-items:flex-start;gap:14px;">
@@ -260,7 +260,7 @@
                         ['Payment security','Paystack — M-Pesa & cards','Cash, often no receipt'],
                         ['Session lengths','15, 30, 45 or 60 min fixed blocks','Usually 1hr fixed, wasted time'],
                         ['Access codes','Unique code per session','No access control'],
-                        ['Live classroom','BigBlueButton — no download','Physical or WhatsApp'],
+                        ['Live classroom','Jitsi — no download','Physical or WhatsApp'],
                         ['Session records','Full dashboard history','No records'],
                         ['Reviews & ratings','Verified student reviews','No accountability'],
                         ['Pricing','Clear KSh fixed pricing upfront','Negotiated, opaque'],
@@ -287,7 +287,7 @@
         @foreach([
             ['How do I know tutors are trustworthy?','Every tutor on Mwalimu is TSC-registered, has submitted a National ID, and passes a background check including a Certificate of Good Conduct. Our academic team manually reviews all documents before approving any tutor profile.'],
             ['What if I\'m not happy with my session?','Contact our support team within 24 hours of your session. We review all disputes fairly. First-time bookings come with a 100% money-back guarantee — no questions asked.'],
-            ['Do I need to download anything to join a session?','No. Sessions run in your browser using BigBlueButton. Just enter your access code on the booking page and your session opens in a new browser tab. Works on mobile and desktop.'],
+            ['Do I need to download anything to join a session?','No. Sessions run in your browser using Jitsi. Just enter your access code on the booking page and your session opens in a new browser tab. Works on mobile and desktop.'],
             ['Can parents book sessions for their children?','Yes. Select "Parent" when creating your account. You can add child profiles (name, age, grade level) and book sessions on their behalf. Your session code is sent to your email.'],
             ['How are session prices calculated?','Mwalimu uses fixed pricing for all sessions: Quick Help (20min) = KSh 300, Guided Practice (40min) = KSh 500, Deep Dive (60min) = KSh 700. The same price applies regardless of which tutor you choose.'],
             ['How and when do tutors get paid?','After a session is completed, the tutor\'s earnings are credited to their in-app wallet. Tutors can request a payout to M-Pesa or bank at any time. Payouts are processed within 2–3 business days.'],

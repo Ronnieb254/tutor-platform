@@ -65,7 +65,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
 <div class="access-warning">
     <i class="fa-solid fa-shield-check"></i>
-    <span>Platform-only session · Powered by BigBlueButton · Encrypted</span>
+    <span>Platform-only session · Powered by Jitsi · Encrypted</span>
 </div>
 
 </body>
