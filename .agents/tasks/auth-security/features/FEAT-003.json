@@ -1,0 +1,38 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Implement login activity tracking that logs every login with IP, user agent, device, browser, platform, country; detects new device or new country logins; sends email alerts for suspicious activity. Store in login_activities table.",
+  "status": "pending",
+  "steps": [
+    "Create login_activities migration with columns: id, user_id (foreign key to users), ip_address (string, 45 chars for IPv6), user_agent (text), device (string), browser (string), platform (string), country (string, 2 chars), city (string), is_suspicious (boolean, default false), logged_in_at (timestamp), created_at, updated_at",
+    "Create app/Models/LoginActivity.php Eloquent model with belongsTo User relationship and casts for logged_in_at timestamp",
+    "Install jenssegers/agent package via composer for user agent parsing: 'composer require jenssegers/agent'",
+    "Create app/Services/LoginActivityService.php with methods: recordLogin(User, Request), detectSuspiciousLogin(User, array loginData), getRecentLogins(User, limit=10), getDeviceName(userAgent), getBrowserName(userAgent), getPlatformName(userAgent)",
+    "Use ipapi.co or ip-api.com free geolocation API in LoginActivityService to get country and city from IP address (with fallback to 'Unknown' on API failure)",
+    "Create app/Notifications/SuspiciousLoginNotification.php email following OtpService branded template style with login details: IP, location, device, browser, timestamp, and 'Sign out all other devices' link",
+    "Update LoginController.php store() method to call LoginActivityService->recordLogin() after successful Auth::attempt() but before redirect",
+    "In recordLogin(), check if this is a new device (no prior login_activities with same device+browser+platform) or new country (no prior login_activities with same country) - if yes, mark is_suspicious=true and send email notification",
+    "Test login activity: log in from different browsers, verify database records, verify suspicious login email sent on first login from new browser/device"
+  ],
+  "acceptance_criteria": [
+    "Every successful login creates a login_activities record with IP, user agent, device, browser, platform, country, city",
+    "First login from a new device or new country is marked suspicious and triggers email alert",
+    "Email alert contains login details and link to sign out other devices",
+    "Recent login history is stored and can be queried per user",
+    "User agent parsing correctly identifies device, browser, and platform",
+    "Geolocation API provides country and city for IP addresses"
+  ],
+  "verification": [
+    "Run migrations: 'php artisan migrate'",
+    "Run 'composer require jenssegers/agent' to install user agent parser",
+    "Start server: 'php artisan serve'",
+    "Log in with valid credentials from Chrome browser",
+    "Check login_activities table: 'php artisan tinker' then 'App\\Models\\LoginActivity::latest()->first()' - verify record exists with correct IP, browser='Chrome', platform='Windows'",
+    "Check for suspicious login email (should be sent on first login from this device)",
+    "Log in again from same browser - verify NO suspicious login email sent",
+    "Log in from Firefox browser - verify new login_activities record created and suspicious login email sent",
+    "Verify storage/logs/laravel.log shows no errors during login"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

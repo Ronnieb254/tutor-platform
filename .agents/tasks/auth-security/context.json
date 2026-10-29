@@ -1,0 +1,24 @@
+{
+  "project_type": "Laravel 12 tutoring marketplace with Livewire 3, Paystack payments, and Jitsi sessions",
+  "language": "PHP 8.4",
+  "build_system": "Composer for PHP dependencies, npm for frontend assets (Tailwind CSS)",
+  "test_framework": "No test framework currently configured in the project",
+  "build_command": "composer install && npm install && npm run build",
+  "test_command": "None currently configured - manual testing via php artisan serve",
+  "verification_instructions": "1. Start dev server with 'php artisan serve'. 2. Run migrations with 'php artisan migrate'. 3. Test each feature manually via browser at http://localhost:8000. 4. Check Laravel logs in storage/logs/laravel.log for any errors.",
+  "snapshot_or_generated_files": "None - no generated code that gets checked in",
+  "environment_constraints": "Windows environment with PowerShell; Laravel 12 with PHP 8.4; existing OTP system already in place for email verification; social OAuth with Google/GitHub/Facebook already configured; Password::defaults() not yet configured in AppServiceProvider",
+  "contribution_requirements": "No AGENTS.md or CONTRIBUTING.md found - follow Laravel conventions. All migrations must be independent and never modify existing tables destructively. Match existing code style and patterns from OtpService.",
+  "key_patterns": "Services pattern (OtpService in app/Services/ with branded email HTML template using Fraunces/DM Sans fonts, --ink/#15281F, --trust-blue/#0A64BC, --coral, --mint CSS vars). Controllers in app/Http/Controllers/Auth/ for auth flows. Middleware in app/Http/Middleware/. Blade views in resources/views/auth/ with two-panel layout (dark brand panel left, white form panel right). Routes in routes/web.php with named routes. User model at app/Models/User.php with role helper methods (isAdmin, isTutor, isStudent, isParent).",
+  "relevant_files": [
+    "c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\app\\Services\\OtpService.php",
+    "c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\app\\Http\\Controllers\\Auth\\LoginController.php",
+    "c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\app\\Http\\Controllers\\Auth\\RegisterController.php",
+    "c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\app\\Providers\\AppServiceProvider.php",
+    "c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\app\\Models\\User.php",
+    "c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\routes\\web.php",
+    "c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\resources\\views\\auth\\login.blade.php",
+    "c:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\app\\Http\\Middleware\\RoleMiddleware.php"
+  ],
+  "directory_structure": "app/Services/ for business logic services; app/Http/Controllers/Auth/ for authentication controllers; app/Http/Middleware/ for custom middleware; app/Models/ for Eloquent models; app/Providers/ for service providers; database/migrations/ for DB schema; resources/views/auth/ for auth UI; routes/web.php for web routes"
+}

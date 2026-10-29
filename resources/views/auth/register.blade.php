@@ -551,6 +551,9 @@ svg{
                     @error('password')
                         <span class="error-msg">{{ $message }}</span>
                     @enderror
+                    
+                    {{-- Password Strength Indicator --}}
+                    @include('components.password-strength')
                 </div>
 
                 {{-- Confirm Password Field --}}

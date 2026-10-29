@@ -1,0 +1,43 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Implement secure password reset flow with forgot-password email link, reset page with token validation, session invalidation on password change, and user notification email. Follow existing OtpService email template style.",
+  "status": "pending",
+  "steps": [
+    "Create password_reset_tokens migration adding table with columns: email (string, index), token (string), created_at (timestamp) - Laravel default schema",
+    "Create app/Http/Controllers/Auth/ForgotPasswordController.php with showLinkRequestForm() and sendResetLink() methods using Laravel's Password facade",
+    "Create app/Http/Controllers/Auth/ResetPasswordController.php with showResetForm() and reset() methods that validate token, update password, invalidate all user sessions except current, and send confirmation email",
+    "Create resources/views/auth/forgot-password.blade.php following login.blade.php design pattern (two-panel layout with brand panel and form panel)",
+    "Create resources/views/auth/reset-password.blade.php with token-protected form following same design pattern",
+    "Create password reset email template in app/Notifications/ResetPasswordNotification.php using OtpService emailTemplate() style (Fraunces/DM Sans fonts, --ink, --trust-blue, --coral colors, gradient brand panel)",
+    "Create password changed notification email in app/Notifications/PasswordChangedNotification.php with same branded style alerting user of successful password reset",
+    "Add routes to routes/web.php: GET/POST /forgot-password, GET/POST /reset-password/{token}",
+    "Update login.blade.php 'Forgot password?' link to route('password.request')",
+    "On password reset, invalidate all existing sessions except current using Auth::logoutOtherDevices()",
+    "Test complete flow: request reset, receive email, click link, reset password, verify old password no longer works, verify notification email sent, verify all other sessions logged out"
+  ],
+  "acceptance_criteria": [
+    "User can request password reset via email on forgot-password page",
+    "Reset email contains secure token link valid for 60 minutes",
+    "Reset page validates token and allows password change with same strong password rules",
+    "After password reset, all other device sessions are invalidated",
+    "User receives confirmation email after successful password change",
+    "Old password no longer works after reset",
+    "All emails match existing Mwalimu brand style from OtpService"
+  ],
+  "verification": [
+    "Run migrations: 'php artisan migrate'",
+    "Start server: 'php artisan serve'",
+    "Navigate to http://localhost:8000/login and click 'Forgot password?' link",
+    "Enter valid email and submit - verify redirect with success message",
+    "Check mailhog or logs for reset email with token link",
+    "Click reset link - verify redirect to reset-password page with token in URL",
+    "Enter new password and confirm - verify success message and redirect to login",
+    "Attempt login with old password - verify it fails",
+    "Attempt login with new password - verify it succeeds",
+    "Check for password changed notification email",
+    "Verify storage/logs/laravel.log shows no errors during flow"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

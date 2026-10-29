@@ -1,0 +1,53 @@
+{
+  "id": "FEAT-005",
+  "type": "feat",
+  "description": "Implement two-factor authentication using TOTP (Time-based One-Time Password) via pragmarx/google2fa-laravel package. QR code setup page, recovery codes, 2FA challenge at login, required for admins, optional for other roles.",
+  "status": "pending",
+  "steps": [
+    "Add pragmarx/google2fa-laravel package to composer.json: 'composer require pragmarx/google2fa-laravel'",
+    "Publish google2fa config: 'php artisan vendor:publish --provider=\"PragmaRX\\Google2FALaravel\\ServiceProvider\"'",
+    "Create migration adding 2FA columns to users table: two_factor_secret (text, nullable, encrypted), two_factor_recovery_codes (text, nullable, encrypted JSON array), two_factor_enabled (boolean, default false), two_factor_enabled_at (timestamp, nullable)",
+    "Create app/Services/TwoFactorService.php with methods: generateSecret(), generateQrCodeUrl(User), generateRecoveryCodes(), verifyCode(User, code), verifyRecoveryCode(User, code), enableTwoFactor(User), disableTwoFactor(User)",
+    "Create app/Http/Controllers/Settings/TwoFactorController.php with methods: show() for 2FA setup page, enable() to activate 2FA with QR code and recovery codes, disable() to turn off 2FA, verify() to confirm 2FA code during setup",
+    "Create resources/views/settings/two-factor.blade.php following Mwalimu design with: QR code display (using google2fa's inline SVG QR), manual secret key entry option, recovery codes display (16 codes, 8 chars each, one-time use), enable/disable toggle",
+    "Create app/Http/Middleware/TwoFactorChallengeMiddleware.php that intercepts login for 2FA-enabled users and redirects to 2FA challenge page before reaching dashboard",
+    "Create app/Http/Controllers/Auth/TwoFactorChallengeController.php with show() for challenge page and verify() for code submission",
+    "Create resources/views/auth/two-factor-challenge.blade.php following login.blade.php design with 6-digit code input and 'Use recovery code instead' link",
+    "Update LoginController.php: after successful Auth::attempt(), check if user has 2FA enabled - if yes, store user ID in session and redirect to 2FA challenge instead of dashboard",
+    "In TwoFactorChallengeController->verify(), validate TOTP code using TwoFactorService, complete login with Auth::login(), clear 2FA session data, and redirect to dashboard",
+    "Add middleware to routes/web.php ensuring admins must have 2FA enabled: create TwoFactorRequired middleware that checks auth()->user()->isAdmin() && !auth()->user()->two_factor_enabled and redirects to 2FA setup with warning",
+    "Add routes: GET/POST /settings/two-factor, POST /settings/two-factor/enable, POST /settings/two-factor/disable, GET/POST /auth/two-factor-challenge",
+    "Add '2FA Security' link to settings navigation",
+    "Test complete flow: enable 2FA as student (optional), enable 2FA as admin (required), log out, log in and complete 2FA challenge, test recovery code, disable 2FA"
+  ],
+  "acceptance_criteria": [
+    "Users can enable 2FA from settings page with QR code and recovery codes",
+    "Admins are required to enable 2FA and cannot access platform without it",
+    "Other roles (tutor, student, parent) can optionally enable 2FA",
+    "After login, 2FA-enabled users must enter 6-digit TOTP code from authenticator app",
+    "Recovery codes work as fallback when authenticator app unavailable",
+    "2FA can be disabled by entering current TOTP code for verification",
+    "QR code works with Google Authenticator, Authy, 1Password, etc.",
+    "All 2FA pages match Mwalimu brand design"
+  ],
+  "verification": [
+    "Run 'composer require pragmarx/google2fa-laravel'",
+    "Run 'php artisan vendor:publish --provider=\"PragmaRX\\\\Google2FALaravel\\\\ServiceProvider\"'",
+    "Run migrations: 'php artisan migrate'",
+    "Start server: 'php artisan serve'",
+    "Log in as student at http://localhost:8000/login",
+    "Navigate to http://localhost:8000/settings/two-factor",
+    "Click 'Enable 2FA' - verify QR code and recovery codes displayed",
+    "Scan QR code with Google Authenticator app on phone",
+    "Enter 6-digit code from app and submit - verify 2FA enabled success message",
+    "Log out and log in again - verify redirect to 2FA challenge page after password entry",
+    "Enter code from authenticator app - verify successful login to dashboard",
+    "Log out again, log in, and try recovery code instead - verify it works and code is consumed",
+    "Navigate to 2FA settings and disable 2FA - verify requires TOTP code to disable",
+    "Log in as admin user - verify redirect to 2FA setup if not enabled",
+    "Verify admin cannot access any admin routes without enabling 2FA",
+    "Check storage/logs/laravel.log for any errors during flow"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

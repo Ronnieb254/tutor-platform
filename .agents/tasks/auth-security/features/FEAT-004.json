@@ -1,0 +1,44 @@
+{
+  "id": "FEAT-004",
+  "type": "feat",
+  "description": "Implement device session management with a settings page showing active sessions (device, browser, location, last active time) and ability to sign out individual sessions or all other devices. Integrates with FEAT-003 login_activities for display data.",
+  "status": "pending",
+  "steps": [
+    "Create sessions migration adding columns to sessions table: user_id (unsignedBigInteger, nullable, index), ip_address (string, 45), user_agent (text), last_activity (integer, index) - these are Laravel's default session columns if not already present",
+    "Create app/Http/Controllers/Settings/SecurityController.php with methods: index() to show active sessions page, destroySession(sessionId) to logout specific session, destroyOtherSessions() to logout all except current",
+    "In SecurityController->index(), query sessions table for current user's sessions joined with last login_activity for each session to get device/browser/location display data",
+    "Create resources/views/settings/security.blade.php following Mwalimu design with list of active sessions showing: device icon, browser name + version, platform, location (city, country), IP address (masked: xxx.xxx.xxx.XXX), last active timestamp, and 'Sign Out' button per session",
+    "Add 'Sign Out All Other Devices' button at top of page that calls destroyOtherSessions() and shows password confirmation modal first (user must re-enter password to confirm)",
+    "Implement destroySession() by deleting specific session record from sessions table",
+    "Implement destroyOtherSessions() using Auth::logoutOtherDevices($password) after password verification",
+    "Add routes to routes/web.php: GET /settings/security, DELETE /settings/security/sessions/{sessionId}, POST /settings/security/sessions/destroy-others",
+    "Add 'Security' navigation link in user dashboard sidebar/menu pointing to route('settings.security')",
+    "Test: log in from multiple browsers/devices, verify all sessions appear on security page, sign out one session and verify it's removed, sign out all others and verify only current session remains"
+  ],
+  "acceptance_criteria": [
+    "Security settings page displays all active sessions for current user",
+    "Each session shows device, browser, platform, location, IP (masked), and last active time",
+    "User can sign out individual sessions via 'Sign Out' button",
+    "User can sign out all other devices after password confirmation",
+    "Signed out sessions are immediately invalidated and removed from list",
+    "Current session is never logged out when using 'Sign Out All Other Devices'",
+    "Page design matches existing Mwalimu brand style"
+  ],
+  "verification": [
+    "Run migrations: 'php artisan migrate'",
+    "Start server: 'php artisan serve'",
+    "Log in to http://localhost:8000/dashboard with valid credentials",
+    "Navigate to http://localhost:8000/settings/security",
+    "Verify current session appears in active sessions list with correct device/browser/location details",
+    "Open incognito/private browser window and log in with same account",
+    "Refresh security page in first browser - verify both sessions now listed",
+    "Click 'Sign Out' button on second session - verify it's removed from list",
+    "Verify incognito window is now logged out (refresh shows login page)",
+    "Log in from incognito again, then click 'Sign Out All Other Devices' in first browser",
+    "Enter password in confirmation modal and submit",
+    "Verify only current session remains in list, incognito session is logged out",
+    "Verify storage/logs/laravel.log shows no errors"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}
