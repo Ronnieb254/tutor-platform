@@ -100,7 +100,7 @@ a{color:inherit;text-decoration:none;}
             <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
         </div>
         <h1>The Mwalimu Library</h1>
-        <p>Curated PDFs, past papers, study notes, and video lessons — all in one place.</p>
+        <p>Curated past papers, and study notes in pdfs, and top rated video lessons — all in one place.</p>
         <form method="GET" action="{{ route('library.index') }}" class="hero-search">
             <input type="text" name="search" placeholder="Search resources, subjects, topics…" value="{{ request('search') }}">
             <button type="submit">Search</button>
@@ -119,8 +119,8 @@ a{color:inherit;text-decoration:none;}
                 <span class="count">{{ $resources->total() }}</span>
             </a>
             @php
-                $typeIcons = ['article'=>'📄','pdf'=>'📕','video'=>'🎥','notes'=>'📝','past_paper'=>'📋'];
-                $typeLabels = ['article'=>'Articles','pdf'=>'PDFs','video'=>'Videos','notes'=>'Notes','past_paper'=>'Past Papers'];
+                $typeIcons = ['article'=>'📄','video'=>'🎥','notes'=>'📝','past_paper'=>'📋'];
+                $typeLabels = ['article'=>'Articles','video'=>'Videos','notes'=>'Notes','past_paper'=>'Past Papers'];
             @endphp
             @foreach($resourceTypes as $type)
             <a href="{{ route('library.index', array_merge(request()->all(), ['type'=>$type])) }}" class="filter-item {{ request('type') === $type ? 'active' : '' }}">
@@ -143,15 +143,7 @@ a{color:inherit;text-decoration:none;}
                 <span class="count">{{ $cat->posts_count }}</span>
             </a>
             @endforeach
-
-            <div class="divider"></div>
-
-            <div class="filter-title">Grade Level</div>
-            @foreach(['Form 1','Form 2','Form 3','Form 4','Primary','University','All Levels'] as $grade)
-            <a href="{{ route('library.index', array_merge(request()->all(), ['grade'=>$grade])) }}" class="filter-item {{ request('grade') === $grade ? 'active' : '' }}">
-                {{ $grade }}
-            </a>
-            @endforeach
+           
         </aside>
 
         {{-- Main content --}}
