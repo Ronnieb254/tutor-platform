@@ -20,4 +20,14 @@ return [
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect'      => env('FACEBOOK_REDIRECT_URI'),
     ],
+
+    // SMS — Africa's Talking (set SMS_PROVIDER=africastalking in .env to enable)
+    'sms' => [
+        'provider' => env('SMS_PROVIDER', 'log'), // 'log' in dev, 'africastalking' in prod
+    ],
+    'africastalking' => [
+        'username'  => env('AT_USERNAME', 'sandbox'),
+        'api_key'   => env('AT_API_KEY'),
+        'sender_id' => env('AT_SENDER_ID', 'MWALIMU'),
+    ],
 ];

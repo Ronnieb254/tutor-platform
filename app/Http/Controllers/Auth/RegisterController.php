@@ -4,101 +4,65 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\{User, Wallet, TutorProfile, NotificationPreference};
+use App\Services\OtpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Hash, Auth, DB};
 use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
+    public function __construct(protected OtpService $otp) {}
+
     public function show()
     {
         return view('auth.register');
     }
 
+    /**
+     * Step 1: Validate input, store in session, send OTPs, redirect to verify page.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'role' => ['required', 'in:student,tutor,parent'],
-            'phone' => ['nullable', 'string', 'max:20'],
+            'role'     => ['required', 'in:student,tutor,parent'],
+            'phone'    => ['nullable', 'string', 'max:20'],
             'timezone' => ['nullable', 'string', 'max:50'],
         ]);
 
-        try {
-            DB::beginTransaction();
-
-            // Create user
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'role' => $validated['role'],
-                'phone' => $validated['phone'] ?? null,
+        // Store registration data in session — not yet in the DB
+        session([
+            'reg_pending' => [
+                'name'     => $validated['name'],
+                'email'    => $validated['email'],
+                'password' => $validated['password'],  // plain-text; hashed on final create
+                'role'     => $validated['role'],
+                'phone'    => $validated['phone'] ?? null,
                 'timezone' => $validated['timezone'] ?? 'Africa/Nairobi',
-                'is_active' => true,
-            ]);
+            ],
+        ]);
 
-            // Create wallet for all users
-            Wallet::create([
-                'user_id' => $user->id,
-                'balance' => 0,
-            ]);
-
-            // Create tutor profile if role is tutor
-            if ($validated['role'] === 'tutor') {
-                TutorProfile::create([
-                    'user_id' => $user->id,
-                    'bio' => '',
-                    'hourly_rate' => 0,
-                    'years_experience' => 0,
-                    'verification_status' => 'pending',
-                    'is_available' => false,
-                ]);
-            }
-
-            // Create notification preferences
-            NotificationPreference::create([
-                'user_id' => $user->id,
-                'email_enabled' => true,
-                'booking_notifications' => true,
-                'message_notifications' => true,
-                'reminder_notifications' => true,
-            ]);
-
-            DB::commit();
-
-            // Log the user in
-            Auth::login($user);
-
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Registration successful! Welcome to the platform.',
-                    'redirect' => route('dashboard'),
-                    'user' => $user,
-                ]);
-            }
-
-            return redirect()->route('dashboard')->with('success', 'Welcome to the platform!');
-
+        // Send email OTP
+        try {
+            $this->otp->send($validated['email'], 'email', $validated['name']);
         } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Registration failed: ' . $e->getMessage(), [
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                ]);
-            
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Registration failed. Please try again.',
-                    'error' => $e->getMessage(),
-                ], 500);
-            }
-
-            return back()->withInput()->withErrors(['error' => 'Registration failed. Please try again.']);
+            \Log::error('Failed to send email OTP: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['email' => 'Could not send verification email. Please try again.']);
         }
+
+        // Send phone OTP only if a phone was provided
+        if (!empty($validated['phone'])) {
+            try {
+                $this->otp->send($validated['phone'], 'phone', $validated['name']);
+            } catch (\Exception $e) {
+                \Log::warning('Failed to send phone OTP: ' . $e->getMessage());
+                // Non-fatal: continue with email-only verification
+            }
+        }
+
+        return redirect()->route('otp.verify.show')
+            ->with('info', 'We sent a 6-digit verification code to ' . $validated['email'] . '.');
     }
 }

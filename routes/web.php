@@ -42,6 +42,12 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'show'])->name('register');
     Route::post('/register',[App\Http\Controllers\Auth\RegisterController::class, 'store']);
 });
+
+// OTP verification — accessible to guests (session-based, no auth needed)
+Route::get('/verify-otp',  [App\Http\Controllers\Auth\OtpController::class, 'show'])->name('otp.verify.show');
+Route::post('/verify-otp', [App\Http\Controllers\Auth\OtpController::class, 'verify'])->name('otp.verify');
+Route::post('/resend-otp', [App\Http\Controllers\Auth\OtpController::class, 'resend'])->name('otp.resend');
+
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'destroy'])->name('logout')->middleware('auth');
 
 // ─── Social OAuth ─────────────────────────────────────────────────────────────
