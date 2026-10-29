@@ -61,7 +61,7 @@
                 </div>
                 @endforeach
                 <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);text-align:center;">
-                    <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">From KSh 500</span>
+                    <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">It's KSh 500</span>
                     <span style="font-size:14px;color:rgba(255,255,255,.45);margin-left:8px;">/ per session</span>
                 </div>
             </div>
@@ -79,40 +79,6 @@
                 <p style="color:rgba(21,40,31,.55);">Live cohort classes. Max 30 learners per session — book your seat before it fills up.</p>
             </div>
         </div>
-
-        {{-- FILTER BAR --}}
-        <form method="GET" action="{{ route('group-sessions.index') }}" style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;box-shadow:0 2px 12px rgba(21,40,31,.04);">
-            <div style="flex:2;min-width:180px;">
-                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-magnifying-glass fa-xs" style="color:#0A64BC;"></i> Search</label>
-                <input type="text" name="search" value="{{ $search }}" placeholder="Subject or title…" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">
-            </div>
-            <div style="min-width:160px;">
-                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-book-open fa-xs" style="color:#0A64BC;"></i> Subject</label>
-                <select name="subject" onchange="this.form.submit()" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;background:#fff;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
-                    <option value="">All subjects</option>
-                    @foreach($subjects as $s)
-                    <option value="{{ $s->id }}" {{ (string)$subjectId === (string)$s->id ? 'selected' : '' }}>{{ $s->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div style="min-width:140px;">
-                <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-arrow-down-wide-short fa-xs" style="color:#0A64BC;"></i> Sort</label>
-                <select name="sort" onchange="this.form.submit()" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;background:#fff;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
-                    <option value="date" {{ $sort === 'date' ? 'selected' : '' }}>Date (soonest)</option>
-                    <option value="subject" {{ $sort === 'subject' ? 'selected' : '' }}>Subject A–Z</option>
-                    <option value="price_low" {{ $sort === 'price_low' ? 'selected' : '' }}>Price (low to high)</option>
-                    <option value="price_high" {{ $sort === 'price_high' ? 'selected' : '' }}>Price (high to low)</option>
-                </select>
-            </div>
-            <div style="display:flex;gap:6px;">
-                <button type="submit" style="height:42px;padding:0 18px;border-radius:10px;background:#0A64BC;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;"><i class="fa-solid fa-magnifying-glass"></i> Filter</button>
-                @if($search || $subjectId)
-                <a href="{{ route('group-sessions.index') }}" style="height:42px;padding:0 16px;border-radius:10px;background:#F4F6F4;color:#15281F;font-size:13px;font-weight:500;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-xmark fa-xs"></i> Clear</a>
-                @endif
-            </div>
-        </form>
-
-        <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:16px;"><strong style="color:#15281F;">{{ $sessions->total() }}</strong> session{{ $sessions->total() != 1 ? 's' : '' }} found</p>
 
         @if($sessions->isEmpty())
         <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:64px;text-align:center;">
