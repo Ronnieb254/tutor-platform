@@ -196,7 +196,6 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
     <div class="w">
         <div style="text-align:center;margin-bottom:44px;">
             <h2 style="font-size:clamp(26px,4vw,40px);color:var(--ink);margin-bottom:10px;">Simple, fixed pricing</h2>
-            <p style="color:var(--muted);font-size:17px;">No hidden fees. Pay only for the time you need.</p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
             @foreach([
@@ -208,7 +207,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--trust-blue)'" onmouseout="this.style.borderColor='var(--hair)'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                     <div style="font-size:32px;">{{ $icon }}</div>
-                    <span style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--trust-blue);">{{ $price }}</span>
+                    <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:var(--trust-blue);">{{ $price }}</span>
                 </div>
                 <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px;">{{ $mins }} min</div>
                 <div style="font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px;">{{ $title }}</div>
@@ -283,39 +282,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 500</span> /session · 60 min</div>
                 </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:12px;">
-                @if($upcomingClinics->isNotEmpty())
-                @foreach($upcomingClinics as $clinic)
-                <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;">
-                    <div style="width:50px;height:50px;background:rgba(212,160,23,.25);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                        <i class="fa-solid fa-chalkboard-user" style="color:var(--gold);font-size:20px;"></i>
-                    </div>
-                    <div style="flex:1;min-width:0;">
-                        <div style="font-weight:700;font-size:14px;color:#fff;">{{ $clinic->title }}</div>
-                        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;">{{ $clinic->tutor->name }} · {{ $clinic->subject?->name }}</div>
-                        <div style="font-size:12px;color:var(--gold);margin-top:3px;"><i class="fa-regular fa-calendar fa-xs"></i> {{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</div>
-                    </div>
-                    <div style="text-align:right;flex-shrink:0;">
-                        <div style="font-weight:700;font-size:14px;color:var(--gold);">KSh {{ number_format($clinic->price) }}</div>
-                        <div style="font-size:11px;color:rgba(255,255,255,.4);">{{ $clinic->spotsLeft() }} spots left</div>
-                    </div>
-                </div>
-                @endforeach
-                @else
-                @foreach([['Advanced Mathematics – Paper 2 Strategy','Dr. Amara K.','Mathematics'],['KCSE English – Comprehension & Writing','Ms. Sarah N.','English'],['Physics – Paper 1 Examiner Traps','Prof. James M.','Physics']] as [$t,$name,$subj])
-                <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;">
-                    <div style="width:50px;height:50px;background:rgba(212,160,23,.25);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                        <i class="fa-solid fa-chalkboard-user" style="color:var(--gold);font-size:20px;"></i>
-                    </div>
-                    <div style="flex:1;">
-                        <div style="font-weight:700;font-size:14px;color:#fff;">{{ $t }}</div>
-                        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;">{{ $name }} · {{ $subj }}</div>
-                    </div>
-                    <span style="background:rgba(212,160,23,.2);color:var(--gold);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;">Upcoming</span>
-                </div>
-                @endforeach
-                @endif
-            </div>
+            
         </div>
     </div>
     <style>.ec-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.ec-g{grid-template-columns:1fr 1fr!important;}}</style>
