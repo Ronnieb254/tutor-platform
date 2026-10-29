@@ -12,7 +12,7 @@ class OtpService
      * Generate and send an OTP for the given identifier (email or phone).
      * Returns the OtpVerification record.
      */
-    public function send(string $identifier, string $type = 'email', string $name = ''): OtpVerification
+    public function send(string $identifier, string $type = 'email', string $name = '', string $phoneNumber = ''): OtpVerification
     {
         // Invalidate any previous OTPs for this identifier
         OtpVerification::where('identifier', $identifier)
@@ -26,6 +26,7 @@ class OtpService
             'identifier' => $identifier,
             'type'       => $type,
             'otp'        => $otp,
+            'phone'      => $phoneNumber ?: '',   // store phone from registration form
             'verified'   => false,
             'attempts'   => 0,
             'expires_at' => now()->addMinutes(10),

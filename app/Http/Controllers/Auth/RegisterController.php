@@ -73,6 +73,7 @@ class RegisterController extends Controller
                     'identifier' => $validated['email'],
                     'type'       => 'email',
                     'otp'        => $fallbackOtp,
+                    'phone'      => '',   // legacy NOT NULL column
                     'verified'   => false,
                     'attempts'   => 0,
                     'expires_at' => now()->addMinutes(10),

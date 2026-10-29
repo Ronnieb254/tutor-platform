@@ -10,6 +10,7 @@ class OtpVerification extends Model
         'identifier',
         'type',
         'otp',
+        'phone',        // legacy column — kept for backward compatibility
         'verified',
         'attempts',
         'expires_at',
