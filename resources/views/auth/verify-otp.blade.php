@@ -134,6 +134,21 @@ h1{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);
         <div class="flash flash-err">{{ session('error') }}</div>
         @endif
 
+        {{-- Fallback: email delivery failed, show OTP on screen --}}
+        @if(session('otp_fallback'))
+        <div style="background:rgba(238,190,21,.1);border:2px dashed #EEBE15;border-radius:16px;padding:20px;margin-bottom:24px;text-align:center;">
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.5);margin-bottom:8px;">
+                ⚠️ Email delivery failed — use this code
+            </div>
+            <div style="font-family:monospace;font-size:38px;font-weight:800;color:#15281F;letter-spacing:10px;">
+                {{ session('otp_fallback') }}
+            </div>
+            <div style="font-size:12px;color:rgba(21,40,31,.5);margin-top:8px;">
+                Copy this code and enter it below. Valid for 10 minutes.
+            </div>
+        </div>
+        @endif
+
         <form method="POST" action="{{ route('otp.verify') }}" id="otp-form">
             @csrf
 

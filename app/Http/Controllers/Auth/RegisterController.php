@@ -44,18 +44,48 @@ class RegisterController extends Controller
             ],
         ]);
 
-        // Send email OTP
-        try {
-            $this->otp->send($validated['email'], 'email', $validated['name']);
-        } catch (\Exception $e) {
-            \Log::error('Failed to send email OTP: ' . $e->getMessage());
+        // Send email OTP — store result in session regardless of mail success
+        $otpSent = false;
+        $otpCode = null;
 
-            // If mail is misconfigured (e.g. mailpit in production), fall back to
-            // logging the OTP and still proceeding so registration isn't blocked.
-            if (app()->environment('production') && config('app.debug') === false) {
-                return back()->withInput()->withErrors(['email' => 'Could not send verification email. Please check your email address or try again later.']);
+        try {
+            $record  = $this->otp->send($validated['email'], 'email', $validated['name']);
+            $otpSent = true;
+        } catch (\Exception $e) {
+            \Log::error('Failed to send email OTP: ' . $e->getMessage(), [
+                'email'      => $validated['email'],
+                'mailer'     => config('mail.default'),
+                'host'       => config('mail.mailers.smtp.host'),
+                'port'       => config('mail.mailers.smtp.port'),
+                'encryption' => config('mail.mailers.smtp.encryption'),
+            ]);
+
+            // Fall back: generate OTP manually and store it so verification still works
+            try {
+                // Delete any old OTPs and create a new one directly
+                \App\Models\OtpVerification::where('identifier', $validated['email'])
+                    ->where('type', 'email')
+                    ->where('verified', false)
+                    ->delete();
+
+                $fallbackOtp = (string) random_int(100000, 999999);
+                \App\Models\OtpVerification::create([
+                    'identifier' => $validated['email'],
+                    'type'       => 'email',
+                    'otp'        => $fallbackOtp,
+                    'verified'   => false,
+                    'attempts'   => 0,
+                    'expires_at' => now()->addMinutes(10),
+                ]);
+
+                $otpCode = $fallbackOtp;
+                \Log::warning("Email OTP fallback — OTP for {$validated['email']}: {$fallbackOtp}");
+            } catch (\Exception $dbError) {
+                \Log::error('OTP fallback DB write also failed: ' . $dbError->getMessage());
+                return back()->withInput()->withErrors([
+                    'email' => 'Registration service unavailable. Please try again in a moment.',
+                ]);
             }
-            // In dev / non-production: still redirect so flow can be tested
         }
 
         // Send phone OTP only if a phone was provided
@@ -64,11 +94,22 @@ class RegisterController extends Controller
                 $this->otp->send($validated['phone'], 'phone', $validated['name']);
             } catch (\Exception $e) {
                 \Log::warning('Failed to send phone OTP: ' . $e->getMessage());
-                // Non-fatal: continue with email-only verification
+                // Non-fatal: email verification is sufficient
             }
         }
 
-        return redirect()->route('otp.verify.show')
-            ->with('info', 'We sent a 6-digit verification code to ' . $validated['email'] . '.');
+        $flashMessage = $otpSent
+            ? 'We sent a 6-digit verification code to ' . $validated['email'] . '.'
+            : 'Could not send the email — please enter the code shown on this page.';
+
+        $redirect = redirect()->route('otp.verify.show')->with('info', $flashMessage);
+
+        // In non-production or when mail failed, flash the OTP so user can proceed
+        if ($otpCode !== null) {
+            $redirect = $redirect->with('otp_fallback', $otpCode)
+                                 ->with('otp_fallback_email', $validated['email']);
+        }
+
+        return $redirect;
     }
 }
