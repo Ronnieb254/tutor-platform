@@ -156,27 +156,64 @@ class BookingController extends Controller
 
         $payment = Payment::where('paystack_reference', $request->reference)
             ->where('status', 'pending')
-            ->firstOrFail();
+            ->first();
+
+        // Already confirmed (e.g. by webhook before the JS confirm call arrived)
+        if (!$payment) {
+            $payment = Payment::where('paystack_reference', $request->reference)
+                ->where('status', 'success')
+                ->first();
+
+            if ($payment && $payment->booking) {
+                $fresh = $payment->booking->fresh();
+                return response()->json([
+                    'status'       => 'ok',
+                    'booking_uuid' => $fresh->uuid,
+                    'student_code' => $fresh->session_code_student,
+                    'booking_url'  => route('bookings.show', $fresh->uuid),
+                ]);
+            }
+
+            return response()->json(['status' => 'error', 'message' => 'Payment record not found.'], 404);
+        }
 
         // Verify with Paystack API
         $result = $this->paystack->verifyTransaction($request->reference);
 
-        if (($result['data']['status'] ?? '') === 'success') {
+        \Log::info('Paystack verify result', ['reference' => $request->reference, 'result' => $result]);
+
+        // Paystack returns data.status = 'success' for a completed payment
+        $paystackStatus = $result['data']['status'] ?? '';
+
+        if ($paystackStatus === 'success') {
             $payment->update(['status' => 'success', 'paid_at' => now()]);
+
             $booking = $payment->booking;
-            $this->bookingService->confirmBooking($booking);
+
+            if ($booking && $booking->status !== 'confirmed') {
+                $this->bookingService->confirmBooking($booking);
+            }
+
             $fresh = $booking->fresh();
 
             return response()->json([
                 'status'       => 'ok',
                 'booking_uuid' => $fresh->uuid,
                 'student_code' => $fresh->session_code_student,
-                'tutor_code'   => $fresh->session_code_tutor,
                 'booking_url'  => route('bookings.show', $fresh->uuid),
             ]);
         }
 
-        return response()->json(['status' => 'error', 'message' => 'Payment verification failed.'], 422);
+        \Log::warning('Paystack verify: unexpected status', [
+            'reference'      => $request->reference,
+            'paystack_status'=> $paystackStatus,
+            'full_result'    => $result,
+        ]);
+
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Payment not confirmed by Paystack (status: ' . $paystackStatus . ').',
+        ], 422);
     }
 
     public function cancel(Booking $booking, Request $request)

@@ -8,9 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('otp_verifications')) {
+            return;
+        }
+
         Schema::create('otp_verifications', function (Blueprint $table) {
             $table->id();
-            $table->string('identifier');          // email or phone number
+            $table->string('identifier');
             $table->enum('type', ['email', 'phone']);
             $table->string('otp', 6);
             $table->boolean('verified')->default(false);

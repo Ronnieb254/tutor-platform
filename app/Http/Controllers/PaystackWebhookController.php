@@ -42,7 +42,16 @@ class PaystackWebhookController extends Controller
         if (!$reference) return;
 
         $payment = Payment::where('paystack_reference', $reference)->first();
-        if (!$payment || $payment->status === 'success') return;
+        if (!$payment) {
+            Log::warning('Webhook: payment not found for reference ' . $reference);
+            return;
+        }
+
+        // Idempotent: already handled by the /bookings/confirm endpoint
+        if ($payment->status === 'success') {
+            Log::info('Webhook: payment already confirmed, skipping', ['reference' => $reference]);
+            return;
+        }
 
         $payment->update([
             'status'  => 'success',
@@ -52,6 +61,7 @@ class PaystackWebhookController extends Controller
         $booking = $payment->booking;
         if ($booking && $booking->status === 'pending') {
             $this->booking->confirmBooking($booking);
+            Log::info('Webhook: booking confirmed', ['booking_id' => $booking->id]);
         }
     }
 }

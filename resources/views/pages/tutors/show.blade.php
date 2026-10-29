@@ -721,28 +721,39 @@ function processPayment(data) {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'Accept': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
                         },
                         body: JSON.stringify({ reference: transaction.reference })
                     })
-                    .then(r => r.json())
+                    .then(r => {
+                        if (!r.ok) throw new Error('HTTP ' + r.status);
+                        return r.json();
+                    })
                     .then(confirmRes => {
                         data.processing = false;
                         if (confirmRes.status === 'ok') {
                             data.studentCode = confirmRes.student_code || '';
                             data.bookingRef  = confirmRes.booking_uuid || '';
                             data.step = 3;
-                            // Redirect to session page after 3 seconds
                             if (confirmRes.booking_url) {
                                 setTimeout(() => {
                                     window.location.href = confirmRes.booking_url;
                                 }, 3000);
                             }
+                        } else {
+                            // Payment went through but confirm failed — still move to step 3
+                            // The webhook will confirm async, or user can check dashboard
+                            data.step = 3;
+                            console.warn('Confirm warning:', confirmRes.message);
                         }
                     })
-                    .catch(() => {
+                    .catch((err) => {
+                        // Payment succeeded on Paystack side — don't show error to user
+                        // The Paystack webhook will confirm the booking asynchronously
                         data.processing = false;
                         data.step = 3;
+                        console.warn('Confirm fetch failed, relying on webhook:', err);
                     });
                 },
                 onCancel: function() {
