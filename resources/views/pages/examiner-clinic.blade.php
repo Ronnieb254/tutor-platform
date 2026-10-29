@@ -28,9 +28,7 @@
                     <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
                         <i class="fa-solid fa-calendar-check fa-sm"></i> Book a Clinic Spot
                     </a>
-                    <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
-                        <i class="fa-solid fa-chalkboard-user fa-sm"></i> Host a Clinic
-                    </a>
+                   
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:20px;">
                     @foreach([['fa-sterling-sign','KSh 500','Per 60-min session'],['fa-users','Max 30','Learners per session'],['fa-calendar-week','Daily','Every subject'],['fa-shield-check','Secure','All sessions']] as [$ic,$val,$lbl])
@@ -266,11 +264,7 @@
             </div>
             @endforeach
         </div>
-        <div style="text-align:center;margin-top:28px;">
-            <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
-                <i class="fa-solid fa-chalkboard-user fa-sm"></i> Register as an Examiner
-            </a>
-        </div>
+       
         <style>.ex-g{grid-template-columns:1fr!important;}@media(min-width:768px){.ex-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
     </div>
 </section>
