@@ -108,7 +108,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <a href="{{ route('tutors.index') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Find a Tutor</a>
         </div>
         <div class="sb-section"><div class="sb-label">Sessions</div>
-            <button class="sb-item" :class="tab==='upcoming'?'active':''" @click="tab='upcoming';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Upcoming Sessions@if($upcomingBookings->count() > 0)<span class="sb-badge">{{ $upcomingBookings->count() }}</span>@endif</button>
+            <button class="sb-item" :class="tab==='upcoming'?'active':''" @click="tab='upcoming';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Upcoming Sessions @if($upcomingBookings->count() > 0)<span class="sb-badge">{{ $upcomingBookings->count() }}</span>@endif</button>
             <button class="sb-item" :class="tab==='history'?'active':''" @click="tab='history';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2v10l4 4"/><circle cx="12" cy="12" r="10"/></svg>Session History</button>
             <button class="sb-item" :class="tab==='chats'?'active':''" @click="tab='chats';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Messages</button>
         </div>
@@ -116,7 +116,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <button class="sb-item" :class="tab==='payments'?'active':''" @click="tab='payments';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Payment History</button>
         </div>
         <div class="sb-section"><div class="sb-label">Account</div>
-            <button class="sb-item" :class="tab==='notifications'?'active':''" @click="tab='notifications';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Notifications@if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif</button>
+            <button class="sb-item" :class="tab==='notifications'?'active':''" @click="tab='notifications';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Notifications @if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif</button>
             <button class="sb-item" :class="tab==='children'?'active':''" @click="tab='children';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Child Profiles</button>
             <button class="sb-item" :class="tab==='wishlist'?'active':''" @click="tab='wishlist';sidebarOpen=false"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Saved Tutors</button>
             <a href="{{ route('home') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Back to Site</a>
@@ -186,7 +186,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👦</div>
             <div style="flex:1;min-width:0;">
                 <div style="font-weight:600;font-size:14px;">{{ $child->name }}</div>
-                <div style="font-size:12px;color:var(--muted);">@if($child->age)Age {{ $child->age }} · @endif@if($child->grade_level){{ $child->grade_level }}@endif</div>
+                <div style="font-size:12px;color:var(--muted);">@if($child->age)Age {{ $child->age }} · @endif @if($child->grade_level){{ $child->grade_level }}@endif</div>
             </div>
             <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm">Book Session</a>
         </div>
@@ -211,7 +211,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($b->tutor?->name ?? '?',0,1) }}</div>
             <div style="flex:1;min-width:0;">
                 <div style="font-weight:600;font-size:14px;">{{ $b->tutor?->name ?? '—' }}</div>
-                <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} · {{ $b->duration_minutes }}min@if($b->student && $b->student->parent_id) · For: {{ $b->student->name }}@endif</div>
+                <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} · {{ $b->duration_minutes }}min @if($b->student && $b->student->parent_id) · For: {{ $b->student->name }}@endif</div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
                 <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $b->scheduled_at->format('M j') }}</div>
@@ -256,7 +256,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                     <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
                     @if($b->canJoin())<span class="bdg bdg-mint">🔴 Live Now</span>@endif
                 </div>
-                <div style="font-size:13px;color:var(--muted);">{{ $b->subject?->name ?? 'General Session' }} · {{ $b->duration_minutes }} minutes@if($b->student && $b->student->parent_id) · For: {{ $b->student->name }}@endif</div>
+                <div style="font-size:13px;color:var(--muted);">{{ $b->subject?->name ?? 'General Session' }} · {{ $b->duration_minutes }} minutes @if($b->student && $b->student->parent_id) · For: {{ $b->student->name }}@endif</div>
                 <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;">
                     <div style="display:flex;align-items:center;gap:6px;font-size:13px;"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span style="color:var(--ink);font-weight:500;">{{ $b->scheduled_at->format('D, M j, Y') }}</span></div>
                     <div style="display:flex;align-items:center;gap:6px;font-size:13px;"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="color:var(--ink);font-weight:500;">{{ $b->scheduled_at->format('g:i a') }}</span></div>
