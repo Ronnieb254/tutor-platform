@@ -1,73 +1,100 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+@include('partials.head')
+<title>Session Room – Mwalimu</title>
+<style>
+:root{--ink:#15281F;--trust-blue:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var(--ink);overflow:hidden;}
 
-@section('title', 'Session Room - ' . $booking->uuid)
+.room-container{width:100%;height:100vh;display:flex;flex-direction:column;}
+#jitsi-container{flex:1;width:100%;background:#000;}
 
-@section('content')
-<div class="min-h-screen bg-gray-900">
-    <!-- Header Bar -->
-    <div class="bg-gray-800 border-b border-gray-700 px-4 py-3">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('bookings.show', $booking->uuid) }}" 
-                   class="text-gray-400 hover:text-white transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                </a>
-                <div>
-                    <h1 class="text-white font-semibold">
-                        {{ $booking->subject ? $booking->subject->name : 'Session' }} - {{ $booking->duration_minutes }} minutes
-                    </h1>
-                    <p class="text-sm text-gray-400">
-                        @if(auth()->id() === $booking->tutor_id)
-                            Student: {{ $booking->student->name }}
-                        @else
-                            Tutor: {{ $booking->tutor->name }}
-                        @endif
-                    </p>
-                </div>
+.session-header{background:linear-gradient(135deg,#111C16,#15281F);padding:12px 24px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:13px;z-index:100;flex-shrink:0;}
+.session-header .left{display:flex;align-items:center;gap:16px;flex:1;min-width:0;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;transition:color .15s;flex-shrink:0;}
+.back-btn:hover{color:rgba(255,255,255,.85);}
+.session-title{font-weight:700;font-family:'Fraunces',serif;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-meta{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.session-meta .dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.2);}
+.session-meta .time{color:rgba(255,255,255,.4);font-size:12px;}
+.session-code{background:rgba(10,100,188,.2);border:1px solid rgba(10,100,188,.3);padding:4px 12px;border-radius:8px;font-size:11px;font-weight:700;font-family:monospace;letter-spacing:.05em;}
+.moderator-badge{background:rgba(234,179,8,.15);border:1px solid rgba(234,179,8,.3);color:#facc15;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:4px;}
+.copy-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;width:36px;height:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+.copy-btn:hover{background:rgba(255,255,255,.15);}
+.copy-btn.copied{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.4);color:#10B981;}
+.exit-btn{background:rgba(234,85,42,.15);border:1px solid rgba(234,85,42,.3);color:#ff7849;padding:8px 18px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+.exit-btn:hover{background:rgba(234,85,42,.25);}
+.recording-indicator{display:none;align-items:center;gap:6px;background:rgba(234,85,42,.15);border:1px solid rgba(234,85,42,.3);color:#ff7849;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:700;animation:pulse-rec 1.5s infinite;}
+.recording-indicator.active{display:inline-flex;}
+@keyframes pulse-rec{0%,100%{opacity:1;}50%{opacity:.5;}}
+</style>
+</head>
+<body>
+
+<div class="room-container">
+    {{-- Session Header --}}
+    <div class="session-header">
+        <div class="left">
+            <a href="{{ route('bookings.show', $booking->uuid) }}" class="back-btn">
+                <i class="fa-solid fa-arrow-left fa-xs"></i> Back
+            </a>
+            <div class="session-title">
+                {{ $booking->subject ? $booking->subject->name : 'Session' }} · {{ $booking->duration_minutes }} min
             </div>
-
-            <div class="flex items-center space-x-3">
-                <div class="text-right">
-                    <p class="text-xs text-gray-400">Session Code</p>
-                    <p class="text-sm font-mono text-white">
-                        @if(auth()->id() === $booking->tutor_id)
-                            {{ $booking->session_code_tutor }}
-                        @else
-                            {{ $booking->session_code_student }}
-                        @endif
-                    </p>
-                </div>
-                
-                <button onclick="copySessionCode()" 
-                        class="p-2 text-gray-400 hover:text-white transition"
-                        title="Copy session code">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                    </svg>
-                </button>
+            <div class="session-meta">
+                <span class="dot"></span>
+                <span class="time">
+                    @if(auth()->id() === $booking->tutor_id)
+                        Student: {{ $booking->student->name }}
+                    @else
+                        Tutor: {{ $booking->tutor->name }}
+                    @endif
+                </span>
+                @if(auth()->id() === $booking->tutor_id)
+                    <span class="moderator-badge"><i class="fa-solid fa-shield-halved fa-xs"></i> MODERATOR</span>
+                @endif
+                <span class="recording-indicator" id="recIndicator">
+                    <i class="fa-solid fa-circle fa-xs"></i> REC
+                </span>
             </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+            <div style="text-align:right;">
+                <p style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:2px;">Session Code</p>
+                <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">
+                    @if(auth()->id() === $booking->tutor_id)
+                        {{ $booking->session_code_tutor }}
+                    @else
+                        {{ $booking->session_code_student }}
+                    @endif
+                </p>
+            </div>
+            <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
+                <i class="fa-solid fa-copy fa-xs"></i>
+            </button>
+            <button onclick="leaveSession()" class="exit-btn">
+                <i class="fa-solid fa-phone-slash fa-xs"></i> Leave
+            </button>
         </div>
     </div>
 
-    <!-- Jitsi Meet Container -->
-    <div id="jitsi-container" class="w-full" style="height: calc(100vh - 64px);"></div>
+    {{-- Jitsi Meet Container --}}
+    <div id="jitsi-container"></div>
 </div>
 
-@push('scripts')
 <script src="https://meet.jit.si/external_api.js"></script>
 <script>
-    // Meeting configuration
     const domain = 'meet.jit.si';
     const meetingRoom = '{{ $booking->meeting_room }}';
-    const userDisplayName = '{{ auth()->user()->name }}';
-    const userEmail = '{{ auth()->user()->email }}';
+    const userDisplayName = '{{ addslashes(auth()->user()->name) }}';
+    const userEmail = '{{ addslashes(auth()->user()->email) }}';
     const isModerator = {{ auth()->id() === $booking->tutor_id ? 'true' : 'false' }};
     const sessionCode = '{{ auth()->id() === $booking->tutor_id ? $booking->session_code_tutor : $booking->session_code_student }}';
+    const bookingUrl = '{{ route("bookings.show", $booking->uuid) }}';
 
-    // Jitsi Meet configuration options
     const options = {
         roomName: meetingRoom,
         width: '100%',
@@ -78,123 +105,126 @@
             startWithVideoMuted: false,
             enableWelcomePage: false,
             prejoinPageEnabled: false,
-            disableInviteFunctions: true,
             enableNoisyMicDetection: true,
             resolution: 720,
             constraints: {
                 video: {
-                    height: {
-                        ideal: 720,
-                        max: 1080,
-                        min: 240
-                    }
+                    height: { ideal: 720, max: 1080, min: 240 },
+                    width: { ideal: 1280, max: 1920, min: 320 }
                 }
             },
-            // Recording controls - only moderator can record
-            fileRecordingsEnabled: isModerator,
+            // Screen sharing
+            desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
+            desktopSharingChromeSources: ['screen', 'window', 'tab'],
+            desktopSharingChromeExtId: null,
+            desktopSharingFirefoxDisabled: false,
+            desktopSharingFirefoxMaxExtensionIframeSize: 600,
+            // Recording (moderators only)
+            fileRecordingsEnabled: true,
             liveStreamingEnabled: false,
-            // UI customization
-            toolbarButtons: [
-                'microphone',
-                'camera',
-                'desktop',
-                'fullscreen',
-                'fodeviceselection',
-                'hangup',
-                'profile',
-                'chat',
-                'recording',
-                'livestreaming',
-                'etherpad',
-                'sharedvideo',
-                'settings',
-                'raisehand',
-                'videoquality',
-                'filmstrip',
-                'stats',
-                'shortcuts',
-                'tileview',
-                'help',
-                'mute-everyone',
-                'security'
-            ],
+            // All collaboration tools enabled
+            whiteboardEnabled: true,
+           etherpadEnabled: true,
+            // Breakout rooms
+            breakoutRoomsEnabled: true,
+            // All toolbar buttons available — do NOT restrict toolbarButtons array
+            // (removing toolbarButtons lets Jitsi show all available tools)
         },
         interfaceConfigOverwrite: {
             SHOW_JITSI_WATERMARK: false,
             SHOW_WATERMARK_FOR_GUESTS: false,
             SHOW_BRAND_WATERMARK: false,
+            SHOW_POWERED_BY: false,
             BRAND_WATERMARK_LINK: '',
-            DEFAULT_BACKGROUND: '#1f2937',
+            JITSI_WATERMARK_LINK: '',
+            DEFAULT_BACKGROUND: '#15281F',
+            DEFAULT_LOCAL_DISPLAY_NAME: 'me',
+            DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',
             DISABLE_PRESENCE_STATUS: false,
             DISPLAY_WELCOME_PAGE_CONTENT: false,
+            DISPLAY_INVITE_MORE_HEADER: false,
             HIDE_INVITE_MORE_HEADER: true,
             MOBILE_APP_PROMO: false,
             SHOW_CHROME_EXTENSION_BANNER: false,
-            DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',
-            APP_NAME: 'Mwalimu Session',
-            NATIVE_APP_NAME: 'Mwalimu',
-            PROVIDER_NAME: 'Mwalimu',
+            SHOW_DEEP_LINKING_IMAGE: false,
+            SHOW_GIPPER_WATERMARK_LINK: false,
+            SHOW_JITSI_WATERMARK: false,
+            RECENT_LIST_ENABLED: false,
+            SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
+            VIDEO_LAYOUT_FIT: 'both',
+            // Full toolbar — all tools visible
+            TOOLBAR_BUTTONS: [
+                'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+                'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
+                'etherpad', 'sharedvideo', 'settings', 'raisehand', 'videoquality',
+                'filmstrip', 'stats', 'shortcuts', 'tileview', 'videobackgroundblur',
+                'download', 'help', 'mute-everyone', 'mute-video-everyone',
+                'security', 'toggle-camera', 'whiteboard', 'participants-pane',
+            ],
+            TOOLBAR_ALWAYS_VISIBLE: false,
+            INITIAL_TOOLBAR_TIMEOUT: 5000,
+            TOOLBAR_TIMEOUT: 4000,
         },
         userInfo: {
             displayName: userDisplayName,
-            email: userEmail
-        }
+            email: userEmail,
+        },
     };
 
-    // Initialize Jitsi
     const api = new JitsiMeetExternalAPI(domain, options);
 
-    // Set moderator status
-    if (isModerator) {
-        api.addEventListener('videoConferenceJoined', () => {
-            console.log('Joined as moderator');
-        });
-    }
-
-    // Track when user leaves
-    api.addEventListener('readyToClose', () => {
-        window.location.href = '{{ route("bookings.show", $booking->uuid) }}';
+    // Moderator joined
+    api.addEventListener('videoConferenceJoined', () => {
+        console.log('Joined as ' + (isModerator ? 'moderator' : 'participant'));
     });
 
-    // Handle errors
-    api.addEventListener('errorOccurred', (error) => {
-        console.error('Jitsi error:', error);
-        alert('An error occurred with the video conference. Please try refreshing the page.');
-    });
-
-    // Copy session code function
-    function copySessionCode() {
-        const code = sessionCode;
-        navigator.clipboard.writeText(code).then(() => {
-            // Show temporary success message
-            const btn = event.currentTarget;
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
-            btn.classList.add('text-green-400');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('text-green-400');
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy:', err);
-            alert('Failed to copy session code');
-        });
-    }
-
-    // Prevent accidental page close
-    window.addEventListener('beforeunload', (e) => {
-        e.preventDefault();
-        e.returnValue = '';
-    });
-
-    // Cleanup on page unload
-    window.addEventListener('unload', () => {
-        if (api) {
-            api.dispose();
+    // Recording status
+    api.addEventListener('recordingStatusChanged', (e) => {
+        const indicator = document.getElementById('recIndicator');
+        if (e.on && isModerator) {
+            indicator.classList.add('active');
+        } else {
+            indicator.classList.remove('active');
         }
     });
-</script>
-@endpush
 
-@endsection
+    // Leave handling
+    api.addEventListener('readyToClose', () => {
+        window.location.href = bookingUrl;
+    });
+    api.addEventListener('hangup', () => {
+        window.location.href = bookingUrl;
+    });
+
+    // Error handling
+    api.addEventListener('errorOccurred', (error) => {
+        console.error('Jitsi error:', error);
+    });
+
+    // Copy session code
+    function copySessionCode() {
+        navigator.clipboard.writeText(sessionCode).then(() => {
+            const btn = document.getElementById('copyBtn');
+            btn.innerHTML = '<i class="fa-solid fa-check fa-xs"></i>';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-solid fa-copy fa-xs"></i>';
+                btn.classList.remove('copied');
+            }, 2000);
+        }).catch(() => alert('Failed to copy: ' + sessionCode));
+    }
+
+    // Leave session
+    function leaveSession() {
+        try { api.executeCommand('hangup'); } catch(e) {}
+        setTimeout(() => { window.location.href = bookingUrl; }, 500);
+    }
+
+    // Cleanup
+    window.addEventListener('beforeunload', (e) => {
+        try { api.dispose(); } catch(err) {}
+    });
+</script>
+
+</body>
+</html>
