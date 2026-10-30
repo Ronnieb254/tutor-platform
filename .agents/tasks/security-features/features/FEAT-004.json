@@ -1,0 +1,40 @@
+{
+  "id": "FEAT-004",
+  "type": "feat",
+  "description": "Login Activity Tracking: log every login attempt (success and failure) with IP, user agent, status, and reason. Email notification on suspicious activity (new device or >= 5 failed attempts in 30 minutes). UI to view last 10 login entries in settings page.",
+  "status": "pending",
+  "steps": [
+    "1. Create migration 2026_10_31_000003_create_login_activities_table.php with Schema::create('login_activities', ...) containing: id, user_id (nullable FK to users, indexed - null for failed login before user lookup), email (string 255, indexed), ip_address (string 45), user_agent (text), status (enum 'success','failed'), reason (nullable string for failure reason), created_at (timestamp only, no updated_at). Add foreign key with onDelete('cascade') for user_id. Index on (email, created_at) for fast failure count queries.",
+    "2. Create model app/Models/LoginActivity.php with fillable ['user_id','email','ip_address','user_agent','status','reason'], timestamps=false (only created_at), casts ['created_at'=>'datetime']. Relationship: belongsTo(User::class).",
+    "3. Add relationship to app/Models/User.php: public function loginActivities() { return $this->hasMany(LoginActivity::class); }",
+    "4. Create app/Services/LoginActivityService.php with methods: recordSuccess(User $user, Request $request) (creates LoginActivity with status=success, user_id, email, ip from $request->ip(), user_agent from $request->userAgent()), recordFailure(string $email, Request $request, string $reason) (creates LoginActivity with status=failed, user_id=null, email, ip, user_agent, reason), checkSuspiciousActivity(User $user, Request $request): bool (returns true if: (a) user_agent hash not in last 10 successful logins for this user, OR (b) >= 5 failed login attempts for this email in last 30 minutes). Use a hash of user_agent for device fingerprint comparison.",
+    "5. Modify app/Http/Controllers/Auth/LoginController.php store() method: (a) On successful Auth::attempt(), call LoginActivityService::recordSuccess($user, $request). (b) Check LoginActivityService::checkSuspiciousActivity($user, $request) - if true, send SuspiciousLoginNotification to user. (c) On failed login (before throwing ValidationException), extract email from $request, call LoginActivityService::recordFailure($email, $request, 'Invalid credentials'). (d) For deactivated user login attempt, call recordFailure() with reason 'Account deactivated'.",
+    "6. Create app/Notifications/SuspiciousLoginNotification.php extending Notification, via(['mail']), toMail(LoginActivity $activity) returns MailMessage with subject 'New login from unrecognized device' or 'Multiple failed login attempts detected', body includes IP address, user agent, timestamp, and advice to change password if not recognized. Pass the LoginActivity record to the notification constructor.",
+    "7. Create app/Http/Controllers/Settings/SecurityController.php with method loginHistory() [GET /settings/security/login-history] that returns view with last 10 login activities via auth()->user()->loginActivities()->latest()->limit(10)->get(). View displays table with columns: Date/Time, Status (badge), IP Address, Device (parsed user_agent), Location (optional, can be 'Unknown' for now).",
+    "8. Add routes to routes/web.php: Route::middleware('auth')->group: GET /settings/security (SecurityController@index) shows security settings overview, GET /settings/security/login-history (SecurityController@loginHistory) shows full activity table. Link to these from user dashboard or settings menu.",
+    "9. Create Blade view resources/views/pages/settings/security-login-history.blade.php with table showing last 10 login activities. Each row: timestamp, status badge (green for success, red for failed), IP address, device (short string from user_agent like 'Chrome on Windows'), reason (for failures). Match card-based layout from admin/settings.blade.php with inline CSS.",
+    "10. Integrate login history section into existing settings page (if a unified settings page exists, e.g., resources/views/pages/settings/index.blade.php) or create new security tab. Show last 3 activities inline with 'View all' link to /settings/security/login-history. Ensure this section is visible to all logged-in users (students, parents, tutors, admins).",
+    "11. Add user_agent parsing helper in a trait or helper file (app/Helpers/UserAgentHelper.php) with method parseUserAgent(string $userAgent): string that extracts browser and OS (e.g., 'Chrome 120 on Windows 10'). Use simple string parsing or a package like jenssegers/agent if available (check composer.json first)."
+  ],
+  "acceptance_criteria": [
+    "Every successful login creates a login_activities record with status=success and the user's ID",
+    "Every failed login attempt creates a login_activities record with status=failed, email, and reason",
+    "First login from a new device (different user_agent) triggers SuspiciousLoginNotification email",
+    "5 or more failed login attempts for the same email within 30 minutes triggers SuspiciousLoginNotification to that user (if account exists)",
+    "Settings page at /settings/security/login-history shows last 10 login activities in descending order",
+    "Login activity table displays readable date/time, status badge, IP, device info, and failure reason (if failed)",
+    "All user roles (student, parent, tutor, admin) can view their own login history"
+  ],
+  "verification": [
+    "Run php artisan migrate to create login_activities table",
+    "Register and login as a new user - check login_activities table has 1 success record with correct IP and user_agent",
+    "Attempt login with wrong password 3 times - verify 3 failed records in login_activities with reason 'Invalid credentials'",
+    "Login successfully after failures - verify success record created and no suspicious email sent (same device)",
+    "Change user_agent in browser (or use different browser) and login - verify SuspiciousLoginNotification email received",
+    "Make 5 failed login attempts for an email within 30 minutes - verify SuspiciousLoginNotification email sent on 5th attempt",
+    "Visit /settings/security/login-history as any user role - verify last 10 activities display correctly with badges and timestamps",
+    "Check storage/logs/laravel.log for any errors during login or activity recording"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

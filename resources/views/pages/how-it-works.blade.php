@@ -27,7 +27,7 @@
             Mwalimu connects Kenyan students and parents with verified, TSC-registered expert tutors. Book in minutes, pay securely, join a live class from anywhere.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:48px;">
-            @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
+            @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Find a Tutor
             </a>
@@ -183,7 +183,7 @@
             @endforeach
         </div>
         <div style="text-align:center;margin-top:28px;">
-            @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
+            @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Browse Tutors & Book Now
             </a>

@@ -1,0 +1,45 @@
+{
+  "id": "FEAT-005",
+  "type": "feat",
+  "description": "Session Management: track active sessions per user, auto-logout based on role (2 hours for tutors/admins, 24 hours for students/parents), UI to view active sessions and revoke them individually or all at once. Syncs with Laravel's database session driver.",
+  "status": "pending",
+  "steps": [
+    "1. Verify SESSION_DRIVER=database in .env (check existing sessions table created in 2024_01_01_000001_create_users_table.php migration). This feature depends on database sessions.",
+    "2. Create migration 2026_10_31_000004_create_user_sessions_table.php with Schema::create('user_sessions', ...) containing: id, user_id (FK to users, indexed), session_id (string 255, unique), ip_address (string 45), user_agent (text), last_activity (timestamp), created_at (timestamp only). Foreign key with onDelete('cascade'). Index on (user_id, last_activity) for active session queries.",
+    "3. Create model app/Models/UserSession.php with fillable ['user_id','session_id','ip_address','user_agent','last_activity'], timestamps=false (only created_at), casts ['last_activity'=>'datetime','created_at'=>'datetime']. Relationship: belongsTo(User::class). Add scope scopeActive(Builder $query, int $minutes) to filter sessions with last_activity within $minutes.",
+    "4. Add relationship to app/Models/User.php: public function userSessions() { return $this->hasMany(UserSession::class); }",
+    "5. Create app/Http/Middleware/TrackUserSession.php implementing handle(Request, Closure). Logic: if auth()->check(), get current session ID via session()->getId(), find or create UserSession record for this user+session_id, update last_activity=now(), ip_address, user_agent. Check inactivity timeout based on user role: tutors/admins max 2 hours (120 min), students/parents max 24 hours (1440 min). If last_activity older than threshold, logout user (Auth::logout()), invalidate session, redirect to login with message 'Session expired due to inactivity.' This middleware runs on every authenticated request.",
+    "6. Register TrackUserSession middleware in bootstrap/app.php or app/Http/Kernel.php in the 'web' middleware group (after StartSession and Authenticate). Ensure it runs on all authenticated routes.",
+    "7. Create app/Services/SessionManagementService.php with methods: getActiveSessions(User $user): Collection (returns user_sessions for this user with last_activity within role-based timeout, ordered by last_activity desc), revokeSession(UserSession $session) (delete UserSession record, find and delete matching session from sessions table by session_id), revokeAllOtherSessions(User $user, string $currentSessionId) (delete all UserSession records for user except current, delete matching sessions from sessions table). Use DB::table('sessions')->where('id', $sessionId)->delete() to remove from sessions table.",
+    "8. Create app/Http/Controllers/Settings/SessionController.php with methods: index() [GET /settings/sessions] returns view with active sessions via SessionManagementService::getActiveSessions(auth()->user()), destroy(UserSession $session) [DELETE /settings/sessions/{session}] calls revokeSession() and redirects back with success message, revokeOthers() [POST /settings/sessions/revoke-others] calls revokeAllOtherSessions() with current session ID and redirects back.",
+    "9. Add routes to routes/web.php: Route::middleware('auth')->group: GET /settings/sessions (SessionController@index) named 'settings.sessions', DELETE /settings/sessions/{session} (SessionController@destroy) named 'settings.sessions.destroy', POST /settings/sessions/revoke-others (SessionController@revokeOthers) named 'settings.sessions.revoke-others'.",
+    "10. Create Blade view resources/views/pages/settings/sessions.blade.php showing table of active sessions. Each row: IP address, Device (parsed user_agent), Last Active (human-readable time ago like '5 minutes ago'), Current Session badge (if session_id matches current), Revoke button (DELETE to /settings/sessions/{session}). Add 'Sign out all other devices' button at top (POST to /settings/sessions/revoke-others with password confirmation modal). Match card-based layout with inline CSS.",
+    "11. Integrate sessions section into existing settings page sidebar or tabs. Link from security settings overview. Ensure all user roles can access their session management page.",
+    "12. Add cleanup job or command (optional but recommended): php artisan make:command CleanupExpiredSessions. Logic: delete UserSession records where last_activity older than max timeout (24 hours), delete orphaned sessions from sessions table. Schedule in app/Console/Kernel.php to run daily. This is optional; manual cleanup via migration or during login also works."
+  ],
+  "acceptance_criteria": [
+    "Every authenticated request creates or updates a user_sessions record with current session_id and timestamp",
+    "Tutors and admins are auto-logged out after 2 hours of inactivity (no requests within 2 hours)",
+    "Students and parents are auto-logged out after 24 hours of inactivity",
+    "Settings page at /settings/sessions shows all active sessions for the current user with IP, device, last active time",
+    "Current session is clearly marked with a badge or indicator in the sessions list",
+    "Clicking 'Revoke' on a session deletes the user_sessions record and terminates that session (user on that device is logged out)",
+    "Clicking 'Sign out all other devices' keeps current session active and terminates all others",
+    "Revoking a session requires password confirmation (implement modal or form in the view)",
+    "All user roles can manage their own sessions"
+  ],
+  "verification": [
+    "Run php artisan migrate to create user_sessions table",
+    "Login as tutor in browser A, verify user_sessions table has 1 record with session_id matching session()->getId()",
+    "Open incognito/another browser, login as same tutor, verify user_sessions now has 2 records with different session_ids",
+    "Visit /settings/sessions - verify both sessions appear in the list with correct IP and device info, one marked as 'Current Session'",
+    "Click 'Revoke' on the non-current session, verify that session is logged out (test in the other browser)",
+    "Login in 3 browsers, click 'Sign out all other devices', verify only current session remains active and other 2 are logged out",
+    "Login as tutor, wait 2 hours and 1 minute, make a request - verify auto-logout and redirect to login with 'Session expired' message",
+    "Login as student, wait 2 hours and 1 minute, make a request - verify still logged in (24-hour timeout for students)",
+    "Wait 24 hours as student, make request - verify auto-logout",
+    "Check storage/logs/laravel.log for any errors during session tracking"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

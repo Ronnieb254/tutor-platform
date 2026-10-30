@@ -1,0 +1,28 @@
+{
+  "project_type": "Laravel 12 + Livewire 3 + Alpine.js tutoring marketplace (PHP 8.4)",
+  "language": "PHP",
+  "build_system": "Composer for PHP dependencies. No npm build needed for backend-only changes. Migrations run via php artisan migrate.",
+  "test_framework": "None configured (no Pest or PHPUnit test files exist). Skip writing tests.",
+  "build_command": "composer install (dependencies already present)",
+  "test_command": "Not applicable - no test framework installed",
+  "verification_instructions": "1. Run php artisan migrate to apply new migrations. 2. Start the dev server with php artisan serve. 3. Manually test each feature through the browser: register/login flows, settings pages, session tracking. 4. Check Laravel logs at storage/logs/laravel.log for errors.",
+  "snapshot_or_generated_files": null,
+  "environment_constraints": "This is a local Windows worktree. Database is MySQL 8.0+. Laravel session driver is 'database' (sessions table already exists). Never restart any external services. Auth uses standard Laravel Auth facade with LoginController at app/Http/Controllers/Auth/LoginController.php.",
+  "contribution_requirements": "No CONTRIBUTING.md or AGENTS.md found. Follow Laravel 12 conventions. Use Schema::hasTable() guards in migrations since password_reset_tokens table already exists. Match existing code style: controller methods use type-hinted Request, models use fillable arrays, Blade views use inline CSS with custom properties (--ink, --cream, --trust-blue, --coral, --gold, --mint).",
+  "key_patterns": "Controllers return view() or redirect() with withErrors/with() flash messages. Notifications extend Illuminate\\Notifications\\Notification with via(['database','mail']) and toMail() returning MailMessage with ->view(). Services are plain PHP classes in app/Services/. Middleware registered in bootstrap/app.php or Kernel (check both). User model has role enum (student/tutor/admin/parent) and helper methods isAdmin(), isTutor(), isStudent(), isParent(). Existing OtpService pattern: generate 6-digit code, store in DB with expiry, send via Mail facade.",
+  "relevant_files": [
+    "app/Http/Controllers/Auth/LoginController.php",
+    "app/Http/Controllers/Auth/RegisterController.php",
+    "app/Models/User.php",
+    "app/Services/OtpService.php",
+    "app/Notifications/BookingConfirmedStudent.php",
+    "app/Http/Middleware/RoleMiddleware.php",
+    "app/Providers/AppServiceProvider.php",
+    "database/migrations/2024_01_01_000001_create_users_table.php",
+    "database/migrations/2026_10_30_000001_create_password_reset_tokens_table.php",
+    "resources/views/pages/admin/settings.blade.php",
+    "resources/views/pages/dashboard/tutor.blade.php",
+    "routes/web.php"
+  ],
+  "directory_structure": "app/Http/Controllers/ (Auth/, Admin/, Settings/ subdirs), app/Models/, app/Services/, app/Notifications/, app/Http/Middleware/, database/migrations/, resources/views/auth/, resources/views/pages/ (admin/, dashboard/, settings/), routes/web.php, config/ (paystack.php, services.php - no auth.php yet, will create if needed)"
+}

@@ -86,7 +86,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 </p>
 
                 {{-- Quick booking CTA — always show for students/parents, hide for tutors/admins --}}
-                @if(!auth()->check() || in_array(auth()->user()->role, ['student','parent']))
+                @if(!auth()->check() || (auth()->check() && in_array(auth()->user()->role, ['student','parent'])))
                 <div style="background:#fff;border-radius:20px;border:1px solid var(--hair);padding:20px;max-width:520px;margin-bottom:28px;box-shadow:0 4px 24px rgba(21,40,31,.08);">
                     <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--trust-blue);"></i> Book a session now</p>
                     <form action="{{ route('tutors.index') }}" method="GET" style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -308,7 +308,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
 </section>
 
 {{-- FOR TUTORS CTA — hidden for tutors and admins --}}
-@if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
+@if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
 <section style="background:var(--trust-blue);padding:72px 0;">
     <div class="w">
         <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="tc-g">

@@ -1,0 +1,42 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Enhanced Password Reset with 15-minute token expiry, rate limiting (max 3 requests per hour per email), email notification on successful reset, and prevention of last 3 password reuse. Integrates with existing Laravel password reset flow.",
+  "status": "pending",
+  "steps": [
+    "1. Create config/auth.php if it doesn't exist (copy from Laravel 12 defaults). Set 'passwords' => ['users' => ['provider' => 'users', 'table' => 'password_reset_tokens', 'expire' => 15, 'throttle' => 60]]. This sets token expiry to 15 minutes.",
+    "2. Create migration 2026_10_31_000002_create_password_history_table.php with Schema::create('password_history', ...) containing: id, user_id (FK to users, indexed), password (hashed string, 255), created_at (timestamp, no updated_at). Use $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'). Add index on user_id for fast lookups.",
+    "3. Create model app/Models/PasswordHistory.php with fillable ['user_id','password'], timestamps=false (only created_at), casts ['created_at'=>'datetime']. Relationship: belongsTo(User::class).",
+    "4. Add relationship to app/Models/User.php: public function passwordHistory() { return $this->hasMany(PasswordHistory::class); }",
+    "5. Create app/Services/PasswordHistoryService.php with methods: checkPasswordReuse(User $user, string $newPassword): bool (fetches last 3 passwords via passwordHistory()->latest()->limit(3)->get(), uses Hash::check() to compare, returns true if match found), storePassword(User $user) (creates PasswordHistory record with current user password hash). This service is called before password updates.",
+    "6. Create or modify app/Http/Controllers/Auth/ForgotPasswordController.php (if doesn't exist, create it). Method sendResetLinkEmail(Request): validate email, apply rate limiting with RateLimiter::attempt('password-reset:'.$email, 3, fn()=>true, 3600) - max 3 per hour. On exceeded, return error 'Too many password reset attempts. Please try again in 1 hour.' Use Password::sendResetLink($credentials) to send email with token. Return success message.",
+    "7. Create or modify app/Http/Controllers/Auth/ResetPasswordController.php. Method reset(Request): validate token+email+password+password_confirmation, check password against last 3 via PasswordHistoryService::checkPasswordReuse(), if reused return error 'You cannot reuse any of your last 3 passwords.' Use Password::reset() to update password. On success, call PasswordHistoryService::storePassword() to record new password hash, send PasswordResetSuccessNotification to user, and redirect to login with success message.",
+    "8. Add routes to routes/web.php: Route::middleware('guest')->group: GET /forgot-password (ForgotPasswordController@showLinkRequestForm), POST /forgot-password (ForgotPasswordController@sendResetLinkEmail) named 'password.email', GET /reset-password/{token} (ResetPasswordController@showResetForm) named 'password.reset', POST /reset-password (ResetPasswordController@reset) named 'password.update'.",
+    "9. Create Blade views: resources/views/auth/forgot-password.blade.php (email input form, submit button), resources/views/auth/reset-password.blade.php (token+email hidden, new password+confirm inputs, password requirements list, submit button). Match existing auth view styles.",
+    "10. Create app/Notifications/PasswordResetSuccessNotification.php extending Notification, via(['mail']), toMail() returns MailMessage with subject 'Your password has been reset' and body 'Your Mwalimu account password was successfully changed on [timestamp]. If you did not make this change, please contact support immediately.' Include user IP and user agent in email body for security context.",
+    "11. Modify app/Http/Controllers/Auth/RegisterController.php store() method: after user creation in the OTP flow (check OtpController for final user creation), call PasswordHistoryService::storePassword() to record the initial password hash. This ensures the first password is in history.",
+    "12. Create app/Http/Requests/UpdatePasswordRequest.php form request for password updates in user settings (not reset flow, just settings change). Validate current_password, new password with Password::defaults() rules, and check reuse with PasswordHistoryService in the authorize() or prepareForValidation() method. Use in settings controller when user changes password via settings page."
+  ],
+  "acceptance_criteria": [
+    "Password reset tokens expire after exactly 15 minutes from creation",
+    "Users can request password reset max 3 times per hour per email - 4th attempt within the hour returns throttle error",
+    "Users cannot set their new password to match any of their last 3 passwords",
+    "On successful password reset, user receives email notification with timestamp and device info",
+    "Password history is recorded on: user registration (initial password), password reset, password change via settings",
+    "Attempting to reuse a recent password returns clear error message before password update",
+    "config/auth.php exists with correct expire and throttle values"
+  ],
+  "verification": [
+    "Run php artisan migrate to create password_history table",
+    "Register a new user, check password_history table contains 1 record with hashed password",
+    "Visit /forgot-password, enter email, verify email received with reset link containing token",
+    "Click reset link, attempt to set password to the current password - verify error 'cannot reuse last 3 passwords'",
+    "Set a new password, verify redirect to login and PasswordResetSuccessNotification email received",
+    "Attempt 4 password reset requests within 1 hour for same email - verify 4th request returns throttle error",
+    "Change password via settings 2 more times (total 3 password changes), then attempt to set password to any of the last 3 - verify error appears",
+    "Wait 16 minutes after requesting a reset token, attempt to use it - verify 'token expired' error",
+    "Check storage/logs/laravel.log for any errors during reset flow"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

@@ -1,0 +1,41 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Two-Factor Authentication (2FA) using TOTP with QR codes. Mandatory for admins, optional for tutors. Students and parents are exempt. Package: pragmarx/google2fa-laravel. Hooks into LoginController post-password-success. Settings UI for enable/disable, QR code display, and recovery codes management.",
+  "status": "pending",
+  "steps": [
+    "1. Install composer package: composer require pragmarx/google2fa-laravel. This package wraps pragmarx/google2fa and includes QR code generation via bacon/bacon-qr-code.",
+    "2. Create migration 2026_10_31_000001_create_two_factor_auth_table.php with Schema::create('two_factor_auth', ...) containing: id, user_id (FK to users, unique), secret (encrypted string), recovery_codes (json, encrypted), enabled_at (nullable timestamp), timestamps. Use $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade').",
+    "3. Create model app/Models/TwoFactorAuth.php with fillable ['user_id','secret','recovery_codes','enabled_at'], casts ['recovery_codes'=>'array','enabled_at'=>'datetime'], and protected $encryptable = ['secret','recovery_codes'] (Laravel auto-encrypts these). Relationship: belongsTo(User::class).",
+    "4. Add relationship to app/Models/User.php: public function twoFactorAuth() { return $this->hasOne(TwoFactorAuth::class); }. Add helper: public function has2FAEnabled(): bool { return $this->twoFactorAuth && $this->twoFactorAuth->enabled_at !== null; }",
+    "5. Modify app/Http/Controllers/Auth/LoginController.php store() method: after successful Auth::attempt() and is_active check, add 2FA redirect logic. If user is admin or tutor AND has 2FA enabled, store user_id in session as '2fa_user_id', logout the user (Auth::logout()), and redirect to route('2fa.challenge'). Otherwise proceed to dashboard as normal. For admins without 2FA, redirect to route('2fa.setup.force') instead of dashboard.",
+    "6. Create app/Http/Controllers/Auth/TwoFactorController.php with methods: showSetup() [GET /2fa/setup], storeSetup(Request) [POST /2fa/setup - generates secret, QR, recovery codes, stores in DB, marks enabled_at], showChallenge() [GET /2fa/challenge - shows code input form], verifyChallenge(Request) [POST /2fa/challenge - verifies TOTP or recovery code, logs user in on success], disable(Request) [POST /2fa/disable - requires password confirmation, deletes 2FA record]. Use PragmaRX\\Google2FALaravel\\Facade\\Google2FA for TOTP operations.",
+    "7. Add routes to routes/web.php: Route::middleware('guest')->group: GET/POST /2fa/setup, GET/POST /2fa/challenge. Route::middleware('auth')->group: POST /2fa/disable, POST /2fa/recovery (regenerate recovery codes). Route /2fa/setup/force for admins (middleware guest or auth, check inside controller).",
+    "8. Create Blade views: resources/views/auth/2fa-setup.blade.php (shows QR code via data:image/svg+xml URL from Google2FA::getQRCodeInline(), lists 8 recovery codes, copy buttons, continue button), resources/views/auth/2fa-challenge.blade.php (6-digit code input, use recovery code link, back to login link), resources/views/auth/2fa-force.blade.php (admin-only first-time setup mandate). Match existing auth view styles with card-based layout and DM Sans font.",
+    "9. Create settings tab in resources/views/pages/settings/security.blade.php (new file, or add to existing settings page if one exists for users). Show 2FA status badge, Enable/Disable toggle button (POST to /2fa/setup or /2fa/disable), view recovery codes button (modal or inline), regenerate recovery codes button. Only show for tutors and admins. Use card component with inline CSS matching admin/settings.blade.php pattern.",
+    "10. Create app/Notifications/TwoFactorEnabledNotification.php extending Notification, via(['mail']), toMail() returns MailMessage with subject 'Two-Factor Authentication Enabled' and plain text body confirming 2FA is now active for the account. Send this notification in storeSetup() after enabling 2FA."
+  ],
+  "acceptance_criteria": [
+    "After password login, admins and tutors with 2FA enabled are redirected to /2fa/challenge before dashboard access",
+    "Admins without 2FA are forced to /2fa/setup on first login",
+    "QR code displays correctly in setup flow and can be scanned by Google Authenticator or Authy",
+    "6-digit TOTP codes verify successfully within the 30-second window",
+    "Recovery codes (8 codes) can be used as fallback and are consumed on use",
+    "Disabling 2FA requires password re-confirmation and removes the two_factor_auth record",
+    "Students and parents never see 2FA prompts or settings",
+    "Email notification sent when 2FA is enabled"
+  ],
+  "verification": [
+    "Run php artisan migrate to create two_factor_auth table",
+    "Register as admin and login - should be redirected to /2fa/setup (forced)",
+    "Scan QR code with authenticator app, enter 6-digit code, verify redirect to dashboard",
+    "Logout and login again - should go to /2fa/challenge, enter code, verify login succeeds",
+    "Visit settings page as admin, verify 2FA shows as enabled with recovery codes visible",
+    "Disable 2FA, logout, login again - should go directly to dashboard (no challenge)",
+    "Register as tutor, enable 2FA from settings, logout, login, verify challenge page appears",
+    "Register as student, verify no 2FA options appear in settings or login flow",
+    "Check storage/logs/laravel.log for any errors during the flow"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}
