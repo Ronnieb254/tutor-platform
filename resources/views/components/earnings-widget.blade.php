@@ -72,8 +72,6 @@
                 <div class="progress-bar" role="progressbar" style="width:{{ $clinicPercentage }}%;background:#EEBE15;border-radius:999px;"></div>
             </div>
             <small class="text-muted" style="font-size:12px;">{{ $earnings['clinic_sessions_count'] }} sessions</small>
-        </div>
-
-        
+        </div>  
     </div>
 </div>
