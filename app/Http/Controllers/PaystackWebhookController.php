@@ -21,13 +21,25 @@ class PaystackWebhookController extends Controller
         $payload   = $request->getContent();
         $signature = $request->header('X-Paystack-Signature', '');
 
+        Log::info('Paystack webhook received', [
+            'has_signature' => !empty($signature),
+            'payload_size' => strlen($payload),
+            'ip' => $request->ip(),
+        ]);
+
         if (!$this->paystack->verifyWebhookSignature($payload, $signature)) {
-            Log::warning('Paystack webhook: invalid signature');
+            Log::warning('Paystack webhook: invalid signature', [
+                'signature' => $signature,
+                'payload_preview' => substr($payload, 0, 200),
+            ]);
             return response()->json(['status' => 'invalid signature'], 401);
         }
 
         $event = json_decode($payload, true);
-        Log::info('Paystack webhook event: ' . ($event['event'] ?? 'unknown'));
+        Log::info('Paystack webhook event: ' . ($event['event'] ?? 'unknown'), [
+            'event_type' => $event['event'] ?? 'unknown',
+            'reference' => $event['data']['reference'] ?? null,
+        ]);
 
         if (($event['event'] ?? '') === 'charge.success') {
             $this->handleChargeSuccess($event['data']);
