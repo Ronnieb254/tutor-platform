@@ -78,7 +78,7 @@
                         ['fa-right-to-bracket','Tutor Login',           route('login')],
                         ['fa-gauge-high',      'Dashboard',             auth()->check() ? route('dashboard') : route('login')],
                     ] as [$ic,$label,$url])
-                    @if($label === 'Become a Tutor' && auth()->check() && in_array(auth()->user()->role, ['tutor','admin']))
+                    @if($label === 'Become a Tutor' && auth()->check() && auth()->user() && in_array(auth()->user()->role, ['tutor','admin']))
                         @continue
                     @endif
                     @if($label === 'Tutor Login' && auth()->check())
