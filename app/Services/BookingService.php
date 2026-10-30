@@ -72,44 +72,33 @@ class BookingService
 
     public function confirmBooking(Booking $booking): void
     {
-        DB::transaction(function () use ($booking) {
-            // Generate session access codes
-            $tutorCode   = 'TUT-' . strtoupper(Str::random(6));
-            $studentCode = 'STU-' . strtoupper(Str::random(6));
+        // Generate codes and meeting details outside transaction first
+        $tutorCode   = 'TUT-' . strtoupper(Str::random(6));
+        $studentCode = 'STU-' . strtoupper(Str::random(6));
+        $meetingID   = 'Mwalimu-session-' . $booking->uuid;
 
-            // Generate Jitsi meeting room name (no passwords needed for Jitsi)
-            $meetingID = 'Mwalimu-session-' . $booking->uuid;
+        $tutorJoinUrl = $this->jitsi->getJoinUrl(
+            $meetingID,
+            $booking->tutor->name,
+            true,
+            ['email' => $booking->tutor->email, 'recording' => true]
+        );
 
-            // Note: Jitsi meetings don't need to be "created" - they exist when someone joins
-            // The room is secured by the unique UUID in the room name
-            
-            // Generate join URLs
-            $tutorJoinUrl = $this->jitsi->getJoinUrl(
-                $meetingID,
-                $booking->tutor->name,
-                true, // isModerator
-                [
-                    'email' => $booking->tutor->email,
-                    'recording' => true,
-                ]
-            );
+        $studentJoinUrl = $this->jitsi->getJoinUrl(
+            $meetingID,
+            $booking->student->name,
+            false,
+            ['email' => $booking->student->email, 'restrictGuests' => true]
+        );
 
-            $studentJoinUrl = $this->jitsi->getJoinUrl(
-                $meetingID,
-                $booking->student->name,
-                false, // not moderator
-                [
-                    'email' => $booking->student->email,
-                    'restrictGuests' => true,
-                ]
-            );
-
+        // Keep the DB transaction tight — only data writes, no external calls
+        DB::transaction(function () use ($booking, $tutorCode, $studentCode, $meetingID, $tutorJoinUrl, $studentJoinUrl) {
             $booking->update([
                 'status'               => 'confirmed',
                 'meeting_room'         => $meetingID,
                 'meeting_url'          => $studentJoinUrl,
-                'meeting_password'     => null, // Jitsi doesn't use passwords
-                'moderator_password'   => null, // Jitsi uses moderator flag instead
+                'meeting_password'     => null,
+                'moderator_password'   => null,
                 'session_code_tutor'   => $tutorCode,
                 'session_code_student' => $studentCode,
             ]);
@@ -126,23 +115,23 @@ class BookingService
                 );
             }
 
-            // Update tutor stats
             $booking->tutor->tutorProfile?->increment('total_sessions');
-
-            $booking->refresh()->load(['student', 'tutor', 'subject']);
-
-            try {
-                $booking->student->notify(new BookingConfirmedStudent($booking));
-            } catch (\Throwable $e) {
-                Log::warning('Student booking notification failed: '.$e->getMessage());
-            }
-
-            try {
-                $booking->tutor->notify(new BookingConfirmedTutor($booking));
-            } catch (\Throwable $e) {
-                Log::warning('Tutor booking notification failed: '.$e->getMessage());
-            }
         });
+
+        // Reload fresh data for notifications — outside the transaction
+        $booking->refresh()->load(['student', 'tutor', 'subject']);
+
+        try {
+            $booking->student->notify(new BookingConfirmedStudent($booking));
+        } catch (\Throwable $e) {
+            Log::warning('Student booking notification failed: ' . $e->getMessage());
+        }
+
+        try {
+            $booking->tutor->notify(new BookingConfirmedTutor($booking));
+        } catch (\Throwable $e) {
+            Log::warning('Tutor booking notification failed: ' . $e->getMessage());
+        }
     }
 
     public function cancelBooking(Booking $booking, string $reason = '', ?User $cancelledBy = null): void
