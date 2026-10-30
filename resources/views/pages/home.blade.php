@@ -231,9 +231,11 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px;">{{ $mins }} min</div>
                 <div style="font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px;">{{ $title }}</div>
                 <p style="font-size:13px;color:var(--muted);line-height:1.65;">{{ $desc }}</p>
-                <a href="{{ route('tutors.index') }}" style="display:@if(auth()->check() && auth()->user()->role === 'tutor')none@else inline-flex@endif;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:var(--trust-blue);">
+                @if(!auth()->check() || (auth()->check() && auth()->user()->role !== 'tutor' && auth()->user()->role !== 'admin'))
+                <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:var(--trust-blue);">
                     Book now <i class="fa-solid fa-arrow-right fa-xs"></i>
                 </a>
+                @endif
             </div>
             @endforeach
         </div>
