@@ -1,344 +1,314 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="csrf-token" content="{{ csrf_token() }}">
+@include('partials.head')
 <title>Examiner Dashboard – Mwalimu</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <style>
-:root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:#F2F5F2;}
-a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
-button{font-family:inherit;cursor:pointer;}
-
-/* Layout */
-.layout{display:flex;height:100vh;overflow:hidden;}
-
-/* Sidebar */
-.sidebar{width:256px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:relative;z-index:50;}
-.sb-logo{padding:22px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
-.sb-logo-text{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:#fff;}
-.sb-nav{flex:1;padding:10px 8px;overflow-y:auto;}
-.sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.58);transition:all .15s;margin-bottom:1px;cursor:pointer;border:none;background:none;width:100%;text-align:left;}
-.sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
-.sb-item.active{background:var(--trust-blue);color:#fff;}
-.sb-footer{padding:14px;border-top:1px solid rgba(255,255,255,.06);}
-.sb-user{display:flex;align-items:center;gap:10px;}
-.sb-avatar{width:34px;height:34px;border-radius:10px;background:var(--trust-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;}
-.sb-uname{font-size:13px;font-weight:600;color:#fff;}
-.sb-urole{font-size:11px;color:rgba(255,255,255,.35);}
-.sb-logout{width:28px;height:28px;border-radius:8px;border:none;background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.sb-logout:hover{background:rgba(255,255,255,.16);color:#fff;}
-
-/* Main Content */
-.main{flex:1;overflow-y:auto;background:#F2F5F2;}
-.top-bar{background:#fff;border-bottom:1px solid var(--hair);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:40;}
-.top-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:all .15s;}
-.btn-primary{background:var(--trust-blue);color:#fff;}
-.btn-primary:hover{background:#5B21B6;}
-.btn-outline{background:#fff;color:var(--ink);border:1px solid var(--hair);}
-.btn-outline:hover{background:#FAFCFA;}
-.btn-success{background:var(--mint);color:#fff;}
-.btn-success:hover{background:#059669;}
-.btn-sm{padding:7px 12px;font-size:12.5px;}
-
-/* Content Area */
-.content{padding:28px;}
-.card{background:#fff;border-radius:14px;border:1px solid var(--hair);overflow:hidden;transition:box-shadow .15s;}
-.card:hover{box-shadow:0 2px 12px rgba(0,0,0,.04);}
-.card-header{padding:16px 20px;border-bottom:1px solid var(--hair);display:flex;justify-content:between;align-items:center;background:#FAFCFA;}
-.card-body{padding:20px;}
-.card-footer{padding:14px 20px;border-top:1px solid var(--hair);background:#FAFCFA;}
-
-/* Stats Grid */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px;}
-.stat{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;transition:box-shadow .15s;}
-.stat:hover{box-shadow:0 2px 12px rgba(0,0,0,.04);}
-.stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
-.stat-lbl{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
-.stat-val{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:4px;}
-.stat-sub{font-size:12px;color:var(--muted);}
-
-/* Clinic Cards Grid */
-.clinics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;margin-top:24px;}
-.clinic-card{background:#fff;border:1px solid var(--hair);border-radius:14px;overflow:hidden;transition:all .15s;display:flex;flex-direction:column;}
-.clinic-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);transform:translateY(-2px);}
-.clinic-hdr{padding:12px 16px;border-bottom:1px solid var(--hair);display:flex;justify-content:space-between;align-items:center;background:#FAFCFA;}
-.badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
-.badge-primary{background:rgba(10,100,188,.1);color:var(--trust-blue);}
-.badge-success{background:rgba(16,185,129,.1);color:var(--mint);}
-.badge-warning{background:rgba(212,160,23,.1);color:#EEBE15;}
-.badge-secondary{background:var(--hair);color:var(--muted);}
-.clinic-body{padding:18px;flex:1;}
-.clinic-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:12px;line-height:1.4;}
-.clinic-meta{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
-.clinic-meta-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);}
-.clinic-meta-item svg{width:14px;height:14px;opacity:.7;flex-shrink:0;}
-.clinic-enrollment{margin:14px 0;}
-.enrollment-bar{height:8px;background:var(--hair);border-radius:999px;overflow:hidden;margin-top:6px;}
-.enrollment-fill{height:100%;background:var(--mint);border-radius:999px;transition:width .3s;}
-.clinic-price{font-size:18px;font-weight:700;color:var(--ink);margin-top:12px;}
-.clinic-actions{padding:14px 16px;border-top:1px solid var(--hair);display:flex;gap:8px;}
-
-/* Empty State */
-.empty{text-align:center;padding:60px 20px;}
-.empty-icon{font-size:64px;margin-bottom:20px;opacity:.3;}
-.empty-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:8px;}
-.empty-text{font-size:14px;color:var(--muted);margin-bottom:24px;}
-
-/* Flash Messages */
-.flash{padding:14px 18px;border-radius:10px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-size:13.5px;}
-.flash-success{background:#DCFCE7;color:#166534;border:1px solid#BBF7D0;}
-
-/* Earnings Widget Adjustments */
-.earnings-widget{margin-bottom:24px;}
-.earnings-widget .card{border:1px solid var(--hair);}
-.earnings-widget .card-header{background:linear-gradient(135deg,var(--mint),#059669);color:#fff;border:none;}
-.earnings-widget h5{color:#fff;font-weight:700;}
-
-/* Mobile responsive */
-@media(max-width:768px){
-    .sidebar{position:fixed;left:-256px;top:0;bottom:0;transition:left .25s;z-index:50;}
-    .sidebar.open{left:0;}
-    .stats{grid-template-columns:1fr;}
-    .clinics-grid{grid-template-columns:1fr;}
-    .top-bar{padding:12px 16px;}
-    .content{padding:16px;}
-}
-
-/* SVG Icons */
-svg{stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;}
+/* Page-specific dashboard styles (self-contained; design tokens come from partials.head) */
+.session-hero{background:linear-gradient(135deg,#111C16,#15281F);padding:48px 0;position:relative;overflow:hidden;}
+.session-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:rgba(10,100,188,.1);border-radius:50%;pointer-events:none;}
+.session-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:220px;height:220px;background:rgba(16,185,129,.06);border-radius:50%;pointer-events:none;}
+/* Start-session pulse button (mirrors booking show .join-btn-live) */
+.start-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;text-decoration:none;background:#10B981;color:#fff;box-shadow:0 0 0 0 rgba(16,185,129,.4);animation:pulse-green 2s infinite;transition:background .18s;}
+.start-btn:hover{background:#059669;}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.4);}50%{box-shadow:0 0 0 14px rgba(16,185,129,0);}}
+/* Outline / detail button */
+.detail-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;border:1.5px solid rgba(21,40,31,.15);background:#fff;color:#15281F;text-decoration:none;transition:all .15s;}
+.detail-btn:hover{border-color:rgba(10,100,188,.4);background:#F9FAF9;}
+/* Capacity bar */
+.cap-bar{height:6px;background:rgba(21,40,31,.06);border-radius:999px;overflow:hidden;}
+.cap-fill{height:100%;border-radius:999px;transition:width .3s;}
+/* Timeline dots for recent enrollments */
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.tl-line{width:2px;background:rgba(21,40,31,.08);flex:1;margin:3px 0;}
+/* Stat grid responsive */
+.dash-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
+@media(max-width:768px){.dash-stats{grid-template-columns:1fr;}}
+/* Clinic list responsive */
+.clinic-row{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;}
+@media(max-width:600px){.clinic-row{flex-direction:column;}}
+.clinic-actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.pill{padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:5px;}
 </style>
 </head>
 <body>
-@php
-$user = auth()->user();
-@endphp
+@php $user = auth()->user(); @endphp
 
-<div class="layout">
-    {{-- Sidebar --}}
-    <aside class="sidebar">
-        <div class="sb-logo">
-            <div class="sb-logo-text">Mwalimu</div>
-        </div>
-        
-        <nav class="sb-nav">
-            <a href="{{ route('examiner.dashboard') }}" class="sb-item active">
-                <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                <span>Dashboard</span>
-            </a>
-            
-            <a href="{{ route('examiner.clinics.create') }}" class="sb-item">
-                <svg width="18" height="18" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>Create Clinic</span>
-            </a>
-            
-            <a href="{{ route('tutor.dashboard') }}" class="sb-item">
-                <svg width="18" height="18" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span>Tutor Dashboard</span>
-            </a>
-            
-            <a href="{{ route('examiner-clinic') }}" class="sb-item">
-                <svg width="18" height="18" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                <span>Browse Clinics</span>
-            </a>
-        </nav>
+@include('partials.nav')
 
-        <div class="sb-footer">
-            <div class="sb-user">
-                <div class="sb-avatar">{{ substr($user->name, 0, 2) }}</div>
-                <div style="flex:1;min-width:0;">
-                    <div class="sb-uname">{{ $user->name }}</div>
-                    <div class="sb-urole">Examiner</div>
+{{-- ─── HERO ─── --}}
+<div class="session-hero">
+    <div style="max-width:1360px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
+        <a href="{{ route('dashboard') }}" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;margin-bottom:18px;transition:color .15s;" onmouseover="this.style.color='rgba(255,255,255,.85)'" onmouseout="this.style.color='rgba(255,255,255,.5)'">
+            <i class="fa-solid fa-arrow-left fa-xs"></i> Dashboard
+        </a>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+            <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+                    <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(16,185,129,.2);color:#4ADE80;border:1px solid rgba(16,185,129,.3);">
+                        <i class="fa-solid fa-circle-check fa-xs"></i> Approved Examiner
+                    </span>
+                    <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.25);">
+                        <i class="fa-solid fa-star fa-xs"></i> KNEC Examiner
+                    </span>
                 </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="sb-logout" title="Logout">
-                        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    </button>
-                </form>
+                <h1 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#fff;margin-bottom:8px;">
+                    Welcome back, {{ $user->name }}
+                </h1>
+                <p style="font-size:15px;color:rgba(255,255,255,.6);max-width:520px;">
+                    Run your examiner clinics, track enrollments and earnings, and start live sessions — all in one place.
+                </p>
             </div>
-        </div>
-    </aside>
-
-    {{-- Main Content --}}
-    <main class="main">
-        <div class="top-bar">
-            <h1 class="top-title">Examiner Dashboard</h1>
-            <a href="{{ route('examiner.clinics.create') }}" class="btn btn-primary">
-                <svg width="16" height="16" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Create Clinic
+            <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint" style="flex-shrink:0;">
+                <i class="fa-solid fa-plus fa-sm"></i> Create New Clinic
             </a>
         </div>
+    </div>
+</div>
 
-        <div class="content">
-            @if(session('success'))
-                <div class="flash flash-success">
-                    <svg width="18" height="18" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                    {{ session('success') }}
-                </div>
+{{-- ─── MAIN ─── --}}
+<div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;">
+
+    {{-- Flash messages --}}
+    @if(session('success'))
+        <div class="flash flash-ok"><i class="fa-solid fa-circle-check"></i> {{ session('success') }}</div>
+    @endif
+    @if(session('info'))
+        <div class="flash flash-info"><i class="fa-solid fa-circle-info"></i> {{ session('info') }}</div>
+    @endif
+    @if(session('error'))
+        <div class="flash flash-err"><i class="fa-solid fa-triangle-exclamation"></i> {{ session('error') }}</div>
+    @endif
+
+    {{-- ─── STATS ROW ─── --}}
+    <div class="dash-stats" style="margin-bottom:36px;">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(10,100,188,.1);color:#0A64BC;"><i class="fa-solid fa-chalkboard-user"></i></div>
+            <div class="stat-label">Total Clinics</div>
+            <div class="stat-value">{{ $totalClinics }}</div>
+            <div class="stat-sub">{{ $upcomingCount }} upcoming</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981;"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-label">Total Students Enrolled</div>
+            <div class="stat-value">{{ $totalStudents }}</div>
+            <div class="stat-sub">across all your clinics</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(212,160,23,.12);color:#B8920F;"><i class="fa-solid fa-calendar-days"></i></div>
+            <div class="stat-label">Upcoming Sessions</div>
+            <div class="stat-value">{{ $upcomingCount }}</div>
+            <div class="stat-sub">scheduled ahead</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981;"><i class="fa-solid fa-sack-dollar"></i></div>
+            <div class="stat-label">Clinic Earnings</div>
+            <div class="stat-value">KSh {{ number_format($clinicEarnings, 0) }}</div>
+            @if($clinicEarnings > 0)
+                <div class="stat-sub">Your 40% share after platform fee</div>
+            @else
+                <div class="stat-sub">Earnings appear once students book paid clinics</div>
             @endif
+        </div>
+    </div>
 
-            {{-- Stats Overview --}}
-            @php
-                $totalClinics = $clinics->total();
-                $scheduledClinics = App\Models\ExaminerClinic::where('created_by', $user->id)->where('status', 'scheduled')->count();
-                $totalEnrollments = App\Models\ClinicEnrollment::whereHas('clinic', function($q) use ($user) {
-                    $q->where('created_by', $user->id);
-                })->count();
-                $totalRevenue = isset($earnings) ? $earnings['clinic_earnings'] : 0;
-            @endphp
-
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-icon" style="background:rgba(10,100,188,.1);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" stroke="#0A64BC"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                    </div>
-                    <div class="stat-lbl">Total Clinics</div>
-                    <div class="stat-val">{{ $totalClinics }}</div>
-                    <div class="stat-sub">{{ $scheduledClinics }} scheduled</div>
+    @if($totalClinics === 0)
+        {{-- ─── NO CLINICS EMPTY STATE ─── --}}
+        <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:64px 24px;text-align:center;box-shadow:0 2px 16px rgba(21,40,31,.06);">
+            <div style="width:88px;height:88px;border-radius:24px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;">
+                <i class="fa-solid fa-chalkboard-user" style="font-size:38px;color:#0A64BC;"></i>
+            </div>
+            <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:10px;">Create your first clinic</h2>
+            <p style="font-size:15px;color:rgba(21,40,31,.55);max-width:480px;margin:0 auto 26px;line-height:1.7;">
+                You're approved as an examiner. Set up your first examiner clinic — choose a subject and paper (PP1, PP2, PP3), set the time, and students can start booking right away.
+            </p>
+            <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint" style="font-size:15px;padding:13px 32px;">
+                <i class="fa-solid fa-plus fa-sm"></i> Create Your First Clinic
+            </a>
+        </div>
+    @else
+        {{-- ─── UPCOMING CLINICS ─── --}}
+        <div style="margin-bottom:40px;">
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+                <div>
+                    <h2 style="font-family:'Fraunces',serif;font-size:clamp(22px,3vw,30px);color:#15281F;margin-bottom:4px;">Upcoming Clinics</h2>
+                    <p style="font-size:14px;color:rgba(21,40,31,.55);">{{ $upcomingClinics->count() }} clinic{{ $upcomingClinics->count() != 1 ? 's' : '' }} scheduled</p>
                 </div>
-
-                <div class="stat">
-                    <div class="stat-icon" style="background:rgba(16,185,129,.1);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" stroke="#10B981"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </div>
-                    <div class="stat-lbl">Total Students</div>
-                    <div class="stat-val">{{ $totalEnrollments }}</div>
-                    <div class="stat-sub">across all clinics</div>
-                </div>
-
-                <div class="stat">
-                    <div class="stat-icon" style="background:rgba(212,160,23,.1);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" stroke="#EEBE15"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    </div>
-                    <div class="stat-lbl">Clinic Earnings</div>
-                    <div class="stat-val">KSh {{ number_format($totalRevenue, 0) }}</div>
-                    <div class="stat-sub">40% commission rate</div>
-                </div>
-
-                <div class="stat">
-                    <div class="stat-icon" style="background:rgba(232,82,42,.1);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" stroke="#E8522A"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    </div>
-                    <div class="stat-lbl">Avg. Enrollment</div>
-                    @php
-                        $avgEnrollment = $totalClinics > 0 ? round($totalEnrollments / $totalClinics, 1) : 0;
-                    @endphp
-                    <div class="stat-val">{{ $avgEnrollment }}</div>
-                    <div class="stat-sub">per clinic</div>
-                </div>
+                <a href="{{ route('examiner.clinics.create') }}" class="btn btn-v btn-sm"><i class="fa-solid fa-plus fa-xs"></i> New Clinic</a>
             </div>
 
-            {{-- Earnings Widget --}}
-            @if(isset($earnings))
-                <div class="earnings-widget">
-                    @include('components.earnings-widget', ['earnings' => $earnings])
-                </div>
-            @endif
-
-            {{-- Clinics List --}}
-            @if($clinics->isEmpty())
-                <div class="card">
-                    <div class="card-body">
-                        <div class="empty">
-                            <div class="empty-icon">📚</div>
-                            <div class="empty-title">No Clinics Created Yet</div>
-                            <div class="empty-text">Start by creating your first examiner clinic. Students can book and join once it's published.</div>
-                            <a href="{{ route('examiner.clinics.create') }}" class="btn btn-primary">
-                                <svg width="16" height="16" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                Create Your First Clinic
-                            </a>
-                        </div>
-                    </div>
+            @if($upcomingClinics->isEmpty())
+                <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:48px 24px;text-align:center;">
+                    <div style="font-size:44px;margin-bottom:12px;color:rgba(21,40,31,.12);"><i class="fa-solid fa-calendar-xmark"></i></div>
+                    <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;">No upcoming clinics</h3>
+                    <p style="color:rgba(21,40,31,.55);margin-bottom:18px;">Schedule a new clinic so students can book a spot.</p>
+                    <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint"><i class="fa-solid fa-plus fa-sm"></i> Create New Clinic</a>
                 </div>
             @else
-                <div class="clinics-grid">
-                    @foreach($clinics as $clinic)
-                        <div class="clinic-card">
-                            <div class="clinic-hdr">
-                                <span class="badge badge-primary">{{ $clinic->paper_type }}</span>
-                                <span class="badge badge-{{ $clinic->status === 'scheduled' ? 'success' : ($clinic->status === 'live' ? 'warning' : 'secondary') }}">
-                                    {{ ucfirst($clinic->status) }}
-                                </span>
-                            </div>
-
-                            <div class="clinic-body">
-                                <h3 class="clinic-title">{{ $clinic->name ?? $clinic->title }}</h3>
-
-                                <div class="clinic-meta">
-                                    <div class="clinic-meta-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                                        <span>{{ $clinic->subject->name ?? 'N/A' }}</span>
-                                    </div>
-                                    <div class="clinic-meta-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                                        <span>{{ $clinic->scheduled_at->format('M d, Y') }}</span>
-                                    </div>
-                                    <div class="clinic-meta-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                        <span>{{ $clinic->scheduled_at->format('h:i A') }}</span>
-                                    </div>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    @foreach($upcomingClinics as $clinic)
+                        @php
+                            $enrolled = $clinic->enrollments_count;
+                            $capacity = $clinic->max_students ?: 30;
+                            $fillPct  = $capacity > 0 ? round(($enrolled / $capacity) * 100) : 0;
+                            $isFull   = $enrolled >= $capacity;
+                            $canStart = in_array($clinic->status, ['scheduled', 'live']);
+                            $clinicTitle = $clinic->title ?? $clinic->name ?? 'Untitled Clinic';
+                        @endphp
+                        <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;box-shadow:0 2px 12px rgba(21,40,31,.04);">
+                            <div class="clinic-row">
+                                <div style="width:54px;height:54px;border-radius:16px;background:rgba(212,160,23,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                    <i class="fa-solid fa-chalkboard-user" style="color:#EEBE15;font-size:22px;"></i>
                                 </div>
-
-                                <div class="clinic-enrollment">
-                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                                        <span style="font-size:13px;font-weight:600;color:var(--muted);">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                            Enrollment
-                                        </span>
-                                        <span style="font-size:14px;font-weight:700;color:var(--ink);">
-                                            {{ $clinic->enrollments_count }} / {{ $clinic->max_students }}
-                                        </span>
-                                    </div>
-                                    <div class="enrollment-bar">
+                                <div style="flex:1;min-width:200px;">
+                                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+                                        <div>
+                                            <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;">{{ $clinicTitle }}</h3>
+                                            @if($clinic->batch_number > 1)
+                                                <span style="font-size:11px;color:rgba(21,40,31,.4);font-weight:600;">Session {{ $clinic->batch_number }} (auto-opened)</span>
+                                            @endif
+                                        </div>
                                         @php
-                                            $percentage = $clinic->max_students > 0 ? ($clinic->enrollments_count / $clinic->max_students * 100) : 0;
+                                            $statusCfg = [
+                                                'scheduled' => ['rgba(10,100,188,.1)', '#0A64BC', 'fa-clock', 'Scheduled'],
+                                                'live'      => ['rgba(16,185,129,.1)', '#10B981', 'fa-circle-dot', 'Live'],
+                                                'completed' => ['rgba(21,40,31,.06)', 'rgba(21,40,31,.55)', 'fa-flag-checkered', 'Completed'],
+                                                'cancelled' => ['rgba(232,82,42,.1)', '#E8522A', 'fa-ban', 'Cancelled'],
+                                            ];
+                                            [$sbg, $scol, $sic, $slbl] = $statusCfg[$clinic->status] ?? ['rgba(21,40,31,.06)', 'rgba(21,40,31,.55)', 'fa-circle', ucfirst($clinic->status)];
                                         @endphp
-                                        <div class="enrollment-fill" style="width:{{ $percentage }}%"></div>
+                                        <span class="pill" style="background:{{ $sbg }};color:{{ $scol }};"><i class="fa-solid {{ $sic }} fa-xs"></i> {{ $slbl }}</span>
+                                    </div>
+                                    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;">
+                                        @if($clinic->subject)
+                                            <span class="pill" style="background:rgba(21,40,31,.06);color:#15281F;"><i class="fa-solid fa-book-open fa-xs"></i>{{ $clinic->subject->name }}</span>
+                                        @endif
+                                        @if($clinic->paper_type)
+                                            <span class="pill" style="background:rgba(212,160,23,.1);color:#EEBE15;font-weight:700;"><i class="fa-solid fa-file-lines fa-xs"></i>{{ $clinic->paper_type }}</span>
+                                        @endif
+                                        @if($isFull)
+                                            <span class="pill" style="background:#FEE2E2;color:#991B1B;font-weight:700;"><i class="fa-solid fa-lock fa-xs"></i> FULL</span>
+                                        @endif
+                                    </div>
+                                    <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:rgba(21,40,31,.55);align-items:center;margin-bottom:10px;">
+                                        <span><i class="fa-regular fa-calendar fa-xs" style="color:#0A64BC;margin-right:4px;"></i>{{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</span>
+                                        <span><i class="fa-solid fa-clock fa-xs" style="color:#0A64BC;margin-right:4px;"></i>{{ $clinic->duration_minutes }} min</span>
+                                        <span style="color:{{ $isFull ? '#991B1B' : '#10B981' }};font-weight:600;"><i class="fa-solid fa-users fa-xs" style="margin-right:4px;"></i>{{ $enrolled }}/{{ $capacity }} enrolled</span>
+                                        <span><i class="fa-solid fa-money-bill fa-xs" style="color:#EEBE15;margin-right:4px;"></i>KSh {{ number_format($clinic->price, 0) }}</span>
+                                    </div>
+                                    <div class="cap-bar" style="width:100%;max-width:320px;">
+                                        <div class="cap-fill" style="width:{{ $fillPct }}%;background:{{ $isFull ? '#E8522A' : ($fillPct > 70 ? '#EEBE15' : '#10B981') }};"></div>
                                     </div>
                                 </div>
-
-                                <div class="clinic-price">
-                                    KSh {{ number_format($clinic->price, 2) }}
-                                    <span style="font-size:13px;font-weight:500;color:var(--muted);margin-left:6px;">
-                                        (KSh {{ number_format($clinic->price * 0.40, 2) }} yours)
-                                    </span>
+                                <div class="clinic-actions">
+                                    <a href="{{ route('examiner.clinics.show', $clinic) }}" class="detail-btn"><i class="fa-solid fa-eye fa-xs"></i> View Details</a>
+                                    @if($canStart)
+                                        <a href="{{ route('examiner.clinics.join', $clinic) }}" class="start-btn"><i class="fa-solid fa-video fa-xs"></i> Start Session</a>
+                                    @endif
                                 </div>
-                            </div>
-
-                            <div class="clinic-actions">
-                                <a href="{{ route('examiner.clinics.show', $clinic->id) }}" class="btn btn-outline btn-sm" style="flex:1;">
-                                    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    View
-                                </a>
-                                @if($clinic->status === 'scheduled' || $clinic->status === 'live')
-                                    <a href="{{ route('examiner.clinics.join', $clinic->id) }}" class="btn btn-success btn-sm" style="flex:1;">
-                                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-                                        Join
-                                    </a>
-                                @endif
                             </div>
                         </div>
                     @endforeach
                 </div>
-
-                {{-- Pagination --}}
-                @if($clinics->hasPages())
-                    <div style="margin-top:28px;display:flex;justify-content:center;">
-                        {{ $clinics->links() }}
-                    </div>
-                @endif
             @endif
         </div>
-    </main>
+
+        {{-- ─── PAST CLINICS ─── --}}
+        <div style="margin-bottom:40px;">
+            <div style="margin-bottom:20px;">
+                <h2 style="font-family:'Fraunces',serif;font-size:clamp(22px,3vw,30px);color:#15281F;margin-bottom:4px;">Past Clinics</h2>
+                <p style="font-size:14px;color:rgba(21,40,31,.55);">Clinics that have already taken place</p>
+            </div>
+            <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;box-shadow:0 2px 16px rgba(21,40,31,.06);">
+                @if($pastClinics->isEmpty())
+                    <div style="text-align:center;padding:36px 12px;">
+                        <div style="font-size:40px;margin-bottom:10px;color:rgba(21,40,31,.12);"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                        <p style="font-size:15px;color:rgba(21,40,31,.55);">No past clinics yet. Once a clinic's scheduled time passes, it will show up here.</p>
+                    </div>
+                @else
+                    <div class="tbl-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Clinic</th>
+                                    <th>Date</th>
+                                    <th>Enrolled</th>
+                                    <th>Earnings</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pastClinics as $clinic)
+                                    @php
+                                        $clinicTitle = $clinic->title ?? $clinic->name ?? 'Untitled Clinic';
+                                        $enrolled = $clinic->enrollments_count;
+                                        $clinicEarn = $enrolled * ($clinic->price * 0.40);
+                                    @endphp
+                                    <tr>
+                                        <td>
+                                            <div style="display:flex;align-items:center;gap:10px;">
+                                                <div style="width:36px;height:36px;border-radius:10px;background:rgba(21,40,31,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                                    <i class="fa-solid fa-chalkboard-user" style="color:rgba(21,40,31,.5);font-size:14px;"></i>
+                                                </div>
+                                                <div>
+                                                    <div style="font-weight:600;color:#15281F;">{{ $clinicTitle }}</div>
+                                                    <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $clinic->subject->name ?? 'N/A' }}{{ $clinic->paper_type ? ' · ' . $clinic->paper_type : '' }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="color:rgba(21,40,31,.65);">{{ $clinic->scheduled_at->format('M j, Y') }}</td>
+                                        <td><span style="font-weight:600;color:#15281F;">{{ $enrolled }}</span><span style="color:rgba(21,40,31,.4);">/{{ $clinic->max_students ?: 30 }}</span></td>
+                                        <td style="font-weight:700;color:#10B981;">KSh {{ number_format($clinicEarn, 0) }}</td>
+                                        <td style="text-align:right;">
+                                            <a href="{{ route('examiner.clinics.show', $clinic) }}" style="font-size:13px;font-weight:600;color:#0A64BC;text-decoration:none;display:inline-flex;align-items:center;gap:5px;">View <i class="fa-solid fa-arrow-right fa-xs"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        {{-- ─── RECENT ENROLLMENTS ─── --}}
+        <div>
+            <div style="margin-bottom:20px;">
+                <h2 style="font-family:'Fraunces',serif;font-size:clamp(22px,3vw,30px);color:#15281F;margin-bottom:4px;">Recent Enrollments</h2>
+                <p style="font-size:14px;color:rgba(21,40,31,.55);">Students who recently booked your clinics</p>
+            </div>
+            <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;box-shadow:0 2px 16px rgba(21,40,31,.06);">
+                @if($recentEnrollments->isEmpty())
+                    <div style="text-align:center;padding:36px 12px;">
+                        <div style="font-size:40px;margin-bottom:10px;color:rgba(21,40,31,.12);"><i class="fa-solid fa-user-plus"></i></div>
+                        <p style="font-size:15px;color:rgba(21,40,31,.55);">No enrollments yet. Once students book your clinics, they'll appear here.</p>
+                    </div>
+                @else
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                        @foreach($recentEnrollments as $enrollment)
+                            <div style="display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid rgba(21,40,31,.05);">
+                                <div class="tl-dot" style="background:#10B981;margin-top:8px;"></div>
+                                <div style="width:38px;height:38px;border-radius:11px;background:#{{ substr(md5($enrollment->student?->email ?? 'x'),0,6) }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;">
+                                    {{ strtoupper(substr($enrollment->student?->name ?? '?', 0, 1)) }}
+                                </div>
+                                <div style="flex:1;min-width:0;">
+                                    <div style="font-weight:600;color:#15281F;font-size:14px;">{{ $enrollment->student?->name ?? 'Unknown student' }}</div>
+                                    <div style="font-size:13px;color:rgba(21,40,31,.55);margin-top:2px;">
+                                        enrolled in <strong style="color:#15281F;">{{ $enrollment->clinic?->title ?? $enrollment->clinic?->name ?? 'a clinic' }}</strong>
+                                    </div>
+                                </div>
+                                <div style="font-size:12px;color:rgba(21,40,31,.45);flex-shrink:0;text-align:right;white-space:nowrap;">
+                                    {{ $enrollment->created_at?->format('M j, Y') }}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endif
 </div>
 
+@include('partials.footer')
 </body>
 </html>

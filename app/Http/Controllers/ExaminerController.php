@@ -78,7 +78,7 @@ class ExaminerController extends Controller
     {
         $user = Auth::user();
 
-        // Check if registered examiner
+        // Gate: only approved examiners can view the dashboard
         $registration = ExaminerRegistration::where('tutor_id', $user->id)->first();
 
         if (!$registration || !$registration->isApproved()) {
@@ -86,20 +86,58 @@ class ExaminerController extends Controller
                 ->with('error', 'You must be an approved examiner to access this page.');
         }
 
-        // Get examiner's clinics
-        $clinics = ExaminerClinic::where('created_by', $user->id)
+        // Statistics
+        $totalClinics  = ExaminerClinic::where('created_by', $user->id)->count();
+        $totalStudents = ClinicEnrollment::whereHas('clinic', function ($q) use ($user) {
+            $q->where('created_by', $user->id);
+        })->count();
+        $upcomingCount = ExaminerClinic::where('created_by', $user->id)->upcoming()->count();
+
+        // Earnings (clinic share = tutor_amount = amount minus the 60% platform fee)
+        $earningsService = new \App\Services\EarningsService();
+        $allEarnings    = $earningsService->calculateTutorEarnings($user);
+        $recentEarnings = $earningsService->getRecentEarnings($user);
+        $earnings       = array_merge($allEarnings, $recentEarnings);
+        $clinicEarnings = $earnings['clinic_earnings'] ?? 0;
+
+        // Upcoming clinics (scheduled in the future)
+        $upcomingClinics = ExaminerClinic::where('created_by', $user->id)
             ->with('subject')
             ->withCount('enrollments')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->upcoming()
+            ->orderBy('scheduled_at', 'asc')
+            ->take(6)
+            ->get();
 
-        // Calculate earnings
-        $earningsService = new \App\Services\EarningsService();
-        $allEarnings     = $earningsService->calculateTutorEarnings($user);
-        $recentEarnings  = $earningsService->getRecentEarnings($user);
-        $earnings        = array_merge($allEarnings, $recentEarnings);
+        // Past clinics (already started)
+        $pastClinics = ExaminerClinic::where('created_by', $user->id)
+            ->with('subject')
+            ->withCount('enrollments')
+            ->where('scheduled_at', '<', now())
+            ->orderBy('scheduled_at', 'desc')
+            ->take(10)
+            ->get();
 
-        return view('pages.examiner-dashboard', compact('clinics', 'earnings'));
+        // Recent enrollments across the examiner's clinics
+        $recentEnrollments = ClinicEnrollment::whereHas('clinic', function ($q) use ($user) {
+            $q->where('created_by', $user->id);
+        })
+            ->with(['student', 'clinic'])
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('pages.examiner-dashboard', compact(
+            'registration',
+            'totalClinics',
+            'totalStudents',
+            'upcomingCount',
+            'clinicEarnings',
+            'upcomingClinics',
+            'pastClinics',
+            'recentEnrollments',
+            'earnings'
+        ));
     }
 
     /**
