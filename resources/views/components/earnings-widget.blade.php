@@ -39,7 +39,7 @@
                 <div style="font-size:13.5px;color:#15281F;">
                     <svg width="16" height="16" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:6px;color:#0A64BC;" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <strong>1-on-1 Sessions</strong>
-                    <span class="badge ms-2" style="background:rgba(16,185,129,.15);color:#10B981;font-size:10px;padding:3px 8px;border-radius:6px;">75% rate</span>
+                    <!-- <span class="badge ms-2" style="background:rgba(16,185,129,.15);color:#10B981;font-size:10px;padding:3px 8px;border-radius:6px;">75% rate</span> -->
                 </div>
                 <strong style="color:#10B981;font-size:14px;">KSh {{ number_format($earnings['booking_earnings'], 2) }}</strong>
             </div>
@@ -59,7 +59,7 @@
                 <div style="font-size:13.5px;color:#15281F;">
                     <svg width="16" height="16" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:6px;color:#EEBE15;" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                     <strong>Exam Clinics</strong>
-                    <span class="badge ms-2" style="background:rgba(212,160,23,.15);color:#EEBE15;font-size:10px;padding:3px 8px;border-radius:6px;">40% rate</span>
+                    <!-- <span class="badge ms-2" style="background:rgba(212,160,23,.15);color:#EEBE15;font-size:10px;padding:3px 8px;border-radius:6px;">40% rate</span> -->
                 </div>
                 <strong style="color:#10B981;font-size:14px;">KSh {{ number_format($earnings['clinic_earnings'], 2) }}</strong>
             </div>
@@ -74,12 +74,6 @@
             <small class="text-muted" style="font-size:12px;">{{ $earnings['clinic_sessions_count'] }} sessions</small>
         </div>
 
-        <div class="alert mb-0 mt-3" style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);color:#0A64BC;border-radius:10px;padding:12px 16px;">
-            <small style="font-size:12.5px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:6px;" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                <strong>Commission Rates:</strong> You earn 75% from 1-on-1 sessions and 40% from exam clinics. 
-                Earnings update in real-time after each successful payment.
-            </small>
-        </div>
+        
     </div>
 </div>
