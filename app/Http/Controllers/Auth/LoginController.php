@@ -44,6 +44,23 @@ class LoginController extends Controller
                 ]);
             }
 
+            // 2FA Check for Admins and Tutors
+            if ($user->isAdmin() || $user->isTutor()) {
+                // Admin without 2FA - force setup
+                if ($user->isAdmin() && !$user->has2FAEnabled()) {
+                    $request->session()->put('2fa_user_id', $user->id);
+                    Auth::logout();
+                    return redirect()->route('2fa.setup.force');
+                }
+                
+                // User with 2FA enabled - redirect to challenge
+                if ($user->has2FAEnabled()) {
+                    $request->session()->put('2fa_user_id', $user->id);
+                    Auth::logout();
+                    return redirect()->route('2fa.challenge');
+                }
+            }
+
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,

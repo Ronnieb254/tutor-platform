@@ -29,7 +29,8 @@
     25 => 'Livewire\\LivewireServiceProvider',
     26 => 'Carbon\\Laravel\\ServiceProvider',
     27 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    28 => 'Spatie\\Permission\\PermissionServiceProvider',
+    28 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
+    29 => 'Spatie\\Permission\\PermissionServiceProvider',
   ),
   'eager' => 
   array (
@@ -47,7 +48,8 @@
     11 => 'Livewire\\LivewireServiceProvider',
     12 => 'Carbon\\Laravel\\ServiceProvider',
     13 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    14 => 'Spatie\\Permission\\PermissionServiceProvider',
+    14 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
+    15 => 'Spatie\\Permission\\PermissionServiceProvider',
   ),
   'deferred' => 
   array (

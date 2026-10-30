@@ -120,11 +120,21 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Refund::class);
     }
 
+    public function twoFactorAuth()
+    {
+        return $this->hasOne(TwoFactorAuth::class);
+    }
+
     // Helpers
     public function isAdmin(): bool   { return $this->role === 'admin'; }
     public function isTutor(): bool   { return $this->role === 'tutor'; }
     public function isStudent(): bool { return $this->role === 'student'; }
     public function isParent(): bool  { return $this->role === 'parent'; }
+
+    public function has2FAEnabled(): bool
+    {
+        return $this->twoFactorAuth && $this->twoFactorAuth->enabled_at !== null;
+    }
 
     public function getAvatarUrlAttribute(): string
     {

@@ -41,6 +41,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/login',   [App\Http\Controllers\Auth\LoginController::class, 'store']);
     Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'show'])->name('register');
     Route::post('/register',[App\Http\Controllers\Auth\RegisterController::class, 'store']);
+    
+    // 2FA routes (guest accessible during login flow)
+    Route::get('/2fa/setup', [App\Http\Controllers\Auth\TwoFactorController::class, 'showSetup'])->name('2fa.setup');
+    Route::post('/2fa/setup', [App\Http\Controllers\Auth\TwoFactorController::class, 'storeSetup']);
+    Route::get('/2fa/setup/force', [App\Http\Controllers\Auth\TwoFactorController::class, 'showForcedSetup'])->name('2fa.setup.force');
+    Route::get('/2fa/challenge', [App\Http\Controllers\Auth\TwoFactorController::class, 'showChallenge'])->name('2fa.challenge');
+    Route::post('/2fa/challenge', [App\Http\Controllers\Auth\TwoFactorController::class, 'verifyChallenge']);
 });
 
 // OTP verification — accessible to guests (session-based, no auth needed)
@@ -57,6 +64,10 @@ Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'
 // ─── Authenticated ────────────────────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
+    // 2FA management (authenticated users)
+    Route::post('/2fa/disable', [App\Http\Controllers\Auth\TwoFactorController::class, 'disable'])->name('2fa.disable');
+    Route::post('/2fa/recovery', [App\Http\Controllers\Auth\TwoFactorController::class, 'regenerateRecoveryCodes'])->name('2fa.recovery');
 
     // Clinic enrollment (KSh 300 per session, 30 students max)
     Route::post('/clinic/{clinic}/enroll', [App\Http\Controllers\ClinicController::class, 'enroll'])->name('clinic.enroll');
