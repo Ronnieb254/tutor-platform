@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\{User, Wallet, TutorProfile, NotificationPreference};
-use App\Services\OtpService;
+use App\Services\{OtpService, PasswordHistoryService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Hash, Auth, DB};
 
 class OtpController extends Controller
 {
-    public function __construct(protected OtpService $otp) {}
+    public function __construct(
+        protected OtpService $otp,
+        protected PasswordHistoryService $passwordHistory
+    ) {}
 
     /**
      * Show the OTP verification page.
@@ -100,6 +103,9 @@ class OtpController extends Controller
                 'message_notifications'  => true,
                 'reminder_notifications' => true,
             ]);
+
+            // Store initial password in history
+            $this->passwordHistory->storePassword($user);
 
             DB::commit();
 

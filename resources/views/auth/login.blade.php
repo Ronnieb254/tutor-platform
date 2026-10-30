@@ -483,7 +483,7 @@ svg{
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember me</label>
                     </div>
-                    <a href="#" class="forgot-link">Forgot password?</a>
+                    <a href="{{ route('password.request') }}" class="forgot-link">Forgot password?</a>
                 </div>
 
                 {{-- Submit Button --}}

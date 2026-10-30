@@ -40,15 +40,19 @@ class ResetPasswordController extends Controller
             'password' => ['required', 'confirmed', PasswordRules::defaults()],
         ]);
 
+        // First, find the user and check password reuse before attempting reset
+        $user = User::where('email', $request->email)->first();
+        
+        if ($user && $this->passwordHistory->checkPasswordReuse($user, $request->password)) {
+            return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['password' => 'You cannot reuse any of your last 3 passwords.']);
+        }
+
         // Attempt to reset the user's password
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) use ($request) {
-                // Check if password is being reused
-                if ($this->passwordHistory->checkPasswordReuse($user, $password)) {
-                    throw new \Exception('You cannot reuse any of your last 3 passwords.');
-                }
-
                 // Update the password
                 $user->forceFill([
                     'password' => Hash::make($password),
@@ -72,17 +76,6 @@ class ResetPasswordController extends Controller
         if ($status === Password::PASSWORD_RESET) {
             return redirect()->route('login')
                 ->with('success', 'Your password has been reset successfully. Please log in with your new password.');
-        }
-
-        // Check for our custom exception message
-        $errorBag = $request->session()->get('errors');
-        if ($errorBag && $errorBag->has('email')) {
-            $errors = $errorBag->get('email');
-            if (in_array('You cannot reuse any of your last 3 passwords.', $errors)) {
-                return back()
-                    ->withInput($request->only('email'))
-                    ->withErrors(['password' => 'You cannot reuse any of your last 3 passwords.']);
-            }
         }
 
         return back()
