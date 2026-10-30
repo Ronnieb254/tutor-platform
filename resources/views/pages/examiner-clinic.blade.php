@@ -245,7 +245,7 @@
     <div style="max-width:960px;margin:0 auto;padding:0 24px;">
         <div style="text-align:center;margin-bottom:40px;">
             <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,38px);color:#15281F;margin-bottom:10px;">For Tutors & Examiners</h2>
-            <p style="font-size:16px;color:rgba(21,40,31,.55);">Monetize your marking experience with zero administrative friction and weekly payouts upon request.</p>
+            <p style="font-size:16px;color:rgba(21,40,31,.55);">Monetize your experience with zero administrative friction and weekly payouts upon request.</p>
         </div>
         <div style="display:grid;grid-template-columns:1fr;gap:14px;" class="ex-g">
             @foreach([
