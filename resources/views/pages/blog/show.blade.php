@@ -70,7 +70,7 @@
             </div>
             @endif
 
-            @if(!auth()->check() || auth()->user()->role !== 'tutor')
+            @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
                 <div class="card card-p" style="background:var(--ink);border-color:var(--ink);">
                 <h3 style="font-family:'Fraunces',serif;font-size:16px;color:#fff;margin-bottom:8px;">Need 1-on-1 help?</h3>
                 <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.65;margin-bottom:14px;">Book a session with a TSC-registered tutor from KSh 300.</p>

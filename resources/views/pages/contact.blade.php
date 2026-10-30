@@ -72,7 +72,7 @@
                         ['fa-magnifying-glass','Find a Tutor',route('tutors.index'),'Browse verified tutors'],
                         ['fa-star','Examiner\'s Clinic',route('examiner-clinic'),'Group sessions with national examiners'],
                         ['fa-circle-info','How It Works',route('how-it-works'),'Step-by-step guide'],
-                        (!auth()->check() || auth()->user()->role !== 'tutor')
+                        (!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
                             ? ['fa-chalkboard-user','Become a Tutor',route('register').'?role=tutor','Join as a verified tutor']
                             : null,
                     ]) as [$ic,$label,$url,$desc])

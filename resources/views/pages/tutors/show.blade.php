@@ -623,7 +623,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                     @endforeach
                 </div> -->
 
-                @if(!auth()->check() || auth()->user()->role !== 'tutor')
+                @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
                 <button onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})"
                         style="width:100%;height:52px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;"
                         onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">

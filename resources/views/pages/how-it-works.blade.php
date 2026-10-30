@@ -27,12 +27,16 @@
             Mwalimu connects Kenyan students and parents with verified, TSC-registered expert tutors. Book in minutes, pay securely, join a live class from anywhere.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:48px;">
-            @if(!auth()->check() || auth()->user()->role !== 'tutor')
+            @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Find a Tutor
             </a>
             <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
                 <i class="fa-solid fa-chalkboard-user fa-sm"></i> Become a Tutor
+            </a>
+            @elseif(auth()->check() && auth()->user()->role === 'admin')
+            <a href="{{ route('admin.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
+                <i class="fa-solid fa-gauge-high fa-sm"></i> Admin Dashboard
             </a>
             @else
             <a href="{{ route('tutor.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
@@ -64,12 +68,12 @@
         <div style="display:flex;background:#fff;border-radius:999px;padding:4px;border:1px solid rgba(21,40,31,.1);width:fit-content;margin:0 auto 52px;box-shadow:0 2px 12px rgba(21,40,31,.06);">
             <button @click="role='student'"
                     :style="role==='student' ? 'background:#0A64BC;color:#fff;' : 'background:transparent;color:rgba(21,40,31,.5);'"
-                    style="padding:11px 32px;border-radius:999px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;">
+                    style="padding:11px 32px;border-radius:999px;border:none;font-size:22px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;">
                 <i class="fa-solid fa-graduation-cap fa-sm" style="margin-right:6px;"></i> I'm a Student / Parent
             </button>
             <button @click="role='tutor'"
                     :style="role==='tutor' ? 'background:#0A64BC;color:#fff;' : 'background:transparent;color:rgba(21,40,31,.5);'"
-                    style="padding:11px 32px;border-radius:999px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;">
+                    style="padding:11px 32px;border-radius:999px;border:none;font-size:22px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;">
                 <i class="fa-solid fa-chalkboard-user fa-sm" style="margin-right:6px;"></i> I'm a Tutor
             </button>
         </div>
@@ -179,7 +183,7 @@
             @endforeach
         </div>
         <div style="text-align:center;margin-top:28px;">
-            @if(!auth()->check() || auth()->user()->role !== 'tutor')
+            @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Browse Tutors & Book Now
             </a>
@@ -321,7 +325,7 @@
         <h2 style="font-family:'Fraunces',serif;font-size:clamp(28px,5vw,52px);color:#fff;margin-bottom:14px;">Ready to get started?</h2>
         <p style="font-size:18px;color:rgba(255,255,255,.6);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of students, parents and tutors on Kenya's leading tutoring platform.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
-            @if(!auth()->check() || auth()->user()->role !== 'tutor')
+            @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:#0A64BC;color:#fff;font-size:16px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Find a Tutor
             </a>

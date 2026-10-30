@@ -85,8 +85,8 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     <strong style="color:var(--ink);">Instant 1-on-1 tutoring</strong> — tell us your subject and schedule. Mwalimu matches you with a vetted, TSC-registered expert teacher available right now or at your earliest convenience.
                 </p>
 
-                {{-- Quick booking CTA — hidden for tutors --}}
-                @if(!auth()->check() || auth()->user()->role !== 'tutor')
+                {{-- Quick booking CTA — always show for students/parents, hide for tutors/admins --}}
+                @if(!auth()->check() || in_array(auth()->user()->role, ['student','parent']))
                 <div style="background:#fff;border-radius:20px;border:1px solid var(--hair);padding:20px;max-width:520px;margin-bottom:28px;box-shadow:0 4px 24px rgba(21,40,31,.08);">
                     <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--trust-blue);"></i> Book a session now</p>
                     <form action="{{ route('tutors.index') }}" method="GET" style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -106,8 +106,16 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     <a href="{{ route('tutors.index') }}" class="btn btn-v" style="font-size:15px;padding:14px 32px;">
                         <i class="fa-solid fa-magnifying-glass"></i> Find a Tutor
                     </a>
+                    @if(!auth()->check())
                     <a href="{{ route('register') }}?role=tutor" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
                         <i class="fa-solid fa-chalkboard-user"></i> Become a Tutor
+                    </a>
+                    @endif
+                </div>
+                @elseif(auth()->check() && auth()->user()->role === 'admin')
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;">
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-v" style="font-size:15px;padding:14px 32px;">
+                        <i class="fa-solid fa-gauge-high"></i> Admin Dashboard
                     </a>
                 </div>
                 @else
@@ -299,8 +307,8 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
     <style>.ec-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.ec-g{grid-template-columns:1fr 1fr!important;}}</style>
 </section>
 
-{{-- FOR TUTORS CTA — hidden for logged-in tutors (they're already one) --}}
-@if(!auth()->check() || auth()->user()->role !== 'tutor')
+{{-- FOR TUTORS CTA — hidden for tutors and admins --}}
+@if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
 <section style="background:var(--trust-blue);padding:72px 0;">
     <div class="w">
         <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="tc-g">
@@ -390,7 +398,19 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             <a href="{{ route('tutor.dashboard') }}" class="btn btn-v" style="font-size:16px;padding:15px 40px;"><i class="fa-solid fa-gauge-high"></i> Go to Dashboard</a>
             <a href="/examiner-clinic" class="btn" style="background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.3);font-size:16px;padding:15px 40px;"><i class="fa-solid fa-calendar-check"></i> View Clinics</a>
         </div>
-        @else
+        @elseif(auth()->check() && auth()->user()->role === 'admin')
+        <h2 style="font-size:clamp(28px,5vw,52px);color:#fff;margin-bottom:14px;">Welcome back, {{ auth()->user()->name }}!</h2>
+        <p style="font-size:17px;color:rgba(255,255,255,.6);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Head to the admin dashboard to manage the platform.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-v" style="font-size:16px;padding:15px 40px;"><i class="fa-solid fa-gauge-high"></i> Admin Dashboard</a>
+        </div>
+        @elseif(auth()->check() && in_array(auth()->user()->role, ['student','parent']))
+        <h2 style="font-size:clamp(28px,5vw,52px);color:#fff;margin-bottom:14px;">Ready to learn?</h2>
+        <p style="font-size:17px;color:rgba(255,255,255,.6);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Find expert tutors and book your next session.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+            <a href="{{ route('tutors.index') }}" class="btn btn-v" style="font-size:16px;padding:15px 40px;"><i class="fa-solid fa-magnifying-glass"></i> Find a Tutor</a>
+        </div>
+        @elseif(!auth()->check())
         <h2 style="font-size:clamp(28px,5vw,52px);color:#fff;margin-bottom:14px;">Ready to learn?</h2>
         <p style="font-size:17px;color:rgba(255,255,255,.6);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of Kenyan students and parents who trust Mwalimu for expert, safe, verified tutoring.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
