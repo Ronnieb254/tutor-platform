@@ -628,11 +628,11 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         </div>
 
                         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-                            <a :href="bookingRef ? '/bookings/' + bookingRef : '{{ route('student.dashboard') }}'"
+                            <a :href="bookingRef ? '/bookings/' + bookingRef : '{{ route('dashboard') }}'"
                                style="display:inline-flex;align-items:center;gap:7px;padding:13px 28px;border-radius:999px;background:#10B981;color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
                                 <i class="fa-solid fa-video fa-xs"></i> Go to My Session
                             </a>
-                            <a href="{{ route('student.dashboard') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
+                            <a href="{{ route('dashboard') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
                                 <i class="fa-solid fa-gauge-high fa-xs"></i> Dashboard
                             </a>
                             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
