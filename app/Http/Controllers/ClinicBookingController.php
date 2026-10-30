@@ -68,7 +68,7 @@ class ClinicBookingController extends Controller
         try {
             $result = $this->paystack->initializeTransaction(
                 $user->email,
-                (int) ($clinic->price * 100), // Paystack expects amount in cents
+                (float) $clinic->price, // PaystackService multiplies by 100 internally
                 $reference,
                 [
                     'clinic_id' => $clinic->id,
