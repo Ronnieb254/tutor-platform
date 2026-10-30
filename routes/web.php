@@ -42,6 +42,12 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'show'])->name('register');
     Route::post('/register',[App\Http\Controllers\Auth\RegisterController::class, 'store']);
     
+    // Password reset routes
+    Route::get('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+    
     // 2FA routes (guest accessible during login flow)
     Route::get('/2fa/setup', [App\Http\Controllers\Auth\TwoFactorController::class, 'showSetup'])->name('2fa.setup');
     Route::post('/2fa/setup', [App\Http\Controllers\Auth\TwoFactorController::class, 'storeSetup']);

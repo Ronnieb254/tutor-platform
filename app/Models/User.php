@@ -125,6 +125,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(TwoFactorAuth::class);
     }
 
+    public function passwordHistory()
+    {
+        return $this->hasMany(PasswordHistory::class);
+    }
+
     // Helpers
     public function isAdmin(): bool   { return $this->role === 'admin'; }
     public function isTutor(): bool   { return $this->role === 'tutor'; }
