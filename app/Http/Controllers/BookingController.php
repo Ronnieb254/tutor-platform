@@ -286,3 +286,40 @@ class BookingController extends Controller
         return response()->json(['status' => 'ok']);
     }
 }
+
+    public function meetingRoom(Booking $booking)
+    {
+        // Allow student, tutor, or admin to view
+        $user = auth()->user();
+        if ($user->id !== $booking->student_id &&
+            $user->id !== $booking->tutor_id &&
+            !$user->isAdmin()) {
+            abort(403);
+        }
+
+        // Only allow access to confirmed bookings
+        if ($booking->status !== 'confirmed') {
+            return redirect()
+                ->route('bookings.show', $booking->uuid)
+                ->with('error', 'This session has not been confirmed yet.');
+        }
+
+        // Check if session is starting within 15 minutes or already started
+        $scheduledTime = \Carbon\Carbon::parse($booking->scheduled_at);
+        $now = now();
+        $minutesUntilStart = $now->diffInMinutes($scheduledTime, false);
+        $minutesSinceStart = $scheduledTime->diffInMinutes($now, false);
+
+        // Allow entry 15 minutes before or up to duration + 30 minutes after
+        $canJoin = ($minutesUntilStart <= 15) && ($minutesSinceStart <= ($booking->duration_minutes + 30));
+
+        if (!$canJoin) {
+            return redirect()
+                ->route('bookings.show', $booking->uuid)
+                ->with('error', 'You can only join the session 15 minutes before it starts.');
+        }
+
+        $booking->load(['student', 'tutor', 'subject']);
+
+        return view('pages.bookings.meeting-room', compact('booking'));
+    }

@@ -176,15 +176,15 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                         </div>
                         <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">Code Verified — You're In!</h3>
                         <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;">Your classroom is ready. Click below to join the live session.</p>
-                        @if($joinUrl)
-                        <a href="{{$joinUrl}}" target="_blank" rel="noopener noreferrer"
+                        @if($booking->meeting_room)
+                        <a href="{{ route('bookings.room', $booking->uuid) }}"
                            onclick="fetch('/bookings/{{$booking->uuid}}/joined',{method:'POST',headers:{'X-CSRF-TOKEN':document.querySelector('meta[name=csrf-token]').content,'Content-Type':'application/json'}})"
                            class="join-btn join-btn-live"
                            style="display:inline-flex;align-items:center;gap:10px;padding:16px 40px;border-radius:999px;font-size:16px;font-weight:700;text-decoration:none;background:#10B981;color:#fff;box-shadow:0 0 0 0 rgba(16,185,129,.4);animation:pulse-green 2s infinite;">
-                            <i class="fa-solid fa-video fa-sm"></i> Join Live Session
+                            <i class="fa-solid fa-video fa-sm"></i> Start Session Now
                         </a>
                         @else
-                        <p style="color:#E8522A;font-size:14px;">Session link is not available yet. Please refresh or contact support.</p>
+                        <p style="color:#E8522A;font-size:14px;">Session is not available yet. Please refresh or contact support.</p>
                         @endif
                     </div>
                     @else
