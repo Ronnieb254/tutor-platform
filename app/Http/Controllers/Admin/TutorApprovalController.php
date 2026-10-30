@@ -90,4 +90,34 @@ class TutorApprovalController extends Controller
         $status = $user->fresh()->is_active ? 'activated' : 'suspended';
         return back()->with('success', "{$user->name} has been {$status}.");
     }
+
+    /** Change a user's role — super-admin only */
+    public function changeRole(User $user, Request $request)
+    {
+        // Only super-admin may call this
+        if (!auth()->user()->isSuperAdmin()) {
+            abort(403, 'Only super-admins can change user roles.');
+        }
+
+        $request->validate([
+            'role' => 'required|in:student,parent,tutor,admin,super-admin',
+        ]);
+
+        // Prevent removing own super-admin role
+        if ($user->id === auth()->id() && $request->role !== 'super-admin') {
+            return back()->withErrors(['role' => 'You cannot demote yourself from super-admin.']);
+        }
+
+        $oldRole = $user->role;
+        $user->update(['role' => $request->role]);
+
+        \Log::info('User role changed by super-admin', [
+            'target_user' => $user->id,
+            'old_role'    => $oldRole,
+            'new_role'    => $request->role,
+            'changed_by'  => auth()->id(),
+        ]);
+
+        return back()->with('success', "{$user->name}'s role changed from {$oldRole} to {$request->role}.");
+    }
 }

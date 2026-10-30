@@ -33,6 +33,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                 <option value="parent" {{ $role==='parent'?'selected':'' }}>Parents</option>
                 <option value="tutor" {{ $role==='tutor'?'selected':'' }}>Tutors</option>
                 <option value="admin" {{ $role==='admin'?'selected':'' }}>Admins</option>
+                <option value="super-admin" {{ $role==='super-admin'?'selected':'' }}>Super Admins</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Filter</button>
@@ -43,10 +44,10 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
 </div>
 
 {{-- Role summary --}}
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-    @foreach([['Students','student','#0A64BC'],['Parents','parent','#E8522A'],['Tutors','tutor','#10B981'],['Admins','admin','#EEBE15']] as [$label,$r,$color])
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;">
+    @foreach([['Students','student','#0A64BC'],['Parents','parent','#E8522A'],['Tutors','tutor','#10B981'],['Admins','admin','#EEBE15'],['Super Admins','super-admin','#7C3AED']] as [$label,$r,$color])
     <a href="{{ route('admin.users') }}?role={{ $r }}" style="background:#fff;border:1px solid {{ $r===$role ? $color : 'var(--hairline)' }};border-radius:12px;padding:14px 16px;text-align:center;display:block;">
-        <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:{{ $color }};">{{ User::where('role',$r)->count() }}</div>
+        <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:{{ $color }};">{{ \App\Models\User::where('role',$r)->count() }}</div>
         <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $label }}</div>
     </a>
     @endforeach
@@ -80,8 +81,8 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                         </div>
                     </td>
                     <td>
-                        @php $rc=['student'=>'badge-blue','parent'=>'badge-trust-blue','tutor'=>'badge-green','admin'=>'badge-amber'][$user->role]??'badge-gray'; @endphp
-                        <span class="badge {{ $rc }}">{{ ucfirst($user->role) }}</span>
+                        @php $rc=['student'=>'badge-blue','parent'=>'badge-trust-blue','tutor'=>'badge-green','admin'=>'badge-amber','super-admin'=>'badge-purple'][$user->role]??'badge-gray'; @endphp
+                        <span class="badge {{ $rc }}" style="{{ $user->role==='super-admin'?'background:#7C3AED;color:#fff;':'' }}">{{ $user->role==='super-admin'?'⭐ Super Admin':ucfirst($user->role) }}</span>
                     </td>
                     <td style="color:var(--muted);font-size:13px;">{{ $user->created_at->format('M j, Y') }}</td>
                     <td>
@@ -92,7 +93,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                         @endif
                     </td>
                     <td>
-                        <div style="display:flex;gap:6px;">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
                             @if($user->role === 'tutor' && $user->tutorProfile)
                             <a href="{{ route('admin.tutors') }}" class="btn btn-outline btn-sm">Profile</a>
                             @endif
@@ -103,6 +104,19 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                                     {{ $user->is_active ? 'Suspend' : 'Activate' }}
                                 </button>
                             </form>
+                            {{-- Change Role — only super-admin can do this --}}
+                            @if(auth()->user()->isSuperAdmin())
+                            <form method="POST" action="/admin/users/{{ $user->id }}/change-role" style="display:inline;display:flex;align-items:center;gap:4px;">
+                                @csrf @method('PATCH')
+                                <select name="role" onchange="this.form.submit()"
+                                        style="height:30px;padding:0 8px;border-radius:8px;border:1.5px solid rgba(21,40,31,.2);font-size:12px;font-family:inherit;background:#fff;cursor:pointer;"
+                                        title="Change role">
+                                    @foreach(['student','parent','tutor','admin','super-admin'] as $r)
+                                    <option value="{{ $r }}" {{ $user->role===$r?'selected':'' }}>{{ $r==='super-admin'?'⭐ Super Admin':ucfirst($r) }}</option>
+                                    @endforeach
+                                </select>
+                            </form>
+                            @endif
                             @endif
                         </div>
                     </td>

@@ -313,6 +313,9 @@ Route::middleware('auth')->group(function () {
 
         // User toggle active
         Route::patch('/users/{user}/toggle-active', [App\Http\Controllers\Admin\TutorApprovalController::class, 'toggleUser'])->name('users.toggle');
+
+        // Change user role (super-admin only)
+        Route::patch('/users/{user}/change-role', [App\Http\Controllers\Admin\TutorApprovalController::class, 'changeRole'])->name('users.change-role');
         
         // Refund management
         Route::post('/refunds/{refund}/approve', [App\Http\Controllers\RefundController::class, 'approve'])->name('refunds.approve');
