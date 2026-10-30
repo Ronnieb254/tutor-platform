@@ -54,7 +54,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
             <div>
                 <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-certificate"></i> TSC-Registered Tutors Only</div>
                 <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">Find your perfect tutor</h1>
-                <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:460px;">TSC verified tutors across the Kenyan curriculum. Sessions from KSh 300.</p>
+                <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:460px;">Personalised Learning, Proven Teaching Expertise, Affordable Prices.</p>
             </div>
             <!-- <div style="display:flex;flex-wrap:wrap;gap:8px;align-self:flex-end;max-width:480px;">
                 @foreach($categories->take(6) as $cat)
@@ -103,14 +103,6 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 </div>
                 @endif
                 
-                <div style="min-width:140px;">
-                    <span class="f-label"><i class="fa-solid fa-arrow-up-wide-short fa-xs" style="color:var(--trust-blue);"></i> Sort</span>
-                    <select name="sort" class="f-input">
-                        <option value="rating_avg" {{ $sort==='rating_avg'?'selected':'' }}>Highest Rated</option>
-                        <option value="price_asc" {{ $sort==='price_asc'?'selected':'' }}>Lowest Price</option>
-                        <option value="sessions" {{ $sort==='sessions'?'selected':'' }}>Most Sessions</option>
-                    </select>
-                </div>
                 <div style="display:flex;gap:6px;align-items:flex-end;">
                     <button type="submit" class="btn btn-v btn-sm" style="height:42px;"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
                     @if($search||$catId||$subjId||$minP||$maxP||$minR)
@@ -131,19 +123,6 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
         @if($maxP)<span class="filter-tag">To KSh {{ number_format($maxP) }}</span>@endif
     </div>
     @endif
-
-    {{-- Results bar --}}
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
-        <p style="font-size:14px;color:var(--muted);"><strong style="color:var(--ink);">{{ $tutors->total() }}</strong> tutor{{ $tutors->total()!=1?'s':'' }} found</p>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;">
-            @foreach($categories->take(5) as $cat)
-            <a href="{{ route('tutors.index') }}?category={{ $cat->id }}"
-               style="padding:4px 12px;border-radius:999px;font-size:12px;font-weight:500;border:1px solid {{ $catId==$cat->id?'var(--trust-blue)':'var(--hair)' }};background:{{ $catId==$cat->id?'var(--trust-blue)':'#fff' }};color:{{ $catId==$cat->id?'#fff':'var(--ink)' }};transition:all .15s;">
-                {{ $cat->icon }} {{ $cat->name }}
-            </a>
-            @endforeach
-        </div>
-    </div>
 
     {{-- Tutors grid --}}
     @if($tutors->isEmpty())
