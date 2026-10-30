@@ -252,7 +252,63 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
             <div style="background:#FEF9C3;border:1.5px solid #FDE68A;border-radius:22px;padding:28px;text-align:center;">
                 <i class="fa-solid fa-clock" style="font-size:40px;color:#EEBE15;display:block;margin-bottom:14px;"></i>
                 <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:8px;">Awaiting Confirmation</h3>
-                <p style="font-size:14px;color:rgba(21,40,31,.6);">Your booking is pending payment confirmation. Session codes will be sent once confirmed.</p>
+                <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:20px;">Your booking is pending payment confirmation. Session codes will be sent once confirmed.</p>
+
+                {{-- Admin or Tutor: manual confirm button --}}
+                @if(auth()->user()->isAdmin() || auth()->id() === $booking->tutor_id)
+                <div style="background:#fff;border-radius:14px;border:1.5px solid rgba(21,40,31,.1);padding:18px;margin-top:4px;" x-data="{ confirming: false, done: false, error: '' }">
+                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:12px;">
+                        <i class="fa-solid fa-shield-check" style="color:#0A64BC;"></i>
+                        {{ auth()->user()->isAdmin() ? 'Admin Action' : 'Tutor Action' }}
+                    </p>
+                    <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:14px;">
+                        Manually confirm this booking to generate session codes and notify both the student and tutor by email.
+                    </p>
+                    <template x-if="done">
+                        <div style="display:flex;align-items:center;gap:8px;color:#10B981;font-weight:700;font-size:14px;justify-content:center;">
+                            <i class="fa-solid fa-circle-check"></i> Confirmed! Codes sent. Page refreshing…
+                        </div>
+                    </template>
+                    <template x-if="error">
+                        <div style="color:#E8522A;font-size:13px;margin-bottom:10px;" x-text="error"></div>
+                    </template>
+                    <template x-if="!done">
+                        <button @click="
+                            confirming = true; error = '';
+                            fetch('/bookings/{{ $booking->uuid }}/force-confirm', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(r => r.json())
+                            .then(res => {
+                                confirming = false;
+                                if (res.status === 'ok') {
+                                    done = true;
+                                    setTimeout(() => window.location.reload(), 1800);
+                                } else {
+                                    error = res.message || 'Failed to confirm booking.';
+                                }
+                            })
+                            .catch(() => { confirming = false; error = 'Network error. Please try again.'; })
+                        "
+                        :disabled="confirming"
+                        style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;"
+                        :style="confirming ? 'opacity:.7;cursor:not-allowed' : ''"
+                        onmouseover="if(!this.disabled) this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
+                            <template x-if="confirming">
+                                <span style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-spinner fa-spin fa-xs"></i> Confirming…</span>
+                            </template>
+                            <template x-if="!confirming">
+                                <span style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-circle-check fa-xs"></i> Confirm Booking & Send Codes</span>
+                            </template>
+                        </button>
+                    </template>
+                </div>
+                @endif
             </div>
             @elseif($booking->status === 'completed')
             <div style="background:#DCFCE7;border:1.5px solid #BBF7D0;border-radius:22px;padding:28px;text-align:center;">

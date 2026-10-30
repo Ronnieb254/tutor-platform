@@ -112,6 +112,9 @@ Route::middleware('auth')->group(function () {
     // Tutor availability - get available time slots
     Route::get('/api/tutors/{tutor}/availability', [BookingController::class, 'getAvailableSlots'])->name('api.tutor.availability');
 
+    // Force-confirm a pending booking (admin or tutor only)
+    Route::post('/bookings/{booking}/force-confirm', [BookingController::class, 'forceConfirm'])->name('bookings.force-confirm');
+
     // Booking messages
     Route::post('/bookings/{booking}/messages', function(\Illuminate\Http\Request $req, \App\Models\Booking $booking) {
         $req->validate(['body' => 'required|string|max:1000']);

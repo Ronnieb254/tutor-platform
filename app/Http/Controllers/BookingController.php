@@ -332,6 +332,67 @@ class BookingController extends Controller
     }
 
     /**
+     * Force-confirm a pending booking (admin or assigned tutor only).
+     * Generates session codes, updates status, and sends email notifications to both parties.
+     */
+    public function forceConfirm(Booking $booking)
+    {
+        $user = auth()->user();
+
+        // Only admin or the booking's own tutor may force-confirm
+        if (!$user->isAdmin() && $user->id !== $booking->tutor_id) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorised.'], 403);
+        }
+
+        if ($booking->status === 'confirmed') {
+            return response()->json(['status' => 'ok', 'message' => 'Already confirmed.']);
+        }
+
+        if (!in_array($booking->status, ['pending'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Cannot confirm a booking with status: ' . $booking->status,
+            ], 422);
+        }
+
+        try {
+            $this->bookingService->confirmBooking($booking);
+        } catch (\Throwable $e) {
+            // Fallback: directly update without Jitsi URL generation
+            \Log::error('forceConfirm: confirmBooking failed, applying fallback: ' . $e->getMessage());
+            $booking->update([
+                'status'               => 'confirmed',
+                'session_code_tutor'   => 'TUT-' . strtoupper(\Illuminate\Support\Str::random(6)),
+                'session_code_student' => 'STU-' . strtoupper(\Illuminate\Support\Str::random(6)),
+                'meeting_room'         => $booking->meeting_room ?: 'Mwalimu-session-' . $booking->uuid,
+                'meeting_url'          => $booking->meeting_url ?: 'https://meet.jit.si/Mwalimu-session-' . $booking->uuid,
+            ]);
+            $booking->refresh()->load(['student', 'tutor', 'subject']);
+
+            // Still send the notifications
+            try {
+                $booking->student->notify(new \App\Notifications\BookingConfirmedStudent($booking));
+            } catch (\Throwable $ne) {
+                \Log::warning('Student notification failed: ' . $ne->getMessage());
+            }
+            try {
+                $booking->tutor->notify(new \App\Notifications\BookingConfirmedTutor($booking));
+            } catch (\Throwable $ne) {
+                \Log::warning('Tutor notification failed: ' . $ne->getMessage());
+            }
+        }
+
+        \Log::info('Booking force-confirmed by ' . $user->role . ' #' . $user->id, [
+            'booking_uuid' => $booking->uuid,
+        ]);
+
+        return response()->json([
+            'status'  => 'ok',
+            'message' => 'Booking confirmed. Codes sent to student and tutor.',
+        ]);
+    }
+
+    /**
      * Get available time slots for a tutor on a specific date.
      * Returns JSON array of available time slots, filtered by:
      * - Tutor's weekly availability schedule
