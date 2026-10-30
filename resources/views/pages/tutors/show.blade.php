@@ -623,11 +623,13 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                     @endforeach
                 </div> -->
 
+                @if(!auth()->check() || auth()->user()->role !== 'tutor')
                 <button onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})"
                         style="width:100%;height:52px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;"
                         onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                     <i class="fa-solid fa-calendar-check fa-sm"></i> Book a Session
                 </button>
+                @endif
 
                 <div style="display:flex;flex-direction:column;gap:7px;">
                     @foreach(['fa-certificate green TSC-Registered & Verified','fa-lock green Secure, private classroom','fa-rotate-left green 100% money-back first lesson','fa-key green Session code sent by email'] as $item)

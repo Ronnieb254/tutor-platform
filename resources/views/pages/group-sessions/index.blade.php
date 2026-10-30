@@ -33,9 +33,11 @@
                         <i class="fa-solid fa-ticket fa-sm"></i> My Sessions
                     </a>
                     @else
+                    @if(!auth()->check() || auth()->user()->role !== 'tutor')
                     <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
                         <i class="fa-solid fa-chalkboard-user fa-sm"></i> Host a Class
                     </a>
+                    @endif
                     @endauth
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:20px;">

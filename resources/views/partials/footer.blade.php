@@ -75,10 +75,15 @@
                         ['fa-chalkboard-user', 'Become a Tutor',        route('register').'?role=tutor'],
                         ['fa-id-card-clip',    'Verification Process',  route('how-it-works')],
                         ['fa-star',            'Host a Clinic',         route('examiner-clinic').'#examiners'],
-                        ['fa-share-nodes',     'Referral Programme',    '#'],
                         ['fa-right-to-bracket','Tutor Login',           route('login')],
                         ['fa-gauge-high',      'Dashboard',             auth()->check() ? route('dashboard') : route('login')],
                     ] as [$ic,$label,$url])
+                    @if($label === 'Become a Tutor' && auth()->check() && auth()->user()->role === 'tutor')
+                        @continue
+                    @endif
+                    @if($label === 'Tutor Login' && auth()->check())
+                        @continue
+                    @endif
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
                         <i class="fa-solid {{ $ic }}" style="font-size:11px;width:13px;text-align:center;opacity:.5;"></i>
                         {{ $label }}

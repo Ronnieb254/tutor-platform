@@ -68,12 +68,14 @@
                     <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
                         <i class="fa-solid fa-link" style="color:#0A64BC;font-size:14px;"></i> Quick Links
                     </h3>
-                    @foreach([
+                    @foreach(array_filter([
                         ['fa-magnifying-glass','Find a Tutor',route('tutors.index'),'Browse verified tutors'],
                         ['fa-star','Examiner\'s Clinic',route('examiner-clinic'),'Group sessions with national examiners'],
                         ['fa-circle-info','How It Works',route('how-it-works'),'Step-by-step guide'],
-                        ['fa-chalkboard-user','Become a Tutor',route('register').'?role=tutor','Join as a verified tutor'],
-                    ] as [$ic,$label,$url,$desc])
+                        (!auth()->check() || auth()->user()->role !== 'tutor')
+                            ? ['fa-chalkboard-user','Become a Tutor',route('register').'?role=tutor','Join as a verified tutor']
+                            : null,
+                    ]) as [$ic,$label,$url,$desc])
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(21,40,31,.06);text-decoration:none;transition:opacity .15s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
                         <div style="width:34px;height:34px;background:rgba(10,100,188,.08);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                             <i class="fa-solid {{ $ic }}" style="color:#0A64BC;font-size:12px;"></i>
