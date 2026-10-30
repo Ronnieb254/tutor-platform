@@ -130,6 +130,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(PasswordHistory::class);
     }
 
+    public function loginActivities()
+    {
+        return $this->hasMany(LoginActivity::class);
+    }
+
     // Helpers
     public function isAdmin(): bool   { return $this->role === 'admin'; }
     public function isTutor(): bool   { return $this->role === 'tutor'; }
