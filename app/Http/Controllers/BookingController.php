@@ -166,6 +166,35 @@ class BookingController extends Controller
 
             if ($payment && $payment->booking) {
                 $fresh = $payment->booking->fresh();
+
+                // If booking is confirmed but has no codes (edge case from previous bug), generate them
+                if ($fresh->status === 'confirmed' && !$fresh->session_code_student) {
+                    $fresh->update([
+                        'session_code_tutor'   => 'TUT-' . strtoupper(\Illuminate\Support\Str::random(6)),
+                        'session_code_student' => 'STU-' . strtoupper(\Illuminate\Support\Str::random(6)),
+                        'meeting_room'         => $fresh->meeting_room ?: 'Mwalimu-session-' . $fresh->uuid,
+                        'meeting_url'          => $fresh->meeting_url ?: 'https://meet.jit.si/Mwalimu-session-' . $fresh->uuid,
+                    ]);
+                    $fresh->refresh();
+                }
+
+                // If booking is still pending but payment succeeded, confirm it now
+                if ($fresh->status === 'pending') {
+                    try {
+                        $this->bookingService->confirmBooking($fresh);
+                    } catch (\Throwable $e) {
+                        \Log::error('confirmBooking fallback failed: ' . $e->getMessage());
+                        $fresh->update([
+                            'status'               => 'confirmed',
+                            'session_code_tutor'   => 'TUT-' . strtoupper(\Illuminate\Support\Str::random(6)),
+                            'session_code_student' => 'STU-' . strtoupper(\Illuminate\Support\Str::random(6)),
+                            'meeting_room'         => 'Mwalimu-session-' . $fresh->uuid,
+                            'meeting_url'          => 'https://meet.jit.si/Mwalimu-session-' . $fresh->uuid,
+                        ]);
+                    }
+                    $fresh->refresh();
+                }
+
                 return response()->json([
                     'status'       => 'ok',
                     'booking_uuid' => $fresh->uuid,
@@ -191,7 +220,27 @@ class BookingController extends Controller
             $booking = $payment->booking;
 
             if ($booking && $booking->status !== 'confirmed') {
-                $this->bookingService->confirmBooking($booking);
+                try {
+                    $this->bookingService->confirmBooking($booking);
+                } catch (\Throwable $e) {
+                    // confirmBooking failed but payment is already marked success.
+                    // Force-update the booking status and codes so the student is not left hanging.
+                    \Log::error('confirmBooking failed, applying fallback: ' . $e->getMessage(), [
+                        'booking_id' => $booking->id,
+                        'trace'      => $e->getTraceAsString(),
+                    ]);
+
+                    $tutorCode   = 'TUT-' . strtoupper(\Illuminate\Support\Str::random(6));
+                    $studentCode = 'STU-' . strtoupper(\Illuminate\Support\Str::random(6));
+
+                    $booking->update([
+                        'status'               => 'confirmed',
+                        'session_code_tutor'   => $tutorCode,
+                        'session_code_student' => $studentCode,
+                        'meeting_room'         => 'Mwalimu-session-' . $booking->uuid,
+                        'meeting_url'          => 'https://meet.jit.si/Mwalimu-session-' . $booking->uuid,
+                    ]);
+                }
             }
 
             $fresh = $booking->fresh();
