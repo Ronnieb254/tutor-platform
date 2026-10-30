@@ -322,10 +322,11 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 confirmed: false,
                 studentCode: '',
                 bookingRef: '',
+                slots: [],
+                loadingSlots: false,
                 prices: {{ json_encode($prices) }},
                 get price() {
                     const base = this.prices[this.dur] || 300;
-                    // Free first 20-min session
                     if (this.dur === 20 && {{ $isFreeFirstSession ? 'true' : 'false' }}) return 0;
                     return base;
                 },
@@ -333,6 +334,23 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 get sessionName() {
                     const names = {{ json_encode($sessNames) }};
                     return names[this.dur] || 'Quick Help';
+                },
+                async fetchSlots() {
+                    if (!this.date) { this.slots = []; return; }
+                    this.loadingSlots = true;
+                    this.slots = [];
+                    this.time = '';
+                    try {
+                        const resp = await fetch('/api/tutors/{{ $tutor->id }}/availability?date=' + this.date, {
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        const data = await resp.json();
+                        this.slots = data.slots || [];
+                    } catch(e) {
+                        console.error('Failed to fetch slots:', e);
+                    } finally {
+                        this.loadingSlots = false;
+                    }
                 }
             }">
 
@@ -397,21 +415,58 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
                             <i class="fa-solid fa-calendar" style="color:#0A64BC;font-size:16px;"></i> 2. Pick Date & Time
                         </h3>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;" class="dt-g">
-                            <div>
-                                <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Date</label>
-                                <input type="date" x-model="date" :min="new Date(Date.now()+86400000).toISOString().split('T')[0]"
-                                       style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
-                                       onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
-                            </div>
-                            <div>
-                                <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Time (EAT)</label>
-                                <input type="time" x-model="time"
-                                       style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
-                                       onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
-                            </div>
+                        <div style="margin-bottom:16px;">
+                            <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Date</label>
+                            <input type="date" x-model="date" @change="fetchSlots()" :min="new Date(Date.now()+86400000).toISOString().split('T')[0]"
+                                   style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
+                                   onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
                         </div>
-                        <style>.dt-g{grid-template-columns:1fr 1fr!important;}@media(max-width:480px){.dt-g{grid-template-columns:1fr!important;}}</style>
+
+                        {{-- Time slot picker --}}
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">
+                                Available Time Slots (EAT)
+                            </label>
+
+                            {{-- Loading state --}}
+                            <template x-if="loadingSlots">
+                                <div style="display:flex;align-items:center;gap:8px;padding:20px;color:rgba(21,40,31,.5);font-size:14px;">
+                                    <i class="fa-solid fa-spinner fa-spin" style="color:#0A64BC;"></i> Checking availability...
+                                </div>
+                            </template>
+
+                            {{-- Slots available --}}
+                            <template x-if="!loadingSlots && slots.length > 0">
+                                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" class="slot-grid">
+                                    <template x-for="slot in slots" :key="slot.time">
+                                        <button @click="time = slot.time"
+                                                :style="time === slot.time ? 'background:#0A64BC;color:#fff;border-color:#0A64BC;' : 'background:#F9FAF9;color:#15281F;border-color:rgba(21,40,31,.12);'"
+                                                style="padding:10px 6px;border-radius:10px;border:1.5px solid;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;text-align:center;"
+                                                x-text="slot.label"
+                                                onmouseover="if(this.style.background !== '#0A64BC') this.style.borderColor='#0A64BC'"
+                                                onmouseout="if(this.style.background !== '#0A64BC') this.style.borderColor='rgba(21,40,31,.12)'">
+                                        </button>
+                                    </template>
+                                </div>
+                            </template>
+
+                            {{-- No slots --}}
+                            <template x-if="!loadingSlots && date && slots.length === 0">
+                                <div style="padding:20px;text-align:center;background:#F9FAF9;border-radius:12px;border:1px solid rgba(21,40,31,.08);">
+                                    <i class="fa-regular fa-calendar-xmark" style="font-size:24px;color:rgba(21,40,31,.2);margin-bottom:8px;display:block;"></i>
+                                    <p style="font-size:13px;color:rgba(21,40,31,.5);">No available slots for this date. Try another day.</p>
+                                </div>
+                            </template>
+
+                            {{-- No date selected --}}
+                            <template x-if="!loadingSlots && !date">
+                                <div style="padding:20px;text-align:center;background:#F9FAF9;border-radius:12px;border:1px solid rgba(21,40,31,.08);">
+                                    <i class="fa-regular fa-calendar" style="font-size:24px;color:rgba(21,40,31,.2);margin-bottom:8px;display:block;"></i>
+                                    <p style="font-size:13px;color:rgba(21,40,31,.5);">Select a date to see available time slots.</p>
+                                </div>
+                            </template>
+                        </div>
+                        <style>.slot-grid{grid-template-columns:repeat(3,1fr)!important;}@media(min-width:480px){.slot-grid{grid-template-columns:repeat(4,1fr)!important;}}@media(min-width:768px){.slot-grid{grid-template-columns:repeat(5,1fr)!important;}}</style>
 
                         @if($tutor->subjects->isNotEmpty())
                         <div style="margin-bottom:14px;">
@@ -682,6 +737,16 @@ function processPayment(data) {
 
     data.processing = true;
 
+    // Safety fallback: if processing takes more than 45 seconds, unstick the UI
+    const safetyTimeout = setTimeout(() => {
+        if (data.processing) {
+            clearTimeout(safetyTimeout);
+        data.processing = false;
+            data.step = 3;
+            alert('Payment may still be processing. Check your dashboard — your session will appear once confirmed.');
+        }
+    }, 45000);
+
     fetch('/bookings', {
         method: 'POST',
         headers: {
@@ -700,7 +765,8 @@ function processPayment(data) {
     .then(r => r.json())
     .then(res => {
         if (res.status === 'ok' && res.free) {
-            data.processing = false;
+            clearTimeout(safetyTimeout);
+        data.processing = false;
             data.studentCode = res.student_code || '';
             data.bookingRef  = res.booking_uuid || '';
             data.step = 3;
@@ -718,7 +784,10 @@ function processPayment(data) {
                 ref: res.reference,
                 metadata: { booking_id: res.booking_id },
                 onSuccess: function(transaction) {
-                    // Confirm booking after payment
+                    // Confirm booking after payment - with 20s timeout
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 20000);
+
                     fetch('/bookings/confirm', {
                         method: 'POST',
                         headers: {
@@ -726,14 +795,17 @@ function processPayment(data) {
                             'Accept': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
                         },
-                        body: JSON.stringify({ reference: transaction.reference })
+                        body: JSON.stringify({ reference: transaction.reference }),
+                        signal: controller.signal
                     })
                     .then(r => {
+                        clearTimeout(timeoutId);
                         if (!r.ok) throw new Error('HTTP ' + r.status);
                         return r.json();
                     })
                     .then(confirmRes => {
-                        data.processing = false;
+                        clearTimeout(safetyTimeout);
+        data.processing = false;
                         if (confirmRes.status === 'ok') {
                             data.studentCode = confirmRes.student_code || '';
                             data.bookingRef  = confirmRes.booking_uuid || '';
@@ -744,31 +816,38 @@ function processPayment(data) {
                                 }, 3000);
                             }
                         } else {
-                            // Payment went through but confirm failed — still move to step 3
-                            // The webhook will confirm async, or user can check dashboard
+                            // Payment went through but confirm returned non-ok
+                            // Still move to step 3 — webhook will confirm async
                             data.step = 3;
                             console.warn('Confirm warning:', confirmRes.message);
                         }
                     })
                     .catch((err) => {
+                        clearTimeout(timeoutId);
                         // Payment succeeded on Paystack side — don't show error to user
                         // The Paystack webhook will confirm the booking asynchronously
-                        data.processing = false;
+                        clearTimeout(safetyTimeout);
+        data.processing = false;
                         data.step = 3;
-                        console.warn('Confirm fetch failed, relying on webhook:', err);
+                        console.warn('Confirm fetch failed/timed out, relying on webhook:', err);
+                        // Show a gentle message that payment was received
+                        alert('Payment received successfully! Your session is being confirmed. You will receive your session code shortly.');
                     });
                 },
                 onCancel: function() {
-                    data.processing = false;
+                    clearTimeout(safetyTimeout);
+        data.processing = false;
                 }
             });
             handler.openIframe();
         } else {
-            data.processing = false;
+            clearTimeout(safetyTimeout);
+        data.processing = false;
             alert(res.message || 'Could not process booking. Please try again.');
         }
     })
     .catch(err => {
+        clearTimeout(safetyTimeout);
         data.processing = false;
         console.error(err);
         alert('Network error. Please try again.');

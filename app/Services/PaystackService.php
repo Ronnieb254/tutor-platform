@@ -67,6 +67,7 @@ class PaystackService
         }
 
         $response = Http::withToken($this->secretKey)
+            ->timeout(15)
             ->get("{$this->baseUrl}/transaction/verify/{$reference}");
 
         return $response->json();

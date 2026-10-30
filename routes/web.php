@@ -109,6 +109,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
     Route::post('/bookings/{booking}/joined', [BookingController::class, 'markJoined'])->name('bookings.joined');
 
+    // Tutor availability - get available time slots
+    Route::get('/api/tutors/{tutor}/availability', [BookingController::class, 'getAvailableSlots'])->name('api.tutor.availability');
+
     // Booking messages
     Route::post('/bookings/{booking}/messages', function(\Illuminate\Http\Request $req, \App\Models\Booking $booking) {
         $req->validate(['body' => 'required|string|max:1000']);
