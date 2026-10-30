@@ -70,11 +70,13 @@
             </div>
             @endif
 
-            <div class="card card-p" style="background:var(--ink);border-color:var(--ink);">
+            @if(!auth()->check() || auth()->user()->role !== 'tutor')
+                <div class="card card-p" style="background:var(--ink);border-color:var(--ink);">
                 <h3 style="font-family:'Fraunces',serif;font-size:16px;color:#fff;margin-bottom:8px;">Need 1-on-1 help?</h3>
                 <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.65;margin-bottom:14px;">Book a session with a TSC-registered tutor from KSh 300.</p>
                 <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm" style="width:100%;justify-content:center;"><i class="fa-solid fa-magnifying-glass"></i> Find a Tutor</a>
             </div>
+            @endif
         </aside>
     </div>
 </div>

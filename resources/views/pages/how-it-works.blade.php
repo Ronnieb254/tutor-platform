@@ -179,9 +179,11 @@
             @endforeach
         </div>
         <div style="text-align:center;margin-top:28px;">
+            @if(!auth()->check() || auth()->user()->role !== 'tutor')
             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Browse Tutors & Book Now
             </a>
+            @endif
         </div>
     </div>
     <style>.price-grid{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.price-grid{grid-template-columns:repeat(4,1fr)!important;}}</style>
