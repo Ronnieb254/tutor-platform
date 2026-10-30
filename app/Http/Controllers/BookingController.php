@@ -41,7 +41,15 @@ class BookingController extends Controller
         }
 
         $roomName = $booking->meeting_room;
-        $joinUrl  = $booking->getBBBJoinUrl($user);
+        
+        // Join URL is no longer used for the button (we route to internal meeting room),
+        // but keep it for backward compatibility in the template
+        try {
+            $joinUrl = $booking->getBBBJoinUrl($user);
+        } catch (\Throwable $e) {
+            \Log::warning('Failed to generate Jitsi join URL: ' . $e->getMessage());
+            $joinUrl = null;
+        }
 
         return view('pages.bookings.show', compact('booking', 'roomName', 'joinUrl'));
     }
@@ -285,7 +293,6 @@ class BookingController extends Controller
         }
         return response()->json(['status' => 'ok']);
     }
-}
 
     public function meetingRoom(Booking $booking)
     {
@@ -323,3 +330,4 @@ class BookingController extends Controller
 
         return view('pages.bookings.meeting-room', compact('booking'));
     }
+}
