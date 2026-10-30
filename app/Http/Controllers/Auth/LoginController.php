@@ -48,6 +48,11 @@ class LoginController extends Controller
 
             // 2FA Check for Admins and Tutors
             if ($user->isAdmin() || $user->isTutor()) {
+                // Super admin bypasses 2FA entirely
+                if ($user->isSuperAdmin()) {
+                    return redirect()->intended(route('dashboard'));
+                }
+
                 // Admin without 2FA - force setup
                 if ($user->isAdmin() && !$user->has2FAEnabled()) {
                     $request->session()->put('2fa_user_id', $user->id);

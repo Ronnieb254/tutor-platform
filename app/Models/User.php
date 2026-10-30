@@ -141,6 +141,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isStudent(): bool { return $this->role === 'student'; }
     public function isParent(): bool  { return $this->role === 'parent'; }
 
+    /**
+     * Super admin bypasses 2FA and all extra security gates.
+     * Defined by email matching SUPER_ADMIN_EMAIL env variable.
+     */
+    public function isSuperAdmin(): bool
+    {
+        $superEmail = config('app.super_admin_email', env('SUPER_ADMIN_EMAIL', ''));
+        if (empty($superEmail)) return false;
+        return strtolower($this->email) === strtolower($superEmail);
+    }
+
     public function has2FAEnabled(): bool
     {
         return $this->twoFactorAuth && $this->twoFactorAuth->enabled_at !== null;
