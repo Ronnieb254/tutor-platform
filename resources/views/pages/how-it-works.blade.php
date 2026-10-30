@@ -31,9 +31,11 @@
             <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                 <i class="fa-solid fa-magnifying-glass fa-sm"></i> Find a Tutor
             </a>
+            @if(!auth()->check() || auth()->user()->role === 'parent')
             <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
                 <i class="fa-solid fa-chalkboard-user fa-sm"></i> Become a Tutor
             </a>
+            @endif
             @elseif(auth()->check() && auth()->user()->role === 'admin')
             <a href="{{ route('admin.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
                 <i class="fa-solid fa-gauge-high fa-sm"></i> Admin Dashboard

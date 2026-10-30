@@ -110,6 +110,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     <a href="{{ route('register') }}?role=tutor" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
                         <i class="fa-solid fa-chalkboard-user"></i> Become a Tutor
                     </a>
+                    @elseif(auth()->check() && auth()->user()->role === 'parent')
+                    <a href="{{ route('register') }}?role=tutor" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
+                        <i class="fa-solid fa-chalkboard-user"></i> Become a Tutor
+                    </a>
                     @endif
                 </div>
                 @elseif(auth()->check() && auth()->user()->role === 'admin')
@@ -338,7 +342,9 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     @endforeach
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                    @if(!auth()->check() || auth()->user()->role === 'parent')
                     <a href="{{ route('register') }}?role=tutor" class="btn btn-w"><i class="fa-solid fa-chalkboard-user"></i> Register as a Tutor</a>
+                    @endif
                     <a href="{{ route('how-it-works') }}" class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);">Learn More</a>
                 </div>
             </div>
