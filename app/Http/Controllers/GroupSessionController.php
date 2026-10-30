@@ -72,8 +72,7 @@ class GroupSessionController extends Controller
     }
 
     /**
-     * Enroll a student in a group session (pay-per-session).
-     * Reuses the same payment + enrollment pattern as ClinicController::enroll.
+     * Enroll a student in a group session via Paystack payment.
      */
     public function enroll(Request $request, ExaminerClinic $groupSession)
     {
@@ -92,44 +91,56 @@ class GroupSessionController extends Controller
             return back()->with('error', 'This session is full. Please choose another time slot.');
         }
 
+        // Create a pending payment record
+        $paystack  = app(\App\Services\PaystackService::class);
+        $reference = $paystack->generateReference('GRP');
+
+        $paymentData = [
+            'user_id'      => $user->id,
+            'clinic_id'    => $groupSession->id,
+            'amount'       => $groupSession->price,
+            'currency'     => 'KES',
+            'payment_type' => 'group_session',
+            'paystack_reference' => $reference,
+            'status'       => 'pending',
+        ];
+
+        if (\Schema::hasColumn('payments', 'commission_rate')) {
+            $paymentData['commission_rate'] = 60.00;
+            $paymentData['tutor_amount']    = round($groupSession->price * 0.40, 2);
+            $paymentData['platform_amount'] = round($groupSession->price * 0.60, 2);
+        }
+
+        $payment = Payment::create($paymentData);
+
+        // Initialize Paystack transaction
         try {
-            return \DB::transaction(function () use ($groupSession, $user) {
-                $paymentData = [
-                    'user_id'       => $user->id,
-                    'clinic_id'     => $groupSession->id,
-                    'amount'        => $groupSession->price,
-                    'currency'      => 'KES',
-                    'payment_type'  => 'group_session',
-                    'status'        => 'success',
-                    'paid_at'       => now(),
-                ];
-
-                if (\Schema::hasColumn('payments', 'commission_rate')) {
-                    $paymentData['commission_rate']  = 60.00;
-                    $paymentData['tutor_amount']      = round($groupSession->price * 0.40, 2);
-                    $paymentData['platform_amount']   = round($groupSession->price * 0.60, 2);
-                }
-
-                $payment = Payment::create($paymentData);
-
-                $enrollment = ClinicEnrollment::create([
+            $result = $paystack->initializeTransaction(
+                $user->email,
+                (float) $groupSession->price,
+                $reference,
+                [
                     'clinic_id'    => $groupSession->id,
-                    'student_id'   => $user->id,
-                    'payment_id'   => $payment->id,
-                    'session_code' => strtoupper(Str::random(8)),
-                ]);
+                    'user_id'      => $user->id,
+                    'payment_type' => 'group_session',
+                ]
+            );
 
-                return redirect()->route('group-sessions.show', $groupSession)
-                    ->with('success', "You're enrolled! Your session code is {$enrollment->session_code}. Join 15 minutes before the start time.");
-            });
+            if (!($result['status'] ?? false)) {
+                $payment->delete();
+                return back()->with('error', 'Payment initialization failed. Please try again.');
+            }
+
+            // Redirect to Paystack payment page
+            return redirect($result['data']['authorization_url']);
+
         } catch (\Exception $e) {
-            \Log::error('Group session enrollment failed: ' . $e->getMessage(), [
+            $payment->delete();
+            \Log::error('Group session payment init failed: ' . $e->getMessage(), [
                 'session_id' => $groupSession->id,
                 'user_id'    => $user->id,
-                'trace'      => $e->getTraceAsString(),
             ]);
-
-            return back()->with('error', 'Something went wrong while processing your enrollment. Please try again or contact support.');
+            return back()->with('error', 'Something went wrong. Please try again or contact support.');
         }
     }
 

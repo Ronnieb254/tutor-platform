@@ -47,7 +47,7 @@ class PaystackWebhookController extends Controller
             return;
         }
 
-        // Idempotent: already handled by the /bookings/confirm endpoint
+        // Idempotent: already handled
         if ($payment->status === 'success') {
             Log::info('Webhook: payment already confirmed, skipping', ['reference' => $reference]);
             return;
@@ -58,10 +58,65 @@ class PaystackWebhookController extends Controller
             'paid_at' => now(),
         ]);
 
-        $booking = $payment->booking;
-        if ($booking && $booking->status === 'pending') {
-            $this->booking->confirmBooking($booking);
-            Log::info('Webhook: booking confirmed', ['booking_id' => $booking->id]);
+        $type = $payment->payment_type ?? null;
+
+        // ── 1-on-1 booking ────────────────────────────────────────────────────
+        if ($type === null || $type === 'booking' || $payment->booking_id) {
+            $booking = $payment->booking;
+            if ($booking && $booking->status === 'pending') {
+                $this->booking->confirmBooking($booking);
+                Log::info('Webhook: 1-on-1 booking confirmed', ['booking_id' => $booking->id]);
+            }
+            return;
+        }
+
+        // ── Clinic / Group session ─────────────────────────────────────────────
+        if (in_array($type, ['clinic', 'group_session'])) {
+            $clinicId = $payment->clinic_id;
+            if (!$clinicId) {
+                Log::warning('Webhook: clinic_id missing on payment', ['payment_id' => $payment->id]);
+                return;
+            }
+
+            $clinic = \App\Models\ExaminerClinic::find($clinicId);
+            if (!$clinic) {
+                Log::warning('Webhook: clinic not found', ['clinic_id' => $clinicId]);
+                return;
+            }
+
+            $user = \App\Models\User::find($payment->user_id);
+            if (!$user) {
+                Log::warning('Webhook: user not found', ['user_id' => $payment->user_id]);
+                return;
+            }
+
+            // Idempotent — already enrolled
+            if ($clinic->isEnrolledBy($user)) {
+                Log::info('Webhook: already enrolled, skipping', ['clinic_id' => $clinicId, 'user_id' => $user->id]);
+                return;
+            }
+
+            if ($clinic->isFull()) {
+                Log::warning('Webhook: clinic full, cannot enroll', ['clinic_id' => $clinicId]);
+                return;
+            }
+
+            $enrollment = \App\Models\ClinicEnrollment::create([
+                'clinic_id'    => $clinic->id,
+                'student_id'   => $user->id,
+                'payment_id'   => $payment->id,
+                'session_code' => strtoupper(\Illuminate\Support\Str::random(8)),
+            ]);
+
+            if ($clinic->fresh()->isFull() && $clinic->parent_clinic_id === null) {
+                $clinic->autoCreateNextSession();
+            }
+
+            Log::info('Webhook: clinic/group enrollment confirmed', [
+                'clinic_id'     => $clinicId,
+                'user_id'       => $user->id,
+                'enrollment_id' => $enrollment->id,
+            ]);
         }
     }
 }

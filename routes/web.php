@@ -389,34 +389,19 @@ Route::get('/paystack/callback', function (\Illuminate\Http\Request $request) {
             ->with('error', 'Payment not found. Please contact support if you were charged.');
     }
 
-    // Already confirmed (Paystack webhook arrived first) — go straight to booking
+    // Already confirmed (webhook arrived first)
     if ($payment->status === 'success') {
-        $booking = $payment->booking;
-        $redirect = $booking ? route('bookings.show', $booking->uuid) : route('dashboard');
-        return redirect($redirect)->with('success', 'Your booking is confirmed!');
+        return \App\Http\Controllers\PaystackCallbackHelper::redirectAfterPayment($payment, 'Your booking is confirmed!');
     }
 
     // Verify with Paystack
     $paystack = app(\App\Services\PaystackService::class);
     $result   = $paystack->verifyTransaction($reference);
-
     $paystackStatus = $result['data']['status'] ?? '';
 
     if ($paystackStatus === 'success') {
         $payment->update(['status' => 'success', 'paid_at' => now()]);
-
-        $booking = $payment->booking;
-
-        if ($booking && $booking->status === 'pending') {
-            $bookingService = app(\App\Services\BookingService::class);
-            $bookingService->confirmBooking($booking);
-        }
-
-        $booking = $payment->booking()->first();
-        $redirect = $booking ? route('bookings.show', $booking->uuid) : route('dashboard');
-
-        return redirect($redirect)
-            ->with('success', 'Payment confirmed! Your booking is now active.');
+        return \App\Http\Controllers\PaystackCallbackHelper::confirmAndRedirect($payment);
     }
 
     \Log::warning('Paystack callback: unverified payment', [
