@@ -68,12 +68,12 @@
 
         {{-- Toggle --}}
         <div style="display:flex;background:#fff;border-radius:999px;padding:6px;border:1.5px solid rgba(21,40,31,.12);width:fit-content;margin:0 auto 52px;box-shadow:0 4px 20px rgba(21,40,31,.1);">
-            <button @click="role='student'"
+            <button type="button" @click="role='student'"
                     :style="role==='student' ? 'background:linear-gradient(135deg,#0A64BC,#120A8F);color:#fff;box-shadow:0 4px 16px rgba(10,100,188,.35);' : 'background:transparent;color:rgba(21,40,31,.5);'"
                     style="padding:16px 44px;border-radius:999px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:9px;">
                 <i class="fa-solid fa-graduation-cap"></i> I'm a Student / Parent
             </button>
-            <button @click="role='tutor'"
+            <button type="button" @click="role='tutor'"
                     :style="role==='tutor' ? 'background:linear-gradient(135deg,#0A64BC,#120A8F);color:#fff;box-shadow:0 4px 16px rgba(10,100,188,.35);' : 'background:transparent;color:rgba(21,40,31,.5);'"
                     style="padding:16px 44px;border-radius:999px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:9px;">
                 <i class="fa-solid fa-chalkboard-user"></i> I'm a Tutor
