@@ -13,7 +13,14 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
-        if (!in_array(auth()->user()->role, $roles)) {
+        $user = auth()->user();
+
+        // Super-admin passes every role gate automatically
+        if ($user->role === 'super-admin') {
+            return $next($request);
+        }
+
+        if (!in_array($user->role, $roles)) {
             abort(403, 'Unauthorized');
         }
 
