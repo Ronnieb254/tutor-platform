@@ -276,6 +276,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/',           fn() => view('pages.dashboard.admin'))->name('dashboard');
         Route::get('/tutors',     fn() => view('pages.admin.tutors'))->name('tutors');
         Route::get('/users',      fn() => view('pages.admin.users'))->name('users');
+        Route::get('/bookings',   [App\Http\Controllers\Admin\BookingController::class, 'index'])->name('bookings');
         Route::get('/payouts',    fn() => view('pages.admin.payouts'))->name('payouts');
         Route::get('/settings',   fn() => view('pages.admin.settings'))->name('settings');
         Route::get('/blog',       fn() => view('pages.admin.blog'))->name('blog');

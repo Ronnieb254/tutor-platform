@@ -107,7 +107,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">Recent Bookings</h3>
                 <p style="font-size:12px;color:var(--muted);margin-top:1px;">Latest session bookings across the platform</p>
             </div>
-            <a href="#" class="btn btn-outline btn-sm">View All</a>
+            <a href="{{ route('admin.bookings') }}" class="btn btn-outline btn-sm">View All</a>
         </div>
         <div class="table-wrap">
             <table>
@@ -119,6 +119,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                         <th>Date</th>
                         <th>Amount</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -138,9 +139,25 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                             @php $sc = ['pending'=>'badge-amber','confirmed'=>'badge-green','completed'=>'badge-blue','cancelled'=>'badge-red'][$booking->status] ?? 'badge-gray'; @endphp
                             <span class="badge {{ $sc }}">{{ ucfirst($booking->status) }}</span>
                         </td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <a href="{{ route('bookings.show', $booking->uuid) }}"
+                                   class="btn btn-outline btn-sm" title="View booking">
+                                    View
+                                </a>
+                                @if($booking->status === 'pending')
+                                <button onclick="confirmBooking('{{ $booking->uuid }}', this)"
+                                        class="btn btn-sm"
+                                        style="background:#10B981;color:#fff;border:none;cursor:pointer;font-size:11px;padding:5px 10px;border-radius:8px;font-family:inherit;font-weight:700;white-space:nowrap;"
+                                        title="Confirm booking and send session codes to tutor & student">
+                                    ✓ Confirm
+                                </button>
+                                @endif
+                            </div>
+                        </td>
                     </tr>
                     @empty
-                    <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:32px;">No bookings yet</td></tr>
+                    <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px;">No bookings yet</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -183,3 +200,54 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function confirmBooking(uuid, btn) {
+    if (!confirm('Confirm this booking? Session codes will be emailed and sent as notifications to both the tutor and student.')) return;
+
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = '<svg style="width:12px;height:12px;animation:spin 1s linear infinite;display:inline-block;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Confirming…';
+    btn.disabled = true;
+
+    fetch(`/bookings/${uuid}/force-confirm`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res.status === 'ok') {
+            btn.innerHTML = '✓ Confirmed!';
+            btn.style.background = '#059669';
+
+            // Replace the status badge in the same row
+            const row = btn.closest('tr');
+            const statusTd = row.querySelector('.badge');
+            if (statusTd) {
+                statusTd.className = 'badge badge-green';
+                statusTd.textContent = 'Confirmed';
+            }
+
+            // Remove the confirm button after a moment
+            setTimeout(() => btn.remove(), 2000);
+        } else {
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+            alert('Error: ' + (res.message || 'Failed to confirm booking.'));
+        }
+    })
+    .catch(() => {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+        alert('Network error. Please try again.');
+    });
+}
+</script>
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+@endpush
