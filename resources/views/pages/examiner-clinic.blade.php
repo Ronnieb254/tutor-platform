@@ -28,7 +28,11 @@
                     <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
                         <i class="fa-solid fa-calendar-check fa-sm"></i> Book a Clinic Spot
                     </a>
-                   
+                    @auth
+                    <a href="{{ route('clinic.my-bookings') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.2)';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(255,255,255,.12)';this.style.transform='translateY(0)'">
+                        <i class="fa-solid fa-ticket fa-sm"></i> My Clinic Bookings
+                    </a>
+                    @endauth
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:20px;">
                     @foreach([['fa-sterling-sign','KSh 500','Per 60-min session'],['fa-users','Max 30','Learners per session'],['fa-calendar-week','Daily','Every subject'],['fa-shield-check','Secure','All sessions']] as [$ic,$val,$lbl])
