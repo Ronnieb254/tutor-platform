@@ -138,7 +138,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     @foreach([
                         ['fa-certificate','TSC Registered','All tutors'],
                         ['fa-shield-halved','Background Checked','Every tutor'],
-                        ['fa-rotate-left','100% Refund','First lesson'],
+                        ['fa-rotate-left','100% Refund','First lesson if unsatisfied'],
                         ['fa-lock','Secure Sessions','Always private'],
                     ] as [$ic,$title,$sub])
                     <div style="display:flex;align-items:center;gap:8px;">

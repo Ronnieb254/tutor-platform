@@ -100,7 +100,7 @@ a{color:inherit;text-decoration:none;}
             <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
         </div>
         <h1>The Mwalimu Library</h1>
-        <p>Curated past papers, and study notes in PDFs, and top rated video lessons — all in one place.</p>
+        <p>Curated past papers, and study notes in PDF, and top rated video lessons — all in one place.</p>
         <form method="GET" action="{{ route('library.index') }}" class="hero-search">
             <input type="text" name="search" placeholder="Search resources, subjects, topics…" value="{{ request('search') }}">
             <button type="submit">Search</button>
@@ -119,8 +119,8 @@ a{color:inherit;text-decoration:none;}
                 <span class="count">{{ $resources->total() }}</span>
             </a>
             @php
-                $typeIcons = ['article'=>'📄','video'=>'🎥','notes'=>'📝','past_paper'=>'📋'];
-                $typeLabels = ['article'=>'Articles','video'=>'Videos','notes'=>'Notes','past_paper'=>'Past Papers'];
+                $typeIcons = ['article'=>'📄','notes'=>'📝','past_paper'=>'📋','video'=>'🎥'];
+                $typeLabels = ['article'=>'Articles','notes'=>'Notes','past_paper'=>'Past Papers','video'=>'Videos'];
             @endphp
             @foreach($resourceTypes as $type)
             <a href="{{ route('library.index', array_merge(request()->all(), ['type'=>$type])) }}" class="filter-item {{ request('type') === $type ? 'active' : '' }}">

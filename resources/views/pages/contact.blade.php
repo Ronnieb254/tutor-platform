@@ -105,7 +105,7 @@
             {{-- RIGHT: Contact form --}}
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:36px;box-shadow:0 4px 24px rgba(21,40,31,.06);">
                 <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:6px;">Send us a message</h2>
-                <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:28px;">We typically respond within 24 hours on business days.</p>
+                <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:28px;">We typically respond immediately on business days.</p>
 
                 @if(session('contact_success'))
                 <div style="background:#DCFCE7;border:1px solid #BBF7D0;border-radius:14px;padding:16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;color:#166534;font-size:14px;font-weight:500;">

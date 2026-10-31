@@ -54,7 +54,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
             <div>
                 <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-certificate"></i> TSC-Registered Tutors Only</div>
                 <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">Find your perfect tutor</h1>
-                <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:460px;">Personalised Learning, Proven Teaching Expertise, Affordable Prices.</p>
+                <p style="font-size:14px;color:rgba(255,255,255,.6);max-width:460px;">Personalised Learning, Proven Teaching Expertise, Affordable Prices.</p>
             </div>
             <!-- <div style="display:flex;flex-wrap:wrap;gap:8px;align-self:flex-end;max-width:480px;">
                 @foreach($categories->take(6) as $cat)
