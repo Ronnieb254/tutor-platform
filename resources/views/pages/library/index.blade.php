@@ -76,7 +76,7 @@ a{color:inherit;text-decoration:none;}
 .empty p{font-size:14px;color:var(--muted);}
 
 /* Type helpers */
-.type-pdf{background:#FEF2F2;color:#DC2626;}
+/* .type-pdf{background:#FEF2F2;color:#DC2626;} */
 .type-video{background:#EDE9FE;color:#7C3AED;}
 .type-notes{background:#FEF9C3;color:#D97706;}
 .type-past_paper{background:#DCFCE7;color:#16A34A;}
@@ -100,7 +100,7 @@ a{color:inherit;text-decoration:none;}
             <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
         </div>
         <h1>The Mwalimu Library</h1>
-        <p>Curated past papers, and study notes in pdfs, and top rated video lessons — all in one place.</p>
+        <p>Curated past papers, and study notes in PDFs, and top rated video lessons — all in one place.</p>
         <form method="GET" action="{{ route('library.index') }}" class="hero-search">
             <input type="text" name="search" placeholder="Search resources, subjects, topics…" value="{{ request('search') }}">
             <button type="submit">Search</button>
@@ -171,12 +171,12 @@ a{color:inherit;text-decoration:none;}
                         @if($resource->thumbnail)
                             <img src="{{ asset('storage/'.$resource->thumbnail) }}" alt="{{ $resource->title }}">
                         @else
-                            @php $icons = ['article'=>'📄','pdf'=>'📕','video'=>'🎥','notes'=>'📝','past_paper'=>'📋']; @endphp
+                            @php $icons = ['article'=>'📄','video'=>'🎥','notes'=>'📝','past_paper'=>'📋']; @endphp
                             {{ $icons[$resource->resource_type] ?? '📄' }}
                         @endif
                         @php
-                            $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
-                            $typeLabelMap = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
+                            $typeClasses = ['article'=>'bdg-blue','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
+                            $typeLabelMap = ['article'=>'Article','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
                         @endphp
                         <span class="card-type-badge bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">
                             {{ $typeLabelMap[$resource->resource_type] ?? ucfirst($resource->resource_type) }}

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BlogPost extends Model
 {
-    const RESOURCE_TYPES = ['article', 'pdf', 'video', 'notes', 'past_paper'];
+    const RESOURCE_TYPES = ['article', 'video', 'notes', 'past_paper'];
 
     protected $fillable = [
         'author_id', 'blog_category_id', 'title', 'slug',

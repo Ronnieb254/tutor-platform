@@ -100,8 +100,8 @@
             <tbody>
                 @forelse($resources as $resource)
                 @php
-                    $typeIcons = ['article'=>'📄','pdf'=>'📕','video'=>'🎥','notes'=>'📝','past_paper'=>'📋'];
-                    $typeClasses = ['article'=>'badge-primary','pdf'=>'badge-danger','video'=>'badge-purple','notes'=>'badge-warning','past_paper'=>'badge-success'];
+                    $typeIcons = ['article'=>'📄','video'=>'🎥','notes'=>'📝','past_paper'=>'📋'];
+                    $typeClasses = ['article'=>'badge-primary','video'=>'badge-purple','notes'=>'badge-warning','past_paper'=>'badge-success'];
                 @endphp
                 <tr>
                     <td style="max-width:280px;">
