@@ -272,7 +272,7 @@
                         ['Tutor verification','TSC-registered & background-checked','Often unverified'],
                         ['Booking process','Online, instant, 24/7','Phone calls, scheduling hassle'],
                         ['Payment security','Paystack — M-Pesa & cards','Cash, often no receipt'],
-                        ['Session lengths','15, 30, 45 or 60 min fixed blocks','Usually 1hr fixed, wasted time'],
+                        ['Session lengths','20, 40 or 60 min fixed blocks','Usually 1hr fixed, wasted time'],
                         ['Access codes','Unique code per session','No access control'],
                         ['Live classroom','Jitsi — no download','Physical or WhatsApp'],
                         ['Session records','Full dashboard history','No records'],
