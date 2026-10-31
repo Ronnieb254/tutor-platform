@@ -67,16 +67,16 @@
         </div>
 
         {{-- Toggle --}}
-        <div style="display:flex;background:#fff;border-radius:999px;padding:4px;border:1px solid rgba(21,40,31,.1);width:fit-content;margin:0 auto 52px;box-shadow:0 2px 12px rgba(21,40,31,.06);">
+        <div style="display:flex;background:#fff;border-radius:999px;padding:6px;border:1.5px solid rgba(21,40,31,.12);width:fit-content;margin:0 auto 52px;box-shadow:0 4px 20px rgba(21,40,31,.1);">
             <button @click="role='student'"
-                    :style="role==='student' ? 'background:#0A64BC;color:#fff;' : 'background:transparent;color:rgba(21,40,31,.5);'"
-                    style="padding:11px 32px;border-radius:999px;border:none;font-size:22px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;">
-                <i class="fa-solid fa-graduation-cap fa-sm" style="margin-right:6px;"></i> I'm a Student / Parent
+                    :style="role==='student' ? 'background:linear-gradient(135deg,#0A64BC,#120A8F);color:#fff;box-shadow:0 4px 16px rgba(10,100,188,.35);' : 'background:transparent;color:rgba(21,40,31,.5);'"
+                    style="padding:16px 44px;border-radius:999px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:9px;">
+                <i class="fa-solid fa-graduation-cap"></i> I'm a Student / Parent
             </button>
             <button @click="role='tutor'"
-                    :style="role==='tutor' ? 'background:#0A64BC;color:#fff;' : 'background:transparent;color:rgba(21,40,31,.5);'"
-                    style="padding:11px 32px;border-radius:999px;border:none;font-size:22px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;">
-                <i class="fa-solid fa-chalkboard-user fa-sm" style="margin-right:6px;"></i> I'm a Tutor
+                    :style="role==='tutor' ? 'background:linear-gradient(135deg,#0A64BC,#120A8F);color:#fff;box-shadow:0 4px 16px rgba(10,100,188,.35);' : 'background:transparent;color:rgba(21,40,31,.5);'"
+                    style="padding:16px 44px;border-radius:999px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:9px;">
+                <i class="fa-solid fa-chalkboard-user"></i> I'm a Tutor
             </button>
         </div>
 
