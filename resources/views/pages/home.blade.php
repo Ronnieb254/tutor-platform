@@ -222,23 +222,31 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
             @foreach([
-                ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.'],
-                ['40','Guided Practice','🎯','KSh 500','A full structured lesson with warm-up, teaching and Q&A.'],
-                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value. Ideal for exam prep.'],
-                ['60','Group Session','👥','KSh 500','Learn together with other students. Share the cost, maximize value.'],
-            ] as [$mins,$title,$icon,$price,$desc])
-            <div style="border:2px solid var(--hair);border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;" class="card-lift" onmouseover="this.style.borderColor='var(--trust-blue)'" onmouseout="this.style.borderColor='var(--hair)'">
+                ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
+                ['40','Guided Practice','🎯','KSh 500','A full structured lesson with warm-up, teaching and Q&A.', false],
+                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value. Ideal for exam prep.', false],
+                ['60','Group Session','👥','KSh 500','Learn together with other students. Share the cost, maximize value.', true],
+            ] as [$mins,$title,$icon,$price,$desc,$isGroup])
+            <div style="border:2px solid {{ $isGroup ? 'var(--hair)' : '#EEBE15' }};border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;background:{{ $isGroup ? 'transparent' : 'rgba(238,190,21,.05)' }};" class="card-lift"
+                 onmouseover="this.style.borderColor='{{ $isGroup ? 'var(--trust-blue)' : '#d4a800' }}'"
+                 onmouseout="this.style.borderColor='{{ $isGroup ? 'var(--hair)' : '#EEBE15' }}'">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                     <div style="font-size:32px;">{{ $icon }}</div>
-                    <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:var(--trust-blue);">{{ $price }}</span>
+                    <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:{{ $isGroup ? 'var(--trust-blue)' : '#EEBE15' }};">{{ $price }}</span>
                 </div>
                 <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px;">{{ $mins }} min</div>
                 <div style="font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px;">{{ $title }}</div>
                 <p style="font-size:13px;color:var(--muted);line-height:1.65;">{{ $desc }}</p>
                 @if(!auth()->check() || (auth()->check() && auth()->user()->role !== 'tutor' && auth()->user()->role !== 'admin'))
-                <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:var(--trust-blue);">
+                @if($isGroup)
+                <a href="{{ route('group-sessions.index') }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:var(--trust-blue);">
+                    View sessions <i class="fa-solid fa-arrow-right fa-xs"></i>
+                </a>
+                @else
+                <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:#EEBE15;">
                     Book now <i class="fa-solid fa-arrow-right fa-xs"></i>
                 </a>
+                @endif
                 @endif
             </div>
             @endforeach
