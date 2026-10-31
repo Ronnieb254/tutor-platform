@@ -12,10 +12,10 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         return match($user->role) {
-            'admin' => $this->adminDashboard(),
-            'tutor' => $this->tutorDashboard(),
+            'admin', 'super-admin' => $this->adminDashboard(),
+            'tutor'  => $this->tutorDashboard(),
             'parent' => $this->parentDashboard(),
-            default => $this->studentDashboard(),
+            default  => $this->studentDashboard(),
         };
     }
 
