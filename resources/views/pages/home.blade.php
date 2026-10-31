@@ -127,9 +127,9 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     <a href="{{ route('tutor.dashboard') }}" class="btn btn-v" style="font-size:15px;padding:14px 32px;">
                         <i class="fa-solid fa-gauge-high"></i> Go to Dashboard
                     </a>
-                    <a href="{{ route('examiner.dashboard') }}" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
+                    {{-- <a href="{{ route('examiner.dashboard') }}" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
                         <i class="fa-solid fa-chalkboard-user"></i> Examiner Dashboard
-                    </a>
+                    </a> --}}
                 </div>
                 @endif
 

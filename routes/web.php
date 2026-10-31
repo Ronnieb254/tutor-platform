@@ -348,6 +348,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/examiner-clinics/{examinerClinic}/cancel', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'cancel'])->name('examiner-clinics.cancel');
         Route::post('/examiner-clinics/{examinerClinic}/start', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'start'])->name('examiner-clinics.start');
         Route::post('/examiner-clinics/{examinerClinic}/complete', [App\Http\Controllers\Admin\ExaminerClinicController::class, 'complete'])->name('examiner-clinics.complete');
+
+        // Group Sessions management
+        Route::get('/group-sessions',                          [App\Http\Controllers\Admin\GroupSessionController::class, 'index'])->name('group-sessions.index');
+        Route::get('/group-sessions/create',                   [App\Http\Controllers\Admin\GroupSessionController::class, 'create'])->name('group-sessions.create');
+        Route::post('/group-sessions',                         [App\Http\Controllers\Admin\GroupSessionController::class, 'store'])->name('group-sessions.store');
+        Route::get('/group-sessions/{groupSession}',           [App\Http\Controllers\Admin\GroupSessionController::class, 'show'])->name('group-sessions.show');
+        Route::get('/group-sessions/{groupSession}/edit',      [App\Http\Controllers\Admin\GroupSessionController::class, 'edit'])->name('group-sessions.edit');
+        Route::patch('/group-sessions/{groupSession}',         [App\Http\Controllers\Admin\GroupSessionController::class, 'update'])->name('group-sessions.update');
+        Route::delete('/group-sessions/{groupSession}',        [App\Http\Controllers\Admin\GroupSessionController::class, 'destroy'])->name('group-sessions.destroy');
+        Route::post('/group-sessions/{groupSession}/cancel',   [App\Http\Controllers\Admin\GroupSessionController::class, 'cancel'])->name('group-sessions.cancel');
+        Route::post('/group-sessions/{groupSession}/start',    [App\Http\Controllers\Admin\GroupSessionController::class, 'start'])->name('group-sessions.start');
+        Route::post('/group-sessions/{groupSession}/complete', [App\Http\Controllers\Admin\GroupSessionController::class, 'complete'])->name('group-sessions.complete');
     });
     
     // Tutor can manage their own subjects

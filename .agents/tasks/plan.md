@@ -1,124 +1,238 @@
-# Implementation Plan — Examiner Dashboard (Mwalimu Tutor Platform)
+# Implementation Plan — Admin Group Sessions
 
-Task: Turn `ExaminerController::dashboard()` + `resources/views/pages/examiner-dashboard.blade.php`
-into a complete, functional examiner dashboard that matches the booking show page
-(`resources/views/pages/bookings/show.blade.php`) visual language exactly.
+## Codebase findings
 
-All paths below are relative to `c:/Users/Administrator/Downloads/mediacity.co.in-2026-10-13/mediacity.co.in-2026-10-13/tutor-platform/`.
-
----
-
-## Key findings from the codebase (grounding for every step)
-
-### How examiner status is determined (confirmed, not assumed)
-- `ExaminerRegistration` model (`app/Models/ExaminerRegistration.php`): table `examiner_registrations`,
-  fillable `['tutor_id','status','rejection_reason']`, method `isApproved(): bool` returns `$this->status === 'approved'`.
-- The existing `dashboard()` already gates access: `$registration = ExaminerRegistration::where('tutor_id', $user->id)->first();`
-  then `if (!$registration || !$registration->isApproved()) { redirect()->route('examiner.apply') }`.
-- Decision: keep this gate exactly. The dashboard view is only ever rendered to an **approved** examiner,
-  so the "not yet verified" edge case is handled by the redirect to `examiner.apply` (no new view branch needed).
-  The hero will show an "Approved Examiner" badge built from `$registration->status`.
-
-### Data model facts used (real field / relationship names)
-- `ExaminerClinic` (`app/Models/ExaminerClinic.php`): owned via `created_by` (and `tutor_id`). Key fields:
-  `title`, `name`, `subject_id` (→ `subject()`), `paper_type` (PP1/PP2/PP3), `scheduled_at` (cast datetime),
-  `duration_minutes`, `price` (decimal:2), `max_students` (default 30), `status` ('scheduled','live','completed','cancelled'),
-  `batch_number`. Relationships: `enrollments()` (hasMany `ClinicEnrollment`), `subject()` (belongsTo).
-  Helpers: `enrolledCount()`, `isFull()`, `spotsLeft()`, `canJoin(User)`. Scope `upcoming()`: `where('scheduled_at','>',now())->where('status','scheduled')`.
-- `ClinicEnrollment` (`app/Models/ClinicEnrollment.php`): fillable `['clinic_id','student_id','payment_id','session_code','attended']`,
-  default timestamps (so `latest()` orders by `created_at`). Relationships: `clinic()` (belongsTo `ExaminerClinic`),
-  `student()` (belongsTo `User`, key `student_id`), `payment()` (belongsTo `Payment`).
-- `Payment` (`app/Models/Payment.php`): `payment_type` ('clinic'|'booking'), `tutor_amount`, `platform_amount`,
-  `commission_rate`, `status` ('success' via `scopeSuccessful`). Clinic commission = 40% tutor / 60% platform
-  (`calculateCommission()`), i.e. **tutor_amount is the amount minus the platform fee**.
-- `EarningsService` (`app/Services/EarningsService.php`): `calculateTutorEarnings($user)` returns an array including
-  `clinic_earnings` (sum of `tutor_amount` for successful clinic payments on clinics `created_by` the tutor) and
-  `total_earnings`. `getRecentEarnings($user)` adds `clinic_earnings_30d`, `total_earnings_30d`.
-
-### Layout decision (resolves the `@extends('layouts.app')` vs. design-system conflict)
-- The task text says "Use `@extends('layouts.app')`", BUT `resources/views/layouts/app.blade.php` is a **generic Tailwind**
-  page (gray/black nav, `bg-gray-50`, Tailwind CDN) that does NOT contain the Mwalimu design system.
-- The booking show page — the authoritative design reference per the workflow notifications — does NOT use
-  `@extends('layouts.app')`. It uses standalone `<!DOCTYPE html>` + `@include('partials.head')` + `@include('partials.nav')`
-  + `@include('partials.footer')`.
-- `resources/views/partials/head.blade.php` IS the Mwalimu design system: it loads Fraunces + DM Sans, Font Awesome 6.5.1,
-  Alpine, and defines the full token set (`.btn`, `.btn-v`, `.btn-mint`, `.card`, `.card-p`, `.badge`, `.stat-card`,
-  `.w`, `.section`, `.flash-ok`, CSS vars `--ink #15281F`, `--trust-blue #0A64BC`, `--mint #10B981`, `--gold #EEBE15`,
-  `--coral #E8522A`, `--sidebar #111C16`, `--cream #FBF5E6`).
-- Decision: **follow the booking show page pattern** — standalone HTML with `@include('partials.head')`,
-  `@include('partials.nav')`, `@include('partials.footer')`, plus a page `<style>` block for dashboard-specific
-  classes (hero gradient, code/pill styles, capacity bars). This is the only way to match the design system the
-  notifications require. Do NOT use `@extends('layouts.app')`.
-- Confirmed `resources/views/partials/footer.blade.php` exists; show.blade.php ends with `@include('partials.footer')`
-  then a `<script>` block.
-
-### Earnings widget decision
-- The current view does `@include('components.earnings-widget', ['earnings' => $earnings])`, but that component
-  (`resources/views/components/earnings-widget.blade.php`) uses Bootstrap classes (`card`, `row`, `col-md-4`,
-  `progress`, `progress-bar`) that do NOT render under the Mwalimu partials (no Bootstrap).
-- Decision: do NOT include `components.earnings-widget`. Render earnings inline in the Mwalimu design tokens
-  (a dedicated stat card + optional small breakdown), using the numbers from `EarningsService`. Keep passing
-  `$earnings` so sub-text (e.g. 30-day figure) is available.
-
-### Routes (confirmed in routes/web.php lines 97–103)
-- `examiner.apply` (GET `/examiner/apply`) — for the not-verified CTA.
-- `examiner.dashboard` (GET `/examiner/dashboard`).
-- `examiner.clinics.create` (GET `/examiner/clinics/create`).
-- `examiner.clinics.store` (POST `/examiner/clinics`).
-- `examiner.clinics.show` (GET `/examiner/clinics/{clinic}`) — use `route('examiner.clinics.show', $clinic)` (implicit binding).
-- `examiner.clinics.join` (GET `/examiner/clinics/{clinic}/join`) — use `route('examiner.clinics.join', $clinic)`.
-- Browse page: `route('examiner-clinic')`; standard: `route('dashboard')`, `route('home')` (used by nav partial).
+- Admin views use **flat `.blade.php` files** in `resources/views/pages/admin/` (e.g. `clinics.blade.php`, `clinic-show.blade.php`, `clinic-create.blade.php`). The `examiner-clinics/` subdirectory referenced in the task prompt does not exist — only the flat files are present. The new group-sessions views follow the same flat pattern.
+- Existing admin clinics use `ClinicController` (not `ExaminerClinicController`). `ExaminerClinicController` handles the separate `examiner-clinics` resource. The new `GroupSessionController` is modelled after `ExaminerClinicController` since group sessions live in the same `examiner_clinics` table.
+- `ExaminerClinic` model has `scopeGroupSessions()`, `scopeClinics()`, and `isGroupSession()` already defined. The `is_group_session` column is protected by `Schema::hasColumn()` guards throughout.
+- `User::isAdmin()` returns `true` for both `admin` and `super-admin` roles. Tutor list is fetched via `User::where('role', 'tutor')->...` pattern (confirmed in `clinic-create.blade.php` which passes `$tutors`).
+- Admin route group: `Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(...)` — new group-session routes go inside this group.
+- Admin sidebar "Content" section ends after `admin.blog` and before `admin.settings` — the new "Group Sessions" nav item goes between `admin.examiner-clinics.*` and `admin.settings`.
+- `ExaminerClinicController::store()` sets `session_code = 'EXAM-' . Str::random(8)` and `status = 'upcoming'`. The new controller uses `'GRP-' . strtoupper(Str::random(8))` and `meeting_room = 'Mwalimu-group-' . Str::uuid()`.
+- `Subject` model: `id`, `name`, `slug`, `icon`, `is_active`. Load with `Subject::where('is_active', true)->orderBy('name')->get()`.
+- `ClinicEnrollment` model exists (referenced in `ExaminerClinic` relationships) — used on the show page to list enrolled students.
+- Build / test: Laravel PHP project. Verification = `php artisan route:list | grep group-sessions` plus loading pages in a browser (no automated test suite discovered for controllers).
 
 ---
 
-- [ ] 1. Rewrite `ExaminerController::dashboard()` to query and pass all dashboard data.
-      Keep the existing access gate (`ExaminerRegistration::where('tutor_id',$user->id)->first()` +
-      `->isApproved()`, redirect to `examiner.apply` otherwise). Then build:
-      - `$registration` (for the Approved badge).
-      - `$totalClinics` = `ExaminerClinic::where('created_by',$user->id)->count()`.
-      - `$totalStudents` = `ClinicEnrollment::whereHas('clinic', fn($q)=>$q->where('created_by',$user->id))->count()`.
-      - `$upcomingCount` = `ExaminerClinic::where('created_by',$user->id)->upcoming()->count()` (scope = `scheduled_at > now()` AND `status='scheduled'`).
-      - `$clinicEarnings` = `$earnings['clinic_earnings']` from `EarningsService::calculateTutorEarnings($user)` (this is the tutor's 40% = amount minus 60% platform fee).
-      - `$upcomingClinics` = `ExaminerClinic::where('created_by',$user->id)->with('subject')->withCount('enrollments')->upcoming()->orderBy('scheduled_at','asc')->take(6)->get()`.
-      - `$pastClinics` = `ExaminerClinic::where('created_by',$user->id)->with('subject')->withCount('enrollments')->where('scheduled_at','<',now())->orderBy('scheduled_at','desc')->take(10)->get()`.
-      - `$recentEnrollments` = `ClinicEnrollment::whereHas('clinic', fn($q)=>$q->where('created_by',$user->id))->with(['student','clinic'])->latest()->take(8)->get()`.
-      - `$earnings` = merged array from `EarningsService::calculateTutorEarnings($user)` + `getRecentEarnings($user)` (kept for sub-text; do NOT pass it to the Bootstrap earnings-widget component).
-      `return view('pages.examiner-dashboard', compact('registration','totalClinics','totalStudents','upcomingCount','clinicEarnings','upcomingClinics','pastClinics','recentEnrollments','earnings'));`.
-      Files: app/Http/Controllers/ExaminerController.php
-      Verify: `php -l app/Http/Controllers/ExaminerController.php` → "No syntax errors detected".
+## Plan
 
-- [ ] 2. Rewrite `resources/views/pages/examiner-dashboard.blade.php` as a standalone page using the Mwalimu partials + booking-show design language.
-      Structure (replace the entire file — drop the old inline sidebar/Tailwind approach):
-      - `<!DOCTYPE html><html lang="en"><head>@include('partials.head')<title>Examiner Dashboard – Mwalimu</title><style>…</style></head><body>`
-      - `@include('partials.nav')`
-      - Hero: `<div class="session-hero">` using `background:linear-gradient(135deg,#111C16,#15281F)` with a `::before` decorative circle (`rgba(10,100,188,.1)`, 260px, top-right), inside a `.w` container. Contents: a back arrow link (`route('dashboard')`, `fa-arrow-left`, `rgba(255,255,255,.5)`); a flex row with left column = "Approved Examiner" pill badge (`background:rgba(16,185,129,.2);color:#4ADE80;border:1px solid rgba(16,185,129,.3)` + `fa-circle-check`) + Fraunces `<h1>` "Welcome back, {{ $user->name }}"; right column = "Create New Clinic" button (`btn btn-mint`, `fa-plus`, `route('examiner.clinics.create')`).
-      - Stats row: a responsive grid of 4 `.stat-card` cards using the design-system classes from `partials.head` (`.stat-card`, `.stat-icon`, `.stat-label`, `.stat-value`, `.stat-sub`). Cards: Total Clinics (`$totalClinics`, icon `fa-chalkboard-user`, blue icon bg), Total Students Enrolled (`$totalStudents`, `fa-users`, mint), Upcoming Sessions (`$upcomingCount`, `fa-calendar-days`, gold), Clinic Earnings (`KSh number_format($clinicEarnings,0)`, `fa-sack-dollar`, mint; sub-text "Your 40% share after platform fee").
-      - Upcoming Clinics section: `.w` container, section heading (Fraunces) + count; render `$upcomingClinics` as list cards cloned from the `examiner-clinic.blade.php` pattern (54px `fa-chalkboard-user` gold icon tile, title, subject/paper pills `padding:3px 11px;border-radius:999px`, date `D, M j \a\t g:ia` / duration / `enrolledCount()/max_students` with a capacity bar `height:6px`). Actions per card: "Start Session" green pulse button (`.join-btn-live` style: `background:#10B981;animation:pulse-green 2s infinite`, `fa-video`, links `route('examiner.clinics.join',$clinic)`) shown when `in_array($clinic->status,['scheduled','live'])`; "View Details" outline button (`fa-eye`, `route('examiner.clinics.show',$clinic)`). Empty state: centered card `fa-calendar-xmark` + "No upcoming clinics" + Create New Clinic CTA.
-      - Past Clinics section: a white card (`border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px`) containing a table using the design-system `.tbl-wrap`/`thead th`/`tbody tr` pattern (defined in `partials.head`): columns Clinic (title + subject), Date, Enrolled, Earnings (`KSh number_format($clinic->price * 0.40 * enrolledCount,0)` approx, or just show price). Empty state row if `$pastClinics->isEmpty()`.
-      - Recent Enrollments section: white card with a timeline/list (dot indicators `width:10px;height:10px;border-radius:50%` per booking-show pattern) showing `$recentEnrollments`: `$enrollment->student->name`, `$enrollment->clinic->title`, `$enrollment->created_at->format('M j, Y')`. Empty state if none.
-      - Empty states: no-clinics (when `$totalClinics === 0`) → a prominent centered card "Create your first clinic" CTA to `examiner.clinics.create`; no-earnings (when `$clinicEarnings <= 0`) → stat shows "KSh 0" with sub-text "Earnings appear once students book paid clinics".
-      - Flash messages: render `@if(session('success'))` / `info` / `error` using `.flash .flash-ok` / `.flash-info` / `.flash-err` classes from `partials.head`.
-      - `@include('partials.footer')` then a closing `<script>` (only if needed for copy-to-clipboard; otherwise just close `</body></html>`).
-      Use Font Awesome (`fa-solid fa-*`) consistently; Fraunces for headings, DM Sans for body (already loaded by `partials.head`); responsive grids via inline `grid-template-columns:repeat(auto-fit,minmax(220px,1fr))` with a `@media(max-width:768px)` fallback to 1fr (same technique as `examiner-clinic.blade.php`).
-      Files: resources/views/pages/examiner-dashboard.blade.php
-      Verify: `php artisan view:cache` → compiles with no errors (run `php artisan view:clear` after).
+- [ ] 1. Create `App\Http\Controllers\Admin\GroupSessionController`
+      New file. Namespace `App\Http\Controllers\Admin`. Uses `ExaminerClinic`, `Subject`, `User`, `Request`, `Str`.
+      All queries chain `->groupSessions()` (scopeGroupSessions). Store/update force `is_group_session = true`.
 
-- [ ] 3. Run the full verification suite and record results.
-      Run from the `tutor-platform` directory (cwd note: the planner's shell is PowerShell — use `;` not `&&`):
-      - `php -l app/Http/Controllers/ExaminerController.php` → expect "No syntax errors detected".
-      - `php artisan view:cache` → expect successful compile, no Blade errors (then `php artisan view:clear`).
-      - `php artisan route:list --name=examiner` → expect `examiner.dashboard`, `examiner.clinics.create`, `examiner.clinics.show`, `examiner.clinics.join`, `examiner.apply`, `examiner.clinics.store` listed.
-      - (If a DB/app boot is available) `php artisan route:list` boot check: confirm no fatal errors on app boot.
-      Record each command's actual output in the step findings. Note any environment limitation (e.g. if `route:list` fails to boot due to missing `.env`/DB, state that the blade + PHP-lint checks still validate syntax and templates).
-      Files: (no file changes — verification only; record results in the feature findings)
-      Verify: all three commands above exit 0 / report success.
+      Methods and their logic (mirrors `ExaminerClinicController` exactly, with group-session-specific overrides):
 
----
+      ```php
+      public function index(Request $request)
+          // ExaminerClinic::with(['subject','tutor'])->groupSessions()->orderBy('scheduled_at','desc')
+          // Filters: status, subject_id, search (title/description), from_date, to_date
+          // paginate(20); pass $sessions, $subjects
+          // return view('pages.admin.group-sessions.index', compact('sessions','subjects'))
 
-## Notes for the implementer
-- Do NOT change `routes/web.php` or add routes. Do NOT touch the apply/create/show/join controller methods.
-- The dashboard view only renders for approved examiners (controller enforces it), so an "Approved Examiner" badge is always truthful; there is no in-dashboard "pending" branch by design.
-- `$clinic->enrollments_count` is available on `$upcomingClinics` and `$pastClinics` because both use `withCount('enrollments')`.
-- For per-clinic earnings in the past-clinics table, the platform fee is 60% for clinics, so the examiner's share is `$clinic->price * 0.40` per enrolled student; use `$clinic->enrollments_count * ($clinic->price * 0.40)` for the per-clinic earnings column (display only; the authoritative total is `$clinicEarnings` from `EarningsService`).
-- Keep using `$clinic->title` (fall back to `$clinic->name ?? $clinic->title`) and `$clinic->subject->name ?? 'N/A'`.
-- The `pulse-green` keyframes and `.session-hero` style already appear in show.blade.php; re-declare them in this page's `<style>` block so the page is self-contained.
+      public function create()
+          // $subjects = Subject::where('is_active',true)->orderBy('name')->get()
+          // $tutors   = User::where('role','tutor')->orderBy('name')->get()
+          // return view('pages.admin.group-sessions.create', compact('subjects','tutors'))
+
+      public function store(Request $request)
+          // validate: subject_id (required|exists:subjects,id), title (required|string|max:255),
+          //           description (nullable|string), scheduled_at (required|date|after:now),
+          //           duration_minutes (required|integer|min:15|max:480),
+          //           max_students (nullable|integer|min:1|max:200),
+          //           price (nullable|numeric|min:0),
+          //           tutor_id (nullable|exists:users,id)
+          // Set:
+          //   $validated['is_group_session'] = true
+          //   $validated['session_code']     = 'GRP-' . strtoupper(Str::random(8))
+          //   $validated['meeting_room']     = 'Mwalimu-group-' . Str::uuid()
+          //   $validated['created_by']       = auth()->id()
+          //   $validated['status']           = 'scheduled'
+          //   $validated['max_students']     = $validated['max_students'] ?? 30
+          // ExaminerClinic::create($validated)
+          // redirect()->route('admin.group-sessions.show', $session)->with('success',...)
+
+      public function show(ExaminerClinic $groupSession)
+          // load(['subject','tutor','enrollments.student'])  (student via ClinicEnrollment->belongsTo User as student_id)
+          // abort-if !$groupSession->isGroupSession(), 404
+          // $stats = [total_enrolled, spots_remaining, completion_rate]
+          // return view('pages.admin.group-sessions.show', compact('groupSession','stats'))
+
+      public function edit(ExaminerClinic $groupSession)
+          // abort-if !$groupSession->isGroupSession(), 404
+          // Guard: in_progress|completed|cancelled → redirect back with error
+          // $subjects, $tutors
+          // return view('pages.admin.group-sessions.edit', compact('groupSession','subjects','tutors'))
+
+      public function update(Request $request, ExaminerClinic $groupSession)
+          // abort-if !$groupSession->isGroupSession(), 404
+          // Guard: completed|cancelled → redirect back with error
+          // Same validation as store minus scheduled_at|after:now (allow past for rescheduling)
+          // Prevent reducing max_students below enrollment count
+          // Force is_group_session = true on update
+          // redirect()->route('admin.group-sessions.show', $groupSession)->with('success',...)
+
+      public function destroy(ExaminerClinic $groupSession)
+          // abort-if !$groupSession->isGroupSession(), 404
+          // Only allow deletion when status=scheduled AND enrollments=0
+          // $groupSession->delete()
+          // redirect()->route('admin.group-sessions.index')->with('success',...)
+
+      public function cancel(ExaminerClinic $groupSession)
+          // abort-if !$groupSession->isGroupSession(), 404
+          // Guard: already completed|cancelled → back with error
+          // $groupSession->update(['status'=>'cancelled'])
+          // redirect back with success
+
+      public function start(ExaminerClinic $groupSession)
+          // abort-if !$groupSession->isGroupSession(), 404
+          // Guard: status !== 'scheduled' → back with error
+          // $groupSession->update(['status'=>'in_progress'])
+          // redirect()->route('admin.group-sessions.show', $groupSession)->with('success',...)
+
+      public function complete(ExaminerClinic $groupSession)
+          // abort-if !$groupSession->isGroupSession(), 404
+          // Guard: status !== 'in_progress' → back with error
+          // $groupSession->update(['status'=>'completed'])
+          // redirect back with success
+      ```
+
+      Files: `app/Http/Controllers/Admin/GroupSessionController.php`
+      Verify: `php artisan route:list 2>&1 | Select-String "group-sessions"` — no output yet (routes not added), but file parses without error: `php artisan tinker --execute="new App\Http\Controllers\Admin\GroupSessionController;"` exits 0.
+
+- [ ] 2. Register routes inside the admin group in `routes/web.php`
+      Add the following block immediately after the `// Examiner Clinics management` block (around line 346 of the file, after the last `examiner-clinics.complete` route):
+
+      ```php
+      // Group Sessions management
+      Route::get('/group-sessions',                               [App\Http\Controllers\Admin\GroupSessionController::class, 'index'])->name('group-sessions.index');
+      Route::get('/group-sessions/create',                        [App\Http\Controllers\Admin\GroupSessionController::class, 'create'])->name('group-sessions.create');
+      Route::post('/group-sessions',                              [App\Http\Controllers\Admin\GroupSessionController::class, 'store'])->name('group-sessions.store');
+      Route::get('/group-sessions/{groupSession}',                [App\Http\Controllers\Admin\GroupSessionController::class, 'show'])->name('group-sessions.show');
+      Route::get('/group-sessions/{groupSession}/edit',           [App\Http\Controllers\Admin\GroupSessionController::class, 'edit'])->name('group-sessions.edit');
+      Route::patch('/group-sessions/{groupSession}',              [App\Http\Controllers\Admin\GroupSessionController::class, 'update'])->name('group-sessions.update');
+      Route::delete('/group-sessions/{groupSession}',             [App\Http\Controllers\Admin\GroupSessionController::class, 'destroy'])->name('group-sessions.destroy');
+      Route::post('/group-sessions/{groupSession}/cancel',        [App\Http\Controllers\Admin\GroupSessionController::class, 'cancel'])->name('group-sessions.cancel');
+      Route::post('/group-sessions/{groupSession}/start',         [App\Http\Controllers\Admin\GroupSessionController::class, 'start'])->name('group-sessions.start');
+      Route::post('/group-sessions/{groupSession}/complete',      [App\Http\Controllers\Admin\GroupSessionController::class, 'complete'])->name('group-sessions.complete');
+      ```
+
+      Route parameter name `{groupSession}` matches the controller method parameter `ExaminerClinic $groupSession` — Laravel resolves this via implicit model binding against `examiner_clinics.id`.
+
+      Files: `routes/web.php`
+      Verify: `php artisan route:list 2>&1 | Select-String "group-sessions"` — shows 10 routes all with `admin.group-sessions.*` names.
+
+- [ ] 3. Create view: `resources/views/pages/admin/group-sessions/index.blade.php`
+      Pattern: mirrors `pages/admin/clinics.blade.php` but adapted for group sessions.
+      `@extends('layouts.admin')`, `@section('title','Group Sessions')`.
+      - Stats row: Total, Scheduled, In Progress, Completed (from `$sessions` collection counts before pagination — pass as `$stats` from controller or compute inline from a second unpaginated query).
+        **Decision**: pass `$stats` as a separate array from the controller's `index()` method (`ExaminerClinic::groupSessions()->selectRaw(...)` counts by status). This avoids loading all records into the view.
+      - Filter bar: `GET` form with inputs for `search` (text), `status` (select: All/scheduled/in_progress/completed/cancelled), `subject_id` (select), `from_date`, `to_date`.
+      - Table columns: Title / Subject, Scheduled, Tutor, Slots (enrolled/max with fill bar), Status badge, Actions.
+      - Status badges use the same CSS variables as existing views: `badge-green` (completed), `badge-blue` (scheduled), `badge-amber` (in_progress), `badge-red` (cancelled).
+      - Action buttons per row: View, Edit (if scheduled), Cancel (if not cancelled/completed), Delete (if scheduled + 0 enrolled).
+      - Pagination block identical to `clinics.blade.php`.
+      - "Create Group Session" button links to `route('admin.group-sessions.create')`.
+
+      Files: `resources/views/pages/admin/group-sessions/index.blade.php`
+      Verify: Navigate to `/admin/group-sessions` as admin — page loads without 500 error, table renders (even empty).
+
+- [ ] 4. Create view: `resources/views/pages/admin/group-sessions/create.blade.php`
+      Pattern: mirrors `pages/admin/clinic-create.blade.php`.
+      `@extends('layouts.admin')`, `@section('title','Create Group Session')`.
+      Form `POST` to `route('admin.group-sessions.store')`.
+      Fields (all use the same inline-CSS form style as clinic-create):
+      - `subject_id` — select from `$subjects` (required)
+      - `title` — text input (required, max 255)
+      - `description` — textarea (nullable)
+      - `tutor_id` — select from `$tutors` filtered to `role=tutor` (nullable; "Optional — leave blank if TBD")
+      - `scheduled_at` — datetime-local input (required)
+      - `duration_minutes` — number input, default 60, min 30, max 480 (required)
+      - `max_students` — number input, default 30, min 1, max 200 (nullable; info note: "Default 30 if left blank")
+      - `price` — number input, default 0, min 0 (nullable)
+      - Error display block at top (same style as clinic-create).
+      - Info callout box: "Session code (GRP-XXXXXXXX) and meeting room are auto-generated on creation."
+      - Back link → `route('admin.group-sessions.index')`.
+
+      Files: `resources/views/pages/admin/group-sessions/create.blade.php`
+      Verify: Navigate to `/admin/group-sessions/create` — page loads, form submits successfully with valid data and redirects to the show page.
+
+- [ ] 5. Create view: `resources/views/pages/admin/group-sessions/show.blade.php`
+      Pattern: mirrors `pages/admin/clinic-show.blade.php`.
+      `@extends('layouts.admin')`, `@section('title', 'Group Session – ' . $groupSession->title)`.
+      Two-column layout (2fr / 1fr) with mobile stack.
+
+      Left column:
+      - **Enrolled Students** card — table with columns: #, Student (name + email), Attended (tick/dash), Enrolled at. Show enrollment count vs max_students capacity bar.
+      - Empty state if no enrollments.
+
+      Right column (meta panel cards):
+      - **Session Info** card: Status, Session Code (`GRP-...`), Meeting Room, Price (KSh), Duration, Max Students, Scheduled At, Created By.
+      - **Tutor** card (if `$groupSession->tutor` set): name, email, "Launch Session" button → `route('examiner.clinics.join', $groupSession)` (reuses existing Jitsi join route since it accepts any ExaminerClinic).
+      - **Subject** card: subject name, slug.
+
+      Action buttons in page header (top-right):
+      - "Edit" → `route('admin.group-sessions.edit', $groupSession)` — shown only when `status === 'scheduled'`
+      - "Start Session" (POST form → `route('admin.group-sessions.start', $groupSession)`) — shown when `status === 'scheduled'`
+      - "Mark Complete" (POST form → `route('admin.group-sessions.complete', $groupSession)`) — shown when `status === 'in_progress'`
+      - "Cancel" (POST form with confirm → `route('admin.group-sessions.cancel', $groupSession)`) — shown when not cancelled/completed
+      - "Delete" (DELETE form with confirm → `route('admin.group-sessions.destroy', $groupSession)`) — shown when `status === 'scheduled'` and 0 enrollments
+
+      Back link → `route('admin.group-sessions.index')`.
+
+      Files: `resources/views/pages/admin/group-sessions/show.blade.php`
+      Verify: After creating a group session, clicking "View" from the index lands on the show page with all meta data visible.
+
+- [ ] 6. Create view: `resources/views/pages/admin/group-sessions/edit.blade.php`
+      Pattern: mirrors `create.blade.php` with pre-filled `old()`/model values.
+      `@extends('layouts.admin')`, `@section('title','Edit Group Session')`.
+      Form `PATCH` to `route('admin.group-sessions.update', $groupSession)` (include `@method('PATCH')`).
+      Same fields as create, pre-populated from `$groupSession`:
+      - `subject_id` — pre-select `$groupSession->subject_id`
+      - `title` — pre-fill `$groupSession->title`
+      - `description` — pre-fill `$groupSession->description`
+      - `tutor_id` — pre-select `$groupSession->tutor_id`
+      - `scheduled_at` — pre-fill `$groupSession->scheduled_at->format('Y-m-d\TH:i')`
+      - `duration_minutes` — pre-fill `$groupSession->duration_minutes`
+      - `max_students` — pre-fill `$groupSession->max_students`
+      - `price` — pre-fill `$groupSession->price`
+      - Session Code shown as read-only text (not an input): "Cannot be changed after creation."
+      Back link → `route('admin.group-sessions.show', $groupSession)`.
+
+      Files: `resources/views/pages/admin/group-sessions/edit.blade.php`
+      Verify: Clicking "Edit" on a scheduled group session loads the form with correct pre-filled values. Submitting updates and redirects back to show page with success flash.
+
+- [ ] 7. Add "Group Sessions" nav item to the admin sidebar in `layouts/admin.blade.php`
+      In the "Content" `nav-section`, add the new item **after** the "Examiner Clinics" `<a>` element and **before** the "Blog Posts" `<a>` element.
+
+      Insert exactly:
+      ```blade
+      <a href="{{ route('admin.group-sessions.index') }}" class="nav-item {{ request()->routeIs('admin.group-sessions*') ? 'active' : '' }}">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Group Sessions
+      </a>
+      ```
+      (Uses the "group of people" SVG icon, consistent with the Tutor Approvals icon already used in the People section.)
+
+      Files: `resources/views/layouts/admin.blade.php`
+      Verify: Admin sidebar renders "Group Sessions" link between "Examiner Clinics" and "Blog Posts". Active state highlights when on any `admin.group-sessions.*` route.
+
+- [ ] 8. Update `GroupSessionController::index()` to pass stats array
+      Add a `$stats` array computed **before** the paginated query by running a grouped count:
+      ```php
+      $stats = ExaminerClinic::groupSessions()
+          ->selectRaw('status, count(*) as total')
+          ->groupBy('status')
+          ->pluck('total', 'status')
+          ->toArray();
+      $stats['total'] = ExaminerClinic::groupSessions()->count();
+      ```
+      Pass `$stats` into the view via `compact('sessions', 'subjects', 'stats')`.
+      This is part of item 1 if written together; list as separate item because the view (item 3) depends on the stats array shape being defined.
+
+      Files: `app/Http/Controllers/Admin/GroupSessionController.php`
+      Verify: The index view renders the stats row without undefined variable errors.
+
+> **Note on `{groupSession}` route-model binding**: Laravel resolves `ExaminerClinic $groupSession` from the route key `{groupSession}` using the model's primary key. No custom `getRouteKeyName()` override is needed. The `abort-if !isGroupSession()` guard in each method prevents a non-group-session record from being manipulated through these routes even if someone crafts a URL with a regular clinic ID.
+
+> **No migration needed**: `is_group_session` column already exists in `examiner_clinics` (in `ExaminerClinic::$fillable` and confirmed by `scopeGroupSessions()` / `scopeClinics()` guards).
