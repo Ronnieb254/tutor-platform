@@ -91,7 +91,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--trust-blue);"></i> Book a session now</p>
                     <form action="{{ route('tutors.index') }}" method="GET" style="display:flex;gap:8px;flex-wrap:wrap;">
                         <select name="category" style="flex:1;min-width:140px;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid var(--hair);background:#fff;font-size:14px;font-family:inherit;outline:none;" onchange="this.form.submit()">
-                            <option value="">Choose Subject</option>
+                            <option value="">Choose Category</option>
                             @foreach($categories as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->icon }} {{ $cat->name }}</option>
                             @endforeach
@@ -198,7 +198,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 ['fa-shield-halved','Background-Checked Tutors','Every tutor passes verification and a background screening before they can be onboarded on Mwalimu.','#10B981'],
                 ['fa-lock','Secure Classrooms','Lessons run in a secure space, assuring parents and learners of unmatched comfort and safety.','#E8522A'],
                 ['fa-certificate','Verified Credentials','Subject expertise and teaching credentials are thoroughly reviewed by our academic team.','#EEBE15'],
-                ['fa-user-secret','Privacy & Safety','Tutors and learners cannot chat or exchange contacts on the platform.','#3B82F6'],
+                ['fa-user-secret','Privacy & Safety','All communication is managed and maintained within the platform.','#3B82F6'],
                 ['fa-rotate-left','100% Money-Back','Not satisfied with your first lesson? We\'ll refund it in full — no questions asked.','#EC4899'],
             ] as [$icon,$title,$desc,$color])
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
@@ -266,7 +266,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
         <div style="display:grid;grid-template-columns:1fr;gap:20px;max-width:1000px;margin:0 auto;" class="steps-g">
             @foreach([
                 ['1','fa-list-check','Select your session','Choose your level (JSS/SS/F3/F4), what you need help with, subject, topic, date, time, and duration. The platform shows you available, matched tutors instantly.','#0A64BC'],
-                ['2','fa-mobile-screen-button','Pay via M-Pesa','Enter your phone number to prompt payment. Enter your M-Pesa PIN to complete. No account needed for learners — just your phone number.','#10B981'],
+                ['2','fa-mobile-screen-button','Pay via M-Pesa','Enter your phone number to prompt payment. Enter your M-Pesa PIN to complete.','#10B981'],
                 ['3','fa-video','Join your secure session','Receive a one-time session code by SMS/email. Enter the code to access your private, secure classroom. No tutor can contact you outside the platform.','#E8522A'],
             ] as [$num,$icon,$title,$desc,$color])
             <div class="card" style="padding:28px;display:flex;gap:20px;align-items:flex-start;">
@@ -335,7 +335,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">
                     @foreach([
                         ['1','fa-pen-to-square','Register','Tell us who you are, subjects you teach, and your experience.'],
-                        ['2','fa-id-card-clip','Get Verified','We check your credentials, ID, and TSC certificate — usually 72 hours, or 24 hours with Speedy Verification (KSh 1,000).'],
+                        ['2','fa-id-card-clip','Get Verified','We check your credentials, ID, Good Conduct certificate, and TSC certificate — usually 72 hours, or 24 hours with Speedy Verification (KSh 1,000).'],
                         ['3','fa-money-bill-trend-up','Start Earning','Your profile goes live. Accept lesson requests and get paid per completed lesson.'],
                     ] as [$num,$icon,$title,$desc])
                     <div style="display:flex;align-items:flex-start;gap:12px;">
@@ -358,7 +358,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             </div>
             <div style="display:grid;grid-template-columns:1fr;gap:12px;">
                 @foreach([
-                    ['fa-bolt','Weekly Payouts','Enjoy the convenience of flexible weekly payouts, issued immediately upon your request via M-Pesa. No rigid monthly waiting periods—you control when you get paid each week.'],
+                    ['fa-bolt','Weekly Payouts','Enjoy the convenience of flexible weekly payouts, issued immediately via M-Pesa upon your request. '],
                     ['fa-star','Build Reputation','Featured clinic sessions put you in front of hundreds of parents & learners.'],
                     ['fa-headset','Zero Admin','Mwalimu handles student acquisition, payments, reminders and classroom setup.'],
                 ] as [$icon,$title,$desc])
