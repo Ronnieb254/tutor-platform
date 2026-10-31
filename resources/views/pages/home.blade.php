@@ -348,7 +348,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     <a href="{{ route('how-it-works') }}" class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);">Learn More</a>
                 </div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+            <div style="display:grid;grid-template-columns:1fr;gap:12px;">
                 @foreach([
                     ['fa-bolt','Weekly Payouts','Enjoy the convenience of flexible weekly payouts, issued immediately upon your request via M-Pesa. No rigid monthly waiting periods—you control when you get paid each week.'],
                     ['fa-star','Build Reputation','Featured clinic sessions put you in front of hundreds of parents & learners.'],
