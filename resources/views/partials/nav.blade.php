@@ -38,7 +38,7 @@
                     ['how-it-works',       'fa-circle-info',      'How It Works'],
                     ['examiner-clinic',    'fa-star',             'Examiner\'s Clinic'],
                     ['group-sessions.index','fa-users',           'Group Sessions'],
-                    ['blog.index',         'fa-newspaper',        'Blog'],
+                    ['library.index',      'fa-book-open',        'Library'],
                     ['contact',            'fa-envelope',         'Contact'],
                 ] as [$route, $icon, $label])
                 <a href="{{ route($route) }}"
@@ -141,7 +141,7 @@
                 ['how-it-works',       'fa-circle-info',      'How It Works'],
                 ['examiner-clinic',    'fa-star',             'Examiner\'s Clinic'],
                 ['group-sessions.index','fa-users',           'Group Sessions'],
-                ['blog.index',         'fa-newspaper',        'Blog'],
+                ['library.index',      'fa-book-open',        'Library'],
                 ['contact',            'fa-envelope',         'Contact'],
             ] as [$route, $icon, $label])
             <a href="{{ route($route) }}"

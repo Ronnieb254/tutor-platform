@@ -58,7 +58,7 @@
                         ['fa-star',            "Examiner's Clinic",    route('examiner-clinic')],
                         ['fa-circle-info',     'How It Works',         route('how-it-works')],
                         ['fa-play-circle',     'Courses',              route('courses.index')],
-                        ['fa-newspaper',       'Blog',                 route('blog.index')],
+                        ['fa-book-open',       'Library',              route('library.index')],
                         ['fa-user-plus',       'Create Free Account',  route('register')],
                     ] as [$ic,$label,$url])
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
