@@ -15,7 +15,7 @@
                         </svg>
                         <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#fff;"><span style="color:#60a5fa;">Mw</span>alimu</span>
                     </a>
-                    <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;max-width:280px;margin-bottom:20px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms. 100% money-back on your first lesson.</p>
+                    <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;max-width:280px;margin-bottom:20px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms. 100% money-back if unsatisfied with your first lesson.</p>
 
                     {{-- Trust badges --}}
                     <!-- <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">

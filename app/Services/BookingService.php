@@ -33,16 +33,13 @@ class BookingService
 
     public function createBooking(array $data): Booking
     {
-        // Fixed pricing — check free first session for 20-min individual
+        // Fixed pricing
         $studentId = $data['student_id'];
         $tutorProfile = TutorProfile::findOrFail($data['tutor_profile_id']);
         $minutes  = $data['duration_minutes'];
         $sessionType = $data['session_type'] ?? 'individual';
 
-        // Free first session only applies to 20-min individual sessions
-        $isFree   = ($sessionType === 'individual' && $minutes === 20) 
-                    && TutorProfile::isFreeFirstSession($studentId, $tutorProfile->user_id);
-        $amount   = $isFree ? 0.00 : ($tutorProfile->getPriceForSession($minutes, $sessionType));
+        $amount   = $tutorProfile->getPriceForSession($minutes, $sessionType);
         $fees     = $this->calculateFees($amount);
 
         return DB::transaction(function () use ($data, $fees, $tutorProfile, $sessionType) {

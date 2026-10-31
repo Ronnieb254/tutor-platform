@@ -37,10 +37,8 @@
 $prices    = [20=>300,40=>500,60=>700];
 $sessNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 $sessDesc  = [20=>'Rapid revision or a quick question',40=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
-// Free first 20-min session check
-$isFreeFirstSession = auth()->check()
-    ? \App\Models\TutorProfile::isFreeFirstSession(auth()->id(), $tutor->user_id)
-    : true; // Show free badge to guests too to encourage signup
+// No free first session — 100% money-back guarantee if unsatisfied
+$isFreeFirstSession = false;
 $colors    = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6'];
 $avColor   = $colors[$tutor->id % count($colors)];
 $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->latest()->paginate(8);
@@ -498,7 +496,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         <i class="fa-solid fa-arrow-right fa-sm"></i>
                     </button>
                     <p style="text-align:center;font-size:12px;color:rgba(21,40,31,.4);margin-top:10px;">
-                        <i class="fa-solid fa-rotate-left fa-xs" style="color:#10B981;"></i> 100% money-back on your first lesson
+                        <i class="fa-solid fa-rotate-left fa-xs" style="color:#10B981;"></i> 100% money-back if unsatisfied with your first lesson
                     </p>
                 </div>
 
@@ -687,7 +685,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 @endif
 
                 <div style="display:flex;flex-direction:column;gap:7px;">
-                    @foreach(['fa-certificate green TSC-Registered & Verified','fa-lock green Secure, private classroom','fa-rotate-left green 100% money-back first lesson','fa-key green Session code sent by email'] as $item)
+                    @foreach(['fa-certificate green TSC-Registered & Verified','fa-lock green Secure, private classroom','fa-rotate-left green 100% money-back if unsatisfied','fa-key green Session code sent by email'] as $item)
                     @php [$ic,,$text] = explode(' ',$item,3); @endphp
                     <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(21,40,31,.6);">
                         <i class="fa-solid fa-{{ $ic }}" style="color:#10B981;font-size:11px;width:13px;text-align:center;"></i>{{ $text }}

@@ -4,7 +4,7 @@
 <div x-data="{ ann: !sessionStorage.getItem('mw_ann') }" x-show="ann" x-cloak
      style="background:linear-gradient(90deg,#120A8F,#0A64BC);color:#fff;font-size:13px;padding:9px 20px;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:101;">
     <i class="fa-solid fa-certificate fa-xs" style="opacity:.8;"></i>
-    <span style="text-align:center;">All tutors are <strong>TSC-registered & background-checked</strong> — <strong>100% money-back</strong> on your first lesson</span>
+    <span style="text-align:center;">All tutors are <strong>TSC-registered & background-checked</strong> — <strong>100% money-back</strong> if unsatisfied with your first lesson</span>
     <button @click="sessionStorage.setItem('mw_ann','1');ann=false"
             style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .15s;"
             onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'"

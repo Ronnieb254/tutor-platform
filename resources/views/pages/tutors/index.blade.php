@@ -176,18 +176,12 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
             <!-- <div class="dur-pills">
                 @foreach([20=>['Quick Help',300],40=>['Guided Practice',500],60=>['Deep Dive',700]] as $mins=>[$name,$price])
                 @php
-                $isFreeForUser = $mins === 15 && auth()->check()
-                    ? \App\Models\TutorProfile::isFreeFirstSession(auth()->id(), $tutor->user_id)
-                    : ($mins === 15); // show FREE to guests too
+                $isFreeForUser = false; // No free first session — 100% money-back guarantee instead
                 @endphp
-                <div class="dp" title="{{ $name }}" style="{{ $isFreeForUser ? 'border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.04);' : '' }}">
+                <div class="dp" title="{{ $name }}">
                     <div class="dp-min">{{ $mins }}m</div>
-                    <div style="font-size:9px;font-weight:700;margin:1px 0;line-height:1.2;color:{{ $isFreeForUser ? '#10B981' : 'var(--trust-blue)' }}">{{ $name }}</div>
-                    @if($isFreeForUser)
-                    <div style="font-size:9px;font-weight:800;color:#10B981;letter-spacing:.02em;">FREE</div>
-                    @else
+                    <div style="font-size:9px;font-weight:700;margin:1px 0;line-height:1.2;color:var(--trust-blue)">{{ $name }}</div>
                     <div class="dp-price">KSh {{ $price }}</div>
-                    @endif
                 </div>
                 @endforeach
             </div> -->
