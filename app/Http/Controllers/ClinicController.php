@@ -26,6 +26,7 @@ class ClinicController extends Controller
         $paperTypes = ['PP1' => 'Paper 1', 'PP2' => 'Paper 2', 'PP3' => 'Paper 3'];
 
         $clinics = ExaminerClinic::upcoming()
+            ->clinics()  // exclude group sessions (is_group_session = false only)
             ->with(['tutor', 'subject', 'enrollments'])
             ->when($subjectId, fn($q) => $q->where('subject_id', $subjectId))
             ->when($paperType && \Schema::hasColumn('examiner_clinics', 'paper_type'), fn($q) => $q->where('paper_type', $paperType))
