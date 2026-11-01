@@ -653,6 +653,44 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 <script>
 const chat = document.getElementById('chat-messages');
 if(chat) chat.scrollTop = chat.scrollHeight;
+
+// Initialize DataTables for all tables
+$(document).ready(function() {
+    // Upcoming sessions table
+    if ($('#parent-upcoming-sessions-table').length) {
+        initDataTable('#parent-upcoming-sessions-table', {
+            order: [[3, 'asc']], // Date ascending
+            columnDefs: [
+                { type: 'date', targets: 3 },
+                { type: 'num', targets: 4 }, // Duration
+                { orderable: false, targets: [7, 8] } // Review, Actions
+            ]
+        });
+    }
+    
+    // Refund requests table
+    if ($('#parent-refunds-table').length) {
+        initDataTable('#parent-refunds-table', {
+            order: [[5, 'desc']], // Date descending
+            columnDefs: [
+                { type: 'num', targets: 3 }, // Amount
+                { type: 'date', targets: 5 }
+            ]
+        });
+    }
+    
+    // Payment history table
+    if ($('#parent-payments-table').length) {
+        initDataTable('#parent-payments-table', {
+            order: [[2, 'desc']], // Date descending
+            columnDefs: [
+                { type: 'date', targets: 2 },
+                { type: 'num', targets: 4 }, // Amount
+                { orderable: false, targets: 6 } // Actions
+            ]
+        });
+    }
+});
 </script>
 </body>
 </html>
