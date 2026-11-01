@@ -344,21 +344,59 @@ class BookingController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Unauthorised.'], 403);
         }
 
+        // If already confirmed — resend codes without changing anything
         if ($booking->status === 'confirmed') {
-            return response()->json(['status' => 'ok', 'message' => 'Already confirmed.']);
+            $booking->load(['student', 'tutor', 'subject']);
+
+            // Ensure codes exist (generate if missing)
+            if (!$booking->session_code_student) {
+                $booking->update([
+                    'session_code_tutor'   => 'TUT-' . strtoupper(\Illuminate\Support\Str::random(6)),
+                    'session_code_student' => 'STU-' . strtoupper(\Illuminate\Support\Str::random(6)),
+                    'meeting_room'         => $booking->meeting_room ?: 'Mwalimu-session-' . $booking->uuid,
+                    'meeting_url'          => $booking->meeting_url ?: 'https://meet.jit.si/Mwalimu-session-' . $booking->uuid,
+                ]);
+                $booking->refresh()->load(['student', 'tutor', 'subject']);
+            }
+
+            // Resend notifications — send synchronously, bypass queue
+            try {
+                \Illuminate\Support\Facades\Notification::sendNow(
+                    $booking->student,
+                    new \App\Notifications\BookingConfirmedStudent($booking)
+                );
+            } catch (\Throwable $e) {
+                \Log::warning('Resend student notification failed: ' . $e->getMessage());
+            }
+            try {
+                \Illuminate\Support\Facades\Notification::sendNow(
+                    $booking->tutor,
+                    new \App\Notifications\BookingConfirmedTutor($booking)
+                );
+            } catch (\Throwable $e) {
+                \Log::warning('Resend tutor notification failed: ' . $e->getMessage());
+            }
+
+            \Log::info('Booking codes resent by admin #' . $user->id, ['booking_uuid' => $booking->uuid]);
+
+            return response()->json([
+                'status'  => 'ok',
+                'message' => 'Session codes resent to student and tutor.',
+            ]);
         }
 
-        if (!in_array($booking->status, ['pending'])) {
+        if ($booking->status === 'cancelled') {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Cannot confirm a booking with status: ' . $booking->status,
+                'status'  => 'error',
+                'message' => 'Cannot confirm a cancelled booking.',
             ], 422);
         }
 
+        // Pending or any other status — confirm it
         try {
             $this->bookingService->confirmBooking($booking);
         } catch (\Throwable $e) {
-            // Fallback: directly update without Jitsi URL generation
+            // Fallback: directly update without service layer
             \Log::error('forceConfirm: confirmBooking failed, applying fallback: ' . $e->getMessage());
             $booking->update([
                 'status'               => 'confirmed',
@@ -369,14 +407,19 @@ class BookingController extends Controller
             ]);
             $booking->refresh()->load(['student', 'tutor', 'subject']);
 
-            // Still send the notifications
             try {
-                $booking->student->notify(new \App\Notifications\BookingConfirmedStudent($booking));
+                \Illuminate\Support\Facades\Notification::sendNow(
+                    $booking->student,
+                    new \App\Notifications\BookingConfirmedStudent($booking)
+                );
             } catch (\Throwable $ne) {
                 \Log::warning('Student notification failed: ' . $ne->getMessage());
             }
             try {
-                $booking->tutor->notify(new \App\Notifications\BookingConfirmedTutor($booking));
+                \Illuminate\Support\Facades\Notification::sendNow(
+                    $booking->tutor,
+                    new \App\Notifications\BookingConfirmedTutor($booking)
+                );
             } catch (\Throwable $ne) {
                 \Log::warning('Tutor notification failed: ' . $ne->getMessage());
             }

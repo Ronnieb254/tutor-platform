@@ -119,13 +119,19 @@ class BookingService
         $booking->refresh()->load(['student', 'tutor', 'subject']);
 
         try {
-            $booking->student->notify(new BookingConfirmedStudent($booking));
+            \Illuminate\Support\Facades\Notification::sendNow(
+                $booking->student,
+                new BookingConfirmedStudent($booking)
+            );
         } catch (\Throwable $e) {
             Log::warning('Student booking notification failed: ' . $e->getMessage());
         }
 
         try {
-            $booking->tutor->notify(new BookingConfirmedTutor($booking));
+            \Illuminate\Support\Facades\Notification::sendNow(
+                $booking->tutor,
+                new BookingConfirmedTutor($booking)
+            );
         } catch (\Throwable $e) {
             Log::warning('Tutor booking notification failed: ' . $e->getMessage());
         }
