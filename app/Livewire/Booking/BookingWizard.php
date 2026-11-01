@@ -82,7 +82,8 @@ class BookingWizard extends Component
             'scheduledTime' => 'required',
         ]);
 
-        $scheduledAt = Carbon::parse("{$this->scheduledDate} {$this->scheduledTime}");
+        $scheduledAt = Carbon::parse("{$this->scheduledDate} {$this->scheduledTime}", 'Africa/Nairobi')
+            ->utc(); // Store as UTC in DB
 
         $booking = $bookingService->createBooking([
             'tutor_profile_id' => $this->tutorProfile->id,

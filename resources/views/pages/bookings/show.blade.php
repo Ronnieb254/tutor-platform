@@ -30,7 +30,7 @@ $isStudent = auth()->id() === $booking->student_id;
 $isTutor   = auth()->id() === $booking->tutor_id;
 $myCode    = $isTutor ? $booking->session_code_tutor : $booking->session_code_student;
 $otherName = $isTutor ? ($booking->student?->name ?? 'Student') : ($booking->tutor?->name ?? 'Tutor');
-$sessionStart   = $booking->scheduled_at;
+$sessionStart   = $booking->scheduled_at->setTimezone('Africa/Nairobi');
 $sessionEnd     = $sessionStart->copy()->addMinutes($booking->duration_minutes);
 $minutesUntil   = now()->diffInMinutes($sessionStart, false);
 $canJoin        = $booking->canJoin();

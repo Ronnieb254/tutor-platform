@@ -67,9 +67,15 @@ class BookingController extends Controller
             'notes'            => 'nullable|string|max:500',
         ]);
 
+        // Parse scheduled_at as EAT and convert to UTC before storing
+        $scheduledAtEat = \Carbon\Carbon::parse($request->input('scheduled_at'), 'Africa/Nairobi')->utc();
+
         $booking = $this->bookingService->createBooking(array_merge(
             $request->all(),
-            ['student_id' => auth()->id()]
+            [
+                'student_id'   => auth()->id(),
+                'scheduled_at' => $scheduledAtEat,
+            ]
         ));
 
         if ((float) $booking->total_amount <= 0) {
