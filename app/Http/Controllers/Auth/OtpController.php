@@ -109,10 +109,28 @@ class OtpController extends Controller
 
             DB::commit();
 
+            // Send contract email to new tutors
+            if ($pending['role'] === 'tutor') {
+                try {
+                    \Illuminate\Support\Facades\Notification::sendNow(
+                        $user,
+                        new \App\Notifications\TutorContractEmail()
+                    );
+                } catch (\Exception $e) {
+                    \Log::warning('Failed to send tutor contract email: ' . $e->getMessage());
+                }
+            }
+
             // Clear session and log in
             session()->forget('reg_pending');
 
             Auth::login($user);
+
+            // Redirect tutors to contract acceptance first
+            if ($pending['role'] === 'tutor') {
+                return redirect()->route('tutor-contract')
+                    ->with('success', 'Welcome to Mwalimu! Please read and accept the Tutor Services Agreement to continue. A copy has been sent to your email.');
+            }
 
             return redirect()->route('dashboard')
                 ->with('success', 'Welcome to Mwalimu! Your account has been verified.');

@@ -7,7 +7,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TutorContractController;
 use Illuminate\Support\Facades\Route;
+
+// ─── Legal Pages ──────────────────────────────────────────────────────────────
+Route::get('/privacy-policy', fn() => view('pages.legal.privacy-policy'))->name('privacy-policy');
+Route::get('/terms-of-service', fn() => view('pages.legal.terms-of-service'))->name('terms-of-service');
+Route::get('/cookie-policy', fn() => view('pages.legal.cookie-policy'))->name('cookie-policy');
 
 // ─── Public ───────────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -68,6 +74,14 @@ Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('auth.social.callback');
 
 // ─── Authenticated ────────────────────────────────────────────────────────────
+// Tutor Contract Routes (before main auth group - contract required to access dashboard)
+Route::middleware('auth')->group(function () {
+    Route::get('/tutor/contract', [TutorContractController::class, 'show'])->name('tutor-contract');
+    Route::post('/tutor/contract/accept', [TutorContractController::class, 'accept'])->name('accept-tutor-contract');
+    Route::get('/tutor/contract/download', [TutorContractController::class, 'download'])->name('download-tutor-contract');
+    Route::post('/tutor/contract/resend', [TutorContractController::class, 'resend'])->name('resend-tutor-contract');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 

@@ -15,6 +15,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name', 'email', 'password', 'role', 'avatar',
         'provider', 'provider_id', 'phone', 'timezone', 'is_active',
         'parent_id', 'age', 'grade_level',
+        'contract_accepted', 'contract_accepted_at',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -22,9 +23,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
-            'is_active'         => 'boolean',
+            'email_verified_at'    => 'datetime',
+            'password'             => 'hashed',
+            'is_active'            => 'boolean',
+            'contract_accepted'    => 'boolean',
+            'contract_accepted_at' => 'datetime',
         ];
     }
 
@@ -133,6 +136,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function loginActivities()
     {
         return $this->hasMany(LoginActivity::class);
+    }
+
+    public function contractAcceptances()
+    {
+        return $this->hasMany(TutorContractAcceptance::class);
     }
 
     // Helpers

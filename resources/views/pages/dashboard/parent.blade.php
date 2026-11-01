@@ -146,7 +146,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 <div x-show="tab==='overview'">
     <div style="margin-bottom:20px;">
         <h2 style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">Hello, {{ explode(' ',$user->name)[0] }} 👋</h2>
-        <p style="font-size:14px;color:var(--muted);margin-top:4px;">Managing your children's learning journey · {{ now()->format('l, F j, Y') }}</p>
+        <p style="font-size:14px;color:var(--muted);margin-top:4px;">Manage your children's learning journey · {{ now()->format('l, F j, Y') }}</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
         <div class="stat">

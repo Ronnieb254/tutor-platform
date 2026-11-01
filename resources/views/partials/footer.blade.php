@@ -102,9 +102,9 @@
                     @foreach([
                         ['fa-building',      'OvalDesk Ventures',    'https://ovaldesk.co.ke'],
                         ['fa-envelope',      'Contact Us',           route('contact')],
-                        ['fa-shield-halved', 'Privacy Policy',       '#'],
-                        ['fa-file-contract', 'Terms of Service',     '#'],
-                        ['fa-cookie-bite',   'Cookie Policy',        '#'],
+                        ['fa-shield-halved', 'Privacy Policy',       route('privacy-policy')],
+                        ['fa-file-contract', 'Terms of Service',     route('terms-of-service')],
+                        ['fa-cookie-bite',   'Cookie Policy',        route('cookie-policy')],
                     ] as [$ic,$label,$url])
                     <a href="{{ $url }}" {{ str_starts_with($url,'http') ? 'target="_blank"' : '' }} style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
                         <i class="fa-solid {{ $ic }}" style="font-size:11px;width:13px;text-align:center;opacity:.5;"></i>
