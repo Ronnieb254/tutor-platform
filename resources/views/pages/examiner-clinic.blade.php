@@ -19,10 +19,10 @@
                     <i class="fa-solid fa-star fa-xs"></i> The Examiner's Clinic
                 </div>
                 <h1 style="font-family:'Fraunces',serif;font-size:clamp(34px,5vw,58px);color:#fff;margin-bottom:16px;line-height:1.1;">
-                    Learn from the experts who <span style="color:#EEBE15;">set the exams.</span>
+                    Learn from the experts who <span style="color:#EEBE15;">set and mark the exams.</span>
                 </h1>
                 <p style="font-size:17px;color:rgba(255,255,255,.65);max-width:560px;margin-bottom:28px;line-height:1.85;">
-                    Most revision resources focus on <em style="font-style:italic;">what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to answer questions</strong> — delivered by national examiners and markers, structured per paper (PP1, PP2, PP3).
+                    Most revision resources focus on <em style="font-style:italic;">what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> — delivered by national examiners and markers, structured per paper (PP1, PP2, PP3) as it applies.
                 </p>
                 <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
                     <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
@@ -50,7 +50,7 @@
             </div>
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;">
                 <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">What each clinic covers</p>
-                @foreach(['Exam strategy & question time management','High-frequency exam questions by topic','Examiner traps — mistakes that lose marks','Marking scheme analysis — how marks are awarded','Common student errors and how to avoid them','How KNEC examiners grade papers'] as $item)
+                @foreach(['Exam strategy & question time management','High-frequency exam questions by topic','Examiner traps — mistakes and NRT areas','Marking scheme analysis — how marks are awarded','Common student errors and how to avoid them','How KNEC examiners grade papers'] as $item)
                 <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
                     <i class="fa-solid fa-circle-check" style="color:#10B981;margin-top:2px;flex-shrink:0;font-size:13px;"></i>
                     <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>

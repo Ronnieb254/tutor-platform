@@ -56,7 +56,7 @@
             </div>
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;">
                 <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">How group sessions work</p>
-                @foreach(['Browse upcoming live classes by subject','Book your seat — pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
+                @foreach(['Browse upcoming live classes by subject/topic','Book your seat — pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
                 <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
                     <i class="fa-solid fa-circle-check" style="color:#10B981;margin-top:2px;flex-shrink:0;font-size:13px;"></i>
                     <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
