@@ -69,7 +69,7 @@
         {{-- STEP 2: Subjects --}}
         @if($step === 2)
         <h2 class="font-serif text-2xl font-bold text-ink mb-2">Which subjects do you teach?</h2>
-        <p class="text-muted text-sm mb-6">Select all that apply. You can update this later.</p>
+        <p class="text-muted text-sm mb-6">Select up to 2 subjects. You can update this later.</p>
         @error('selectedSubjects')<p class="form-error mb-3">{{ $message }}</p>@enderror
         <div class="space-y-4 max-h-96 overflow-y-auto pr-1">
             @foreach($subjects as $categoryName => $categorySubjects)
@@ -78,9 +78,9 @@
                 <div class="flex flex-wrap gap-2">
                     @foreach($categorySubjects as $subject)
                     <label class="cursor-pointer">
-                        <input type="checkbox" wire:model="selectedSubjects" value="{{ $subject->id }}" class="sr-only">
+                        <input type="checkbox" wire:model="selectedSubjects" value="{{ $subject->id }}" class="sr-only" {{ count($selectedSubjects) >= 2 && !in_array($subject->id, $selectedSubjects) ? 'disabled' : '' }}>
                         <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium border-2 transition
-                            {{ in_array($subject->id, $selectedSubjects) ? 'border-trust-blue bg-trust-blue text-white' : 'border-hairline text-ink hover:border-trust-blue/40' }}">
+                            {{ in_array($subject->id, $selectedSubjects) ? 'border-trust-blue bg-trust-blue text-white' : (count($selectedSubjects) >= 2 ? 'border-hairline text-muted opacity-50 cursor-not-allowed' : 'border-hairline text-ink hover:border-trust-blue/40') }}">
                             {{ $subject->name }}
                         </span>
                     </label>
@@ -89,7 +89,7 @@
             </div>
             @endforeach
         </div>
-        <p class="text-xs text-muted mt-3">{{ count($selectedSubjects) }} subject(s) selected</p>
+        <p class="text-xs text-muted mt-3">{{ count($selectedSubjects) }}/2 subject(s) selected @if(count($selectedSubjects) >= 2)<span class="text-mint"><i class="fa-solid fa-check fa-xs"></i> Maximum reached</span>@endif</p>
         <div class="flex justify-between mt-6">
             <button wire:click="prevStep" class="pill-btn-outline px-6">← Back</button>
             <button wire:click="nextStep" class="pill-btn-primary px-8">Continue →</button>

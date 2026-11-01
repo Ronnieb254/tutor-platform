@@ -570,6 +570,7 @@ function tutorOnboarding() {
         validateStep2() {
             this.errors = {};
             if (this.form.subjects.length === 0) { this.errors.subjects = 'Please select at least 1 subject'; return; }
+            if (this.form.subjects.length > 2) { this.errors.subjects = 'Maximum 2 subjects allowed'; return; }
             this.step = 3;
         },
 

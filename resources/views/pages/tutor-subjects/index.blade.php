@@ -229,7 +229,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
         <div class="sec-hdr">
             <div>
                 <div class="sec-title">Manage Your Subjects</div>
-                <div class="sec-sub">Select the subjects you teach — these appear on your public profile for students to find.</div>
+                <div class="sec-sub">Select up to 2 subjects you teach — these appear on your public profile for students to find.</div>
             </div>
             <a href="{{ route('tutor.dashboard') }}" class="btn btn-o btn-sm">
                 <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -254,7 +254,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 </div>
             </div>
             <div style="padding:18px 22px;background:#F9FAF9;">
-                <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;">Your Selected Subjects</p>
+                <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;">Your Selected Subjects (Max 2)</p>
                 <div id="selected-preview" style="display:flex;flex-wrap:wrap;gap:6px;min-height:30px;">
                     @forelse($tutorProfile->subjects as $subject)
                     <span class="subject-chip" data-subject-id="{{ $subject->id }}">
@@ -334,6 +334,10 @@ function toggleSubject(id, name) {
         checkbox.checked = false;
         delete subjectNames[id];
     } else {
+        if (selectedSubjects.size >= 2) {
+            alert('You can only select up to 2 subjects. Please deselect a subject first.');
+            return;
+        }
         selectedSubjects.add(id);
         card.classList.add('selected');
         checkbox.checked = true;
@@ -341,6 +345,7 @@ function toggleSubject(id, name) {
     }
     updatePreview();
     updateCount();
+    updateMaxReachedState();
 }
 
 function deselectSubject(id) {
@@ -353,6 +358,7 @@ function deselectSubject(id) {
     delete subjectNames[id];
     updatePreview();
     updateCount();
+    updateMaxReachedState();
 }
 
 function updatePreview() {
@@ -368,7 +374,29 @@ function updatePreview() {
 }
 
 function updateCount() {
-    document.getElementById('subject-count').textContent = selectedSubjects.size;
+    const countSpan = document.getElementById('subject-count');
+    countSpan.textContent = selectedSubjects.size;
+    if (selectedSubjects.size >= 2) {
+        countSpan.innerHTML = selectedSubjects.size + '/2 <span style="color:var(--mint);margin-left:6px;"><i class="fa-solid fa-check fa-xs"></i> Max reached</span>';
+    } else {
+        countSpan.textContent = selectedSubjects.size + '/2';
+    }
+}
+
+function updateMaxReachedState() {
+    const isMaxReached = selectedSubjects.size >= 2;
+    document.querySelectorAll('.subject-card').forEach(function(card) {
+        const id = parseInt(card.dataset.subjectId);
+        if (!selectedSubjects.has(id)) {
+            if (isMaxReached) {
+                card.style.opacity = '0.4';
+                card.style.cursor = 'not-allowed';
+            } else {
+                card.style.opacity = '1';
+                card.style.cursor = 'pointer';
+            }
+        }
+    });
 }
 
 document.getElementById('search-subjects').addEventListener('input', function(e) {
@@ -390,7 +418,16 @@ document.getElementById('subjects-form').addEventListener('submit', function(e) 
         alert('Please select at least one subject');
         return false;
     }
+    if (selectedSubjects.size > 2) {
+        e.preventDefault();
+        alert('You can only select up to 2 subjects');
+        return false;
+    }
 });
+
+// Initialize on page load
+updateCount();
+updateMaxReachedState();
 </script>
 </body>
 </html>

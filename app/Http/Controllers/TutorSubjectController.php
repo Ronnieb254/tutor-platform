@@ -36,7 +36,7 @@ class TutorSubjectController extends Controller
         }
 
         $request->validate([
-            'subject_ids' => 'required|array|min:1',
+            'subject_ids' => 'required|array|min:1|max:2',
             'subject_ids.*' => 'exists:subjects,id',
         ]);
 
@@ -58,6 +58,14 @@ class TutorSubjectController extends Controller
         $request->validate([
             'subject_id' => 'required|exists:subjects,id',
         ]);
+
+        // Check if tutor already has 2 subjects
+        if ($tutorProfile->subjects()->count() >= 2) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You can only select up to 2 subjects',
+            ], 422);
+        }
 
         // Attach without detaching existing
         $tutorProfile->subjects()->syncWithoutDetaching([$request->subject_id]);

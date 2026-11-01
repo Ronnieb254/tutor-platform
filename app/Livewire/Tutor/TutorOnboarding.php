@@ -48,7 +48,7 @@ class TutorOnboarding extends Component
             ]);
         }
         if ($this->step === 2) {
-            $this->validate(['selectedSubjects' => 'required|array|min:1']);
+            $this->validate(['selectedSubjects' => 'required|array|min:1|max:2']);
         }
         $this->step++;
     }
