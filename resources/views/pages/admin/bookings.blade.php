@@ -64,7 +64,7 @@
         <span style="font-size:14px;color:var(--muted);">{{ $bookings->total() }} booking{{ $bookings->total()!==1?'s':'' }} found</span>
     </div>
     <div class="table-wrap">
-        <table>
+        <table id="bookings-table">
             <thead>
                 <tr>
                     <th>Student</th>
@@ -74,7 +74,7 @@
                     <th>Duration</th>
                     <th>Amount</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th class="no-export">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,12 +94,12 @@
                         <div style="font-size:11px;color:var(--muted);">{{ $booking->tutor->email }}</div>
                     </td>
                     <td style="color:var(--muted);">{{ $booking->subject?->name ?? '—' }}</td>
-                    <td style="white-space:nowrap;font-size:13px;">
+                    <td data-order="{{ $booking->scheduled_at->timestamp }}" style="white-space:nowrap;font-size:13px;">
                         <div>{{ $booking->scheduled_at->format('M j, Y') }}</div>
                         <div style="color:var(--muted);font-size:11px;">{{ $booking->scheduled_at->format('g:i a') }} EAT</div>
                     </td>
-                    <td style="font-size:13px;">{{ $booking->duration_minutes }} min</td>
-                    <td style="font-weight:600;font-size:13px;">KSh {{ number_format($booking->total_amount) }}</td>
+                    <td data-order="{{ $booking->duration_minutes }}" style="font-size:13px;">{{ $booking->duration_minutes }} min</td>
+                    <td data-order="{{ $booking->total_amount }}" style="font-weight:600;font-size:13px;">KSh {{ number_format($booking->total_amount) }}</td>
                     <td>
                         @php $sc = ['pending'=>'badge-amber','confirmed'=>'badge-green','completed'=>'badge-blue','cancelled'=>'badge-red'][$booking->status] ?? 'badge-gray'; @endphp
                         <span class="badge {{ $sc }}" id="status-{{ $booking->uuid }}">{{ ucfirst($booking->status) }}</span>
@@ -144,6 +144,18 @@
 
 @push('scripts')
 <script>
+$(document).ready(function() {
+    initDataTable('#bookings-table', {
+        order: [[3, 'desc']], // Scheduled column descending
+        columnDefs: [
+            { type: 'date', targets: 3 }, // Scheduled
+            { type: 'num', targets: 4 },  // Duration
+            { type: 'num', targets: 5 },  // Amount
+            { orderable: false, targets: 7 } // Actions
+        ]
+    });
+});
+
 function confirmBooking(uuid, btn) {
     if (!confirm('Confirm this booking?\n\nSession codes will be emailed and sent as in-app notifications to both the tutor and student.')) return;
 

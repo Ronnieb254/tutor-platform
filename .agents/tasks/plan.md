@@ -1,238 +1,935 @@
-# Implementation Plan — Admin Group Sessions
+# Implementation Plan: Apply DataTables to All Tables System-Wide
 
-## Codebase findings
+## Executive Summary
 
-- Admin views use **flat `.blade.php` files** in `resources/views/pages/admin/` (e.g. `clinics.blade.php`, `clinic-show.blade.php`, `clinic-create.blade.php`). The `examiner-clinics/` subdirectory referenced in the task prompt does not exist — only the flat files are present. The new group-sessions views follow the same flat pattern.
-- Existing admin clinics use `ClinicController` (not `ExaminerClinicController`). `ExaminerClinicController` handles the separate `examiner-clinics` resource. The new `GroupSessionController` is modelled after `ExaminerClinicController` since group sessions live in the same `examiner_clinics` table.
-- `ExaminerClinic` model has `scopeGroupSessions()`, `scopeClinics()`, and `isGroupSession()` already defined. The `is_group_session` column is protected by `Schema::hasColumn()` guards throughout.
-- `User::isAdmin()` returns `true` for both `admin` and `super-admin` roles. Tutor list is fetched via `User::where('role', 'tutor')->...` pattern (confirmed in `clinic-create.blade.php` which passes `$tutors`).
-- Admin route group: `Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(...)` — new group-session routes go inside this group.
-- Admin sidebar "Content" section ends after `admin.blog` and before `admin.settings` — the new "Group Sessions" nav item goes between `admin.examiner-clinics.*` and `admin.settings`.
-- `ExaminerClinicController::store()` sets `session_code = 'EXAM-' . Str::random(8)` and `status = 'upcoming'`. The new controller uses `'GRP-' . strtoupper(Str::random(8))` and `meeting_room = 'Mwalimu-group-' . Str::uuid()`.
-- `Subject` model: `id`, `name`, `slug`, `icon`, `is_active`. Load with `Subject::where('is_active', true)->orderBy('name')->get()`.
-- `ClinicEnrollment` model exists (referenced in `ExaminerClinic` relationships) — used on the show page to list enrolled students.
-- Build / test: Laravel PHP project. Verification = `php artisan route:list | grep group-sessions` plus loading pages in a browser (no automated test suite discovered for controllers).
+This plan covers the integration of DataTables 1.13+ (with Responsive and Buttons extensions) across **all 23+ table elements** identified throughout the Laravel 12 / Livewire 3.6 Blade application. The application uses three main layouts (app, admin, guest) and has tables in admin views, user dashboards, and public pages.
+
+**Key Finding:** DataTables is not currently integrated. The app uses Alpine.js 3.x and SweetAlert2 loaded via CDN, plus Vite for asset compilation (no jQuery currently included).
+
+**Critical Decision:** Since DataTables requires jQuery, we will add jQuery 3.7+ via CDN to avoid Vite rebuild complexity. DataTables will be loaded via CDN (CSS + JS + extensions) in a single shared partial (`resources/views/partials/datatables-assets.blade.php`) that both `layouts/admin.blade.php` and `layouts/app.blade.php` can include.
+
+**Livewire Compatibility:** The app uses Livewire 3.6 primarily for search/filter forms (e.g., `livewire/tutors/tutor-search.blade.php`), not for table rendering. The tables themselves are server-rendered Blade loops with `@foreach`. **Therefore, Livewire/DataTables conflict is not an issue** — we simply apply DataTables to the server-rendered `<table>` elements.
 
 ---
 
-## Plan
+## Table Inventory (23 tables identified)
 
-- [ ] 1. Create `App\Http\Controllers\Admin\GroupSessionController`
-      New file. Namespace `App\Http\Controllers\Admin`. Uses `ExaminerClinic`, `Subject`, `User`, `Request`, `Str`.
-      All queries chain `->groupSessions()` (scopeGroupSessions). Store/update force `is_group_session = true`.
+### Admin Layout Tables (resources/views/pages/admin/)
 
-      Methods and their logic (mirrors `ExaminerClinicController` exactly, with group-session-specific overrides):
+1. **admin/bookings.blade.php** — Bookings management table
+   - Columns: Student, Tutor, Subject, Scheduled, Duration, Amount, Status, Actions
+   - Rows: ~50–500 (paginated in backend currently)
+   - ID to add: `id="bookings-table"`
+   - Column types: text, text, text, date, number, currency, badge/html, html (buttons)
+   - Server-side: No (client-side OK for <1000 rows)
 
-      ```php
-      public function index(Request $request)
-          // ExaminerClinic::with(['subject','tutor'])->groupSessions()->orderBy('scheduled_at','desc')
-          // Filters: status, subject_id, search (title/description), from_date, to_date
-          // paginate(20); pass $sessions, $subjects
-          // return view('pages.admin.group-sessions.index', compact('sessions','subjects'))
+2. **admin/blog.blade.php** — Blog posts table
+   - Columns: Title, Author, Published, Views, Actions
+   - Rows: ~20–200
+   - ID to add: `id="blog-table"`
+   - Column types: text, text, date, number, html
+   - Server-side: No
 
-      public function create()
-          // $subjects = Subject::where('is_active',true)->orderBy('name')->get()
-          // $tutors   = User::where('role','tutor')->orderBy('name')->get()
-          // return view('pages.admin.group-sessions.create', compact('subjects','tutors'))
+3. **admin/categories.blade.php** — Categories table
+   - Columns: Icon, Name, Description, Subjects Count, Actions
+   - Rows: ~10–30
+   - ID to add: `id="categories-table"`
+   - Column types: html, text, text, number, html
+   - Server-side: No
 
-      public function store(Request $request)
-          // validate: subject_id (required|exists:subjects,id), title (required|string|max:255),
-          //           description (nullable|string), scheduled_at (required|date|after:now),
-          //           duration_minutes (required|integer|min:15|max:480),
-          //           max_students (nullable|integer|min:1|max:200),
-          //           price (nullable|numeric|min:0),
-          //           tutor_id (nullable|exists:users,id)
-          // Set:
-          //   $validated['is_group_session'] = true
-          //   $validated['session_code']     = 'GRP-' . strtoupper(Str::random(8))
-          //   $validated['meeting_room']     = 'Mwalimu-group-' . Str::uuid()
-          //   $validated['created_by']       = auth()->id()
-          //   $validated['status']           = 'scheduled'
-          //   $validated['max_students']     = $validated['max_students'] ?? 30
-          // ExaminerClinic::create($validated)
-          // redirect()->route('admin.group-sessions.show', $session)->with('success',...)
+4. **admin/clinic-show.blade.php** — Clinic bookings table (inside clinic detail view)
+   - Columns: Student, Email, Phone, Booked At, Status, Actions
+   - Rows: ~10–50 per clinic
+   - ID to add: `id="clinic-bookings-table"`
+   - Column types: text, text, text, date, badge/html, html
+   - Server-side: No
 
-      public function show(ExaminerClinic $groupSession)
-          // load(['subject','tutor','enrollments.student'])  (student via ClinicEnrollment->belongsTo User as student_id)
-          // abort-if !$groupSession->isGroupSession(), 404
-          // $stats = [total_enrolled, spots_remaining, completion_rate]
-          // return view('pages.admin.group-sessions.show', compact('groupSession','stats'))
+5. **admin/clinics.blade.php** — Examiner clinics list table
+   - Columns: Title, Type, Tutor, Scheduled, Duration, Max Students, Enrolled, Price, Status, Actions
+   - Rows: ~20–100
+   - ID to add: `id="clinics-table"`
+   - Column types: text, text, text, date, number, number, number, currency, badge/html, html
+   - Server-side: No
 
-      public function edit(ExaminerClinic $groupSession)
-          // abort-if !$groupSession->isGroupSession(), 404
-          // Guard: in_progress|completed|cancelled → redirect back with error
-          // $subjects, $tutors
-          // return view('pages.admin.group-sessions.edit', compact('groupSession','subjects','tutors'))
+6. **admin/library.blade.php** — Library resources table
+   - Columns: Resource (title+icon), Type, Author, Category, Grade, Downloads, Status, Actions
+   - Rows: ~30–500
+   - ID to add: `id="library-table"`
+   - Column types: html, badge/html, text, text, text, number, badge/html, html
+   - Server-side: Consider if >500 rows (initially client-side)
 
-      public function update(Request $request, ExaminerClinic $groupSession)
-          // abort-if !$groupSession->isGroupSession(), 404
-          // Guard: completed|cancelled → redirect back with error
-          // Same validation as store minus scheduled_at|after:now (allow past for rescheduling)
-          // Prevent reducing max_students below enrollment count
-          // Force is_group_session = true on update
-          // redirect()->route('admin.group-sessions.show', $groupSession)->with('success',...)
+7. **admin/payouts.blade.php** — Tutor payout requests table
+   - Columns: Tutor, Amount, Bank Details, Requested, Status, Actions
+   - Rows: ~20–300
+   - ID to add: `id="payouts-table"`
+   - Column types: text, currency, text, date, badge/html, html
+   - Server-side: No
 
-      public function destroy(ExaminerClinic $groupSession)
-          // abort-if !$groupSession->isGroupSession(), 404
-          // Only allow deletion when status=scheduled AND enrollments=0
-          // $groupSession->delete()
-          // redirect()->route('admin.group-sessions.index')->with('success',...)
+8. **admin/subjects.blade.php** — Subjects table
+   - Columns: Name, Category, Icon, Active, Tutors Count, Actions
+   - Rows: ~50–200
+   - ID to add: `id="subjects-table"`
+   - Column types: text, text, html, badge/html, number, html
+   - Server-side: No
 
-      public function cancel(ExaminerClinic $groupSession)
-          // abort-if !$groupSession->isGroupSession(), 404
-          // Guard: already completed|cancelled → back with error
-          // $groupSession->update(['status'=>'cancelled'])
-          // redirect back with success
+9. **admin/settings.blade.php** — Session pricing multipliers table (read-only reference)
+   - Columns: Duration, Multiplier, Example
+   - Rows: 4 (fixed: 15min, 30min, 45min, 60min)
+   - ID to add: `id="pricing-multipliers-table"`
+   - Column types: text, text, text
+   - Server-side: No
+   - Special: read-only info table, no export needed (skip export buttons for this one)
 
-      public function start(ExaminerClinic $groupSession)
-          // abort-if !$groupSession->isGroupSession(), 404
-          // Guard: status !== 'scheduled' → back with error
-          // $groupSession->update(['status'=>'in_progress'])
-          // redirect()->route('admin.group-sessions.show', $groupSession)->with('success',...)
+10. **admin/group-sessions/index.blade.php** — Group sessions admin table
+    - Columns: Session, Tutor, Scheduled, Duration, Price, Enrolled, Max, Status, Actions
+    - Rows: ~20–200
+    - ID to add: `id="group-sessions-table"`
+    - Column types: text, text, date, number, currency, number, number, badge/html, html
+    - Server-side: No
 
-      public function complete(ExaminerClinic $groupSession)
-          // abort-if !$groupSession->isGroupSession(), 404
-          // Guard: status !== 'in_progress' → back with error
-          // $groupSession->update(['status'=>'completed'])
-          // redirect back with success
+11. **admin/users.blade.php** — All users table
+    - Columns: User, Email, Role, Registered, Status, Actions
+    - Rows: ~100–2000 (may need server-side if >1000)
+    - ID to add: `id="users-table"`
+    - Column types: html, text, text, date, badge/html, html
+    - Server-side: Yes if >1000 users (check in browser; initially client-side)
+
+12. **admin/group-sessions/show.blade.php** — Session enrollments table (inside session detail)
+    - Columns: Student, Email, Enrolled At, Payment Status, Actions
+    - Rows: ~5–30 per session
+    - ID to add: `id="session-enrollments-table"`
+    - Column types: text, text, date, badge/html, html
+    - Server-side: No
+
+### Parent/Student Dashboard Tables (resources/views/pages/dashboard/)
+
+13. **dashboard/parent.blade.php** — THREE tables:
+    - **Upcoming sessions table**
+      - Columns: Tutor, Child, Subject, Date, Duration, Paid, Status, Review, Actions
+      - ID: `id="parent-upcoming-sessions-table"`
+      - Column types: text, text, text, date, number, currency, badge/html, html, html
+    - **Refund requests table**
+      - Columns: Booking, Tutor, Reason, Amount, Status, Date
+      - ID: `id="parent-refunds-table"`
+      - Column types: text, text, text, currency, badge/html, date
+    - **Payment history table**
+      - Columns: Tutor, Reference, Date, Session, Amount, Status, Actions
+      - ID: `id="parent-payments-table"`
+      - Column types: text, text, date, text, currency, badge/html, html
+    - Rows: ~10–200 per table
+    - Server-side: No
+
+14. **dashboard/student.blade.php** — TWO tables:
+    - **Upcoming sessions table**
+      - Columns: Tutor, Subject, Date, Duration, Paid, Status, Review, Actions
+      - ID: `id="student-sessions-table"`
+      - Column types: text, text, date, number, currency, badge/html, html, html
+    - **Payment history table**
+      - Columns: Tutor, Reference, Date, Session, Amount, Status, Actions
+      - ID: `id="student-payments-table"`
+      - Column types: text, text, date, text, currency, badge/html, html
+    - Rows: ~10–150 per table
+    - Server-side: No
+
+15. **dashboard/admin.blade.php** — Recent bookings table (summary)
+    - Columns: Student, Tutor, Subject, Date, Amount, Status, Actions
+    - Rows: ~20 (paginated backend, but small subset)
+    - ID: `id="admin-recent-bookings-table"`
+    - Column types: html, text, text, date, currency, badge/html, html
+    - Server-side: No
+
+### Tutor-Facing Tables
+
+16. **tutor/library/index.blade.php** — Tutor's uploaded resources table
+    - Columns: Resource, Type, Submitted, Downloads, Status, Actions
+    - Rows: ~5–100 per tutor
+    - ID: `id="tutor-library-table"`
+    - Column types: html, badge/html, date, number, badge/html, html
+    - Server-side: No
+
+### Examiner Dashboard
+
+17. **examiner-dashboard.blade.php** — Clinic bookings table (tutor/examiner view)
+    - Columns: Student, Email, Phone, Session, Booked At, Status
+    - Rows: ~10–50
+    - ID: `id="examiner-bookings-table"`
+    - Column types: text, text, text, text, date, badge/html
+    - Server-side: No
+
+18. **examiner-clinic-details.blade.php** — Clinic session bookings table (public detail view)
+    - Columns: Student, Email, Phone, Booked At, Status
+    - Rows: ~10–30
+    - ID: `id="clinic-detail-bookings-table"`
+    - Column types: text, text, text, date, badge/html
+    - Server-side: No
+
+### Public/Marketing Pages
+
+19. **how-it-works.blade.php** — Pricing comparison table (informational, no data)
+    - Columns: Feature, Individual, Group Session
+    - Rows: ~8 (fixed content)
+    - ID: `id="pricing-comparison-table"`
+    - Column types: text, html, html
+    - Server-side: No
+    - Special: Informational table; export not critical but include for consistency
+
+20. **legal/cookie-policy.blade.php** — Cookie types table (fixed content)
+    - Columns: Cookie Name, Purpose, Expiry
+    - Rows: ~6 (fixed)
+    - ID: `id="cookies-table"`
+    - Column types: text, text, text
+    - Server-side: No
+    - Special: Legal/info table; export optional
+
+### Email Templates (excluded from DataTables)
+
+- **emails/booking-confirmed-tutor.blade.php** and **emails/booking-confirmed-student.blade.php** contain `<table>` tags for email layout (HTML email structure), NOT data tables. **Do not apply DataTables to email templates.**
+
+---
+
+## Integration Approach
+
+### 1. Shared Infrastructure
+
+**File:** `resources/views/partials/datatables-assets.blade.php`
+
+This partial will include:
+- jQuery 3.7.1 (slim build, from CDN)
+- DataTables 1.13.11 CSS + JS (from CDN)
+- DataTables Responsive extension CSS + JS
+- DataTables Buttons extension CSS + JS
+- JSZip (required for Excel export)
+- pdfmake + vfs_fonts (required for PDF export)
+- HTML5 export buttons
+- A single shared `initDataTable(selector, options)` function that:
+  - Merges default config (responsive, buttons, page length options, language)
+  - Wraps init in try/catch to prevent one table's failure from breaking others
+  - Logs errors to console
+
+**File:** `resources/views/partials/datatables-init.blade.php`
+
+A Blade partial that can be `@include`d at the bottom of any view with tables. It will accept a parameter like `@include('partials.datatables-init', ['tables' => ['#bookings-table' => ['order' => [[3, 'desc']]], ...]])` and call `initDataTable()` for each.
+
+### 2. Layout Integration
+
+**Admin Layout (`resources/views/layouts/admin.blade.php`)**
+- Add `@include('partials.datatables-assets')` in the `<head>` section after the existing CDN scripts (Alpine, SweetAlert2).
+
+**App Layout (`resources/views/layouts/app.blade.php`)**
+- Add `@include('partials.datatables-assets')` in the `<head>` section.
+
+**Guest Layout (`resources/views/layouts/guest.blade.php`)**
+- Add `@include('partials.datatables-assets')` in the `<head>` only if needed (currently guest layout is for auth pages, no tables; but the cookie-policy.blade.php might extend guest or a similar layout — check and add if needed).
+
+### 3. Styling Integration
+
+DataTables comes with default themes. We will:
+- Use the "default" DataTables theme CSS (loads from CDN).
+- Add a small `<style>` block in `datatables-assets.blade.php` to override DataTables' default colors/fonts to match the app's design system:
+  - Use `--ink`, `--trust-blue`, `--hairline`, `--muted` CSS variables (already defined in admin.blade.php and app.blade.php).
+  - Ensure buttons use the app's `.btn` classes or custom styles matching the brand.
+  - Responsive table design: DataTables Responsive extension handles mobile automatically (hides columns, shows + icon to expand).
+
+### 4. Export Button Styling
+
+DataTables Buttons extension provides copy, CSV, Excel, PDF, and print buttons. We will:
+- Style them to match the app's existing button design (`.btn`, `.btn-primary`, `.btn-outline`).
+- Position them in the top-right of each table's container (DataTables places them in `div.dt-buttons` by default).
+- Override button CSS in the shared partial to use:
+  - Border-radius: `10px` (app's standard button radius).
+  - Colors: `#0A64BC` (trust-blue) for primary, white background with border for outline.
+  - Font: `'DM Sans'` to match the app.
+
+---
+
+## Implementation Steps (Ordered by Dependency)
+
+### Step 1: Create Shared DataTables Assets Partial
+
+- [ ] **1.1** Create `resources/views/partials/datatables-assets.blade.php`.
+  - Include jQuery 3.7.1 slim (CDN: `https://code.jquery.com/jquery-3.7.1.slim.min.js`).
+  - Include DataTables 1.13.11 CSS (CDN: `https://cdn.datatables.net/1.13.11/css/jquery.dataTables.min.css`).
+  - Include DataTables 1.13.11 JS (CDN: `https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js`).
+  - Include Responsive extension CSS (CDN: `https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css`).
+  - Include Responsive extension JS (CDN: `https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js`).
+  - Include Buttons extension CSS (CDN: `https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css`).
+  - Include Buttons extension JS (CDN: `https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js`).
+  - Include JSZip (CDN: `https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js`).
+  - Include pdfmake (CDN: `https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js`).
+  - Include pdfmake fonts (CDN: `https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js`).
+  - Include Buttons HTML5 export (CDN: `https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js`).
+  - Include Buttons print (CDN: `https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js`).
+  - Add `<style>` block to override DataTables styles:
+    - Table borders: use `var(--hairline)`.
+    - Header background: `rgba(21,40,31,.03)`.
+    - Row hover: `#FAFCFA`.
+    - Pagination buttons: match `.btn` style.
+    - Search input: match `.form-input` style from admin layout (height 40px, border-radius 10px, border 1.5px solid var(--hairline)).
+    - Button colors: trust-blue for primary actions.
+  - Add `<script>` block with `initDataTable(selector, customOptions)` function:
+    ```javascript
+    function initDataTable(selector, customOptions = {}) {
+      try {
+        const defaultOptions = {
+          responsive: true,
+          pageLength: 25,
+          lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+          dom: '<"dt-top"<"dt-length"l><"dt-buttons"B><"dt-search"f>>rt<"dt-bottom"<"dt-info"i><"dt-pagination"p>>',
+          buttons: [
+            { extend: 'copy', text: '<i class="fa-solid fa-copy fa-xs"></i> Copy', className: 'btn-dt' },
+            { extend: 'csv', text: '<i class="fa-solid fa-file-csv fa-xs"></i> CSV', className: 'btn-dt' },
+            { extend: 'excel', text: '<i class="fa-solid fa-file-excel fa-xs"></i> Excel', className: 'btn-dt' },
+            { extend: 'pdf', text: '<i class="fa-solid fa-file-pdf fa-xs"></i> PDF', className: 'btn-dt' },
+            { extend: 'print', text: '<i class="fa-solid fa-print fa-xs"></i> Print', className: 'btn-dt' }
+          ],
+          language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search...",
+            lengthMenu: "Show _MENU_",
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            infoEmpty: "No entries found",
+            infoFiltered: "(filtered from _MAX_ total entries)",
+            paginate: {
+              first: "First",
+              last: "Last",
+              next: "Next",
+              previous: "Prev"
+            }
+          }
+        };
+        const options = { ...defaultOptions, ...customOptions };
+        $(selector).DataTable(options);
+      } catch (error) {
+        console.error('DataTables init failed for', selector, error);
+      }
+    }
+    ```
+  - **Files:** `resources/views/partials/datatables-assets.blade.php`
+  - **Verify:** Open the file in an editor and confirm all CDN URLs are present, and the `initDataTable` function is defined.
+
+---
+
+### Step 2: Add DataTables Assets to Layouts
+
+- [ ] **2.1** Modify `resources/views/layouts/admin.blade.php`:
+  - Locate the `<head>` section (around line 13, after SweetAlert2 script).
+  - Add `@include('partials.datatables-assets')` immediately after the SweetAlert2 line.
+  - **Files:** `resources/views/layouts/admin.blade.php`
+  - **Verify:** Open admin.blade.php and confirm the `@include` directive is present in `<head>`.
+
+- [ ] **2.2** Modify `resources/views/layouts/app.blade.php`:
+  - Locate the `<head>` section (around line 10–12, after Font Awesome and SweetAlert2).
+  - Add `@include('partials.datatables-assets')` after SweetAlert2.
+  - **Files:** `resources/views/layouts/app.blade.php`
+  - **Verify:** Open app.blade.php and confirm the `@include` directive is present in `<head>`.
+
+- [ ] **2.3** Check if `resources/views/pages/legal/cookie-policy.blade.php` or `resources/views/pages/how-it-works.blade.php` extend `layouts.guest`:
+  - Read the first few lines of both files to see `@extends('layouts.guest')` or similar.
+  - If yes, modify `resources/views/layouts/guest.blade.php` to add `@include('partials.datatables-assets')` in `<head>`.
+  - If no (they extend a different layout or are standalone), handle them in their specific view (see step 6).
+  - **Files:** `resources/views/layouts/guest.blade.php` (conditional)
+  - **Verify:** Confirm by reading the layout directive in cookie-policy.blade.php and how-it-works.blade.php.
+
+---
+
+### Step 3: Admin Tables — Add IDs and Initialize DataTables
+
+Apply DataTables to all admin tables in priority order: bookings → users → group-sessions → payouts → library → blog → clinics → subjects → categories → settings.
+
+- [ ] **3.1** `resources/views/pages/admin/bookings.blade.php`:
+  - Locate `<table>` (line ~70).
+  - Add `id="bookings-table"` to the `<table>` tag.
+  - At the bottom of the file, before `@endsection`, add:
+    ```blade
+    @push('scripts')
+    <script>
+    $(document).ready(function() {
+      initDataTable('#bookings-table', {
+        order: [[3, 'desc']], // Scheduled column descending
+        columnDefs: [
+          { type: 'date', targets: 3 }, // Scheduled
+          { type: 'num', targets: 4 },  // Duration
+          { type: 'num', targets: 5 },  // Amount
+          { orderable: false, targets: 7 } // Actions
+        ]
+      });
+    });
+    </script>
+    @endpush
+    ```
+  - **Files:** `resources/views/pages/admin/bookings.blade.php`
+  - **Verify:** Run `php artisan view:cache` (or clear: `php artisan view:clear`), then load `/admin/bookings` in a browser. Confirm DataTables controls (search, pagination, export buttons) appear, sorting/search work, and console has no JS errors.
+
+- [ ] **3.2** `resources/views/pages/admin/users.blade.php`:
+  - Locate `<table>` (line ~61).
+  - Add `id="users-table"`.
+  - Add initialization script in `@push('scripts')`:
+    ```javascript
+    initDataTable('#users-table', {
+      order: [[3, 'desc']], // Registered column descending
+      columnDefs: [
+        { type: 'date', targets: 3 }, // Registered
+        { orderable: false, targets: 5 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/users.blade.php`
+  - **Verify:** Load `/admin/users` in browser, confirm DataTables active, no JS errors.
+
+- [ ] **3.3** `resources/views/pages/admin/group-sessions/index.blade.php`:
+  - Locate `<table>` (line ~72).
+  - Add `id="group-sessions-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#group-sessions-table', {
+      order: [[2, 'asc']], // Scheduled ascending
+      columnDefs: [
+        { type: 'date', targets: 2 },
+        { type: 'num', targets: [3, 4, 5, 6] }, // Duration, Price, Enrolled, Max
+        { orderable: false, targets: 8 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/group-sessions/index.blade.php`
+  - **Verify:** Load `/admin/group-sessions`, confirm DataTables.
+
+- [ ] **3.4** `resources/views/pages/admin/payouts.blade.php`:
+  - Locate `<table>` (line ~63).
+  - Add `id="payouts-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#payouts-table', {
+      order: [[3, 'desc']], // Requested date descending
+      columnDefs: [
+        { type: 'num', targets: 1 }, // Amount
+        { type: 'date', targets: 3 }, // Requested
+        { orderable: false, targets: 5 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/payouts.blade.php`
+  - **Verify:** Load `/admin/payouts`, confirm DataTables.
+
+- [ ] **3.5** `resources/views/pages/admin/library.blade.php`:
+  - Locate `<table>` (line ~87).
+  - Add `id="library-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#library-table', {
+      order: [[5, 'desc']], // Downloads descending
+      columnDefs: [
+        { type: 'num', targets: 5 }, // Downloads
+        { orderable: false, targets: 7 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/library.blade.php`
+  - **Verify:** Load `/admin/library`, confirm DataTables.
+
+- [ ] **3.6** `resources/views/pages/admin/blog.blade.php`:
+  - Locate `<table>` (line ~40).
+  - Add `id="blog-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#blog-table', {
+      order: [[2, 'desc']], // Published descending
+      columnDefs: [
+        { type: 'date', targets: 2 },
+        { type: 'num', targets: 3 }, // Views
+        { orderable: false, targets: 4 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/blog.blade.php`
+  - **Verify:** Load `/admin/blog`, confirm DataTables.
+
+- [ ] **3.7** `resources/views/pages/admin/clinics.blade.php`:
+  - Locate `<table>` (line ~87).
+  - Add `id="clinics-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#clinics-table', {
+      order: [[3, 'asc']], // Scheduled ascending
+      columnDefs: [
+        { type: 'date', targets: 3 },
+        { type: 'num', targets: [4, 5, 6, 7] }, // Duration, Max, Enrolled, Price
+        { orderable: false, targets: 9 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/clinics.blade.php`
+  - **Verify:** Load `/admin/clinics`, confirm DataTables.
+
+- [ ] **3.8** `resources/views/pages/admin/subjects.blade.php`:
+  - Locate `<table>` (line ~83).
+  - Add `id="subjects-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#subjects-table', {
+      order: [[0, 'asc']], // Name ascending
+      columnDefs: [
+        { type: 'num', targets: 4 }, // Tutors Count
+        { orderable: false, targets: 5 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/subjects.blade.php`
+  - **Verify:** Load `/admin/subjects`, confirm DataTables.
+
+- [ ] **3.9** `resources/views/pages/admin/categories.blade.php`:
+  - Locate `<table>` (line ~32).
+  - Add `id="categories-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#categories-table', {
+      order: [[1, 'asc']], // Name ascending
+      columnDefs: [
+        { type: 'num', targets: 3 }, // Subjects Count
+        { orderable: false, targets: 4 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/categories.blade.php`
+  - **Verify:** Load `/admin/categories`, confirm DataTables.
+
+- [ ] **3.10** `resources/views/pages/admin/settings.blade.php`:
+  - Locate the pricing multipliers `<table>` (line ~124).
+  - Add `id="pricing-multipliers-table"`.
+  - Initialize with **no export buttons** (info table only):
+    ```javascript
+    initDataTable('#pricing-multipliers-table', {
+      paging: false,
+      searching: false,
+      info: false,
+      buttons: [] // No export buttons for this info table
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/settings.blade.php`
+  - **Verify:** Load `/admin/settings`, confirm table is sortable but no pagination/search/export (clean, minimal).
+
+- [ ] **3.11** `resources/views/pages/admin/clinic-show.blade.php`:
+  - Locate `<table>` (line ~82).
+  - Add `id="clinic-bookings-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#clinic-bookings-table', {
+      order: [[3, 'desc']], // Booked At descending
+      columnDefs: [
+        { type: 'date', targets: 3 },
+        { orderable: false, targets: 5 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/clinic-show.blade.php`
+  - **Verify:** Load a clinic detail page, confirm DataTables.
+
+- [ ] **3.12** `resources/views/pages/admin/group-sessions/show.blade.php`:
+  - Locate `<table>` (line ~70).
+  - Add `id="session-enrollments-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#session-enrollments-table', {
+      order: [[2, 'desc']], // Enrolled At descending
+      columnDefs: [
+        { type: 'date', targets: 2 },
+        { orderable: false, targets: 4 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/admin/group-sessions/show.blade.php`
+  - **Verify:** Load a group session detail page, confirm DataTables.
+
+---
+
+### Step 4: User Dashboard Tables — Parent, Student, Admin Dashboards
+
+- [ ] **4.1** `resources/views/pages/dashboard/parent.blade.php` — THREE tables:
+  - **Table 1:** Upcoming sessions table (line ~303).
+    - Add `id="parent-upcoming-sessions-table"`.
+    - At bottom of view, add:
+      ```javascript
+      initDataTable('#parent-upcoming-sessions-table', {
+        order: [[3, 'asc']], // Date ascending
+        columnDefs: [
+          { type: 'date', targets: 3 },
+          { type: 'num', targets: 4 }, // Duration
+          { orderable: false, targets: [7, 8] } // Review, Actions
+        ]
+      });
       ```
-
-      Files: `app/Http/Controllers/Admin/GroupSessionController.php`
-      Verify: `php artisan route:list 2>&1 | Select-String "group-sessions"` — no output yet (routes not added), but file parses without error: `php artisan tinker --execute="new App\Http\Controllers\Admin\GroupSessionController;"` exits 0.
-
-- [ ] 2. Register routes inside the admin group in `routes/web.php`
-      Add the following block immediately after the `// Examiner Clinics management` block (around line 346 of the file, after the last `examiner-clinics.complete` route):
-
-      ```php
-      // Group Sessions management
-      Route::get('/group-sessions',                               [App\Http\Controllers\Admin\GroupSessionController::class, 'index'])->name('group-sessions.index');
-      Route::get('/group-sessions/create',                        [App\Http\Controllers\Admin\GroupSessionController::class, 'create'])->name('group-sessions.create');
-      Route::post('/group-sessions',                              [App\Http\Controllers\Admin\GroupSessionController::class, 'store'])->name('group-sessions.store');
-      Route::get('/group-sessions/{groupSession}',                [App\Http\Controllers\Admin\GroupSessionController::class, 'show'])->name('group-sessions.show');
-      Route::get('/group-sessions/{groupSession}/edit',           [App\Http\Controllers\Admin\GroupSessionController::class, 'edit'])->name('group-sessions.edit');
-      Route::patch('/group-sessions/{groupSession}',              [App\Http\Controllers\Admin\GroupSessionController::class, 'update'])->name('group-sessions.update');
-      Route::delete('/group-sessions/{groupSession}',             [App\Http\Controllers\Admin\GroupSessionController::class, 'destroy'])->name('group-sessions.destroy');
-      Route::post('/group-sessions/{groupSession}/cancel',        [App\Http\Controllers\Admin\GroupSessionController::class, 'cancel'])->name('group-sessions.cancel');
-      Route::post('/group-sessions/{groupSession}/start',         [App\Http\Controllers\Admin\GroupSessionController::class, 'start'])->name('group-sessions.start');
-      Route::post('/group-sessions/{groupSession}/complete',      [App\Http\Controllers\Admin\GroupSessionController::class, 'complete'])->name('group-sessions.complete');
+  - **Table 2:** Refund requests table (line ~433).
+    - Add `id="parent-refunds-table"`.
+    - Initialize:
+      ```javascript
+      initDataTable('#parent-refunds-table', {
+        order: [[5, 'desc']], // Date descending
+        columnDefs: [
+          { type: 'num', targets: 3 }, // Amount
+          { type: 'date', targets: 5 }
+        ]
+      });
       ```
-
-      Route parameter name `{groupSession}` matches the controller method parameter `ExaminerClinic $groupSession` — Laravel resolves this via implicit model binding against `examiner_clinics.id`.
-
-      Files: `routes/web.php`
-      Verify: `php artisan route:list 2>&1 | Select-String "group-sessions"` — shows 10 routes all with `admin.group-sessions.*` names.
-
-- [ ] 3. Create view: `resources/views/pages/admin/group-sessions/index.blade.php`
-      Pattern: mirrors `pages/admin/clinics.blade.php` but adapted for group sessions.
-      `@extends('layouts.admin')`, `@section('title','Group Sessions')`.
-      - Stats row: Total, Scheduled, In Progress, Completed (from `$sessions` collection counts before pagination — pass as `$stats` from controller or compute inline from a second unpaginated query).
-        **Decision**: pass `$stats` as a separate array from the controller's `index()` method (`ExaminerClinic::groupSessions()->selectRaw(...)` counts by status). This avoids loading all records into the view.
-      - Filter bar: `GET` form with inputs for `search` (text), `status` (select: All/scheduled/in_progress/completed/cancelled), `subject_id` (select), `from_date`, `to_date`.
-      - Table columns: Title / Subject, Scheduled, Tutor, Slots (enrolled/max with fill bar), Status badge, Actions.
-      - Status badges use the same CSS variables as existing views: `badge-green` (completed), `badge-blue` (scheduled), `badge-amber` (in_progress), `badge-red` (cancelled).
-      - Action buttons per row: View, Edit (if scheduled), Cancel (if not cancelled/completed), Delete (if scheduled + 0 enrolled).
-      - Pagination block identical to `clinics.blade.php`.
-      - "Create Group Session" button links to `route('admin.group-sessions.create')`.
-
-      Files: `resources/views/pages/admin/group-sessions/index.blade.php`
-      Verify: Navigate to `/admin/group-sessions` as admin — page loads without 500 error, table renders (even empty).
-
-- [ ] 4. Create view: `resources/views/pages/admin/group-sessions/create.blade.php`
-      Pattern: mirrors `pages/admin/clinic-create.blade.php`.
-      `@extends('layouts.admin')`, `@section('title','Create Group Session')`.
-      Form `POST` to `route('admin.group-sessions.store')`.
-      Fields (all use the same inline-CSS form style as clinic-create):
-      - `subject_id` — select from `$subjects` (required)
-      - `title` — text input (required, max 255)
-      - `description` — textarea (nullable)
-      - `tutor_id` — select from `$tutors` filtered to `role=tutor` (nullable; "Optional — leave blank if TBD")
-      - `scheduled_at` — datetime-local input (required)
-      - `duration_minutes` — number input, default 60, min 30, max 480 (required)
-      - `max_students` — number input, default 30, min 1, max 200 (nullable; info note: "Default 30 if left blank")
-      - `price` — number input, default 0, min 0 (nullable)
-      - Error display block at top (same style as clinic-create).
-      - Info callout box: "Session code (GRP-XXXXXXXX) and meeting room are auto-generated on creation."
-      - Back link → `route('admin.group-sessions.index')`.
-
-      Files: `resources/views/pages/admin/group-sessions/create.blade.php`
-      Verify: Navigate to `/admin/group-sessions/create` — page loads, form submits successfully with valid data and redirects to the show page.
-
-- [ ] 5. Create view: `resources/views/pages/admin/group-sessions/show.blade.php`
-      Pattern: mirrors `pages/admin/clinic-show.blade.php`.
-      `@extends('layouts.admin')`, `@section('title', 'Group Session – ' . $groupSession->title)`.
-      Two-column layout (2fr / 1fr) with mobile stack.
-
-      Left column:
-      - **Enrolled Students** card — table with columns: #, Student (name + email), Attended (tick/dash), Enrolled at. Show enrollment count vs max_students capacity bar.
-      - Empty state if no enrollments.
-
-      Right column (meta panel cards):
-      - **Session Info** card: Status, Session Code (`GRP-...`), Meeting Room, Price (KSh), Duration, Max Students, Scheduled At, Created By.
-      - **Tutor** card (if `$groupSession->tutor` set): name, email, "Launch Session" button → `route('examiner.clinics.join', $groupSession)` (reuses existing Jitsi join route since it accepts any ExaminerClinic).
-      - **Subject** card: subject name, slug.
-
-      Action buttons in page header (top-right):
-      - "Edit" → `route('admin.group-sessions.edit', $groupSession)` — shown only when `status === 'scheduled'`
-      - "Start Session" (POST form → `route('admin.group-sessions.start', $groupSession)`) — shown when `status === 'scheduled'`
-      - "Mark Complete" (POST form → `route('admin.group-sessions.complete', $groupSession)`) — shown when `status === 'in_progress'`
-      - "Cancel" (POST form with confirm → `route('admin.group-sessions.cancel', $groupSession)`) — shown when not cancelled/completed
-      - "Delete" (DELETE form with confirm → `route('admin.group-sessions.destroy', $groupSession)`) — shown when `status === 'scheduled'` and 0 enrollments
-
-      Back link → `route('admin.group-sessions.index')`.
-
-      Files: `resources/views/pages/admin/group-sessions/show.blade.php`
-      Verify: After creating a group session, clicking "View" from the index lands on the show page with all meta data visible.
-
-- [ ] 6. Create view: `resources/views/pages/admin/group-sessions/edit.blade.php`
-      Pattern: mirrors `create.blade.php` with pre-filled `old()`/model values.
-      `@extends('layouts.admin')`, `@section('title','Edit Group Session')`.
-      Form `PATCH` to `route('admin.group-sessions.update', $groupSession)` (include `@method('PATCH')`).
-      Same fields as create, pre-populated from `$groupSession`:
-      - `subject_id` — pre-select `$groupSession->subject_id`
-      - `title` — pre-fill `$groupSession->title`
-      - `description` — pre-fill `$groupSession->description`
-      - `tutor_id` — pre-select `$groupSession->tutor_id`
-      - `scheduled_at` — pre-fill `$groupSession->scheduled_at->format('Y-m-d\TH:i')`
-      - `duration_minutes` — pre-fill `$groupSession->duration_minutes`
-      - `max_students` — pre-fill `$groupSession->max_students`
-      - `price` — pre-fill `$groupSession->price`
-      - Session Code shown as read-only text (not an input): "Cannot be changed after creation."
-      Back link → `route('admin.group-sessions.show', $groupSession)`.
-
-      Files: `resources/views/pages/admin/group-sessions/edit.blade.php`
-      Verify: Clicking "Edit" on a scheduled group session loads the form with correct pre-filled values. Submitting updates and redirects back to show page with success flash.
-
-- [ ] 7. Add "Group Sessions" nav item to the admin sidebar in `layouts/admin.blade.php`
-      In the "Content" `nav-section`, add the new item **after** the "Examiner Clinics" `<a>` element and **before** the "Blog Posts" `<a>` element.
-
-      Insert exactly:
-      ```blade
-      <a href="{{ route('admin.group-sessions.index') }}" class="nav-item {{ request()->routeIs('admin.group-sessions*') ? 'active' : '' }}">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Group Sessions
-      </a>
+  - **Table 3:** Payment history table (line ~482).
+    - Add `id="parent-payments-table"`.
+    - Initialize:
+      ```javascript
+      initDataTable('#parent-payments-table', {
+        order: [[2, 'desc']], // Date descending
+        columnDefs: [
+          { type: 'date', targets: 2 },
+          { type: 'num', targets: 4 }, // Amount
+          { orderable: false, targets: 6 } // Actions
+        ]
+      });
       ```
-      (Uses the "group of people" SVG icon, consistent with the Tutor Approvals icon already used in the People section.)
+  - **Files:** `resources/views/pages/dashboard/parent.blade.php`
+  - **Verify:** Load parent dashboard, confirm all 3 tables have DataTables active, no JS errors.
 
-      Files: `resources/views/layouts/admin.blade.php`
-      Verify: Admin sidebar renders "Group Sessions" link between "Examiner Clinics" and "Blog Posts". Active state highlights when on any `admin.group-sessions.*` route.
-
-- [ ] 8. Update `GroupSessionController::index()` to pass stats array
-      Add a `$stats` array computed **before** the paginated query by running a grouped count:
-      ```php
-      $stats = ExaminerClinic::groupSessions()
-          ->selectRaw('status, count(*) as total')
-          ->groupBy('status')
-          ->pluck('total', 'status')
-          ->toArray();
-      $stats['total'] = ExaminerClinic::groupSessions()->count();
+- [ ] **4.2** `resources/views/pages/dashboard/student.blade.php` — TWO tables:
+  - **Table 1:** Upcoming sessions (line ~447).
+    - Add `id="student-sessions-table"`.
+    - Initialize:
+      ```javascript
+      initDataTable('#student-sessions-table', {
+        order: [[2, 'asc']], // Date ascending
+        columnDefs: [
+          { type: 'date', targets: 2 },
+          { type: 'num', targets: 3 }, // Duration
+          { orderable: false, targets: [6, 7] } // Review, Actions
+        ]
+      });
       ```
-      Pass `$stats` into the view via `compact('sessions', 'subjects', 'stats')`.
-      This is part of item 1 if written together; list as separate item because the view (item 3) depends on the stats array shape being defined.
+  - **Table 2:** Payment history (line ~609).
+    - Add `id="student-payments-table"`.
+    - Initialize:
+      ```javascript
+      initDataTable('#student-payments-table', {
+        order: [[2, 'desc']], // Date descending
+        columnDefs: [
+          { type: 'date', targets: 2 },
+          { type: 'num', targets: 4 }, // Amount
+          { orderable: false, targets: 6 } // Actions
+        ]
+      });
+      ```
+  - **Files:** `resources/views/pages/dashboard/student.blade.php`
+  - **Verify:** Load student dashboard, confirm both tables have DataTables.
 
-      Files: `app/Http/Controllers/Admin/GroupSessionController.php`
-      Verify: The index view renders the stats row without undefined variable errors.
+- [ ] **4.3** `resources/views/pages/dashboard/admin.blade.php`:
+  - Locate `<table>` (line ~113).
+  - Add `id="admin-recent-bookings-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#admin-recent-bookings-table', {
+      order: [[3, 'desc']], // Date descending
+      columnDefs: [
+        { type: 'date', targets: 3 },
+        { type: 'num', targets: 4 }, // Amount
+        { orderable: false, targets: 6 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/dashboard/admin.blade.php`
+  - **Verify:** Load admin dashboard, confirm table active.
 
-> **Note on `{groupSession}` route-model binding**: Laravel resolves `ExaminerClinic $groupSession` from the route key `{groupSession}` using the model's primary key. No custom `getRouteKeyName()` override is needed. The `abort-if !isGroupSession()` guard in each method prevents a non-group-session record from being manipulated through these routes even if someone crafts a URL with a regular clinic ID.
+---
 
-> **No migration needed**: `is_group_session` column already exists in `examiner_clinics` (in `ExaminerClinic::$fillable` and confirmed by `scopeGroupSessions()` / `scopeClinics()` guards).
+### Step 5: Tutor and Examiner Tables
+
+- [ ] **5.1** `resources/views/pages/tutor/library/index.blade.php`:
+  - Locate `<table>` (line ~139).
+  - Add `id="tutor-library-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#tutor-library-table', {
+      order: [[2, 'desc']], // Submitted descending
+      columnDefs: [
+        { type: 'date', targets: 2 },
+        { type: 'num', targets: 3 }, // Downloads
+        { orderable: false, targets: 5 } // Actions
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/tutor/library/index.blade.php`
+  - **Verify:** Load tutor library page, confirm DataTables.
+
+- [ ] **5.2** `resources/views/pages/examiner-dashboard.blade.php`:
+  - Locate `<table>` (line ~230).
+  - Add `id="examiner-bookings-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#examiner-bookings-table', {
+      order: [[4, 'desc']], // Booked At descending
+      columnDefs: [
+        { type: 'date', targets: 4 }
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/examiner-dashboard.blade.php`
+  - **Verify:** Load examiner dashboard, confirm table active.
+
+- [ ] **5.3** `resources/views/pages/examiner-clinic-details.blade.php`:
+  - Locate `<table>` (line ~90).
+  - Add `id="clinic-detail-bookings-table"`.
+  - Initialize:
+    ```javascript
+    initDataTable('#clinic-detail-bookings-table', {
+      order: [[3, 'desc']], // Booked At descending
+      columnDefs: [
+        { type: 'date', targets: 3 }
+      ]
+    });
+    ```
+  - **Files:** `resources/views/pages/examiner-clinic-details.blade.php`
+  - **Verify:** Load clinic detail page (public), confirm table active.
+
+---
+
+### Step 6: Public/Marketing Tables
+
+- [ ] **6.1** `resources/views/pages/how-it-works.blade.php`:
+  - Locate `<table>` (line ~262).
+  - Add `id="pricing-comparison-table"`.
+  - Check which layout it extends (`@extends('layouts.XXX')`). If it's not `layouts.guest` or `layouts.app`, ensure DataTables assets are loaded (add `@include('partials.datatables-assets')` in the view's `@section('head')` or similar).
+  - Initialize (minimal: paging off, export optional):
+    ```javascript
+    initDataTable('#pricing-comparison-table', {
+      paging: false,
+      searching: false,
+      info: false,
+      order: [[0, 'asc']] // Feature column ascending
+    });
+    ```
+  - **Files:** `resources/views/pages/how-it-works.blade.php`
+  - **Verify:** Load `/how-it-works`, confirm table is sortable, no pagination (static content).
+
+- [ ] **6.2** `resources/views/pages/legal/cookie-policy.blade.php`:
+  - Locate `<table>` (line ~89).
+  - Add `id="cookies-table"`.
+  - Check layout extends directive. If `layouts.guest`, ensure DataTables assets are included in guest layout (done in step 2.3). If standalone, add assets include.
+  - Initialize:
+    ```javascript
+    initDataTable('#cookies-table', {
+      paging: false,
+      searching: false,
+      info: false,
+      order: [[0, 'asc']] // Cookie Name ascending
+    });
+    ```
+  - **Files:** `resources/views/pages/legal/cookie-policy.blade.php`
+  - **Verify:** Load `/cookie-policy`, confirm table sortable, no pagination.
+
+---
+
+### Step 7: Verification and Testing
+
+- [ ] **7.1** Run frontend build:
+  - Execute `npm run build` in `c:/Users/Administrator/Downloads/mediacity.co.in-2026-10-13/mediacity.co.in-2026-10-13/tutor-platform/`.
+  - Confirm no build errors.
+  - **Command:** `npm run build`
+  - **Expected:** "build complete" or similar success message.
+
+- [ ] **7.2** Clear Laravel view cache and recompile:
+  - Execute `php artisan view:clear` to clear cached views.
+  - Execute `php artisan view:cache` to recompile (or just clear and let Laravel compile on-demand).
+  - **Commands:** `php artisan view:clear && php artisan view:cache`
+  - **Expected:** No syntax errors reported.
+
+- [ ] **7.3** Syntax-check modified Blade files:
+  - Run `php -l` on each modified Blade file to catch PHP syntax errors. For example:
+    ```
+    php -l resources/views/pages/admin/bookings.blade.php
+    ```
+  - Repeat for all 23+ modified files.
+  - **Expected:** "No syntax errors detected" for each file.
+
+- [ ] **7.4** Browser verification (manual, by user):
+  - Open the application in a browser (Chrome/Edge recommended).
+  - Navigate to each page with a table (start with `/admin/bookings`).
+  - For each table, verify:
+    - DataTables controls (search box, page length dropdown, pagination) appear.
+    - Export buttons (Copy, CSV, Excel, PDF, Print) appear and are styled correctly.
+    - Sorting works on each column (click column headers).
+    - Search/filter works (type in search box, table filters).
+    - Pagination works (click next/previous, change page length).
+    - Export buttons work (click CSV, confirm download; click PDF, confirm download).
+    - Responsive: resize browser to mobile width, confirm table becomes responsive (+ icon to expand rows, or horizontal scroll with responsive plugin).
+    - Console (F12 → Console) has no JavaScript errors related to DataTables.
+  - **Test priority order:**
+    1. `/admin/bookings` (most critical admin table)
+    2. `/admin/users` (large dataset potential)
+    3. Parent dashboard tables (user-facing, high visibility)
+    4. Other admin tables
+    5. Public/marketing tables (lower priority, static content)
+
+- [ ] **7.5** Accessibility check (basic):
+  - Confirm DataTables search input has `aria-label` (DataTables should add this by default, but verify).
+  - Confirm pagination links are keyboard-navigable (tab through them, press Enter).
+  - Confirm screen reader can read table headers and data (use browser's accessibility inspector or NVDA/JAWS if available).
+  - **Note:** Full WCAG compliance requires manual testing with assistive tech; this is a basic smoke test.
+
+---
+
+### Step 8: Error Handling and Edge Cases
+
+- [ ] **8.1** Verify try/catch in `initDataTable()` function:
+  - Open `resources/views/partials/datatables-assets.blade.php`.
+  - Confirm the `initDataTable()` function wraps `$(selector).DataTable(options)` in `try/catch` and logs errors to console.
+  - **Expected:** If a table ID is misspelled or a table doesn't exist, console shows error but other tables still initialize.
+
+- [ ] **8.2** Test with empty tables:
+  - Navigate to a page where a table might be empty (e.g., `/admin/categories` if no categories exist, or a user dashboard with no bookings).
+  - Confirm DataTables still initializes and shows "No entries found" or similar message.
+  - Confirm export buttons are present (exporting an empty table should produce an empty CSV/Excel file).
+
+- [ ] **8.3** Test with large datasets (if applicable):
+  - If `/admin/users` has >1000 rows, check performance:
+    - Load the page, measure time to render (should be <3 seconds on a modern browser).
+    - If slow, consider switching to server-side processing: modify the initialization to add `serverSide: true` and `ajax: { url: '/admin/users/data', type: 'POST' }`, then implement a Laravel controller method to return DataTables JSON. (This is a future optimization, not required for initial rollout if <1000 users.)
+
+---
+
+## Column Type Hints and Export Configuration
+
+DataTables auto-detects column types (text, number, date) but explicit `columnDefs` improve accuracy. The plan above specifies `columnDefs` for each table:
+- `{ type: 'date', targets: [col_index] }` for date columns (e.g., "Scheduled At").
+- `{ type: 'num', targets: [col_index] }` for numeric columns (e.g., "Amount", "Duration").
+- `{ orderable: false, targets: [col_index] }` for action columns (buttons/links that shouldn't be sorted).
+
+**Date Format:** If dates are in `M j, Y` format (e.g., "Jan 15, 2026"), DataTables will parse them correctly. If they are in a non-standard format, we may need a custom sorting plugin (defer to testing; most common formats work out of the box).
+
+**Currency:** Amounts displayed as "KSh 1,000" will be treated as text by default. To sort correctly, we can:
+- Use `{ type: 'num', targets: [amount_col] }` and ensure the `<td>` has a `data-order` attribute with the numeric value, e.g., `<td data-order="1000">KSh 1,000</td>`. (Apply this in the Blade `@foreach` loop for amount columns.)
+- **Implementation note:** In step 3.1 (bookings table) and similar, when modifying the Blade file, wrap currency cells like:
+  ```blade
+  <td data-order="{{ $booking->total_amount }}">KSh {{ number_format($booking->total_amount) }}</td>
+  ```
+  This ensures sorting is numeric, not alphabetic.
+
+---
+
+## Livewire Compatibility Note
+
+**Livewire components in this app** (e.g., `livewire/tutors/tutor-search.blade.php`) use `wire:model` for **form inputs** (search, filters), not for table rendering. The tables themselves are server-rendered Blade `@foreach` loops, so there is **no Livewire/DataTables conflict**.
+
+If in the future a table is refactored to be Livewire-driven (rows updated via Livewire wire actions), the initialization script must listen for Livewire's `livewire:load` and `livewire:update` events to reinitialize DataTables after Livewire re-renders the table. Example:
+```javascript
+Livewire.on('dataUpdated', () => {
+  $('#table-id').DataTable().destroy();
+  initDataTable('#table-id', options);
+});
+```
+**For this plan, no Livewire-driven tables exist, so this is not required.**
+
+---
+
+## Server-Side Processing (Future Consideration)
+
+If any table exceeds 1000 rows and client-side performance degrades, implement server-side processing:
+1. Modify the table's initialization to add `serverSide: true` and `ajax: { url: '/api/datatables/users', type: 'POST' }`.
+2. Create a Laravel route (e.g., `POST /api/datatables/users`) that accepts DataTables' request parameters (`draw`, `start`, `length`, `search`, `order`) and returns JSON in DataTables' expected format.
+3. Use a package like `yajra/laravel-datatables` to simplify server-side response generation.
+
+**Defer to testing.** Initially, all tables use client-side processing.
+
+---
+
+## Summary of Files to Create/Modify
+
+### Create:
+1. `resources/views/partials/datatables-assets.blade.php` — Shared CDN assets + initDataTable function + styling.
+
+### Modify (add DataTables initialization):
+1. `resources/views/layouts/admin.blade.php` — Add `@include('partials.datatables-assets')` in `<head>`.
+2. `resources/views/layouts/app.blade.php` — Add `@include('partials.datatables-assets')` in `<head>`.
+3. `resources/views/layouts/guest.blade.php` — Add `@include('partials.datatables-assets')` if needed (check step 2.3).
+4. `resources/views/pages/admin/bookings.blade.php` — Add ID + script.
+5. `resources/views/pages/admin/users.blade.php` — Add ID + script.
+6. `resources/views/pages/admin/group-sessions/index.blade.php` — Add ID + script.
+7. `resources/views/pages/admin/payouts.blade.php` — Add ID + script.
+8. `resources/views/pages/admin/library.blade.php` — Add ID + script.
+9. `resources/views/pages/admin/blog.blade.php` — Add ID + script.
+10. `resources/views/pages/admin/clinics.blade.php` — Add ID + script.
+11. `resources/views/pages/admin/subjects.blade.php` — Add ID + script.
+12. `resources/views/pages/admin/categories.blade.php` — Add ID + script.
+13. `resources/views/pages/admin/settings.blade.php` — Add ID + script (no export buttons).
+14. `resources/views/pages/admin/clinic-show.blade.php` — Add ID + script.
+15. `resources/views/pages/admin/group-sessions/show.blade.php` — Add ID + script.
+16. `resources/views/pages/dashboard/parent.blade.php` — Add IDs + scripts (3 tables).
+17. `resources/views/pages/dashboard/student.blade.php` — Add IDs + scripts (2 tables).
+18. `resources/views/pages/dashboard/admin.blade.php` — Add ID + script.
+19. `resources/views/pages/tutor/library/index.blade.php` — Add ID + script.
+20. `resources/views/pages/examiner-dashboard.blade.php` — Add ID + script.
+21. `resources/views/pages/examiner-clinic-details.blade.php` — Add ID + script.
+22. `resources/views/pages/how-it-works.blade.php` — Add ID + script.
+23. `resources/views/pages/legal/cookie-policy.blade.php` — Add ID + script.
+
+**Total:** 1 new file, 23+ modified files.
+
+---
+
+## Build and Test Commands
+
+**Frontend build:**
+```bash
+cd c:/Users/Administrator/Downloads/mediacity.co.in-2026-10-13/mediacity.co.in-2026-10-13/tutor-platform
+npm run build
+```
+
+**Laravel view cache:**
+```bash
+php artisan view:clear
+php artisan view:cache
+```
+
+**Syntax check (example for one file):**
+```bash
+php -l resources/views/pages/admin/bookings.blade.php
+```
+
+**Browser testing:**
+- Open `http://localhost:8000` (or the app's URL).
+- Navigate to each table page.
+- Verify DataTables controls, sorting, search, pagination, export, responsive behavior.
+- Open browser console (F12), confirm no JavaScript errors.
+
+---
+
+## Risk Mitigation
+
+1. **jQuery Conflicts:** Since Alpine.js is already loaded, and we're adding jQuery, there's a risk of `$` conflicts. Mitigation: jQuery is loaded **before** Alpine, and we use `$(document).ready()` to ensure DOM is ready. Alpine uses `x-data`, not `$`, so no direct conflict. Test thoroughly.
+
+2. **CSS Conflicts:** DataTables' default CSS might conflict with the app's existing table styles. Mitigation: The shared partial includes custom CSS overrides that use the app's CSS variables (`--ink`, `--trust-blue`, etc.) to ensure visual consistency.
+
+3. **Performance:** Large tables (>500 rows) may be slow with client-side processing. Mitigation: Start with client-side; monitor performance in testing. If slow, implement server-side processing for that specific table (deferred to post-rollout optimization).
+
+4. **Livewire:** Future Livewire-driven tables will need special handling. Mitigation: Document the Livewire reinit pattern above; implement only if/when needed.
+
+5. **Export Button Overload:** Too many export buttons might clutter the UI. Mitigation: The shared config includes 5 buttons (Copy, CSV, Excel, PDF, Print). For info-only tables (e.g., pricing multipliers), we set `buttons: []` to hide them. If users find buttons overwhelming, we can reduce to 3 (CSV, Excel, PDF) in a future iteration.
+
+---
+
+## Success Criteria
+
+- [ ] All 23+ tables have DataTables ID assigned.
+- [ ] All tables show DataTables search, pagination, and export controls.
+- [ ] Sorting works on all sortable columns.
+- [ ] Search/filter works across all tables.
+- [ ] Export buttons (CSV, Excel, PDF, Print) work and produce correct files.
+- [ ] Responsive: tables adapt to mobile viewports (horizontal scroll or column hiding).
+- [ ] No JavaScript console errors on any table page.
+- [ ] Build and syntax checks pass (`npm run build`, `php artisan view:cache`, `php -l`).
+- [ ] Accessibility: keyboard navigation and screen reader compatibility verified (basic check).
+- [ ] Existing functionality (inline JS, forms, Livewire components) remains intact — no regressions.
+
+---
+
+## Post-Implementation Notes
+
+- **Documentation:** After rollout, add a brief section to the project README or a new `docs/datatables.md` file explaining how to add DataTables to a new table (ID, script, columnDefs).
+- **Maintenance:** If DataTables is updated to a new version, update the CDN URLs in `datatables-assets.blade.php` and test thoroughly.
+- **Server-Side Processing:** If any table grows beyond 1000 rows and performance degrades, implement server-side processing for that table using the pattern described above (defer to future sprint).
+
+---
+
+**End of Plan**

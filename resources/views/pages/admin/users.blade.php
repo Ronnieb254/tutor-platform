@@ -58,14 +58,14 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
         <span style="font-size:14px;color:var(--muted);">{{ $users->total() }} user{{ $users->total()!==1?'s':'' }} found</span>
     </div>
     <div class="table-wrap">
-        <table>
+        <table id="users-table">
             <thead>
                 <tr>
                     <th>User</th>
                     <th>Role</th>
                     <th>Joined</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th class="no-export">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,7 +84,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                         @php $rc=['student'=>'badge-blue','parent'=>'badge-trust-blue','tutor'=>'badge-green','admin'=>'badge-amber','super-admin'=>'badge-purple'][$user->role]??'badge-gray'; @endphp
                         <span class="badge {{ $rc }}" style="{{ $user->role==='super-admin'?'background:#7C3AED;color:#fff;':'' }}">{{ $user->role==='super-admin'?'⭐ Super Admin':ucfirst($user->role) }}</span>
                     </td>
-                    <td style="color:var(--muted);font-size:13px;">{{ $user->created_at->format('M j, Y') }}</td>
+                    <td data-order="{{ $user->created_at->timestamp }}" style="color:var(--muted);font-size:13px;">{{ $user->created_at->format('M j, Y') }}</td>
                     <td>
                         @if($user->email_verified_at)
                         <span class="badge badge-green">✓ Verified</span>
@@ -131,4 +131,18 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
     <div style="padding:16px 24px;border-top:1px solid var(--hairline);">{{ $users->withQueryString()->links() }}</div>
     @endif
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#users-table', {
+        order: [[2, 'desc']], // Joined column descending
+        columnDefs: [
+            { type: 'date', targets: 2 }, // Joined
+            { orderable: false, targets: 4 } // Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection

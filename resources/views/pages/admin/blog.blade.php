@@ -37,7 +37,7 @@ $categories = BlogCategory::all();
 
 <div class="card">
     <div class="table-wrap">
-        <table>
+        <table id="blog-table">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -45,7 +45,7 @@ $categories = BlogCategory::all();
                     <th>Author</th>
                     <th>Date</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th class="no-export">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,7 +65,7 @@ $categories = BlogCategory::all();
                         @endif
                     </td>
                     <td style="color:var(--muted);font-size:13px;">{{ $post->author->name }}</td>
-                    <td style="color:var(--muted);font-size:13px;white-space:nowrap;">{{ $post->created_at->format('M j, Y') }}</td>
+                    <td data-order="{{ $post->created_at->timestamp }}" style="color:var(--muted);font-size:13px;white-space:nowrap;">{{ $post->created_at->format('M j, Y') }}</td>
                     <td>
                         <span class="badge {{ $post->is_published ? 'badge-green' : 'badge-amber' }}">
                             {{ $post->is_published ? 'Published' : 'Draft' }}
@@ -144,4 +144,18 @@ $categories = BlogCategory::all();
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#blog-table', {
+        order: [[3, 'desc']], // Date descending
+        columnDefs: [
+            { type: 'date', targets: 3 }, // Date
+            { orderable: false, targets: 5 } // Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection

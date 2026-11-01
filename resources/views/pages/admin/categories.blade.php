@@ -29,7 +29,7 @@
 
     <div class="card">
         <div style="overflow-x:auto;">
-            <table>
+            <table id="categories-table">
                 <thead>
                     <tr>
                         <th>Icon</th>
@@ -38,7 +38,7 @@
                         <th>Subjects</th>
                         <th>Sort Order</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th class="no-export">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,8 +52,8 @@
                             @endif
                         </td>
                         <td><code style="background:#F4F6F4;padding:3px 8px;border-radius:6px;font-size:11px;">{{ $category->slug }}</code></td>
-                        <td><span class="bdg bdg-trust-blue">{{ $category->subjects_count }} subjects</span></td>
-                        <td>{{ $category->sort_order }}</td>
+                        <td data-order="{{ $category->subjects_count }}"><span class="bdg bdg-trust-blue">{{ $category->subjects_count }} subjects</span></td>
+                        <td data-order="{{ $category->sort_order }}">{{ $category->sort_order }}</td>
                         <td>
                             <label class="toggle-switch">
                                 <input type="checkbox" {{ $category->is_active ? 'checked' : '' }} onchange="toggleCategory({{ $category->id }}, this)">
@@ -190,6 +190,21 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#categories-table', {
+        order: [[1, 'asc']], // Name ascending
+        columnDefs: [
+            { type: 'num', targets: 3 }, // Subjects Count
+            { type: 'num', targets: 4 }, // Sort Order
+            { orderable: false, targets: [5, 6] } // Status, Actions
+        ]
+    });
+});
+</script>
+@endpush
 
 <style>
 .toggle-switch{position:relative;display:inline-block;width:44px;height:24px;}

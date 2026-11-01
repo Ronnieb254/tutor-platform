@@ -84,7 +84,7 @@
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;">Resources ({{ $resources->total() }})</h3>
     </div>
     <div style="overflow-x:auto;">
-        <table>
+        <table id="library-table">
             <thead>
                 <tr>
                     <th>Resource</th>
@@ -94,7 +94,7 @@
                     <th>Grade</th>
                     <th>Downloads</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th class="no-export">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,7 +125,7 @@
                     <td style="font-size:13px;">{{ $resource->author->name }}</td>
                     <td style="font-size:13px;color:var(--text-muted);">{{ $resource->category?->name ?? '—' }}</td>
                     <td style="font-size:13px;color:var(--text-muted);">{{ $resource->grade_level ?? '—' }}</td>
-                    <td style="font-size:13px;font-weight:600;">{{ number_format($resource->download_count) }}</td>
+                    <td data-order="{{ $resource->download_count }}" style="font-size:13px;font-weight:600;">{{ number_format($resource->download_count) }}</td>
                     <td>
                         @if(!$resource->is_approved)
                             <span class="badge badge-warning">Pending</span>
