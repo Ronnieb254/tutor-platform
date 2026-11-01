@@ -171,12 +171,12 @@ a{color:inherit;text-decoration:none;}
                         @if($resource->thumbnail)
                             <img src="{{ asset('storage/'.$resource->thumbnail) }}" alt="{{ $resource->title }}">
                         @else
-                            @php $icons = ['article'=>'📄','video'=>'🎥','notes'=>'📝','past_paper'=>'📋']; @endphp
+                            @php $icons = ['article'=>'📄','notes'=>'📝','past_paper'=>'📋','video'=>'🎥']; @endphp
                             {{ $icons[$resource->resource_type] ?? '📄' }}
                         @endif
                         @php
-                            $typeClasses = ['article'=>'bdg-blue','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
-                            $typeLabelMap = ['article'=>'Article','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
+                            $typeClasses = ['article'=>'bdg-blue','notes'=>'bdg-amber','past_paper'=>'bdg-green','video'=>'bdg-purple'];
+                            $typeLabelMap = ['article'=>'Article','notes'=>'Notes','past_paper'=>'Past Paper','video'=>'Video'];
                         @endphp
                         <span class="card-type-badge bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">
                             {{ $typeLabelMap[$resource->resource_type] ?? ucfirst($resource->resource_type) }}

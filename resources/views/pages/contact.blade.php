@@ -43,7 +43,7 @@
 
                     @foreach([
                         ['fa-location-dot','Office','Suite 11, Samima Suites, Nairobi West',null],
-                        ['fa-envelope','Email','info@ovaldesk.co.ke','mailto:info@ovaldesk.co.ke'],
+                        ['fa-envelope','Email','support@ovaldesk.co.ke','mailto:support@ovaldesk.co.ke'],
                         ['fa-phone','Phone','0724 367 814 / 0723 636 901','tel:+254724367814'],
                         ['fa-globe','Website','ovaldesk.co.ke','https://ovaldesk.co.ke'],
                     ] as [$ic,$label,$val,$href])
@@ -189,8 +189,8 @@
                 <div style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(21,40,31,.08);text-align:center;">
                     <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:10px;">Or reach us directly</p>
                     <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
-                        <a href="mailto:info@ovaldesk.co.ke" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:1.5px solid rgba(21,40,31,.15);color:#15281F;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s;" onmouseover="this.style.borderColor='#0A64BC';this.style.color='#0A64BC'" onmouseout="this.style.borderColor='rgba(21,40,31,.15)';this.style.color='#15281F'">
-                            <i class="fa-solid fa-envelope fa-xs"></i> info@ovaldesk.co.ke
+                        <a href="mailto:support@ovaldesk.co.ke" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:1.5px solid rgba(21,40,31,.15);color:#15281F;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s;" onmouseover="this.style.borderColor='#0A64BC';this.style.color='#0A64BC'" onmouseout="this.style.borderColor='rgba(21,40,31,.15)';this.style.color='#15281F'">
+                            <i class="fa-solid fa-envelope fa-xs"></i> support@ovaldesk.co.ke
                         </a>
                         <a href="tel:+254724367814" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:1.5px solid rgba(21,40,31,.15);color:#15281F;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s;" onmouseover="this.style.borderColor='#0A64BC';this.style.color='#0A64BC'" onmouseout="this.style.borderColor='rgba(21,40,31,.15)';this.style.color='#15281F'">
                             <i class="fa-solid fa-phone fa-xs"></i> 0724 367 814

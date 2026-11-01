@@ -13,7 +13,7 @@ class PlatformSettingsSeeder extends Seeder
             // General
             ['key' => 'platform_name',             'value' => 'Mwalimu',                                    'group' => 'general'],
             ['key' => 'platform_tagline',          'value' => 'Instant 1-on-1 tutoring, matched in seconds','group' => 'general'],
-            ['key' => 'contact_email',             'value' => 'info@ovaldesk.co.ke',                        'group' => 'general'],
+            ['key' => 'contact_email',             'value' => 'support@ovaldesk.co.ke',                        'group' => 'general'],
             ['key' => 'contact_phone_1',           'value' => '0724367814',                                 'group' => 'general'],
             ['key' => 'contact_phone_2',           'value' => '0723636901',                                 'group' => 'general'],
             ['key' => 'contact_address',           'value' => 'Suite 11, Samima Suites, Nairobi West',      'group' => 'general'],

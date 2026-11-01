@@ -32,7 +32,7 @@ class DocumentRejected extends Notification implements ShouldQueue
             ->line("**Reason:** {$this->reason}")
             ->line('Please log in to your dashboard, go to **My Documents**, and re-upload a clear, valid copy.')
             ->action('Re-upload Documents', url('/dashboard/tutor?tab=documents'))
-            ->line('If you have questions, contact us at info@ovaldesk.co.ke');
+            ->line('If you have questions, contact us at support@ovaldesk.co.ke');
     }
 
     public function toArray(object $notifiable): array
