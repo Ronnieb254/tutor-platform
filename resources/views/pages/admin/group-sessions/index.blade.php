@@ -125,7 +125,6 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:40px;">No group sessions found. <a href="{{ route('admin.group-sessions.create') }}" style="color:#0A64BC;">Create one</a></td></tr>
                 @endforelse
             </tbody>
         </table>

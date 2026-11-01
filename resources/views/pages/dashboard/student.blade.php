@@ -481,7 +481,6 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                         <td><a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a></td>
                     </tr>
                     @empty
-                    <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">No session history yet</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -633,7 +632,6 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No payments yet</td></tr>
                     @endforelse
                 </tbody>
             </table>

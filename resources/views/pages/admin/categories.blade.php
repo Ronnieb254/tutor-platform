@@ -73,7 +73,6 @@
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="7" style="text-align:center;padding:48px;color:var(--muted);">No categories found. Add your first category to get started.</td></tr>
                     @endforelse
                 </tbody>
             </table>

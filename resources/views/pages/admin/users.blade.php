@@ -122,7 +122,6 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:40px;">No users found</td></tr>
                 @endforelse
             </tbody>
         </table>

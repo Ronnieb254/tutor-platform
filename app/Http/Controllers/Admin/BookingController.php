@@ -20,7 +20,7 @@ class BookingController extends Controller
                 ->orWhereHas('tutor', fn($u) => $u->where('name', 'like', "%{$search}%"))
             )
             ->latest()
-            ->paginate(25);
+            ->get();
 
         return view('pages.admin.bookings', compact('bookings', 'status', 'search'));
     }

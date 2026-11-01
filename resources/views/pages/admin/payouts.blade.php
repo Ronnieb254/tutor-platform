@@ -120,7 +120,6 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:40px;">No {{ $status }} payout requests</td></tr>
                 @endforelse
             </tbody>
         </table>

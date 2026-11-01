@@ -84,12 +84,6 @@ $categories = BlogCategory::all();
                     </td>
                 </tr>
                 @empty
-                <tr>
-                    <td colspan="6" style="text-align:center;padding:48px;color:var(--muted);">
-                        <div style="font-size:36px;margin-bottom:8px;">✍️</div>
-                        No blog posts yet. Create your first post!
-                    </td>
-                </tr>
                 @endforelse
             </tbody>
         </table>

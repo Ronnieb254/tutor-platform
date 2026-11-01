@@ -157,7 +157,6 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px;">No bookings yet</td></tr>
                     @endforelse
                 </tbody>
             </table>

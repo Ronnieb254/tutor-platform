@@ -122,7 +122,6 @@
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="6" style="text-align:center;padding:48px;color:var(--muted);">No subjects found. Add your first subject to get started.</td></tr>
                     @endforelse
                 </tbody>
             </table>

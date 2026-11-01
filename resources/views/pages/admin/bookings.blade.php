@@ -61,7 +61,7 @@
 {{-- Bookings table --}}
 <div class="card">
     <div style="padding:16px 24px;border-bottom:1px solid var(--hairline);display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:14px;color:var(--muted);">{{ $bookings->total() }} booking{{ $bookings->total()!==1?'s':'' }} found</span>
+        <span style="font-size:14px;color:var(--muted);">{{ $bookings->count() }} booking{{ $bookings->count()!==1?'s':'' }} found</span>
     </div>
     <div class="table-wrap">
         <table id="bookings-table">
@@ -130,14 +130,11 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:40px;">No bookings found</td></tr>
                 @endforelse
             </tbody>
         </table>
     </div>
-    @if($bookings->hasPages())
-    <div style="padding:16px 24px;border-top:1px solid var(--hairline);">{{ $bookings->withQueryString()->links() }}</div>
-    @endif
+
 </div>
 
 @endsection
