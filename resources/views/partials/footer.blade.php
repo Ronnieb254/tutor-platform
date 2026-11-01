@@ -61,9 +61,6 @@
                         ['fa-circle-info',     'How It Works',         route('how-it-works')],
                         ['fa-envelope',        'Contact Us',           route('contact')],
                     ] as [$ic,$label,$url])
-                    @if($label === 'Dashboard' && !auth()->check())
-                        @continue
-                    @endif
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
                         <i class="fa-solid {{ $ic }}" style="font-size:11px;width:13px;text-align:center;opacity:.5;"></i>
                         {{ $label }}
