@@ -215,7 +215,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                     <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
                         <i class="fa-solid fa-calendar-week" style="color:#0A64BC;font-size:16px;"></i> Weekly Schedule
                     </h2>
-                    <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">East Africa Time (EAT, UTC+3)</p>
+                    <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">Nairobi, Kenya Time (EAT · UTC+3)</p>
                     @php
                     $avails = $tutor->availabilities()->where('is_active',true)->orderBy('day_of_week')->get();
                     $days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -423,7 +423,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         {{-- Time slot picker --}}
                         <div style="margin-bottom:14px;">
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">
-                                Available Time Slots (EAT)
+                                Available Time Slots (Nairobi, Kenya · EAT UTC+3)
                             </label>
 
                             {{-- Loading state --}}
@@ -685,7 +685,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 @endif
 
                 <div style="display:flex;flex-direction:column;gap:7px;">
-                    @foreach(['fa-certificate green TSC-Registered & Verified','fa-lock green Secure, private classroom','fa-rotate-left green 100% money-back if unsatisfied','fa-key green Session code sent by email'] as $item)
+                    @foreach(['fa-certificate green TSC-Registered & Verified','fa-lock green Secure, private classroom','fa-rotate-left green 100% money-back first lesson','fa-key green Session code sent by email'] as $item)
                     @php [$ic,,$text] = explode(' ',$item,3); @endphp
                     <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(21,40,31,.6);">
                         <i class="fa-solid fa-{{ $ic }}" style="color:#10B981;font-size:11px;width:13px;text-align:center;"></i>{{ $text }}

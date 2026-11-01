@@ -436,8 +436,9 @@ class BookingController extends Controller
     }
 
     /**
+    /**
      * Get available time slots for a tutor on a specific date.
-     * Returns JSON array of available time slots, filtered by:
+     * Returns JSON array of available time slots in EAT (Africa/Nairobi, UTC+3), filtered by:
      * - Tutor's weekly availability schedule
      * - Existing bookings (non-cancelled)
      * - Current time (for today's date)
@@ -448,7 +449,11 @@ class BookingController extends Controller
             'date' => 'required|date|after_or_equal:today',
         ]);
 
-        $date = \Carbon\Carbon::parse($request->date);
+        $tz = new \DateTimeZone('Africa/Nairobi');
+        $eat = 'Africa/Nairobi';
+
+        // Parse date in EAT
+        $date = \Carbon\Carbon::parse($request->date, $eat)->startOfDay();
         $dayOfWeek = $date->dayOfWeek; // 0=Sunday, 6=Saturday
 
         // Get tutor's availability for this day
@@ -465,18 +470,25 @@ class BookingController extends Controller
             ]);
         }
 
-        // Generate time slots (30-minute intervals)
+        // Current time in EAT — used to filter out past slots
+        $nowEAT = \Carbon\Carbon::now($eat);
+
+        // Generate time slots (30-minute intervals) in EAT
         $allSlots = [];
         foreach ($availability as $avail) {
-            $start = \Carbon\Carbon::parse($date->format('Y-m-d') . ' ' . $avail->start_time);
-            $end = \Carbon\Carbon::parse($date->format('Y-m-d') . ' ' . $avail->end_time);
+            $start = \Carbon\Carbon::parse(
+                $date->format('Y-m-d') . ' ' . $avail->start_time, $eat
+            );
+            $end = \Carbon\Carbon::parse(
+                $date->format('Y-m-d') . ' ' . $avail->end_time, $eat
+            );
 
             while ($start < $end) {
                 $slotEnd = $start->copy()->addMinutes(30);
                 if ($slotEnd <= $end) {
                     $allSlots[] = [
-                        'time' => $start->format('H:i'),
-                        'label' => $start->format('g:i A'),
+                        'time'     => $start->format('H:i'),
+                        'label'    => $start->format('g:i A') . ' EAT',
                         'datetime' => $start->format('Y-m-d H:i:s'),
                     ];
                 }
@@ -486,21 +498,21 @@ class BookingController extends Controller
 
         // Get existing bookings for this tutor on this date (non-cancelled)
         $existingBookings = \App\Models\Booking::where('tutor_id', $tutor->user_id)
-            ->whereDate('scheduled_at', $date)
+            ->whereDate('scheduled_at', $date->format('Y-m-d'))
             ->whereNotIn('status', ['cancelled'])
             ->get()
-            ->map(function ($booking) {
-                $start = \Carbon\Carbon::parse($booking->scheduled_at);
-                $end = $start->copy()->addMinutes($booking->duration_minutes);
+            ->map(function ($booking) use ($eat) {
+                $start = \Carbon\Carbon::parse($booking->scheduled_at)->setTimezone($eat);
+                $end   = $start->copy()->addMinutes($booking->duration_minutes);
                 return ['start' => $start, 'end' => $end];
             });
 
-        // Filter out booked slots
-        $availableSlots = array_filter($allSlots, function ($slot) use ($existingBookings, $date) {
-            $slotStart = \Carbon\Carbon::parse($slot['datetime']);
+        // Filter out booked and past slots
+        $availableSlots = array_filter($allSlots, function ($slot) use ($existingBookings, $date, $nowEAT, $eat) {
+            $slotStart = \Carbon\Carbon::parse($slot['datetime'], $eat);
 
-            // If date is today, only show slots at least 1 hour from now
-            if ($date->isToday() && $slotStart <= now()->addHour()) {
+            // If date is today, only show slots at least 1 hour from now (EAT)
+            if ($date->isSameDay($nowEAT) && $slotStart <= $nowEAT->copy()->addHour()) {
                 return false;
             }
 
@@ -508,7 +520,7 @@ class BookingController extends Controller
             $slotEnd = $slotStart->copy()->addMinutes(30);
             foreach ($existingBookings as $booking) {
                 if ($slotStart < $booking['end'] && $slotEnd > $booking['start']) {
-                    return false; // Overlaps
+                    return false;
                 }
             }
 
@@ -520,8 +532,8 @@ class BookingController extends Controller
 
         return response()->json([
             'status' => 'ok',
-            'slots' => $availableSlots,
-            'total' => count($availableSlots),
+            'slots'  => $availableSlots,
+            'total'  => count($availableSlots),
         ]);
     }
 }
