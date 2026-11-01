@@ -129,7 +129,7 @@
         {{-- STEP 4: Documents --}}
         @if($step === 4)
         <h2 class="font-serif text-2xl font-bold text-ink mb-2">Upload your documents</h2>
-        <p class="text-muted text-sm mb-6">All 3 documents are required. Our team will review them within 24–48 hours. JPG, PNG or PDF, max 5MB each.</p>
+        <p class="text-muted text-sm mb-6">All 5 documents are required. Our team will review them within 24–48 hours. JPG, PNG or PDF, max 5MB each.</p>
         <div class="space-y-4">
             <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
                 <label class="form-label">🪪 National ID / Passport <span class="text-coral">* Required</span></label>
@@ -144,16 +144,28 @@
                 <p class="text-xs text-muted mt-1">Teachers Service Commission certificate</p>
             </div>
             <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
+                <label class="form-label">🛡️ Certificate of Good Conduct <span class="text-coral">* Required</span></label>
+                <input type="file" wire:model="goodConductCertificate" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
+                @error('goodConductCertificate')<p class="form-error">{{ $message }}</p>@enderror
+                <p class="text-xs text-muted mt-1">DCI Certificate of Good Conduct (must be current)</p>
+            </div>
+            <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
                 <label class="form-label">🎓 Academic Certificate <span class="text-coral">* Required</span></label>
                 <input type="file" wire:model="academicCertificate" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
                 @error('academicCertificate')<p class="form-error">{{ $message }}</p>@enderror
                 <p class="text-xs text-muted mt-1">Degree, diploma, or academic qualification certificate</p>
             </div>
+            <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
+                <label class="form-label">📸 Passport Size Photo <span class="text-coral">* Required</span></label>
+                <input type="file" wire:model="passportPhoto" accept=".jpg,.jpeg,.png" class="text-sm text-muted">
+                @error('passportPhoto')<p class="form-error">{{ $message }}</p>@enderror
+                <p class="text-xs text-muted mt-1">Recent passport-size photograph</p>
+            </div>
         </div>
         <div class="rounded-2xl bg-trust-blue/5 border border-trust-blue/15 p-4 mt-4">
             <p class="text-xs text-trust-blue font-semibold mb-1">📋 Document requirements</p>
             <ul class="text-xs text-muted space-y-0.5 list-disc list-inside">
-                <li>All 3 documents must be uploaded to proceed</li>
+                <li>All 5 documents must be uploaded to proceed</li>
                 <li>Documents must be clear and legible</li>
                 <li>Accepted formats: JPG, PNG, or PDF only</li>
                 <li>Maximum file size: 5MB per document</li>

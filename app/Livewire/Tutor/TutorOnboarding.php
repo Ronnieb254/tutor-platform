@@ -33,9 +33,11 @@ class TutorOnboarding extends Component
     ];
 
     // Documents
-    public $nationalId         = null;
-    public $tscCertificate     = null;
-    public $academicCertificate = null;
+    public $nationalId             = null;
+    public $tscCertificate         = null;
+    public $goodConductCertificate = null;
+    public $academicCertificate    = null;
+    public $passportPhoto          = null;
 
     public function nextStep()
     {
@@ -58,9 +60,11 @@ class TutorOnboarding extends Component
     public function submit()
     {
         $this->validate([
-            'nationalId'         => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'tscCertificate'     => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'academicCertificate' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'nationalId'             => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'tscCertificate'         => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'goodConductCertificate' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'academicCertificate'    => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'passportPhoto'          => 'required|file|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         $user = auth()->user();
@@ -94,9 +98,11 @@ class TutorOnboarding extends Component
 
         // Store documents
         $docTypes = [
-            'nationalId'         => 'national_id',
-            'tscCertificate'     => 'tsc_certificate',
-            'academicCertificate' => 'academic_certificate'
+            'nationalId'             => 'national_id',
+            'tscCertificate'         => 'tsc_certificate',
+            'goodConductCertificate' => 'certificate_of_good_conduct',
+            'academicCertificate'    => 'degree_certificate',
+            'passportPhoto'          => 'passport_photo',
         ];
         foreach ($docTypes as $prop => $type) {
             if ($this->{$prop}) {

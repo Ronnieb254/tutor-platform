@@ -145,11 +145,11 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
         </div>
         
         {{-- Documents Status --}}
-        <div style="padding:16px 20px;border-bottom:1px solid var(--hairline);background:{{ $approvedDocs === 3 ? 'rgba(16,185,129,.05)' : ($rejectedDocs > 0 ? 'rgba(239,68,68,.05)' : 'rgba(251,191,36,.05)') }};">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--hairline);background:{{ $approvedDocs === 5 ? 'rgba(16,185,129,.05)' : ($rejectedDocs > 0 ? 'rgba(239,68,68,.05)' : 'rgba(251,191,36,.05)') }};">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                 <span style="font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;">Documents</span>
-                <span class="badge {{ $approvedDocs === 3 ? 'badge-green' : ($pendingDocs > 0 ? 'badge-amber' : 'badge-gray') }}" style="font-size:10px;">
-                    {{ $approvedDocs }}/{{ max(3, $docCount) }} Approved
+                <span class="badge {{ $approvedDocs === 5 ? 'badge-green' : ($pendingDocs > 0 ? 'badge-amber' : 'badge-gray') }}" style="font-size:10px;">
+                    {{ $approvedDocs }}/{{ max(5, $docCount) }} Approved
                 </span>
             </div>
             
@@ -161,11 +161,18 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
                 @foreach($docs as $doc)
                 @php
-                    $docLabels = ['id_document'=>'ID','certificate'=>'Certificate','proof_of_qualification'=>'Qualification'];
+                    $docLabels = [
+                        'national_id' => 'National ID',
+                        'tsc_certificate' => 'TSC Certificate',
+                        'certificate_of_good_conduct' => 'Good Conduct',
+                        'degree_certificate' => 'Academic Cert',
+                        'passport_photo' => 'Passport Photo',
+                        'other' => 'Other',
+                    ];
                     $statusColors = ['pending'=>'badge-amber','approved'=>'badge-green','rejected'=>'badge-red'];
                 @endphp
                 <span class="badge {{ $statusColors[$doc->status] ?? 'badge-gray' }}" style="font-size:10px;">
-                    {{ $docLabels[$doc->document_type] ?? ucfirst($doc->document_type) }}
+                    {{ $docLabels[$doc->type] ?? ucfirst($doc->type) }}
                 </span>
                 @endforeach
             </div>
@@ -185,7 +192,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='block'" class="btn btn-outline" style="flex:1;font-size:13px;">
                 <i class="fa-solid fa-eye"></i> Review
             </button>
-            @if($approvedDocs === 3)
+            @if($approvedDocs === 5)
             <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
                 @csrf @method('PATCH')
                 <button type="submit" class="btn btn-primary" style="width:100%;font-size:13px;" onclick="return confirm('Approve {{ $profile->user->name }} and make them live?')">
@@ -267,7 +274,14 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     <div class="doc-row">
                         @php
                             $isPdf = str_ends_with(strtolower($doc->file_path), '.pdf');
-                            $docLabel = ['id_document'=>'ID Document','certificate'=>'Certificate','proof_of_qualification'=>'Proof of Qualification'][$doc->document_type] ?? ucfirst($doc->document_type);
+                            $docLabel = [
+                                'national_id' => 'National ID / Passport',
+                                'tsc_certificate' => 'TSC Certificate',
+                                'certificate_of_good_conduct' => 'Certificate of Good Conduct',
+                                'degree_certificate' => 'Academic Certificate',
+                                'passport_photo' => 'Passport Photo',
+                                'other' => 'Other',
+                            ][$doc->type] ?? ucfirst($doc->type);
                         @endphp
                         
                         @if($isPdf)
@@ -320,8 +334,8 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     </form>
                     <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
                         @csrf @method('PATCH')
-                        <button type="submit" class="btn btn-primary" style="width:100%;" {{ $approvedDocs < 3 ? 'disabled' : '' }} onclick="return confirm('Approve and make this tutor live?')">
-                            <i class="fa-solid fa-circle-check"></i> {{ $approvedDocs === 3 ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/3 docs)' }}
+                        <button type="submit" class="btn btn-primary" style="width:100%;" {{ $approvedDocs < 5 ? 'disabled' : '' }} onclick="return confirm('Approve and make this tutor live?')">
+                            <i class="fa-solid fa-circle-check"></i> {{ $approvedDocs === 5 ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/5 docs)' }}
                         </button>
                     </form>
                 </div>

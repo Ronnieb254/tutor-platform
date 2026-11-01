@@ -308,10 +308,10 @@ $activeTab = request('tab','overview');
     @php
         $docs = $profile?->documents ?? collect();
         $uploadedTypes = $docs->pluck('type')->toArray();
-        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
+        $requiredTypes = ['national_id', 'tsc_certificate', 'certificate_of_good_conduct', 'degree_certificate', 'passport_photo'];
         $missingTypes = array_diff($requiredTypes, $uploadedTypes);
         $missingCount = count($missingTypes);
-        $docNames = ['national_id' => 'National ID', 'tsc_certificate' => 'TSC Certificate', 'degree_certificate' => 'Academic Certificate', 'passport_photo' => 'Passport Photo'];
+        $docNames = ['national_id' => 'National ID', 'tsc_certificate' => 'TSC Certificate', 'certificate_of_good_conduct' => 'Certificate of Good Conduct', 'degree_certificate' => 'Academic Certificate', 'passport_photo' => 'Passport Photo'];
         $missingNames = array_map(fn($t) => $docNames[$t], $missingTypes);
     @endphp
     <div class="status-banner {{ $verificationStatus==='action_required' ? 'status-rejected' : ($verificationStatus==='under_review' ? 'status-pending' : 'status-pending') }}">
@@ -329,7 +329,7 @@ $activeTab = request('tab','overview');
                 @elseif($verificationStatus==='under_review')
                     Our team is reviewing your profile and documents. You'll receive an email once approved — usually within 24–48 hours.
                 @else
-                    You need to upload <strong>all 3 required documents</strong> before we can review your profile.
+                    You need to upload <strong>all 5 required documents</strong> before we can review your profile.
                     @if($missingCount > 0)
                         <span style="color:var(--coral);font-weight:700;">{{ $missingCount }} remaining: {{ implode(', ', $missingNames) }}</span>
                     @endif

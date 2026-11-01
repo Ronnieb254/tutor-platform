@@ -5,7 +5,7 @@
         $status = $profile->verification_status;
         $docs = $profile->documents;
         $uploadedTypes = $docs->pluck('type')->toArray();
-        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate'];
+        $requiredTypes = ['national_id', 'tsc_certificate', 'certificate_of_good_conduct', 'degree_certificate', 'passport_photo'];
         $missingTypes = array_diff($requiredTypes, $uploadedTypes);
         $missingCount = count($missingTypes);
     @endphp
@@ -33,7 +33,7 @@
                 @elseif($status === 'under_review')
                     Our team is reviewing your profile and documents. You'll be notified once approved — usually within 24-48 hours.
                 @else
-                    You need to upload all 3 required documents before we can review your profile.
+                    You need to upload all 5 required documents before we can review your profile.
                     @if($missingCount > 0)
                         <span class="font-semibold text-coral">{{ $missingCount }} document(s) remaining.</span>
                     @endif

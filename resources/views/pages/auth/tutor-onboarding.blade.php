@@ -514,7 +514,9 @@ function tutorOnboarding() {
         files: {
             national_id: null,
             tsc_certificate: null,
+            certificate_of_good_conduct: null,
             academic_certificate: null,
+            passport_photo: null,
         },
         errors: {},
 
@@ -576,10 +578,10 @@ function tutorOnboarding() {
 
         validateStep3() {
             this.errors = {};
-            const required = ['national_id','tsc_certificate','academic_certificate'];
+            const required = ['national_id','tsc_certificate','certificate_of_good_conduct','academic_certificate','passport_photo'];
             const missing = required.filter(f => !this.files[f]);
             if (missing.length > 0) {
-                this.errors.documents = 'Please upload all 3 required documents (' + missing.join(', ').replace(/_/g,' ') + ')';
+                this.errors.documents = 'Please upload all 5 required documents (' + missing.join(', ').replace(/_/g,' ') + ')';
                 return;
             }
             this.step = 4;
