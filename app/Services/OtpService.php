@@ -26,6 +26,7 @@ class OtpService
             'identifier' => $identifier,
             'type'       => $type,
             'otp'        => $otp,
+            'phone'      => $phoneNumber ?: '',
             'verified'   => false,
             'attempts'   => 0,
             'expires_at' => now()->addMinutes(10),

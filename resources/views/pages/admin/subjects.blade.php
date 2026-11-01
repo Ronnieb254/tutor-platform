@@ -80,7 +80,7 @@
 
     <div class="card">
         <div style="overflow-x:auto;">
-            <table>
+            <table id="subjects-table">
                 <thead>
                     <tr>
                         <th>Icon</th>
@@ -88,7 +88,7 @@
                         <th>Category</th>
                         <th>Slug</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th class="no-export">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -311,4 +311,17 @@ document.addEventListener('keydown', function(e) {
     }
 });
 </script>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#subjects-table', {
+        order: [[1, 'asc']], // Name ascending
+        columnDefs: [
+            { orderable: false, targets: [4, 5] } // Status, Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection

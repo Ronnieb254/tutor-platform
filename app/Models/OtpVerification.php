@@ -10,6 +10,7 @@ class OtpVerification extends Model
         'identifier',
         'type',
         'otp',
+        'phone',
         'verified',
         'attempts',
         'expires_at',

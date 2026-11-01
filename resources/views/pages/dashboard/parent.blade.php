@@ -300,8 +300,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div style="font-size:12px;color:var(--muted);margin-top:1px;">{{ $pastBookings->count() }} past sessions</div>
         </div>
         <div style="overflow-x:auto;">
-            <table>
-                <thead><tr><th>Tutor</th><th>Child</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Status</th><th>Review</th><th></th></tr></thead>
+            <table id="parent-upcoming-sessions-table">
+                <thead><tr><th>Tutor</th><th>Child</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Status</th><th>Review</th><th class="no-export"></th></tr></thead>
                 <tbody>
                     @forelse($pastBookings as $b)
                     @php
@@ -430,7 +430,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <span class="bdg bdg-trust-blue">{{ $refunds->total() }} total</span>
         </div>
         <div style="overflow-x:auto;">
-            <table>
+            <table id="parent-refunds-table">
                 <thead><tr><th>Booking</th><th>Tutor</th><th>Reason</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
                 <tbody>
                     @foreach($refunds as $refund)
@@ -479,8 +479,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
     <div class="card">
         <div style="padding:16px 20px;border-bottom:1px solid var(--hair);"><div class="sec-title">Payment History</div></div>
         <div style="overflow-x:auto;">
-            <table>
-                <thead><tr><th>Tutor</th><th>Reference</th><th>Date</th><th>Session</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+            <table id="parent-payments-table">
+                <thead><tr><th>Tutor</th><th>Reference</th><th>Date</th><th>Session</th><th>Amount</th><th>Status</th><th class="no-export"></th></tr></thead>
                 <tbody>
                     @forelse($payments as $payment)
                     @php $pb = $payment->booking; @endphp

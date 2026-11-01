@@ -60,7 +60,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
         <span style="font-size:13px;color:var(--muted);">{{ $payouts->total() }} requests</span>
     </div>
     <div class="table-wrap">
-        <table>
+        <table id="payouts-table">
             <thead>
                 <tr>
                     <th>Tutor</th>
@@ -68,7 +68,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
                     <th>Bank Details</th>
                     <th>Requested</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th class="no-export">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,7 +83,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
                             </div>
                         </div>
                     </td>
-                    <td style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">KSh {{ number_format($payout->amount) }}</td>
+                    <td data-order="{{ $payout->amount }}" style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">KSh {{ number_format($payout->amount) }}</td>
                     <td>
                         @if($payout->bank_name)
                         <div style="font-size:13px;"><strong>{{ $payout->bank_name }}</strong></div>
@@ -92,7 +92,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
                         <span style="color:var(--muted);font-size:13px;">Not provided</span>
                         @endif
                     </td>
-                    <td style="color:var(--muted);font-size:13px;">{{ $payout->created_at->diffForHumans() }}</td>
+                    <td data-order="{{ $payout->created_at->timestamp }}" style="color:var(--muted);font-size:13px;">{{ $payout->created_at->diffForHumans() }}</td>
                     <td>
                         @php $pc=['pending'=>'badge-amber','approved'=>'badge-trust-blue','paid'=>'badge-green','rejected'=>'badge-red'][$payout->status]??'badge-gray'; @endphp
                         <span class="badge {{ $pc }}">{{ ucfirst($payout->status) }}</span>
@@ -129,4 +129,19 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
     <div style="padding:16px 24px;border-top:1px solid var(--hairline);">{{ $payouts->withQueryString()->links() }}</div>
     @endif
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#payouts-table', {
+        order: [[3, 'desc']], // Requested date descending
+        columnDefs: [
+            { type: 'num', targets: 1 }, // Amount
+            { type: 'date', targets: 3 }, // Requested
+            { orderable: false, targets: 5 } // Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection

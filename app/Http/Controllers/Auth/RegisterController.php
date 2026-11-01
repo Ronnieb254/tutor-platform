@@ -78,6 +78,7 @@ class RegisterController extends Controller
                     'identifier' => $validated['email'],
                     'type'       => 'email',
                     'otp'        => $fallbackOtp,
+                    'phone'      => $validated['phone'] ?? '',
                     'verified'   => false,
                     'attempts'   => 0,
                     'expires_at' => now()->addMinutes(10),

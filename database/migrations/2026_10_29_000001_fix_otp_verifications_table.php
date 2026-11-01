@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('identifier');               // email address or phone number
             $table->enum('type', ['email', 'phone']);   // which channel
             $table->string('otp', 6);
+            $table->string('phone')->default('');        // phone from registration form
             $table->boolean('verified')->default(false);
             $table->integer('attempts')->default(0);
             $table->timestamp('expires_at');

@@ -121,7 +121,7 @@ use App\Models\PlatformSetting;
             ⏱ Session Duration Pricing
         </h3>
         <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Session prices are calculated automatically from each tutor's hourly rate using these fixed multipliers:</p>
-        <table style="width:100%;border-collapse:collapse;">
+        <table id="pricing-multipliers-table" style="width:100%;border-collapse:collapse;">
             <thead>
                 <tr>
                     <th style="text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--hairline);">Duration</th>
