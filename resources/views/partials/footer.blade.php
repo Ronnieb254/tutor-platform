@@ -74,7 +74,6 @@
                     @foreach([
                         ['fa-chalkboard-user', 'Become a Tutor',        route('register').'?role=tutor'],
                         ['fa-id-card-clip',    'Verification Process',  route('how-it-works')],
-                        ['fa-star',            'Host a Clinic',         route('examiner-clinic').'#examiners'],
                         ['fa-right-to-bracket','Tutor Login',           route('login')],
                         ['fa-gauge-high',      'Dashboard',             auth()->check() ? route('dashboard') : route('login')],
                     ] as [$ic,$label,$url])
