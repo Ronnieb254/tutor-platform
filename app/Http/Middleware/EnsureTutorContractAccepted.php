@@ -28,7 +28,9 @@ class EnsureTutorContractAccepted
                     'logout',
                 ];
 
-                if (!in_array($request->route()->getName(), $allowedRoutes)) {
+                $currentRoute = $request->route()?->getName();
+
+                if (!in_array($currentRoute, $allowedRoutes)) {
                     return redirect()->route('tutor-contract')
                         ->with('info', 'Please read and accept the Tutor Services Agreement to continue.');
                 }
