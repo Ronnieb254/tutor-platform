@@ -34,7 +34,7 @@
                     {{-- Contact details --}}
                     <div style="display:flex;flex-direction:column;gap:6px;">
                         @foreach([
-                            ['fa-envelope','info@ovaldesk.co.ke','mailto:info@ovaldesk.co.ke'],
+                            ['fa-envelope','support@ovaldesk.co.ke','mailto:support@ovaldesk.co.ke'],
                             ['fa-phone','0724 367 814 / 0723 636 901','tel:+254724367814'],
                             ['fa-location-dot','Suite 11, Samima Suites, Nairobi West',null],
                         ] as [$ic,$text,$href])
@@ -55,17 +55,26 @@
                     <h4 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.35);margin-bottom:16px;">For Learners</h4>
                     @foreach([
                         ['fa-magnifying-glass','Find a Tutor',         route('tutors.index')],
+                        ['fa-users',           'Group Sessions',       route('group-sessions.index')],
                         ['fa-star',            "Examiner's Clinic",    route('examiner-clinic')],
-                        ['fa-circle-info',     'How It Works',         route('how-it-works')],
-                        ['fa-play-circle',     'Courses',              route('courses.index')],
                         ['fa-book-open',       'Library',              route('library.index')],
-                        ['fa-user-plus',       'Create Free Account',  route('register')],
+                        ['fa-circle-info',     'How It Works',         route('how-it-works')],
+                        ['fa-envelope',        'Contact Us',           route('contact')],
                     ] as [$ic,$label,$url])
+                    @if($label === 'Dashboard' && !auth()->check())
+                        @continue
+                    @endif
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
                         <i class="fa-solid {{ $ic }}" style="font-size:11px;width:13px;text-align:center;opacity:.5;"></i>
                         {{ $label }}
                     </a>
                     @endforeach
+                    @auth
+                    <a href="{{ route('dashboard') }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
+                        <i class="fa-solid fa-gauge-high" style="font-size:11px;width:13px;text-align:center;opacity:.5;"></i>
+                        Dashboard
+                    </a>
+                    @endauth
                 </div>
 
                 {{-- For Tutors --}}
