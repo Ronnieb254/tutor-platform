@@ -141,8 +141,8 @@ $(document).ready(function() {
         order: [[2, 'asc']], // Scheduled ascending
         columnDefs: [
             { type: 'date', targets: 2 },
-            { type: 'num', targets: [3, 4, 5, 6] }, // Duration, Price, Enrolled, Max
-            { orderable: false, targets: 8 } // Actions
+            { type: 'num', targets: [3, 4] }, // Slots, Price
+            { orderable: false, targets: 6 } // Actions
         ]
     });
 });
