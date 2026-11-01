@@ -227,7 +227,7 @@
                     </div>
                 @else
                     <div class="tbl-wrap">
-                        <table>
+                        <table id="examiner-bookings-table">
                             <thead>
                                 <tr>
                                     <th>Clinic</th>
@@ -310,5 +310,16 @@
 </div>
 
 @include('partials.footer')
+
+<script>
+$(document).ready(function() {
+    initDataTable('#examiner-bookings-table', {
+        order: [[4, 'desc']], // Booked At descending
+        columnDefs: [
+            { type: 'date', targets: 4 }
+        ]
+    });
+});
+</script>
 </body>
 </html>

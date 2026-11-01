@@ -79,7 +79,7 @@
                     No students enrolled yet.
                 </div>
                 @else
-                <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <table id="clinic-bookings-table" style="width:100%;border-collapse:collapse;font-size:13px;">
                     <thead>
                         <tr style="background:rgba(21,40,31,.02);">
                             <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">#</th>
@@ -180,4 +180,18 @@
     </div>
     <style>.detail-g{grid-template-columns:1fr!important;}@media(min-width:900px){.detail-g{grid-template-columns:2fr 1fr!important;}}</style>
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#clinic-bookings-table', {
+        order: [[3, 'desc']], // Booked At descending
+        columnDefs: [
+            { type: 'date', targets: 3 },
+            { orderable: false, targets: 5 } // Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection

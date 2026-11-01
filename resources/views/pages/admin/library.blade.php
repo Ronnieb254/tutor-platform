@@ -310,3 +310,17 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#library-table', {
+        order: [[5, 'desc']], // Downloads descending
+        columnDefs: [
+            { type: 'num', targets: 5 }, // Downloads
+            { orderable: false, targets: 7 } // Actions
+        ]
+    });
+});
+</script>
+@endpush

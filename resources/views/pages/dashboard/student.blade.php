@@ -444,9 +444,9 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div style="font-size:12px;color:var(--muted);margin-top:1px;">{{ $pastBookings->count() }} past sessions</div>
         </div>
         <div style="overflow-x:auto;">
-            <table>
+            <table id="student-sessions-table">
                 <thead><tr>
-                    <th>Tutor</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Status</th><th>Review</th><th></th>
+                    <th>Tutor</th><th>Subject</th><th>Date</th><th>Duration</th><th>Paid</th><th>Status</th><th>Review</th><th class="no-export"></th>
                 </tr></thead>
                 <tbody>
                     @forelse($pastBookings as $b)
@@ -606,9 +606,9 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div class="sec-title">Payment History</div>
         </div>
         <div style="overflow-x:auto;">
-            <table>
+            <table id="student-payments-table">
                 <thead><tr>
-                    <th>Tutor</th><th>Reference</th><th>Date</th><th>Session</th><th>Amount</th><th>Status</th><th></th>
+                    <th>Tutor</th><th>Reference</th><th>Date</th><th>Session</th><th>Amount</th><th>Status</th><th class="no-export"></th>
                 </tr></thead>
                 <tbody>
                     @forelse($payments as $payment)
@@ -825,6 +825,33 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 <script>
 const chat = document.getElementById('chat-messages');
 if(chat) chat.scrollTop = chat.scrollHeight;
+
+// Initialize DataTables for all tables
+$(document).ready(function() {
+    // Upcoming sessions table
+    if ($('#student-sessions-table').length) {
+        initDataTable('#student-sessions-table', {
+            order: [[2, 'asc']], // Date ascending
+            columnDefs: [
+                { type: 'date', targets: 2 },
+                { type: 'num', targets: 3 }, // Duration
+                { orderable: false, targets: [6, 7] } // Review, Actions
+            ]
+        });
+    }
+    
+    // Payment history table
+    if ($('#student-payments-table').length) {
+        initDataTable('#student-payments-table', {
+            order: [[2, 'desc']], // Date descending
+            columnDefs: [
+                { type: 'date', targets: 2 },
+                { type: 'num', targets: 4 }, // Amount
+                { orderable: false, targets: 6 } // Actions
+            ]
+        });
+    }
+});
 </script>
 </body>
 </html>

@@ -110,7 +110,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
             <a href="{{ route('admin.bookings') }}" class="btn btn-outline btn-sm">View All</a>
         </div>
         <div class="table-wrap">
-            <table>
+            <table id="admin-recent-bookings-table">
                 <thead>
                     <tr>
                         <th>Student</th>
@@ -199,6 +199,21 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
         @endif
     </div>
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#admin-recent-bookings-table', {
+        order: [[3, 'desc']], // Date descending
+        columnDefs: [
+            { type: 'date', targets: 3 },
+            { type: 'num', targets: 4 }, // Amount
+            { orderable: false, targets: 6 } // Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection
 
 @push('scripts')

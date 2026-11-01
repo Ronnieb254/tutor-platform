@@ -84,7 +84,7 @@
 
     {{-- Clinics table --}}
     <div style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);overflow:hidden;">
-        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <table id="clinics-table" style="width:100%;border-collapse:collapse;font-size:13px;">
             <thead>
                 <tr style="background:rgba(21,40,31,.03);border-bottom:1px solid rgba(21,40,31,.08);">
                     <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Clinic</th>
@@ -92,7 +92,7 @@
                     <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Tutor</th>
                     <th style="padding:12px 16px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Slots</th>
                     <th style="padding:12px 16px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Status</th>
-                    <th style="padding:12px 16px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Actions</th>
+                    <th class="no-export" style="padding:12px 16px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -215,4 +215,18 @@
     </div>
     @endif
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#clinics-table', {
+        order: [[1, 'asc']], // Scheduled ascending
+        columnDefs: [
+            { type: 'date', targets: 1 },
+            { orderable: false, targets: [3, 4, 5] } // Slots, Status, Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection

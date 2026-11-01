@@ -67,7 +67,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
             </div>
         </div>
         <div class="table-wrap">
-            <table>
+            <table id="session-enrollments-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -163,4 +163,17 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
 @media(max-width:900px){.show-grid{grid-template-columns:1fr!important;}}
 </style>
 
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#session-enrollments-table', {
+        order: [[2, 'desc']], // Enrolled At descending
+        columnDefs: [
+            { type: 'date', targets: 2 },
+            { orderable: false, targets: 4 } // Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection

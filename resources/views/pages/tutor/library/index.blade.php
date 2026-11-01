@@ -136,7 +136,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;">My Uploaded Resources</h3>
             </div>
             <div style="overflow-x:auto;">
-                <table>
+                <table id="tutor-library-table">
                     <thead>
                         <tr>
                             <th>Resource</th>
@@ -216,5 +216,19 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
     </div>
 </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    if ($('#tutor-library-table').length) {
+        initDataTable('#tutor-library-table', {
+            order: [[2, 'desc']],
+            columnDefs: [
+                { type: 'num', targets: 5 }, // Downloads
+                { orderable: false, targets: 6 } // Actions
+            ]
+        });
+    }
+});
+</script>
 </body>
 </html>

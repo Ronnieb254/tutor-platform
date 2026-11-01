@@ -69,7 +69,7 @@
         <span style="font-size:14px;color:var(--muted);">{{ $sessions->total() }} session{{ $sessions->total()!==1?'s':'' }}</span>
     </div>
     <div class="table-wrap">
-        <table>
+        <table id="group-sessions-table">
             <thead>
                 <tr>
                     <th>Title / Subject</th>
@@ -135,4 +135,18 @@
     @endif
 </div>
 
+@push('scripts')
+<script>
+$(document).ready(function() {
+    initDataTable('#group-sessions-table', {
+        order: [[2, 'asc']], // Scheduled ascending
+        columnDefs: [
+            { type: 'date', targets: 2 },
+            { type: 'num', targets: [3, 4, 5, 6] }, // Duration, Price, Enrolled, Max
+            { orderable: false, targets: 8 } // Actions
+        ]
+    });
+});
+</script>
+@endpush
 @endsection
