@@ -14,7 +14,7 @@
 </head>
 <body class="bg-gray-50">
     <!-- Sticky Navigation -->
-    <nav class="sticky top-0 z-50 bg-white shadow-md border-b border-gray-200">
+    <nav class="sticky top-0 z-50 bg-white shadow-md border-b border-gray-200" x-data="{ mobileOpen: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
@@ -116,13 +116,38 @@
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden">
-                    <button class="text-gray-700 hover:text-purple-600">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button @click="mobileOpen = !mobileOpen" class="text-gray-700 hover:text-purple-600" aria-label="Toggle mobile menu">
+                        <svg x-show="!mobileOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <svg x-show="mobileOpen" x-cloak class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
                     </button>
                 </div>
             </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileOpen" x-cloak x-transition class="md:hidden bg-white border-t border-gray-200 px-4 py-3 space-y-1">
+            @auth
+                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-gauge-high mr-2 text-gray-500"></i>Dashboard
+                </a>
+                <a href="{{ route('sessions.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-calendar mr-2 text-gray-500"></i>Sessions
+                </a>
+                <a href="{{ route('inbox.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-envelope mr-2 text-gray-500"></i>Messages
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                    Login
+                </a>
+                <a href="{{ route('register') }}" class="block px-3 py-2 rounded-md text-sm font-medium bg-black text-white hover:bg-gray-800 transition-colors duration-200">
+                    Register
+                </a>
+            @endauth
         </div>
     </nav>
 

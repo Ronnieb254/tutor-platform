@@ -140,6 +140,10 @@
             .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:199;}
             .sidebar-overlay.show{display:block;}
         }
+        @media(max-width:639px){
+            .admin-content{padding:16px;}
+            .topbar{padding:0 16px;}
+        }
     </style>
     @stack('styles')
 </head>

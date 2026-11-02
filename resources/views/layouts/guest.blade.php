@@ -66,6 +66,11 @@
 
         .auth-footer-text { text-align:center; font-size:14px; color:var(--muted); margin-top:20px; }
         .auth-footer-text a { color:var(--trust-blue); font-weight:600; }
+        @media(max-width:400px){
+            .social-grid { grid-template-columns:1fr; }
+            .role-grid { grid-template-columns:1fr 1fr; }
+            .guest-header { padding:16px; }
+        }
     </style>
 </head>
 <body>

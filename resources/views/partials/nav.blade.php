@@ -2,6 +2,7 @@
 
 {{-- Announcement Bar --}}
 <div x-data="{ ann: !sessionStorage.getItem('mw_ann') }" x-show="ann" x-cloak
+     class="mw-ann-bar"
      style="background:linear-gradient(90deg,#120A8F,#0A64BC);color:#fff;font-size:13px;padding:9px 20px;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:101;">
     <i class="fa-solid fa-certificate fa-xs" style="opacity:.8;"></i>
     <span style="text-align:center;">All tutors are <strong>TSC-registered & background-checked</strong> — <strong>100% money-back</strong> if unsatisfied with your first lesson</span>
@@ -167,5 +168,8 @@
     .mw-desklinks{display:flex!important;}
     .mw-ham{display:none!important;}
     .mw-signin,.mw-uname{display:block!important;}
+}
+@media(max-width:640px){
+    .mw-ann-bar{padding-right:48px;}
 }
 </style>
