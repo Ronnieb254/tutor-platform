@@ -29,6 +29,24 @@
 @media(max-width:600px){.clinic-row{flex-direction:column;}}
 .clinic-actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;}
 .pill{padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:5px;}
+/* Phase 6 — additional responsive rules */
+@media(max-width:639px){
+    .clinic-cards,.clinic-grid,[class*="clinic-list"]{
+        grid-template-columns:1fr !important;
+    }
+    /* upcoming clinic cards: stack action buttons below content */
+    .clinic-actions{
+        width:100%;
+        justify-content:flex-start;
+    }
+    /* hero padding */
+    .session-hero{padding:28px 0;}
+}
+@media(max-width:479px){
+    .dash-stats{grid-template-columns:1fr !important;}
+    /* start/detail buttons full-width */
+    .start-btn,.detail-btn{width:100%;justify-content:center;}
+}
 </style>
 </head>
 <body>

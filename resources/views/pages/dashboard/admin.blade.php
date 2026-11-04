@@ -215,6 +215,32 @@ $(document).ready(function() {
 @endpush
 @endsection
 
+@push('styles')
+<style>
+/* Phase 6 — admin dashboard responsive */
+@media(max-width:639px){
+    /* 3-col second row → 1-col */
+    .admin-stats,
+    .stat-cards{
+        grid-template-columns:1fr !important;
+    }
+    div[style*="repeat(3,1fr)"]{
+        grid-template-columns:1fr !important;
+    }
+    /* 2-col content layout (bookings + approvals) → single column */
+    div[style*="1fr 380px"]{
+        grid-template-columns:1fr !important;
+    }
+}
+@media(max-width:479px){
+    /* Stat cards already handled by layout; ensure 1-col for all grid variants */
+    .stats-grid{
+        grid-template-columns:1fr !important;
+    }
+}
+</style>
+@endpush
+
 @push('scripts')
 <script>
 function confirmBooking(uuid, btn) {

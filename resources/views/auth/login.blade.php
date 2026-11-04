@@ -351,6 +351,28 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
         padding:24px;
     }
 }
+@media(max-width:639px){
+    .form-panel{
+        padding:16px;
+        align-items:flex-start;
+        padding-top:32px;
+    }
+    .form-container{
+        width:100% !important;
+        max-width:100% !important;
+    }
+    .form-header{
+        margin-bottom:28px;
+    }
+    .form-header h2{
+        font-size:26px;
+    }
+    .form-row{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+}
 
 /* SVG Icons */
 svg{

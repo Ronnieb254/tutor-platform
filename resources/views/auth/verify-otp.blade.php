@@ -97,6 +97,39 @@ h1{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);
 .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
 .btn-submit.loading .spinner{display:block;}
 .btn-submit.loading .btn-text{display:none;}
+
+/* Mobile responsive */
+@media(max-width:639px){
+    .card{
+        padding:28px 16px !important;
+        max-width:100% !important;
+        border-radius:16px;
+    }
+    .otp-input{
+        width:42px !important;
+        height:52px !important;
+        font-size:20px !important;
+        border-radius:10px !important;
+    }
+    .otp-group{
+        gap:6px !important;
+    }
+    .resend-row{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+    }
+}
+@media(max-width:399px){
+    .otp-input{
+        width:36px !important;
+        height:46px !important;
+        font-size:18px !important;
+    }
+    .otp-group{
+        gap:4px !important;
+    }
+}
     </style>
 </head>
 <body>

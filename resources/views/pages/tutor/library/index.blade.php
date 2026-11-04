@@ -59,6 +59,11 @@ tbody tr:hover{background:#FAFCFA;}
 tbody tr:last-child{border-bottom:none;}
 td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 @media(max-width:1023px){.sidebar{display:none;}}
+@media(max-width:639px){
+    .topbar{flex-wrap:wrap;height:auto;padding:12px 16px;gap:8px;}
+    .content{padding:16px;}
+    .stats-g{grid-template-columns:1fr !important;}
+}
 </style>
 </head>
 <body>
