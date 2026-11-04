@@ -64,9 +64,9 @@ $has2FA = $user->has2FAEnabled();
                     </div>
                     <div style="display:flex;gap:8px;">
                         <button type="button" class="btn btn-sm btn-outline" onclick="copyExistingRecoveryCodes()">📋 Copy</button>
-                        <form action="{{ route('2fa.recovery') }}" method="POST" style="display:inline;">
+                        <form action="{{ route('2fa.recovery') }}" method="POST" style="display:inline;" onsubmit="event.preventDefault(); regenerateRecoveryCodes(this);">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-outline" onclick="return confirm('Generate new recovery codes? Your old codes will stop working.')">
+                            <button type="submit" class="btn btn-sm btn-outline">
                                 🔄 Regenerate
                             </button>
                         </form>
@@ -77,7 +77,7 @@ $has2FA = $user->has2FAEnabled();
 
             <hr style="border:none;border-top:1px solid var(--hairline);margin:8px 0;">
 
-            <form action="{{ route('2fa.disable') }}" method="POST" onsubmit="return confirm('Are you sure you want to disable two-factor authentication?')">
+            <form action="{{ route('2fa.disable') }}" method="POST" onsubmit="event.preventDefault(); disable2FA(this);">
                 @csrf
                 <div style="margin-bottom:12px;">
                     <label class="form-label">Enter your password to disable 2FA</label>
@@ -110,9 +110,9 @@ function copyRecoveryCodes() {
     if (codes.length > 0) {
         const text = codes.join('\n');
         navigator.clipboard.writeText(text).then(() => {
-            alert('✓ Recovery codes copied to clipboard!');
+            showToast('Recovery codes copied to clipboard!', 'success');
         }).catch(() => {
-            alert('Failed to copy. Please copy manually.');
+            showToast('Failed to copy. Please copy manually.', 'error');
         });
     }
 }
@@ -122,10 +122,36 @@ function copyExistingRecoveryCodes() {
         const codes = @json($user->twoFactorAuth->recovery_codes);
         const text = codes.join('\n');
         navigator.clipboard.writeText(text).then(() => {
-            alert('✓ Recovery codes copied to clipboard!');
+            showToast('Recovery codes copied to clipboard!', 'success');
         }).catch(() => {
-            alert('Failed to copy. Please copy manually.');
+            showToast('Failed to copy. Please copy manually.', 'error');
         });
     @endif
+}
+
+function regenerateRecoveryCodes(form) {
+    showConfirm(
+        'Generate New Recovery Codes?',
+        'Your old codes will stop working.',
+        'Generate',
+        'Cancel'
+    ).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+}
+
+function disable2FA(form) {
+    showConfirm(
+        'Disable Two-Factor Authentication?',
+        'Are you sure you want to turn off 2FA? This will make your account less secure.',
+        'Yes, Disable',
+        'Cancel'
+    ).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
 }
 </script>

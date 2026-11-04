@@ -539,7 +539,7 @@ function tutorOnboarding() {
             const file = event.target.files[0];
             if (!file) return;
             if (file.size > 5 * 1024 * 1024) {
-                alert('File too large. Maximum 5MB allowed.');
+                showError('File Too Large', 'Maximum 5MB allowed.');
                 return;
             }
             this.files[field] = file;
@@ -549,7 +549,7 @@ function tutorOnboarding() {
             event.currentTarget.classList.remove('drag');
             const file = event.dataTransfer.files[0];
             if (!file) return;
-            if (file.size > 5 * 1024 * 1024) { alert('File too large. Max 5MB.'); return; }
+            if (file.size > 5 * 1024 * 1024) { showError('File Too Large', 'Maximum 5MB allowed.'); return; }
             this.files[field] = file;
         },
 
@@ -620,12 +620,12 @@ function tutorOnboarding() {
                     }
                 } else {
                     this.submitting = false;
-                    alert(data.message || 'Submission failed. Please try again.');
+                    showError('Submission Failed', data.message || 'Please try again.');
                 }
             } catch (e) {
                 this.submitting = false;
                 console.error(e);
-                alert('An error occurred. Please try again.');
+                showError('Error', 'An error occurred. Please try again.');
             }
         }
     }

@@ -318,7 +318,10 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 time: '',
                 subject: '',
                 notes: '',
+                phone: '',
                 processing: false,
+                stkSent: false,
+                stkMsg: '',
                 confirmed: false,
                 studentCode: '',
                 bookingRef: '',
@@ -550,15 +553,20 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         @auth
                         <div style="background:#F9FAF9;border-radius:14px;padding:18px;">
                             <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:12px;">
-                                <i class="fa-solid fa-credit-card fa-xs" style="color:#0A64BC;"></i> Pay Securely via Paystack
+                                <i class="fa-solid fa-mobile-screen-button fa-xs" style="color:#0A64BC;"></i> Pay via M-Pesa
                             </p>
-                            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
-                                @foreach(['M-Pesa','Visa','Mastercard'] as $pm)
-                                <span style="background:#fff;border:1px solid rgba(21,40,31,.12);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:#15281F;display:flex;align-items:center;gap:5px;">
-                                    <i class="fa-solid {{ $pm==='M-Pesa'?'fa-mobile-screen-button':($pm==='Visa'?'fa-credit-card':'fa-credit-card') }}" style="color:#0A64BC;font-size:11px;"></i>
-                                    {{ $pm }}
-                                </span>
-                                @endforeach
+                            {{-- M-Pesa phone input --}}
+                            <div style="margin-bottom:14px;" x-show="!isFree">
+                                <label style="font-size:12px;font-weight:600;color:rgba(21,40,31,.6);display:block;margin-bottom:5px;">M-Pesa Phone Number</label>
+                                <input type="tel" x-model="phone" placeholder="e.g. 0712 345 678"
+                                       style="width:100%;height:42px;border-radius:10px;border:1.5px solid rgba(21,40,31,.18);padding:0 12px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;"
+                                       onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                                <p style="font-size:11px;color:rgba(21,40,31,.5);margin-top:4px;">You'll receive an STK Push prompt. Enter your PIN to pay.</p>
+                            </div>
+                            {{-- STK sent banner --}}
+                            <div x-show="stkSent" style="background:rgba(16,185,129,.08);border:1.5px solid #10B981;border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:center;">
+                                <p style="font-size:13px;font-weight:700;color:#059669;margin-bottom:3px;"><i class="fa-solid fa-mobile-screen-button"></i> Check your phone!</p>
+                                <p x-text="stkMsg" style="font-size:12px;color:rgba(21,40,31,.6);"></p>
                             </div>
                             <button @click="processPayment($data)"
                                     :disabled="processing"
@@ -566,8 +574,8 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                                     style="width:100%;height:52px;border-radius:999px;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;">
                                 <template x-if="!processing">
                                     <span style="display:flex;align-items:center;gap:8px;">
-                                        <i :class="isFree ? 'fa-solid fa-gift fa-xs' : 'fa-solid fa-lock fa-xs'"></i>
-                                        <span x-text="isFree ? 'Book Free Session' : 'Pay KSh ' + price"></span>
+                                        <i :class="isFree ? 'fa-solid fa-gift fa-xs' : 'fa-solid fa-mobile-screen-button fa-xs'"></i>
+                                        <span x-text="isFree ? 'Book Free Session' : 'Pay KSh ' + price + ' via M-Pesa'"></span>
                                     </span>
                                 </template>
                                 <template x-if="processing">
@@ -711,7 +719,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
 
 @include('partials.footer')
 
-<script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="https://meet.jit.si/external_api.js" defer></script>
 <script>
 function showTab(name, btn) {
     ['about','availability','reviews','book'].forEach(t => {
@@ -732,21 +740,15 @@ function showTab(name, btn) {
 
 function processPayment(data) {
     if (!data || !data.date || !data.time) {
-        alert('Please select a date and time.');
+        showError('Missing Information', 'Please select a date and time.');
+        return;
+    }
+    if (!data.phone || data.phone.length < 9) {
+        showError('Invalid Phone Number', 'Please enter your M-Pesa phone number.');
         return;
     }
 
     data.processing = true;
-
-    // Safety fallback: if processing takes more than 45 seconds, unstick the UI
-    const safetyTimeout = setTimeout(() => {
-        if (data.processing) {
-            clearTimeout(safetyTimeout);
-        data.processing = false;
-            data.step = 3;
-            alert('Payment may still be processing. Check your dashboard — your session will appear once confirmed.');
-        }
-    }, 45000);
 
     fetch('/bookings', {
         method: 'POST',
@@ -761,13 +763,13 @@ function processPayment(data) {
             scheduled_at: data.date + ' ' + data.time,
             subject_id: data.subject || null,
             notes: data.notes,
+            phone: data.phone,
         })
     })
     .then(r => r.json())
     .then(res => {
         if (res.status === 'ok' && res.free) {
-            clearTimeout(safetyTimeout);
-        data.processing = false;
+            data.processing = false;
             data.studentCode = res.student_code || '';
             data.bookingRef  = res.booking_uuid || '';
             data.step = 3;
@@ -776,82 +778,56 @@ function processPayment(data) {
             }
             return;
         }
-        if (res.status === 'ok') {
-            const handler = PaystackPop.setup({
-                key: '{{ config('paystack.public_key') }}',
-                email: '{{ auth()->user()?->email }}',
-                amount: data.price * 100,
-                currency: 'KES',
-                ref: res.reference,
-                metadata: { booking_id: res.booking_id },
-                onSuccess: function(transaction) {
-                    // Confirm booking after payment - with 20s timeout
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 20000);
+        if (res.status === 'ok' && res.reference) {
+            // STK Push sent — start polling
+            data.stkSent  = true;
+            data.stkMsg   = res.message || 'Check your phone for the M-Pesa prompt.';
+            const ref     = res.reference;
+            const maxPolls = 60;
+            let polls = 0;
 
-                    fetch('/bookings/confirm', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                        },
-                        body: JSON.stringify({ reference: transaction.reference }),
-                        signal: controller.signal
-                    })
-                    .then(r => {
-                        clearTimeout(timeoutId);
-                        if (!r.ok) throw new Error('HTTP ' + r.status);
-                        return r.json();
-                    })
-                    .then(confirmRes => {
-                        clearTimeout(safetyTimeout);
-        data.processing = false;
-                        if (confirmRes.status === 'ok') {
-                            data.studentCode = confirmRes.student_code || '';
-                            data.bookingRef  = confirmRes.booking_uuid || '';
-                            data.step = 3;
-                            if (confirmRes.booking_url) {
-                                setTimeout(() => {
-                                    window.location.href = confirmRes.booking_url;
-                                }, 3000);
-                            }
-                        } else {
-                            // Payment went through but confirm returned non-ok
-                            // Still move to step 3 — webhook will confirm async
-                            data.step = 3;
-                            console.warn('Confirm warning:', confirmRes.message);
-                        }
-                    })
-                    .catch((err) => {
-                        clearTimeout(timeoutId);
-                        // Payment succeeded on Paystack side — don't show error to user
-                        // The Paystack webhook will confirm the booking asynchronously
-                        clearTimeout(safetyTimeout);
-        data.processing = false;
-                        data.step = 3;
-                        console.warn('Confirm fetch failed/timed out, relying on webhook:', err);
-                        // Show a gentle message that payment was received
-                        alert('Payment received successfully! Your session is being confirmed. You will receive your session code shortly.');
-                    });
-                },
-                onCancel: function() {
-                    clearTimeout(safetyTimeout);
-        data.processing = false;
+            function poll() {
+                if (polls >= maxPolls) {
+                    data.processing = false;
+                    data.stkSent = false;
+                    showError('Payment Timeout', 'Payment confirmation timed out. If you were charged, contact support with reference: ' + ref);
+                    return;
                 }
-            });
-            handler.openIframe();
+                polls++;
+                fetch('/api/daraja/status?reference=' + encodeURIComponent(ref), {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(r => r.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        data.processing = false;
+                        data.stkSent    = false;
+                        data.studentCode = result.student_code || '';
+                        data.bookingRef  = result.booking_uuid || '';
+                        data.step = 3;
+                        if (result.booking_url) {
+                            setTimeout(() => { window.location.href = result.booking_url; }, 3000);
+                        }
+                    } else if (result.status === 'failed') {
+                        data.processing = false;
+                        data.stkSent = false;
+                        showError('Payment Failed', result.message || 'M-Pesa payment was not completed. Please try again.');
+                    } else {
+                        setTimeout(poll, 5000);
+                    }
+                })
+                .catch(() => setTimeout(poll, 5000));
+            }
+            setTimeout(poll, 5000);
         } else {
-            clearTimeout(safetyTimeout);
-        data.processing = false;
-            alert(res.message || 'Could not process booking. Please try again.');
+            data.processing = false;
+            showError('Booking Failed', res.message || 'Could not process booking. Please try again.');
         }
     })
     .catch(err => {
-        clearTimeout(safetyTimeout);
         data.processing = false;
         console.error(err);
-        alert('Network error. Please try again.');
+        showError('Network Error', 'Please try again.');
     });
 }
 </script>

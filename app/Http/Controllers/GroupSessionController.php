@@ -72,14 +72,15 @@ class GroupSessionController extends Controller
     }
 
     /**
-     * Enroll a student in a group session via Paystack payment.
+     * Enroll a student in a group session via Daraja M-Pesa STK Push.
      */
     public function enroll(Request $request, ExaminerClinic $groupSession)
     {
-        // Defensive: guard against non-group-session records
         if (\Schema::hasColumn('examiner_clinics', 'is_group_session') && !$groupSession->is_group_session) {
             return back()->with('error', 'This is not a group session.');
         }
+
+        $request->validate(['phone' => 'required|string|min:9|max:15']);
 
         $user = $request->user();
 
@@ -91,18 +92,18 @@ class GroupSessionController extends Controller
             return back()->with('error', 'This session is full. Please choose another time slot.');
         }
 
-        // Create a pending payment record
-        $paystack  = app(\App\Services\PaystackService::class);
-        $reference = $paystack->generateReference('GRP');
+        $daraja    = app(\App\Services\DarajaService::class);
+        $reference = $daraja->generateReference('GRP');
 
         $paymentData = [
-            'user_id'      => $user->id,
-            'clinic_id'    => $groupSession->id,
-            'amount'       => $groupSession->price,
-            'currency'     => 'KES',
-            'payment_type' => 'group_session',
-            'paystack_reference' => $reference,
-            'status'       => 'pending',
+            'user_id'             => $user->id,
+            'clinic_id'           => $groupSession->id,
+            'amount'              => $groupSession->price,
+            'currency'            => 'KES',
+            'payment_type'        => 'group_session',
+            'mpesa_reference'     => $reference,
+            'payer_phone'         => $daraja->normalizePhone($request->input('phone')),
+            'status'              => 'pending',
         ];
 
         if (\Schema::hasColumn('payments', 'commission_rate')) {
@@ -111,31 +112,30 @@ class GroupSessionController extends Controller
             $paymentData['platform_amount'] = round($groupSession->price * 0.60, 2);
         }
 
-        $payment = Payment::create($paymentData);
-
-        // Initialize Paystack transaction
         try {
-            $result = $paystack->initializeTransaction(
-                $user->email,
+            $result = $daraja->initializeStkPush(
+                $request->input('phone'),
                 (float) $groupSession->price,
                 $reference,
-                [
-                    'clinic_id'    => $groupSession->id,
-                    'user_id'      => $user->id,
-                    'payment_type' => 'group_session',
-                ]
+                'Mwalimu Group'
             );
 
-            if (!($result['status'] ?? false)) {
-                $payment->delete();
-                return back()->with('error', 'Payment initialization failed. Please try again.');
+            $responseCode = $result['ResponseCode'] ?? ($result['errorCode'] ?? null);
+
+            if ($responseCode !== '0' && !isset($result['_mock'])) {
+                return back()->with('error', 'Payment initialization failed: ' . ($result['errorMessage'] ?? 'Please try again.'));
             }
 
-            // Redirect to Paystack payment page
-            return redirect($result['data']['authorization_url']);
+            $paymentData['checkout_request_id'] = $result['CheckoutRequestID'] ?? null;
+            $paymentData['merchant_request_id'] = $result['MerchantRequestID'] ?? null;
+
+            $payment = Payment::create($paymentData);
+
+            // Redirect to a polling/waiting page
+            session(['group_payment_ref' => $reference, 'group_session_id' => $groupSession->id]);
+            return redirect()->route('group-sessions.payment-pending', ['reference' => $reference]);
 
         } catch (\Exception $e) {
-            $payment->delete();
             \Log::error('Group session payment init failed: ' . $e->getMessage(), [
                 'session_id' => $groupSession->id,
                 'user_id'    => $user->id,

@@ -304,11 +304,11 @@ async function toggleSubject(id, checkbox) {
         const data = await response.json();
         if (data.status !== 'ok') {
             checkbox.checked = !checkbox.checked;
-            alert('Failed to toggle subject status');
+            showError('Error', 'Failed to toggle subject status');
         }
     } catch (error) {
         checkbox.checked = !checkbox.checked;
-        alert('Error toggling subject status');
+        showError('Error', 'Error toggling subject status');
     }
 }
 

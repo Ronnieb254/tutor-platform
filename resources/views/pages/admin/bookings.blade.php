@@ -159,40 +159,46 @@ $(document).ready(function() {
 });
 
 function confirmBooking(uuid, btn) {
-    if (!confirm('Confirm this booking?\n\nSession codes will be emailed and sent as in-app notifications to both the tutor and student.')) return;
+    showConfirm(
+        'Confirm Booking?',
+        'Session codes will be emailed and sent as in-app notifications to both the tutor and student.',
+        'Yes, Confirm',
+        'Cancel'
+    ).then((result) => {
+        if (!result.isConfirmed) return;
 
-    const originalHtml = btn.innerHTML;
-    btn.innerHTML = '⏳ Confirming…';
-    btn.disabled = true;
-    btn.style.opacity = '0.7';
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '⏳ Confirming…';
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
 
-    fetch(`/bookings/${uuid}/force-confirm`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.status === 'ok') {
-            btn.innerHTML = '✓ Confirmed!';
-            btn.style.background = '#059669';
-            btn.style.opacity = '1';
-
-            // Update status badge
-            const badge = document.getElementById(`status-${uuid}`);
-            if (badge) {
-                badge.className = 'badge badge-green';
-                badge.textContent = 'Confirmed';
+        fetch(`/bookings/${uuid}/force-confirm`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
             }
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.status === 'ok') {
+                btn.innerHTML = '✓ Confirmed!';
+                btn.style.background = '#059669';
+                btn.style.opacity = '1';
 
-            // Remove button after 2 seconds
-            setTimeout(() => btn.remove(), 2000);
+                // Update status badge
+                const badge = document.getElementById(`status-${uuid}`);
+                if (badge) {
+                    badge.className = 'badge badge-green';
+                    badge.textContent = 'Confirmed';
+                }
 
-            // Show success toast
-            showToast('✓ Booking confirmed! Codes emailed to tutor and student.', 'success');
+                // Remove button after 2 seconds
+                setTimeout(() => btn.remove(), 2000);
+
+                // Show success toast
+                showToast('✓ Booking confirmed! Codes emailed to tutor and student.', 'success');
         } else {
             btn.innerHTML = originalHtml;
             btn.disabled = false;
@@ -206,14 +212,21 @@ function confirmBooking(uuid, btn) {
         btn.style.opacity = '1';
         showToast('Network error. Please try again.', 'error');
     });
+    });
 }
 
 function resendCodes(uuid, btn) {
-    if (!confirm('Resend session codes to the tutor and student?')) return;
+    showConfirm(
+        'Resend Session Codes?',
+        'This will resend session codes to the tutor and student.',
+        'Yes, Resend',
+        'Cancel'
+    ).then((result) => {
+        if (!result.isConfirmed) return;
 
-    const originalHtml = btn.innerHTML;
-    btn.innerHTML = '⏳ Sending…';
-    btn.disabled = true;
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '⏳ Sending…';
+        btn.disabled = true;
 
     fetch(`/bookings/${uuid}/force-confirm`, {
         method: 'POST',

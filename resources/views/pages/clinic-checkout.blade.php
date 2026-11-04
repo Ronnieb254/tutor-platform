@@ -91,19 +91,38 @@ a{color:inherit;text-decoration:none;}
             </div>
         </div>
 
-        {{-- Payment Method Selection --}}
+        {{-- Payment Method --}}
         <div style="margin-bottom:24px;">
             <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;">Payment Method</h3>
-            <div class="payment-method selected" data-method="paystack">
-                <div class="payment-icon">💳</div>
-                <div class="payment-name">M-Pesa / Card Payment</div>
-                <div class="payment-desc">Secure payment via Paystack (M-Pesa, Visa, Mastercard)</div>
+            <div class="payment-method selected" data-method="mpesa">
+                <div class="payment-icon">📱</div>
+                <div class="payment-name">M-Pesa (Lipa Na M-Pesa)</div>
+                <div class="payment-desc">Secure STK Push — enter your M-Pesa PIN on your phone to pay</div>
             </div>
         </div>
 
         {{-- Payment Form --}}
         <form id="paymentForm" method="POST" action="{{ route('clinic.pay', $clinic) }}">
             @csrf
+
+            {{-- M-Pesa Phone --}}
+            <div style="margin-bottom:18px;">
+                <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
+                    <i class="fa-solid fa-mobile-screen-button fa-xs" style="color:var(--trust-blue);margin-right:5px;"></i>
+                    M-Pesa Phone Number
+                </label>
+                <input type="tel" name="phone" required
+                       placeholder="e.g. 0712 345 678"
+                       style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;"
+                       onfocus="this.style.borderColor='var(--trust-blue)'"
+                       onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                @error('phone')
+                    <p style="font-size:12px;color:var(--coral);margin-top:5px;">{{ $message }}</p>
+                @enderror
+                <p style="font-size:11px;color:var(--muted);margin-top:5px;">
+                    You'll receive an STK Push on this number. Enter your PIN to complete payment.
+                </p>
+            </div>
 
             {{-- User Verification --}}
             <div style="background:#F9FAFB;border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;">
@@ -116,13 +135,13 @@ a{color:inherit;text-decoration:none;}
             <div class="terms">
                 <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
                     <input type="checkbox" name="terms" required style="margin-top:3px;cursor:pointer;width:16px;height:16px;">
-                    <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand that this booking is non-refundable.</span>
+                    <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this booking is subject to the Mwalimu cancellation policy.</span>
                 </label>
             </div>
 
             {{-- Submit Button --}}
             <button type="submit" class="btn btn-primary" id="submitBtn">
-                <i class="fa-solid fa-lock fa-sm"></i> Pay KSh {{ number_format($clinic->price) }} & Confirm Booking
+                <i class="fa-solid fa-lock fa-sm"></i> Pay KSh {{ number_format($clinic->price) }} via M-Pesa
             </button>
             <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
                 <i class="fa-solid fa-arrow-left fa-sm"></i> Back

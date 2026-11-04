@@ -185,7 +185,7 @@ class SampleBookingSeeder extends Seeder
                     'user_id'            => $student->id,
                     'amount'             => $amount,
                     'currency'           => 'KES',
-                    'paystack_reference' => 'SAMPLE-' . strtoupper(Str::random(10)),
+                    'mpesa_reference' => 'SAMPLE-' . strtoupper(Str::random(10)),
                     'status'             => 'success',
                     'paid_at'            => now()->subMinutes(rand(10,60)),
                     'metadata'           => ['sample' => true],

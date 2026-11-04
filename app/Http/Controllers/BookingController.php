@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Services\BookingService;
-use App\Services\PaystackService;
+use App\Services\DarajaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
     public function __construct(
-        protected BookingService  $bookingService,
-        protected PaystackService $paystack
+        protected BookingService $bookingService,
+        protected DarajaService  $daraja
     ) {}
 
     public function show(Booking $booking)
@@ -80,13 +80,13 @@ class BookingController extends Controller
 
         if ((float) $booking->total_amount <= 0) {
             Payment::create([
-                'booking_id'         => $booking->id,
-                'user_id'            => auth()->id(),
-                'amount'             => 0,
-                'currency'           => 'KES',
-                'paystack_reference' => 'FREE-' . strtoupper(Str::random(12)),
-                'status'             => 'success',
-                'paid_at'            => now(),
+                'booking_id'      => $booking->id,
+                'user_id'         => auth()->id(),
+                'amount'          => 0,
+                'currency'        => 'KES',
+                'mpesa_reference' => 'FREE-' . strtoupper(Str::random(12)),
+                'status'          => 'success',
+                'paid_at'         => now(),
             ]);
 
             $this->bookingService->confirmBooking($booking);
@@ -103,62 +103,69 @@ class BookingController extends Controller
             ]);
         }
 
-        // Initialize Paystack transaction
-        $reference = $this->paystack->generateReference();
-        
+        // Validate phone number is present
+        $request->validate(['phone' => 'required|string|min:9|max:15']);
+
+        // Initiate M-Pesa STK Push
+        $reference = $this->daraja->generateReference();
+
         try {
-            $result = $this->paystack->initializeTransaction(
-                auth()->user()->email,
+            $result = $this->daraja->initializeStkPush(
+                $request->input('phone'),
                 $booking->total_amount,
                 $reference,
-                ['booking_id' => $booking->id]
+                'Mwalimu Session'
             );
 
-            \Log::info('Paystack initialization response', ['result' => $result]);
+            \Log::info('Daraja STK Push response', ['result' => $result]);
 
-            if ($result['status'] ?? false) {
+            $responseCode = $result['ResponseCode'] ?? ($result['errorCode'] ?? null);
+
+            if ($responseCode === '0' || isset($result['_mock'])) {
+                // Store checkout_request_id so callback can match this payment
                 Payment::create([
-                    'booking_id'           => $booking->id,
-                    'user_id'              => auth()->id(),
-                    'amount'               => $booking->total_amount,
-                    'currency'             => 'KES',
-                    'paystack_reference'   => $reference,
-                    'paystack_access_code' => $result['data']['access_code'] ?? null,
-                    'status'               => 'pending',
+                    'booking_id'          => $booking->id,
+                    'user_id'             => auth()->id(),
+                    'amount'              => $booking->total_amount,
+                    'currency'            => 'KES',
+                    'mpesa_reference'     => $reference,
+                    'checkout_request_id' => $result['CheckoutRequestID'] ?? null,
+                    'merchant_request_id' => $result['MerchantRequestID'] ?? null,
+                    'status'              => 'pending',
+                    'payer_phone'         => $this->daraja->normalizePhone($request->input('phone')),
                 ]);
 
                 return response()->json([
-                    'status'      => 'ok',
-                    'access_code' => $result['data']['access_code'],
-                    'reference'   => $reference,
-                    'booking_id'  => $booking->id,
+                    'status'               => 'ok',
+                    'reference'            => $reference,
+                    'checkout_request_id'  => $result['CheckoutRequestID'] ?? null,
+                    'booking_id'           => $booking->id,
+                    'message'              => $result['CustomerMessage'] ?? 'Check your phone for the M-Pesa prompt.',
                 ]);
             }
 
-            $errorMessage = $result['message'] ?? 'Could not initialize payment.';
-            \Log::error('Paystack initialization failed', [
-                'result' => $result,
+            $errorMessage = $result['errorMessage'] ?? ($result['ResponseDescription'] ?? 'Could not initialize payment.');
+            \Log::error('Daraja STK Push failed', [
+                'result'     => $result,
                 'booking_id' => $booking->id,
-                'user_email' => auth()->user()->email,
-                'amount' => $booking->total_amount,
             ]);
 
             $booking->delete();
             return response()->json([
-                'status' => 'error', 
+                'status'  => 'error',
                 'message' => $errorMessage,
-                'debug' => config('app.debug') ? $result : null
+                'debug'   => config('app.debug') ? $result : null,
             ], 422);
-            
+
         } catch (\Exception $e) {
-            \Log::error('Paystack exception', [
+            \Log::error('Daraja exception', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
-            
+
             $booking->delete();
             return response()->json([
-                'status' => 'error', 
+                'status'  => 'error',
                 'message' => 'Payment gateway error: ' . $e->getMessage(),
             ], 422);
         }
@@ -168,20 +175,19 @@ class BookingController extends Controller
     {
         $request->validate(['reference' => 'required|string']);
 
-        $payment = Payment::where('paystack_reference', $request->reference)
+        $payment = Payment::where('mpesa_reference', $request->reference)
             ->where('status', 'pending')
             ->first();
 
-        // Already confirmed (e.g. by webhook before the JS confirm call arrived)
+        // Already confirmed (e.g. by Daraja callback before the poll arrived)
         if (!$payment) {
-            $payment = Payment::where('paystack_reference', $request->reference)
+            $payment = Payment::where('mpesa_reference', $request->reference)
                 ->where('status', 'success')
                 ->first();
 
             if ($payment && $payment->booking) {
                 $fresh = $payment->booking->fresh();
 
-                // If booking is confirmed but has no codes (edge case from previous bug), generate them
                 if ($fresh->status === 'confirmed' && !$fresh->session_code_student) {
                     $fresh->update([
                         'session_code_tutor'   => 'TUT-' . strtoupper(\Illuminate\Support\Str::random(6)),
@@ -192,7 +198,6 @@ class BookingController extends Controller
                     $fresh->refresh();
                 }
 
-                // If booking is still pending but payment succeeded, confirm it now
                 if ($fresh->status === 'pending') {
                     try {
                         $this->bookingService->confirmBooking($fresh);
@@ -217,66 +222,11 @@ class BookingController extends Controller
                 ]);
             }
 
-            return response()->json(['status' => 'error', 'message' => 'Payment record not found.'], 404);
+            return response()->json(['status' => 'pending', 'message' => 'Awaiting M-Pesa confirmation.']);
         }
 
-        // Verify with Paystack API
-        $result = $this->paystack->verifyTransaction($request->reference);
-
-        \Log::info('Paystack verify result', ['reference' => $request->reference, 'result' => $result]);
-
-        // Paystack returns data.status = 'success' for a completed payment
-        $paystackStatus = $result['data']['status'] ?? '';
-
-        if ($paystackStatus === 'success') {
-            $payment->update(['status' => 'success', 'paid_at' => now()]);
-
-            $booking = $payment->booking;
-
-            if ($booking && $booking->status !== 'confirmed') {
-                try {
-                    $this->bookingService->confirmBooking($booking);
-                } catch (\Throwable $e) {
-                    // confirmBooking failed but payment is already marked success.
-                    // Force-update the booking status and codes so the student is not left hanging.
-                    \Log::error('confirmBooking failed, applying fallback: ' . $e->getMessage(), [
-                        'booking_id' => $booking->id,
-                        'trace'      => $e->getTraceAsString(),
-                    ]);
-
-                    $tutorCode   = 'TUT-' . strtoupper(\Illuminate\Support\Str::random(6));
-                    $studentCode = 'STU-' . strtoupper(\Illuminate\Support\Str::random(6));
-
-                    $booking->update([
-                        'status'               => 'confirmed',
-                        'session_code_tutor'   => $tutorCode,
-                        'session_code_student' => $studentCode,
-                        'meeting_room'         => 'Mwalimu-session-' . $booking->uuid,
-                        'meeting_url'          => 'https://meet.jit.si/Mwalimu-session-' . $booking->uuid,
-                    ]);
-                }
-            }
-
-            $fresh = $booking->fresh();
-
-            return response()->json([
-                'status'       => 'ok',
-                'booking_uuid' => $fresh->uuid,
-                'student_code' => $fresh->session_code_student,
-                'booking_url'  => route('bookings.show', $fresh->uuid),
-            ]);
-        }
-
-        \Log::warning('Paystack verify: unexpected status', [
-            'reference'      => $request->reference,
-            'paystack_status'=> $paystackStatus,
-            'full_result'    => $result,
-        ]);
-
-        return response()->json([
-            'status'  => 'error',
-            'message' => 'Payment not confirmed by Paystack (status: ' . $paystackStatus . ').',
-        ], 422);
+        // Payment still pending — return pending so the front-end keeps polling
+        return response()->json(['status' => 'pending', 'message' => 'Awaiting M-Pesa confirmation.']);
     }
 
     public function cancel(Booking $booking, Request $request)

@@ -529,7 +529,7 @@ svg{
 
 @if($errors->any())
 <script>
-    alert('Login failed: {{ $errors->first() }}');
+    showError('Login Failed', '{{ $errors->first() }}');
 </script>
 @endif
 

@@ -244,46 +244,53 @@ $(document).ready(function() {
 @push('scripts')
 <script>
 function confirmBooking(uuid, btn) {
-    if (!confirm('Confirm this booking? Session codes will be emailed and sent as notifications to both the tutor and student.')) return;
+    showConfirm(
+        'Confirm Booking?',
+        'Session codes will be emailed and sent as notifications to both the tutor and student.',
+        'Yes, Confirm',
+        'Cancel'
+    ).then((result) => {
+        if (!result.isConfirmed) return;
 
-    const originalHtml = btn.innerHTML;
-    btn.innerHTML = '<svg style="width:12px;height:12px;animation:spin 1s linear infinite;display:inline-block;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Confirming…';
-    btn.disabled = true;
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<svg style="width:12px;height:12px;animation:spin 1s linear infinite;display:inline-block;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Confirming…';
+        btn.disabled = true;
 
-    fetch(`/bookings/${uuid}/force-confirm`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.status === 'ok') {
-            btn.innerHTML = '✓ Confirmed!';
-            btn.style.background = '#059669';
-
-            // Replace the status badge in the same row
-            const row = btn.closest('tr');
-            const statusTd = row.querySelector('.badge');
-            if (statusTd) {
-                statusTd.className = 'badge badge-green';
-                statusTd.textContent = 'Confirmed';
+        fetch(`/bookings/${uuid}/force-confirm`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
             }
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.status === 'ok') {
+                btn.innerHTML = '✓ Confirmed!';
+                btn.style.background = '#059669';
 
-            // Remove the confirm button after a moment
-            setTimeout(() => btn.remove(), 2000);
-        } else {
+                // Replace the status badge in the same row
+                const row = btn.closest('tr');
+                const statusTd = row.querySelector('.badge');
+                if (statusTd) {
+                    statusTd.className = 'badge badge-green';
+                    statusTd.textContent = 'Confirmed';
+                }
+
+                // Remove the confirm button after a moment
+                setTimeout(() => btn.remove(), 2000);
+            } else {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                showError('Error', res.message || 'Failed to confirm booking.');
+            }
+        })
+        .catch(() => {
             btn.innerHTML = originalHtml;
             btn.disabled = false;
-            alert('Error: ' + (res.message || 'Failed to confirm booking.'));
-        }
-    })
-    .catch(() => {
-        btn.innerHTML = originalHtml;
-        btn.disabled = false;
-        alert('Network error. Please try again.');
+            showError('Network Error', 'Please try again.');
+        });
     });
 }
 </script>

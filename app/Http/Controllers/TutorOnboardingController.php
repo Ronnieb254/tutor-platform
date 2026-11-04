@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\TutorProfile;
 use App\Models\TutorDocument;
 use App\Models\Wallet;
-use App\Services\PaystackService;
+use App\Services\DarajaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class TutorOnboardingController extends Controller
 {
-    public function submit(Request $request, PaystackService $paystack)
+    public function submit(Request $request, DarajaService $daraja)
     {
         $request->validate([
             'name'             => 'required|string|max:255',
@@ -100,24 +100,39 @@ class TutorOnboardingController extends Controller
             ['balance' => 0, 'currency' => 'KES']
         );
 
-        // If speedy verification requested, init Paystack transaction
+        // If speedy verification requested, send STK Push
         if ($isSpecedy) {
-            $reference = $paystack->generateReference('SPV');
-            $result    = $paystack->initializeTransaction(
-                $user->email,
-                1000.00,
-                $reference,
-                ['purpose' => 'speedy_verification', 'tutor_profile_id' => $profile->id]
-            );
+            $phone     = $request->input('phone', '');
+            $reference = $daraja->generateReference('SPV');
 
-            if ($result['status'] ?? false) {
-                return response()->json([
-                    'status'             => 'ok',
-                    'speedy'             => true,
-                    'tutor_id'           => $profile->id,
-                    'paystack_access_code' => $result['data']['access_code'],
-                    'reference'          => $reference,
-                ]);
+            try {
+                $result       = $daraja->initializeStkPush($phone, 1000.00, $reference, 'Mwalimu SpeedyVerify');
+                $responseCode = $result['ResponseCode'] ?? ($result['errorCode'] ?? null);
+
+                if ($responseCode === '0' || isset($result['_mock'])) {
+                    // Store a pending payment so DarajaCallbackController can mark speedy later
+                    \App\Models\Payment::create([
+                        'user_id'             => $user->id,
+                        'amount'              => 1000.00,
+                        'currency'            => 'KES',
+                        'payment_type'        => 'speedy_verification',
+                        'mpesa_reference'     => $reference,
+                        'checkout_request_id' => $result['CheckoutRequestID'] ?? null,
+                        'payer_phone'         => $daraja->normalizePhone($phone),
+                        'status'              => 'pending',
+                    ]);
+
+                    return response()->json([
+                        'status'   => 'ok',
+                        'speedy'   => true,
+                        'stk_sent' => true,
+                        'tutor_id' => $profile->id,
+                        'message'  => $result['CustomerMessage'] ?? 'Check your phone for the M-Pesa prompt.',
+                    ]);
+                }
+            } catch (\Exception $e) {
+                \Log::error('Speedy verification STK failed: ' . $e->getMessage());
+                // Fall through — still submitted, just not speedy
             }
         }
 
@@ -126,31 +141,5 @@ class TutorOnboardingController extends Controller
             'speedy'  => false,
             'tutor_id'=> $profile->id,
         ]);
-    }
-
-    public function speedyWebhook(Request $request, PaystackService $paystack)
-    {
-        $payload   = $request->getContent();
-        $signature = $request->header('X-Paystack-Signature','');
-
-        if (!$paystack->verifyWebhookSignature($payload, $signature)) {
-            return response()->json(['status' => 'invalid'], 401);
-        }
-
-        $event = json_decode($payload, true);
-        if (($event['event'] ?? '') === 'charge.success') {
-            $meta = $event['data']['metadata'] ?? [];
-            if (($meta['purpose'] ?? '') === 'speedy_verification') {
-                $profile = TutorProfile::find($meta['tutor_profile_id'] ?? 0);
-                if ($profile) {
-                    $profile->update([
-                        'speedy_verification_paid'    => true,
-                        'speedy_verification_paid_at' => now(),
-                    ]);
-                }
-            }
-        }
-
-        return response()->json(['status' => 'ok']);
     }
 }

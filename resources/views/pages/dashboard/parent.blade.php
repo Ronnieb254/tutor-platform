@@ -287,7 +287,14 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
                 @if($b->status === 'confirmed')<a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint">{{ $b->canJoin() ? '🎥 Join Session' : 'Open Session' }}</a>@else<a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-v">View Booking</a>@endif
                 @if(in_array($b->status,['pending','confirmed']) && $b->scheduled_at->isFuture())
-                <form method="POST" action="{{ route('bookings.cancel',$b->uuid) }}" onsubmit="return confirm('Cancel this booking?')">@csrf<input type="hidden" name="reason" value="Cancelled by parent"><button type="submit" class="btn btn-sm" style="width:100%;background:#FEF2F2;color:#991B1B;border:none;">Cancel</button></form>
+                <form method="POST" action="{{ route('bookings.cancel',$b->uuid) }}" onsubmit="event.preventDefault(); confirmCancelBooking{{ $b->id }}(this)">@csrf<input type="hidden" name="reason" value="Cancelled by parent"><button type="submit" class="btn btn-sm" style="width:100%;background:#FEF2F2;color:#991B1B;border:none;">Cancel</button></form>
+                <script>
+                function confirmCancelBooking{{ $b->id }}(form) {
+                    showConfirm('Cancel Booking?', 'Are you sure?', 'Yes, Cancel', 'No').then((result) => {
+                        if (result.isConfirmed) form.submit();
+                    });
+                }
+                </script>
                 @endif
             </div>
         </div>
@@ -346,12 +353,19 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                             <div style="display:flex;gap:6px;align-items:center;">
                                 <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a>
                                 @if($canRequestRefund && !$hasRefund)
-                                <form method="POST" action="{{ route('bookings.refund.first20min', $b->id) }}" style="display:inline;">
+                                <form method="POST" action="{{ route('bookings.refund.first20min', $b->id) }}" style="display:inline;" onsubmit="event.preventDefault(); confirmRefund{{ $b->id }}(this)">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm" style="background:rgba(236,72,153,.1);color:#EC4899;border:1px solid rgba(236,72,153,.2);font-weight:600;" onclick="return confirm('Request a 100% refund for this session? The amount will be added to your wallet immediately.')">
+                                    <button type="submit" class="btn btn-sm" style="background:rgba(236,72,153,.1);color:#EC4899;border:1px solid rgba(236,72,153,.2);font-weight:600;">
                                         💰 Refund
                                     </button>
                                 </form>
+                                <script>
+                                function confirmRefund{{ $b->id }}(form) {
+                                    showConfirm('Request Refund?', 'Request a 100% refund for this session? The amount will be added to your wallet immediately.', 'Yes, Refund', 'Cancel').then((result) => {
+                                        if (result.isConfirmed) form.submit();
+                                    });
+                                }
+                                </script>
                                 @endif
                             </div>
                         </td>

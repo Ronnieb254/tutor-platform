@@ -62,9 +62,11 @@ $sessionTiers = [
                     <i class="fa-regular fa-calendar fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Date
                 </p>
                 <input type="date" wire:model="scheduledDate"
-                       min="{{ now()->addDay()->format('Y-m-d') }}"
+                       id="bw-date"
+                       min="{{ now()->format('Y-m-d') }}"
                        style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
-                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"
+                       oninput="bwSyncTimeMin(this.value)">
                 @error('scheduledDate')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
             </div>
             <div>
@@ -72,11 +74,42 @@ $sessionTiers = [
                     <i class="fa-regular fa-clock fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Time
                 </p>
                 <input type="time" wire:model="scheduledTime"
+                       id="bw-time"
                        style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
                        onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
                 @error('scheduledTime')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
             </div>
         </div>
+        <script>
+        (function () {
+            var today = '{{ now()->format('Y-m-d') }}';
+
+            function nowTimeStr() {
+                var d = new Date();
+                return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+            }
+
+            window.bwSyncTimeMin = function (dateVal) {
+                var timeInput = document.getElementById('bw-time');
+                if (!timeInput) return;
+                if (dateVal === today) {
+                    timeInput.min = nowTimeStr();
+                    // If current value is already in the past, clear it
+                    if (timeInput.value && timeInput.value < timeInput.min) {
+                        timeInput.value = '';
+                    }
+                } else {
+                    timeInput.min = '';
+                }
+            };
+
+            // Run on page load in case today is already selected
+            document.addEventListener('livewire:init', function () {
+                var dateInput = document.getElementById('bw-date');
+                if (dateInput) bwSyncTimeMin(dateInput.value);
+            });
+        })();
+        </script>
 
         {{-- Subject --}}
         @if($subjects->isNotEmpty())
@@ -98,12 +131,14 @@ $sessionTiers = [
         {{-- Notes --}}
         <div>
             <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                <i class="fa-solid fa-note-sticky fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Notes for tutor <span style="font-weight:400;text-transform:none;">(optional)</span>
+                <i class="fa-solid fa-note-sticky fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Notes for tutor <span style="color:var(--coral);">*</span>
             </p>
             <textarea wire:model="notes" rows="2"
                       placeholder="Topics to cover, past exam areas, specific questions…"
+                      required
                       style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
+            @error('notes') <span style="font-size:12px;color:var(--coral);margin-top:4px;display:block;">{{ $message }}</span> @enderror
         </div>
 
         <button wire:click="nextStep"
@@ -151,6 +186,41 @@ $sessionTiers = [
             <p style="font-size:12px;color:var(--muted);line-height:1.65;">You'll receive a unique <strong style="color:var(--ink);">STU-XXXXXX</strong> session access code by email and SMS. Use it to enter your live class on session day.</p>
         </div>
 
+        {{-- M-Pesa phone number input --}}
+        <div>
+            <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
+                <i class="fa-solid fa-mobile-screen-button fa-xs" style="color:var(--trust-blue);margin-right:5px;"></i>
+                M-Pesa Phone Number
+            </label>
+            <input type="tel"
+                   wire:model.live="phone"
+                   placeholder="e.g. 0712 345 678"
+                   style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:14px;font-family:inherit;outline:none;"
+                   onfocus="this.style.borderColor='var(--trust-blue)'"
+                   onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+            @error('phone')
+                <p style="font-size:12px;color:var(--coral);margin-top:5px;">{{ $message }}</p>
+            @enderror
+            <p style="font-size:11px;color:var(--muted);margin-top:5px;">
+                You will receive an STK Push prompt on this number. Enter your M-Pesa PIN to pay.
+            </p>
+        </div>
+
+        {{-- STK sent banner (shown by JS once push is dispatched) --}}
+        <div id="stkBanner" style="display:none;background:rgba(16,185,129,.08);border:1.5px solid var(--mint);border-radius:14px;padding:14px 16px;text-align:center;">
+            <p style="font-size:14px;font-weight:700;color:#059669;margin-bottom:4px;">
+                <i class="fa-solid fa-mobile-screen-button"></i> Check your phone!
+            </p>
+            <p id="stkBannerMsg" style="font-size:13px;color:var(--muted);">
+                Enter your M-Pesa PIN to complete payment.
+            </p>
+            <div style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--muted);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--mint);animation:pulse 1.2s infinite;"></span>
+                Waiting for confirmation…
+            </div>
+        </div>
+        <style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
+
         <div style="display:flex;gap:10px;">
             <button wire:click="prevStep"
                     style="flex:1;height:48px;border-radius:999px;background:#fff;color:var(--ink);border:2px solid rgba(21,40,31,.18);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .18s;">
@@ -171,7 +241,7 @@ $sessionTiers = [
         </div>
         <p style="font-size:11px;text-align:center;color:var(--muted);">
             <i class="fa-solid fa-lock fa-xs" style="color:var(--mint);"></i>
-            Secured by Paystack · M-Pesa, Visa & Mastercard accepted
+            Secured by M-Pesa · Lipa Na M-Pesa STK Push
         </p>
     </div>
     @endif
@@ -203,25 +273,47 @@ $sessionTiers = [
 </div>
 
 @push('scripts')
-<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
 document.addEventListener('livewire:initialized', () => {
-    Livewire.on('open-paystack', (data) => {
-        const handler = PaystackPop.setup({
-            key: '{{ config('paystack.public_key') }}',
-            email: data.email,
-            amount: data.amount,
-            currency: 'KES',
-            ref: data.reference,
-            metadata: { cancel_action: window.location.href },
-            onSuccess: function(transaction) {
-                @this.paymentSuccess(transaction.reference);
-            },
-            onCancel: function() {
-                // User cancelled, stay on step 2
-            }
-        });
-        handler.openIframe();
+
+    // ── STK Push sent — start polling ────────────────────────────────────────
+    Livewire.on('stk-sent', (data) => {
+        const reference  = data.reference;
+        const statusUrl  = '/api/daraja/status?reference=' + encodeURIComponent(reference);
+        const maxPolls   = 60;   // 5 minutes at 5-second intervals
+        let   polls      = 0;
+
+        // Show the "check your phone" banner
+        const banner = document.getElementById('stkBanner');
+        const bannerMsg = document.getElementById('stkBannerMsg');
+        if (banner) {
+            banner.style.display = '';
+            if (bannerMsg && data.message) bannerMsg.textContent = data.message;
+        }
+
+        function poll() {
+            if (polls >= maxPolls) return; // timed out — user can retry
+            polls++;
+
+            fetch(statusUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        // Confirm on the Livewire component → advances to step 3
+                        @this.paymentSuccess(reference);
+                    } else if (result.status === 'failed') {
+                        if (banner) banner.style.display = 'none';
+                        // Surface error via Livewire
+                        @this.addError('phone', result.message || 'M-Pesa payment was not completed. Please try again.');
+                    } else {
+                        setTimeout(poll, 5000);
+                    }
+                })
+                .catch(() => setTimeout(poll, 5000));
+        }
+
+        // First poll after 5 s to allow Safaricom callback to arrive
+        setTimeout(poll, 5000);
     });
 });
 </script>

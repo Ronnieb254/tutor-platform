@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TutorContractAcceptance;
 use App\Notifications\TutorContractEmail;
+use App\Notifications\TutorContractAcceptedEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -62,6 +63,13 @@ class TutorContractController extends Controller
             'contract_accepted' => true,
             'contract_accepted_at' => now(),
         ]);
+
+        // Send acceptance confirmation email
+        try {
+            $user->notify(new TutorContractAcceptedEmail());
+        } catch (\Exception $e) {
+            \Log::warning('Failed to send contract acceptance email: ' . $e->getMessage());
+        }
 
         return redirect()->route('tutor.dashboard')
             ->with('success', 'Contract accepted successfully! Welcome to Mwalimu.');

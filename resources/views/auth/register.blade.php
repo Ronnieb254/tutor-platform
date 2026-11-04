@@ -599,7 +599,10 @@ svg{
                 <div class="terms-wrapper">
                     <input type="checkbox" id="terms" name="terms" required>
                     <label for="terms">
-                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        I agree to the
+                        <a href="{{ route('terms-of-service') }}" target="_blank" rel="noopener">Terms of Service</a>
+                        and
+                        <a href="{{ route('privacy-policy') }}" target="_blank" rel="noopener">Privacy Policy</a>
                     </label>
                 </div>
 
@@ -624,7 +627,13 @@ svg{
 
 @if($errors->any())
 <script>
-    alert('Registration failed: {{ $errors->first() }}');
+    document.addEventListener('DOMContentLoaded', function () {
+        const msg = document.createElement('div');
+        msg.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#E8522A;color:#fff;padding:14px 24px;border-radius:10px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);max-width:90vw;text-align:center;';
+        msg.textContent = '{{ $errors->first() }}';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 5000);
+    });
 </script>
 @endif
 

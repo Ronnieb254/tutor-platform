@@ -197,12 +197,19 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 <i class="fa-solid fa-eye"></i> Review
             </button>
             @if($approvedDocs === 5)
-            <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
+            <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmApproval{{ $profile->id }}(this, '{{ $profile->user->name }}')">
                 @csrf @method('PATCH')
-                <button type="submit" class="btn btn-primary" style="width:100%;font-size:13px;" onclick="return confirm('Approve {{ $profile->user->name }} and make them live?')">
+                <button type="submit" class="btn btn-primary" style="width:100%;font-size:13px;">
                     <i class="fa-solid fa-circle-check"></i> Approve
                 </button>
             </form>
+            <script>
+            function confirmApproval{{ $profile->id }}(form, name) {
+                showConfirm('Approve Tutor?', 'Approve ' + name + ' and make them live?', 'Yes, Approve', 'Cancel').then((result) => {
+                    if (result.isConfirmed) form.submit();
+                });
+            }
+            </script>
             @else
             <button disabled class="btn" style="flex:1;background:rgba(0,0,0,.05);color:var(--muted);cursor:not-allowed;font-size:13px;">
                 <i class="fa-solid fa-lock"></i> Approve
@@ -330,18 +337,32 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline" style="flex:1;justify-content:center;text-decoration:none;">
                         <i class="fa-solid fa-book-open"></i> Manage Subjects ({{ $profile->subjects->count() }})
                     </a>
-                    <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;">
+                    <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmSuspend{{ $profile->id }}(this)">
                         @csrf @method('PATCH')
-                        <button type="submit" class="btn btn-danger" style="width:100%;" onclick="return confirm('Suspend this tutor?')">
+                        <button type="submit" class="btn btn-danger" style="width:100%;">
                             <i class="fa-solid fa-ban"></i> Suspend
                         </button>
                     </form>
-                    <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
+                    <script>
+                    function confirmSuspend{{ $profile->id }}(form) {
+                        showConfirm('Suspend Tutor?', 'Are you sure you want to suspend this tutor?', 'Yes, Suspend', 'Cancel').then((result) => {
+                            if (result.isConfirmed) form.submit();
+                        });
+                    }
+                    </script>
+                    <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmFinalApproval{{ $profile->id }}(this)">
                         @csrf @method('PATCH')
-                        <button type="submit" class="btn btn-primary" style="width:100%;" {{ $approvedDocs < 5 ? 'disabled' : '' }} onclick="return confirm('Approve and make this tutor live?')">
+                        <button type="submit" class="btn btn-primary" style="width:100%;" {{ $approvedDocs < 5 ? 'disabled' : '' }}>
                             <i class="fa-solid fa-circle-check"></i> {{ $approvedDocs === 5 ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/5 docs)' }}
                         </button>
                     </form>
+                    <script>
+                    function confirmFinalApproval{{ $profile->id }}(form) {
+                        showConfirm('Approve Tutor?', 'Approve and make this tutor live?', 'Yes, Approve', 'Cancel').then((result) => {
+                            if (result.isConfirmed) form.submit();
+                        });
+                    }
+                    </script>
                 </div>
             </div>
         </div>

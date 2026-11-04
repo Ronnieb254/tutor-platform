@@ -5,7 +5,7 @@ namespace App\Livewire\Booking;
 use App\Models\TutorProfile;
 use App\Models\Subject;
 use App\Models\Payment;
-use App\Services\PaystackService;
+use App\Services\DarajaService;
 use App\Services\BookingService;
 use Livewire\Component;
 use Illuminate\Support\Carbon;
@@ -22,11 +22,13 @@ class BookingWizard extends Component
     public string $bookingFor       = 'self';
     public ?int   $childProfileId   = null;
     public string $notes            = '';
+    public string $phone            = '';  // M-Pesa phone number
 
     // Payment state
-    public ?string $paystackReference  = null;
-    public ?string $paystackAccessCode = null;
+    public ?string $mpesaReference     = null;
+    public ?string $checkoutRequestId  = null;
     public bool   $paymentProcessing   = false;
+    public bool   $stkSent             = false;   // STK Push dispatched, waiting for customer
     public bool   $bookingConfirmed    = false;
     public ?string $studentCode        = null;
     public ?string $bookingUuid        = null;
@@ -34,7 +36,7 @@ class BookingWizard extends Component
     public function mount(TutorProfile $tutorProfile)
     {
         $this->tutorProfile = $tutorProfile;
-        $this->scheduledDate = now()->addDay()->format('Y-m-d');
+        $this->scheduledDate = now()->format('Y-m-d');
     }
 
     public function getSessionPriceProperty(): float
@@ -64,8 +66,9 @@ class BookingWizard extends Component
             $this->validate([
                 'duration'      => 'required|in:20,40,60',
                 'sessionType'   => 'required|in:individual,group',
-                'scheduledDate' => 'required|date|after:today',
+                'scheduledDate' => 'required|date|after_or_equal:today',
                 'scheduledTime' => 'required',
+                'notes'         => 'required|string|min:5',
             ]);
         }
         $this->step++;
@@ -73,17 +76,19 @@ class BookingWizard extends Component
 
     public function prevStep() { $this->step = max(1, $this->step - 1); }
 
-    public function initPayment(PaystackService $paystack, BookingService $bookingService)
+    public function initPayment(DarajaService $daraja, BookingService $bookingService)
     {
         $this->validate([
             'duration'      => 'required|in:20,40,60',
             'sessionType'   => 'required|in:individual,group',
             'scheduledDate' => 'required|date|after:today',
             'scheduledTime' => 'required',
+            'notes'         => 'required|string|min:5',
+            'phone'         => 'required|string|min:9|max:15',
         ]);
 
         $scheduledAt = Carbon::parse("{$this->scheduledDate} {$this->scheduledTime}", 'Africa/Nairobi')
-            ->utc(); // Store as UTC in DB
+            ->utc();
 
         $booking = $bookingService->createBooking([
             'tutor_profile_id' => $this->tutorProfile->id,
@@ -97,47 +102,80 @@ class BookingWizard extends Component
             'notes'            => $this->notes,
         ]);
 
-        $reference = $paystack->generateReference();
-        $result = $paystack->initializeTransaction(
-            auth()->user()->email,
+        // Free session — confirm immediately
+        if ((float) $booking->total_amount <= 0) {
+            Payment::create([
+                'booking_id'      => $booking->id,
+                'user_id'         => auth()->id(),
+                'amount'          => 0,
+                'currency'        => 'KES',
+                'mpesa_reference' => 'FREE-' . strtoupper(\Illuminate\Support\Str::random(12)),
+                'status'          => 'success',
+                'paid_at'         => now(),
+            ]);
+            $bookingService->confirmBooking($booking);
+            $this->bookingConfirmed = true;
+            $this->studentCode      = $booking->fresh()->session_code_student;
+            $this->bookingUuid      = $booking->uuid;
+            $this->step             = 3;
+            return;
+        }
+
+        $reference = $daraja->generateReference();
+        $result    = $daraja->initializeStkPush(
+            $this->phone,
             $booking->total_amount,
             $reference,
-            ['booking_id' => $booking->id]
+            'Mwalimu Session'
         );
 
-        if ($result['status'] ?? false) {
+        $responseCode = $result['ResponseCode'] ?? ($result['errorCode'] ?? null);
+
+        if ($responseCode === '0' || isset($result['_mock'])) {
             Payment::create([
-                'booking_id'           => $booking->id,
-                'user_id'              => auth()->id(),
-                'amount'               => $booking->total_amount,
-                'currency'             => 'KES',
-                'paystack_reference'   => $reference,
-                'paystack_access_code' => $result['data']['access_code'],
-                'status'               => 'pending',
+                'booking_id'          => $booking->id,
+                'user_id'             => auth()->id(),
+                'amount'              => $booking->total_amount,
+                'currency'            => 'KES',
+                'mpesa_reference'     => $reference,
+                'checkout_request_id' => $result['CheckoutRequestID'] ?? null,
+                'merchant_request_id' => $result['MerchantRequestID'] ?? null,
+                'payer_phone'         => $daraja->normalizePhone($this->phone),
+                'status'              => 'pending',
             ]);
 
-            $this->paystackReference  = $reference;
-            $this->paystackAccessCode = $result['data']['access_code'];
+            $this->mpesaReference    = $reference;
+            $this->checkoutRequestId = $result['CheckoutRequestID'] ?? null;
+            $this->stkSent           = true;
 
-            // Dispatch JS to open Paystack popup
-            $this->dispatch('open-paystack', [
-                'access_code' => $result['data']['access_code'],
-                'reference'   => $reference,
-                'email'       => auth()->user()->email,
-                'amount'      => (int) round($booking->total_amount * 100),
+            // Tell the JS layer to start polling
+            $this->dispatch('stk-sent', [
+                'reference'           => $reference,
+                'checkout_request_id' => $result['CheckoutRequestID'] ?? null,
+                'message'             => $result['CustomerMessage'] ?? 'Check your phone for the M-Pesa prompt.',
             ]);
+        } else {
+            $booking->delete();
+            $this->addError('phone', 'Payment could not be initialised: ' . ($result['errorMessage'] ?? $result['ResponseDescription'] ?? 'Please try again.'));
         }
     }
 
     public function paymentSuccess(string $reference, BookingService $bookingService)
     {
-        $payment = Payment::where('paystack_reference', $reference)->firstOrFail();
-        $payment->update(['status' => 'success', 'paid_at' => now()]);
-        $bookingService->confirmBooking($payment->booking);
+        $payment = Payment::where('mpesa_reference', $reference)->firstOrFail();
+
+        if ($payment->status !== 'success') {
+            $payment->update(['status' => 'success', 'paid_at' => now()]);
+        }
+
+        $booking = $payment->booking;
+        if ($booking && $booking->status !== 'confirmed') {
+            $bookingService->confirmBooking($booking);
+        }
 
         $this->bookingConfirmed = true;
-        $this->studentCode      = $payment->booking->fresh()->session_code_student;
-        $this->bookingUuid      = $payment->booking->uuid;
+        $this->studentCode      = $booking->fresh()->session_code_student;
+        $this->bookingUuid      = $booking->uuid;
         $this->step             = 3;
     }
 

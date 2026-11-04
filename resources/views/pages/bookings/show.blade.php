@@ -464,7 +464,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     </div>
                     <div style="display:flex;justify-content:space-between;font-size:13px;">
                         <span style="color:rgba(21,40,31,.5);">Reference</span>
-                        <code style="font-size:11px;background:#F4F6F4;padding:2px 7px;border-radius:5px;color:#15281F;">{{ Str::limit($booking->payment->paystack_reference,18) }}</code>
+                        <code style="font-size:11px;background:#F4F6F4;padding:2px 7px;border-radius:5px;color:#15281F;">{{ Str::limit($booking->payment->mpesa_reference ?? $booking->payment->mpesa_receipt ?? '—', 18) }}</code>
                     </div>
                     @if($booking->payment->paid_at)
                     <div style="display:flex;justify-content:space-between;font-size:13px;">
@@ -480,7 +480,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
 
             {{-- Cancel --}}
             @if(in_array($booking->status,['pending','confirmed']) && $sessionStart->isFuture())
-            <form method="POST" action="{{ route('bookings.cancel',$booking->uuid) }}" onsubmit="return confirm('Cancel this booking? This action cannot be undone.')">
+            <form method="POST" action="{{ route('bookings.cancel',$booking->uuid) }}" id="cancel-booking-form-{{ $booking->uuid }}" onsubmit="event.preventDefault(); confirmCancelBooking('{{ $booking->uuid }}', this)">
                 @csrf
                 <input type="hidden" name="reason" value="Cancelled by {{ $isTutor ? 'tutor' : 'student' }}">
                 <button type="submit" style="width:100%;padding:12px;border-radius:14px;background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.background='#FECACA'" onmouseout="this.style.background='#FEE2E2'">
@@ -520,6 +520,21 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
   .join-btn{padding:14px 24px;font-size:14px;}
 }
 </style>
+
+<script>
+function confirmCancelBooking(uuid, form) {
+    showConfirm(
+        'Cancel Booking?',
+        'This action cannot be undone.',
+        'Yes, Cancel',
+        'No'
+    ).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+}
+</script>
 
 @include('partials.footer')
 

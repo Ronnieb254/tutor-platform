@@ -14,9 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Exclude Paystack webhook from CSRF
+        // Exclude Daraja M-Pesa callback from CSRF (Safaricom POSTs without a token)
         $middleware->validateCsrfTokens(except: [
-            'api/paystack/webhook',
+            'api/daraja/callback',
         ]);
 
         // Register named middleware alias

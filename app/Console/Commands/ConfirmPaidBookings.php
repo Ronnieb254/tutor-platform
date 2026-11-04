@@ -2,98 +2,92 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Booking;
 use App\Models\Payment;
 use App\Services\BookingService;
-use App\Services\PaystackService;
+use App\Services\DarajaService;
 use Illuminate\Console\Command;
 
 class ConfirmPaidBookings extends Command
 {
-    protected $signature = 'bookings:confirm-paid';
-    protected $description = 'Verify and confirm bookings with successful Paystack payments';
+    protected $signature   = 'bookings:confirm-paid';
+    protected $description = 'Confirm bookings whose M-Pesa payment is marked successful but the booking is still pending. Also re-queries Daraja for any long-standing pending payments.';
 
     public function __construct(
-        protected PaystackService $paystack,
+        protected DarajaService  $daraja,
         protected BookingService $bookingService
     ) {
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): int
     {
-        $this->info('Checking for paid but unconfirmed bookings...');
+        $this->info('Checking for paid but unconfirmed bookings…');
 
-        // Find payments that are successful but bookings still pending
+        // ── 1. Payments already marked success but booking still pending ─────
         $payments = Payment::with('booking')
             ->where('status', 'success')
-            ->whereHas('booking', function ($q) {
-                $q->where('status', 'pending');
-            })
+            ->whereHas('booking', fn($q) => $q->where('status', 'pending'))
             ->get();
 
-        if ($payments->isEmpty()) {
-            $this->info('No paid bookings need confirmation.');
-            return 0;
-        }
+        if ($payments->isNotEmpty()) {
+            $this->info("Found {$payments->count()} paid booking(s) to confirm.");
 
-        $this->info("Found {$payments->count()} paid booking(s) to confirm.");
-
-        foreach ($payments as $payment) {
-            $booking = $payment->booking;
-            
-            try {
-                $this->bookingService->confirmBooking($booking);
-                $this->info("✓ Confirmed booking {$booking->uuid} (Payment: {$payment->paystack_reference})");
-            } catch (\Exception $e) {
-                $this->error("✗ Failed to confirm booking {$booking->uuid}: {$e->getMessage()}");
+            foreach ($payments as $payment) {
+                $booking = $payment->booking;
+                try {
+                    $this->bookingService->confirmBooking($booking);
+                    $this->info("✓ Confirmed booking {$booking->uuid} (ref: {$payment->mpesa_reference})");
+                } catch (\Exception $e) {
+                    $this->error("✗ Failed to confirm booking {$booking->uuid}: {$e->getMessage()}");
+                }
             }
+        } else {
+            $this->info('No paid bookings need confirmation.');
         }
 
-        // Also check for pending payments and verify with Paystack
-        $this->info("\nChecking pending payments with Paystack...");
-        
-        $pendingPayments = Payment::with('booking')
+        // ── 2. Re-query Daraja for pending payments older than 3 minutes ─────
+        $this->newLine();
+        $this->info('Checking pending payments via Daraja STK query…');
+
+        $pending = Payment::with('booking')
             ->where('status', 'pending')
-            ->whereNotNull('paystack_reference')
-            ->where('created_at', '>=', now()->subDays(7))
+            ->whereNotNull('checkout_request_id')
+            ->where('created_at', '>=', now()->subDays(1))
+            ->where('created_at', '<=', now()->subMinutes(3)) // give Daraja time to callback
             ->get();
 
-        if ($pendingPayments->isEmpty()) {
-            $this->info('No pending payments to verify.');
+        if ($pending->isEmpty()) {
+            $this->info('No pending payments to re-query.');
             return 0;
         }
 
-        $this->info("Found {$pendingPayments->count()} pending payment(s) to verify.");
+        $this->info("Found {$pending->count()} pending payment(s) to re-query.");
 
-        foreach ($pendingPayments as $payment) {
+        foreach ($pending as $payment) {
             try {
-                $verification = $this->paystack->verifyTransaction($payment->paystack_reference);
-                
-                if (($verification['status'] ?? false) && ($verification['data']['status'] ?? '') === 'success') {
-                    $this->info("Payment {$payment->paystack_reference} is actually PAID on Paystack");
-                    
-                    // Update payment
-                    $payment->update([
-                        'status' => 'success',
-                        'paid_at' => now(),
-                    ]);
+                $result     = $this->daraja->queryStkStatus($payment->checkout_request_id);
+                $resultCode = $result['ResultCode'] ?? null;
 
-                    // Confirm booking
+                if ($resultCode === '0' || $resultCode === 0) {
+                    $this->info("Payment {$payment->mpesa_reference} confirmed via STK query.");
+
+                    $payment->update(['status' => 'success', 'paid_at' => now()]);
+
                     if ($payment->booking && $payment->booking->status === 'pending') {
                         $this->bookingService->confirmBooking($payment->booking);
                         $this->info("✓ Confirmed booking {$payment->booking->uuid}");
                     }
                 } else {
-                    $status = $verification['data']['status'] ?? 'unknown';
-                    $this->warn("Payment {$payment->paystack_reference} status: {$status}");
+                    $desc = $result['ResultDesc'] ?? 'unknown';
+                    $this->warn("Payment {$payment->mpesa_reference} not yet confirmed: {$desc}");
                 }
             } catch (\Exception $e) {
-                $this->error("✗ Failed to verify payment {$payment->paystack_reference}: {$e->getMessage()}");
+                $this->error("✗ Failed to query payment {$payment->mpesa_reference}: {$e->getMessage()}");
             }
         }
 
-        $this->info("\nDone!");
+        $this->newLine();
+        $this->info('Done!');
         return 0;
     }
 }

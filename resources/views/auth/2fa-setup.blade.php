@@ -310,9 +310,9 @@ function copyRecoveryCodes() {
     const text = codes.join('\n');
     
     navigator.clipboard.writeText(text).then(() => {
-        alert('Recovery codes copied to clipboard!');
+        showToast('Recovery codes copied to clipboard!', 'success');
     }).catch(() => {
-        alert('Failed to copy. Please copy manually.');
+        showToast('Failed to copy. Please copy manually.', 'error');
     });
 }
 </script>

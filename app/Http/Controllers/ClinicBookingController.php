@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\ExaminerClinic;
 use App\Models\ClinicEnrollment;
 use App\Models\Payment;
-use App\Services\PaystackService;
+use App\Services\DarajaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ClinicBookingController extends Controller
 {
-    protected $paystack;
+    protected $daraja;
 
-    public function __construct(PaystackService $paystack)
+    public function __construct(DarajaService $daraja)
     {
-        $this->paystack = $paystack;
+        $this->daraja = $daraja;
     }
 
     /**
@@ -45,64 +45,61 @@ class ClinicBookingController extends Controller
     }
 
     /**
-     * Process the payment via Paystack.
-     * Redirects to Paystack payment gateway.
+     * Process the payment via Daraja M-Pesa STK Push.
      */
     public function pay(Request $request, ExaminerClinic $clinic)
     {
+        $request->validate(['phone' => 'required|string|min:9|max:15']);
+
         $user = $request->user();
 
-        // Double-check capacity
         if ($clinic->isFull()) {
             return back()->with('error', 'Session is full. Please try another session.');
         }
 
-        // Check not already enrolled
         if ($clinic->isEnrolledBy($user)) {
             return back()->with('error', 'You are already enrolled in this session.');
         }
 
-        // Initialize Paystack transaction
-        $reference = $this->paystack->generateReference('CLINIC');
-        
+        $reference = $this->daraja->generateReference('CLINIC');
+
         try {
-            $result = $this->paystack->initializeTransaction(
-                $user->email,
-                (float) $clinic->price, // PaystackService multiplies by 100 internally
+            $result = $this->daraja->initializeStkPush(
+                $request->input('phone'),
+                (float) $clinic->price,
                 $reference,
-                [
-                    'clinic_id' => $clinic->id,
-                    'user_id' => $user->id,
-                    'type' => 'clinic',
-                ]
+                'Mwalimu Clinic'
             );
 
-            if (!$result['status']) {
-                return back()->with('error', 'Payment initialization failed. Please try again.');
+            $responseCode = $result['ResponseCode'] ?? ($result['errorCode'] ?? null);
+
+            if ($responseCode !== '0' && !isset($result['_mock'])) {
+                return back()->with('error', 'Payment initialization failed: ' . ($result['errorMessage'] ?? $result['ResponseDescription'] ?? 'Please try again.'));
             }
 
-            // Create payment record
-            $payment = Payment::create([
-                'user_id' => $user->id,
-                'clinic_id' => $clinic->id,
-                'amount' => $clinic->price,
-                'currency' => 'KES',
-                'payment_type' => 'clinic',
-                'status' => 'pending',
-                'paystack_reference' => $reference,
-                'paystack_access_code' => $result['data']['access_code'] ?? null,
-                'metadata' => [
-                    'clinic_id' => $clinic->id,
+            // Create pending payment record
+            Payment::create([
+                'user_id'             => $user->id,
+                'clinic_id'           => $clinic->id,
+                'amount'              => $clinic->price,
+                'currency'            => 'KES',
+                'payment_type'        => 'clinic',
+                'status'              => 'pending',
+                'mpesa_reference'     => $reference,
+                'checkout_request_id' => $result['CheckoutRequestID'] ?? null,
+                'merchant_request_id' => $result['MerchantRequestID'] ?? null,
+                'payer_phone'         => $this->daraja->normalizePhone($request->input('phone')),
+                'metadata'            => [
+                    'clinic_id'    => $clinic->id,
                     'clinic_title' => $clinic->title ?? $clinic->name,
-                ]
+                ],
             ]);
-            // Commission auto-calculated via Payment model boot method
 
-            // Store reference in session for callback verification
+            // Store reference in session for the polling page
             session(['clinic_payment_ref' => $reference, 'clinic_id' => $clinic->id]);
 
-            // Redirect to Paystack payment page
-            return redirect($result['data']['authorization_url']);
+            // Redirect to a polling/waiting page
+            return redirect()->route('clinic.payment-pending', ['reference' => $reference]);
 
         } catch (\Exception $e) {
             return back()->with('error', 'Payment error: ' . $e->getMessage());
@@ -110,79 +107,36 @@ class ClinicBookingController extends Controller
     }
 
     /**
-     * Handle Paystack callback/redirect after payment.
-     * User is redirected here from Paystack after payment.
+     * Payment-pending polling page shown after STK Push is sent.
+     * The JS on this page polls /api/daraja/status?reference=xxx until success or failure.
      */
-    public function callback(Request $request)
+    public function paymentPending(Request $request)
     {
-        $reference = $request->get('reference');
-        $clinicId = session('clinic_id');
+        $reference = $request->get('reference') ?? session('clinic_payment_ref');
 
-        if (!$reference || !$clinicId) {
+        if (!$reference) {
             return redirect()->route('examiner-clinic')
-                ->with('error', 'Invalid payment reference. Please contact support.');
+                ->with('error', 'Payment reference missing.');
         }
 
-        try {
-            // Verify payment with Paystack
-            $verifyResult = $this->paystack->verifyTransaction($reference);
+        $payment = Payment::where('mpesa_reference', $reference)->first();
 
-            if ($verifyResult['status'] !== true) {
-                return redirect()->route('examiner-clinic')
-                    ->with('error', 'Payment verification failed.');
-            }
+        if (!$payment) {
+            return redirect()->route('examiner-clinic')
+                ->with('error', 'Payment not found. Please contact support.');
+        }
 
-            $paymentData = $verifyResult['data'];
-
-            // Update payment record
-            $payment = Payment::where('paystack_reference', $reference)->first();
-            if ($payment) {
-                $payment->update([
-                    'status' => 'success',
-                    'paid_at' => now(),
-                ]);
-            }
-
-            // Get clinic and enroll user
-            $clinic = ExaminerClinic::findOrFail($clinicId);
-            $user = auth()->user();
-
-            // Double-check not already enrolled
-            if ($clinic->isEnrolledBy($user)) {
-                return redirect()->route('clinic.my-bookings')
-                    ->with('warning', 'You were already enrolled in this clinic.');
-            }
-
-            // Check capacity one more time
-            if ($clinic->isFull()) {
-                // Refund scenario (for now, just notify)
-                return redirect()->route('examiner-clinic')
-                    ->with('error', 'Session became full. Please contact support for refund assistance.');
-            }
-
-            // Create enrollment
-            $enrollment = ClinicEnrollment::create([
-                'clinic_id' => $clinic->id,
-                'student_id' => $user->id,
-                'payment_id' => $payment->id,
-                'session_code' => strtoupper(Str::random(8)),
-            ]);
-
-            // If this enrollment fills the session, auto-create next one
-            if ($clinic->fresh()->isFull() && $clinic->parent_clinic_id === null) {
-                $clinic->autoCreateNextSession();
-            }
-
-            // Clear session
+        // Already confirmed by callback — go straight to bookings
+        if ($payment->status === 'success') {
             session()->forget(['clinic_payment_ref', 'clinic_id']);
-
-            return redirect()->route('clinic.my-bookings')
-                ->with('success', "Booking confirmed! Your session code: {$enrollment->session_code}. The clinic is on {$clinic->scheduled_at->format('D, M j \a\t g:ia')}.");
-
-        } catch (\Exception $e) {
-            return redirect()->route('examiner-clinic')
-                ->with('error', 'Payment verification error: ' . $e->getMessage());
+            $enrollment = \App\Models\ClinicEnrollment::where('payment_id', $payment->id)->first();
+            $msg = $enrollment
+                ? "Booking confirmed! Your session code: {$enrollment->session_code}."
+                : 'Your payment was confirmed.';
+            return redirect()->route('clinic.my-bookings')->with('success', $msg);
         }
+
+        return view('pages.clinic-payment-pending', compact('payment', 'reference'));
     }
 
     /**

@@ -153,7 +153,7 @@
                     Some cookies on our site are set by third-party services. We do not control these cookies and recommend reviewing their privacy policies:
                 </p>
                 <ul style="line-height:1.8;color:var(--muted);margin-left:24px;">
-                    <li><strong>Paystack:</strong> Payment processing - <a href="https://paystack.com/privacy" target="_blank" style="color:var(--trust-blue);text-decoration:underline;">Privacy Policy</a></li>
+                    <li><strong>Safaricom (M-Pesa / Daraja):</strong> Payment processing - <a href="https://www.safaricom.co.ke/about/safaricom-privacy-statement" target="_blank" style="color:var(--trust-blue);text-decoration:underline;">Privacy Statement</a></li>
                     <li><strong>Jitsi Meet:</strong> Video conferencing - <a href="https://jitsi.org/security/" target="_blank" style="color:var(--trust-blue);text-decoration:underline;">Security Policy</a></li>
                 </ul>
             </section>

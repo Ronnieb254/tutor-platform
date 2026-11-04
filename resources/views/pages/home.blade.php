@@ -267,7 +267,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             @foreach([
                 ['1','fa-list-check','Select your session','Choose your level (JSS/SS/F3/F4), what you need help with, subject, topic, date, time, and duration. The platform shows you available, matched tutors instantly.','#0A64BC'],
                 ['2','fa-mobile-screen-button','Pay via M-Pesa','Enter your phone number to prompt payment. Enter your M-Pesa PIN to complete.','#10B981'],
-                ['3','fa-video','Join your secure session','Receive a one-time session code by SMS/email. Enter the code to access your private, secure classroom. No tutor can contact you outside the platform.','#E8522A'],
+                ['3','fa-video','Join your secure session','Receive a one-time session code by email. Enter the code to access your private, secure classroom. No tutor can contact you outside the platform.','#E8522A'],
             ] as [$num,$icon,$title,$desc,$color])
             <div class="card" style="padding:28px;display:flex;gap:20px;align-items:flex-start;">
                 <div style="width:52px;height:52px;background:{{ $color }};border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -358,7 +358,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             </div>
             <div style="display:grid;grid-template-columns:1fr;gap:12px;">
                 @foreach([
-                    ['fa-bolt','Weekly Payouts','Enjoy the convenience of flexible weekly payouts, issued immediately via M-Pesa upon your request. '],
+                    ['fa-bolt','Weekly Payouts','Enjoy the convenience of flexible weekly payouts, issued every Friday upon your request. '],
                     ['fa-star','Build Reputation','Featured clinic sessions put you in front of hundreds of parents & learners.'],
                     ['fa-headset','Zero Admin','Mwalimu handles student acquisition, payments, reminders and classroom setup.'],
                 ] as [$icon,$title,$desc])
@@ -383,7 +383,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
         </div>
         <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="test-g">
             @foreach([
-                ['G','Grace W.','Parent, Nairobi','My daughter improved from D to A in Maths in just 6 weeks. The 30-minute sessions fit perfectly after school. The tutor is TSC-registered and very professional.','after sessions with Dr. Amara'],
+                ['G','Grace W.','Parent, Nairobi','My daughter improved from D to A in Maths in just 6 weeks. The 40-minute sessions fit perfectly after school. The tutor is TSC-registered and very professional.','after sessions with Dr. Amara'],
                 ['B','Brian K.','Form 4 Student','I was panicking about KCSE Chemistry. My Mwalimu tutor broke down the marking scheme so clearly I could predict what the examiner wanted. Passed with an A.','after sessions with Mr. James'],
                 ['M','Mercy N.','Parent, Mombasa','The one-time session code is genius — my son enters the code and the class opens. No sharing of numbers. No chatting outside. Very safe for a teenage learner.','after sessions with Ms. Fatuma'],
             ] as [$init,$name,$role,$quote,$note])

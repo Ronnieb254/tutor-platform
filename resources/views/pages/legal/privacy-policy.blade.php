@@ -77,13 +77,34 @@
                 <p style="line-height:1.8;color:var(--muted);margin-bottom:12px;">We do not sell your personal information. We may share your information only in the following circumstances:</p>
                 
                 <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">4.1 With Service Providers</h3>
-                <p style="line-height:1.8;color:var(--muted);margin-bottom:16px;">We share information with trusted third-party service providers who assist us in operating the platform, including payment processors (Paystack), SMS providers, and hosting services.</p>
+                <p style="line-height:1.8;color:var(--muted);margin-bottom:16px;">We share information with trusted third-party service providers who assist us in operating the platform, including Safaricom (M-Pesa / Daraja API for payment processing), SMS providers, and hosting services.</p>
 
                 <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">4.2 For Legal Compliance</h3>
                 <p style="line-height:1.8;color:var(--muted);margin-bottom:16px;">We may disclose information when required by law, court order, or to protect the rights, safety, and security of Mwalimu, our users, or the public.</p>
 
                 <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">4.3 With Your Consent</h3>
                 <p style="line-height:1.8;color:var(--muted);">We may share information with your explicit consent, such as displaying tutor profiles to learners or facilitating communication within approved channels.</p>
+            </section>
+
+            <section style="margin-bottom:32px;">
+                <h2 style="font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:12px;">4A. Tutor Obligations Regarding Learner Data</h2>
+                <p style="line-height:1.8;color:var(--muted);margin-bottom:12px;">
+                    All tutors on the Mwalimu platform are contractually bound by the Electronic Tutor Services Agreement to uphold the following data protection obligations in accordance with the Data Protection Act, 2019:
+                </p>
+                <ul style="line-height:1.8;color:var(--muted);margin-left:24px;margin-bottom:16px;">
+                    <li>Use learner information only to deliver authorised tuition, assess learning needs, prepare lessons, and carry out other approved educational activities</li>
+                    <li>Keep confidential all personal information about learners, parents, guardians, other tutors, and Mwalimu</li>
+                    <li>Not sell, disclose, or commercially exploit learner information</li>
+                    <li>Not copy or download learner records except where reasonably necessary and authorised</li>
+                    <li>Not share learner names, contact details, photographs, academic records, or lesson content on social media without lawful authority and required permissions</li>
+                    <li>Not use learner information for unrelated marketing or private tutoring solicitation</li>
+                    <li>Not store learner information or disclose it to unauthorised persons</li>
+                    <li>Promptly notify Mwalimu of any suspected loss, unauthorised disclosure, account compromise, or other personal-data breach involving Platform information</li>
+                    <li>On termination or written request, return or securely delete personal information no longer lawfully required</li>
+                </ul>
+                <p style="line-height:1.8;color:var(--muted);">
+                    Nothing in the Tutor Services Agreement authorises a tutor to record, publish, or reuse a learner's image, voice, or lesson recording outside approved educational purposes.
+                </p>
             </section>
 
             <section style="margin-bottom:32px;">
@@ -101,16 +122,29 @@
             </section>
 
             <section style="margin-bottom:32px;">
-                <h2 style="font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:12px;">6. Data Security</h2>
+                <h2 style="font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:12px;">6. Lesson Recording and Quality Assurance</h2>
+                <p style="line-height:1.8;color:var(--muted);margin-bottom:12px;">
+                    Lessons may be recorded only where the Platform's recording policy, applicable law, and required notices and permissions allow it. In particular:
+                </p>
+                <ul style="line-height:1.8;color:var(--muted);margin-left:24px;margin-bottom:16px;">
+                    <li>Mwalimu may use learner feedback, attendance information, completion records, and quality assessments to monitor service quality and resolve disputes</li>
+                    <li>Tutors may not independently record, screenshot, livestream, or publish lessons involving learners without the necessary authorisation</li>
+                    <li>Mwalimu may ask tutors for reasonable cooperation when investigating a complaint, assessing teaching quality, or responding to a safeguarding or data-protection concern</li>
+                    <li>Tutors may not manipulate reviews or pressure learners or parents to give misleading feedback</li>
+                </ul>
+            </section>
+
+            <section style="margin-bottom:32px;">
+                <h2 style="font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:12px;">7. Data Security</h2>
                 <p style="line-height:1.8;color:var(--muted);">
                     We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These include encryption, secure servers, access controls, and regular security audits. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.
                 </p>
             </section>
 
             <section style="margin-bottom:32px;">
-                <h2 style="font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:12px;">7. Data Retention</h2>
+                <h2 style="font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:12px;">8. Data Retention</h2>
                 <p style="line-height:1.8;color:var(--muted);">
-                    We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, comply with legal obligations, resolve disputes, and enforce our agreements. Upon account closure or request, we will securely delete or anonymize your data unless retention is required by law.
+                    We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, comply with legal obligations, resolve disputes, and enforce our agreements. Upon account closure or written request, we will securely delete or anonymize your data unless retention is required by law.
                 </p>
             </section>
 

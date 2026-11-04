@@ -66,30 +66,34 @@ use App\Models\PlatformSetting;
         </div>
     </div>
 
-    {{-- Paystack --}}
+    {{-- Daraja M-Pesa --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            💰 Paystack Integration
+            📱 Daraja M-Pesa Integration
         </h3>
         <div style="background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.3);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#92400E;">
             ⚠ These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
         </div>
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
-                <label class="form-label">Public Key (from .env)</label>
-                <input type="text" class="form-input" value="{{ config('paystack.public_key') ? substr(config('paystack.public_key'),0,12).'••••••••••' : 'Not configured' }}" disabled style="background:#F4F6F4;color:var(--muted);">
+                <label class="form-label">Environment</label>
+                <input type="text" class="form-input" value="{{ config('daraja.environment', 'sandbox') }}" disabled style="background:#F4F6F4;color:var(--muted);">
             </div>
             <div>
-                <label class="form-label">Secret Key (from .env)</label>
-                <input type="text" class="form-input" value="sk_••••••••••••••••" disabled style="background:#F4F6F4;color:var(--muted);">
+                <label class="form-label">Consumer Key (from .env)</label>
+                <input type="text" class="form-input" value="{{ config('daraja.consumer_key') ? substr(config('daraja.consumer_key'),0,8).'••••••••' : 'Not configured' }}" disabled style="background:#F4F6F4;color:var(--muted);">
             </div>
             <div>
-                <label class="form-label">Webhook URL</label>
+                <label class="form-label">Business Short Code</label>
+                <input type="text" class="form-input" value="{{ config('daraja.shortcode', 'Not configured') }}" disabled style="background:#F4F6F4;color:var(--muted);">
+            </div>
+            <div>
+                <label class="form-label">Callback URL</label>
                 <div style="display:flex;gap:8px;">
-                    <input type="text" class="form-input" value="{{ url('/api/paystack/webhook') }}" readonly style="background:#F4F6F4;font-size:12px;">
-                    <button type="button" onclick="navigator.clipboard.writeText('{{ url('/api/paystack/webhook') }}')" class="btn btn-outline btn-sm" style="white-space:nowrap;">Copy</button>
+                    <input type="text" class="form-input" value="{{ url('/api/daraja/callback') }}" readonly style="background:#F4F6F4;font-size:12px;">
+                    <button type="button" onclick="navigator.clipboard.writeText('{{ url('/api/daraja/callback') }}')" class="btn btn-outline btn-sm" style="white-space:nowrap;">Copy</button>
                 </div>
-                <p style="font-size:12px;color:var(--muted);margin-top:4px;">Paste this URL in your Paystack dashboard → Settings → Webhooks</p>
+                <p style="font-size:12px;color:var(--muted);margin-top:4px;">Set <code>DARAJA_CALLBACK_URL</code> in .env to this URL. Must be a publicly reachable HTTPS endpoint.</p>
             </div>
         </div>
     </div>

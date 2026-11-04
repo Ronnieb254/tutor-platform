@@ -335,7 +335,7 @@ function toggleSubject(id, name) {
         delete subjectNames[id];
     } else {
         if (selectedSubjects.size >= 2) {
-            alert('You can only select up to 2 subjects. Please deselect a subject first.');
+            showToast('You can only select up to 2 subjects. Please deselect a subject first.', 'warning');
             return;
         }
         selectedSubjects.add(id);
@@ -415,12 +415,12 @@ document.getElementById('search-subjects').addEventListener('input', function(e)
 document.getElementById('subjects-form').addEventListener('submit', function(e) {
     if (selectedSubjects.size === 0) {
         e.preventDefault();
-        alert('Please select at least one subject');
+        showError('Selection Required', 'Please select at least one subject');
         return false;
     }
     if (selectedSubjects.size > 2) {
         e.preventDefault();
-        alert('You can only select up to 2 subjects');
+        showError('Too Many Subjects', 'You can only select up to 2 subjects');
         return false;
     }
 });

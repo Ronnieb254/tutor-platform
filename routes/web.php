@@ -409,43 +409,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/examiner-clinics/{examinerClinic}/join', [App\Http\Controllers\ExaminerClinicEnrollmentController::class, 'join'])->name('examiner-clinics.join');
 });
 
-// ─── Paystack Callback (redirected from Paystack after payment) ───────────────
-Route::get('/paystack/callback', function (\Illuminate\Http\Request $request) {
-    $reference = $request->get('trxref') ?? $request->get('reference');
+// ─── Daraja M-Pesa Payment Pending / Polling pages ───────────────────────────
+Route::middleware('auth')->group(function () {
+    Route::get('/clinic/payment-pending', [App\Http\Controllers\ClinicBookingController::class, 'paymentPending'])
+        ->name('clinic.payment-pending');
 
-    if (!$reference) {
-        return redirect()->route('dashboard')
-            ->with('error', 'Payment reference missing. Please check your dashboard.');
-    }
-
-    // Find the pending payment
-    $payment = \App\Models\Payment::where('paystack_reference', $reference)->first();
-
-    if (!$payment) {
-        return redirect()->route('dashboard')
-            ->with('error', 'Payment not found. Please contact support if you were charged.');
-    }
-
-    // Already confirmed (webhook arrived first)
-    if ($payment->status === 'success') {
-        return \App\Http\Controllers\PaystackCallbackHelper::redirectAfterPayment($payment, 'Your booking is confirmed!');
-    }
-
-    // Verify with Paystack
-    $paystack = app(\App\Services\PaystackService::class);
-    $result   = $paystack->verifyTransaction($reference);
-    $paystackStatus = $result['data']['status'] ?? '';
-
-    if ($paystackStatus === 'success') {
-        $payment->update(['status' => 'success', 'paid_at' => now()]);
-        return \App\Http\Controllers\PaystackCallbackHelper::confirmAndRedirect($payment);
-    }
-
-    \Log::warning('Paystack callback: unverified payment', [
-        'reference'      => $reference,
-        'paystack_status'=> $paystackStatus,
-    ]);
-
-    return redirect()->route('dashboard')
-        ->with('error', 'Payment could not be verified. Please contact support with reference: ' . $reference);
-})->name('paystack.callback')->middleware('auth');
+    Route::get('/group-sessions/payment-pending', function (\Illuminate\Http\Request $request) {
+        $reference = $request->get('reference') ?? session('group_payment_ref');
+        if (!$reference) {
+            return redirect()->route('group-sessions.index')->with('error', 'Payment reference missing.');
+        }
+        $payment = \App\Models\Payment::where('mpesa_reference', $reference)->first();
+        if (!$payment) {
+            return redirect()->route('group-sessions.index')->with('error', 'Payment not found.');
+        }
+        if ($payment->status === 'success') {
+            session()->forget(['group_payment_ref', 'group_session_id']);
+            $enrollment = \App\Models\ClinicEnrollment::where('payment_id', $payment->id)->first();
+            return redirect()->route('group-sessions.my-sessions')
+                ->with('success', $enrollment ? "Enrolled! Your session code: {$enrollment->session_code}." : 'Payment confirmed.');
+        }
+        return view('pages.clinic-payment-pending', compact('payment', 'reference'));
+    })->name('group-sessions.payment-pending');
+});

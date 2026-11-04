@@ -109,18 +109,6 @@ class OtpController extends Controller
 
             DB::commit();
 
-            // Send contract email to new tutors
-            if ($pending['role'] === 'tutor') {
-                try {
-                    \Illuminate\Support\Facades\Notification::sendNow(
-                        $user,
-                        new \App\Notifications\TutorContractEmail()
-                    );
-                } catch (\Exception $e) {
-                    \Log::warning('Failed to send tutor contract email: ' . $e->getMessage());
-                }
-            }
-
             // Clear session and log in
             session()->forget('reg_pending');
 

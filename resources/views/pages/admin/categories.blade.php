@@ -269,11 +269,11 @@ async function toggleCategory(id, checkbox) {
         const data = await response.json();
         if (data.status !== 'ok') {
             checkbox.checked = !checkbox.checked;
-            alert('Failed to toggle category status');
+            showError('Error', 'Failed to toggle category status');
         }
     } catch (error) {
         checkbox.checked = !checkbox.checked;
-        alert('Error toggling category status');
+        showError('Error', 'Error toggling category status');
     }
 }
 

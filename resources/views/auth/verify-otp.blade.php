@@ -391,13 +391,13 @@ function resendOtp(type) {
                 setTimeout(() => { errEl.textContent = ''; errEl.style.color = ''; }, 4000);
             }
         } else {
-            alert(data.message || 'Failed to resend. Please try again.');
+            showError('Error', data.message || 'Failed to resend. Please try again.');
         }
     })
     .catch(() => {
         btn.textContent = type === 'email' ? 'Resend email code' : 'Resend phone code';
         btn.disabled = false;
-        alert('Network error. Please try again.');
+        showError('Network Error', 'Please try again.');
     });
 }
 

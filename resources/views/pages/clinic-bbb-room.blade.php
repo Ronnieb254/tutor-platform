@@ -193,7 +193,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 btn.innerHTML = '<i class="fa-solid fa-copy fa-xs"></i>';
                 btn.classList.remove('copied');
             }, 2000);
-        }).catch(() => alert('Failed to copy: ' + sessionCode));
+        }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));
     }
 
     function leaveSession() {

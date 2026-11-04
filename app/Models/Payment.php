@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     protected $fillable = [
-        'booking_id', 'clinic_id', 'user_id', 'amount', 'currency',
+        'booking_id', 'clinic_id', 'course_id', 'user_id', 'amount', 'currency',
         'payment_type', 'tutor_amount', 'platform_amount', 'commission_rate',
-        'paystack_reference', 'paystack_access_code',
-        'status', 'metadata', 'paid_at',
+        'mpesa_reference', 'checkout_request_id', 'merchant_request_id',
+        'mpesa_receipt', 'payer_phone',
+        'status', 'failure_reason', 'metadata', 'paid_at',
     ];
 
     protected function casts(): array

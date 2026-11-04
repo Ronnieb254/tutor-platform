@@ -348,7 +348,7 @@ function copyRecoveryCodes() {
     const text = codes.join('\n');
     
     navigator.clipboard.writeText(text).then(() => {
-        alert('✓ Recovery codes copied to clipboard!\n\nPaste them into a secure password manager or document right now.');
+        showToast('Recovery codes copied! Paste them into a secure password manager now.', 'success');
     }).catch(() => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
@@ -356,7 +356,7 @@ function copyRecoveryCodes() {
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        alert('✓ Recovery codes copied to clipboard!');
+        showToast('Recovery codes copied to clipboard!', 'success');
     });
 }
 </script>
