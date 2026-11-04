@@ -496,6 +496,29 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
 .session-grid{grid-template-columns:1fr!important;}
 @media(min-width:1024px){.session-grid{grid-template-columns:1fr 360px!important;}}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* Phase 5 responsive overrides */
+@media(max-width:1023px){
+  .booking-layout,[class*="booking-grid"],[class*="session-layout"]{
+    flex-direction:column !important;
+    display:flex !important;
+  }
+  .booking-detail,.chat-panel,[class*="chat-wrap"]{
+    width:100% !important;
+    max-width:100% !important;
+  }
+  div[style*="grid-template-columns:2fr"],
+  div[style*="grid-template-columns: 2fr"]{
+    grid-template-columns:1fr !important;
+    display:block !important;
+  }
+}
+@media(max-width:639px){
+  .session-info-grid,div[style*="repeat(2,1fr)"]{
+    grid-template-columns:1fr !important;
+  }
+  .code-text{font-size:28px;}
+  .join-btn{padding:14px 24px;font-size:14px;}
+}
 </style>
 
 @include('partials.footer')
