@@ -18,7 +18,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
 </div>
 
 {{-- Summary cards --}}
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;" class="payout-stats">
     @foreach([
         ['Pending','pending',PayoutRequest::where('status','pending')->count(),'#EEBE15','badge-amber'],
         ['Approved','approved',PayoutRequest::where('status','approved')->count(),'#0A64BC','badge-trust-blue'],
@@ -33,7 +33,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
     @endforeach
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;" class="payout-summary">
     <div style="background:#fff;border:1px solid var(--hairline);border-radius:14px;padding:20px;display:flex;align-items:center;gap:16px;">
         <div style="width:44px;height:44px;background:rgba(212,160,23,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -120,6 +120,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
                     </td>
                 </tr>
                 @empty
+                <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted);font-size:14px;">No payout requests found</td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -129,6 +130,11 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
     @endif
 </div>
 
+<style>
+.payout-stats{grid-template-columns:repeat(2,1fr)!important;}
+@media(min-width:768px){.payout-stats{grid-template-columns:repeat(4,1fr)!important;}}
+@media(max-width:480px){.payout-summary{grid-template-columns:1fr!important;}}
+</style>
 @push('scripts')
 <script>
 $(document).ready(function() {

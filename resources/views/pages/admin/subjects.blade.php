@@ -256,6 +256,17 @@
 .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:white;border-radius:50%;transition:.3s;}
 input:checked + .slider{background-color:#10B981;}
 input:checked + .slider:before{transform:translateX(20px);}
+/* accordion / category triggers — touch friendly */
+[data-accordion-trigger],[data-toggle],[data-category-toggle],
+.accordion-trigger,.category-trigger{
+    min-height:44px;display:flex;align-items:center;
+}
+/* subjects filter grid → stack on mobile */
+@media(max-width:639px){
+    .card form > div[style*="grid-template-columns"]{
+        grid-template-columns:1fr !important;
+    }
+}
 </style>
 
 <script>

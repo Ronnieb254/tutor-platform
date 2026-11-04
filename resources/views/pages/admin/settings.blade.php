@@ -179,4 +179,17 @@ use App\Models\PlatformSetting;
     </button>
 </div>
 </form>
+
+@push('styles')
+<style>
+@media(max-width:767px){
+    .settings-section, [class*="settings-grid"]{ display:block !important; }
+    .settings-section > *, [class*="settings-grid"] > *{ width:100% !important; }
+    /* the inline 1fr 1fr settings grid */
+    form > div[style*="grid-template-columns:1fr 1fr"]{
+        grid-template-columns:1fr !important;
+    }
+}
+</style>
+@endpush
 @endsection

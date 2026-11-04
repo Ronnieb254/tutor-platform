@@ -44,7 +44,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
 </div>
 
 {{-- Role summary --}}
-<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;">
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;" class="role-summary-grid">
     @foreach([['Students','student','#0A64BC'],['Parents','parent','#E8522A'],['Tutors','tutor','#10B981'],['Admins','admin','#EEBE15'],['Super Admins','super-admin','#7C3AED']] as [$label,$r,$color])
     <a href="{{ route('admin.users') }}?role={{ $r }}" style="background:#fff;border:1px solid {{ $r===$role ? $color : 'var(--hairline)' }};border-radius:12px;padding:14px 16px;text-align:center;display:block;">
         <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:{{ $color }};">{{ \App\Models\User::where('role',$r)->count() }}</div>
@@ -130,6 +130,18 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
     <div style="padding:16px 24px;border-top:1px solid var(--hairline);">{{ $users->withQueryString()->links() }}</div>
     @endif
 </div>
+
+@push('styles')
+<style>
+/* role summary grid: 5-col → 3-col → 2-col → 1-col */
+@media(max-width:767px){
+    .role-summary-grid{ grid-template-columns:repeat(3,1fr) !important; }
+}
+@media(max-width:479px){
+    .role-summary-grid{ grid-template-columns:repeat(2,1fr) !important; }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>

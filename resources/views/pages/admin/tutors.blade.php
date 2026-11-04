@@ -25,6 +25,10 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
 .doc-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:#F9FAF9;border:1px solid rgba(21,40,31,.06);margin-bottom:8px;}
 .doc-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;border:1px solid rgba(21,40,31,.08);flex-shrink:0;cursor:pointer;}
 .doc-thumb-placeholder{width:48px;height:48px;border-radius:10px;background:rgba(21,40,31,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;cursor:pointer;}
+@media(max-width:639px){
+    .modal-content, [id*="tutor-"] .modal-box{ width:95vw !important; max-width:95vw !important; }
+    .modal-box{ width:95vw !important; max-width:95vw !important; }
+}
 </style>
 
 <div class="page-header">

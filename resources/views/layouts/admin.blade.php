@@ -144,6 +144,21 @@
             .admin-content{padding:16px;}
             .topbar{padding:0 16px;}
         }
+
+        /* ── Phase 4 global admin responsive ── */
+        @media(max-width:639px){
+            /* 4-col stat grids → 2-col */
+            div[style*="repeat(4,1fr)"]{ grid-template-columns:repeat(2,1fr) !important; }
+            /* flex filter forms → column */
+            form[style*="display:flex"]{ flex-direction:column !important; }
+            form[style*="display: flex"]{ flex-direction:column !important; }
+        }
+        @media(max-width:479px){
+            div[style*="repeat(4,1fr)"]{ grid-template-columns:1fr !important; }
+            div[style*="repeat(2,1fr)"]{ grid-template-columns:1fr !important; }
+            /* payouts summary cards */
+            div[style*="repeat(3,1fr)"]{ grid-template-columns:1fr !important; }
+        }
     </style>
     @stack('styles')
 </head>

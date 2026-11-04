@@ -43,7 +43,7 @@
 </form>
 
 {{-- Stats bar --}}
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;" class="booking-stats">
     @foreach([
         ['pending','#EEBE15','Pending'],
         ['confirmed','#10B981','Confirmed'],
@@ -130,6 +130,7 @@
                     </td>
                 </tr>
                 @empty
+                <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--muted);font-size:14px;">No bookings found</td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -137,6 +138,10 @@
 
 </div>
 
+<style>
+.booking-stats{grid-template-columns:repeat(2,1fr)!important;}
+@media(min-width:768px){.booking-stats{grid-template-columns:repeat(4,1fr)!important;}}
+</style>
 @endsection
 
 @push('scripts')

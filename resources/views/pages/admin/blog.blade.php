@@ -152,4 +152,16 @@ $(document).ready(function() {
 });
 </script>
 @endpush
+@push('styles')
+<style>
+/* blog stat cards: 3-col → 1-col on small mobile (covered by global rule too) */
+@media(max-width:479px){
+    div[style*="repeat(3,1fr)"]{ grid-template-columns:1fr !important; }
+}
+/* blog modal responsive */
+@media(max-width:639px){
+    #new-post-modal > div{ width:95vw !important; max-width:95vw !important; }
+}
+</style>
+@endpush
 @endsection
