@@ -99,7 +99,7 @@ a{color:inherit;text-decoration:none;}
 <section class="hero">
     <div class="hero-inner">
         <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:999px;padding:6px 14px;margin-bottom:20px;">
-            <span style="font-size:16px;">📚</span>
+            <span style="font-size:16px;"><i class="fas fa-book" style="color:rgba(255,255,255,.9);"></i></span>
             <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
         </div>
         <h1>The Mwalimu Library</h1>
@@ -216,7 +216,7 @@ a{color:inherit;text-decoration:none;}
                 @if($loop->last)</div>@endif
             @empty
                 <div class="empty">
-                    <div class="empty-icon">📚</div>
+                    <div class="empty-icon"><i class="fas fa-book" style="font-size:48px;color:var(--muted);"></i></div>
                     <h3>No resources found</h3>
                     <p>Try adjusting your filters or search terms.</p>
                     @if(request()->hasAny(['search','type','category','grade']))

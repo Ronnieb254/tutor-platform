@@ -353,7 +353,7 @@ $activeTab = request('tab','overview');
     </div>
     @else
     <div class="status-banner status-approved" style="margin-bottom:20px;">
-        <div style="font-size:24px;flex-shrink:0;">✅</div>
+        <div style="font-size:24px;flex-shrink:0;"><i class="fas fa-check-circle" style="color:#10B981;"></i></div>
         <div>
             <div style="font-weight:700;font-size:15px;color:#166534;">Your profile is live!</div>
             <div style="font-size:13px;color:#4ADE80;margin-top:2px;">Students can find and book sessions with you. {{ $pendingBookings > 0 ? "You have $pendingBookings pending booking(s)." : '' }}</div>
@@ -821,10 +821,10 @@ $activeTab = request('tab','overview');
              onmouseover="this.style.background='#F9FAF9'" onmouseout="this.style.background='{{ $isUnread ? 'rgba(10,100,188,.04)' : 'transparent' }}'">
             {{-- Icon based on type --}}
             @php
-            $icons = ['new_booking'=>['📅','rgba(10,100,188,.1)'],'booking_confirmed'=>['✅','rgba(16,185,129,.1)'],'booking_cancelled'=>['❌','rgba(232,82,42,.1)'],'payout_processed'=>['💰','rgba(212,160,23,.1)']];
-            [$notifIcon,$notifBg] = $icons[$data['type'] ?? ''] ?? ['🔔','rgba(21,40,31,.05)'];
+            $icons = ['new_booking'=>['fa-calendar','rgba(10,100,188,.1)','#0A64BC'],'booking_confirmed'=>['fa-check-circle','rgba(16,185,129,.1)','#10B981'],'booking_cancelled'=>['fa-times-circle','rgba(232,82,42,.1)','#E8522A'],'payout_processed'=>['fa-money-bill-wave','rgba(212,160,23,.1)','#D4A017']];
+            [$notifIcon,$notifBg,$notifColor] = $icons[$data['type'] ?? ''] ?? ['fa-bell','rgba(21,40,31,.05)','#15281F'];
             @endphp
-            <div style="width:44px;height:44px;border-radius:12px;background:{{ $notifBg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">{{ $notifIcon }}</div>
+            <div style="width:44px;height:44px;border-radius:12px;background:{{ $notifBg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas {{ $notifIcon }}" style="color:{{ $notifColor }};"></i></div>
             <div style="flex:1;min-width:0;">
                 <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
                     <div>
@@ -836,7 +836,7 @@ $activeTab = request('tab','overview');
                         </div>
                         @endif
                         @if(!empty($data['scheduled_at']))
-                        <div style="font-size:12px;color:var(--muted);margin-top:4px;">📅 {{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fas fa-calendar" style="margin-right:4px;"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
                         @endif
                     </div>
                     <div style="text-align:right;flex-shrink:0;">

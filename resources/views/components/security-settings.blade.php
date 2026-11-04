@@ -6,12 +6,12 @@ $has2FA = $user->has2FAEnabled();
 
 <div class="card card-p" style="margin-bottom:24px;">
     <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-        🔒 Two-Factor Authentication
+        <i class="fas fa-lock" style="margin-right:6px;"></i>Two-Factor Authentication
     </h3>
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,0.1);border-left:4px solid var(--mint);padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;color:var(--ink);">
-        ✓ {{ session('success') }}
+        <i class="fas fa-check" style="color:var(--mint);margin-right:6px;"></i>{{ session('success') }}
     </div>
     @endif
 

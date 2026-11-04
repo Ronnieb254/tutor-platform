@@ -106,7 +106,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
 <div class="main">
     <header class="topbar">
-        <div class="page-title">📚 My Resources</div>
+        <div class="page-title"><i class="fas fa-book" style="margin-right:8px;"></i>My Resources</div>
         <a href="{{ route('tutor.library.create') }}" class="btn btn-v">
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Upload Resource
@@ -115,7 +115,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
     <div class="content">
         @if(session('success'))
-        <div class="flash flash-ok">✓ {{ session('success') }}</div>
+        <div class="flash flash-ok"><i class="fas fa-check" style="margin-right:6px;"></i>{{ session('success') }}</div>
         @endif
 
         {{-- Stats --}}
@@ -202,7 +202,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                         @empty
                         <tr>
                             <td colspan="7" style="text-align:center;padding:60px;">
-                                <div style="font-size:40px;margin-bottom:10px;">📚</div>
+                                <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-book" style="color:var(--muted);"></i></div>
                                 <p style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;">No resources yet</p>
                                 <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Share study materials, past papers, or notes with students.</p>
                                 <a href="{{ route('tutor.library.create') }}" class="btn btn-v">Upload Your First Resource</a>

@@ -8,11 +8,11 @@
     @php
     $docs = $profile?->documents ?? collect();
     $docTypes = [
-        'national_id'                  => ['National ID / Passport',      '🪪', 'Required'],
-        'tsc_certificate'              => ['TSC Certificate',             '📜', 'Required'],
-        'certificate_of_good_conduct' => ['Certificate of Good Conduct', '🛡️', 'Required'],
-        'degree_certificate'           => ['Academic Certificate',       '🎓', 'Required'],
-        'passport_photo'               => ['Passport Photo',             '📸', 'Required'],
+        'national_id'                  => ['National ID / Passport',      'fa-id-card', 'Required'],
+        'tsc_certificate'              => ['TSC Certificate',             'fa-scroll', 'Required'],
+        'certificate_of_good_conduct' => ['Certificate of Good Conduct', 'fa-shield-halved', 'Required'],
+        'degree_certificate'           => ['Academic Certificate',       'fa-graduation-cap', 'Required'],
+        'passport_photo'               => ['Passport Photo',             'fa-camera', 'Required'],
     ];
 
     // Check which required docs are uploaded
@@ -36,7 +36,7 @@
     {{-- ── Overall status banner ───────────────────────────────── --}}
     @if($isApproved)
         <div class="status-banner status-approved" style="margin-bottom:24px;">
-            <span style="font-size:24px;">✅</span>
+            <span style="font-size:24px;"><i class="fas fa-check-circle" style="color:#10B981;"></i></span>
             <div>
                 <div style="font-weight:700;color:#166534;font-size:15px;">Fully Verified</div>
                 <div style="font-size:13px;color:#4ADE80;">
@@ -61,7 +61,7 @@
 
     @elseif($verificationStatus === 'under_review')
         <div class="status-banner status-pending" style="margin-bottom:24px;">
-            <span style="font-size:24px;">⏳</span>
+            <span style="font-size:24px;"><i class="fas fa-clock" style="color:#D4A017;"></i></span>
             <div>
                 <div style="font-weight:700;color:#854D0E;font-size:15px;">Under Review</div>
                 <div style="font-size:13px;color:#92400E;">
@@ -73,7 +73,7 @@
 
     @elseif($verificationStatus === 'action_required')
         <div class="status-banner status-rejected" style="margin-bottom:24px;">
-            <span style="font-size:24px;">⚠️</span>
+            <span style="font-size:24px;"><i class="fas fa-exclamation-triangle" style="color:#E8522A;"></i></span>
             <div>
                 <div style="font-weight:700;color:#991B1B;font-size:15px;">Action Required</div>
                 <div style="font-size:13px;color:#B91C1C;">
@@ -100,7 +100,7 @@
                 background:{{ $stepDone ? 'var(--mint)' : ($stepActive ? 'var(--trust-blue)' : '#fff') }};
                 color:{{ ($stepDone || $stepActive) ? '#fff' : 'var(--muted)' }};
                 border-right:{{ !$loop->last ? '1px solid var(--hair)' : 'none' }};">
-                {{ $stepDone ? '✓' : $num }}. {{ $step }}
+                {{ $stepDone ? '<i class="fas fa-check"></i>' : $num }}. {{ $step }}
             </div>
             @endforeach
         </div>
@@ -130,7 +130,7 @@
                 <div style="width:52px;height:52px;border-radius:13px;background:{{ $iconBg }};
                             display:flex;align-items:center;justify-content:center;
                             font-size:24px;flex-shrink:0;">
-                    {{ $icon }}
+                    <i class="fas {{ $icon }}" style="color:{{ $doc && $doc->status === 'approved' ? '#10B981' : ($doc && $doc->status === 'rejected' ? '#E8522A' : '#0A64BC') }};"></i>
                 </div>
                 <div style="min-width:0;">
                     {{-- Title row --}}
@@ -152,13 +152,13 @@
                     {{-- Subtitle --}}
                     @if($doc)
                         <div style="font-size:12px;color:var(--muted);">
-                            📎 {{ $doc->original_name ?? 'Uploaded file' }}
+                            <i class="fas fa-paperclip" style="margin-right:4px;"></i>{{ $doc->original_name ?? 'Uploaded file' }}
                             &nbsp;·&nbsp;
                             {{ $doc->created_at->format('M j, Y') }}
                         </div>
                         @if($doc->admin_note)
                         <div style="font-size:12px;color:var(--coral);margin-top:4px;font-weight:500;">
-                            💬 Admin: {{ $doc->admin_note }}
+                            <i class="fas fa-comment" style="margin-right:4px;"></i>Admin: {{ $doc->admin_note }}
                         </div>
                         @endif
                     @else
@@ -166,7 +166,7 @@
                                     color:{{ $isMissing ? 'var(--coral)' : 'var(--muted)' }};
                                     font-weight:{{ $isMissing ? '600' : '400' }};">
                             {{ $isMissing
-                                ? '⚠️ Required — please upload this document'
+                                ? '<i class="fas fa-exclamation-triangle" style="margin-right:4px;"></i>Required — please upload this document'
                                 : 'No document uploaded yet' }}
                         </div>
                     @endif
@@ -226,7 +226,7 @@
         </p>
         <p style="font-size:13px;color:var(--muted);line-height:1.7;">
             JPG, PNG or PDF &middot; Max 5 MB per file &middot; Must be clear and legible &middot;
-            National ID must show both sides if applicable
+            National ID must show both sides
         </p>
     </div>
 </div>

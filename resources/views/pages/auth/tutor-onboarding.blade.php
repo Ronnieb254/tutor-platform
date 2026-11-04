@@ -238,7 +238,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.national_id">
                                     <div>
-                                        <div class="upload-icon">✅</div>
+                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.national_id.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.national_id.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -264,7 +264,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.academic_certificate">
                                     <div>
-                                        <div class="upload-icon">✅</div>
+                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.academic_certificate.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.academic_certificate.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -290,7 +290,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.tsc_certificate">
                                     <div>
-                                        <div class="upload-icon">✅</div>
+                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.tsc_certificate.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.tsc_certificate.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -316,7 +316,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.certificate_of_good_conduct">
                                     <div>
-                                        <div class="upload-icon">✅</div>
+                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.certificate_of_good_conduct.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.certificate_of_good_conduct.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -342,7 +342,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.passport_photo">
                                     <div>
-                                        <div class="upload-icon">✅</div>
+                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.passport_photo.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.passport_photo.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -409,13 +409,11 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                             Pay KSh 1,000 via M-Pesa or card to activate priority verification
                         </p>
                         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-                            @foreach(['M-Pesa','Visa','Mastercard'] as $pm)
                             <span style="background:#fff;border:1px solid rgba(21,40,31,.12);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:5px;">
-                                <i class="fa-solid {{ $pm==='M-Pesa'?'fa-mobile-screen-button':'fa-credit-card' }}" style="color:var(--gold);font-size:11px;"></i>{{ $pm }}
+                                <i class="fa-solid fa-mobile-screen-button" style="color:var(--gold);font-size:11px;"></i>M-Pesa
                             </span>
-                            @endforeach
                         </div>
-                        <p style="font-size:12px;color:rgba(21,40,31,.6);">Payment will be processed after you submit your application via Paystack.</p>
+                        <p style="font-size:12px;color:rgba(21,40,31,.6);">Payment is processed via M-Pesa STK Push after you submit your application. You will receive a prompt on your phone.</p>
                     </div>
 
                     {{-- What happens next --}}
@@ -613,19 +611,10 @@ function tutorOnboarding() {
 
                 if (data.status === 'ok') {
                     this.submitting = false;
-                    if (this.form.speedy && data.paystack_access_code) {
-                        // Open Paystack for speedy fee
-                        const handler = PaystackPop.setup({
-                            key: '{{ config('paystack.public_key') }}',
-                            email: '{{ auth()->user()?->email }}',
-                            amount: 100000, // KSh 1000 in cents
-                            currency: 'KES',
-                            ref: data.reference,
-                            metadata: { purpose: 'speedy_verification', tutor_id: data.tutor_id },
-                            onSuccess: () => { this.step = 5; },
-                            onCancel: () => { this.step = 5; } // Still submitted, just not speedy
-                        });
-                        handler.openIframe();
+                    if (this.form.speedy && data.stk_sent) {
+                        // STK Push sent for speedy verification fee — advance to success
+                        // Enrollment is confirmed once Daraja callback arrives
+                        this.step = 5;
                     } else {
                         this.step = 5;
                     }
@@ -642,7 +631,6 @@ function tutorOnboarding() {
     }
 }
 </script>
-<script src="https://js.paystack.co/v1/inline.js"></script>
 @livewireScripts
 </body>
 </html>

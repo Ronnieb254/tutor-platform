@@ -204,7 +204,7 @@ select.form-input{cursor:pointer;}
                         <p style="font-size:12px;color:var(--muted);">PDF, DOC, PPT, MP4, AVI — max 50 MB</p>
                     </div>
                     <div x-show="hasFile" style="display:none;">
-                        <div style="font-size:40px;margin-bottom:10px;">✅</div>
+                        <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-check-circle" style="color:#10B981;"></i></div>
                         <p style="font-weight:600;font-size:14px;color:var(--mint);">File selected</p>
                     </div>
                 </div>

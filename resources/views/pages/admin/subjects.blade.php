@@ -15,14 +15,14 @@
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:20px;">✅</span>
+        <span style="font-size:20px;"><i class="fas fa-check-circle" style="color:#10B981;"></i></span>
         <span style="color:#059669;font-weight:600;">{{ session('success') }}</span>
     </div>
     @endif
 
     @if(session('error'))
     <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:20px;">❌</span>
+        <span style="font-size:20px;"><i class="fas fa-times-circle" style="color:#dc2626;"></i></span>
         <span style="color:#dc2626;font-weight:600;">{{ session('error') }}</span>
     </div>
     @endif

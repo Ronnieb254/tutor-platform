@@ -499,7 +499,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                     @php $pb = $payment->booking; @endphp
                     <tr>
                         <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($pb?->tutor?->name ?? 'T',0,1) }}</div>{{ $pb?->tutor?->name ?? '—' }}</div></td>
-                        <td><code style="background:#F4F6F4;padding:2px 8px;border-radius:6px;font-size:11px;">{{ Str::limit($payment->paystack_reference,18) }}</code></td>
+                        <td><code style="background:#F4F6F4;padding:2px 8px;border-radius:6px;font-size:11px;">{{ Str::limit($payment->mpesa_reference,18) }}</code></td>
                         <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? '—' }}</td>
                         <td style="font-size:13px;color:var(--muted);">{{ $pb?->duration_minutes }}min · {{ $pb?->subject?->name ?? 'General' }}</td>
                         <td style="font-weight:700;color:var(--ink);">KSh {{ number_format($payment->amount) }}</td>
@@ -525,19 +525,19 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
         @forelse($notifications as $notif)
         @php $isUnread = is_null($notif->read_at); $data = $notif->data; @endphp
         <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(21,40,31,.05);background:{{ $isUnread ? 'rgba(10,100,188,.04)' : 'transparent' }};">
-            @php $icons=['new_booking'=>['📅','rgba(10,100,188,.1)'],'booking_confirmed'=>['✅','rgba(16,185,129,.1)'],'booking_cancelled'=>['❌','rgba(232,82,42,.1)']]; [$ic,$bg]=$icons[$data['type']??'']??['🔔','rgba(21,40,31,.05)']; @endphp
-            <div style="width:44px;height:44px;border-radius:12px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">{{ $ic }}</div>
+            @php $icons=['new_booking'=>['fa-calendar','rgba(10,100,188,.1)','#0A64BC'],'booking_confirmed'=>['fa-check-circle','rgba(16,185,129,.1)','#10B981'],'booking_cancelled'=>['fa-times-circle','rgba(232,82,42,.1)','#E8522A']]; [$ic,$bg,$color]=$icons[$data['type']??'']??['fa-bell','rgba(21,40,31,.05)','#15281F']; @endphp
+            <div style="width:44px;height:44px;border-radius:12px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas {{ $ic }}" style="color:{{ $color }};"></i></div>
             <div style="flex:1;">
                 <div style="font-weight:{{ $isUnread?'700':'500' }};font-size:14px;color:var(--ink);">{{ $data['message'] ?? 'New notification' }}</div>
                 @if(!empty($data['code']))<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:8px;padding:4px 10px;margin-top:6px;"><span style="font-size:11px;color:var(--muted);">Your access code:</span><code style="font-size:14px;font-weight:800;color:var(--trust-blue);">{{ $data['code'] }}</code></div>@endif
-                @if(!empty($data['scheduled_at']))<div style="font-size:12px;color:var(--muted);margin-top:4px;">📅 {{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>@endif
+                @if(!empty($data['scheduled_at']))<div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fas fa-calendar" style="margin-right:4px;"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>@endif
                 <div style="font-size:11px;color:var(--muted);margin-top:6px;">{{ $notif->created_at->diffForHumans() }}</div>
                 @if(!empty($data['url']))<a href="{{ $data['url'] }}" class="btn btn-mint btn-sm" style="margin-top:8px;">Join / View Session</a>@endif
             </div>
             @if($isUnread)<div style="width:8px;height:8px;background:var(--trust-blue);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>@endif
         </div>
         @empty
-        <div style="padding:64px;text-align:center;"><div style="font-size:44px;margin-bottom:12px;">🔔</div><div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;">No notifications yet</div><div style="font-size:14px;color:var(--muted);">You'll be notified here when a booking is confirmed</div></div>
+        <div style="padding:64px;text-align:center;"><div style="font-size:44px;margin-bottom:12px;"><i class="fas fa-bell" style="color:var(--muted);"></i></div><div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;">No notifications yet</div><div style="font-size:14px;color:var(--muted);">You'll be notified here when a booking is confirmed</div></div>
         @endforelse
     </div>
 </div>

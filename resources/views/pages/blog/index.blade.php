@@ -48,7 +48,11 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                     <img src="{{ asset('storage/'.$post->thumbnail) }}" alt="{{ $post->title }}" class="post-thumb">
                     @else
                     <div class="post-thumb-placeholder" style="background:{{ $colors[$loop->index%count($colors)] }}22;">
-                        {{ ['📐','🔬','📚','✏️','🎯','📝'][$loop->index%6] }}
+                        @php 
+                        $icons = ['fa-ruler','fa-flask','fa-book','fa-pen','fa-bullseye','fa-file-lines'];
+                        $iconColors = ['#0A64BC','#10B981','#D4A017','#E8522A','#8B5CF6','#F59E0B'];
+                        @endphp
+                        <i class="fas {{ $icons[$loop->index%6] }}" style="font-size:48px;color:{{ $iconColors[$loop->index%6] }};"></i>
                     </div>
                     @endif
                     <div style="padding:20px;">

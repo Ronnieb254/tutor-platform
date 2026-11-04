@@ -40,7 +40,11 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
             <img src="{{ asset('storage/'.$course->thumbnail) }}" alt="{{ $course->title }}" style="width:100%;height:200px;object-fit:cover;">
             @else
             <div style="width:100%;height:180px;background:{{ $colors[$loop->index%count($colors)] }}22;display:flex;align-items:center;justify-content:center;font-size:52px;">
-                {{ ['📐','🔬','📚','✏️','🎯','💡'][$loop->index%6] }}
+                @php 
+                $icons = ['fa-ruler','fa-flask','fa-book','fa-pen','fa-bullseye','fa-lightbulb'];
+                $iconColors = ['#0A64BC','#10B981','#D4A017','#E8522A','#8B5CF6','#F59E0B'];
+                @endphp
+                <i class="fas {{ $icons[$loop->index%6] }}" style="color:{{ $iconColors[$loop->index%6] }};"></i>
             </div>
             @endif
             <div style="padding:20px;">

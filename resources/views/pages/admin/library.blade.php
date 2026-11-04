@@ -4,7 +4,7 @@
 @section('content')
 <div class="page-header">
     <div>
-        <h1>📚 Library Management</h1>
+        <h1><i class="fas fa-book" style="margin-right:8px;"></i>Library Management</h1>
         <p>Manage all learning resources, approve tutor submissions, organise categories</p>
     </div>
     <button onclick="document.getElementById('add-modal').style.display='flex'" class="btn btn-primary">
