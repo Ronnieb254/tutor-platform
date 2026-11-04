@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('password_history', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('password', 255);
-            $table->timestamp('created_at')->useCurrent();
+        if (!Schema::hasTable('password_history')) {
+            Schema::create('password_history', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->string('password', 255);
+                $table->timestamp('created_at')->useCurrent();
 
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+                $table->foreign('user_id')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('cascade');
 
-            $table->index('user_id');
-        });
+                $table->index('user_id');
+            });
+        }
     }
 
     /**

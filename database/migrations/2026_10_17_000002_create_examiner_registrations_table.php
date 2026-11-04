@@ -8,15 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('examiner_registrations', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tutor_id')->constrained('users')->onDelete('cascade');
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('approved');
-            $table->text('rejection_reason')->nullable();
-            $table->timestamps();
+        if (!Schema::hasTable('examiner_registrations')) {
+            Schema::create('examiner_registrations', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('tutor_id')->constrained('users')->onDelete('cascade');
+                $table->enum('status', ['pending', 'approved', 'rejected'])->default('approved');
+                $table->text('rejection_reason')->nullable();
+                $table->timestamps();
             
-            $table->unique('tutor_id');
-        });
+                $table->unique('tutor_id');
+            });
+        }
     }
 
     public function down(): void

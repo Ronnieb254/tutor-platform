@@ -7,16 +7,18 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('booking_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('receiver_id')->constrained('users')->cascadeOnDelete();
-            $table->text('body');
-            $table->timestamp('read_at')->nullable();
-            $table->timestamps();
-            $table->index(['booking_id', 'created_at']);
-        });
+        if (!Schema::hasTable('messages')) {
+            Schema::create('messages', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('booking_id')->constrained()->cascadeOnDelete();
+                $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('receiver_id')->constrained('users')->cascadeOnDelete();
+                $table->text('body');
+                $table->timestamp('read_at')->nullable();
+                $table->timestamps();
+                $table->index(['booking_id', 'created_at']);
+            });
+        }
     }
 
     public function down(): void

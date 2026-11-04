@@ -8,15 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('notification_preferences', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->boolean('email_enabled')->default(true);
-            $table->boolean('booking_notifications')->default(true);
-            $table->boolean('message_notifications')->default(true);
-            $table->boolean('reminder_notifications')->default(true);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('notification_preferences')) {
+            Schema::create('notification_preferences', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+                $table->boolean('email_enabled')->default(true);
+                $table->boolean('booking_notifications')->default(true);
+                $table->boolean('message_notifications')->default(true);
+                $table->boolean('reminder_notifications')->default(true);
+                $table->timestamps();
+            });
+        }
     }
 
     public function down(): void

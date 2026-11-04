@@ -7,26 +7,30 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('wallets', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
-            $table->decimal('balance', 12, 2)->default(0);
-            $table->string('currency', 10)->default('NGN');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('wallets')) {
+            Schema::create('wallets', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
+                $table->decimal('balance', 12, 2)->default(0);
+                $table->string('currency', 10)->default('NGN');
+                $table->timestamps();
+            });
+        }
 
-        Schema::create('wallet_transactions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('wallet_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['credit','debit']);
-            $table->decimal('amount', 12, 2);
-            $table->decimal('balance_after', 12, 2);
-            $table->string('description');
-            $table->string('reference')->nullable();
-            $table->json('metadata')->nullable();
-            $table->timestamps();
-            $table->index(['wallet_id', 'type']);
-        });
+        if (!Schema::hasTable('wallet_transactions')) {
+            Schema::create('wallet_transactions', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('wallet_id')->constrained()->cascadeOnDelete();
+                $table->enum('type', ['credit','debit']);
+                $table->decimal('amount', 12, 2);
+                $table->decimal('balance_after', 12, 2);
+                $table->string('description');
+                $table->string('reference')->nullable();
+                $table->json('metadata')->nullable();
+                $table->timestamps();
+                $table->index(['wallet_id', 'type']);
+            });
+        }
     }
 
     public function down(): void

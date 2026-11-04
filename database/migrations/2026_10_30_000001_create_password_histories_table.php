@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('password_histories', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('password');
-            $table->timestamps();
+        if (!Schema::hasTable('password_histories')) {
+            Schema::create('password_histories', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->string('password');
+                $table->timestamps();
 
-            $table->index('user_id');
-            $table->index('created_at');
-        });
+                $table->index('user_id');
+                $table->index('created_at');
+            });
+        }
     }
 
     /**

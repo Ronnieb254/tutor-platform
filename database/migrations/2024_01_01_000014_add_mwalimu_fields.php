@@ -37,34 +37,38 @@ return new class extends Migration {
         });
 
         // Examiner's Clinic table
-        Schema::create('examiner_clinics', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tutor_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->json('topics_covered')->nullable(); // exam strategy, marking scheme, etc
-            $table->timestamp('scheduled_at');
-            $table->integer('duration_minutes')->default(60);
-            $table->decimal('price', 10, 2)->default(1000.00);
-            $table->integer('max_students')->default(50);
-            $table->enum('status', ['scheduled','live','completed','cancelled'])->default('scheduled');
-            $table->string('meeting_room')->nullable();
-            $table->timestamps();
-            $table->index(['subject_id', 'scheduled_at']);
-        });
+        if (!Schema::hasTable('examiner_clinics')) {
+            Schema::create('examiner_clinics', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('tutor_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->json('topics_covered')->nullable(); // exam strategy, marking scheme, etc
+                $table->timestamp('scheduled_at');
+                $table->integer('duration_minutes')->default(60);
+                $table->decimal('price', 10, 2)->default(1000.00);
+                $table->integer('max_students')->default(50);
+                $table->enum('status', ['scheduled','live','completed','cancelled'])->default('scheduled');
+                $table->string('meeting_room')->nullable();
+                $table->timestamps();
+                $table->index(['subject_id', 'scheduled_at']);
+            });
+        }
 
         // Clinic enrollments
-        Schema::create('clinic_enrollments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('clinic_id')->constrained('examiner_clinics')->cascadeOnDelete();
-            $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('payment_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('session_code', 20)->nullable()->unique();
-            $table->boolean('attended')->default(false);
-            $table->unique(['clinic_id', 'student_id']);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('clinic_enrollments')) {
+            Schema::create('clinic_enrollments', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('clinic_id')->constrained('examiner_clinics')->cascadeOnDelete();
+                $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('payment_id')->nullable()->constrained()->nullOnDelete();
+                $table->string('session_code', 20)->nullable()->unique();
+                $table->boolean('attended')->default(false);
+                $table->unique(['clinic_id', 'student_id']);
+                $table->timestamps();
+            });
+        }
 
         // Add fixed pricing fields to bookings
         Schema::table('bookings', function (Blueprint $table) {
@@ -74,26 +78,30 @@ return new class extends Migration {
         });
 
         // Referral commissions
-        Schema::create('referral_commissions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('referrer_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('referred_tutor_id')->constrained('users')->cascadeOnDelete();
-            $table->decimal('amount', 10, 2)->default(0);
-            $table->enum('status', ['pending','paid'])->default('pending');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('referral_commissions')) {
+            Schema::create('referral_commissions', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('referrer_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('referred_tutor_id')->constrained('users')->cascadeOnDelete();
+                $table->decimal('amount', 10, 2)->default(0);
+                $table->enum('status', ['pending','paid'])->default('pending');
+                $table->timestamps();
+            });
+        }
 
         // OTP verification table
-        Schema::create('otp_verifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('phone');
-            $table->string('otp', 6);
-            $table->string('purpose')->default('login'); // login, register, payment
-            $table->boolean('verified')->default(false);
-            $table->timestamp('expires_at');
-            $table->timestamps();
-            $table->index('phone');
-        });
+        if (!Schema::hasTable('otp_verifications')) {
+            Schema::create('otp_verifications', function (Blueprint $table) {
+                $table->id();
+                $table->string('phone');
+                $table->string('otp', 6);
+                $table->string('purpose')->default('login'); // login, register, payment
+                $table->boolean('verified')->default(false);
+                $table->timestamp('expires_at');
+                $table->timestamps();
+                $table->index('phone');
+            });
+        }
     }
 
     public function down(): void

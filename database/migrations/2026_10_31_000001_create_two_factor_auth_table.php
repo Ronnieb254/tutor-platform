@@ -8,14 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('two_factor_auth', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade');
-            $table->string('secret');
-            $table->json('recovery_codes');
-            $table->timestamp('enabled_at')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('two_factor_auth')) {
+            Schema::create('two_factor_auth', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade');
+                $table->string('secret');
+                $table->json('recovery_codes');
+                $table->timestamp('enabled_at')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     public function down(): void
