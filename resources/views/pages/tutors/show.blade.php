@@ -48,7 +48,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
 
 {{-- ── PROFILE HERO ────────────────────────────────────────────────── --}}
 <div class="profile-hero">
-    <div style="max-width:1360px;margin:0 auto;padding:0 24px @media(min-width:1024px){padding:0 48px}">
+    <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
 
         {{-- Breadcrumb --}}
         <div style="margin-bottom:20px;">
@@ -124,7 +124,8 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
         </div>
 
         {{-- Tab bar --}}
-        <div style="display:flex;gap:0;margin-top:28px;overflow-x:auto;" x-data="">
+        <div style="overflow-x:auto;display:flex;-webkit-overflow-scrolling:touch;">
+        <div style="display:flex;gap:0;margin-top:28px;" x-data="">
             <button class="ptab on" onclick="showTab('about',this)">
                 <i class="fa-solid fa-user fa-xs" style="margin-right:5px;"></i>About
             </button>
@@ -138,12 +139,13 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 <i class="fa-solid fa-calendar-check fa-xs" style="margin-right:5px;"></i>Book Session
             </button>
         </div>
+        </div>
     </div>
 </div>
 
 {{-- ── MAIN CONTENT ─────────────────────────────────────────────────── --}}
 <div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;" class="w">
-    <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="show-grid">
+    <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="show-grid session-layout">
 
         {{-- LEFT: Tab content --}}
         <div>
@@ -647,8 +649,9 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.1);padding:26px;box-shadow:0 4px 28px rgba(21,40,31,.08);">
                 <div style="text-align:center;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid rgba(21,40,31,.08);">
                     <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:8px;">Session Rates</div>
+                    <div style="font-size:13px;color:rgba(21,40,31,.5);">starting from </div>
                     <div style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#0A64BC;">KSh 300</div>
-                    <div style="font-size:13px;color:rgba(21,40,31,.5);">starting from per session</div>
+                    <div style="font-size:13px;color:rgba(21,40,31,.5);">per session</div>
                 </div>
 
                 {{-- Tier quick reference --}}
@@ -852,6 +855,7 @@ function processPayment(data) {
     });
 }
 </script>
+<style>.session-layout{grid-template-columns:1fr!important;}@media(min-width:1024px){.session-layout{grid-template-columns:1fr 380px!important;}}</style>
 @livewireScripts
 </body>
 </html>

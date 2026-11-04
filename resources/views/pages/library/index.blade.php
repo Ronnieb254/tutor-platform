@@ -87,6 +87,9 @@ a{color:inherit;text-decoration:none;}
 .pagination a,.pagination span{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:14px;font-weight:600;transition:all .15s;}
 .pagination a{background:#fff;border:1px solid var(--hair);color:var(--ink);}.pagination a:hover{border-color:var(--trust-blue);color:var(--trust-blue);}
 .pagination .active{background:var(--trust-blue);color:#fff;border:1px solid var(--trust-blue);}
+
+@media(max-width:768px){.sidebar{position:static;}}
+@media(max-width:480px){.hero-search{flex-direction:column;gap:8px;}.hero-search input{border-radius:12px;}.hero-search button{border-radius:12px;height:46px;width:100%;}}
 </style>
 </head>
 <body>

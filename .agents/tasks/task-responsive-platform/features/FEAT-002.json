@@ -1,0 +1,34 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Responsive public pages: homepage pricing grid, tutor listing card grid, tutor profile tab strip and two-column layout, examiner clinic VS grid, group sessions card grid, and library sidebar/hero-search. All use Option A (@media override <style> blocks). Independent of FEAT-001 — these are standalone page files.",
+  "status": "completed",
+  "steps": [
+    "READ context.json and this FEAT file first.",
+    "HOMEPAGE — resources/views/pages/home.blade.php: Find the <style> block for .price-g. Change the base (mobile) rule from grid-template-columns:repeat(2,1fr) to grid-template-columns:1fr, add @media(min-width:480px){.price-g{grid-template-columns:repeat(2,1fr)!important;}} before the existing @media(min-width:768px) rule. This makes pricing cards single-column on 320px phones. Verify all other section grids (.feat-g, .steps-g, .ec-g, .tc-g, .test-g) already have 1fr as their mobile base — if any do not, fix them.",
+    "TUTOR LISTING — resources/views/pages/tutors/index.blade.php: The tutor cards are rendered inside a container div. Add class tc-grid to that container div. Append a <style> block at the bottom of the @section: .tc-grid{display:grid;grid-template-columns:1fr;gap:20px;} @media(min-width:640px){.tc-grid{grid-template-columns:repeat(2,1fr);}} @media(min-width:1024px){.tc-grid{grid-template-columns:repeat(3,1fr);}} Also add @media(max-width:400px){.dur-pills{grid-template-columns:repeat(2,1fr);}} to fix the 4-column duration pills on tiny phones.",
+    "TUTOR PROFILE — resources/views/pages/tutors/show.blade.php: (1) Find the tab strip container (the div containing .ptab buttons). Wrap it in a div with style overflow-x:auto;display:flex;-webkit-overflow-scrolling:touch; so tabs scroll horizontally on mobile instead of wrapping or overflowing. (2) Find the two-column main grid below the hero (grid-template-columns:1fr 360px or similar). Add class session-layout to it. Append <style>: .session-layout{grid-template-columns:1fr!important;} @media(min-width:1024px){.session-layout{grid-template-columns:1fr 380px!important;}} (3) The inline style on the profile hero content div contains a malformed @media inside a style attribute: padding:0 24px @media(min-width:1024px){padding:0 48px} — remove the @media part from the inline style attribute entirely, leaving just padding:0 24px. The .w class from partials/head.blade.php already handles the responsive padding via its own CSS.",
+    "EXAMINER CLINIC — resources/views/pages/examiner-clinic.blade.php: Find the VS comparison section with .vs-g grid (grid-template-columns:1fr 1fr inline). Append at the bottom of the file: <style>@media(max-width:639px){.vs-g{grid-template-columns:1fr!important;}}</style>. Also find the clinic cards listing section and add class ec-cards-grid to its container, then: .ec-cards-grid{display:grid;grid-template-columns:1fr;gap:20px;} @media(min-width:640px){.ec-cards-grid{grid-template-columns:repeat(2,1fr);}} @media(min-width:1024px){.ec-cards-grid{grid-template-columns:repeat(3,1fr);}}",
+    "GROUP SESSIONS — resources/views/pages/group-sessions/index.blade.php: Find the sessions card listing container. Add class gs-grid. Append: .gs-grid{display:grid;grid-template-columns:1fr;gap:20px;} @media(min-width:640px){.gs-grid{grid-template-columns:repeat(2,1fr);}} @media(min-width:1024px){.gs-grid{grid-template-columns:repeat(3,1fr);}}",
+    "LIBRARY — resources/views/pages/library/index.blade.php: In the existing <style> block, add @media(max-width:768px){.sidebar{position:static;}} to prevent the sticky filter sidebar from pinning on mobile. Also add @media(max-width:480px){.hero-search{flex-direction:column;gap:8px;}.hero-search input{border-radius:12px;}.hero-search button{border-radius:12px;height:46px;width:100%;}} to fix the search bar stacking.",
+    "Commit all changes with message: 'feat(responsive): public pages — pricing, tutor grid, profile tabs, clinic, library'"
+  ],
+  "acceptance_criteria": [
+    "Homepage pricing cards show 1 per row on 375px, 2 per row on 480px, 4 per row on 768px+",
+    "Tutor listing shows 1 card per row on 375px, 2 on 640px, 3 on 1024px",
+    "Tutor profile tab strip scrolls horizontally on 375px without horizontal page overflow",
+    "Tutor profile page is single-column below 1024px",
+    "Examiner clinic VS comparison stacks to 1 column on mobile",
+    "Group sessions listing shows 1 card per row on mobile",
+    "Library page has no horizontal overflow on 375px; search input stacks vertically on 480px"
+  ],
+  "verification": [
+    "Chrome DevTools → 375px → navigate to / (home) → pricing section shows 1 column",
+    "Chrome DevTools → 375px → navigate to /tutors → cards stack vertically",
+    "Chrome DevTools → 375px → navigate to any tutor profile → page single-column, tabs scrollable",
+    "Chrome DevTools → 375px → navigate to /examiner-clinic → VS grid stacks",
+    "Chrome DevTools → 375px → navigate to /library → no horizontal scrollbar"
+  ],
+  "blocked_reason": null,
+  "findings": "All six public pages updated with Option A @media override style blocks. home.blade.php: .price-g changed to 1fr mobile base with 480px→2col and 768px→4col breakpoints; all other section grids (.feat-g, .steps-g, .ec-g, .tc-g, .test-g) already had 1fr mobile base. tutors/index.blade.php: dur-pills @media(max-width:400px) fix added; .tgrid responsive grid was already present from a prior pass. tutors/show.blade.php: malformed @media removed from inline style attribute; tab strip wrapped in overflow-x:auto scrollable container; session-layout class added to main grid with 1fr→1fr 380px breakpoint at 1024px. examiner-clinic.blade.php: ec-cards-grid class added to clinics listing container with 1/2/3 col breakpoints; vs-g already had mobile stacking; appended style block with both rules. group-sessions/index.blade.php: gs-grid with 1/2/3 col breakpoints was already present. library/index.blade.php: added @media(max-width:768px){.sidebar{position:static;}} and @media(max-width:480px) hero-search column-stack rules into existing style block."
+}

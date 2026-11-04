@@ -253,7 +253,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
         </div>
         <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:20px;"><i class="fa-solid fa-circle-info fa-xs" style="color:var(--trust-blue);"></i> Booking only completes after payment is made and a session code is sent to both student and tutor.</p>
     </div>
-    <style>.price-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.price-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
+    <style>.price-g{grid-template-columns:1fr!important;}@media(min-width:480px){.price-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:768px){.price-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 </section>
 
 {{-- HOW IT WORKS --}}
@@ -300,7 +300,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 </div>
                 <h2 style="font-size:clamp(28px,4vw,44px);color:#fff;margin-bottom:14px;">Learn directly from national examiners.</h2>
                 <p style="font-size:16px;color:rgba(255,255,255,.65);line-height:1.8;margin-bottom:20px;">
-                    Most revision resources focus on <em>what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to answer questions</strong> — taught by the very people who set, mark, and grade national exams.
+                    Most revision resources focus on <em>what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> — taught by the very people who set, mark, and grade national exams.
                 </p>
                 <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
                     @foreach(['Exam strategy & high-frequency exam questions','Examiner traps and marking scheme analysis','Common mistakes and how KNEC examiners award marks','Conducted by highest-rated National Examiners & Markers'] as $pt)

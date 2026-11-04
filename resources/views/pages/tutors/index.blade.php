@@ -217,7 +217,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     @endif
     @endif
 </div>
-<style>.tgrid{grid-template-columns:1fr!important;}@media(min-width:640px){.tgrid{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.tgrid{grid-template-columns:repeat(3,1fr)!important;}}</style>
+<style>.tgrid{grid-template-columns:1fr!important;}@media(min-width:640px){.tgrid{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.tgrid{grid-template-columns:repeat(3,1fr)!important;}}@media(max-width:400px){.dur-pills{grid-template-columns:repeat(2,1fr);}}</style>
 
 @include('partials.footer')
 @livewireScripts

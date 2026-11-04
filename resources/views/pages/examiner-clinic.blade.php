@@ -148,7 +148,7 @@
             <a href="{{ route('examiner-clinic') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><i class="fa-solid fa-arrow-left fa-sm"></i> Clear Filters</a>
         </div>
         @else
-        <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:grid;grid-template-columns:1fr;gap:14px;" class="ec-cards-grid">
             @foreach($clinics as $clinic)
             @php
                 $isFull = $clinic->isFull();
@@ -273,6 +273,12 @@
     </div>
 </section>
 
+<style>
+@media(max-width:639px){.vs-g{grid-template-columns:1fr!important;}}
+.ec-cards-grid{display:grid;grid-template-columns:1fr;gap:20px;}
+@media(min-width:640px){.ec-cards-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:1024px){.ec-cards-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
 @include('partials.footer')
 @livewireScripts
 </body>
