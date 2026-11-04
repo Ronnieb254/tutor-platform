@@ -81,9 +81,9 @@
                            value="{{ old('max_students', 30) }}" min="1" max="200">
                 </div>
                 <div>
-                    <label class="form-label">Price (KSh) <span style="color:var(--muted);font-weight:400;">(default 500)</span></label>
+                    <label class="form-label">Price (KSh) <span style="color:var(--muted);font-weight:400;">(default 600)</span></label>
                     <input type="number" name="price" class="form-input"
-                           value="{{ old('price', 500) }}" min="0" step="50">
+                           value="{{ old('price', 600) }}" min="0" step="50">
                 </div>
             </div>
         </div>

@@ -21,8 +21,8 @@ class PlatformSettingsSeeder extends Seeder
 
             // ── Session pricing tiers ──────────────────────────────────────
             ['key' => 'price_20min',               'value' => '300',                                        'group' => 'payments'],
-            ['key' => 'price_40min',               'value' => '500',                                        'group' => 'payments'],
-            ['key' => 'price_60min',               'value' => '700',                                        'group' => 'payments'],
+            ['key' => 'price_40min',               'value' => '600',                                        'group' => 'payments'],
+            ['key' => 'price_60min',               'value' => '900',                                        'group' => 'payments'],
 
             // Session names
             ['key' => 'session_name_20min',        'value' => 'Quick Help',                                 'group' => 'payments'],

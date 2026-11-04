@@ -218,7 +218,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;" class="form-2col">
                         <div class="field" style="margin-bottom:0;">
                             <label>Price per Seat (KSh) <span class="req">*</span></label>
-                            <input type="number" name="price" value="{{ old('price', 500) }}" min="0" step="50" required>
+                            <input type="number" name="price" value="{{ old('price', 600) }}" min="0" step="50" required>
                             @error('price')<p class="error">{{ $message }}</p>@enderror
                         </div>
                         <div class="field" style="margin-bottom:0;">

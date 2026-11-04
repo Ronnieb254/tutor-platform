@@ -3,7 +3,7 @@
 <head>
 @include('partials.head')
 <title>Examiner's Clinic – Mwalimu</title>
-<meta name="description" content="Learn directly from Kenya's national examiners and markers. Group sessions per paper (PP1, PP2, PP3). KSh 500 per session. Max 30 students per session.">
+<meta name="description" content="Learn directly from Kenya's national examiners and markers. Group sessions per paper (PP1, PP2, PP3). KSh 1,000 per session. Max 30 students per session.">
 </head>
 <body>
 @include('partials.nav')
@@ -35,7 +35,7 @@
                     @endauth
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:20px;">
-                    @foreach([['fa-sterling-sign','KSh 500','Per 60-min session'],['fa-users','Max 30','Learners per session'],['fa-calendar-week','Daily','Every subject'],['fa-shield-check','Secure','All sessions']] as [$ic,$val,$lbl])
+                    @foreach([['fa-sterling-sign','KSh 1,000','Per 60-min session'],['fa-users','Max 30','Learners per session'],['fa-calendar-week','Daily','Every subject'],['fa-shield-check','Secure','All sessions']] as [$ic,$val,$lbl])
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div style="width:34px;height:34px;background:rgba(212,160,23,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                             <i class="fa-solid {{ $ic }}" style="color:#EEBE15;font-size:13px;"></i>
@@ -57,7 +57,7 @@
                 </div>
                 @endforeach
                 <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);text-align:center;">
-                    <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">KSh 500</span>
+                    <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">KSh 1,000</span>
                     <span style="font-size:14px;color:rgba(255,255,255,.45);margin-left:8px;">/ 60-minute session</span>
                 </div>
             </div>
@@ -84,7 +84,7 @@
             </div>
             <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;border-left:4px solid #EEBE15;">
                 <h3 style="font-size:15px;font-weight:700;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-star fa-sm" style="color:#EEBE15;"></i> Examiner's Clinic</h3>
-                @foreach(['Focuses on HOW to answer','Strategic, marks-focused teaching','Direct insight into KNEC marking criteria','KSh 500 for a 60-minute group session'] as $item)
+                @foreach(['Focuses on HOW to answer','Strategic, marks-focused teaching','Direct insight into KNEC marking criteria','KSh 1,000 for a 60-minute group session'] as $item)
                 <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:13px;color:#15281F;">
                     <i class="fa-solid fa-circle-check" style="color:#10B981;margin-top:2px;flex-shrink:0;"></i>{{ $item }}
                 </div>

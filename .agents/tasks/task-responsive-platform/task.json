@@ -1,0 +1,7 @@
+{
+  "task_id": "task-responsive-platform",
+  "task_description": "Make the entire Mwalimu tutor Laravel+Blade platform responsive across mobile (320px+), tablet (768px+), and desktop (1024px+). Fix DataTables TN/18 empty-state bug in payouts/blog/group-sessions tables. Fix countdown timer timezone bug on booking show page.",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
+  "blocked_reason": null
+}

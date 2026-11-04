@@ -34,7 +34,7 @@
 </head>
 <body>
 @php
-$prices    = [20=>300,40=>500,60=>700];
+$prices    = [20=>300,40=>600,60=>900];
 $sessNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 $sessDesc  = [20=>'Rapid revision or a quick question',40=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
 // No free first session — 100% money-back guarantee if unsatisfied

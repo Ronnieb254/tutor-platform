@@ -41,7 +41,7 @@ $q=TutorProfile::approved()->with(['user','subjects'])
 $q=$sort==='price_asc'?$q->orderBy('hourly_rate'):($sort==='sessions'?$q->orderByDesc('total_sessions'):$q->orderByDesc('rating_avg'));
 $tutors=$q->paginate(12)->withQueryString();
 $colors=['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899','#0EA5E9','#8B5CF6'];
-$prices=[20=>300,40=>500,60=>700];
+$prices=[20=>300,40=>600,60=>900];
 $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 @endphp
 

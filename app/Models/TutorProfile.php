@@ -63,10 +63,10 @@ class TutorProfile extends Model
     public static function sessionPrices(): array
     {
         return [
-            '20_individual' => ['name' => 'Quick Help',       'duration' => 20, 'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question', 'type' => 'individual'],
-            '40_individual' => ['name' => 'Guided Practice',  'duration' => 40, 'price' => 500, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A', 'type' => 'individual'],
-            '60_individual' => ['name' => 'Deep Dive',        'duration' => 60, 'price' => 700, 'icon' => '🏆', 'desc' => 'Maximum learning, best value', 'type' => 'individual'],
-            '60_group'      => ['name' => 'Group Session',    'duration' => 60, 'price' => 500, 'icon' => '👥', 'desc' => 'Learn together, share the cost', 'type' => 'group'],
+            '20_individual' => ['name' => 'Quick Help',       'duration' => 20, 'price' => 300,  'icon' => '⚡', 'desc' => 'Rapid revision or a quick question', 'type' => 'individual'],
+            '40_individual' => ['name' => 'Guided Practice',  'duration' => 40, 'price' => 600,  'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A', 'type' => 'individual'],
+            '60_individual' => ['name' => 'Deep Dive',        'duration' => 60, 'price' => 900,  'icon' => '🏆', 'desc' => 'Maximum learning, best value', 'type' => 'individual'],
+            '60_group'      => ['name' => 'Group Session',    'duration' => 60, 'price' => 600,  'icon' => '👥', 'desc' => 'Learn together, share the cost', 'type' => 'group'],
         ];
     }
 

@@ -55,7 +55,7 @@ use App\Models\PlatformSetting;
 $categories    = Category::active()->with('subjects')->take(8)->get();
 $featuredTutors = TutorProfile::approved()->with(['user','subjects'])->orderByDesc('rating_avg')->take(6)->get();
 $upcomingClinics = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
-$prices = [20=>300,40=>500,60=>700,'60_group'=>500];
+$prices = [20=>300,40=>600,60=>900,'60_group'=>600];
 $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_group'=>'Group Session'];
 @endphp
 
@@ -223,9 +223,9 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
             @foreach([
                 ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
-                ['40','Guided Practice','🎯','KSh 500','A full structured lesson with warm-up, teaching and Q&A.', false],
-                ['60','Deep Dive','🏆','KSh 700','Maximum learning. Best value. Ideal for exam prep.', false],
-                ['60','Group Session','👥','KSh 500','Learn together with other students. Share the cost, maximize value.', true],
+                ['40','Guided Practice','🎯','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false],
+                ['60','Deep Dive','🏆','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false],
+                ['60','Group Session','👥','KSh 600','Learn together with other students. Share the cost, maximize value.', true],
             ] as [$mins,$title,$icon,$price,$desc,$isGroup])
             <div style="border:2px solid {{ $isGroup ? 'var(--hair)' : '#EEBE15' }};border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;background:{{ $isGroup ? 'transparent' : 'rgba(238,190,21,.05)' }};" class="card-lift"
                  onmouseover="this.style.borderColor='{{ $isGroup ? 'var(--trust-blue)' : '#d4a800' }}'"
@@ -312,7 +312,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 </div>
                 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
                     <a href="/examiner-clinic" class="btn btn-w"><i class="fa-solid fa-calendar-check"></i> View Upcoming Clinics</a>
-                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 500</span> /session · 60 min</div>
+                    <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 1,000</span> /session · 60 min</div>
                 </div>
             </div>
             

@@ -92,7 +92,7 @@
                     <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.5);margin-bottom:6px;display:block;">
                         Price (KSh) <span style="color:#dc2626;">*</span>
                     </label>
-                    <input type="number" name="price" value="{{ old('price', 500) }}" min="0" step="1" required
+                    <input type="number" name="price" value="{{ old('price', 1000) }}" min="0" step="1" required
                         style="width:100%;height:44px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:#15281F;outline:none;"
                         onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">
                 </div>
