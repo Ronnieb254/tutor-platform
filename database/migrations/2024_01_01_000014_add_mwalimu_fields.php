@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -9,32 +10,69 @@ return new class extends Migration {
     {
         // Add phone OTP and referral to users
         Schema::table('users', function (Blueprint $table) {
-            $table->string('phone_verified_at')->nullable()->after('phone');
-            $table->string('referral_code', 20)->nullable()->unique()->after('provider_id');
-            $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete()->after('referral_code');
+            if (!Schema::hasColumn('users', 'phone_verified_at')) {
+                $table->string('phone_verified_at')->nullable()->after('phone');
+            }
+            if (!Schema::hasColumn('users', 'referral_code')) {
+                $table->string('referral_code', 20)->nullable()->unique()->after('provider_id');
+            }
+            if (!Schema::hasColumn('users', 'referred_by')) {
+                $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete()->after('referral_code');
+            }
         });
 
         // Add TSC and additional doc fields to tutor_profiles
         Schema::table('tutor_profiles', function (Blueprint $table) {
-            $table->boolean('is_tsc_registered')->default(false)->after('is_approved');
-            $table->string('tsc_number')->nullable()->after('is_tsc_registered');
-            $table->boolean('speedy_verification_paid')->default(false)->after('tsc_number');
-            $table->timestamp('speedy_verification_paid_at')->nullable()->after('speedy_verification_paid');
-            $table->json('subjects_taught')->nullable()->after('speedy_verification_paid_at'); // max 2 subjects
-            $table->enum('level', ['JSS','SS','F3','F4','all'])->default('all')->after('subjects_taught');
-            $table->integer('referral_earnings')->default(0)->after('level');
+            if (!Schema::hasColumn('tutor_profiles', 'is_tsc_registered')) {
+                $table->boolean('is_tsc_registered')->default(false)->after('is_approved');
+            }
+            if (!Schema::hasColumn('tutor_profiles', 'tsc_number')) {
+                $table->string('tsc_number')->nullable()->after('is_tsc_registered');
+            }
+            if (!Schema::hasColumn('tutor_profiles', 'speedy_verification_paid')) {
+                $table->boolean('speedy_verification_paid')->default(false)->after('tsc_number');
+            }
+            if (!Schema::hasColumn('tutor_profiles', 'speedy_verification_paid_at')) {
+                $table->timestamp('speedy_verification_paid_at')->nullable()->after('speedy_verification_paid');
+            }
+            if (!Schema::hasColumn('tutor_profiles', 'subjects_taught')) {
+                $table->json('subjects_taught')->nullable()->after('speedy_verification_paid_at');
+            }
+            if (!Schema::hasColumn('tutor_profiles', 'level')) {
+                $table->enum('level', ['JSS','SS','F3','F4','all'])->default('all')->after('subjects_taught');
+            }
+            if (!Schema::hasColumn('tutor_profiles', 'referral_earnings')) {
+                $table->integer('referral_earnings')->default(0)->after('level');
+            }
         });
 
         // Add more doc types to tutor_documents
-        Schema::table('tutor_documents', function (Blueprint $table) {
-            $table->dropColumn('type');
-        });
-        Schema::table('tutor_documents', function (Blueprint $table) {
-            $table->enum('type', [
-                'national_id','degree_certificate','tsc_certificate',
-                'certificate_of_good_conduct','passport_photo','other'
-            ])->after('tutor_profile_id');
-        });
+        if (!Schema::hasColumn('tutor_documents', 'type')) {
+            Schema::table('tutor_documents', function (Blueprint $table) {
+                $table->enum('type', [
+                    'national_id','degree_certificate','tsc_certificate',
+                    'certificate_of_good_conduct','passport_photo','other'
+                ])->after('tutor_profile_id');
+            });
+        } else {
+            Schema::table('tutor_documents', function (Blueprint $table) {
+                $table->enum('type', [
+                    'national_id','certificate','qualification','degree_certificate',
+                    'tsc_certificate','certificate_of_good_conduct','passport_photo','other'
+                ])->change();
+            });
+
+            DB::table('tutor_documents')
+                ->whereIn('type', ['certificate', 'qualification'])
+                ->update(['type' => 'degree_certificate']);
+
+            Schema::table('tutor_documents', function (Blueprint $table) {
+                $table->enum('type', [
+                    'national_id','degree_certificate','tsc_certificate',
+                    'certificate_of_good_conduct','passport_photo','other'
+                ])->change();
+            });
+        }
 
         // Examiner's Clinic table
         if (!Schema::hasTable('examiner_clinics')) {
@@ -72,9 +110,15 @@ return new class extends Migration {
 
         // Add fixed pricing fields to bookings
         Schema::table('bookings', function (Blueprint $table) {
-            $table->string('need_type')->nullable()->after('student_notes'); // explanation, homework, exam prep, etc
-            $table->string('topic')->nullable()->after('need_type');
-            $table->enum('level', ['JSS','SS','F3','F4'])->nullable()->after('topic');
+            if (!Schema::hasColumn('bookings', 'need_type')) {
+                $table->string('need_type')->nullable()->after('student_notes');
+            }
+            if (!Schema::hasColumn('bookings', 'topic')) {
+                $table->string('topic')->nullable()->after('need_type');
+            }
+            if (!Schema::hasColumn('bookings', 'level')) {
+                $table->enum('level', ['JSS','SS','F3','F4'])->nullable()->after('topic');
+            }
         });
 
         // Referral commissions
