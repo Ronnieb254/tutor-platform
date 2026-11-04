@@ -90,6 +90,20 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 .flash-err{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;}
 .tutor-card{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1px solid var(--hair);background:#fff;transition:all .2s;}
 .tutor-card:hover{border-color:rgba(10,100,188,.3);box-shadow:0 4px 16px rgba(21,40,31,.08);}
+
+/* ── Responsive overrides (mobile-first additions, desktop untouched) ── */
+@media(max-width:639px){
+  .content{padding:14px;}
+  /* child profiles: already handled by .ch-grid class */
+  /* session card rows: wrap on narrow screens */
+  .card [style*="display:flex"][style*="align-items:center"]{flex-wrap:wrap;}
+}
+@media(max-width:479px){
+  .stats-g{grid-template-columns:1fr!important;}
+  .quick-g{grid-template-columns:1fr!important;}
+  .ch-grid{grid-template-columns:1fr!important;}
+  .pay-stats{grid-template-columns:1fr!important;}
+}
 </style>
 </head>
 <body>

@@ -135,6 +135,19 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 /* Flash */
 .flash{padding:12px 16px;border-radius:12px;font-size:13.5px;font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
 .flash-ok{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;}
+
+/* ── Responsive overrides (mobile-first additions, desktop untouched) ── */
+@media(max-width:639px){
+  /* booking mini-stat grid: 2-col on small mobile */
+  .booking-stats-g{grid-template-columns:repeat(2,1fr)!important;}
+  /* session card row meta: stack nicely */
+  .content{padding:14px;}
+}
+@media(max-width:479px){
+  /* any 2-col quick/stat grids → 1 col on very small screens */
+  .quick-g{grid-template-columns:1fr!important;}
+  .stats-g{grid-template-columns:1fr!important;}
+}
 </style>
 </head>
 <body>
@@ -458,7 +471,7 @@ $activeTab = request('tab','overview');
     $cancelledB = $allBookings->where('status','cancelled');
     @endphp
 
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;" class="booking-stats-g">
         @foreach([['All',$allBookings->count(),'bdg-gray'],['Upcoming',$upcomingB->count(),'bdg-blue'],['Completed',$completedB->count(),'bdg-green'],['Cancelled',$cancelledB->count(),'bdg-amber']] as [$l,$c,$b])
         <div class="stat" style="padding:14px 16px;text-align:center;">
             <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">{{ $c }}</div>
@@ -466,6 +479,7 @@ $activeTab = request('tab','overview');
         </div>
         @endforeach
     </div>
+    <style>.booking-stats-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.booking-stats-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 
     {{-- Upcoming --}}
     @if($upcomingB->isNotEmpty())
@@ -508,7 +522,7 @@ $activeTab = request('tab','overview');
             <div class="sec-title">Session History</div>
             <div class="sec-sub">Every session you have taught or have scheduled</div>
         </div>
-        <div style="overflow-x:auto;">
+        <div style="overflow-x:auto;" class="tbl-wrap">
             <table>
                 <thead><tr>
                     <th>Student</th><th>Subject</th><th>Date & Time</th><th>Duration</th><th>Earnings</th><th>Code</th><th>Status</th><th></th>
@@ -688,7 +702,7 @@ $activeTab = request('tab','overview');
                 <div class="sec-title">Payment History</div>
                 <div style="font-size:12px;color:var(--muted);margin-top:1px;">All earnings and deductions</div>
             </div>
-            <div style="overflow-x:auto;">
+            <div style="overflow-x:auto;" class="tbl-wrap">
                 <table>
                     <thead><tr>
                         <th>Description</th><th>Reference</th><th>Date</th><th>Type</th><th>Amount</th><th>Balance</th>
