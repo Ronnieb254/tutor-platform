@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->enum('session_type', ['individual', 'group'])
-                  ->default('individual')
-                  ->after('duration_minutes');
-        });
+        if (!Schema::hasColumn('bookings', 'session_type')) {
+            Schema::table('bookings', function (Blueprint $table) {
+                $table->enum('session_type', ['individual', 'group'])
+                    ->default('individual')
+                    ->after('duration_minutes');
+            });
+        }
     }
 
     /**
@@ -23,8 +25,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->dropColumn('session_type');
-        });
+        if (Schema::hasColumn('bookings', 'session_type')) {
+            Schema::table('bookings', function (Blueprint $table) {
+                $table->dropColumn('session_type');
+            });
+        }
     }
 };

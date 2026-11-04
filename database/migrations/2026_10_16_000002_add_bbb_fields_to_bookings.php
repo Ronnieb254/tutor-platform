@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->string('meeting_password')->nullable()->after('meeting_url');
-            $table->string('moderator_password')->nullable()->after('meeting_password');
+            if (!Schema::hasColumn('bookings', 'meeting_password')) {
+                $table->string('meeting_password')->nullable()->after('meeting_url');
+            }
+            if (!Schema::hasColumn('bookings', 'moderator_password')) {
+                $table->string('moderator_password')->nullable()->after('meeting_password');
+            }
         });
     }
 
@@ -22,8 +26,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->dropColumn(['meeting_password', 'moderator_password']);
-        });
+        $columns = array_values(array_filter(
+            ['meeting_password', 'moderator_password'],
+            fn ($column) => Schema::hasColumn('bookings', $column)
+        ));
+
+        if ($columns) {
+            Schema::table('bookings', function (Blueprint $table) use ($columns) {
+                $table->dropColumn($columns);
+            });
+        }
     }
 };

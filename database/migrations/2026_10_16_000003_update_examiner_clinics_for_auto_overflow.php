@@ -10,10 +10,14 @@ return new class extends Migration
     {
         Schema::table('examiner_clinics', function (Blueprint $table) {
             // Add auto-created flag
-            $table->boolean('is_auto_created')->default(false)->after('status');
+            if (!Schema::hasColumn('examiner_clinics', 'is_auto_created')) {
+                $table->boolean('is_auto_created')->default(false)->after('status');
+            }
             
             // Ensure max_students defaults to 30
-            $table->integer('max_students')->default(30)->change();
+            if (Schema::hasColumn('examiner_clinics', 'max_students')) {
+                $table->integer('max_students')->default(30)->change();
+            }
             
             // Add session code for Jitsi access
             if (!Schema::hasColumn('examiner_clinics', 'session_code')) {
@@ -21,8 +25,12 @@ return new class extends Migration
             }
             
             // Remove BBB-specific columns (no longer needed with Jitsi)
-            if (Schema::hasColumn('examiner_clinics', 'bbb_meeting_id')) {
-                $table->dropColumn(['bbb_meeting_id', 'bbb_attendee_pw', 'bbb_moderator_pw']);
+            $bbbColumns = array_values(array_filter(
+                ['bbb_meeting_id', 'bbb_attendee_pw', 'bbb_moderator_pw'],
+                fn ($column) => Schema::hasColumn('examiner_clinics', $column)
+            ));
+            if ($bbbColumns) {
+                $table->dropColumn($bbbColumns);
             }
         });
     }
@@ -30,7 +38,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('examiner_clinics', function (Blueprint $table) {
-            $table->dropColumn('is_auto_created');
+            if (Schema::hasColumn('examiner_clinics', 'is_auto_created')) {
+                $table->dropColumn('is_auto_created');
+            }
             
             if (!Schema::hasColumn('examiner_clinics', 'bbb_meeting_id')) {
                 $table->string('bbb_meeting_id')->nullable();

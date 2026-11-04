@@ -25,8 +25,12 @@ return new class extends Migration
 
         // Add contract acceptance flag to users table
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('contract_accepted')->default(false)->after('remember_token');
-            $table->timestamp('contract_accepted_at')->nullable()->after('contract_accepted');
+            if (!Schema::hasColumn('users', 'contract_accepted')) {
+                $table->boolean('contract_accepted')->default(false)->after('remember_token');
+            }
+            if (!Schema::hasColumn('users', 'contract_accepted_at')) {
+                $table->timestamp('contract_accepted_at')->nullable()->after('contract_accepted');
+            }
         });
     }
 
