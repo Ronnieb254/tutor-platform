@@ -8,21 +8,51 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('subjects', function (Blueprint $table) {
-            // Drop the unique constraint on slug alone
-            $table->dropUnique('subjects_slug_unique');
-            
-            // Add a composite unique constraint: slug must be unique within each category
-            $table->unique(['category_id', 'slug'], 'subjects_category_slug_unique');
-        });
+        foreach (Schema::getIndexes('subjects') as $index) {
+            if ($index['type'] === 'unique' && $index['columns'] === ['slug']) {
+                Schema::table('subjects', function (Blueprint $table) use ($index) {
+                    $table->dropUnique($index['name']);
+                });
+            }
+        }
+
+        $hasCategorySlugUnique = false;
+        foreach (Schema::getIndexes('subjects') as $index) {
+            if ($index['type'] === 'unique' && $index['columns'] === ['category_id', 'slug']) {
+                $hasCategorySlugUnique = true;
+                break;
+            }
+        }
+
+        if (! $hasCategorySlugUnique) {
+            Schema::table('subjects', function (Blueprint $table) {
+                $table->unique(['category_id', 'slug'], 'subjects_category_slug_unique');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('subjects', function (Blueprint $table) {
-            // Reverse the change
-            $table->dropUnique('subjects_category_slug_unique');
-            $table->unique('slug', 'subjects_slug_unique');
-        });
+        foreach (Schema::getIndexes('subjects') as $index) {
+            if ($index['type'] === 'unique' && $index['columns'] === ['category_id', 'slug']) {
+                Schema::table('subjects', function (Blueprint $table) use ($index) {
+                    $table->dropUnique($index['name']);
+                });
+            }
+        }
+
+        $hasSlugUnique = false;
+        foreach (Schema::getIndexes('subjects') as $index) {
+            if ($index['type'] === 'unique' && $index['columns'] === ['slug']) {
+                $hasSlugUnique = true;
+                break;
+            }
+        }
+
+        if (! $hasSlugUnique) {
+            Schema::table('subjects', function (Blueprint $table) {
+                $table->unique('slug', 'subjects_slug_unique');
+            });
+        }
     }
 };
