@@ -180,6 +180,9 @@
                         @if($clinic->paper_type)
                         <span style="background:rgba(212,160,23,.1);color:#EEBE15;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-file-lines fa-xs"></i>{{ $clinic->paper_type }}</span>
                         @endif
+                        @if(\Schema::hasColumn('examiner_clinics','curriculum_id') && $clinic->curriculum_id)
+                        <span style="background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-graduation-cap fa-xs"></i>{{ optional($clinic->curriculum)->name }}</span>
+                        @endif
                         @if($isFull)
                         <span style="background:#FEE2E2;color:#991B1B;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-lock fa-xs"></i> FULL</span>
                         @endif

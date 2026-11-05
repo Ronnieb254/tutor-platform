@@ -52,14 +52,16 @@ class GroupSessionController extends Controller
     {
         $subjects = Subject::where('is_active', true)->orderBy('name')->get();
         $tutors   = User::where('role', 'tutor')->orderBy('name')->get();
+        $curricula = \App\Models\Curriculum::active()->orderBy('track')->orderBy('sort_order')->get();
 
-        return view('pages.admin.group-sessions.create', compact('subjects', 'tutors'));
+        return view('pages.admin.group-sessions.create', compact('subjects', 'tutors', 'curricula'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'subject_id'        => 'required|exists:subjects,id',
+            'curriculum_id'     => 'nullable|exists:curricula,id',
             'title'             => 'required|string|max:255',
             'description'       => 'nullable|string',
             'tutor_id'          => 'nullable|exists:users,id',
@@ -111,10 +113,11 @@ class GroupSessionController extends Controller
                 ->with('error', 'Cannot edit a ' . $groupSession->status . ' session.');
         }
 
-        $subjects = Subject::where('is_active', true)->orderBy('name')->get();
-        $tutors   = User::where('role', 'tutor')->orderBy('name')->get();
+        $subjects  = Subject::where('is_active', true)->orderBy('name')->get();
+        $tutors    = User::where('role', 'tutor')->orderBy('name')->get();
+        $curricula = \App\Models\Curriculum::active()->orderBy('track')->orderBy('sort_order')->get();
 
-        return view('pages.admin.group-sessions.edit', compact('groupSession', 'subjects', 'tutors'));
+        return view('pages.admin.group-sessions.edit', compact('groupSession', 'subjects', 'tutors', 'curricula'));
     }
 
     public function update(Request $request, ExaminerClinic $groupSession)
@@ -129,6 +132,7 @@ class GroupSessionController extends Controller
 
         $validated = $request->validate([
             'subject_id'        => 'required|exists:subjects,id',
+            'curriculum_id'     => 'nullable|exists:curricula,id',
             'title'             => 'required|string|max:255',
             'description'       => 'nullable|string',
             'tutor_id'          => 'nullable|exists:users,id',

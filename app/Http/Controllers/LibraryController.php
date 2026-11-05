@@ -12,7 +12,16 @@ class LibraryController extends Controller
 {
     public function index(Request $request)
     {
+        $track = session('curriculum_track', '');
         $query = BlogPost::published()->with(['author', 'category', 'subject']);
+
+        // Filter by curriculum track when set (graceful fallback: null = show all)
+        if ($track && \Schema::hasColumn('blog_posts', 'curriculum_id')) {
+            $query->where(function ($q) use ($track) {
+                $q->whereHas('curriculum', fn($c) => $c->where('track', $track))
+                  ->orWhereNull('curriculum_id'); // include untagged legacy content
+            });
+        }
 
         if ($request->filled('category')) {
             $query->where('blog_category_id', $request->category);
@@ -38,7 +47,7 @@ class LibraryController extends Controller
         $categories     = BlogCategory::withCount(['posts' => fn($q) => $q->published()])->get();
         $resourceTypes  = BlogPost::RESOURCE_TYPES;
 
-        return view('pages.library.index', compact('resources', 'categories', 'resourceTypes'));
+        return view('pages.library.index', compact('resources', 'categories', 'resourceTypes', 'track'));
     }
 
     public function show(string $slug)

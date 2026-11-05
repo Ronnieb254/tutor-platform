@@ -65,8 +65,9 @@ class ExaminerClinicController extends Controller
      */
     public function create()
     {
-        $subjects = Subject::where('is_active', true)->orderBy('name')->get();
-        return view('pages.admin.examiner-clinics.create', compact('subjects'));
+        $subjects  = Subject::where('is_active', true)->orderBy('name')->get();
+        $curricula = \App\Models\Curriculum::active()->orderBy('track')->orderBy('sort_order')->get();
+        return view('pages.admin.examiner-clinics.create', compact('subjects', 'curricula'));
     }
 
     /**
@@ -75,12 +76,13 @@ class ExaminerClinicController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'subject_id' => 'required|exists:subjects,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'scheduled_at' => 'required|date|after:now',
+            'subject_id'       => 'required|exists:subjects,id',
+            'curriculum_id'    => 'nullable|exists:curricula,id',
+            'title'            => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'scheduled_at'     => 'required|date|after:now',
             'duration_minutes' => 'required|integer|min:15|max:480',
-            'max_students' => 'nullable|integer|min:1|max:100',
+            'max_students'     => 'nullable|integer|min:1|max:100',
         ]);
 
         // Generate unique session code
@@ -137,8 +139,9 @@ class ExaminerClinicController extends Controller
                 ->with('error', 'Cannot edit a clinic that has started or completed.');
         }
 
-        $subjects = Subject::where('is_active', true)->orderBy('name')->get();
-        return view('pages.admin.examiner-clinics.edit', compact('examinerClinic', 'subjects'));
+        $subjects  = Subject::where('is_active', true)->orderBy('name')->get();
+        $curricula = \App\Models\Curriculum::active()->orderBy('track')->orderBy('sort_order')->get();
+        return view('pages.admin.examiner-clinics.edit', compact('examinerClinic', 'subjects', 'curricula'));
     }
 
     /**
@@ -160,12 +163,13 @@ class ExaminerClinicController extends Controller
         }
 
         $validated = $request->validate([
-            'subject_id' => 'required|exists:subjects,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'scheduled_at' => 'required|date',
+            'subject_id'       => 'required|exists:subjects,id',
+            'curriculum_id'    => 'nullable|exists:curricula,id',
+            'title'            => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'scheduled_at'     => 'required|date',
             'duration_minutes' => 'required|integer|min:15|max:480',
-            'max_students' => 'required|integer|min:1|max:100',
+            'max_students'     => 'required|integer|min:1|max:100',
         ]);
 
         // Don't allow reducing max_students below current enrollment count

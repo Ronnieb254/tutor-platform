@@ -12,7 +12,7 @@ class BlogPost extends Model
         'author_id', 'blog_category_id', 'title', 'slug',
         'excerpt', 'content', 'thumbnail',
         'is_published', 'published_at', 'meta_title', 'meta_description',
-        'resource_type', 'file_path', 'file_size', 'subject_id',
+        'resource_type', 'file_path', 'file_size', 'subject_id', 'curriculum_id',
         'grade_level', 'download_count', 'is_approved',
     ];
 
@@ -26,9 +26,10 @@ class BlogPost extends Model
         ];
     }
 
-    public function author()   { return $this->belongsTo(User::class, 'author_id'); }
-    public function category() { return $this->belongsTo(BlogCategory::class, 'blog_category_id'); }
-    public function subject()  { return $this->belongsTo(Subject::class, 'subject_id'); }
+    public function author()     { return $this->belongsTo(User::class, 'author_id'); }
+    public function category()  { return $this->belongsTo(BlogCategory::class, 'blog_category_id'); }
+    public function subject()   { return $this->belongsTo(Subject::class, 'subject_id'); }
+    public function curriculum(){ return $this->belongsTo(Curriculum::class); }
 
     public function scopePublished($q)
     {

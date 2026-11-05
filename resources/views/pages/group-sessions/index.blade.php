@@ -109,6 +109,9 @@
                         @if($isSeries)
                         <span style="background:rgba(212,160,23,.12);color:#EEBE15;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-layer-group fa-xs"></i>Session {{ $session->session_number }}/{{ $session->total_sessions }}</span>
                         @endif
+                        @if(\Schema::hasColumn('examiner_clinics','curriculum_id') && $session->curriculum_id)
+                        <span style="background:rgba(10,100,188,.08);color:#0A64BC;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-graduation-cap fa-xs"></i>{{ optional($session->curriculum)->name }}</span>
+                        @endif
                     </div>
                     <span style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#EEBE15;">KSh {{ number_format($session->price) }}</span>
                 </div>

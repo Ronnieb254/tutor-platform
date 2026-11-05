@@ -91,6 +91,7 @@
                     <th>Type</th>
                     <th>Author</th>
                     <th>Category</th>
+                    <th>Curriculum</th>
                     <th>Grade</th>
                     <th>Downloads</th>
                     <th>Status</th>
@@ -124,6 +125,13 @@
                     </td>
                     <td style="font-size:13px;">{{ $resource->author->name }}</td>
                     <td style="font-size:13px;color:var(--text-muted);">{{ $resource->category?->name ?? '—' }}</td>
+                    <td style="font-size:13px;">
+                        @if($resource->curriculum_id)
+                        <span style="font-size:11px;background:rgba(10,100,188,.08);color:#0A64BC;padding:2px 7px;border-radius:999px;white-space:nowrap;">{{ $resource->curriculum->name ?? '—' }}</span>
+                        @else
+                        <span style="font-size:11px;color:var(--text-muted);">All</span>
+                        @endif
+                    </td>
                     <td style="font-size:13px;color:var(--text-muted);">{{ $resource->grade_level ?? '—' }}</td>
                     <td data-order="{{ $resource->download_count }}" style="font-size:13px;font-weight:600;">{{ number_format($resource->download_count) }}</td>
                     <td>
@@ -216,6 +224,30 @@
                 <div>
                     <label class="form-label">Title *</label>
                     <input type="text" name="title" class="form-input" required placeholder="Resource title">
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div>
+                        <label class="form-label">Subject</label>
+                        <select name="subject_id" class="form-input">
+                            <option value="">None</option>
+                            @foreach($subjects as $s)
+                            <option value="{{ $s->id }}">{{ $s->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Curriculum</label>
+                        <select name="curriculum_id" class="form-input">
+                            <option value="">All tracks</option>
+                            @foreach($curricula->groupBy('track') as $trackName => $group)
+                            <optgroup label="{{ ucfirst($trackName) }}">
+                                @foreach($group as $c)
+                                <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                @endforeach
+                            </optgroup>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                     <div>

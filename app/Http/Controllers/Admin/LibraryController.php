@@ -51,8 +51,10 @@ class LibraryController extends Controller
 
         $categories    = BlogCategory::all();
         $resourceTypes = BlogPost::RESOURCE_TYPES;
+        $curricula     = \App\Models\Curriculum::active()->orderBy('track')->orderBy('sort_order')->get();
+        $subjects      = \App\Models\Subject::where('is_active', true)->orderBy('name')->get();
 
-        return view('pages.admin.library', compact('resources', 'stats', 'categories', 'resourceTypes'));
+        return view('pages.admin.library', compact('resources', 'stats', 'categories', 'resourceTypes', 'curricula', 'subjects'));
     }
 
     public function store(Request $request)
@@ -62,6 +64,7 @@ class LibraryController extends Controller
             'resource_type'      => 'required|in:' . implode(',', BlogPost::RESOURCE_TYPES),
             'blog_category_id'   => 'nullable|exists:blog_categories,id',
             'subject_id'         => 'nullable|exists:subjects,id',
+            'curriculum_id'      => 'nullable|exists:curricula,id',
             'grade_level'        => 'nullable|string|max:20',
             'excerpt'            => 'nullable|string',
             'content'            => 'nullable|string',
@@ -91,6 +94,7 @@ class LibraryController extends Controller
             'author_id'        => auth()->id(),
             'blog_category_id' => $validated['blog_category_id'] ?? null,
             'subject_id'       => $validated['subject_id'] ?? null,
+            'curriculum_id'    => $validated['curriculum_id'] ?? null,
             'title'            => $validated['title'],
             'slug'             => $slug,
             'excerpt'          => $validated['excerpt'] ?? null,

@@ -172,7 +172,7 @@ a{color:inherit;text-decoration:none;}
         @endif
     @else
         <div class="empty">
-            <div class="empty-icon">📅</div>
+            <div class="empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
             <h2 class="empty-title">No Bookings Yet</h2>
             <p class="empty-text">You haven't booked any clinic sessions. Start learning from national examiners today!</p>
             <a href="{{ route('examiner-clinic') }}" class="btn btn-primary" style="width:auto;margin:0 auto;">

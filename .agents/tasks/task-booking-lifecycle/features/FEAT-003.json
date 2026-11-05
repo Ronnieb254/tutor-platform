@@ -1,0 +1,28 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Session auto-completion Artisan command + SessionCompletedNotification + scheduling. Determines delivery status (full/partial/not_delivered), credits tutor wallet proportionally, processes student refunds, fires completion notifications. Depends on FEAT-001 (new columns) but independent of FEAT-002.",
+  "status": "pending",
+  "steps": [
+    "Create `app/Notifications/SessionCompletedNotification.php`. Constructor: `__construct(public Booking $booking)`. Channels: ['database','mail']. toMail(): subject is 'Your session has ended – Please leave a review'; use MailMessage->view('emails.session-completed', ['booking' => $this->booking]). toArray(): return ['type'=>'session_completed','booking_id'=>$this->booking->id,'booking_uuid'=>$this->booking->uuid,'delivery_status'=>$this->booking->delivery_status,'message'=>'Your session has ended. Please leave a review.','url'=>route('bookings.show',$this->booking->uuid)].",
+    "Create `resources/views/emails/session-completed.blade.php`. Match the style of `resources/views/emails/booking-confirmed-student.blade.php` exactly (inline CSS, dark header with Mwalimu logo SVG, FBF5E6 background, 520px max-width table). Content: greeting with recipient name, session summary table (Tutor, Student, Subject, Date, Duration, Delivery Status), a colored delivery badge (green=Fully Delivered, yellow=Partially Delivered, red=Not Delivered), a 'Leave a Review' CTA button linking to `route('bookings.show', $booking->uuid)`, footer. Note: the view does not know which user is rendering — include both tutor and student name in the session table.",
+    "Create `app/Console/Commands/CompleteExpiredSessions.php`. Signature: `sessions:complete-expired`. Description: 'Auto-complete sessions past their end time, classify delivery, credit tutor, process refunds.'. In handle(): query Booking::where('status','confirmed')->where(DB::raw('DATE_ADD(scheduled_at, INTERVAL duration_minutes MINUTE)'), '<=', now()->subMinutes(30))->get(). For each booking: call $booking->refresh(); compute $pct = $booking->deliveryPercent(); determine outcome: if ($booking->tutor_joined && $booking->student_joined && $pct >= 80) → full delivery; elseif ($booking->tutor_joined && (!$booking->student_joined || $pct < 80)) → partial delivery; else → not_delivered. Apply outcome: FULL: update status=completed, delivery_status=full, completed_at=now(); credit tutor_earning to tutor wallet (use Wallet::firstOrCreate + wallet->credit() pattern from the old BookingService, reference amount from $booking->tutor_earning). PARTIAL: update status=partial, delivery_status=partial, completed_at=now(); credit 50% of tutor_earning to tutor wallet; create Refund with booking_id, payment_id ($booking->payment->id), user_id=$booking->student_id, amount=($booking->total_amount * 0.5), currency='KES', reason='other', description='Partial session delivery refund', status='approved', approved_at=now(); call app(RefundService::class)->processRefund($refund). NOT_DELIVERED: update status=no_show, delivery_status=not_delivered, completed_at=now(); do NOT credit tutor; create Refund with amount=$booking->total_amount, reason='no_show', status='approved', approved_at=now(); call processRefund($refund). After applying outcome: send SessionCompletedNotification to both $booking->tutor and $booking->student using Notification::sendNow(). Wrap each booking in try/catch, log errors.",
+    "Modify `routes/console.php` to register the schedule. Replace the existing file content (which only has the 'inspire' command) with: use Illuminate\\Support\\Facades\\Schedule; Schedule::command('bookings:confirm-paid')->everyMinute(); Schedule::command('sessions:complete-expired')->everyFiveMinutes(); Keep the existing Artisan::command('inspire'...) block as well."
+  ],
+  "acceptance_criteria": [
+    "php artisan sessions:complete-expired runs without fatal errors (may log 'no sessions to complete')",
+    "php artisan schedule:list shows bookings:confirm-paid (every minute) and sessions:complete-expired (every 5 minutes)",
+    "SessionCompletedNotification class instantiates without error",
+    "session-completed.blade.php renders without Blade errors",
+    "A confirmed booking past its end+30min window is updated to completed/partial/no_show after running the command",
+    "Tutor wallet is credited for full/partial delivery; not credited for no_show",
+    "A Refund record is created for partial/no_show cases and processRefund() credits the student wallet"
+  ],
+  "verification": [
+    "php artisan sessions:complete-expired",
+    "php artisan schedule:list",
+    "php artisan route:clear && php artisan config:clear"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

@@ -318,6 +318,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 time: '',
                 subject: '',
                 notes: '',
+                notesTouched: false,
                 phone: '',
                 processing: false,
                 stkSent: false,
@@ -420,7 +421,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         </h3>
                         <div style="margin-bottom:16px;">
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Date</label>
-                            <input type="date" x-model="date" @change="fetchSlots()" :min="new Date(Date.now()+86400000).toISOString().split('T')[0]"
+                            <input type="date" x-model="date" @change="fetchSlots()" :min="new Date().toISOString().split('T')[0]"
                                    style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
                                    onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
                         </div>
@@ -486,16 +487,18 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         @endif
 
                         <div>
-                            <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Notes for tutor (optional)</label>
+                            <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Notes for tutor <span style="color:#E8522A;">*</span></label>
                             <textarea x-model="notes" rows="2" placeholder="Topics to cover, past exam areas, specific questions…"
+                                      required
                                       style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
                                       onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
+                            <p x-show="notesTouched && !notes.trim()" style="font-size:12px;color:#E8522A;margin-top:4px;">Please describe what you need help with.</p>
                         </div>
                     </div>
 
-                    <button @click="step=2" :disabled="!date || !time"
+                    <button @click="notes.trim() ? (step=2) : (notesTouched=true)" :disabled="!date || !time || !notes.trim()"
                             style="width:100%;height:52px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
-                            :style="(!date||!time)?'opacity:.5;cursor:not-allowed;':''"
+                            :style="(!date||!time||!notes.trim())?'opacity:.5;cursor:not-allowed;':''"
                             onmouseover="if(this.date&&this.time)this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
                         Continue to Review
                         <i class="fa-solid fa-arrow-right fa-sm"></i>

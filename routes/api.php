@@ -14,7 +14,8 @@ Route::post('/daraja/callback', [DarajaCallbackController::class, 'handle'])
 /*
  * Polling endpoint — the frontend polls this to know when payment
  * has been confirmed by the Daraja callback.
+ * No auth required — reference is unguessable and contains no sensitive data.
+ * Auth check is done inside the controller via the payment record ownership.
  */
 Route::get('/daraja/status', [DarajaCallbackController::class, 'status'])
-    ->middleware('auth')
     ->name('daraja.status');

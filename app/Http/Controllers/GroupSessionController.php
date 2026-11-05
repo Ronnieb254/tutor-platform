@@ -23,15 +23,27 @@ class GroupSessionController extends Controller
      */
     public function index(Request $request)
     {
-        $search   = $request->get('search', '');
+        $search    = $request->get('search', '');
         $subjectId = $request->get('subject', '');
-        $sort     = $request->get('sort', 'date');
+        $sort      = $request->get('sort', 'date');
+        $track     = session('curriculum_track', '');
 
-        $subjects = Subject::active()->with('category')->orderBy('name')->get();
+        // Load subjects filtered by active track (graceful fallback: show all if no track set)
+        $subjects = $track
+            ? Subject::active()
+                ->whereHas('curriculum', fn($q) => $q->where('track', $track))
+                ->with('category')->orderBy('name')->get()
+            : Subject::active()->with('category')->orderBy('name')->get();
 
         $sessions = ExaminerClinic::upcoming()
             ->groupSessions()
             ->with(['tutor', 'subject', 'enrollments'])
+            ->when($track && \Schema::hasColumn('examiner_clinics', 'curriculum_id'), function ($q) use ($track) {
+                $q->where(function ($inner) use ($track) {
+                    $inner->whereHas('curriculum', fn($c) => $c->where('track', $track))
+                          ->orWhereNull('curriculum_id'); // include untagged content (legacy)
+                });
+            })
             ->when($subjectId, fn($q) => $q->where('subject_id', $subjectId))
             ->when($search, function ($q) use ($search) {
                 $q->whereHas('subject', fn($s) => $s->where('name', 'like', "%{$search}%"))
@@ -51,7 +63,7 @@ class GroupSessionController extends Controller
         $sessions = $sessions->paginate(12)->withQueryString();
 
         return view('pages.group-sessions.index', compact(
-            'sessions', 'subjects', 'search', 'subjectId', 'sort'
+            'sessions', 'subjects', 'search', 'subjectId', 'sort', 'track'
         ));
     }
 

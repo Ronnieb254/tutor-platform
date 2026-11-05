@@ -100,7 +100,7 @@
                 background:{{ $stepDone ? 'var(--mint)' : ($stepActive ? 'var(--trust-blue)' : '#fff') }};
                 color:{{ ($stepDone || $stepActive) ? '#fff' : 'var(--muted)' }};
                 border-right:{{ !$loop->last ? '1px solid var(--hair)' : 'none' }};">
-                {{ $stepDone ? '<i class="fas fa-check"></i>' : $num }}. {{ $step }}
+                {!! $stepDone ? '<i class="fa-solid fa-check"></i>' : $num !!}. {{ $step }}
             </div>
             @endforeach
         </div>
@@ -130,7 +130,7 @@
                 <div style="width:52px;height:52px;border-radius:13px;background:{{ $iconBg }};
                             display:flex;align-items:center;justify-content:center;
                             font-size:24px;flex-shrink:0;">
-                    <i class="fas {{ $icon }}" style="color:{{ $doc && $doc->status === 'approved' ? '#10B981' : ($doc && $doc->status === 'rejected' ? '#E8522A' : '#0A64BC') }};"></i>
+                    <i class="fa-solid {{ $icon }}" style="color:{{ $doc && $doc->status === 'approved' ? '#10B981' : ($doc && $doc->status === 'rejected' ? '#E8522A' : '#0A64BC') }};"></i>
                 </div>
                 <div style="min-width:0;">
                     {{-- Title row --}}
@@ -152,22 +152,24 @@
                     {{-- Subtitle --}}
                     @if($doc)
                         <div style="font-size:12px;color:var(--muted);">
-                            <i class="fas fa-paperclip" style="margin-right:4px;"></i>{{ $doc->original_name ?? 'Uploaded file' }}
+                            <i class="fa-solid fa-paperclip" style="margin-right:4px;"></i>{{ $doc->original_name ?? 'Uploaded file' }}
                             &nbsp;·&nbsp;
                             {{ $doc->created_at->format('M j, Y') }}
                         </div>
                         @if($doc->admin_note)
                         <div style="font-size:12px;color:var(--coral);margin-top:4px;font-weight:500;">
-                            <i class="fas fa-comment" style="margin-right:4px;"></i>Admin: {{ $doc->admin_note }}
+                            <i class="fa-solid fa-comment" style="margin-right:4px;"></i>Admin: {{ $doc->admin_note }}
                         </div>
                         @endif
                     @else
                         <div style="font-size:12px;
                                     color:{{ $isMissing ? 'var(--coral)' : 'var(--muted)' }};
                                     font-weight:{{ $isMissing ? '600' : '400' }};">
-                            {{ $isMissing
-                                ? '<i class="fas fa-exclamation-triangle" style="margin-right:4px;"></i>Required — please upload this document'
-                                : 'No document uploaded yet' }}
+                            @if($isMissing)
+                                <i class="fa-solid fa-triangle-exclamation" style="margin-right:4px;"></i>Required — please upload this document
+                            @else
+                                No document uploaded yet
+                            @endif
                         </div>
                     @endif
                 </div>

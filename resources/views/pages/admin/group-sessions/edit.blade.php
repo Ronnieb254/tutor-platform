@@ -55,6 +55,20 @@
             </div>
 
             <div style="margin-bottom:16px;">
+                <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional — leave blank to show to all tracks)</span></label>
+                <select name="curriculum_id" class="form-input form-select">
+                    <option value="">— All tracks —</option>
+                    @foreach($curricula->groupBy('track') as $track => $group)
+                    <optgroup label="{{ ucfirst($track) }}">
+                        @foreach($group as $c)
+                        <option value="{{ $c->id }}" {{ old('curriculum_id', $groupSession->curriculum_id)==$c->id?'selected':'' }}>{{ $c->name }}</option>
+                        @endforeach
+                    </optgroup>
+                    @endforeach
+                </select>
+            </div>
+
+            <div style="margin-bottom:16px;">
                 <label class="form-label">Description</label>
                 <textarea name="description" class="form-input" rows="3"
                           style="height:auto;padding:12px 14px;resize:vertical;">{{ old('description', $groupSession->description) }}</textarea>

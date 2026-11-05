@@ -238,16 +238,16 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
     </div>
     @else
     <div class="card card-p" style="text-align:center;padding:48px;margin-bottom:20px;">
-        <div style="font-size:48px;margin-bottom:12px;">📅</div>
+        <div style="font-size:48px;margin-bottom:12px;"><i class="fa-solid fa-calendar-xmark"></i></div>
         <h3 style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink);margin-bottom:8px;">No upcoming sessions</h3>
         <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Book a session with one of our verified tutors to get started.</p>
         <a href="{{ route('tutors.index') }}" class="btn btn-v">Find a Tutor</a>
     </div>
     @endif
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="quick-g">
-        @foreach([['upcoming','📅','My Sessions','View all booked sessions'],['chats','💬','Messages','Chat with your tutors'],['payments','💳','Payments','View payment history'],['children','👨‍👩‍👧','Children','Manage child profiles']] as [$t,$ic,$label,$desc])
+        @foreach([['upcoming','fa-solid fa-calendar-check','My Sessions','View all booked sessions'],['chats','fa-solid fa-comments','Messages','Chat with your tutors'],['payments','fa-solid fa-credit-card','Payments','View payment history'],['children','fa-solid fa-users','Children','Manage child profiles']] as [$t,$ic,$label,$desc])
         <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='none'">
-            <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ $ic }}</div>
+            <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;"><i class="{{ $ic }}"></i></div>
             <div><div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $desc }}</div></div>
         </button>
         @endforeach

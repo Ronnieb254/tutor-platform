@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    protected $fillable = ['category_id', 'name', 'slug', 'icon', 'is_active'];
+    protected $fillable = ['category_id', 'curriculum_id', 'name', 'slug', 'icon', 'is_active'];
 
     protected function casts(): array
     {
@@ -14,6 +14,7 @@ class Subject extends Model
     }
 
     public function category()      { return $this->belongsTo(Category::class); }
+    public function curriculum()    { return $this->belongsTo(Curriculum::class); }
     public function tutorProfiles() { return $this->belongsToMany(TutorProfile::class, 'tutor_subjects'); }
     public function bookings()      { return $this->hasMany(Booking::class); }
 

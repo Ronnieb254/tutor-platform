@@ -1,0 +1,7 @@
+{
+  "task_id": "task-booking-lifecycle",
+  "task_description": "Implement the full 8-stage booking session lifecycle: Stage 1 (confirmation + codes), Stage 2 (waiting/countdown), Stage 3 (Jitsi room with JWT), Stage 4 (attendance monitoring), Stage 5 (teaching timer), Stage 6 (session ending buffer), Stage 7 (delivery classification + refunds), Stage 8 (review + tutor payment).",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
+  "blocked_reason": null
+}

@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class ExaminerClinic extends Model
 {
     protected $fillable = [
-        'tutor_id','subject_id','paper_type','parent_clinic_id','batch_number',
+        'tutor_id','subject_id','curriculum_id','paper_type','parent_clinic_id','batch_number',
         'title','name','description','topics_covered',
         'scheduled_at','duration_minutes','price','max_students','status','meeting_room',
         'created_by','session_code','recording_url',
@@ -54,6 +54,7 @@ class ExaminerClinic extends Model
 
     public function tutor()       { return $this->belongsTo(User::class, 'tutor_id'); }
     public function creator()     { return $this->belongsTo(User::class, 'created_by'); }
+    public function curriculum()  { return $this->belongsTo(Curriculum::class); }
     public function subject()     { return $this->belongsTo(Subject::class); }
     public function enrollments() { return $this->hasMany(ClinicEnrollment::class, 'clinic_id'); }
     public function parentClinic() { return $this->belongsTo(ExaminerClinic::class, 'parent_clinic_id'); }

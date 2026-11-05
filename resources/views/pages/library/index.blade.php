@@ -104,6 +104,12 @@ a{color:inherit;text-decoration:none;}
         </div>
         <h1>The Mwalimu Library</h1>
         <p>Curated past papers, and study notes in PDF, and top rated video lessons — all in one place.</p>
+        @if(!empty($track))
+        <p style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">
+            Showing resources for <strong style="color:#fff;">{{ ucfirst($track) }}</strong> curriculum track.
+            <a href="{{ route('curriculum.select') }}" style="color:#EEBE15;text-decoration:underline;">Change track</a>
+        </p>
+        @endif
         <form method="GET" action="{{ route('library.index') }}" class="hero-search">
             <input type="text" name="search" placeholder="Search resources, subjects, topics…" value="{{ request('search') }}">
             <button type="submit">Search</button>
@@ -188,6 +194,9 @@ a{color:inherit;text-decoration:none;}
                     <div class="card-body">
                         @if($resource->category)
                         <div class="card-category">{{ $resource->category->name }}</div>
+                        @endif
+                        @if(\Schema::hasColumn('blog_posts','curriculum_id') && $resource->curriculum_id)
+                        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#0A64BC;margin-bottom:4px;">{{ optional($resource->curriculum)->name }}</div>
                         @endif
                         <div class="card-title">{{ $resource->title }}</div>
                         @if($resource->excerpt)

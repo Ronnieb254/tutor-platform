@@ -15,12 +15,18 @@ class ClinicController extends Controller
      */
     public function index(Request $request)
     {
-        $search   = $request->get('search', '');
+        $search    = $request->get('search', '');
         $subjectId = $request->get('subject', '');
         $paperType = $request->get('paper', '');
-        $sort     = $request->get('sort', 'date');
+        $sort      = $request->get('sort', 'date');
+        $track     = session('curriculum_track', '');
 
-        $subjects = \App\Models\Subject::active()->with('category')->orderBy('name')->get();
+        // Load subjects filtered by active track (graceful fallback: show all if no track set)
+        $subjects = $track
+            ? \App\Models\Subject::active()
+                ->whereHas('curriculum', fn($q) => $q->where('track', $track))
+                ->with('category')->orderBy('name')->get()
+            : \App\Models\Subject::active()->with('category')->orderBy('name')->get();
 
         // Common paper types offered per subject
         $paperTypes = ['PP1' => 'Paper 1', 'PP2' => 'Paper 2', 'PP3' => 'Paper 3'];
@@ -28,6 +34,12 @@ class ClinicController extends Controller
         $clinics = ExaminerClinic::upcoming()
             ->clinics()  // exclude group sessions (is_group_session = false only)
             ->with(['tutor', 'subject', 'enrollments'])
+            ->when($track && \Schema::hasColumn('examiner_clinics', 'curriculum_id'), function ($q) use ($track) {
+                $q->where(function ($inner) use ($track) {
+                    $inner->whereHas('curriculum', fn($c) => $c->where('track', $track))
+                          ->orWhereNull('curriculum_id'); // include untagged legacy content
+                });
+            })
             ->when($subjectId, fn($q) => $q->where('subject_id', $subjectId))
             ->when($paperType && \Schema::hasColumn('examiner_clinics', 'paper_type'), fn($q) => $q->where('paper_type', $paperType))
             ->when($search, function ($q) use ($search) {
@@ -44,7 +56,7 @@ class ClinicController extends Controller
 
         $clinics = $clinics->paginate(12)->withQueryString();
 
-        return view('pages.examiner-clinic', compact('clinics', 'subjects', 'paperTypes', 'search', 'subjectId', 'paperType', 'sort'));
+        return view('pages.examiner-clinic', compact('clinics', 'subjects', 'paperTypes', 'search', 'subjectId', 'paperType', 'sort', 'track'));
     }
 
     /**
