@@ -12,11 +12,13 @@ class Booking extends Model
 
     protected $fillable = [
         'uuid', 'student_id', 'tutor_id', 'subject_id',
-        'scheduled_at', 'duration_minutes', 'session_type', 'status',
+        'scheduled_at', 'duration_minutes', 'actual_duration_seconds', 'session_type', 'status',
         'meeting_url', 'meeting_room', 'meeting_password', 'moderator_password',
         'total_amount', 'platform_fee', 'tutor_earning',
         'student_notes', 'cancellation_reason', 'cancelled_at', 'completed_at',
         'student_joined', 'tutor_joined',
+        'tutor_joined_at', 'student_joined_at',
+        'delivery_status', 'earnings_settled', 'refund_credited',
         'session_code_tutor', 'session_code_student',
         'booking_for', 'child_profile_id',
     ];
@@ -24,15 +26,50 @@ class Booking extends Model
     protected function casts(): array
     {
         return [
-            'scheduled_at'   => 'datetime',
-            'cancelled_at'   => 'datetime',
-            'completed_at'   => 'datetime',
-            'total_amount'   => 'decimal:2',
-            'platform_fee'   => 'decimal:2',
-            'tutor_earning'  => 'decimal:2',
-            'student_joined' => 'boolean',
-            'tutor_joined'   => 'boolean',
+            'scheduled_at'       => 'datetime',
+            'cancelled_at'       => 'datetime',
+            'completed_at'       => 'datetime',
+            'tutor_joined_at'    => 'datetime',
+            'student_joined_at'  => 'datetime',
+            'total_amount'       => 'decimal:2',
+            'platform_fee'       => 'decimal:2',
+            'tutor_earning'      => 'decimal:2',
+            'student_joined'     => 'boolean',
+            'tutor_joined'       => 'boolean',
+            'earnings_settled'   => 'boolean',
+            'refund_credited'    => 'boolean',
         ];
+    }
+
+    /**
+     * Classify session delivery based on attendance timestamps and actual duration.
+     * fully_delivered  : both joined and ≥80% of scheduled duration elapsed
+     * partially_delivered : both joined but <80%, or student never joined
+     * not_delivered    : tutor never joined
+     */
+    public function classifyDelivery(): string
+    {
+        if (!$this->tutor_joined_at) {
+            return 'not_delivered';
+        }
+
+        $scheduledSeconds = $this->duration_minutes * 60;
+        $actual = $this->actual_duration_seconds ?? 0;
+
+        // If actual not recorded, estimate from timestamps
+        if (!$actual && $this->tutor_joined_at && $this->student_joined_at) {
+            $start = max($this->tutor_joined_at, $this->student_joined_at);
+            $end   = $this->completed_at ?? now();
+            $actual = max(0, $end->diffInSeconds($start));
+        }
+
+        if (!$this->student_joined_at) {
+            return 'partially_delivered';
+        }
+
+        $threshold = $scheduledSeconds * 0.80;
+
+        return $actual >= $threshold ? 'fully_delivered' : 'partially_delivered';
     }
 
     protected static function booted(): void

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\LibraryController;
@@ -17,6 +18,10 @@ Route::get('/cookie-policy', fn() => view('pages.legal.cookie-policy'))->name('c
 
 // ─── Public ───────────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Curriculum selection
+Route::get('/select-curriculum', [CurriculumController::class, 'show'])->name('curriculum.select');
+Route::post('/select-curriculum', [CurriculumController::class, 'store'])->name('curriculum.store');
 Route::get('/how-it-works', [HomeController::class, 'howItWorks'])->name('how-it-works');
 Route::get('/examiner-clinic', [App\Http\Controllers\ClinicController::class, 'index'])->name('examiner-clinic');
 Route::get('/group-sessions', [App\Http\Controllers\GroupSessionController::class, 'index'])->name('group-sessions.index');
@@ -122,6 +127,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookings/confirm',          [BookingController::class, 'confirm'])->name('bookings.confirm');
     Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
     Route::post('/bookings/{booking}/joined', [BookingController::class, 'markJoined'])->name('bookings.joined');
+    Route::post('/bookings/{booking}/left', [BookingController::class, 'markLeft'])->name('bookings.left');
+    Route::post('/bookings/{booking}/complete', [BookingController::class, 'completeSession'])->name('bookings.complete');
+    Route::get('/bookings/{booking}/attendance', [BookingController::class, 'attendanceStatus'])->name('bookings.attendance');
 
     // Tutor availability - get available time slots
     Route::get('/api/tutors/{tutor}/availability', [BookingController::class, 'getAvailableSlots'])->name('api.tutor.availability');

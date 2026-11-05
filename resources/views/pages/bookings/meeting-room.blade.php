@@ -29,11 +29,35 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 .recording-indicator{display:none;align-items:center;gap:6px;background:rgba(234,85,42,.15);border:1px solid rgba(234,85,42,.3);color:#ff7849;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:700;animation:pulse-rec 1.5s infinite;}
 .recording-indicator.active{display:inline-flex;}
 @keyframes pulse-rec{0%,100%{opacity:1;}50%{opacity:.5;}}
+
+/* Timer panel */
+#timer-panel{display:none;align-items:center;gap:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 16px;flex-shrink:0;}
+#timer-panel .tp-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);}
+#timer-panel .tp-val{font-family:monospace;font-size:15px;font-weight:700;color:#fff;}
+#timer-panel .tp-val.remaining-danger{color:#E8522A;}
+#progress-bar-wrap{width:80px;height:4px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;}
+#progress-bar{height:100%;background:#10B981;border-radius:999px;transition:width .8s linear,background .5s;}
+
+/* Attendance dots */
+.att-dot{width:8px;height:8px;border-radius:50%;background:#6b7280;display:inline-block;margin-right:4px;transition:background .4s;}
+
+/* Closing buffer banner */
+#closing-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:9998;background:linear-gradient(90deg,#E8522A,#c74020);color:#fff;padding:10px 24px;font-size:13px;font-weight:700;align-items:center;justify-content:center;gap:12px;}
 </style>
 </head>
 <body>
 
 <div class="room-container">
+
+    {{-- Closing-buffer banner (hidden until 5 min left) --}}
+    <div id="closing-banner">
+        <i class="fa-solid fa-triangle-exclamation fa-sm"></i>
+        <span>Session ending soon – closing buffer active. You may finish your lesson.</span>
+        @if(auth()->id() === $booking->tutor_id)
+        <button onclick="document.getElementById('closing-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 14px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:600;">Dismiss</button>
+        @endif
+    </div>
+
     {{-- Session Header --}}
     <div class="session-header">
         <div class="left">
@@ -62,6 +86,29 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+
+            {{-- Teaching timer (shown once both parties join) --}}
+            <div id="timer-panel">
+                <div>
+                    <div class="tp-label">Teaching</div>
+                    <div class="tp-val" id="elapsed-timer">00:00</div>
+                </div>
+                <div>
+                    <div class="tp-label">Remaining</div>
+                    <div class="tp-val" id="remaining-timer">--:--</div>
+                </div>
+                <div>
+                    <div class="tp-label" id="timer-status">Waiting…</div>
+                    <div id="progress-bar-wrap"><div id="progress-bar" style="width:0%;"></div></div>
+                </div>
+            </div>
+
+            {{-- Attendance dots --}}
+            <div style="font-size:11px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:10px;flex-shrink:0;">
+                <span><span class="att-dot" id="tutor-dot"></span>Tutor</span>
+                <span><span class="att-dot" id="student-dot"></span>Student</span>
+            </div>
+
             <div style="text-align:right;">
                 <p style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:2px;">Session Code</p>
                 <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">
@@ -94,12 +141,128 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     const isModerator = {{ auth()->id() === $booking->tutor_id ? 'true' : 'false' }};
     const sessionCode = '{{ auth()->id() === $booking->tutor_id ? $booking->session_code_tutor : $booking->session_code_student }}';
     const bookingUrl = '{{ route("bookings.show", $booking->uuid) }}';
+    const attendanceUrl = '{{ route("bookings.attendance", $booking->uuid) }}';
+    const joinedUrl = '{{ route("bookings.joined", $booking->uuid) }}';
+    const leftUrl = '{{ route("bookings.left", $booking->uuid) }}';
+    const csrfToken = document.querySelector('meta[name=csrf-token]').content;
+
+    // Scheduled session parameters
+    const scheduledSeconds = {{ $booking->duration_minutes * 60 }};
+    const closingBufferSeconds = 300; // 5 min
+    @php
+        $sessionStartTs = $booking->scheduled_at->timestamp;
+    @endphp
+    const sessionStartTs = {{ $sessionStartTs }};
+
+    // ── Timer state ───────────────────────────────────────────────────────────
+    let teachingTimer = null;
+    let elapsedSeconds = 0;
+    let bothJoined = false;
+    let hasJoined = false;
+    let inClosingBuffer = false;
+
+    function formatTime(secs) {
+        const h = Math.floor(secs / 3600);
+        const m = Math.floor((secs % 3600) / 60);
+        const s = secs % 60;
+        if (h > 0) return `${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+        return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    function updateTimerUI() {
+        const remaining = Math.max(0, scheduledSeconds - elapsedSeconds);
+        const elEl   = document.getElementById('elapsed-timer');
+        const remEl  = document.getElementById('remaining-timer');
+        const progEl = document.getElementById('progress-bar');
+
+        if (elEl) elEl.textContent = formatTime(elapsedSeconds);
+        if (remEl) remEl.textContent = formatTime(remaining);
+        if (progEl) {
+            const pct = Math.min(100, (elapsedSeconds / scheduledSeconds) * 100);
+            progEl.style.width = pct + '%';
+            // Colour: green → amber (last 20%) → red (closing buffer)
+            if (remaining <= closingBufferSeconds) {
+                progEl.style.background = '#E8522A';
+            } else if (remaining <= scheduledSeconds * 0.2) {
+                progEl.style.background = '#EEBE15';
+            } else {
+                progEl.style.background = '#10B981';
+            }
+        }
+
+        // Show closing-buffer warning
+        if (remaining <= closingBufferSeconds && !inClosingBuffer) {
+            inClosingBuffer = true;
+            showToast('⏰ Session ending in ' + formatTime(remaining) + ' – closing buffer started.', 'warning');
+            document.getElementById('closing-banner').style.display = 'flex';
+        }
+
+        // Auto-end when remaining hits 0
+        if (remaining === 0 && bothJoined) {
+            clearInterval(teachingTimer);
+            // Notify backend the session time has ended
+            fetch(leftUrl, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
+            });
+        }
+    }
+
+    function startTeachingTimer(serverElapsed) {
+        if (teachingTimer) return; // already running
+        elapsedSeconds = serverElapsed || 0;
+        updateTimerUI();
+        teachingTimer = setInterval(() => {
+            elapsedSeconds++;
+            updateTimerUI();
+        }, 1000);
+        document.getElementById('timer-panel').style.display = 'flex';
+        document.getElementById('timer-status').textContent = 'Teaching timer running…';
+    }
+
+    // Poll attendance status every 10 s
+    function pollAttendance() {
+        fetch(attendanceUrl)
+            .then(r => r.json())
+            .then(data => {
+                const tutorDot = document.getElementById('tutor-dot');
+                const stuDot   = document.getElementById('student-dot');
+
+                if (tutorDot) tutorDot.style.background = data.tutor_joined ? '#10B981' : '#6b7280';
+                if (stuDot)   stuDot.style.background   = data.student_joined ? '#10B981' : '#6b7280';
+
+                if (data.both_joined && !bothJoined) {
+                    bothJoined = true;
+                    startTeachingTimer(data.elapsed_seconds);
+                } else if (bothJoined && teachingTimer) {
+                    // Keep elapsed in sync with server (drift correction)
+                    if (Math.abs(data.elapsed_seconds - elapsedSeconds) > 5) {
+                        elapsedSeconds = data.elapsed_seconds;
+                    }
+                }
+            })
+            .catch(() => {}); // silently ignore
+    }
+
+    // Toast helper
+    function showToast(msg, type) {
+        const t = document.createElement('div');
+        t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;color:#fff;max-width:360px;box-shadow:0 4px 20px rgba(0,0,0,.3);';
+        t.style.background = type === 'warning' ? '#EEBE15' : (type === 'error' ? '#E8522A' : '#10B981');
+        t.style.color = type === 'warning' ? '#15281F' : '#fff';
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 6000);
+    }
 
     const options = {
         roomName: meetingRoom,
         width: '100%',
         height: '100%',
         parentNode: document.querySelector('#jitsi-container'),
+        @if(app(\App\Services\JitsiService::class)->isConfigured() && env('JITSI_USE_JWT'))
+        jwt: '{{ $jitsiJwt ?? "" }}',
+        @endif
         configOverwrite: {
             startWithAudioMuted: false,
             startWithVideoMuted: false,
@@ -113,46 +276,30 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                     width: { ideal: 1280, max: 1920, min: 320 }
                 }
             },
-            // Screen sharing
             desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
             desktopSharingChromeSources: ['screen', 'window', 'tab'],
             desktopSharingChromeExtId: null,
             desktopSharingFirefoxDisabled: false,
-            desktopSharingFirefoxMaxExtensionIframeSize: 600,
-            // Recording (moderators only)
             fileRecordingsEnabled: true,
             liveStreamingEnabled: false,
-            // All collaboration tools enabled
             whiteboardEnabled: true,
-           etherpadEnabled: true,
-            // Breakout rooms
+            etherpadEnabled: true,
             breakoutRoomsEnabled: true,
-            // All toolbar buttons available — do NOT restrict toolbarButtons array
-            // (removing toolbarButtons lets Jitsi show all available tools)
         },
         interfaceConfigOverwrite: {
             SHOW_JITSI_WATERMARK: false,
             SHOW_WATERMARK_FOR_GUESTS: false,
             SHOW_BRAND_WATERMARK: false,
             SHOW_POWERED_BY: false,
-            BRAND_WATERMARK_LINK: '',
-            JITSI_WATERMARK_LINK: '',
             DEFAULT_BACKGROUND: '#15281F',
-            DEFAULT_LOCAL_DISPLAY_NAME: 'me',
-            DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',
-            DISABLE_PRESENCE_STATUS: false,
             DISPLAY_WELCOME_PAGE_CONTENT: false,
             DISPLAY_INVITE_MORE_HEADER: false,
             HIDE_INVITE_MORE_HEADER: true,
             MOBILE_APP_PROMO: false,
             SHOW_CHROME_EXTENSION_BANNER: false,
-            SHOW_DEEP_LINKING_IMAGE: false,
-            SHOW_GIPPER_WATERMARK_LINK: false,
-            SHOW_JITSI_WATERMARK: false,
             RECENT_LIST_ENABLED: false,
             SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
             VIDEO_LAYOUT_FIT: 'both',
-            // Full toolbar — all tools visible
             TOOLBAR_BUTTONS: [
                 'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
                 'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
@@ -173,9 +320,23 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
     const api = new JitsiMeetExternalAPI(domain, options);
 
-    // Moderator joined
+    // ── Joined event ──────────────────────────────────────────────────────────
     api.addEventListener('videoConferenceJoined', () => {
-        console.log('Joined as ' + (isModerator ? 'moderator' : 'participant'));
+        if (!hasJoined) {
+            hasJoined = true;
+            fetch(joinedUrl, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.both_joined) {
+                    startTeachingTimer(0);
+                }
+            });
+            pollAttendance();
+            setInterval(pollAttendance, 10000);
+        }
     });
 
     // Recording status
@@ -188,15 +349,27 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         }
     });
 
+    // Participant joined/left events
+    api.addEventListener('participantJoined', () => { pollAttendance(); });
+    api.addEventListener('participantLeft', () => {
+        fetch(leftUrl, {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
+        });
+        pollAttendance();
+    });
+
     // Leave handling
     api.addEventListener('readyToClose', () => {
-        window.location.href = bookingUrl;
+        fetch(leftUrl, {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
+        }).finally(() => { window.location.href = bookingUrl; });
     });
     api.addEventListener('hangup', () => {
         window.location.href = bookingUrl;
     });
 
-    // Error handling
     api.addEventListener('errorOccurred', (error) => {
         console.error('Jitsi error:', error);
     });
@@ -221,7 +394,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     }
 
     // Cleanup
-    window.addEventListener('beforeunload', (e) => {
+    window.addEventListener('beforeunload', () => {
         try { api.dispose(); } catch(err) {}
     });
 </script>

@@ -243,11 +243,106 @@ class BookingController extends Controller
     {
         $user = auth()->user();
         if ($user->id === $booking->tutor_id) {
-            $booking->update(['tutor_joined' => true]);
+            $updates = ['tutor_joined' => true];
+            if (!$booking->tutor_joined_at) {
+                $updates['tutor_joined_at'] = now();
+            }
+            $booking->update($updates);
         } elseif ($user->id === $booking->student_id) {
-            $booking->update(['student_joined' => true]);
+            $updates = ['student_joined' => true];
+            if (!$booking->student_joined_at) {
+                $updates['student_joined_at'] = now();
+            }
+            $booking->update($updates);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
         }
+
+        // Return both joined states so the JS timer can start
+        $booking->refresh();
+        return response()->json([
+            'status'          => 'ok',
+            'tutor_joined'    => (bool) $booking->tutor_joined,
+            'student_joined'  => (bool) $booking->student_joined,
+            'both_joined'     => $booking->tutor_joined && $booking->student_joined,
+        ]);
+    }
+
+    /**
+     * Mark participant as having left the session (Jitsi postMessage event).
+     * Records actual_duration_seconds if both had joined.
+     */
+    public function markLeft(Booking $booking)
+    {
+        $user = auth()->user();
+        if ($user->id !== $booking->tutor_id && $user->id !== $booking->student_id) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        // If both had joined, accumulate actual seconds from when both were present
+        if ($booking->tutor_joined_at && $booking->student_joined_at) {
+            $bothStart = max($booking->tutor_joined_at, $booking->student_joined_at);
+            $elapsed   = (int) now()->diffInSeconds($bothStart);
+            $booking->update([
+                'actual_duration_seconds' => ($booking->actual_duration_seconds ?? 0) + max(0, $elapsed),
+            ]);
+        }
+
         return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * Finalize a session: classify delivery, credit tutor, handle refunds.
+     * Called by the scheduled command or manually.
+     */
+    public function completeSession(Booking $booking)
+    {
+        $user = auth()->user();
+        if ($user->id !== $booking->tutor_id && !$user->isAdmin()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        if (!in_array($booking->status, ['confirmed'])) {
+            return response()->json(['status' => 'error', 'message' => 'Booking is not in confirmed state.'], 422);
+        }
+
+        try {
+            app(\App\Services\SessionLifecycleService::class)->finaliseSession($booking);
+            return response()->json(['status' => 'ok', 'message' => 'Session finalised.']);
+        } catch (\Throwable $e) {
+            \Log::error('completeSession failed: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Real-time attendance status (polled by JS).
+     */
+    public function attendanceStatus(Booking $booking)
+    {
+        $user = auth()->user();
+        if ($user->id !== $booking->tutor_id && $user->id !== $booking->student_id && !$user->isAdmin()) {
+            return response()->json(['status' => 'error'], 403);
+        }
+
+        $booking->refresh();
+        $scheduledSeconds = $booking->duration_minutes * 60;
+        $elapsed = 0;
+
+        if ($booking->tutor_joined_at && $booking->student_joined_at) {
+            $start   = max($booking->tutor_joined_at, $booking->student_joined_at);
+            $elapsed = (int) now()->diffInSeconds($start);
+        }
+
+        return response()->json([
+            'tutor_joined'    => (bool) $booking->tutor_joined,
+            'student_joined'  => (bool) $booking->student_joined,
+            'both_joined'     => $booking->tutor_joined && $booking->student_joined,
+            'elapsed_seconds' => $elapsed,
+            'total_seconds'   => $scheduledSeconds,
+            'remaining'       => max(0, $scheduledSeconds - $elapsed),
+            'status'          => $booking->status,
+        ]);
     }
 
     public function meetingRoom(Booking $booking)
@@ -284,7 +379,17 @@ class BookingController extends Controller
 
         $booking->load(['student', 'tutor', 'subject']);
 
-        return view('pages.bookings.meeting-room', compact('booking'));
+        // Generate Jitsi JWT if configured
+        $isModerator = $user->id === $booking->tutor_id;
+        $jitsiService = app(\App\Services\JitsiService::class);
+        $jitsiJwt = $jitsiService->makeJWT(
+            $booking->meeting_room,
+            $user->name,
+            $isModerator,
+            ['email' => $user->email]
+        );
+
+        return view('pages.bookings.meeting-room', compact('booking', 'jitsiJwt'));
     }
 
     /**

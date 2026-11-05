@@ -133,7 +133,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     @else
                     <span style="display:flex;align-items:center;gap:7px;background:rgba(21,40,31,.06);color:rgba(21,40,31,.5);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;">
                         <i class="fa-solid fa-clock fa-xs"></i>
-                        Opens {{$minutesUntil > 0 ? 'in '.$minutesUntil.' min' : 'shortly'}}
+                        @if($minutesUntil > 5) Opens in {{ $minutesUntil - 5 }} min @else Opens shortly @endif
                     </span>
                     @endif
                 </div>
@@ -192,14 +192,14 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     <div style="min-height:280px;background:#111C16;border-radius:16px;padding:48px 20px;text-align:center;">
                         <i class="fa-solid fa-satellite-dish" style="font-size:48px;color:rgba(255,255,255,.15);margin-bottom:18px;"></i>
                         <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#fff;margin-bottom:8px;">Session Room Waiting</h3>
-                        <p style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">This room opens 60 minutes before your session starts. Your access code is already on this page.</p>
+                        <p style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">This room opens 5 minutes before your session starts. Your access code is already on this page.</p>
                         <div style="background:rgba(255,255,255,.08);border-radius:16px;padding:16px 24px;display:inline-block;">
                             <p style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:6px;">Time until session</p>
                             <div id="countdown">--:--:--</div>
                         </div>
                         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;justify-content:center;">
                             @foreach([
-                                ['fa-video','Join 60 min before'],
+                                ['fa-video','Room opens 5 min before'],
                                 ['fa-key','Enter your '.($isTutor?'TUT':'STU').'-XXXXXX code'],
                                 ['fa-globe','No download required'],
                             ] as [$ic,$tip])
@@ -487,6 +487,135 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     <i class="fa-solid fa-ban fa-xs"></i> Cancel Booking
                 </button>
             </form>
+            @endif
+
+            {{-- Session Lifecycle Stage Panel --}}
+            @php
+            $stageNow = 'pending';
+            if ($booking->status === 'confirmed') {
+                $nowTs = now();
+                $fiveMinBefore  = $sessionStart->copy()->subMinutes(5);
+                $scheduledEnd   = $sessionEnd;
+                $closingEnd     = $sessionEnd->copy()->addMinutes(5);
+                if ($nowTs < $fiveMinBefore) {
+                    $stageNow = 'waiting';
+                } elseif ($nowTs >= $fiveMinBefore && $nowTs < $scheduledEnd) {
+                    if ($booking->tutor_joined && $booking->student_joined) {
+                        $stageNow = 'in_progress';
+                    } else {
+                        $stageNow = 'classroom_open';
+                    }
+                } elseif ($nowTs >= $scheduledEnd && $nowTs < $closingEnd) {
+                    $stageNow = 'session_ending';
+                } else {
+                    $stageNow = 'overdue';
+                }
+            } elseif ($booking->status === 'completed') {
+                $stageNow = 'completed';
+            } elseif ($booking->status === 'cancelled') {
+                $stageNow = 'cancelled';
+            }
+
+            $stages = [
+                ['waiting',        'fa-clock',            'Waiting for Session'],
+                ['classroom_open', 'fa-door-open',        'Classroom Open'],
+                ['in_progress',    'fa-circle-play',      'Session in Progress'],
+                ['session_ending', 'fa-hourglass-end',    'Session Ending'],
+                ['completed',      'fa-flag-checkered',   'Session Completed'],
+            ];
+            $stageOrder = array_column($stages, 0);
+            $currentIdx = array_search($stageNow, $stageOrder);
+            @endphp
+
+            @if($booking->status !== 'cancelled' && $booking->status !== 'pending')
+            <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:22px;">
+                <h3 style="font-family:'Fraunces',serif;font-size:16px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
+                    <i class="fa-solid fa-list-check" style="color:#0A64BC;font-size:13px;"></i> Session Lifecycle
+                </h3>
+                <div style="display:flex;flex-direction:column;gap:0;">
+                    @foreach($stages as $idx => [$key, $icon, $label])
+                    @php
+                        $isDone    = $currentIdx !== false && $idx < $currentIdx;
+                        $isActive  = $key === $stageNow;
+                        $isPending = !$isDone && !$isActive;
+                        $dotColor  = $isDone ? '#10B981' : ($isActive ? '#0A64BC' : 'rgba(21,40,31,.15)');
+                        $textColor = $isDone ? '#10B981' : ($isActive ? '#0A64BC' : 'rgba(21,40,31,.35)');
+                    @endphp
+                    <div style="display:flex;align-items:center;gap:12px;padding:8px 0;{{ $idx < count($stages)-1 ? 'border-bottom:1px solid rgba(21,40,31,.05);' : '' }}">
+                        <div style="width:28px;height:28px;border-radius:50%;border:2px solid {{ $dotColor }};background:{{ $isDone ? '#10B981' : ($isActive ? 'rgba(10,100,188,.1)' : 'transparent') }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid fa-{{ $isDone ? 'check' : $icon }}" style="font-size:11px;color:{{ $dotColor }};"></i>
+                        </div>
+                        <span style="font-size:13px;font-weight:{{ $isActive ? '700' : '500' }};color:{{ $textColor }};">{{ $label }}</span>
+                        @if($isActive)<span style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:#0A64BC;animation:pulse-green 1.5s infinite;"></span>@endif
+                    </div>
+                    @endforeach
+                </div>
+
+                {{-- Attendance indicators --}}
+                @if(in_array($booking->status, ['confirmed']))
+                <div style="margin-top:14px;padding:12px;background:#F9FAF9;border-radius:12px;">
+                    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.4);margin-bottom:8px;">Attendance</p>
+                    <div style="display:flex;gap:12px;">
+                        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#15281F;">
+                            <span style="width:8px;height:8px;border-radius:50%;background:{{ $booking->tutor_joined ? '#10B981' : '#E5E7EB' }};"></span>
+                            Tutor {{ $booking->tutor_joined ? '✓' : '–' }}
+                        </div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#15281F;">
+                            <span style="width:8px;height:8px;border-radius:50%;background:{{ $booking->student_joined ? '#10B981' : '#E5E7EB' }};"></span>
+                            Student {{ $booking->student_joined ? '✓' : '–' }}
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Delivery status if completed --}}
+                @if($booking->status === 'completed' && $booking->delivery_status)
+                @php
+                    $deliveryLabel = [
+                        'fully_delivered'    => ['#10B981','✅ Fully Delivered'],
+                        'partially_delivered'=> ['#EEBE15','⚠️ Partially Delivered'],
+                        'not_delivered'      => ['#E8522A','❌ Not Delivered'],
+                    ][$booking->delivery_status] ?? ['#6b7280', $booking->delivery_status];
+                @endphp
+                <div style="margin-top:10px;padding:10px 14px;background:#F9FAF9;border-radius:12px;">
+                    <p style="font-size:12px;font-weight:700;color:{{ $deliveryLabel[0] }};margin-bottom:3px;">{{ $deliveryLabel[1] }}</p>
+                    @if($booking->earnings_settled && ($isTutor || auth()->user()->isAdmin()))
+                    <p style="font-size:12px;color:rgba(21,40,31,.5);">Earnings: KSh {{ number_format($booking->tutor_earning, 0) }} settled</p>
+                    @endif
+                    @if($booking->refund_credited && $isStudent)
+                    <p style="font-size:12px;color:#10B981;">Refund credited to your wallet.</p>
+                    @endif
+                </div>
+                @endif
+
+                {{-- Tutor/Admin: manual complete button for overdue sessions --}}
+                @if(in_array($stageNow, ['session_ending','overdue','in_progress']) && ($isTutor || auth()->user()->isAdmin()))
+                <div style="margin-top:12px;" x-data="{ finalising: false, done: false, err: '' }">
+                    <template x-if="done">
+                        <p style="font-size:13px;color:#10B981;font-weight:700;text-align:center;"><i class="fa-solid fa-circle-check fa-xs"></i> Session finalised!</p>
+                    </template>
+                    <template x-if="!done">
+                        <button @click="
+                            finalising=true; err='';
+                            fetch('/bookings/{{ $booking->uuid }}/complete', {
+                                method:'POST',
+                                headers:{'X-CSRF-TOKEN':document.querySelector('meta[name=csrf-token]').content,'Accept':'application/json','Content-Type':'application/json'}
+                            }).then(r=>r.json()).then(res=>{
+                                finalising=false;
+                                if(res.status==='ok'){done=true;setTimeout(()=>window.location.reload(),2000);}
+                                else{err=res.message||'Error';}
+                            }).catch(()=>{finalising=false;err='Network error.';})
+                        " :disabled="finalising"
+                        style="width:100%;padding:11px;border-radius:14px;background:#0A64BC;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;"
+                        :style="finalising?'opacity:.7;cursor:not-allowed':''">
+                            <template x-if="finalising"><span><i class="fa-solid fa-spinner fa-spin fa-xs"></i> Finalising…</span></template>
+                            <template x-if="!finalising"><span><i class="fa-solid fa-flag-checkered fa-xs"></i> End & Finalise Session</span></template>
+                        </button>
+                    </template>
+                    <template x-if="err"><p style="font-size:12px;color:#E8522A;margin-top:6px;" x-text="err"></p></template>
+                </div>
+                @endif
+            </div>
             @endif
         </div>
     </div>

@@ -86,13 +86,9 @@ class JitsiService
     }
 
     /**
-     * Generate JWT token for authenticated Jitsi meetings
-     * 
-     * @param string $roomName Room identifier
-     * @param string $displayName User's display name
-     * @param bool $isModerator Whether user is moderator
-     * @param array $options Additional options
-     * @return string JWT token
+     * Generate JWT token for authenticated Jitsi meetings.
+     * Payload matches the spec:
+     * {context:{user:{name,email,moderator:bool}},aud:'jitsi',iss:APP_ID,sub:DOMAIN,room:room_name,exp:now+3600}
      */
     protected function generateJWT(
         string $roomName,
@@ -101,33 +97,29 @@ class JitsiService
         array $options = []
     ): string {
         $now = time();
-        $exp = $now + (int) (env('JITSI_JWT_TTL', 3600)); // Default 1 hour
+        $exp = $now + (int) (env('JITSI_JWT_TTL', 3600));
 
         $payload = [
-            'iss' => $this->appId,
-            'aud' => $this->appId,
-            'exp' => $exp,
-            'nbf' => $now,
+            'aud'  => 'jitsi',
+            'iss'  => $this->appId,
+            'sub'  => $this->domain,
             'room' => $roomName,
+            'exp'  => $exp,
+            'nbf'  => $now,
             'context' => [
                 'user' => [
-                    'name' => $displayName,
-                    'email' => $options['email'] ?? '',
-                    'avatar' => $options['avatarUrl'] ?? '',
-                    'moderator' => $isModerator ? 'true' : 'false',
+                    'name'      => $displayName,
+                    'email'     => $options['email'] ?? '',
+                    'avatar'    => $options['avatarUrl'] ?? '',
+                    'moderator' => $isModerator,
                 ],
                 'features' => [
                     'livestreaming' => $isModerator,
-                    'recording' => $isModerator,
+                    'recording'     => $isModerator,
                     'transcription' => false,
                 ],
             ],
         ];
-
-        // Add moderator flag
-        if ($isModerator) {
-            $payload['moderator'] = true;
-        }
 
         return JWT::encode($payload, $this->appSecret, 'HS256');
     }
@@ -189,6 +181,27 @@ class JitsiService
         ];
 
         return $meetingUrl . '&' . http_build_query($embedParams);
+    }
+
+    /**
+     * Expose JWT generation for controller use.
+     */
+    public function makeJWT(
+        string $roomName,
+        string $displayName,
+        bool $isModerator,
+        array $options = []
+    ): ?string {
+        if (!$this->useJWT || !$this->appId || !$this->appSecret) {
+            return null;
+        }
+
+        return $this->generateJWT(
+            $this->sanitizeRoomName($roomName),
+            $displayName,
+            $isModerator,
+            $options
+        );
     }
 
     /**
