@@ -10,14 +10,14 @@
     $docTypes = [
         'national_id'                  => ['National ID / Passport',      'fa-id-card', 'Required'],
         'tsc_certificate'              => ['TSC Certificate',             'fa-scroll', 'Required'],
-        'certificate_of_good_conduct' => ['Certificate of Good Conduct', 'fa-shield-halved', 'Required'],
+        'certificate_of_good_conduct' => ['Certificate of Good Conduct', 'fa-shield-halved', 'Optional'],
         'degree_certificate'           => ['Academic Certificate',       'fa-graduation-cap', 'Required'],
         'passport_photo'               => ['Passport Photo',             'fa-camera', 'Required'],
     ];
 
     // Check which required docs are uploaded
     $uploadedTypes       = $docs->pluck('type')->toArray();
-    $requiredTypes       = array_keys($docTypes);
+    $requiredTypes       = array_keys(array_filter($docTypes, fn($v) => $v[2] === 'Required'));
     $missingTypes        = array_diff($requiredTypes, $uploadedTypes);
     $allRequiredUploaded = count($missingTypes) === 0;
     @endphp
@@ -51,7 +51,7 @@
             <div>
                 <div style="font-weight:700;color:#854D0E;font-size:15px;">Upload All Required Documents</div>
                 <div style="font-size:13px;color:#92400E;">
-                    You must upload <strong>all 5 required documents</strong> before your profile can be reviewed.
+                    You must upload <strong>all 4 required documents</strong> before your profile can be reviewed.
                     <span style="font-weight:700;color:var(--coral);">
                         {{ count($missingTypes) }} remaining
                     </span>

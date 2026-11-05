@@ -186,7 +186,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
 </section>
 
 {{-- CURRICULUM CHOOSER --}}
-<section style="padding:60px 0;background:#fff;border-bottom:1px solid var(--hair);">
+<!-- <section style="padding:60px 0;background:#fff;border-bottom:1px solid var(--hair);">
     <div class="w">
         <div style="text-align:center;margin-bottom:36px;">
             <div class="badge bv" style="margin-bottom:12px;"><i class="fa-solid fa-graduation-cap"></i> Choose your curriculum</div>
@@ -239,7 +239,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
         </div>
         <style>.curr-home-grid{grid-template-columns:1fr!important;}@media(min-width:680px){.curr-home-grid{grid-template-columns:1fr 1fr!important;}}</style>
     </div>
-</section>
+</section> -->
 
 {{-- WHY MWALIMU --}}
 <section style="padding:72px 0;background:var(--ink);">
