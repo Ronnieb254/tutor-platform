@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @livewireStyles
@@ -180,18 +181,18 @@ $activeTab = request('tab','overview');
         <div class="sb-section">
             <div class="sb-label">Main</div>
             <button class="sb-item" :class="tab==='overview'?'active':''" @click="tab='overview';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <i class="fa-solid fa-gauge-high fa-fw" style="font-size:14px;"></i>
                 Overview
             </button>
             <button class="sb-item" :class="tab==='documents'?'active':''" @click="tab='documents';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <i class="fa-solid fa-file-lines fa-fw" style="font-size:14px;"></i>
                 My Documents
                 @if($verificationStatus === 'action_required')
                 <span class="sb-badge">!</span>
                 @endif
             </button>
             <a href="{{ route('tutor.subjects') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                <i class="fa-solid fa-book-open fa-fw" style="font-size:14px;"></i>
                 My Subjects
             </a>
         </div>
@@ -200,20 +201,20 @@ $activeTab = request('tab','overview');
         <div class="sb-section">
             <div class="sb-label">Sessions</div>
             <button class="sb-item" :class="tab==='bookings'?'active':''" @click="tab='bookings';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <i class="fa-solid fa-calendar-check fa-fw" style="font-size:14px;"></i>
                 Bookings
                 @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
             </button>
             <button class="sb-item" :class="tab==='history'?'active':''" @click="tab='history';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <i class="fa-solid fa-clock-rotate-left fa-fw" style="font-size:14px;"></i>
                 Session History
             </button>
             <button class="sb-item" :class="tab==='chats'?'active':''" @click="tab='chats';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <i class="fa-solid fa-comments fa-fw" style="font-size:14px;"></i>
                 Messages
             </button>
             <button class="sb-item" :class="tab==='availability'?'active':''" @click="tab='availability';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <i class="fa-solid fa-calendar-days fa-fw" style="font-size:14px;"></i>
                 Availability
             </button>
         </div>
@@ -221,11 +222,11 @@ $activeTab = request('tab','overview');
         <div class="sb-section">
             <div class="sb-label">Finance</div>
             <button class="sb-item" :class="tab==='earnings'?'active':''" @click="tab='earnings';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <i class="fa-solid fa-wallet fa-fw" style="font-size:14px;"></i>
                 Earnings & Wallet
             </button>
             <button class="sb-item" :class="tab==='payouts'?'active':''" @click="tab='payouts';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <i class="fa-solid fa-money-bill-transfer fa-fw" style="font-size:14px;"></i>
                 Payout Requests
             </button>
         </div>
@@ -234,16 +235,16 @@ $activeTab = request('tab','overview');
         <div class="sb-section">
             <div class="sb-label">Account</div>
             <button class="sb-item" :class="tab==='notifications'?'active':''" @click="tab='notifications';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <i class="fa-solid fa-bell fa-fw" style="font-size:14px;"></i>
                 Notifications
                 @if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif
             </button>
             <button class="sb-item" :class="tab==='profile'?'active':''" @click="tab='profile';sidebarOpen=false">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <i class="fa-solid fa-circle-user fa-fw" style="font-size:14px;"></i>
                 My Profile
             </button>
             <a href="{{ route('home') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <i class="fa-solid fa-globe fa-fw" style="font-size:14px;"></i>
                 View Public Site
             </a>
         </div>
@@ -256,7 +257,7 @@ $activeTab = request('tab','overview');
                 <div class="sb-uname">{{ $user->name }}</div>
                 <div class="sb-urole">
                     @if($isApproved)
-                    <span style="color:var(--mint);">✓ Verified Tutor</span>
+                    <span style="color:var(--mint);"><i class="fa-solid fa-circle-check" style="color:var(--mint);margin-right:3px;"></i>Verified Tutor</span>
                     @else
                     <span style="color:rgba(255,255,255,.35);">Pending Verification</span>
                     @endif
@@ -265,7 +266,7 @@ $activeTab = request('tab','overview');
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="sb-logout" title="Sign out">
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <i class="fa-solid fa-right-from-bracket" style="font-size:11px;"></i>
                 </button>
             </form>
         </div>
@@ -278,7 +279,7 @@ $activeTab = request('tab','overview');
     <header class="topbar">
         <div class="topbar-left">
             <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <i class="fa-solid fa-bars" style="font-size:14px;"></i>
             </button>
             <div class="page-title" x-text="{
                 overview:'Dashboard Overview',documents:'My Documents',bookings:'Bookings',history:'Session History',
@@ -288,7 +289,7 @@ $activeTab = request('tab','overview');
         </div>
         <div class="topbar-right">
             <button class="tb-btn" @click="tab='notifications'" title="Notifications">
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <i class="fa-solid fa-bell" style="font-size:14px;"></i>
                 @if($unreadNotifs > 0)<span class="notif-dot"></span>@endif
             </button>
             <div style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;border:1.5px solid var(--hair);">
@@ -302,7 +303,7 @@ $activeTab = request('tab','overview');
     <div class="content">
         @if(session('success'))
         <div class="flash flash-ok">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <i class="fa-solid fa-circle-check" style="font-size:14px;"></i>
             {{ session('success') }}
         </div>
         @endif
@@ -329,7 +330,13 @@ $activeTab = request('tab','overview');
     @endphp
     <div class="status-banner {{ $verificationStatus==='action_required' ? 'status-rejected' : ($verificationStatus==='under_review' ? 'status-pending' : 'status-pending') }}">
         <div style="font-size:28px;flex-shrink:0;">
-            {{ $verificationStatus==='action_required' ? '⚠️' : ($verificationStatus==='under_review' ? '⏳' : '📄') }}
+            @if($verificationStatus==='action_required')
+            <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-triangle-exclamation" style="color:var(--coral);"></i></div>
+            @elseif($verificationStatus==='under_review')
+            <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-clock" style="color:#D97706;"></i></div>
+            @else
+            <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-file-lines" style="color:#92400E;"></i></div>
+            @endif
         </div>
         <div>
             <div style="font-weight:700;font-size:15px;color:var(--ink);">
@@ -353,7 +360,7 @@ $activeTab = request('tab','overview');
     </div>
     @else
     <div class="status-banner status-approved" style="margin-bottom:20px;">
-        <div style="font-size:24px;flex-shrink:0;"><i class="fas fa-check-circle" style="color:#10B981;"></i></div>
+        <div style="font-size:24px;flex-shrink:0;"><i class="fa-solid fa-circle-check" style="color:#10B981;"></i></div>
         <div>
             <div style="font-weight:700;font-size:15px;color:#166534;">Your profile is live!</div>
             <div style="font-size:13px;color:#4ADE80;margin-top:2px;">Students can find and book sessions with you. {{ $pendingBookings > 0 ? "You have $pendingBookings pending booking(s)." : '' }}</div>
@@ -365,7 +372,7 @@ $activeTab = request('tab','overview');
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
         <div class="stat">
             <div class="stat-icon" style="background:rgba(10,100,188,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <i class="fa-solid fa-wallet" style="color:#0A64BC;font-size:18px;"></i>
             </div>
             <div class="stat-lbl">Wallet Balance</div>
             <div class="stat-val">KSh {{ number_format($wallet?->balance ?? 0) }}</div>
@@ -373,7 +380,7 @@ $activeTab = request('tab','overview');
         </div>
         <div class="stat">
             <div class="stat-icon" style="background:rgba(16,185,129,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <i class="fa-solid fa-calendar-check" style="color:#10B981;font-size:18px;"></i>
             </div>
             <div class="stat-lbl">Upcoming Sessions</div>
             <div class="stat-val">{{ $upcoming->count() }}</div>
@@ -381,7 +388,7 @@ $activeTab = request('tab','overview');
         </div>
         <div class="stat">
             <div class="stat-icon" style="background:rgba(232,82,42,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#E8522A" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <i class="fa-solid fa-circle-check" style="color:#E8522A;font-size:18px;"></i>
             </div>
             <div class="stat-lbl">Completed Sessions</div>
             <div class="stat-val">{{ $completedCount }}</div>
@@ -389,14 +396,14 @@ $activeTab = request('tab','overview');
         </div>
         <div class="stat">
             <div class="stat-icon" style="background:rgba(212,160,23,.1);">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                <i class="fa-solid fa-star" style="color:#EEBE15;font-size:18px;"></i>
             </div>
             <div class="stat-lbl">My Rate</div>
             <div class="stat-val" style="font-size:22px;">KSh {{ number_format($profile?->hourly_rate ?? 0) }}/hr</div>
             <div class="stat-sub">{{ $profile?->experience_years ?? 0 }} years experience</div>
         </div>
     </div>
-    <style>.stats-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.stats-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
+    <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:640px){.stats-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.stats-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 
     {{-- Earnings Widget --}}
     @if(isset($earnings))
@@ -440,13 +447,13 @@ $activeTab = request('tab','overview');
     {{-- Quick links --}}
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="quick-g">
         @foreach([
-            ['documents','📄','Documents','Check your verification status'],
-            ['bookings','📅','Bookings','View all session bookings'],
-            ['earnings','💰','Earnings','Check wallet & history'],
-            ['availability','🕐','Availability','Set your schedule'],
+            ['documents','fa-solid fa-file-lines','Documents','Check your verification status'],
+            ['bookings','fa-solid fa-calendar-check','Bookings','View all session bookings'],
+            ['earnings','fa-solid fa-wallet','Earnings','Check wallet & history'],
+            ['availability','fa-solid fa-clock','Availability','Set your schedule'],
         ] as [$t,$ic,$label,$desc])
         <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='translateY(0)'">
-            <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ $ic }}</div>
+            <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;"><i class="{{ $ic }}"></i></div>
             <div>
                 <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</div>
                 <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $desc }}</div>
@@ -507,9 +514,9 @@ $activeTab = request('tab','overview');
             </div>
             @endif
             @if($b->status === 'confirmed')
-            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">{{ $b->canJoin() ? 'Join Session' : 'Open Session' }}</a>
+            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm"><i class="fa-solid fa-arrow-right-to-bracket fa-fw"></i> {{$b->canJoin() ? 'Join Session' : 'Open Session'}}</a>
             @else
-            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a>
+            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm"><i class="fa-solid fa-eye fa-fw"></i> View</a>
             @endif
         </div>
         @endforeach
@@ -553,13 +560,22 @@ $activeTab = request('tab','overview');
                         </td>
                         <td>
                             @if($b->status === 'confirmed')
-                            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm">{{ $b->canJoin() ? 'Join' : 'Open' }}</a>
+                            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm"><i class="fa-solid fa-arrow-right-to-bracket fa-fw"></i> {{ $b->canJoin() ? 'Join' : 'Open' }}</a>
                             @else
-                            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a>
+                            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm"><i class="fa-solid fa-eye fa-fw"></i> View</a>
                             @endif
                         </td>
                     </tr>
                     @empty
+<tr>
+    <td colspan="8">
+        <div style="padding:48px 20px;text-align:center;">
+            <i class="fa-solid fa-calendar-xmark" style="font-size:40px;color:rgba(21,40,31,.15);margin-bottom:12px;display:block;"></i>
+            <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;">No sessions yet</div>
+            <div style="font-size:13px;color:var(--muted);">Your bookings will appear here once students schedule sessions with you</div>
+        </div>
+    </td>
+</tr>
                     @endforelse
                 </tbody>
             </table>
@@ -731,6 +747,15 @@ $activeTab = request('tab','overview');
                             <td style="font-size:13px;color:var(--muted);">KSh {{ number_format($tx->balance_after) }}</td>
                         </tr>
                         @empty
+<tr>
+    <td colspan="6">
+        <div style="padding:48px 20px;text-align:center;">
+            <i class="fa-solid fa-receipt" style="font-size:40px;color:rgba(21,40,31,.15);margin-bottom:12px;display:block;"></i>
+            <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;">No transactions yet</div>
+            <div style="font-size:13px;color:var(--muted);">Your earnings will appear here once students complete payments</div>
+        </div>
+    </td>
+</tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -851,7 +876,7 @@ $activeTab = request('tab','overview');
         </div>
         @empty
         <div style="padding:64px;text-align:center;">
-            <div style="font-size:44px;margin-bottom:12px;">🔔</div>
+            <div style="font-size:44px;margin-bottom:12px;"><i class="fa-solid fa-bell-slash"></i></div>
             <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;">No notifications yet</div>
             <div style="font-size:14px;color:var(--muted);">You'll be notified here when students book sessions with you</div>
         </div>
@@ -901,7 +926,7 @@ $activeTab = request('tab','overview');
         </div>
         <div style="display:flex;justify-content:flex-end;">
             <button type="submit" class="btn btn-v" style="padding:12px 32px;font-size:15px;">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                <i class="fa-solid fa-floppy-disk fa-fw"></i>
                 Save Availability
             </button>
         </div>

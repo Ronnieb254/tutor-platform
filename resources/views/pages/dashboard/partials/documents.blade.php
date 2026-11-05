@@ -36,7 +36,7 @@
     {{-- ── Overall status banner ───────────────────────────────── --}}
     @if($isApproved)
         <div class="status-banner status-approved" style="margin-bottom:24px;">
-            <span style="font-size:24px;"><i class="fas fa-check-circle" style="color:#10B981;"></i></span>
+        <span style="font-size:24px;"><i class="fa-solid fa-circle-check" style="color:#10B981;"></i></span>
             <div>
                 <div style="font-weight:700;color:#166534;font-size:15px;">Fully Verified</div>
                 <div style="font-size:13px;color:#4ADE80;">
@@ -47,7 +47,7 @@
 
     @elseif(!$allRequiredUploaded)
         <div class="status-banner status-pending" style="margin-bottom:24px;">
-            <span style="font-size:24px;">📄</span>
+            <span style="font-size:24px;"><i class="fa-solid fa-file-lines" style="color:#92400E;"></i></span>
             <div>
                 <div style="font-weight:700;color:#854D0E;font-size:15px;">Upload All Required Documents</div>
                 <div style="font-size:13px;color:#92400E;">
@@ -61,7 +61,7 @@
 
     @elseif($verificationStatus === 'under_review')
         <div class="status-banner status-pending" style="margin-bottom:24px;">
-            <span style="font-size:24px;"><i class="fas fa-clock" style="color:#D4A017;"></i></span>
+            <span style="font-size:24px;"><i class="fa-solid fa-clock" style="color:#D97706;"></i></span>
             <div>
                 <div style="font-weight:700;color:#854D0E;font-size:15px;">Under Review</div>
                 <div style="font-size:13px;color:#92400E;">
@@ -73,7 +73,7 @@
 
     @elseif($verificationStatus === 'action_required')
         <div class="status-banner status-rejected" style="margin-bottom:24px;">
-            <span style="font-size:24px;"><i class="fas fa-exclamation-triangle" style="color:#E8522A;"></i></span>
+            <span style="font-size:24px;"><i class="fa-solid fa-triangle-exclamation" style="color:var(--coral);"></i></span>
             <div>
                 <div style="font-weight:700;color:#991B1B;font-size:15px;">Action Required</div>
                 <div style="font-size:13px;color:#B91C1C;">
@@ -181,7 +181,7 @@
                     <a href="{{ route('tutor.documents.view', $doc->id) }}"
                        target="_blank"
                        class="btn btn-o btn-sm">
-                        View
+                        <i class="fa-solid fa-eye fa-fw"></i> View
                     </a>
                 @endif
 
@@ -199,12 +199,7 @@
                                   color:{{ $isMissing ? '#fff' : 'inherit' }};"
                           onmouseover="this.style.opacity='.85'"
                           onmouseout="this.style.opacity='1'">
-                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor" stroke-width="2.5">
-                            <polyline points="16 16 12 12 8 16"/>
-                            <line x1="12" y1="12" x2="12" y2="21"/>
-                            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
-                        </svg>
+                        <i class="fa-solid fa-upload fa-fw"></i>
                         {{ $doc ? 'Re-upload' : ($isMissing ? 'Upload Now' : 'Upload') }}
                         <input type="file"
                                name="document"
