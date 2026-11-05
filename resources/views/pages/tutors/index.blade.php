@@ -29,15 +29,18 @@ use App\Models\Category; use App\Models\Subject; use App\Models\TutorProfile;
 $search=$req=request('search',''); $catId=request('category',''); $subjId=request('subject','');
 $minP=request('min_price',''); $maxP=request('max_price',''); $minR=request('min_rating','');
 $sort=request('sort','rating_avg');
+$track=request('track',session('curriculum_track',''));
+if($track && in_array($track,['kenyan','international'])){session(['curriculum_track'=>$track]);}
 $categories=Category::active()->with('subjects')->get();
 $subjects=$catId?Subject::where('category_id',$catId)->active()->get():collect();
-$q=TutorProfile::approved()->with(['user','subjects'])
+$q=TutorProfile::approved()->with(['user','subjects','approvedCurricula'])
     ->when($search,fn($x)=>$x->search($search))
     ->when($subjId,fn($x)=>$x->whereHas('subjects',fn($s)=>$s->where('subjects.id',$subjId)))
     ->when($catId&&!$subjId,fn($x)=>$x->whereHas('subjects',fn($s)=>$s->where('category_id',$catId)))
     ->when($minP,fn($x)=>$x->where('hourly_rate','>=',$minP))
     ->when($maxP,fn($x)=>$x->where('hourly_rate','<=',$maxP))
-    ->when($minR,fn($x)=>$x->where('rating_avg','>=',$minR));
+    ->when($minR,fn($x)=>$x->where('rating_avg','>=',$minR))
+    ->when($track,fn($x)=>$x->whereHas('approvedCurricula',fn($c)=>$c->where('track',$track)));
 $q=$sort==='price_asc'?$q->orderBy('hourly_rate'):($sort==='sessions'?$q->orderByDesc('total_sessions'):$q->orderByDesc('rating_avg'));
 $tutors=$q->paginate(12)->withQueryString();
 $colors=['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899','#0EA5E9','#8B5CF6'];
@@ -56,15 +59,25 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">Find your perfect tutor</h1>
                 <p style="font-size:14px;color:rgba(255,255,255,.6);max-width:460px;">Personalised Learning, Proven Teaching Expertise, Affordable Prices.</p>
             </div>
-            <!-- <div style="display:flex;flex-wrap:wrap;gap:8px;align-self:flex-end;max-width:480px;">
-                @foreach($categories->take(6) as $cat)
-                <a href="{{ route('tutors.index') }}?category={{ $cat->id }}"
-                   style="display:flex;align-items:center;gap:5px;background:{{ $catId==$cat->id ? 'rgba(255,255,255,.25)' : 'rgba(255,255,255,.08)' }};border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;color:rgba(255,255,255,.85);transition:all .15s;"
-                   onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='{{ $catId==$cat->id ? 'rgba(255,255,255,.25)' : 'rgba(255,255,255,.08)' }}'">
-                    {{ $cat->icon }} {{ $cat->name }}
-                </a>
-                @endforeach
-            </div> -->
+        </div>
+
+        {{-- Curriculum Track Tabs --}}
+        <div style="display:flex;gap:8px;margin-top:24px;flex-wrap:wrap;">
+            <a href="{{ route('tutors.index') }}"
+               style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
+                      {{ !$track ? 'background:rgba(255,255,255,.9);color:var(--ink);' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
+                <i class="fa-solid fa-list fa-xs"></i> All Tutors
+            </a>
+            <a href="{{ route('tutors.index') }}?track=kenyan"
+               style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
+                      {{ $track==='kenyan' ? 'background:#10B981;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
+                <i class="fa-solid fa-flag fa-xs"></i> Kenyan Curriculum
+            </a>
+            <a href="{{ route('tutors.index') }}?track=international"
+               style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
+                      {{ $track==='international' ? 'background:#6366F1;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
+                <i class="fa-solid fa-globe fa-xs"></i> International
+            </a>
         </div>
     </div>
 </div>
@@ -161,6 +174,13 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                         <span class="badge badge-v" style="font-size:10px;">{{ $s->name }}</span>
                         @endforeach
                         @if($tutor->subjects->count()>3)<span class="badge badge-dark" style="font-size:10px;">+{{ $tutor->subjects->count()-3 }}</span>@endif
+                        {{-- Curriculum badges --}}
+                        @foreach($tutor->approvedCurricula->take(2) as $curr)
+                        <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;
+                            {{ $curr->track==='kenyan' ? 'background:rgba(16,185,129,.12);color:#065F46;' : 'background:rgba(99,102,241,.12);color:#3730A3;' }}">
+                            {{ $curr->track==='kenyan' ? '🇰🇪' : '🌐' }} {{ $curr->name }}
+                        </span>
+                        @endforeach
                     </div>
                     <div style="display:flex;align-items:center;gap:10px;margin-top:7px;font-size:12px;color:var(--muted);">
                         <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star fa-xs"></i> {{ number_format($tutor->rating_avg,1) }}</span>

@@ -25,6 +25,8 @@ class TutorOnboardingController extends Controller
             'subjects.*'       => 'exists:subjects,id',
             'levels'           => 'nullable|array',
             'speedy'           => 'nullable',
+            'curriculum_ids'   => 'nullable|array',
+            'curriculum_ids.*' => 'exists:curricula,id',
             // Documents
             'doc_national_id'                  => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'doc_degree_certificate'           => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
@@ -60,6 +62,18 @@ class TutorOnboardingController extends Controller
 
         // Sync subjects
         $profile->subjects()->sync($request->subjects);
+
+        // Sync curricula (save to tutor_curricula pivot with pending status)
+        if ($request->has('curriculum_ids') && is_array($request->curriculum_ids)) {
+            $curriculaSyncData = [];
+            foreach ($request->curriculum_ids as $currId) {
+                $curriculaSyncData[(int)$currId] = [
+                    'verification_status' => 'pending',
+                    'verified_at'         => null,
+                ];
+            }
+            $profile->curricula()->sync($curriculaSyncData);
+        }
 
         // Store documents
         $docTypes = [

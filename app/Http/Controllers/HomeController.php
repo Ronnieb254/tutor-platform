@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Curriculum;
 use App\Models\TutorProfile;
 use App\Models\BlogPost;
 use App\Models\ExaminerClinic;
@@ -35,6 +36,11 @@ class HomeController extends Controller
 
     public function tutors(Request $request)
     {
+        // Store track in session when provided via query string
+        if ($request->has('track') && in_array($request->track, ['kenyan', 'international'])) {
+            session(['curriculum_track' => $request->track]);
+        }
+
         return view('pages.tutors.index');
     }
 

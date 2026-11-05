@@ -175,8 +175,80 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             {{-- ── STEP 2: Subjects ── --}}
             <div x-show="step === 2" x-cloak>
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-book-open" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Subjects You Teach</h2>
-                    <p class="sub">Select up to 2 subjects. Students will be matched with you based on these.</p>
+                    <h2><i class="fa-solid fa-book-open" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Curriculum &amp; Subjects</h2>
+                    <p class="sub">Tell us which curriculum(s) you teach, then select your subjects.</p>
+
+                    {{-- Curriculum Selection --}}
+                    <div class="field" style="margin-bottom:24px;">
+                        <div class="flabel"><i class="fa-solid fa-graduation-cap"></i> Which curriculum do you teach? <span style="color:var(--coral);">*</span></div>
+                        <p class="ferr" x-show="errors.curricula" x-text="errors.curricula" style="margin-bottom:8px;"></p>
+                        <div style="display:flex;flex-direction:column;gap:12px;">
+
+                            {{-- Kenyan Curriculum --}}
+                            <div :style="form.curricula_tracks.includes('kenyan') ? 'border:2px solid #10B981;background:rgba(16,185,129,.04);border-radius:16px;padding:16px;' : 'border:1.5px solid rgba(21,40,31,.15);border-radius:16px;padding:16px;'">
+                                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                                    <input type="checkbox" x-model="form.curricula_tracks" value="kenyan" style="width:18px;height:18px;accent-color:#10B981;flex-shrink:0;">
+                                    <span style="font-size:15px;font-weight:700;color:var(--ink);">🇰🇪 Kenyan Curriculum</span>
+                                    <span style="margin-left:auto;font-size:12px;color:var(--muted);">8-4-4 · CBE JSS · CBE Senior</span>
+                                </label>
+                                <div x-show="form.curricula_tracks.includes('kenyan')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
+                                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
+                                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+                                        @php
+                                        $kenyanCurricula = \App\Models\Curriculum::where('track','kenyan')->orderBy('sort_order')->get();
+                                        @endphp
+                                        @foreach($kenyanCurricula as $curr)
+                                        <span :class="form.curriculum_ids.includes({{ $curr->id }}) ? 's-chip sel' : 's-chip'"
+                                              @click="toggleCurriculum({{ $curr->id }})">
+                                            <i class="fa-solid fa-check fa-xs" x-show="form.curriculum_ids.includes({{ $curr->id }})"></i>
+                                            {{ $curr->name }}
+                                        </span>
+                                        @endforeach
+                                    </div>
+                                    <div style="padding:10px 14px;background:rgba(16,185,129,.06);border-radius:10px;font-size:12px;color:#065F46;">
+                                        <strong>Required docs:</strong> National ID · TSC Certificate · Certificate of Good Conduct · Passport Photo · Degree (recommended)
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- International Curriculum --}}
+                            <div :style="form.curricula_tracks.includes('international') ? 'border:2px solid #6366F1;background:rgba(99,102,241,.04);border-radius:16px;padding:16px;' : 'border:1.5px solid rgba(21,40,31,.15);border-radius:16px;padding:16px;'">
+                                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                                    <input type="checkbox" x-model="form.curricula_tracks" value="international" style="width:18px;height:18px;accent-color:#6366F1;flex-shrink:0;">
+                                    <span style="font-size:15px;font-weight:700;color:var(--ink);">🌐 International Curriculum</span>
+                                    <span style="margin-left:auto;font-size:12px;color:var(--muted);">IGCSE · IB MYP · IB Diploma</span>
+                                </label>
+                                <div x-show="form.curricula_tracks.includes('international')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
+                                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
+                                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+                                        @php
+                                        $intlCurricula = \App\Models\Curriculum::where('track','international')->orderBy('sort_order')->get();
+                                        @endphp
+                                        @foreach($intlCurricula as $curr)
+                                        <span :class="form.curriculum_ids.includes({{ $curr->id }}) ? 's-chip sel' : 's-chip'"
+                                              @click="toggleCurriculum({{ $curr->id }})">
+                                            <i class="fa-solid fa-check fa-xs" x-show="form.curriculum_ids.includes({{ $curr->id }})"></i>
+                                            {{ $curr->name }}
+                                        </span>
+                                        @endforeach
+                                    </div>
+                                    <div style="padding:10px 14px;background:rgba(99,102,241,.06);border-radius:10px;font-size:12px;color:#3730A3;">
+                                        <strong>Required docs:</strong> National ID · Degree Certificate · Teaching Qualification (PGCE or IB cert) · Proof of IGCSE/IB experience · Certificate of Good Conduct · Passport Photo · Examiner credentials (optional)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding:10px 14px;background:rgba(238,190,21,.08);border-radius:10px;font-size:12px;color:#78350F;margin-bottom:20px;">
+                        <i class="fa-solid fa-clock fa-xs" style="color:#EEBE15;"></i>
+                        <strong>Verification:</strong> Standard 72 hrs. Speedy Verification (KSh 1,000) takes 24 hrs.
+                    </div>
+
+                    <div style="border-top:1px solid rgba(21,40,31,.1);padding-top:20px;">
+                        <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);margin-bottom:4px;">Subjects You Teach</h3>
+                        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Select up to 2 subjects. Students will be matched with you based on these.</p>
+                    </div>
 
                     @php $subjectsByCategory = \App\Models\Subject::active()->with('category')->get()->groupBy('category.name'); @endphp
 
@@ -507,6 +579,8 @@ function tutorOnboarding() {
             bio:             '',
             hourly_rate:     '',
             subjects:        [],
+            curricula_tracks: [],
+            curriculum_ids:   [],
             speedy:          false,
         },
         files: {
@@ -524,6 +598,12 @@ function tutorOnboarding() {
             const i = this.form.levels.indexOf(level);
             if (i > -1) this.form.levels.splice(i, 1);
             else this.form.levels.push(level);
+        },
+
+        toggleCurriculum(id) {
+            const i = this.form.curriculum_ids.indexOf(id);
+            if (i > -1) this.form.curriculum_ids.splice(i, 1);
+            else this.form.curriculum_ids.push(id);
         },
 
         toggleSubject(id) {
@@ -569,6 +649,7 @@ function tutorOnboarding() {
 
         validateStep2() {
             this.errors = {};
+            if (this.form.curricula_tracks.length === 0) { this.errors.curricula = 'Please select at least one curriculum track'; return; }
             if (this.form.subjects.length === 0) { this.errors.subjects = 'Please select at least 1 subject'; return; }
             if (this.form.subjects.length > 2) { this.errors.subjects = 'Maximum 2 subjects allowed'; return; }
             this.step = 3;

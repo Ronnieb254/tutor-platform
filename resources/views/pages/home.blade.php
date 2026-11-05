@@ -185,13 +185,64 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
     <!-- <style>.hero-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.hero-g{grid-template-columns:1fr 460px!important;}.hero-vis{display:block!important;}}</style> -->
 </section>
 
+{{-- CURRICULUM CHOOSER --}}
+<section style="padding:60px 0;background:#fff;border-bottom:1px solid var(--hair);">
+    <div class="w">
+        <div style="text-align:center;margin-bottom:36px;">
+            <div class="badge bv" style="margin-bottom:12px;"><i class="fa-solid fa-graduation-cap"></i> Choose your curriculum</div>
+            <h2 style="font-size:clamp(24px,4vw,38px);color:var(--ink);margin-bottom:10px;">Which learning path is yours?</h2>
+            <p style="font-size:15px;color:var(--muted);max-width:480px;margin:0 auto;">Select a track to find tutors, subjects and levels that match your education system.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:860px;margin:0 auto;" class="curr-home-grid">
+            {{-- Kenyan Card --}}
+            <a href="{{ route('tutors.index') }}?track=kenyan" onclick="fetch('{{ route('curriculum.store') }}',{method:'POST',headers:{'X-CSRF-TOKEN':'{{ csrf_token() }}','Content-Type':'application/x-www-form-urlencoded'},body:'track=kenyan'});"
+               style="display:flex;flex-direction:column;background:#0E3D2A;border-radius:24px;padding:32px 28px 28px;text-decoration:none;transition:transform .22s,box-shadow .22s;position:relative;overflow:hidden;min-height:280px;"
+               onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 18px 48px rgba(14,61,42,.35)'"
+               onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <span style="position:absolute;bottom:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:rgba(16,185,129,.12);pointer-events:none;"></span>
+                <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(16,185,129,.2);color:#6EE7B7;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;margin-bottom:16px;width:fit-content;">
+                    <i class="fa-solid fa-flag fa-xs"></i> KENYAN CURRICULUM
+                </span>
+                <span style="font-family:'Fraunces',serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2;">Learn the Kenyan Way</span>
+                <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">8-4-4 · CBC Junior Secondary · CBC Senior School</span>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;flex:1;align-content:flex-start;margin-bottom:20px;">
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">📚 8-4-4</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🎓 CBE JSS (G7–9)</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">⭐ CBE Senior (G10–12)</span>
+                </div>
+                <span style="display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#10B981;color:#fff;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;width:100%;">
+                    <i class="fa-solid fa-arrow-right fa-xs"></i> Find a Kenyan-curriculum tutor
+                </span>
+            </a>
+
+            {{-- International Card --}}
+            <a href="{{ route('tutors.index') }}?track=international" onclick="fetch('{{ route('curriculum.store') }}',{method:'POST',headers:{'X-CSRF-TOKEN':'{{ csrf_token() }}','Content-Type':'application/x-www-form-urlencoded'},body:'track=international'});"
+               style="display:flex;flex-direction:column;background:#0D1F4A;border-radius:24px;padding:32px 28px 28px;text-decoration:none;transition:transform .22s,box-shadow .22s;position:relative;overflow:hidden;min-height:280px;"
+               onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 18px 48px rgba(13,31,74,.35)'"
+               onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <span style="position:absolute;bottom:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:rgba(99,102,241,.15);pointer-events:none;"></span>
+                <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(99,102,241,.3);color:#C7D2FE;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;margin-bottom:16px;width:fit-content;">
+                    <i class="fa-solid fa-globe fa-xs"></i> INTERNATIONAL CURRICULUM
+                </span>
+                <span style="font-family:'Fraunces',serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2;">Learn for the World</span>
+                <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">IGCSE Cambridge · IGCSE Edexcel · IB MYP · IB Diploma</span>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;flex:1;align-content:flex-start;margin-bottom:20px;">
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🎓 IGCSE Cambridge</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🏆 IGCSE Edexcel</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🌐 IB MYP</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🌐 IB Diploma HL/SL</span>
+                </div>
+                <span style="display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#6366F1;color:#fff;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;width:100%;">
+                    <i class="fa-solid fa-arrow-right fa-xs"></i> Find an international tutor
+                </span>
+            </a>
+        </div>
+        <style>.curr-home-grid{grid-template-columns:1fr!important;}@media(min-width:680px){.curr-home-grid{grid-template-columns:1fr 1fr!important;}}</style>
+    </div>
+</section>
+
 {{-- WHY MWALIMU --}}
 <section style="padding:72px 0;background:var(--ink);">
-    <div class="w">
-        <div style="text-align:center;margin-bottom:44px;">
-            <h2 style="font-size:clamp(26px,4vw,40px);color:#fff;margin-bottom:10px;">Learn with confidence, every lesson.</h2>
-            <p style="color:rgba(255,255,255,.55);font-size:17px;">What makes Mwalimu different</p>
-        </div>
         <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="feat-g">
             @foreach([
                 ['fa-user-graduate','Individual Attention','Every learner gets personal 1-on-1 attention from their tutor, greatly improving learning outcomes.','#0A64BC'],

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Curriculum;
 
 class TutorProfile extends Model
 {
@@ -37,6 +38,18 @@ class TutorProfile extends Model
     public function subjects()
     {
         return $this->belongsToMany(Subject::class, 'tutor_subjects');
+    }
+
+    public function curricula()
+    {
+        return $this->belongsToMany(Curriculum::class, 'tutor_curricula')
+            ->withPivot(['verification_status', 'verified_at'])
+            ->withTimestamps();
+    }
+
+    public function approvedCurricula()
+    {
+        return $this->curricula()->wherePivot('verification_status', 'approved');
     }
 
     public function availabilities()
