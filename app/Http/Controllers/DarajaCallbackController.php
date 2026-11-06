@@ -156,6 +156,16 @@ class DarajaCallbackController extends Controller
                 $clinic->autoCreateNextSession();
             }
 
+            // Notify student with their unique access code
+            try {
+                $user->notify(new \App\Notifications\ClinicEnrollmentConfirmed($enrollment));
+            } catch (\Throwable $e) {
+                Log::warning('Daraja callback: could not send ClinicEnrollmentConfirmed', [
+                    'enrollment_id' => $enrollment->id,
+                    'error'         => $e->getMessage(),
+                ]);
+            }
+
             Log::info('Daraja callback: clinic enrollment confirmed', [
                 'clinic_id'     => $clinicId,
                 'user_id'       => $user->id,

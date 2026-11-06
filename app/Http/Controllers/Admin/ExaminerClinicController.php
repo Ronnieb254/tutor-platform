@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ExaminerClinic;
 use App\Models\Subject;
+use App\Notifications\ClinicTutorAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -80,6 +81,7 @@ class ExaminerClinicController extends Controller
             'curriculum_id'    => 'nullable|exists:curricula,id',
             'title'            => 'required|string|max:255',
             'description'      => 'nullable|string',
+            'tutor_id'         => 'nullable|exists:users,id',
             'scheduled_at'     => 'required|date|after:now',
             'duration_minutes' => 'required|integer|min:15|max:480',
             'max_students'     => 'nullable|integer|min:1|max:100',
@@ -96,6 +98,11 @@ class ExaminerClinicController extends Controller
         }
 
         $clinic = ExaminerClinic::create($validated);
+
+        // Notify the assigned tutor
+        if ($clinic->tutor_id && $clinic->tutor) {
+            $clinic->tutor->notify(new ClinicTutorAssigned($clinic));
+        }
 
         return redirect()
             ->route('admin.examiner-clinics.show', $clinic)
@@ -167,6 +174,7 @@ class ExaminerClinicController extends Controller
             'curriculum_id'    => 'nullable|exists:curricula,id',
             'title'            => 'required|string|max:255',
             'description'      => 'nullable|string',
+            'tutor_id'         => 'nullable|exists:users,id',
             'scheduled_at'     => 'required|date',
             'duration_minutes' => 'required|integer|min:15|max:480',
             'max_students'     => 'required|integer|min:1|max:100',
@@ -180,7 +188,15 @@ class ExaminerClinicController extends Controller
                 ->withErrors(['max_students' => "Cannot reduce capacity below current enrollment count ({$enrollmentCount} students)."]);
         }
 
+        $oldTutorId = $examinerClinic->tutor_id;
+
         $examinerClinic->update($validated);
+
+        // Notify if the tutor changed (or was newly assigned)
+        $newTutorId = $examinerClinic->fresh()->tutor_id;
+        if ($newTutorId && $newTutorId !== $oldTutorId) {
+            $examinerClinic->fresh()->tutor?->notify(new ClinicTutorAssigned($examinerClinic->fresh()));
+        }
 
         return redirect()
             ->route('admin.examiner-clinics.show', $examinerClinic)

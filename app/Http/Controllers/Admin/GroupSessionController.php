@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ExaminerClinic;
 use App\Models\Subject;
 use App\Models\User;
+use App\Notifications\ClinicTutorAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -81,6 +82,11 @@ class GroupSessionController extends Controller
 
         $session = ExaminerClinic::create($validated);
 
+        // Notify the assigned tutor
+        if ($session->tutor_id && $session->tutor) {
+            $session->tutor->notify(new ClinicTutorAssigned($session));
+        }
+
         return redirect()
             ->route('admin.group-sessions.show', $session)
             ->with('success', 'Group session "' . $session->title . '" created successfully.');
@@ -152,7 +158,15 @@ class GroupSessionController extends Controller
 
         $validated['is_group_session'] = true;
 
+        $oldTutorId = $groupSession->tutor_id;
+
         $groupSession->update($validated);
+
+        // Notify if the tutor was newly assigned or changed
+        $newTutorId = $groupSession->fresh()->tutor_id;
+        if ($newTutorId && $newTutorId !== $oldTutorId) {
+            $groupSession->fresh()->tutor?->notify(new ClinicTutorAssigned($groupSession->fresh()));
+        }
 
         return redirect()
             ->route('admin.group-sessions.show', $groupSession)

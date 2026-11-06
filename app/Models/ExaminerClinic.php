@@ -11,7 +11,7 @@ class ExaminerClinic extends Model
         'tutor_id','subject_id','curriculum_id','paper_type','parent_clinic_id','batch_number',
         'title','name','description','topics_covered',
         'scheduled_at','duration_minutes','price','max_students','status','meeting_room',
-        'created_by','session_code','recording_url',
+        'created_by','session_code','tutor_code','recording_url',
         'is_auto_created',
         'is_group_session','series_id','session_number','total_sessions',
     ];
@@ -37,6 +37,9 @@ class ExaminerClinic extends Model
             }
             if (\Schema::hasColumn('examiner_clinics', 'session_code')) {
                 $clinic->session_code = $clinic->session_code ?? ('CLINIC-' . strtoupper(Str::random(6)));
+            }
+            if (\Schema::hasColumn('examiner_clinics', 'tutor_code')) {
+                $clinic->tutor_code = $clinic->tutor_code ?? ('TUT-' . strtoupper(Str::random(6)));
             }
         });
 
