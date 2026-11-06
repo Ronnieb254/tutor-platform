@@ -23,7 +23,7 @@
         <article>
             <div style="margin-bottom:20px;">
                 <a href="{{ route('blog.index') }}" style="font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;margin-bottom:16px;transition:color .15s;" onmouseover="this.style.color='var(--trust-blue)'" onmouseout="this.style.color='var(--muted)'">
-                    <i class="fa-solid fa-arrow-left fa-xs"></i> Back to Blog
+                    <span style="font-size:inherit;">←</span> Back to Blog
                 </a>
                 @if($post->category)
                 <span class="badge badge-v" style="display:block;width:fit-content;margin-bottom:14px;">{{ $post->category->name }}</span>
@@ -48,7 +48,7 @@
                 <div style="display:flex;gap:8px;">
                     <span style="font-size:13px;color:var(--muted);">Share:</span>
                     <button onclick="navigator.share?navigator.share({title:'{{ addslashes($post->title) }}',url:window.location.href}):navigator.clipboard.writeText(window.location.href)" class="btn btn-sm btn-o">
-                        <i class="fa-solid fa-share-nodes"></i> Share
+                        <span style="font-size:inherit;">📤</span> Share
                     </button>
                 </div>
             </div>
@@ -57,7 +57,7 @@
         <aside>
             @if($related->isNotEmpty())
             <div class="card card-p" style="margin-bottom:16px;">
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><i class="fa-solid fa-book-open fa-sm" style="color:var(--trust-blue);margin-right:6px;"></i>Related Articles</h3>
+                <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><span style="font-size:inherit;">📖</span>Related Articles</h3>
                 @foreach($related as $r)
                 <a href="{{ route('blog.show', $r->slug) }}" style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);transition:opacity .15s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
                     <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">ðŸ“</div>
@@ -74,7 +74,7 @@
                 <div class="card card-p" style="background:var(--ink);border-color:var(--ink);">
                 <h3 style="font-family:'Fraunces',serif;font-size:16px;color:#fff;margin-bottom:8px;">Need 1-on-1 help?</h3>
                 <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.65;margin-bottom:14px;">Book a session with a TSC-registered tutor from KSh 300.</p>
-                <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm" style="width:100%;justify-content:center;"><i class="fa-solid fa-magnifying-glass"></i> Find a Tutor</a>
+                <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm" style="width:100%;justify-content:center;"><span style="font-size:inherit;">🔍</span> Find a Tutor</a>
             </div>
             @endif
         </aside>

@@ -12,7 +12,7 @@
 
     <div style="margin-bottom:24px;">
         <a href="{{ route('examiner.dashboard') }}" style="font-size:13px;color:rgba(21,40,31,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-bottom:12px;">
-            <i class="fa-solid fa-arrow-left fa-xs"></i> Back to Dashboard
+            <span style="font-size:inherit;">←</span> Back to Dashboard
         </a>
         <h1 style="font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:#15281F;margin-bottom:6px;">Create Examiner Clinic</h1>
         <p style="font-size:15px;color:rgba(21,40,31,.55);">Sessions are capped at <strong>30 students</strong>. When full, an overflow batch is auto-created starting 30 minutes after this session ends.</p>
@@ -20,7 +20,7 @@
 
     @if($errors->any())
     <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:14px 18px;margin-bottom:20px;">
-        <div style="font-weight:700;color:#dc2626;margin-bottom:6px;"><i class="fa-solid fa-triangle-exclamation fa-sm"></i> Please fix the following</div>
+        <div style="font-weight:700;color:#dc2626;margin-bottom:6px;"><span style="font-size:inherit;">⚠️</span> Please fix the following</div>
         <ul style="margin:0;padding-left:20px;font-size:13px;color:#dc2626;">
             @foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach
         </ul>
@@ -29,7 +29,7 @@
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:14px;padding:14px 18px;margin-bottom:20px;color:#059669;font-weight:600;">
-        <i class="fa-solid fa-circle-check fa-sm"></i> {{ session('success') }}
+        <span style="font-size:inherit;">✅</span> {{ session('success') }}
     </div>
     @endif
 
@@ -119,7 +119,7 @@
 
             {{-- Info box --}}
             <div style="background:rgba(10,100,188,.06);border:1px solid rgba(10,100,188,.15);border-radius:12px;padding:14px 16px;margin-bottom:24px;display:flex;gap:10px;align-items:flex-start;">
-                <i class="fa-solid fa-circle-info" style="color:#0A64BC;flex-shrink:0;margin-top:1px;"></i>
+                <span style="font-size:inherit;">ℹ️</span>
                 <div style="font-size:13px;color:#0A64BC;line-height:1.65;">
                     <strong>30 slots Ã‚Â· Auto-overflow.</strong> When all 30 spots are taken the system creates an identical session starting 30 minutes after this one ends. The session goes live in Jitsi at the scheduled time Ã¢â‚¬â€ no action needed from you.
                 </div>
@@ -127,7 +127,7 @@
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <button type="submit" style="flex:1;min-width:160px;height:48px;border-radius:12px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
-                    <i class="fa-solid fa-calendar-plus fa-sm"></i> Create Clinic
+                    <span style="font-size:inherit;">📅</span> Create Clinic
                 </button>
                 <a href="{{ route('examiner.dashboard') }}" style="flex:1;min-width:120px;height:48px;border-radius:12px;background:#F4F6F4;color:#15281F;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">
                     Cancel

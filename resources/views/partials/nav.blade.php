@@ -4,13 +4,13 @@
 <div x-data="{ ann: !sessionStorage.getItem('mw_ann') }" x-show="ann" x-cloak
      class="mw-ann-bar"
      style="background:linear-gradient(90deg,#120A8F,#0A64BC);color:#fff;font-size:13px;padding:9px 20px;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:101;">
-    <i class="fa-solid fa-certificate fa-xs" style="opacity:.8;"></i>
+    <span style="font-size:inherit;">📜</span>
     <span style="text-align:center;">All tutors are <strong>TSC-registered & background-checked</strong> â€” <strong>100% money-back</strong> if unsatisfied with your first lesson</span>
     <button @click="sessionStorage.setItem('mw_ann','1');ann=false"
             style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .15s;"
             onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'"
             aria-label="Dismiss">
-        <i class="fa-solid fa-xmark fa-xs"></i>
+        <span style="font-size:inherit;">❌</span>
     </button>
 </div>
 
@@ -38,7 +38,7 @@
                 <a href="{{ route($route) }}"
                    style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-size:14px;font-weight:500;color:{{ Str::startsWith($cr,$route)||$cr===$route ? '#0A64BC' : '#15281F' }};background:{{ Str::startsWith($cr,$route)||$cr===$route ? 'rgba(10,100,188,.08)' : 'transparent' }};font-weight:{{ Str::startsWith($cr,$route)||$cr===$route ? '700' : '500' }};transition:all .15s;text-decoration:none;"
                    onmouseover="this.style.background='rgba(21,40,31,.07)'" onmouseout="this.style.background='{{ Str::startsWith($cr,$route)||$cr===$route ? 'rgba(10,100,188,.08)' : 'transparent' }}'">
-                    <i class="fa-solid {{ $icon }}" style="font-size:12px;opacity:.7;"></i>
+                    <span class="{{ $icon }}" style="font-size:inherit;">❓</span>
                     {{ $label }}
                 </a>
                 @endforeach
@@ -53,7 +53,7 @@
                         <button @click="nopen=!nopen" @click.outside="nopen=false"
                                 style="position:relative;width:38px;height:38px;border-radius:999px;border:1.5px solid rgba(21,40,31,.12);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;"
                                 onmouseover="this.style.borderColor='rgba(10,100,188,.4)'" onmouseout="this.style.borderColor='rgba(21,40,31,.12)'">
-                            <i class="fa-solid fa-bell" style="font-size:14px;color:rgba(21,40,31,.6);"></i>
+                            <span style="font-size:inherit;">🔔</span>
                             @if($unread > 0)
                             <span style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#E8522A;border-radius:50%;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--cream);">{{ min($unread,9) }}</span>
                             @endif
@@ -90,18 +90,18 @@
                                 onmouseover="this.style.borderColor='rgba(10,100,188,.4)'" onmouseout="this.style.borderColor='rgba(21,40,31,.12)'">
                             <img src="{{ auth()->user()->avatar_url }}" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;">
                             <span style="font-size:13px;font-weight:600;color:#15281F;display:none;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" class="mw-uname">{{ Str::limit(auth()->user()->name,15) }}</span>
-                            <i class="fa-solid fa-chevron-down" style="font-size:10px;color:rgba(21,40,31,.5);" :style="uopen?'transform:rotate(180deg)':''" style="transition:.2s"></i>
+                            <span style="font-size:inherit;">❓</span>
                         </button>
                         <div x-show="uopen" x-transition x-cloak
                              style="position:absolute;right:0;top:calc(100% + 8px);width:200px;background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.1);box-shadow:0 8px 32px rgba(21,40,31,.12);padding:6px;z-index:200;">
                             <a href="{{ route('dashboard') }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;color:#15281F;text-decoration:none;transition:background .15s;" onmouseover="this.style.background='#FBF5E6'" onmouseout="this.style.background='transparent'">
-                                <i class="fa-solid fa-gauge-high" style="color:#0A64BC;width:14px;text-align:center;font-size:13px;"></i> Dashboard
+                                <span style="font-size:inherit;">📊</span> Dashboard
                             </a>
                             <div style="height:1px;background:rgba(21,40,31,.08);margin:4px 0;"></div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;color:#E8522A;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
-                                    <i class="fa-solid fa-right-from-bracket" style="width:14px;text-align:center;font-size:13px;"></i> Sign Out
+                                    <span style="font-size:inherit;">🚪</span> Sign Out
                                 </button>
                             </form>
                         </div>
@@ -109,7 +109,7 @@
                 @else
                     <a href="{{ route('login') }}" style="font-size:14px;font-weight:600;padding:8px 16px;border-radius:999px;color:#15281F;text-decoration:none;transition:background .15s;display:none;" class="mw-signin" onmouseover="this.style.background='rgba(21,40,31,.07)'" onmouseout="this.style.background='transparent'">Sign In</a>
                     <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-user-plus fa-xs"></i> Get Started
+                        <span style="font-size:inherit;">👤</span> Get Started
                     </a>
                 @endauth
 
@@ -140,7 +140,7 @@
             ] as [$route, $icon, $label])
             <a href="{{ route($route) }}"
                style="display:flex;align-items:center;gap:10px;padding:12px 0;font-size:15px;font-weight:500;color:#15281F;border-bottom:1px solid rgba(21,40,31,.07);text-decoration:none;">
-                <i class="fa-solid {{ $icon }}" style="color:#0A64BC;width:16px;text-align:center;font-size:13px;"></i>
+                <span class="{{ $icon }}" style="font-size:inherit;">❓</span>
                 {{ $label }}
             </a>
             @endforeach
@@ -148,7 +148,7 @@
             <div style="display:flex;gap:8px;margin-top:12px;padding-top:12px;">
                 <a href="{{ route('login') }}" style="flex:1;display:flex;align-items:center;justify-content:center;padding:11px;border-radius:999px;border:1.5px solid rgba(21,40,31,.2);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">Sign In</a>
                 <a href="{{ route('register') }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
-                    <i class="fa-solid fa-user-plus fa-xs"></i> Get Started
+                    <span style="font-size:inherit;">👤</span> Get Started
                 </a>
             </div>
             @endguest

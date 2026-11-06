@@ -89,7 +89,7 @@
             </div>
             @endforeach
         </div>
-        <p class="text-xs text-muted mt-3">{{ count($selectedSubjects) }}/2 subject(s) selected @if(count($selectedSubjects) >= 2)<span class="text-mint"><i class="fa-solid fa-check fa-xs"></i> Maximum reached</span>@endif</p>
+        <p class="text-xs text-muted mt-3">{{ count($selectedSubjects) }}/2 subject(s) selected @if(count($selectedSubjects) >= 2)<span class="text-mint"><span style="font-size:inherit;">✅</span> Maximum reached</span>@endif</p>
         <div class="flex justify-between mt-6">
             <button wire:click="prevStep" class="pill-btn-outline px-6">Ã¢â€ Â Back</button>
             <button wire:click="nextStep" class="pill-btn-primary px-8">Continue Ã¢â€ â€™</button>

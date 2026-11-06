@@ -122,7 +122,7 @@ use App\Models\PlatformSetting;
     {{-- Session Durations info --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            <i class="fa-solid fa-stopwatch" style="color:var(--trust-blue);margin-right:8px;"></i> Session Duration Pricing
+            <span style="font-size:inherit;">❓</span> Session Duration Pricing
         </h3>
         <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">
             Mwalimu uses <strong>fixed platform rates</strong> for all sessions. Tutors do not set their own prices. All rates are inclusive of the platform commission.
@@ -152,7 +152,7 @@ use App\Models\PlatformSetting;
             </tbody>
         </table>
         <p style="font-size:12px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline);">
-            <i class="fa-solid fa-circle-info fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i>
+            <span style="font-size:inherit;">ℹ️</span>
             To change session prices, update the <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">sessionPrices()</code> method in <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">app/Models/TutorProfile.php</code>.
         </p>
     </div>

@@ -61,20 +61,20 @@ a{color:inherit;text-decoration:none;}
         <p class="subtitle">Complete your registration for the examiner's clinic</p>
 
         @if(session('error'))
-        <div class="error"><i class="fa-solid fa-circle-xmark" style="margin-right:8px;"></i> {{ session('error') }}</div>
+        <div class="error"><span style="font-size:inherit;">❌</span> {{ session('error') }}</div>
         @endif
 
         {{-- Clinic Information --}}
         <div class="clinic-info">
             <div class="clinic-title">{{ $clinic->title }}</div>
-            <div class="clinic-detail"><i class="fa-solid fa-calendar-check fa-xs"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</div>
-            <div class="clinic-detail"><i class="fa-solid fa-clock fa-xs"></i> {{ $clinic->duration_minutes }} minutes</div>
-            <div class="clinic-detail"><i class="fa-solid fa-user fa-xs"></i> {{ $clinic->tutor->name }}</div>
+            <div class="clinic-detail"><span style="font-size:inherit;">✅</span> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</div>
+            <div class="clinic-detail"><span style="font-size:inherit;">⏰</span> {{ $clinic->duration_minutes }} minutes</div>
+            <div class="clinic-detail"><span style="font-size:inherit;">👤</span> {{ $clinic->tutor->name }}</div>
             @if($clinic->subject)
-            <div class="clinic-detail"><i class="fa-solid fa-book-open fa-xs"></i> {{ $clinic->subject->name }}</div>
+            <div class="clinic-detail"><span style="font-size:inherit;">📖</span> {{ $clinic->subject->name }}</div>
             @endif
             @if($clinic->paper_type)
-            <div class="clinic-detail"><i class="fa-solid fa-file-lines fa-xs"></i> {{ $clinic->paper_type }}</div>
+            <div class="clinic-detail"><span style="font-size:inherit;">📄</span> {{ $clinic->paper_type }}</div>
             @endif
         </div>
 
@@ -108,7 +108,7 @@ a{color:inherit;text-decoration:none;}
             {{-- M-Pesa Phone --}}
             <div style="margin-bottom:18px;">
                 <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
-                    <i class="fa-solid fa-mobile-screen-button fa-xs" style="color:var(--trust-blue);margin-right:5px;"></i>
+                    <span style="font-size:inherit;">📱</span>
                     M-Pesa Phone Number
                 </label>
                 <input type="tel" name="phone" required
@@ -141,10 +141,10 @@ a{color:inherit;text-decoration:none;}
 
             {{-- Submit Button --}}
             <button type="submit" class="btn btn-primary" id="submitBtn">
-                <i class="fa-solid fa-lock fa-sm"></i> Pay KSh {{ number_format($clinic->price) }} via M-Pesa
+                <span style="font-size:inherit;">🔒</span> Pay KSh {{ number_format($clinic->price) }} via M-Pesa
             </button>
             <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
-                <i class="fa-solid fa-arrow-left fa-sm"></i> Back
+                <span style="font-size:inherit;">←</span> Back
             </a>
         </form>
 
@@ -156,7 +156,7 @@ a{color:inherit;text-decoration:none;}
 
         {{-- Security Badge --}}
         <div style="text-align:center;margin-top:24px;font-size:12px;color:var(--muted);">
-            <i class="fa-solid fa-shield-check" style="color:var(--mint);"></i> Your payment is secure and encrypted
+            <span style="font-size:inherit;">🛡️</span> Your payment is secure and encrypted
         </div>
     </div>
 </div>

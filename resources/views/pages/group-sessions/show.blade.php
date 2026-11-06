@@ -22,9 +22,9 @@
 <div style="background:#F9FAF9;border-bottom:1px solid rgba(21,40,31,.07);padding:14px 0;">
     <div style="max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(21,40,31,.5);">
         <a href="{{ route('home') }}" style="color:rgba(21,40,31,.5);text-decoration:none;">Home</a>
-        <i class="fa-solid fa-chevron-right fa-xs"></i>
+        <span style="font-size:inherit;">❓</span>
         <a href="{{ route('group-sessions.index') }}" style="color:rgba(21,40,31,.5);text-decoration:none;">Group Sessions</a>
-        <i class="fa-solid fa-chevron-right fa-xs"></i>
+        <span style="font-size:inherit;">❓</span>
         <span style="color:#15281F;font-weight:600;">{{ Str::limit($groupSession->title, 50) }}</span>
     </div>
 </div>
@@ -34,13 +34,13 @@
     {{-- FLASH MESSAGES --}}
     @if(session('success'))
     <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#065F46;padding:14px 18px;border-radius:12px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;">
-        <i class="fa-solid fa-circle-check" style="color:#10B981;margin-top:1px;flex-shrink:0;"></i>
+        <span style="font-size:inherit;">✅</span>
         <p style="margin:0;font-size:14px;">{{ session('success') }}</p>
     </div>
     @endif
     @if(session('error'))
     <div style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);color:#991B1B;padding:14px 18px;border-radius:12px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;">
-        <i class="fa-solid fa-circle-exclamation" style="color:#DC2626;margin-top:1px;flex-shrink:0;"></i>
+        <span style="font-size:inherit;">❓</span>
         <p style="margin:0;font-size:14px;">{{ session('error') }}</p>
     </div>
     @endif
@@ -52,17 +52,17 @@
             {{-- Subject + series badge --}}
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
                 @if($groupSession->subject)
-                <span style="background:rgba(21,40,31,.06);color:#15281F;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-book-open fa-xs"></i>{{ $groupSession->subject->name }}</span>
+                <span style="background:rgba(21,40,31,.06);color:#15281F;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><span style="font-size:inherit;">📖</span>{{ $groupSession->subject->name }}</span>
                 @endif
                 @if($isSeries)
-                <span style="background:rgba(212,160,23,.12);color:#B7870A;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-layer-group fa-xs"></i>Session {{ $groupSession->session_number }} of {{ $groupSession->total_sessions }}</span>
+                <span style="background:rgba(212,160,23,.12);color:#B7870A;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><span style="font-size:inherit;">❓</span>Session {{ $groupSession->session_number }} of {{ $groupSession->total_sessions }}</span>
                 @endif
                 @if($groupSession->status === 'cancelled')
-                <span style="background:#FEE2E2;color:#991B1B;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-ban fa-xs"></i>Cancelled</span>
+                <span style="background:#FEE2E2;color:#991B1B;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><span style="font-size:inherit;">🚫</span>Cancelled</span>
                 @elseif($isFull)
-                <span style="background:#FEE2E2;color:#991B1B;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-lock fa-xs"></i>Full</span>
+                <span style="background:#FEE2E2;color:#991B1B;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><span style="font-size:inherit;">🔒</span>Full</span>
                 @else
-                <span style="background:rgba(16,185,129,.1);color:#065F46;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-circle fa-xs"></i>Open</span>
+                <span style="background:rgba(16,185,129,.1);color:#065F46;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><span style="font-size:inherit;">❓</span>Open</span>
                 @endif
             </div>
 
@@ -71,7 +71,7 @@
             @if($groupSession->tutor)
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
                 <div style="width:36px;height:36px;border-radius:50%;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i class="fa-solid fa-user" style="color:#0A64BC;font-size:14px;"></i>
+                    <span style="font-size:inherit;">👤</span>
                 </div>
                 <div>
                     <p style="font-size:14px;font-weight:600;color:#15281F;margin:0;">{{ $groupSession->tutor->name }}</p>
@@ -83,19 +83,19 @@
             {{-- Meta row --}}
             <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:24px;padding:18px;background:#F9FAF9;border-radius:14px;border:1px solid rgba(21,40,31,.07);">
                 <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#15281F;">
-                    <div style="width:32px;height:32px;background:rgba(10,100,188,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-regular fa-calendar fa-xs" style="color:#0A64BC;"></i></div>
+                    <div style="width:32px;height:32px;background:rgba(10,100,188,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;"><span style="font-size:inherit;">📅</span></div>
                     <div><p style="font-size:11px;color:rgba(21,40,31,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:0;">Date & Time</p><p style="font-size:14px;font-weight:600;color:#15281F;margin:0;">{{ $groupSession->scheduled_at->format('D, M j \a\t g:ia') }}</p></div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#15281F;">
-                    <div style="width:32px;height:32px;background:rgba(10,100,188,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-clock fa-xs" style="color:#0A64BC;"></i></div>
+                    <div style="width:32px;height:32px;background:rgba(10,100,188,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;"><span style="font-size:inherit;">⏰</span></div>
                     <div><p style="font-size:11px;color:rgba(21,40,31,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:0;">Duration</p><p style="font-size:14px;font-weight:600;color:#15281F;margin:0;">{{ $groupSession->duration_minutes }} minutes</p></div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#15281F;">
-                    <div style="width:32px;height:32px;background:rgba(10,100,188,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-users fa-xs" style="color:#0A64BC;"></i></div>
+                    <div style="width:32px;height:32px;background:rgba(10,100,188,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;"><span style="font-size:inherit;">👤</span></div>
                     <div><p style="font-size:11px;color:rgba(21,40,31,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:0;">Seats</p><p style="font-size:14px;font-weight:600;color:{{ $isFull ? '#991B1B' : '#10B981' }};margin:0;">{{ $enrolledCount }}/{{ $maxStudents }}</p></div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#15281F;">
-                    <div style="width:32px;height:32px;background:rgba(212,160,23,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-tag fa-xs" style="color:#EEBE15;"></i></div>
+                    <div style="width:32px;height:32px;background:rgba(212,160,23,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;"><span style="font-size:inherit;">🏷️</span></div>
                     <div><p style="font-size:11px;color:rgba(21,40,31,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:0;">Price</p><p style="font-family:'Fraunces',serif;font-size:18px;font-weight:800;color:#EEBE15;margin:0;">KSh {{ number_format($groupSession->price) }}</p></div>
                 </div>
             </div>
@@ -133,7 +133,7 @@
             {{-- Series sessions (if part of a series) --}}
             @if($isSeries && $seriesSessions->count() > 1)
             <div>
-                <h2 style="font-size:16px;font-weight:700;color:#15281F;margin-bottom:12px;"><i class="fa-solid fa-layer-group fa-xs" style="color:#EEBE15;margin-right:6px;"></i>All sessions in this series</h2>
+                <h2 style="font-size:16px;font-weight:700;color:#15281F;margin-bottom:12px;"><span style="font-size:inherit;">❓</span>All sessions in this series</h2>
                 <div style="display:flex;flex-direction:column;gap:8px;">
                     @foreach($seriesSessions as $s)
                     @php $isThis = $s->id === $groupSession->id; @endphp
@@ -164,45 +164,45 @@
 
                 @if($groupSession->status === 'cancelled')
                 <div style="background:#FEE2E2;color:#991B1B;padding:14px;border-radius:12px;text-align:center;font-size:14px;font-weight:600;margin-bottom:16px;">
-                    <i class="fa-solid fa-ban"></i> This session has been cancelled.
+                    <span style="font-size:inherit;">🚫</span> This session has been cancelled.
                 </div>
 
                 @elseif($isEnrolled)
                 <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);padding:14px;border-radius:12px;text-align:center;margin-bottom:16px;">
-                    <p style="font-size:14px;font-weight:700;color:#065F46;margin:0 0 4px;"><i class="fa-solid fa-circle-check"></i> You're enrolled!</p>
+                    <p style="font-size:14px;font-weight:700;color:#065F46;margin:0 0 4px;"><span style="font-size:inherit;">✅</span> You're enrolled!</p>
                     <p style="font-size:13px;color:rgba(6,95,70,.7);margin:0;">Check your email for the session code.</p>
                 </div>
                 @if($canJoin)
                 <a href="{{ route('clinic.join', $groupSession) }}" style="display:block;text-align:center;padding:14px;border-radius:12px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:12px;transition:all .15s;" onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
-                    <i class="fa-solid fa-video"></i> Join Live Session
+                    <span style="font-size:inherit;">🎥</span> Join Live Session
                 </a>
                 @else
                 <div style="background:#F9FAF9;border:1px solid rgba(21,40,31,.08);padding:14px;border-radius:12px;text-align:center;margin-bottom:12px;">
-                    <p style="font-size:13px;color:rgba(21,40,31,.55);margin:0;"><i class="fa-solid fa-clock"></i> Session starts {{ $groupSession->scheduled_at->diffForHumans() }}</p>
+                    <p style="font-size:13px;color:rgba(21,40,31,.55);margin:0;"><span style="font-size:inherit;">⏰</span> Session starts {{ $groupSession->scheduled_at->diffForHumans() }}</p>
                     <p style="font-size:12px;color:rgba(21,40,31,.4);margin:6px 0 0;">Join button unlocks 15 min before start.</p>
                 </div>
                 @endif
 
                 @elseif($isFull)
                 <div style="background:#FEE2E2;border:1px solid #FECACA;padding:16px;border-radius:12px;text-align:center;font-size:14px;color:#991B1B;font-weight:600;margin-bottom:16px;">
-                    <i class="fa-solid fa-lock"></i> Session Full
+                    <span style="font-size:inherit;">🔒</span> Session Full
                     <p style="font-size:12px;font-weight:400;margin:6px 0 0;">All {{ $maxStudents }} seats are taken.</p>
                 </div>
                 <a href="{{ route('group-sessions.index') }}" style="display:block;text-align:center;padding:13px;border-radius:12px;background:rgba(21,40,31,.06);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
-                    <i class="fa-solid fa-arrow-left fa-xs"></i> Browse Other Sessions
+                    <span style="font-size:inherit;">←</span> Browse Other Sessions
                 </a>
 
                 @elseif(auth()->check())
                 <form method="POST" action="{{ route('group-sessions.enroll', $groupSession) }}">
                     @csrf
                     <button type="submit" style="width:100%;padding:14px;border-radius:12px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:12px;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
-                        <i class="fa-solid fa-ticket"></i> Book Seat Ã¢â‚¬â€ KSh {{ number_format($groupSession->price) }}
+                        <span style="font-size:inherit;">❓</span> Book Seat Ã¢â‚¬â€ KSh {{ number_format($groupSession->price) }}
                     </button>
                 </form>
 
                 @else
                 <a href="{{ route('login') }}?redirect={{ urlencode(request()->url()) }}" style="display:block;text-align:center;padding:14px;border-radius:12px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:12px;">
-                    <i class="fa-solid fa-right-to-bracket"></i> Log in to Book
+                    <span style="font-size:inherit;">❓</span> Log in to Book
                 </a>
                 <p style="text-align:center;font-size:13px;color:rgba(21,40,31,.5);margin:0;">
                     Don't have an account? <a href="{{ route('register') }}" style="color:#0A64BC;font-weight:600;">Sign up free</a>
@@ -212,7 +212,7 @@
                 <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(21,40,31,.07);">
                     @foreach([['fa-shield-check','Secure M-Pesa payment'],['fa-users','Up to '.$maxStudents.' learners'],['fa-video','Live on Jitsi'],['fa-clock','15-min early access']] as [$ic,$lbl])
                     <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                        <i class="fa-solid {{ $ic }}" style="color:#10B981;font-size:12px;width:14px;text-align:center;flex-shrink:0;"></i>
+                        <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
                         <span style="font-size:13px;color:rgba(21,40,31,.6);">{{ $lbl }}</span>
                     </div>
                     @endforeach

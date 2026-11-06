@@ -18,7 +18,7 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 <section style="background:var(--ink);padding:52px 0;position:relative;overflow:hidden;">
     <div style="position:absolute;bottom:-60px;right:-40px;width:260px;height:260px;background:rgba(10,100,188,.15);border-radius:50%;"></div>
     <div class="w" style="position:relative;z-index:1;">
-        <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-play-circle"></i> Pre-Recorded Courses</div>
+        <div class="badge badge-white" style="margin-bottom:16px;"><span style="font-size:inherit;">❓</span> Pre-Recorded Courses</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Learn at your own pace</h1>
         <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">Video courses from TSC-registered tutors and national examiners â€” covering the full Kenyan curriculum.</p>
     </div>
@@ -27,10 +27,10 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 <div class="w" style="padding-top:48px;padding-bottom:64px;">
     @if($courses->isEmpty())
     <div class="card" style="padding:80px;text-align:center;">
-        <i class="fa-solid fa-photo-film" style="font-size:52px;color:var(--hair);margin-bottom:18px;display:block;"></i>
+        <span style="font-size:inherit;">❓</span>
         <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:10px;">Courses coming soon</h2>
         <p style="color:var(--muted);font-size:16px;margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;">Our tutors are preparing high-quality course content. In the meantime, book a live 1-on-1 session.</p>
-        <a href="{{ route('tutors.index') }}" class="btn btn-v"><i class="fa-solid fa-magnifying-glass"></i> Find a Tutor Instead</a>
+        <a href="{{ route('tutors.index') }}" class="btn btn-v"><span style="font-size:inherit;">🔍</span> Find a Tutor Instead</a>
     </div>
     @else
     <div style="display:grid;grid-template-columns:1fr;gap:20px;" class="course-g">
@@ -41,10 +41,10 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
             @else
             <div style="width:100%;height:180px;background:{{ $colors[$loop->index%count($colors)] }}22;display:flex;align-items:center;justify-content:center;font-size:52px;">
                 @php 
-                $icons = ['fa-ruler','fa-flask','fa-book','fa-pen','fa-bullseye','fa-lightbulb'];
+                $icons = ['📏','🧪','📚','✏️','🎯','💡'];
                 $iconColors = ['#0A64BC','#10B981','#D4A017','#E8522A','#8B5CF6','#F59E0B'];
                 @endphp
-                <i class="fas {{ $icons[$loop->index%6] }}" style="color:{{ $iconColors[$loop->index%6] }};"></i>
+                <span style="color:{{ $iconColors[$loop->index%6] }};">{{ $icons[$loop->index%6] }}</span>
             </div>
             @endif
             <div style="padding:20px;">
@@ -57,13 +57,13 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                     <img src="{{ $course->tutor->avatar_url }}" style="width:20px;height:20px;border-radius:999px;object-fit:cover;">
                     <span>{{ $course->tutor->name }}</span>
                     <span>Â·</span>
-                    <span><i class="fa-solid fa-play fa-xs"></i> {{ $course->total_lessons }} lessons</span>
+                    <span><span style="font-size:inherit;">❓</span> {{ $course->total_lessons }} lessons</span>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;">
                     <span style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:{{ $course->is_free?'var(--mint)':'var(--trust-blue)' }};">
                         {{ $course->is_free ? 'Free' : 'KSh '.number_format($course->price) }}
                     </span>
-                    <span class="btn btn-v btn-sm"><i class="fa-solid fa-arrow-right"></i> View Course</span>
+                    <span class="btn btn-v btn-sm"><span style="font-size:inherit;">→</span> View Course</span>
                 </div>
             </div>
         </a>

@@ -51,7 +51,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
     {{-- Closing-buffer banner (hidden until 5 min left) --}}
     <div id="closing-banner">
-        <i class="fa-solid fa-triangle-exclamation fa-sm"></i>
+        <span style="font-size:inherit;">⚠️</span>
         <span>Session ending soon Ã¢â‚¬â€œ closing buffer active. You may finish your lesson.</span>
         @if(auth()->id() === $booking->tutor_id)
         <button onclick="document.getElementById('closing-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 14px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:600;">Dismiss</button>
@@ -62,7 +62,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     <div class="session-header">
         <div class="left">
             <a href="{{ route('bookings.show', $booking->uuid) }}" class="back-btn">
-                <i class="fa-solid fa-arrow-left fa-xs"></i> Back
+                <span style="font-size:inherit;">←</span> Back
             </a>
             <div class="session-title">
                 {{ $booking->subject ? $booking->subject->name : 'Session' }} Ã‚Â· {{ $booking->duration_minutes }} min
@@ -77,10 +77,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                     @endif
                 </span>
                 @if(auth()->id() === $booking->tutor_id)
-                    <span class="moderator-badge"><i class="fa-solid fa-shield-halved fa-xs"></i> MODERATOR</span>
+                    <span class="moderator-badge"><span style="font-size:inherit;">🛡️</span> MODERATOR</span>
                 @endif
                 <span class="recording-indicator" id="recIndicator">
-                    <i class="fa-solid fa-circle fa-xs"></i> REC
+                    <span style="font-size:inherit;">❓</span> REC
                 </span>
             </div>
         </div>
@@ -120,10 +120,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 </p>
             </div>
             <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
-                <i class="fa-solid fa-copy fa-xs"></i>
+                <span style="font-size:inherit;">❓</span>
             </button>
             <button onclick="leaveSession()" class="exit-btn">
-                <i class="fa-solid fa-phone-slash fa-xs"></i> Leave
+                <span style="font-size:inherit;">📞</span> Leave
             </button>
         </div>
     </div>
@@ -378,10 +378,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     function copySessionCode() {
         navigator.clipboard.writeText(sessionCode).then(() => {
             const btn = document.getElementById('copyBtn');
-            btn.innerHTML = '<i class="fa-solid fa-check fa-xs"></i>';
+            btn.innerHTML = '<span style="font-size:inherit;">✅</span>';
             btn.classList.add('copied');
             setTimeout(() => {
-                btn.innerHTML = '<i class="fa-solid fa-copy fa-xs"></i>';
+                btn.innerHTML = '<span style="font-size:inherit;">❓</span>';
                 btn.classList.remove('copied');
             }, 2000);
         }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));

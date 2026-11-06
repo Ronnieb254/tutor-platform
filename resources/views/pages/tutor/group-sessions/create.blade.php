@@ -136,14 +136,14 @@ $unreadNotifs = $user->unreadNotifications()->count();
             <span class="page-title">Create Group Session</span>
         </div>
         <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost" style="padding:7px 16px;font-size:13px;">
-            <i class="fa-solid fa-arrow-left fa-xs"></i> Back
+            <span style="font-size:inherit;">←</span> Back
         </a>
     </div>
 
     <div class="content">
         @if($errors->any())
         <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:14px 18px;border-radius:12px;margin-bottom:20px;">
-            <p style="font-weight:700;margin-bottom:6px;"><i class="fa-solid fa-circle-exclamation"></i> Please fix the following errors:</p>
+            <p style="font-weight:700;margin-bottom:6px;"><span style="font-size:inherit;">❓</span> Please fix the following errors:</p>
             <ul style="padding-left:18px;font-size:13px;">
                 @foreach($errors->all() as $err)<li>{{ $err }}</li>@endforeach
             </ul>
@@ -157,7 +157,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 {{-- SESSION BASICS --}}
                 <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
                     <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
-                        <i class="fa-solid fa-circle-info fa-sm" style="color:#0A64BC;margin-right:7px;"></i>Session Details
+                        <span style="font-size:inherit;">ℹ️</span>Session Details
                     </h2>
 
                     <div class="field">
@@ -195,7 +195,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 {{-- SCHEDULE --}}
                 <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
                     <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
-                        <i class="fa-regular fa-calendar fa-sm" style="color:#0A64BC;margin-right:7px;"></i>Schedule & Pricing
+                        <span style="font-size:inherit;">📅</span>Schedule & Pricing
                     </h2>
 
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-2col">
@@ -236,7 +236,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
                         <div>
                             <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:4px;">
-                                <i class="fa-solid fa-layer-group fa-sm" style="color:#EEBE15;margin-right:7px;"></i>Multi-Session Series
+                                <span style="font-size:inherit;">❓</span>Multi-Session Series
                             </h2>
                             <p style="font-size:13px;color:var(--muted);">Create a recurring cohort (e.g. 6-week series). Students enroll per session.</p>
                         </div>
@@ -265,7 +265,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                             </div>
                         </div>
                         <div style="margin-top:12px;padding:12px 14px;background:rgba(212,160,23,.07);border-radius:10px;border:1px solid rgba(212,160,23,.2);">
-                            <p style="font-size:13px;color:#B7870A;"><i class="fa-solid fa-circle-info fa-xs" style="margin-right:6px;"></i>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
+                            <p style="font-size:13px;color:#B7870A;"><span style="font-size:inherit;">ℹ️</span>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 {{-- SUBMIT --}}
                 <div style="display:flex;gap:12px;align-items:center;">
                     <button type="submit" class="btn btn-primary" style="padding:13px 32px;font-size:15px;">
-                        <i class="fa-solid fa-check"></i>
+                        <span style="font-size:inherit;">✅</span>
                         <span x-text="isSeries ? 'Create Series' : 'Create Session'">Create Session</span>
                     </button>
                     <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost">Cancel</a>

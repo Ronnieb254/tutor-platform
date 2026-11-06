@@ -55,7 +55,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     <div class="w" style="position:relative;z-index:1;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:32px;flex-wrap:wrap;">
             <div>
-                <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-certificate"></i> TSC-Registered Tutors Only</div>
+                <div class="badge badge-white" style="margin-bottom:16px;"><span style="font-size:inherit;">📜</span> TSC-Registered Tutors Only</div>
                 <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">Find your perfect tutor</h1>
                 <p style="font-size:14px;color:rgba(255,255,255,.6);max-width:460px;">Personalised Learning, Proven Teaching Expertise, Affordable Prices.</p>
             </div>
@@ -66,17 +66,17 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
             <a href="{{ route('tutors.index') }}"
                style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
                       {{ !$track ? 'background:rgba(255,255,255,.9);color:var(--ink);' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
-                <i class="fa-solid fa-list fa-xs"></i> All Tutors
+                <span style="font-size:inherit;">📋</span> All Tutors
             </a>
             <a href="{{ route('tutors.index') }}?track=kenyan"
                style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
                       {{ $track==='kenyan' ? 'background:#10B981;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
-                <i class="fa-solid fa-flag fa-xs"></i> Kenyan Curriculum
+                <span style="font-size:inherit;">🚩</span> Kenyan Curriculum
             </a>
             <a href="{{ route('tutors.index') }}?track=international"
                style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
                       {{ $track==='international' ? 'background:#6366F1;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
-                <i class="fa-solid fa-globe fa-xs"></i> International
+                <span style="font-size:inherit;">🌐</span> International
             </a>
         </div> -->
     </div>
@@ -89,14 +89,14 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
         <div class="filter-card">
             <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
                 <div style="flex:2;min-width:190px;">
-                    <span class="f-label"><i class="fa-solid fa-magnifying-glass fa-xs" style="color:var(--trust-blue);"></i> Search</span>
+                    <span class="f-label"><span style="font-size:inherit;">🔍</span> Search</span>
                     <div style="position:relative;">
-                        <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;"></i>
+                        <span style="font-size:inherit;">🔍</span>
                         <input type="text" name="search" value="{{ $search }}" class="f-input" placeholder="Tutor name or subjectâ€¦" style="padding-left:34px;">
                     </div>
                 </div>
                 <div style="min-width:160px;">
-                    <span class="f-label"><i class="fa-solid fa-layer-group fa-xs" style="color:var(--trust-blue);"></i> Category</span>
+                    <span class="f-label"><span style="font-size:inherit;">❓</span> Category</span>
                     <select name="category" class="f-input" onchange="this.form.submit()">
                         <option value="">All categories</option>
                         @foreach($categories as $cat)
@@ -106,7 +106,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 </div>
                 @if($subjects->isNotEmpty())
                 <div style="min-width:150px;">
-                    <span class="f-label"><i class="fa-solid fa-book-open fa-xs" style="color:var(--trust-blue);"></i> Subject</span>
+                    <span class="f-label"><span style="font-size:inherit;">📖</span> Subject</span>
                     <select name="subject" class="f-input">
                         <option value="">All subjects</option>
                         @foreach($subjects as $s)
@@ -117,9 +117,9 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 @endif
                 
                 <div style="display:flex;gap:6px;align-items:flex-end;">
-                    <button type="submit" class="btn btn-v btn-sm" style="height:42px;"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                    <button type="submit" class="btn btn-v btn-sm" style="height:42px;"><span style="font-size:inherit;">🔍</span> Search</button>
                     @if($search||$catId||$subjId||$minP||$maxP||$minR)
-                    <a href="{{ route('tutors.index') }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--ink);border:none;height:42px;"><i class="fa-solid fa-xmark"></i> Clear</a>
+                    <a href="{{ route('tutors.index') }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--ink);border:none;height:42px;"><span style="font-size:inherit;">❌</span> Clear</a>
                     @endif
                 </div>
             </div>
@@ -129,9 +129,9 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     {{-- Active tags --}}
     @if($search||$catId||$subjId||$minP||$maxP||$minR)
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-        @if($search)<span class="filter-tag"><i class="fa-solid fa-magnifying-glass fa-xs"></i>"{{ $search }}"</span>@endif
-        @if($catId)<span class="filter-tag"><i class="fa-solid fa-layer-group fa-xs"></i>{{ $categories->find($catId)?->name }}</span>@endif
-        @if($minR)<span class="filter-tag"><i class="fa-solid fa-star fa-xs"></i>â˜… {{ $minR }}+</span>@endif
+        @if($search)<span class="filter-tag"><span style="font-size:inherit;">🔍</span>"{{ $search }}"</span>@endif
+        @if($catId)<span class="filter-tag"><span style="font-size:inherit;">❓</span>{{ $categories->find($catId)?->name }}</span>@endif
+        @if($minR)<span class="filter-tag"><span style="font-size:inherit;">⭐</span>â˜… {{ $minR }}+</span>@endif
         @if($minP)<span class="filter-tag">From KSh {{ number_format($minP) }}</span>@endif
         @if($maxP)<span class="filter-tag">To KSh {{ number_format($maxP) }}</span>@endif
     </div>
@@ -140,10 +140,10 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     {{-- Tutors grid --}}
     @if($tutors->isEmpty())
     <div class="card" style="padding:64px;text-align:center;">
-        <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-magnifying-glass" style="color:var(--hair);"></i></div>
+        <div style="font-size:48px;margin-bottom:14px;"><span style="font-size:inherit;">🔍</span></div>
         <h3 style="font-size:22px;color:var(--ink);margin-bottom:8px;">No tutors found</h3>
         <p style="color:var(--muted);margin-bottom:20px;">Try adjusting your filters or search term.</p>
-        <a href="{{ route('tutors.index') }}" class="btn btn-v"><i class="fa-solid fa-arrow-left"></i> Clear Filters</a>
+        <a href="{{ route('tutors.index') }}" class="btn btn-v"><span style="font-size:inherit;">←</span> Clear Filters</a>
     </div>
     @else
     <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="tgrid">
@@ -160,7 +160,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     {{ implode(' ', array_slice(explode(' ', trim($tutor->user->name)), 0, 2)) }}
 </div>
                             <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
-                                <span style="font-size:11px;font-weight:600;color:var(--mint);"><i class="fa-solid fa-certificate fa-xs"></i> TSC Verified</span>
+                                <span style="font-size:11px;font-weight:600;color:var(--mint);"><span style="font-size:inherit;">📜</span> TSC Verified</span>
                                 <span style="color:var(--muted);font-size:11px;">Â· {{ $tutor->experience_years }}yr exp</span>
                             </div>
                         </div>
@@ -183,10 +183,10 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                         @endforeach
                     </div>
                     <div style="display:flex;align-items:center;gap:10px;margin-top:7px;font-size:12px;color:var(--muted);">
-                        <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star fa-xs"></i> {{ number_format($tutor->rating_avg,1) }}</span>
+                        <span style="color:var(--gold);font-weight:700;"><span style="font-size:inherit;">⭐</span> {{ number_format($tutor->rating_avg,1) }}</span>
                         <span>({{ $tutor->total_reviews }})</span>
                         <span>Â·</span><span>{{ $tutor->total_sessions }} sessions</span>
-                        <!-- @if($tutor->city)<span>Â·</span><span><i class="fa-solid fa-location-dot fa-xs"></i> {{ $tutor->city }}</span>@endif -->
+                        <!-- @if($tutor->city)<span>Â·</span><span><span style="font-size:inherit;">📍</span> {{ $tutor->city }}</span>@endif -->
                     </div>
                 </div>
             </div>
@@ -206,10 +206,10 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                 @endforeach
             </div> -->
             <div style="display:flex;gap:8px;">
-                <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fa-solid fa-calendar-check"></i> View & Book</a>
+                <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><span style="font-size:inherit;">✅</span> View & Book</a>
                 @auth
                 <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
-                    <i class="fa-regular fa-heart"></i>
+                    <span style="font-size:inherit;">❤️</span>
                 </a>
                 @endauth
             </div>
@@ -221,17 +221,17 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     @if($tutors->hasPages())
     <div style="margin-top:32px;display:flex;justify-content:center;gap:5px;flex-wrap:wrap;">
         @if($tutors->onFirstPage())
-        <span class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;pointer-events:none;"><i class="fa-solid fa-chevron-left fa-xs"></i> Prev</span>
+        <span class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;pointer-events:none;"><span style="font-size:inherit;">❓</span> Prev</span>
         @else
-        <a href="{{ $tutors->previousPageUrl() }}" class="btn btn-sm btn-o"><i class="fa-solid fa-chevron-left fa-xs"></i> Prev</a>
+        <a href="{{ $tutors->previousPageUrl() }}" class="btn btn-sm btn-o"><span style="font-size:inherit;">❓</span> Prev</a>
         @endif
         @foreach($tutors->getUrlRange(max(1,$tutors->currentPage()-2),min($tutors->lastPage(),$tutors->currentPage()+2)) as $page=>$url)
         <a href="{{ $url }}" class="btn btn-sm" style="background:{{ $page==$tutors->currentPage()?'var(--trust-blue)':'#fff' }};color:{{ $page==$tutors->currentPage()?'#fff':'var(--ink)' }};border:1.5px solid {{ $page==$tutors->currentPage()?'var(--trust-blue)':'var(--hair)' }};">{{ $page }}</a>
         @endforeach
         @if($tutors->hasMorePages())
-        <a href="{{ $tutors->nextPageUrl() }}" class="btn btn-sm btn-o">Next <i class="fa-solid fa-chevron-right fa-xs"></i></a>
+        <a href="{{ $tutors->nextPageUrl() }}" class="btn btn-sm btn-o">Next <span style="font-size:inherit;">❓</span></a>
         @else
-        <span class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;pointer-events:none;">Next <i class="fa-solid fa-chevron-right fa-xs"></i></span>
+        <span class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;pointer-events:none;">Next <span style="font-size:inherit;">❓</span></span>
         @endif
     </div>
     @endif

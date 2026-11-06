@@ -249,7 +249,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 </div>
                 <div style="width:100%;max-width:280px;">
                     <div class="search-wrap">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span style="font-size:inherit;">🔍</span>
                         <input type="text" id="search-subjects" placeholder="Search subjects..." class="search-input">
                     </div>
                 </div>
@@ -370,7 +370,7 @@ function updatePreview() {
     }
     preview.innerHTML = Array.from(selectedSubjects).map(function(id) {
         var name = subjectNames[id] || document.querySelector('.subject-card[data-subject-id="' + id + '"]')?.dataset.subjectName || 'Subject';
-        return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<i class="fa-solid fa-xmark" onclick="deselectSubject(' + id + ')"></i></span>';
+        return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<span style="font-size:inherit;">❌</span></span>';
     }).join('');
 }
 
@@ -378,7 +378,7 @@ function updateCount() {
     const countSpan = document.getElementById('subject-count');
     countSpan.textContent = selectedSubjects.size;
     if (selectedSubjects.size >= 2) {
-        countSpan.innerHTML = selectedSubjects.size + '/2 <span style="color:var(--mint);margin-left:6px;"><i class="fa-solid fa-check fa-xs"></i> Max reached</span>';
+        countSpan.innerHTML = selectedSubjects.size + '/2 <span style="color:var(--mint);margin-left:6px;"><span style="font-size:inherit;">✅</span> Max reached</span>';
     } else {
         countSpan.textContent = selectedSubjects.size + '/2';
     }

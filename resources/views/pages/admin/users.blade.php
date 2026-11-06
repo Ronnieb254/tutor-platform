@@ -137,11 +137,11 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
             {{-- Previous --}}
             @if($users->onFirstPage())
                 <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;">
-                    <i class="fa-solid fa-chevron-left fa-xs"></i>
+                    <span style="font-size:inherit;">❓</span>
                 </span>
             @else
                 <a href="{{ $users->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">
-                    <i class="fa-solid fa-chevron-left fa-xs"></i>
+                    <span style="font-size:inherit;">❓</span>
                 </a>
             @endif
 
@@ -169,11 +169,11 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
             {{-- Next --}}
             @if($users->hasMorePages())
                 <a href="{{ $users->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">
-                    <i class="fa-solid fa-chevron-right fa-xs"></i>
+                    <span style="font-size:inherit;">❓</span>
                 </a>
             @else
                 <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;">
-                    <i class="fa-solid fa-chevron-right fa-xs"></i>
+                    <span style="font-size:inherit;">❓</span>
                 </span>
             @endif
         </div>

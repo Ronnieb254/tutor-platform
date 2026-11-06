@@ -62,7 +62,7 @@ a{color:inherit;text-decoration:none;}
     <div class="header">
         <h1 class="title">My Clinic Bookings</h1>
         <a href="{{ route('examiner-clinic') }}" class="btn btn-primary">
-            <i class="fa-solid fa-plus"></i> Book New Clinic
+            <span style="font-size:inherit;">➕</span> Book New Clinic
         </a>
     </div>
 
@@ -84,17 +84,17 @@ a{color:inherit;text-decoration:none;}
         @endphp
         <div class="booking-card" data-scheduled-at="{{ $booking->clinic->scheduled_at->toIso8601String() }}">
             <div class="booking-icon">
-                <i class="fa-solid fa-chalkboard-user"></i>
+                <span style="font-size:inherit;">👨‍🏫</span>
             </div>
 
             <div class="booking-info">
                 <div class="booking-title">{{ $booking->clinic->title }}</div>
                 <div class="booking-meta">
-                    <span><i class="fa-regular fa-calendar"></i> {{ $booking->clinic->scheduled_at->format('D, M j, Y') }}</span>
-                    <span><i class="fa-solid fa-clock"></i> {{ $booking->clinic->scheduled_at->format('g:ia') }}</span>
-                    <span><i class="fa-solid fa-hourglass-end"></i> {{ $booking->clinic->duration_minutes }}min</span>
+                    <span><span style="font-size:inherit;">📅</span> {{ $booking->clinic->scheduled_at->format('D, M j, Y') }}</span>
+                    <span><span style="font-size:inherit;">⏰</span> {{ $booking->clinic->scheduled_at->format('g:ia') }}</span>
+                    <span><span style="font-size:inherit;">❓</span> {{ $booking->clinic->duration_minutes }}min</span>
                     @if($booking->clinic->tutor)
-                    <span><i class="fa-solid fa-user-tie"></i> {{ $booking->clinic->tutor->name }}</span>
+                    <span><span style="font-size:inherit;">👔</span> {{ $booking->clinic->tutor->name }}</span>
                     @endif
                 </div>
 
@@ -110,20 +110,20 @@ a{color:inherit;text-decoration:none;}
                 {{-- Status Badge --}}
                 @if($canJoin)
                 <span class="status-badge status-upcoming" style="background:rgba(16,185,129,.2);color:#10B981;">
-                    <i class="fa-solid fa-circle fa-xs"></i> LIVE NOW
+                    <span style="font-size:inherit;">❓</span> LIVE NOW
                 </span>
                 @elseif($isUpcoming)
                 <span class="status-badge status-upcoming" id="badge-{{ $booking->id }}">
-                    <i class="fa-solid fa-clock fa-xs"></i>
+                    <span style="font-size:inherit;">⏰</span>
                     <span id="countdown-{{ $booking->id }}">{{ $booking->clinic->scheduled_at->diffForHumans() }}</span>
                 </span>
                 @elseif($booking->attended)
                 <span class="status-badge status-completed">
-                    <i class="fa-solid fa-check fa-xs"></i> Attended
+                    <span style="font-size:inherit;">✅</span> Attended
                 </span>
                 @else
                 <span class="status-badge status-past">
-                    <i class="fa-solid fa-circle-check fa-xs"></i> Completed
+                    <span style="font-size:inherit;">✅</span> Completed
                 </span>
                 @endif
 
@@ -131,11 +131,11 @@ a{color:inherit;text-decoration:none;}
                 <div class="booking-action">
                     @if($canJoin || $isUpcoming)
                     <a href="{{ route('clinic.join', $booking->clinic) }}" class="btn btn-join" style="font-size:12px;padding:8px 14px;">
-                        <i class="fa-solid fa-video"></i> {{ $canJoin ? 'Join Session' : 'Join Early' }}
+                        <span style="font-size:inherit;">🎥</span> {{ $canJoin ? 'Join Session' : 'Join Early' }}
                     </a>
                     @endif
                     <button onclick="copyCode('{{ $booking->session_code }}')" class="btn btn-share" style="font-size:12px;padding:8px 14px;">
-                        <i class="fa-solid fa-copy"></i> Copy Code
+                        <span style="font-size:inherit;">❓</span> Copy Code
                     </button>
                 </div>
 
@@ -154,9 +154,9 @@ a{color:inherit;text-decoration:none;}
         @if($bookings->hasPages())
         <div class="pagination">
             @if($bookings->onFirstPage())
-            <span class="page-link disabled"><i class="fa-solid fa-chevron-left fa-xs"></i></span>
+            <span class="page-link disabled"><span style="font-size:inherit;">❓</span></span>
             @else
-            <a href="{{ $bookings->previousPageUrl() }}" class="page-link"><i class="fa-solid fa-chevron-left fa-xs"></i></a>
+            <a href="{{ $bookings->previousPageUrl() }}" class="page-link"><span style="font-size:inherit;">❓</span></a>
             @endif
 
             @foreach($bookings->getUrlRange(max(1, $bookings->currentPage()-2), min($bookings->lastPage(), $bookings->currentPage()+2)) as $page => $url)
@@ -164,19 +164,19 @@ a{color:inherit;text-decoration:none;}
             @endforeach
 
             @if($bookings->hasMorePages())
-            <a href="{{ $bookings->nextPageUrl() }}" class="page-link"><i class="fa-solid fa-chevron-right fa-xs"></i></a>
+            <a href="{{ $bookings->nextPageUrl() }}" class="page-link"><span style="font-size:inherit;">❓</span></a>
             @else
-            <span class="page-link disabled"><i class="fa-solid fa-chevron-right fa-xs"></i></span>
+            <span class="page-link disabled"><span style="font-size:inherit;">❓</span></span>
             @endif
         </div>
         @endif
     @else
         <div class="empty">
-            <div class="empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
+            <div class="empty-icon"><span style="font-size:inherit;">❌</span></div>
             <h2 class="empty-title">No Bookings Yet</h2>
             <p class="empty-text">You haven't booked any clinic sessions. Start learning from national examiners today!</p>
             <a href="{{ route('examiner-clinic') }}" class="btn btn-primary" style="width:auto;margin:0 auto;">
-                <i class="fa-solid fa-calendar-check"></i> Browse Clinics
+                <span style="font-size:inherit;">✅</span> Browse Clinics
             </a>
         </div>
     @endif
@@ -188,7 +188,7 @@ function copyCode(code) {
         // Show confirmation
         const btn = event.target.closest('button');
         const original = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check fa-xs"></i> Copied!';
+        btn.innerHTML = '<span style="font-size:inherit;">✅</span> Copied!';
         setTimeout(() => {
             btn.innerHTML = original;
         }, 2000);

@@ -23,14 +23,14 @@
 <div class="contract-container">
     <div class="contract-card">
         <div style="text-align: center; margin-bottom: 32px;">
-            <i class="fa-solid fa-file-contract" style="font-size: 48px; color: var(--trust-blue); margin-bottom: 16px;"></i>
+            <span style="font-size:inherit;">📄</span>
             <h1 style="font-family: 'Fraunces', serif; font-size: 32px; color: var(--ink); margin-bottom: 8px;">Tutor Services Agreement</h1>
             <p style="color: var(--muted);">Please read carefully before accepting</p>
         </div>
 
         @if(session('error'))
         <div style="background: rgba(239,68,68,.1); border-left: 3px solid #EF4444; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
-            <p style="color: #991B1B; margin: 0;"><i class="fa-solid fa-triangle-exclamation"></i> {{ session('error') }}</p>
+            <p style="color: #991B1B; margin: 0;"><span style="font-size:inherit;">⚠️</span> {{ session('error') }}</p>
         </div>
         @endif
 
@@ -361,7 +361,7 @@
                 </label>
 
                 <button type="submit" class="btn-accept" id="acceptButton" disabled>
-                    <i class="fa-solid fa-circle-check"></i> Agree &amp; Sign Ã¢â‚¬â€ I Accept the Agreement
+                    <span style="font-size:inherit;">✅</span> Agree &amp; Sign Ã¢â‚¬â€ I Accept the Agreement
                 </button>
 
                 <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px;">

@@ -87,7 +87,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 <div class="pstep">
                     <div class="pstep-dot"
                          :style="step > {{ $i+1 }} ? 'background:#10B981;color:#fff;' : step === {{ $i+1 }} ? 'background:#0A64BC;color:#fff;' : 'background:rgba(21,40,31,.08);color:rgba(21,40,31,.4);'">
-                        <template x-if="step > {{ $i+1 }}"><i class="fa-solid fa-check fa-xs"></i></template>
+                        <template x-if="step > {{ $i+1 }}"><span style="font-size:inherit;">✅</span></template>
                         <template x-if="step <= {{ $i+1 }}"><span>{{ $i+1 }}</span></template>
                     </div>
                     <span class="pstep-label"
@@ -104,41 +104,41 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             {{-- -- STEP 1: Profile -- --}}
             <div x-show="step === 1">
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-user" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Your Profile</h2>
+                    <h2><span style="font-size:inherit;">👤</span>Your Profile</h2>
                     <p class="sub">Tell students about yourself. This will appear on your public tutor profile.</p>
 
                     <div class="row2">
                         <div class="field">
-                            <div class="flabel"><i class="fa-solid fa-user"></i> Full Name <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><span style="font-size:inherit;">👤</span> Full Name <span style="color:var(--coral);">*</span></div>
                             <input type="text" x-model="form.name" class="finput" placeholder="As on National ID" required>
                             <p class="ferr" x-show="errors.name" x-text="errors.name"></p>
                         </div>
                         <div class="field">
-                            <div class="flabel"><i class="fa-solid fa-phone"></i> Phone Number <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><span style="font-size:inherit;">📞</span> Phone Number <span style="color:var(--coral);">*</span></div>
                             <input type="tel" x-model="form.phone" class="finput" placeholder="+254 7XX XXX XXX" required>
                         </div>
                     </div>
 
                     <div class="row2">
                         <div class="field">
-                            <div class="flabel"><i class="fa-solid fa-location-dot"></i> City</div>
+                            <div class="flabel"><span style="font-size:inherit;">📍</span> City</div>
                             <input type="text" x-model="form.city" class="finput" placeholder="e.g. Nairobi">
                         </div>
                         <div class="field">
-                            <div class="flabel"><i class="fa-solid fa-clock"></i> Years of Experience</div>
+                            <div class="flabel"><span style="font-size:inherit;">⏰</span> Years of Experience</div>
                             <input type="number" x-model="form.experience_years" class="finput" placeholder="e.g. 5" min="0" max="50">
                         </div>
                     </div>
 
                     <div class="field">
-                        <div class="flabel"><i class="fa-solid fa-layer-group"></i> Level(s) You Teach <span style="color:var(--coral);">*</span></div>
+                        <div class="flabel"><span style="font-size:inherit;">❓</span> Level(s) You Teach <span style="color:var(--coral);">*</span></div>
                         <div style="display:flex;flex-wrap:wrap;gap:8px;">
                             @foreach(['JSS (Grade 7-9)','Senior School (Grade 10-12)','Form 3','Form 4','Primary (Class 1-6)'] as $level)
                             <label style="cursor:pointer;">
                                 <input type="checkbox" :value="'{{ $level }}'" x-model="form.levels" style="display:none;">
                                 <span :class="form.levels.includes('{{ $level }}') ? 's-chip sel' : 's-chip'"
                                       @click="toggleLevel('{{ $level }}')">
-                                    <i class="fa-solid fa-graduation-cap fa-xs" x-show="form.levels.includes('{{ $level }}')"></i>
+                                    <span style="font-size:inherit;">🎓</span>
                                     {{ $level }}
                                 </span>
                             </label>
@@ -147,7 +147,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     </div>
 
                     <div class="field">
-                        <div class="flabel"><i class="fa-solid fa-pen-to-square"></i> Professional Bio <span style="color:var(--coral);">*</span></div>
+                        <div class="flabel"><span style="font-size:inherit;">✏️</span> Professional Bio <span style="color:var(--coral);">*</span></div>
                         <textarea x-model="form.bio" class="finput" rows="4"
                                   placeholder="Describe your teaching experience, qualifications, approach and what makes your lessons effective... (minimum 50 characters)"></textarea>
                         <div style="display:flex;justify-content:space-between;margin-top:4px;">
@@ -157,17 +157,17 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     </div>
 
                     <div class="field">
-                        <div class="flabel"><i class="fa-solid fa-coins"></i> Hourly Rate (KSh) <span style="color:var(--coral);">*</span></div>
+                        <div class="flabel"><span style="font-size:inherit;">❓</span> Hourly Rate (KSh) <span style="color:var(--coral);">*</span></div>
                         <div style="position:relative;">
                             <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--muted);">KSh</span>
                             <input type="number" x-model="form.hourly_rate" class="finput" style="padding-left:46px;" placeholder="e.g. 2000" min="500">
                         </div>
-                        <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-circle-info fa-xs" style="color:var(--trust-blue);"></i> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
+                        <p style="font-size:11px;color:var(--muted);margin-top:4px;"><span style="font-size:inherit;">ℹ️</span> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
                     </div>
                 </div>
                 <div style="display:flex;gap:12px;">
                     <button class="btn-next" @click="validateStep1()">
-                        Continue <i class="fa-solid fa-arrow-right fa-sm"></i>
+                        Continue <span style="font-size:inherit;">→</span>
                     </button>
                 </div>
             </div>
@@ -175,12 +175,12 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             {{-- -- STEP 2: Subjects -- --}}
             <div x-show="step === 2" x-cloak>
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-book-open" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Curriculum &amp; Subjects</h2>
+                    <h2><span style="font-size:inherit;">📖</span>Curriculum &amp; Subjects</h2>
                     <p class="sub">Tell us which curriculum(s) you teach, then select your subjects.</p>
 
                     {{-- Curriculum Selection --}}
                     <div class="field" style="margin-bottom:24px;">
-                        <div class="flabel"><i class="fa-solid fa-graduation-cap"></i> Which curriculum do you teach? <span style="color:var(--coral);">*</span></div>
+                        <div class="flabel"><span style="font-size:inherit;">🎓</span> Which curriculum do you teach? <span style="color:var(--coral);">*</span></div>
                         <p class="ferr" x-show="errors.curricula" x-text="errors.curricula" style="margin-bottom:8px;"></p>
                         <div style="display:flex;flex-direction:column;gap:12px;">
 
@@ -200,7 +200,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                         @foreach($kenyanCurricula as $curr)
                                         <span :class="form.curriculum_ids.includes({{ $curr->id }}) ? 's-chip sel' : 's-chip'"
                                               @click="toggleCurriculum({{ $curr->id }})">
-                                            <i class="fa-solid fa-check fa-xs" x-show="form.curriculum_ids.includes({{ $curr->id }})"></i>
+                                            <span class="fa-xs" style="font-size:inherit;" x-show="form.curriculum_ids.includes({{ $curr->id }})">✅</span>
                                             {{ $curr->name }}
                                         </span>
                                         @endforeach
@@ -227,7 +227,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                         @foreach($intlCurricula as $curr)
                                         <span :class="form.curriculum_ids.includes({{ $curr->id }}) ? 's-chip sel' : 's-chip'"
                                               @click="toggleCurriculum({{ $curr->id }})">
-                                            <i class="fa-solid fa-check fa-xs" x-show="form.curriculum_ids.includes({{ $curr->id }})"></i>
+                                            <span class="fa-xs" style="font-size:inherit;" x-show="form.curriculum_ids.includes({{ $curr->id }})">✅</span>
                                             {{ $curr->name }}
                                         </span>
                                         @endforeach
@@ -241,7 +241,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     </div>
 
                     <div style="padding:10px 14px;background:rgba(238,190,21,.08);border-radius:10px;font-size:12px;color:#78350F;margin-bottom:20px;">
-                        <i class="fa-solid fa-clock fa-xs" style="color:#EEBE15;"></i>
+                        <span style="font-size:inherit;">⏰</span>
                         <strong>Verification:</strong> Standard 72 hrs. Speedy Verification (KSh 1,000) takes 24 hrs.
                     </div>
 
@@ -261,7 +261,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <span :class="form.subjects.includes({{ $subject->id }}) ? 's-chip sel' : 's-chip'"
                                       @click="toggleSubject({{ $subject->id }})"
                                       :style="!form.subjects.includes({{ $subject->id }}) && form.subjects.length >= 2 ? 'opacity:.4;cursor:not-allowed;' : ''">
-                                    <i class="fa-solid fa-check fa-xs" x-show="form.subjects.includes({{ $subject->id }})"></i>
+                                    <span class="fa-xs" style="font-size:inherit;" x-show="form.subjects.includes({{ $subject->id }})">✅</span>
                                     {{ $subject->name }}
                                 </span>
                                 @endforeach
@@ -272,30 +272,30 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                     <div style="margin-top:14px;padding:12px 14px;background:rgba(10,100,188,.05);border-radius:12px;border:1px solid rgba(10,100,188,.12);">
                         <span style="font-size:13px;font-weight:600;color:var(--trust-blue);">
-                            <i class="fa-solid fa-circle-info fa-xs"></i>
+                            <span style="font-size:inherit;">ℹ️</span>
                             <span x-text="form.subjects.length"></span>/2 subjects selected
-                            <span x-show="form.subjects.length === 2" style="color:var(--mint);margin-left:8px;"><i class="fa-solid fa-check fa-xs"></i> Maximum reached</span>
+                            <span x-show="form.subjects.length === 2" style="color:var(--mint);margin-left:8px;"><span style="font-size:inherit;">✅</span> Maximum reached</span>
                         </span>
                     </div>
                     <p class="ferr" x-show="errors.subjects" x-text="errors.subjects" style="margin-top:8px;"></p>
                 </div>
                 <div style="display:flex;gap:12px;">
-                    <button class="btn-back" @click="step=1"><i class="fa-solid fa-arrow-left fa-xs"></i> Back</button>
-                    <button class="btn-next" @click="validateStep2()">Continue <i class="fa-solid fa-arrow-right fa-sm"></i></button>
+                    <button class="btn-back" @click="step=1"><span style="font-size:inherit;">←</span> Back</button>
+                    <button class="btn-next" @click="validateStep2()">Continue <span style="font-size:inherit;">→</span></button>
                 </div>
             </div>
 
             {{-- -- STEP 3: Documents -- --}}
             <div x-show="step === 3" x-cloak>
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-file-shield" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Verification Documents</h2>
+                    <h2><span style="font-size:inherit;">📄</span>Verification Documents</h2>
                     <p class="sub">Upload your documents so we can verify your credentials. All files are stored securely. Accepted: JPG, PNG, PDF â€” max 5MB each.</p>
 
                     <div style="display:flex;flex-direction:column;gap:16px;">
 
                         {{-- National ID --}}
                         <div>
-                            <div class="flabel"><i class="fa-solid fa-id-card"></i> National ID / Passport <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><span style="font-size:inherit;">❓</span> National ID / Passport <span style="color:var(--coral);">*</span></div>
                             <div class="upload-zone" :class="files.national_id ? 'has-file' : ''"
                                  @dragover.prevent="$el.classList.add('drag')"
                                  @dragleave="$el.classList.remove('drag')"
@@ -310,10 +310,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.national_id">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><span style="font-size:inherit;">✅</span></div>
                                         <div class="upload-title" x-text="files.national_id.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.national_id.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
+                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><span style="font-size:inherit;">✅</span> Ready to upload</span>
                                     </div>
                                 </template>
                             </div>
@@ -321,7 +321,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                         {{-- Degree / Academic --}}
                         <div>
-                            <div class="flabel"><i class="fa-solid fa-graduation-cap"></i> Degree Certificate <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><span style="font-size:inherit;">🎓</span> Degree Certificate <span style="color:var(--coral);">*</span></div>
                             <div class="upload-zone" :class="files.academic_certificate ? 'has-file' : ''"
                                  @dragover.prevent="$el.classList.add('drag')"
                                  @dragleave="$el.classList.remove('drag')"
@@ -336,10 +336,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.academic_certificate">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><span style="font-size:inherit;">✅</span></div>
                                         <div class="upload-title" x-text="files.academic_certificate.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.academic_certificate.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
+                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><span style="font-size:inherit;">✅</span> Ready to upload</span>
                                     </div>
                                 </template>
                             </div>
@@ -347,7 +347,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                         {{-- TSC Certificate --}}
                         <div>
-                            <div class="flabel"><i class="fa-solid fa-certificate"></i> TSC Certificate <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><span style="font-size:inherit;">📜</span> TSC Certificate <span style="color:var(--coral);">*</span></div>
                             <div class="upload-zone" :class="files.tsc_certificate ? 'has-file' : ''"
                                  @dragover.prevent="$el.classList.add('drag')"
                                  @dragleave="$el.classList.remove('drag')"
@@ -362,10 +362,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.tsc_certificate">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><span style="font-size:inherit;">✅</span></div>
                                         <div class="upload-title" x-text="files.tsc_certificate.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.tsc_certificate.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
+                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><span style="font-size:inherit;">✅</span> Ready to upload</span>
                                     </div>
                                 </template>
                             </div>
@@ -373,7 +373,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                         {{-- Certificate of Good Conduct --}}
                         <div>
-                            <div class="flabel"><i class="fa-solid fa-shield-halved"></i> Certificate of Good Conduct <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><span style="font-size:inherit;">🛡️</span> Certificate of Good Conduct <span style="color:var(--coral);">*</span></div>
                             <div class="upload-zone" :class="files.certificate_of_good_conduct ? 'has-file' : ''"
                                  @dragover.prevent="$el.classList.add('drag')"
                                  @dragleave="$el.classList.remove('drag')"
@@ -388,10 +388,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.certificate_of_good_conduct">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><span style="font-size:inherit;">✅</span></div>
                                         <div class="upload-title" x-text="files.certificate_of_good_conduct.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.certificate_of_good_conduct.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
+                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><span style="font-size:inherit;">✅</span> Ready to upload</span>
                                     </div>
                                 </template>
                             </div>
@@ -399,7 +399,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                         {{-- Passport Photo --}}
                         <div>
-                            <div class="flabel"><i class="fa-solid fa-camera"></i> Passport Size Photo <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><span style="font-size:inherit;">📷</span> Passport Size Photo <span style="color:var(--coral);">*</span></div>
                             <div class="upload-zone" :class="files.passport_photo ? 'has-file' : ''"
                                  @dragover.prevent="$el.classList.add('drag')"
                                  @dragleave="$el.classList.remove('drag')"
@@ -414,10 +414,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.passport_photo">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><span style="font-size:inherit;">✅</span></div>
                                         <div class="upload-title" x-text="files.passport_photo.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.passport_photo.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
+                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><span style="font-size:inherit;">✅</span> Ready to upload</span>
                                     </div>
                                 </template>
                             </div>
@@ -427,15 +427,15 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     <p class="ferr" x-show="errors.documents" x-text="errors.documents" style="margin-top:10px;"></p>
                 </div>
                 <div style="display:flex;gap:12px;">
-                    <button class="btn-back" @click="step=2"><i class="fa-solid fa-arrow-left fa-xs"></i> Back</button>
-                    <button class="btn-next" @click="validateStep3()">Continue <i class="fa-solid fa-arrow-right fa-sm"></i></button>
+                    <button class="btn-back" @click="step=2"><span style="font-size:inherit;">←</span> Back</button>
+                    <button class="btn-next" @click="validateStep3()">Continue <span style="font-size:inherit;">→</span></button>
                 </div>
             </div>
 
             {{-- -- STEP 4: Verification -- --}}
             <div x-show="step === 4" x-cloak>
                 <div class="ob-card">
-                    <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Choose Verification Speed</h2>
+                    <h2><span style="font-size:inherit;">⏰</span>Choose Verification Speed</h2>
                     <p class="sub">Your documents will be reviewed by our academic team. Choose how quickly you want to get started.</p>
 
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;" class="ver-g">
@@ -451,7 +451,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <span style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">Standard</span>
                             </div>
                             <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--mint);margin-bottom:6px;">Free</div>
-                            <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fa-solid fa-clock fa-xs" style="color:var(--muted);margin-right:4px;"></i> Up to 3 working days</div>
+                            <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><span style="font-size:inherit;">⏰</span> Up to 3 working days</div>
                             <p style="font-size:13px;color:var(--muted);line-height:1.6;">Our team reviews your documents and verifies your credentials within 3 business days.</p>
                         </div>
 
@@ -464,10 +464,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                     <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="form.speedy ? 'border-color:var(--gold);background:var(--gold);' : 'border-color:rgba(21,40,31,.3);'">
                                         <div x-show="form.speedy" style="width:100%;height:100%;border-radius:50%;background:#fff;transform:scale(.45);"></div>
                                     </div>
-                                    <span class="speedy-badge"><i class="fa-solid fa-bolt fa-xs"></i> Priority Queue</span>
+                                    <span class="speedy-badge"><span style="font-size:inherit;">⚡</span> Priority Queue</span>
                                 </div>
                                 <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--ink);margin-bottom:6px;">KSh 1,000</div>
-                                <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fa-solid fa-rocket fa-xs" style="color:var(--gold);margin-right:4px;"></i> Within 24 hours</div>
+                                <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><span style="font-size:inherit;">❓</span> Within 24 hours</div>
                                 <p style="font-size:13px;color:rgba(21,40,31,.65);line-height:1.6;">Skip the queue. Your application is prioritised and reviewed within 24 hours by a senior verifier.</p>
                             </div>
                         </div>
@@ -477,12 +477,12 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     {{-- Speedy payment form --}}
                     <div x-show="form.speedy" x-cloak style="background:rgba(212,160,23,.08);border:1px solid rgba(212,160,23,.3);border-radius:16px;padding:20px;margin-bottom:0;">
                         <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-                            <i class="fa-solid fa-credit-card" style="color:var(--gold);"></i>
+                            <span style="font-size:inherit;">💳</span>
                             Pay KSh 1,000 via M-Pesa or card to activate priority verification
                         </p>
                         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
                             <span style="background:#fff;border:1px solid rgba(21,40,31,.12);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:5px;">
-                                <i class="fa-solid fa-mobile-screen-button" style="color:var(--gold);font-size:11px;"></i>M-Pesa
+                                <span style="font-size:inherit;">📱</span>M-Pesa
                             </span>
                         </div>
                         <p style="font-size:12px;color:rgba(21,40,31,.6);">Payment is processed via M-Pesa STK Push after you submit your application. You will receive a prompt on your phone.</p>
@@ -490,10 +490,10 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                     {{-- What happens next --}}
                     <div style="margin-top:18px;padding:16px;background:#F9FAF9;border-radius:14px;">
-                        <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-list-check" style="color:var(--trust-blue);"></i> What happens after submission</p>
+                        <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="font-size:inherit;">📋</span> What happens after submission</p>
                         @foreach(['We review your profile, subjects and all uploaded documents','You receive an email when approved (or if action is required)','Your profile goes live and students can book sessions with you','Earnings are credited to your wallet after each completed session'] as $item)
                         <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
-                            <i class="fa-solid fa-circle-check" style="color:var(--mint);margin-top:1px;flex-shrink:0;font-size:11px;"></i>{{ $item }}
+                            <span style="font-size:inherit;">✅</span>{{ $item }}
                         </div>
                         @endforeach
                     </div>
@@ -507,9 +507,9 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 </div>
 
                 <div style="display:flex;gap:12px;" x-show="!submitting">
-                    <button class="btn-back" @click="step=3"><i class="fa-solid fa-arrow-left fa-xs"></i> Back</button>
+                    <button class="btn-back" @click="step=3"><span style="font-size:inherit;">←</span> Back</button>
                     <button class="btn-next" @click="submitApplication()" :disabled="submitting">
-                        <i class="fa-solid fa-paper-plane fa-sm" x-show="!submitting"></i>
+                        <span style="font-size:inherit;">❓</span>
                         <span x-text="form.speedy ? 'Submit & Pay KSh 1,000' : 'Submit Application'"></span>
                     </button>
                 </div>
@@ -519,7 +519,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             <div x-show="step === 5" x-cloak>
                 <div class="ob-card" style="text-align:center;padding:48px 32px;">
                     <div style="width:72px;height:72px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
-                        <i class="fa-solid fa-circle-check" style="font-size:32px;color:var(--mint);"></i>
+                        <span style="font-size:inherit;">✅</span>
                     </div>
                     <h2 style="margin-bottom:8px;">Application Submitted!</h2>
                     <p style="font-size:15px;color:var(--muted);max-width:440px;margin:0 auto 28px;line-height:1.75;">
@@ -539,7 +539,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                             ] as [$ic,$col,$title,$desc])
                             <div style="display:flex;align-items:flex-start;gap:12px;">
                                 <div style="width:32px;height:32px;border-radius:10px;background:{{ $col }}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                    <i class="fa-solid {{ $ic }}" style="color:{{ $col }};font-size:13px;"></i>
+                                    <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
                                 </div>
                                 <div>
                                     <div style="font-size:13px;font-weight:600;color:var(--ink);">{{ $title }}</div>
@@ -553,7 +553,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     <a href="{{ route('tutor.dashboard') }}"
                        style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .18s;"
                        onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
-                        <i class="fa-solid fa-gauge-high fa-sm"></i> Go to Dashboard
+                        <span style="font-size:inherit;">📊</span> Go to Dashboard
                     </a>
                 </div>
             </div>

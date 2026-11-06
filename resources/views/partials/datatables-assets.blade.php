@@ -319,7 +319,7 @@
                 buttons: [
                     { 
                         extend: 'copy', 
-                        text: '<i class="fa-solid fa-copy"></i> Copy', 
+                        text: '<span style="font-size:inherit;">❓</span> Copy', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -327,7 +327,7 @@
                     },
                     { 
                         extend: 'csv', 
-                        text: '<i class="fa-solid fa-file-csv"></i> CSV', 
+                        text: '<span style="font-size:inherit;">📄</span> CSV', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -335,7 +335,7 @@
                     },
                     { 
                         extend: 'excel', 
-                        text: '<i class="fa-solid fa-file-excel"></i> Excel', 
+                        text: '<span style="font-size:inherit;">📄</span> Excel', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -343,7 +343,7 @@
                     },
                     { 
                         extend: 'pdf', 
-                        text: '<i class="fa-solid fa-file-pdf"></i> PDF', 
+                        text: '<span style="font-size:inherit;">📄</span> PDF', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -351,7 +351,7 @@
                     },
                     { 
                         extend: 'print', 
-                        text: '<i class="fa-solid fa-print"></i> Print', 
+                        text: '<span style="font-size:inherit;">🖨️</span> Print', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'

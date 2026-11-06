@@ -14,7 +14,7 @@
     <div style="position:absolute;bottom:-40px;left:10%;width:180px;height:180px;background:rgba(212,160,23,.06);border-radius:50%;pointer-events:none;"></div>
     <div style="max-width:1360px;margin:0 auto;padding:0 24px;position:relative;z-index:1;text-align:center;">
         <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(10,100,188,.3);color:rgba(255,255,255,.9);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:20px;">
-            <i class="fa-solid fa-envelope fa-xs"></i> Get in Touch
+            <span style="font-size:inherit;">✉️</span> Get in Touch
         </div>
         <h1 style="font-family:'Fraunces',serif;font-size:clamp(32px,5vw,52px);color:#fff;margin-bottom:14px;">We'd love to hear from you</h1>
         <p style="font-size:17px;color:rgba(255,255,255,.6);max-width:480px;margin:0 auto;">Whether you're a learner, parent, or tutor â€” our team is here to help.</p>
@@ -47,7 +47,7 @@
                     ] as [$ic,$label,$val,$href])
                     <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;">
                         <div style="width:40px;height:40px;background:rgba(10,100,188,.08);border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="fa-solid {{ $ic }}" style="color:#0A64BC;font-size:14px;"></i>
+                            <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
                         </div>
                         <div>
                             <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.4);margin-bottom:2px;">{{ $label }}</p>
@@ -64,7 +64,7 @@
                 {{-- Quick links --}}
                 <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:24px;">
                     <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
-                        <i class="fa-solid fa-link" style="color:#0A64BC;font-size:14px;"></i> Quick Links
+                        <span style="font-size:inherit;">🔗</span> Quick Links
                     </h3>
                     @foreach(array_filter([
                         ['fa-magnifying-glass','Find a Tutor',route('tutors.index'),'Browse verified tutors'],
@@ -76,13 +76,13 @@
                     ]) as [$ic,$label,$url,$desc])
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(21,40,31,.06);text-decoration:none;transition:opacity .15s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
                         <div style="width:34px;height:34px;background:rgba(10,100,188,.08);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="fa-solid {{ $ic }}" style="color:#0A64BC;font-size:12px;"></i>
+                            <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
                         </div>
                         <div style="flex:1;">
                             <div style="font-size:14px;font-weight:600;color:#15281F;">{{ $label }}</div>
                             <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $desc }}</div>
                         </div>
-                        <i class="fa-solid fa-arrow-right fa-xs" style="color:rgba(21,40,31,.3);"></i>
+                        <span style="font-size:inherit;">→</span>
                     </a>
                     @endforeach
                 </div>
@@ -90,11 +90,11 @@
                 {{-- FAQ --}}
                 <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:18px;padding:22px;">
                     <h3 style="font-size:15px;font-weight:700;color:#15281F;margin-bottom:12px;display:flex;align-items:center;gap:7px;">
-                        <i class="fa-solid fa-circle-question" style="color:#0A64BC;"></i> Common Questions
+                        <span style="font-size:inherit;">❓</span> Common Questions
                     </h3>
                     @foreach(['How are tutors verified?','What if I\'m not satisfied with my session?','How do I join a live session?','How do tutors get paid?'] as $q)
                     <a href="{{ route('how-it-works') }}" style="display:flex;align-items:center;gap:8px;padding:8px 0;font-size:13px;font-weight:500;color:#0A64BC;text-decoration:none;border-bottom:1px solid rgba(10,100,188,.1);">
-                        <i class="fa-solid fa-chevron-right fa-xs"></i>{{ $q }}
+                        <span style="font-size:inherit;">❓</span>{{ $q }}
                     </a>
                     @endforeach
                 </div>
@@ -107,7 +107,7 @@
 
                 @if(session('contact_success'))
                 <div style="background:#DCFCE7;border:1px solid #BBF7D0;border-radius:14px;padding:16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;color:#166534;font-size:14px;font-weight:500;">
-                    <i class="fa-solid fa-circle-check"></i> Message sent! We'll get back to you within 24 hours.
+                    <span style="font-size:inherit;">✅</span> Message sent! We'll get back to you within 24 hours.
                 </div>
                 @endif
 
@@ -116,7 +116,7 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;" class="form-row">
                         <div>
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
-                                <i class="fa-solid fa-user fa-xs" style="color:#0A64BC;"></i> Full Name
+                                <span style="font-size:inherit;">👤</span> Full Name
                             </label>
                             <input type="text" name="name" value="{{ old('name') }}" placeholder="Jane Mwangi" required
                                    style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;transition:all .15s;"
@@ -125,7 +125,7 @@
                         </div>
                         <div>
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
-                                <i class="fa-solid fa-phone fa-xs" style="color:#0A64BC;"></i> Phone
+                                <span style="font-size:inherit;">📞</span> Phone
                             </label>
                             <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="0712 345 678"
                                    style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;transition:all .15s;"
@@ -136,7 +136,7 @@
 
                     <div style="margin-bottom:14px;">
                         <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
-                            <i class="fa-solid fa-envelope fa-xs" style="color:#0A64BC;"></i> Email Address
+                            <span style="font-size:inherit;">✉️</span> Email Address
                         </label>
                         <input type="email" name="email" value="{{ old('email') }}" placeholder="you@example.com" required
                                style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;transition:all .15s;"
@@ -147,7 +147,7 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;" class="form-row">
                         <div>
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
-                                <i class="fa-solid fa-tag fa-xs" style="color:#0A64BC;"></i> I am aâ€¦
+                                <span style="font-size:inherit;">🏷️</span> I am aâ€¦
                             </label>
                             <select name="role" style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22><path d=%22M1 1l4 4 4-4%22 stroke=%22%2315281F%22 stroke-width=%221.5%22 fill=%22none%22/></svg>');background-repeat:no-repeat;background-position:right 14px center;transition:all .15s;" onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
                                 <option value="">Select role</option>
@@ -159,7 +159,7 @@
                         </div>
                         <div>
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
-                                <i class="fa-solid fa-book-open fa-xs" style="color:#0A64BC;"></i> Subject / Topic
+                                <span style="font-size:inherit;">📖</span> Subject / Topic
                             </label>
                             <input type="text" name="subject" value="{{ old('subject') }}" placeholder="e.g. Mathematics â€“ Form 3"
                                    style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;transition:all .15s;"
@@ -169,7 +169,7 @@
 
                     <div style="margin-bottom:22px;">
                         <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
-                            <i class="fa-solid fa-message fa-xs" style="color:#0A64BC;"></i> Message
+                            <span style="font-size:inherit;">❓</span> Message
                         </label>
                         <textarea name="message" rows="4" placeholder="Tell us how we can helpâ€¦" required
                                   style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:vertical;line-height:1.65;background:#fff;transition:all .15s;"
@@ -180,7 +180,7 @@
                     <button type="submit"
                             style="width:100%;height:52px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
                             onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
-                        <i class="fa-solid fa-paper-plane fa-sm"></i> Send Message
+                        <span style="font-size:inherit;">❓</span> Send Message
                     </button>
                 </form>
 
@@ -188,10 +188,10 @@
                     <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:10px;">Or reach us directly</p>
                     <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
                         <a href="mailto:support@ovaldesk.co.ke" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:1.5px solid rgba(21,40,31,.15);color:#15281F;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s;" onmouseover="this.style.borderColor='#0A64BC';this.style.color='#0A64BC'" onmouseout="this.style.borderColor='rgba(21,40,31,.15)';this.style.color='#15281F'">
-                            <i class="fa-solid fa-envelope fa-xs"></i> support@ovaldesk.co.ke
+                            <span style="font-size:inherit;">✉️</span> support@ovaldesk.co.ke
                         </a>
                         <a href="tel:+254724367814" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:1.5px solid rgba(21,40,31,.15);color:#15281F;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s;" onmouseover="this.style.borderColor='#0A64BC';this.style.color='#0A64BC'" onmouseout="this.style.borderColor='rgba(21,40,31,.15)';this.style.color='#15281F'">
-                            <i class="fa-solid fa-phone fa-xs"></i> 0724 367 814
+                            <span style="font-size:inherit;">📞</span> 0724 367 814
                         </a>
                     </div>
                 </div>

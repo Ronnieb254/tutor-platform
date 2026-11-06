@@ -12,7 +12,7 @@
 
     {{-- Breadcrumb --}}
     <a href="{{ route('examiner.dashboard') }}" style="font-size:13px;color:rgba(21,40,31,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-bottom:18px;">
-        <i class="fa-solid fa-arrow-left fa-xs"></i> Examiner Dashboard
+        <span style="font-size:inherit;">←</span> Examiner Dashboard
     </a>
 
     {{-- Header --}}
@@ -25,10 +25,10 @@
                 @endif
             </h1>
             <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:rgba(21,40,31,.55);">
-                @if($clinic->subject)<span><i class="fa-solid fa-book-open fa-xs" style="color:#0A64BC;"></i> {{ $clinic->subject->name }}</span>@endif
-                @if($clinic->paper_type)<span><i class="fa-solid fa-file-lines fa-xs" style="color:#0A64BC;"></i> {{ $clinic->paper_type }}</span>@endif
-                <span><i class="fa-regular fa-calendar fa-xs" style="color:#0A64BC;"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
-                <span><i class="fa-solid fa-clock fa-xs" style="color:#0A64BC;"></i> {{ $clinic->duration_minutes ?? 60 }} min</span>
+                @if($clinic->subject)<span><span style="font-size:inherit;">📖</span> {{ $clinic->subject->name }}</span>@endif
+                @if($clinic->paper_type)<span><span style="font-size:inherit;">📄</span> {{ $clinic->paper_type }}</span>@endif
+                <span><span style="font-size:inherit;">📅</span> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
+                <span><span style="font-size:inherit;">⏰</span> {{ $clinic->duration_minutes ?? 60 }} min</span>
             </div>
         </div>
 
@@ -39,18 +39,18 @@
         @endphp
         @if($isCancelled)
         <span style="display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:10px;background:#FEE2E2;color:#991B1B;font-size:14px;font-weight:700;">
-            <i class="fa-solid fa-ban fa-sm"></i> Cancelled
+            <span style="font-size:inherit;">🚫</span> Cancelled
         </span>
         @elseif($canJoinNow)
         <a href="{{ route('examiner.clinics.join', $clinic) }}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:10px;background:#10B981;color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
-            <i class="fa-solid fa-video fa-sm"></i> Launch Session in Jitsi
+            <span style="font-size:inherit;">🎥</span> Launch Session in Jitsi
         </a>
         @else
         <div style="text-align:right;">
             <div style="font-size:12px;color:rgba(21,40,31,.45);margin-bottom:5px;">Session starts in</div>
             <div id="countdown" style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">Ã¢â‚¬â€</div>
             <a href="{{ route('examiner.clinics.join', $clinic) }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:10px 20px;border-radius:10px;background:#0A64BC;color:#fff;font-size:13px;font-weight:600;text-decoration:none;opacity:.75;">
-                <i class="fa-solid fa-video fa-xs"></i> Join Early
+                <span style="font-size:inherit;">🎥</span> Join Early
             </a>
         </div>
         @endif
@@ -58,7 +58,7 @@
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px 16px;margin-bottom:18px;color:#059669;font-weight:600;">
-        <i class="fa-solid fa-circle-check fa-sm"></i> {{ session('success') }}
+        <span style="font-size:inherit;">✅</span> {{ session('success') }}
     </div>
     @endif
 
@@ -82,7 +82,7 @@
 
             @if($clinic->enrollments->isEmpty())
             <div style="padding:48px;text-align:center;">
-                <i class="fa-solid fa-user-group" style="font-size:30px;color:rgba(21,40,31,.15);margin-bottom:12px;display:block;"></i>
+                <span style="font-size:inherit;">👤</span>
                 <p style="color:rgba(21,40,31,.45);font-size:14px;">No students have enrolled yet.</p>
             </div>
             @else
@@ -109,9 +109,9 @@
                             </td>
                             <td style="padding:12px 16px;text-align:center;">
                                 @if($en->attended)
-                                <i class="fa-solid fa-circle-check" style="color:#10B981;"></i>
+                                <span style="font-size:inherit;">✅</span>
                                 @else
-                                <i class="fa-solid fa-circle-minus" style="color:rgba(21,40,31,.15);"></i>
+                                <span style="font-size:inherit;">❓</span>
                                 @endif
                             </td>
                         </tr>
@@ -153,17 +153,17 @@
             {{-- Overflow info --}}
             @if($clinic->hasOverflowClinic())
             <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:14px;padding:16px;">
-                <h3 style="font-size:12px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;"><i class="fa-solid fa-circle-check fa-xs"></i> Overflow Created</h3>
+                <h3 style="font-size:12px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;"><span style="font-size:inherit;">✅</span> Overflow Created</h3>
                 @php $overflow = $clinic->childSessions()->latest()->first(); @endphp
                 @if($overflow)
                 <div style="font-size:13px;font-weight:600;color:#15281F;margin-bottom:3px;">{{ $overflow->title }}</div>
                 <div style="font-size:12px;color:rgba(21,40,31,.55);">{{ $overflow->scheduled_at->format('D, M j \a\t g:ia') }}</div>
-                <a href="{{ route('examiner.clinics.show', $overflow) }}" style="font-size:12px;color:#059669;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:8px;">View overflow <i class="fa-solid fa-arrow-right fa-xs"></i></a>
+                <a href="{{ route('examiner.clinics.show', $overflow) }}" style="font-size:12px;color:#059669;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:8px;">View overflow <span style="font-size:inherit;">→</span></a>
                 @endif
             </div>
             @elseif($clinic->isFull())
             <div style="background:rgba(232,82,42,.06);border:1px solid rgba(232,82,42,.2);border-radius:14px;padding:16px;font-size:13px;color:#B45309;">
-                <i class="fa-solid fa-users fa-sm"></i> <strong>Session is full</strong> Ã¢â‚¬â€œ overflow will be auto-created when a student books, or you can trigger it manually from the admin panel.
+                <span style="font-size:inherit;">👤</span> <strong>Session is full</strong> Ã¢â‚¬â€œ overflow will be auto-created when a student books, or you can trigger it manually from the admin panel.
             </div>
             @endif
 
@@ -172,7 +172,7 @@
             <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:14px;">
                 <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#0A64BC;margin-bottom:6px;">Overflow from</div>
                 <a href="{{ route('examiner.clinics.show', $clinic->parentClinic) }}" style="font-size:13px;font-weight:600;color:#0A64BC;text-decoration:none;">
-                    {{ $clinic->parentClinic->title }} <i class="fa-solid fa-arrow-up-right-from-square fa-xs"></i>
+                    {{ $clinic->parentClinic->title }} <span style="font-size:inherit;">↑</span>
                 </a>
             </div>
             @endif

@@ -38,20 +38,20 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     <div class="session-header">
         <div class="left">
             <a href="{{ route('examiner-clinic', $clinic->slug) }}" class="back-btn">
-                <i class="fa-solid fa-arrow-left fa-xs"></i> Back
+                <span style="font-size:inherit;">←</span> Back
             </a>
             <div class="session-title">
-                <i class="fa-solid fa-chalkboard-user fa-xs" style="color:rgba(10,100,188,.5);margin-right:4px;"></i>
+                <span style="font-size:inherit;">👨‍🏫</span>
                 {{ $clinic->title ?? $clinic->name }}
             </div>
             <div class="session-meta">
                 <span class="dot"></span>
                 <span class="time">{{ $clinic->scheduled_at->format('D, M j Ã‚Â· g:ia') }}</span>
                 @if($isModerator)
-                    <span class="moderator-badge"><i class="fa-solid fa-shield-halved fa-xs"></i> MODERATOR</span>
+                    <span class="moderator-badge"><span style="font-size:inherit;">🛡️</span> MODERATOR</span>
                 @endif
                 <span class="recording-indicator" id="recIndicator">
-                    <i class="fa-solid fa-circle fa-xs"></i> REC
+                    <span style="font-size:inherit;">❓</span> REC
                 </span>
             </div>
         </div>
@@ -63,11 +63,11 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">{{ $sessionCode }}</p>
             </div>
             <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
-                <i class="fa-solid fa-copy fa-xs"></i>
+                <span style="font-size:inherit;">❓</span>
             </button>
             @endif
             <button onclick="leaveSession()" class="exit-btn">
-                <i class="fa-solid fa-phone-slash fa-xs"></i> Leave
+                <span style="font-size:inherit;">📞</span> Leave
             </button>
         </div>
     </div>
@@ -187,10 +187,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     function copySessionCode() {
         navigator.clipboard.writeText(sessionCode).then(() => {
             const btn = document.getElementById('copyBtn');
-            btn.innerHTML = '<i class="fa-solid fa-check fa-xs"></i>';
+            btn.innerHTML = '<span style="font-size:inherit;">✅</span>';
             btn.classList.add('copied');
             setTimeout(() => {
-                btn.innerHTML = '<i class="fa-solid fa-copy fa-xs"></i>';
+                btn.innerHTML = '<span style="font-size:inherit;">❓</span>';
                 btn.classList.remove('copied');
             }, 2000);
         }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));
