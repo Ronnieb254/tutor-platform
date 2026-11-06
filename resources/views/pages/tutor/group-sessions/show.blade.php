@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{{ Str::limit($groupSession->title, 50) }} – Mwalimu Tutor Portal</title>
+<title>{{ Str::limit($groupSession->title, 50) }} â€“ Mwalimu Tutor Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -64,8 +65,8 @@ $canJoin = $groupSession->canJoin($user);
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
     <div class="sb-logo">
-        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-        <div><div class="sb-logo-text">Mwalimu</div><div class="sb-logo-sub">Tutor Portal</div></div>
+        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
+        <div><div class="sb-logo-sub">Tutor Portal</div></div>
     </div>
     <nav class="sb-nav">
         <div class="sb-section">
@@ -216,7 +217,7 @@ $canJoin = $groupSession->canJoin($user);
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="padding:12px;font-family:monospace;font-size:13px;font-weight:700;color:var(--ink);">{{ $enroll->session_code ?? '—' }}</td>
+                                    <td style="padding:12px;font-family:monospace;font-size:13px;font-weight:700;color:var(--ink);">{{ $enroll->session_code ?? 'â€”' }}</td>
                                     <td style="padding:12px;text-align:right;font-weight:700;color:#EEBE15;font-family:'Fraunces',serif;">
                                         KSh {{ number_format($enroll->payment?->amount ?? $groupSession->price) }}
                                     </td>
@@ -264,7 +265,7 @@ $canJoin = $groupSession->canJoin($user);
                         <div style="padding:8px 10px;border-radius:9px;background:{{ $isThis ? 'rgba(212,160,23,.08)' : 'rgba(21,40,31,.02)' }};border:1px solid {{ $isThis ? 'rgba(212,160,23,.25)' : 'transparent' }};margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
                             <div>
                                 <p style="font-size:12px;font-weight:600;color:var(--ink);margin:0;">Session {{ $s->session_number }}</p>
-                                <p style="font-size:11px;color:var(--muted);margin:0;">{{ $s->scheduled_at->format('M j') }} · {{ $s->enrolledCount() }}/{{ $s->max_students }}</p>
+                                <p style="font-size:11px;color:var(--muted);margin:0;">{{ $s->scheduled_at->format('M j') }} Â· {{ $s->enrolledCount() }}/{{ $s->max_students }}</p>
                             </div>
                             @if(!$isThis)
                             <a href="{{ route('tutor.group-sessions.show', $s) }}" style="font-size:11px;color:#0A64BC;font-weight:600;">View</a>

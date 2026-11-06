@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>My Dashboard � Mwalimu</title>
+<title>My Dashboard ï¿½ Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -149,9 +150,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
     <div class="sb-logo">
-        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
         <div>
-            <div class="sb-logo-text">Mwalimu</div>
             <div class="sb-logo-sub">{{ $user->isParent() ? 'Parent Portal' : 'Student Portal' }}</div>
         </div>
     </div>
@@ -320,7 +320,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
             <div style="flex:1;min-width:0;">
                 <div style="font-weight:600;font-size:14px;">{{ $b->tutor->name }}</div>
-                <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} � {{ $b->duration_minutes }}min</div>
+                <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} ï¿½ {{ $b->duration_minutes }}min</div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
                 <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $b->scheduled_at->format('M j') }}</div>
@@ -389,7 +389,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                     <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
                     @if($b->canJoin())<span class="bdg bdg-mint">?? Live Now</span>@endif
                 </div>
-                <div style="font-size:13px;color:var(--muted);">{{ $b->subject?->name ?? 'General Session' }} � {{ $b->duration_minutes }} minutes</div>
+                <div style="font-size:13px;color:var(--muted);">{{ $b->subject?->name ?? 'General Session' }} ï¿½ {{ $b->duration_minutes }} minutes</div>
                 <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;">
                     <div style="display:flex;align-items:center;gap:6px;font-size:13px;">
                         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -494,7 +494,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                             @elseif($b->status === 'completed')
                             <a href="{{ route('bookings.show',$b->uuid) }}" style="font-size:12px;color:var(--trust-blue);font-weight:600;">Leave review</a>
                             @else
-                            <span style="color:var(--muted);">�</span>
+                            <span style="color:var(--muted);">ï¿½</span>
                             @endif
                         </td>
                         <td><a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a></td>
@@ -570,7 +570,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             </div>
             <form method="POST" action="/bookings/{{ $fb->id }}/messages" style="padding:16px 20px;border-top:1px solid var(--hair);display:flex;gap:10px;">
                 @csrf
-                <input type="text" name="body" placeholder="Type a message�" required style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
+                <input type="text" name="body" placeholder="Type a messageï¿½" required style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 <button type="submit" class="btn btn-v" style="height:44px;padding:0 20px;">
                     <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Send
                 </button>
@@ -634,13 +634,13 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                         <td>
                             <div style="display:flex;align-items:center;gap:10px;">
                                 <div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($payment->booking?->tutor->name ?? 'T',0,1) }}</div>
-                                {{ $payment->booking?->tutor->name ?? '�' }}
+                                {{ $payment->booking?->tutor->name ?? 'ï¿½' }}
                             </div>
                         </td>
                         <td><code style="background:#F4F6F4;padding:2px 8px;border-radius:6px;font-size:11px;">{{ Str::limit($payment->mpesa_reference,18) }}</code></td>
-                        <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? '�' }}</td>
+                        <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? 'ï¿½' }}</td>
                         <td style="font-size:13px;color:var(--muted);">
-                            {{ $payment->booking?->duration_minutes }}min � {{ $payment->booking?->subject?->name ?? 'General' }}
+                            {{ $payment->booking?->duration_minutes }}min ï¿½ {{ $payment->booking?->subject?->name ?? 'General' }}
                         </td>
                         <td style="font-weight:700;color:var(--ink);">KSh {{ number_format($payment->amount) }}</td>
                         <td><span class="bdg bdg-green">? Paid</span></td>
@@ -736,9 +736,9 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 </div>
                 <div style="display:flex;gap:12px;font-size:13px;color:var(--muted);">
                     <span>? {{ number_format($profile->rating_avg,1) }} ({{ $profile->total_reviews }})</span>
-                    <span>�</span>
+                    <span>ï¿½</span>
                     <span style="font-weight:600;color:var(--ink);">KSh {{ number_format($profile->hourly_rate) }}/hr</span>
-                    <span>�</span>
+                    <span>ï¿½</span>
                     <span>{{ $profile->experience_years }}y exp</span>
                 </div>
             </div>
@@ -781,7 +781,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                     <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">{{ $child->name }}</div>
                     <div style="font-size:13px;color:var(--muted);margin-top:3px;">
                         @if($child->age) Age {{ $child->age }} @endif
-                        @if($child->grade_level) � {{ $child->grade_level }} @endif
+                        @if($child->grade_level) ï¿½ {{ $child->grade_level }} @endif
                     </div>
                 </div>
             </div>
@@ -822,7 +822,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                 </div>
                 <div style="margin-bottom:20px;">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Notes (optional)</label>
-                    <textarea name="notes" rows="2" placeholder="Learning goals, subjects they need help with�" style="width:100%;padding:10px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;"></textarea>
+                    <textarea name="notes" rows="2" placeholder="Learning goals, subjects they need help withï¿½" style="width:100%;padding:10px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;"></textarea>
                 </div>
                 <div style="display:flex;gap:10px;">
                     <button type="button" onclick="document.getElementById('add-child-modal').style.display='none'" class="btn btn-o" style="flex:1;">Cancel</button>

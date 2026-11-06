@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Booking Confirmed</title>
 </head>
@@ -26,7 +27,7 @@
       </td></tr>
 
       <tr><td style="padding:32px;">
-        <h1 style="font-size:26px;font-weight:700;color:#15281F;margin:0 0 8px;">Booking Confirmed! <i class="fas fa-check-circle" style="color:#10B981;"></i></h1>
+        <h1 style="font-size:26px;font-weight:700;color:#15281F;margin:0 0 8px;">Booking Confirmed! <i class="fa-solid fa-check-circle" style="color:#10B981;"></i></h1>
         <p style="color:rgba(21,40,31,0.65);font-size:15px;margin:0 0 24px;">
           Hi {{ $booking->student->name }}, your session with <strong style="color:#15281F;">{{ $booking->tutor->name }}</strong> is confirmed and paid.
         </p>
@@ -55,7 +56,7 @@
         </div>
 
         <div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:16px;padding:16px;margin-bottom:24px;">
-          <p style="font-size:13px;font-weight:700;color:#15803D;margin:0 0 6px;">📋 How to join your session</p>
+          <p style="font-size:13px;font-weight:700;color:#15803D;margin:0 0 6px;">?? How to join your session</p>
           <ol style="font-size:13px;color:#166534;margin:0;padding-left:18px;line-height:1.8;">
             <li>Go to your Mwalimu dashboard</li>
             <li>Find this booking under "Upcoming Sessions"</li>

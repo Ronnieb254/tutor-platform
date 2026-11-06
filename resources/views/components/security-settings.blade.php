@@ -6,12 +6,12 @@ $has2FA = $user->has2FAEnabled();
 
 <div class="card card-p" style="margin-bottom:24px;">
     <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-        <i class="fas fa-lock" style="margin-right:6px;"></i>Two-Factor Authentication
+        <i class="fa-solid fa-lock" style="margin-right:6px;"></i>Two-Factor Authentication
     </h3>
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,0.1);border-left:4px solid var(--mint);padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;color:var(--ink);">
-        <i class="fas fa-check" style="color:var(--mint);margin-right:6px;"></i>{{ session('success') }}
+        <i class="fa-solid fa-check" style="color:var(--mint);margin-right:6px;"></i>{{ session('success') }}
     </div>
     @endif
 
@@ -23,7 +23,7 @@ $has2FA = $user->has2FAEnabled();
                 <div style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px;border-radius:6px;text-align:center;">{{ $code }}</div>
             @endforeach
         </div>
-        <button type="button" class="btn btn-sm btn-outline" onclick="copyRecoveryCodes()">📋 Copy All</button>
+        <button type="button" class="btn btn-sm btn-outline" onclick="copyRecoveryCodes()">ðŸ“‹ Copy All</button>
     </div>
     @endif
 
@@ -32,9 +32,9 @@ $has2FA = $user->has2FAEnabled();
             <div style="font-weight:600;font-size:15px;color:var(--ink);margin-bottom:6px;">
                 Status: 
                 @if($has2FA)
-                    <span style="color:var(--mint);">● Enabled</span>
+                    <span style="color:var(--mint);">â— Enabled</span>
                 @else
-                    <span style="color:var(--muted);">○ Disabled</span>
+                    <span style="color:var(--muted);">â—‹ Disabled</span>
                 @endif
             </div>
             <p style="font-size:13px;color:var(--muted);line-height:1.5;">
@@ -51,7 +51,7 @@ $has2FA = $user->has2FAEnabled();
         {{-- Enabled state - show disable option and recovery codes --}}
         <div style="display:flex;flex-direction:column;gap:12px;">
             <button type="button" onclick="toggleRecoveryCodes()" class="btn btn-outline btn-sm" style="width:fit-content;">
-                🔑 View Recovery Codes
+                ðŸ”‘ View Recovery Codes
             </button>
 
             <div id="recovery-codes-section" style="display:none;background:var(--cream);padding:16px;border-radius:10px;margin-top:8px;">
@@ -63,11 +63,11 @@ $has2FA = $user->has2FAEnabled();
                         @endforeach
                     </div>
                     <div style="display:flex;gap:8px;">
-                        <button type="button" class="btn btn-sm btn-outline" onclick="copyExistingRecoveryCodes()">📋 Copy</button>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="copyExistingRecoveryCodes()">ðŸ“‹ Copy</button>
                         <form action="{{ route('2fa.recovery') }}" method="POST" style="display:inline;" onsubmit="event.preventDefault(); regenerateRecoveryCodes(this);">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-outline">
-                                🔄 Regenerate
+                                ðŸ”„ Regenerate
                             </button>
                         </form>
                     </div>
@@ -94,7 +94,7 @@ $has2FA = $user->has2FAEnabled();
     @else
         {{-- Disabled state - show enable option --}}
         <a href="{{ route('2fa.setup') }}" class="btn btn-primary" style="display:inline-block;width:fit-content;">
-            ✓ Enable Two-Factor Authentication
+            âœ“ Enable Two-Factor Authentication
         </a>
     @endif
 </div>

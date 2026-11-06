@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 @section('title', 'Categories Management')
 @section('content')
 <div style="max-width:1400px;margin:0 auto;padding:24px;">

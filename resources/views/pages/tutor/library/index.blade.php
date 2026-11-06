@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Resources – Mwalimu</title>
+<title>My Resources â€“ Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -70,7 +71,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 <div class="layout">
 <aside class="sidebar">
     <div class="sb-logo">
-        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
         <div><div class="sb-logo-text">Mwalimu</div><div style="font-size:10px;color:rgba(255,255,255,.3);">Tutor Portal</div></div>
     </div>
     <nav class="sb-nav">
@@ -106,7 +107,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
 <div class="main">
     <header class="topbar">
-        <div class="page-title"><i class="fas fa-book" style="margin-right:8px;"></i>My Resources</div>
+        <div class="page-title"><i class="fa-solid fa-book" style="margin-right:8px;"></i>My Resources</div>
         <a href="{{ route('tutor.library.create') }}" class="btn btn-v">
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Upload Resource
@@ -115,7 +116,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
     <div class="content">
         @if(session('success'))
-        <div class="flash flash-ok"><i class="fas fa-check" style="margin-right:6px;"></i>{{ session('success') }}</div>
+        <div class="flash flash-ok"><i class="fa-solid fa-check" style="margin-right:6px;"></i>{{ session('success') }}</div>
         @endif
 
         {{-- Stats --}}
@@ -155,7 +156,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                     </thead>
                     <tbody>
                         @php
-                            $typeIcons = ['article'=>'📄','pdf'=>'📕','video'=>'🎥','notes'=>'📝','past_paper'=>'📋'];
+                            $typeIcons = ['article'=>'ðŸ“„','pdf'=>'ðŸ“•','video'=>'ðŸŽ¥','notes'=>'ðŸ“','past_paper'=>'ðŸ“‹'];
                             $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
                             $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
                         @endphp
@@ -164,7 +165,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                             <td style="max-width:260px;">
                                 <div style="display:flex;align-items:center;gap:10px;">
                                     <div style="width:36px;height:36px;border-radius:9px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
-                                        {{ $typeIcons[$resource->resource_type] ?? '📄' }}
+                                        {{ $typeIcons[$resource->resource_type] ?? 'ðŸ“„' }}
                                     </div>
                                     <div>
                                         <div style="font-weight:600;font-size:13.5px;">{{ Str::limit($resource->title, 45) }}</div>
@@ -175,8 +176,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                             <td>
                                 <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">{{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}</span>
                             </td>
-                            <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? '—' }}</td>
-                            <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? '—' }}</td>
+                            <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? 'â€”' }}</td>
+                            <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? 'â€”' }}</td>
                             <td style="font-weight:600;">{{ number_format($resource->download_count) }}</td>
                             <td>
                                 @if(!$resource->is_approved)
@@ -202,7 +203,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                         @empty
                         <tr>
                             <td colspan="7" style="text-align:center;padding:60px;">
-                                <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-book" style="color:var(--muted);"></i></div>
+                                <div style="font-size:40px;margin-bottom:10px;"><i class="fa-solid fa-book" style="color:var(--muted);"></i></div>
                                 <p style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;">No resources yet</p>
                                 <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Share study materials, past papers, or notes with students.</p>
                                 <a href="{{ route('tutor.library.create') }}" class="btn btn-v">Upload Your First Resource</a>

@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Dashboard') – Mwalimu Admin</title>
+    <title>@yield('title', 'Dashboard') ï¿½ Mwalimu Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -145,11 +147,11 @@
             .topbar{padding:0 16px;}
         }
 
-        /* ── Phase 4 global admin responsive ── */
+        /* -- Phase 4 global admin responsive -- */
         @media(max-width:639px){
-            /* 4-col stat grids → 2-col */
+            /* 4-col stat grids ? 2-col */
             div[style*="repeat(4,1fr)"]{ grid-template-columns:repeat(2,1fr) !important; }
-            /* flex filter forms → column */
+            /* flex filter forms ? column */
             form[style*="display:flex"]{ flex-direction:column !important; }
             form[style*="display: flex"]{ flex-direction:column !important; }
         }
@@ -171,7 +173,7 @@
     {{-- Sidebar --}}
     <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
         <div class="sidebar-logo">
-            <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+            <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
             <div>
                 <span>Mwalimu</span>
                 <small>Admin Panel</small>
@@ -365,7 +367,7 @@ window.showConfirm = (title, text, confirmText = 'Yes', cancelText = 'Cancel') =
         cancelButtonText: cancelText,
     });
 
-// Document lightbox — view docs in-page without redirect
+// Document lightbox ï¿½ view docs in-page without redirect
 window.viewDocModal = function(url, isPdf, docName) {
     const content = isPdf
         ? `<iframe src="${url}" style="width:100%;height:70vh;border:none;border-radius:8px;"></iframe>`

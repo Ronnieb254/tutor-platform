@@ -76,7 +76,7 @@
                     <div class="mt-3">
                         <a href="{{ route('sessions.show', $notification->data['booking_uuid']) }}" 
                             class="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-sm font-medium rounded hover:bg-purple-200">
-                            View Session →
+                            View Session â†’
                         </a>
                     </div>
                 @endif

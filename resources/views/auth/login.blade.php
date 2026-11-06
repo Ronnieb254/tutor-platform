@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login – Mwalimu</title>
+    <title>Login ï¿½ Mwalimu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -390,7 +391,9 @@ svg{
     {{-- Left Panel - Brand --}}
     <div class="brand-panel">
         <div class="brand-logo">
-            <h1>Mwalimu</h1>
+            <a href="{{ route('home') }}" style="display:inline-block;">
+                <img src="/images/logo.svg" alt="Mwalimu" style="height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));">
+            </a>
             <p class="brand-tagline">Connecting Students with Expert Tutors</p>
         </div>
 
@@ -435,7 +438,7 @@ svg{
         </div>
 
         <div class="brand-footer">
-            © 2026 Mwalimu. Trusted by thousands of students across Kenya.
+            ï¿½ 2026 Mwalimu. Trusted by thousands of students across Kenya.
         </div>
     </div>
 
@@ -490,7 +493,7 @@ svg{
                             id="password" 
                             name="password" 
                             class="form-input" 
-                            placeholder="••••••••"
+                            placeholder="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
                             required
                             autocomplete="current-password">
                     </div>

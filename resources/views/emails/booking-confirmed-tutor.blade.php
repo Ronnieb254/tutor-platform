@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>New Session Booked</title>
 </head>
@@ -28,7 +29,7 @@
 
       {{-- Body --}}
       <tr><td style="padding:32px;">
-        <h1 style="font-size:26px;font-weight:700;color:#15281F;margin:0 0 8px;">New Session Booked! 🎉</h1>
+        <h1 style="font-size:26px;font-weight:700;color:#15281F;margin:0 0 8px;">New Session Booked! ??</h1>
         <p style="color:rgba(21,40,31,0.65);font-size:15px;margin:0 0 24px;">
           Great news, {{ $booking->tutor->name }}! You have a new booking from <strong style="color:#15281F;">{{ $booking->student->name }}</strong>.
         </p>

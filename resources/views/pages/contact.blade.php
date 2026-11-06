@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -32,9 +32,7 @@
                 {{-- Contact card --}}
                 <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;">
                     <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid rgba(21,40,31,.08);">
-                        <div style="width:52px;height:52px;border-radius:16px;background:#15281F;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <svg width="28" height="28" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
-                        </div>
+                        <img src="/favicon.svg" alt="Mwalimu" style="width:52px;height:52px;flex-shrink:0;">
                         <div>
                             <h3 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#15281F;">Mwalimu</h3>
                             <p style="font-size:13px;color:rgba(21,40,31,.5);">by OvalDesk Ventures</p>

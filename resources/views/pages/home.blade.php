@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
 
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Mwalimu – Instant 1-on-1 Tutoring in Kenya</title>
@@ -206,9 +207,9 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 <span style="font-family:'Fraunces',serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2;">Learn the Kenyan Way</span>
                 <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">8-4-4 · CBC Junior Secondary · CBC Senior School</span>
                 <div style="display:flex;flex-wrap:wrap;gap:6px;flex:1;align-content:flex-start;margin-bottom:20px;">
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">📚 8-4-4</span>
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🎓 CBE JSS (G7–9)</span>
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">⭐ CBE Senior (G10–12)</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? 8-4-4</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? CBE JSS (G7–9)</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">? CBE Senior (G10–12)</span>
                 </div>
                 <span style="display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#10B981;color:#fff;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;width:100%;">
                     <i class="fa-solid fa-arrow-right fa-xs"></i> Find a Kenyan-curriculum tutor
@@ -227,10 +228,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 <span style="font-family:'Fraunces',serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2;">Learn for the World</span>
                 <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">IGCSE Cambridge · IGCSE Edexcel · IB MYP · IB Diploma</span>
                 <div style="display:flex;flex-wrap:wrap;gap:6px;flex:1;align-content:flex-start;margin-bottom:20px;">
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🎓 IGCSE Cambridge</span>
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🏆 IGCSE Edexcel</span>
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🌐 IB MYP</span>
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">🌐 IB Diploma HL/SL</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? IGCSE Cambridge</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? IGCSE Edexcel</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? IB MYP</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? IB Diploma HL/SL</span>
                 </div>
                 <span style="display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#6366F1;color:#fff;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;width:100%;">
                     <i class="fa-solid fa-arrow-right fa-xs"></i> Find an international tutor
@@ -242,7 +243,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
 </section> -->
 
 {{-- WHY MWALIMU --}}
-<section style="padding:72px 0;background:var(--ink);">
+<section style="padding:72px 30px;background:var(--ink);">
         <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="feat-g">
             @foreach([
                 ['fa-user-graduate','Individual Attention','Every learner gets personal 1-on-1 attention from their tutor, greatly improving learning outcomes.','#0A64BC'],
@@ -273,10 +274,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
         </div>
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
             @foreach([
-                ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
-                ['40','Guided Practice','🎯','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false],
-                ['60','Deep Dive','🏆','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false],
-                ['60','Group Session','👥','KSh 600','Learn together with other students. Share the cost, maximize value.', true],
+                ['20','Quick Help','?','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
+                ['40','Guided Practice','??','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false],
+                ['60','Deep Dive','??','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false],
+                ['60','Group Session','??','KSh 600','Learn together with other students. Share the cost, maximize value.', true],
             ] as [$mins,$title,$icon,$price,$desc,$isGroup])
             <div style="border:2px solid {{ $isGroup ? 'var(--hair)' : '#EEBE15' }};border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;background:{{ $isGroup ? 'transparent' : 'rgba(238,190,21,.05)' }};" class="card-lift"
                  onmouseover="this.style.borderColor='{{ $isGroup ? 'var(--trust-blue)' : '#d4a800' }}'"

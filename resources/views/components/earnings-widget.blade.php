@@ -1,4 +1,4 @@
-﻿<div class="card shadow-sm mb-4" style="border:1px solid var(--hair,rgba(21,40,31,.1));">
+<div class="card shadow-sm mb-4" style="border:1px solid var(--hair,rgba(21,40,31,.1));">
     <div class="card-header text-white" style="background:linear-gradient(135deg,#10B981,#059669);border:none;">
         <h5 class="mb-0" style="font-weight:700;color:#fff;font-size:16px;">
             <svg width="18" height="18" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:8px;" stroke="currentColor" stroke-width="2" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>

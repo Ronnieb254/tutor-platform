@@ -1,4 +1,4 @@
-﻿@php $cr = request()->route()?->getName() ?? ''; @endphp
+@php $cr = request()->route()?->getName() ?? ''; @endphp
 
 {{-- Announcement Bar --}}
 <div x-data="{ ann: !sessionStorage.getItem('mw_ann') }" x-show="ann" x-cloak
@@ -22,14 +22,7 @@
 
             {{-- Logo --}}
             <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;">
-                <svg width="36" height="36" viewBox="0 0 100 100" style="flex-shrink:0;">
-                    <circle cx="50" cy="50" r="50" fill="#15281F"/>
-                    <circle cx="50" cy="50" r="34" fill="#0A64BC"/>
-                    <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
-                </svg>
-                <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#15281F;line-height:1;">
-                    <span style="color:#0A64BC;">Mw</span>alimu
-                </span>
+                <img src="/images/logo.svg" alt="Mwalimu" style="height:38px;width:auto;">
             </a>
 
             {{-- Desktop Links --}}

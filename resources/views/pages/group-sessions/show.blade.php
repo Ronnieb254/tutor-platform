@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $groupSession->title }} – Mwalimu</title>
+<title>{{ $groupSession->title }} â€“ Mwalimu</title>
 <meta name="description" content="{{ Str::limit($groupSession->description, 160) }}">
 </head>
 <body>
@@ -140,12 +140,12 @@
                     <div style="padding:14px 16px;border-radius:12px;border:{{ $isThis ? '2px solid #EEBE15' : '1px solid rgba(21,40,31,.08)' }};background:{{ $isThis ? 'rgba(212,160,23,.04)' : '#fff' }};display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
                         <div>
                             <p style="font-size:13px;font-weight:700;color:#15281F;margin:0 0 2px;">Session {{ $s->session_number }}: {{ $s->scheduled_at->format('D, M j \a\t g:ia') }}</p>
-                            <p style="font-size:12px;color:rgba(21,40,31,.5);margin:0;">{{ $s->duration_minutes }}min · {{ $s->enrolledCount() }}/{{ $s->max_students }} enrolled</p>
+                            <p style="font-size:12px;color:rgba(21,40,31,.5);margin:0;">{{ $s->duration_minutes }}min Â· {{ $s->enrolledCount() }}/{{ $s->max_students }} enrolled</p>
                         </div>
                         @if($isThis)
                         <span style="font-size:12px;font-weight:700;color:#B7870A;background:rgba(212,160,23,.12);padding:4px 12px;border-radius:999px;">Current</span>
                         @else
-                        <a href="{{ route('group-sessions.show', $s) }}" style="font-size:12px;font-weight:600;color:#0A64BC;text-decoration:none;">View ↗</a>
+                        <a href="{{ route('group-sessions.show', $s) }}" style="font-size:12px;font-weight:600;color:#0A64BC;text-decoration:none;">View â†—</a>
                         @endif
                     </div>
                     @endforeach
@@ -196,7 +196,7 @@
                 <form method="POST" action="{{ route('group-sessions.enroll', $groupSession) }}">
                     @csrf
                     <button type="submit" style="width:100%;padding:14px;border-radius:12px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:12px;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
-                        <i class="fa-solid fa-ticket"></i> Book Seat — KSh {{ number_format($groupSession->price) }}
+                        <i class="fa-solid fa-ticket"></i> Book Seat â€” KSh {{ number_format($groupSession->price) }}
                     </button>
                 </form>
 

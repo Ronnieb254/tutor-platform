@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -72,7 +72,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
     {{-- Header --}}
     <div class="ob-head">
         <a href="{{ route('home') }}" class="ob-logo">
-            <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+            <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
             <em>Mw</em>alimu
         </a>
         <span style="font-size:13px;color:rgba(255,255,255,.5);">Tutor Onboarding</span>
@@ -101,7 +101,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 @endforeach
             </div>
 
-            {{-- ── STEP 1: Profile ── --}}
+            {{-- -- STEP 1: Profile -- --}}
             <div x-show="step === 1">
                 <div class="ob-card">
                     <h2><i class="fa-solid fa-user" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Your Profile</h2>
@@ -172,7 +172,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 </div>
             </div>
 
-            {{-- ── STEP 2: Subjects ── --}}
+            {{-- -- STEP 2: Subjects -- --}}
             <div x-show="step === 2" x-cloak>
                 <div class="ob-card">
                     <h2><i class="fa-solid fa-book-open" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Curriculum &amp; Subjects</h2>
@@ -188,7 +188,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                             <div :style="form.curricula_tracks.includes('kenyan') ? 'border:2px solid #10B981;background:rgba(16,185,129,.04);border-radius:16px;padding:16px;' : 'border:1.5px solid rgba(21,40,31,.15);border-radius:16px;padding:16px;'">
                                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
                                     <input type="checkbox" x-model="form.curricula_tracks" value="kenyan" style="width:18px;height:18px;accent-color:#10B981;flex-shrink:0;">
-                                    <span style="font-size:15px;font-weight:700;color:var(--ink);">🇰🇪 Kenyan Curriculum</span>
+                                    <span style="font-size:15px;font-weight:700;color:var(--ink);">???? Kenyan Curriculum</span>
                                     <span style="margin-left:auto;font-size:12px;color:var(--muted);">8-4-4 · CBE JSS · CBE Senior</span>
                                 </label>
                                 <div x-show="form.curricula_tracks.includes('kenyan')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
@@ -215,7 +215,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                             <div :style="form.curricula_tracks.includes('international') ? 'border:2px solid #6366F1;background:rgba(99,102,241,.04);border-radius:16px;padding:16px;' : 'border:1.5px solid rgba(21,40,31,.15);border-radius:16px;padding:16px;'">
                                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
                                     <input type="checkbox" x-model="form.curricula_tracks" value="international" style="width:18px;height:18px;accent-color:#6366F1;flex-shrink:0;">
-                                    <span style="font-size:15px;font-weight:700;color:var(--ink);">🌐 International Curriculum</span>
+                                    <span style="font-size:15px;font-weight:700;color:var(--ink);">?? International Curriculum</span>
                                     <span style="margin-left:auto;font-size:12px;color:var(--muted);">IGCSE · IB MYP · IB Diploma</span>
                                 </label>
                                 <div x-show="form.curricula_tracks.includes('international')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
@@ -285,7 +285,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 </div>
             </div>
 
-            {{-- ── STEP 3: Documents ── --}}
+            {{-- -- STEP 3: Documents -- --}}
             <div x-show="step === 3" x-cloak>
                 <div class="ob-card">
                     <h2><i class="fa-solid fa-file-shield" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Verification Documents</h2>
@@ -303,14 +303,14 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <input type="file" @change="handleFile($event,'national_id')" accept=".jpg,.jpeg,.png,.pdf">
                                 <template x-if="!files.national_id">
                                     <div>
-                                        <div class="upload-icon">🪪</div>
+                                        <div class="upload-icon">??</div>
                                         <div class="upload-title">Click to upload or drag & drop</div>
                                         <div class="upload-hint">National ID (front & back) or Passport bio page</div>
                                     </div>
                                 </template>
                                 <template x-if="files.national_id">
                                     <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.national_id.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.national_id.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -329,14 +329,14 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <input type="file" @change="handleFile($event,'academic_certificate')" accept=".jpg,.jpeg,.png,.pdf">
                                 <template x-if="!files.academic_certificate">
                                     <div>
-                                        <div class="upload-icon">🎓</div>
+                                        <div class="upload-icon">??</div>
                                         <div class="upload-title">Click to upload or drag & drop</div>
                                         <div class="upload-hint">Bachelor's degree or higher academic qualification</div>
                                     </div>
                                 </template>
                                 <template x-if="files.academic_certificate">
                                     <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.academic_certificate.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.academic_certificate.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -355,14 +355,14 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <input type="file" @change="handleFile($event,'tsc_certificate')" accept=".jpg,.jpeg,.png,.pdf">
                                 <template x-if="!files.tsc_certificate">
                                     <div>
-                                        <div class="upload-icon">📜</div>
+                                        <div class="upload-icon">??</div>
                                         <div class="upload-title">Click to upload or drag & drop</div>
                                         <div class="upload-hint">Teachers Service Commission registration certificate</div>
                                     </div>
                                 </template>
                                 <template x-if="files.tsc_certificate">
                                     <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.tsc_certificate.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.tsc_certificate.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -381,14 +381,14 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <input type="file" @change="handleFile($event,'certificate_of_good_conduct')" accept=".jpg,.jpeg,.png,.pdf">
                                 <template x-if="!files.certificate_of_good_conduct">
                                     <div>
-                                        <div class="upload-icon">🛡️</div>
+                                        <div class="upload-icon">???</div>
                                         <div class="upload-title">Click to upload or drag & drop</div>
                                         <div class="upload-hint">DCI Certificate of Good Conduct (must be current)</div>
                                     </div>
                                 </template>
                                 <template x-if="files.certificate_of_good_conduct">
                                     <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.certificate_of_good_conduct.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.certificate_of_good_conduct.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -407,14 +407,14 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <input type="file" @change="handleFile($event,'passport_photo')" accept=".jpg,.jpeg,.png">
                                 <template x-if="!files.passport_photo">
                                     <div>
-                                        <div class="upload-icon">📷</div>
+                                        <div class="upload-icon">??</div>
                                         <div class="upload-title">Click to upload or drag & drop</div>
                                         <div class="upload-hint">Recent clear photo, white background preferred</div>
                                     </div>
                                 </template>
                                 <template x-if="files.passport_photo">
                                     <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.passport_photo.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.passport_photo.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -432,7 +432,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 </div>
             </div>
 
-            {{-- ── STEP 4: Verification ── --}}
+            {{-- -- STEP 4: Verification -- --}}
             <div x-show="step === 4" x-cloak>
                 <div class="ob-card">
                     <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Choose Verification Speed</h2>
@@ -515,7 +515,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 </div>
             </div>
 
-            {{-- ── STEP 5: Success ── --}}
+            {{-- -- STEP 5: Success -- --}}
             <div x-show="step === 5" x-cloak>
                 <div class="ob-card" style="text-align:center;padding:48px 32px;">
                     <div style="width:72px;height:72px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">

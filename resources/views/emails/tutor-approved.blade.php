@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Mwalimu Profile is Live!</title>
 </head>
@@ -21,7 +22,7 @@
                 {{-- Body --}}
                 <tr>
                     <td style="background:#fff;padding:40px;">
-                        <div style="font-size:32px;text-align:center;margin-bottom:16px;">🎉</div>
+                        <div style="font-size:32px;text-align:center;margin-bottom:16px;">ðŸŽ‰</div>
                         <h1 style="font-family:Georgia,serif;font-size:24px;font-weight:700;color:#15281F;margin:0 0 16px;text-align:center;">
                             Your Profile is Live!
                         </h1>
@@ -35,7 +36,7 @@
                         {{-- What's next box --}}
                         <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:20px 24px;margin:0 0 24px;">
                             <div style="font-weight:700;color:#166534;font-size:14px;margin-bottom:12px;">
-                                ✅ What's next
+                                âœ… What's next
                             </div>
                             <ul style="margin:0;padding-left:18px;color:#374151;font-size:14px;line-height:1.9;">
                                 <li>Set your weekly availability in your dashboard</li>
@@ -63,7 +64,7 @@
                 <tr>
                     <td style="background:#F9FAF9;border-radius:0 0 16px 16px;padding:20px 40px;text-align:center;border-top:1px solid #E5E7EB;">
                         <p style="font-size:12px;color:#9CA3AF;margin:0;">
-                            © {{ date('Y') }} Mwalimu · Oval Desk Ventures · Nairobi, Kenya
+                            Â© {{ date('Y') }} Mwalimu Â· Oval Desk Ventures Â· Nairobi, Kenya
                         </p>
                     </td>
                 </tr>

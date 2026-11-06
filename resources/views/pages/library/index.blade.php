@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Library – Mwalimu</title>
+<title>Library â€“ Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -99,11 +100,11 @@ a{color:inherit;text-decoration:none;}
 <section class="hero">
     <div class="hero-inner">
         <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:999px;padding:6px 14px;margin-bottom:20px;">
-            <span style="font-size:16px;"><i class="fas fa-book" style="color:rgba(255,255,255,.9);"></i></span>
+            <span style="font-size:16px;"><i class="fa-solid fa-book" style="color:rgba(255,255,255,.9);"></i></span>
             <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
         </div>
         <h1>The Mwalimu Library</h1>
-        <p>Curated past papers, and study notes in PDF, and top rated video lessons — all in one place.</p>
+        <p>Curated past papers, and study notes in PDF, and top rated video lessons â€” all in one place.</p>
         @if(!empty($track))
         <p style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">
             Showing resources for <strong style="color:#fff;">{{ ucfirst($track) }}</strong> curriculum track.
@@ -111,7 +112,7 @@ a{color:inherit;text-decoration:none;}
         </p>
         @endif
         <form method="GET" action="{{ route('library.index') }}" class="hero-search">
-            <input type="text" name="search" placeholder="Search resources, subjects, topics…" value="{{ request('search') }}">
+            <input type="text" name="search" placeholder="Search resources, subjects, topicsâ€¦" value="{{ request('search') }}">
             <button type="submit">Search</button>
         </form>
     </div>
@@ -128,13 +129,13 @@ a{color:inherit;text-decoration:none;}
                 <span class="count">{{ $resources->total() }}</span>
             </a>
             @php
-                $typeIcons = ['article'=>'📄','notes'=>'📝','past_paper'=>'📋','video'=>'🎥'];
+                $typeIcons = ['article'=>'ðŸ“„','notes'=>'ðŸ“','past_paper'=>'ðŸ“‹','video'=>'ðŸŽ¥'];
                 $typeLabels = ['article'=>'Articles','notes'=>'Notes','past_paper'=>'Past Papers','video'=>'Videos'];
             @endphp
             @foreach($resourceTypes as $type)
             <a href="{{ route('library.index', array_merge(request()->all(), ['type'=>$type])) }}" class="filter-item {{ request('type') === $type ? 'active' : '' }}">
                 <span style="display:flex;align-items:center;gap:8px;">
-                    <span style="font-size:15px;">{{ $typeIcons[$type] ?? '📄' }}</span>
+                    <span style="font-size:15px;">{{ $typeIcons[$type] ?? 'ðŸ“„' }}</span>
                     {{ $typeLabels[$type] ?? ucfirst(str_replace('_',' ',$type)) }}
                 </span>
             </a>
@@ -161,7 +162,7 @@ a{color:inherit;text-decoration:none;}
                 <div style="font-size:14px;color:var(--muted);">
                     <strong style="color:var(--ink);">{{ $resources->total() }}</strong> resource{{ $resources->total() != 1 ? 's' : '' }} found
                     @if(request()->hasAny(['search','type','category','grade']))
-                        — <a href="{{ route('library.index') }}" style="color:var(--trust-blue);font-weight:600;">Clear filters</a>
+                        â€” <a href="{{ route('library.index') }}" style="color:var(--trust-blue);font-weight:600;">Clear filters</a>
                     @endif
                 </div>
                 @auth
@@ -180,8 +181,8 @@ a{color:inherit;text-decoration:none;}
                         @if($resource->thumbnail)
                             <img src="{{ asset('storage/'.$resource->thumbnail) }}" alt="{{ $resource->title }}">
                         @else
-                            @php $icons = ['article'=>'📄','notes'=>'📝','past_paper'=>'📋','video'=>'🎥']; @endphp
-                            {{ $icons[$resource->resource_type] ?? '📄' }}
+                            @php $icons = ['article'=>'ðŸ“„','notes'=>'ðŸ“','past_paper'=>'ðŸ“‹','video'=>'ðŸŽ¥']; @endphp
+                            {{ $icons[$resource->resource_type] ?? 'ðŸ“„' }}
                         @endif
                         @php
                             $typeClasses = ['article'=>'bdg-blue','notes'=>'bdg-amber','past_paper'=>'bdg-green','video'=>'bdg-purple'];
@@ -225,7 +226,7 @@ a{color:inherit;text-decoration:none;}
                 @if($loop->last)</div>@endif
             @empty
                 <div class="empty">
-                    <div class="empty-icon"><i class="fas fa-book" style="font-size:48px;color:var(--muted);"></i></div>
+                    <div class="empty-icon"><i class="fa-solid fa-book" style="font-size:48px;color:var(--muted);"></i></div>
                     <h3>No resources found</h3>
                     <p>Try adjusting your filters or search terms.</p>
                     @if(request()->hasAny(['search','type','category','grade']))

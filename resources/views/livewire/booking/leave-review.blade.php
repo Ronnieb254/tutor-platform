@@ -1,7 +1,7 @@
 <div>
     @if($submitted)
     <div class="text-center py-4">
-        <div class="text-4xl mb-2">⭐</div>
+        <div class="text-4xl mb-2">â­</div>
         <p class="font-semibold text-ink">Thank you for your review!</p>
         <p class="text-sm text-muted mt-1">Your feedback helps other students find great tutors.</p>
     </div>
@@ -17,7 +17,7 @@
                         @mouseleave="hovered = 0"
                         class="text-3xl transition"
                         :class="(hovered >= {{ $i }} || (@js($rating) >= {{ $i }} && hovered === 0)) ? 'text-gold' : 'text-hairline'">
-                    ★
+                    â˜…
                 </button>
                 @endfor
                 <span class="text-sm text-muted self-center ml-2">{{ $rating }}/5</span>

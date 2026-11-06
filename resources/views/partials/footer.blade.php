@@ -1,4 +1,4 @@
-﻿<footer style="background:#0D1F14;color:rgba(255,255,255,.65);">
+<footer style="background:#0D1F14;color:rgba(255,255,255,.65);">
     <div style="background:linear-gradient(135deg,#15281F,#111C16);padding:64px 0 0;">
         <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
 
@@ -7,13 +7,8 @@
 
                 {{-- Brand column --}}
                 <div>
-                    <a href="{{ route('home') }}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
-                        <svg width="34" height="34" viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="50" fill="#FBF5E6"/>
-                            <circle cx="50" cy="50" r="34" fill="#0A64BC"/>
-                            <circle cx="38" cy="38" r="6" fill="#FBF5E6"/>
-                        </svg>
-                        <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#fff;"><span style="color:#60a5fa;">Mw</span>alimu</span>
+                    <a href="{{ route('home') }}" style="display:inline-block;margin-bottom:16px;">
+                        <img src="/images/logo.svg" alt="Mwalimu" style="height:38px;width:auto;">
                     </a>
                     <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;max-width:280px;margin-bottom:20px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms. 100% money-back if unsatisfied with your first lesson.</p>
 
@@ -135,7 +130,10 @@
     {{-- Bottom bar --}}
     <div style="background:#0A1810;padding:16px 0;">
         <div style="max-width:1360px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-            <span style="font-size:12px;color:rgba(255,255,255,.3);">&copy; {{ date('Y') }} Mwalimu by <a href="https://ovaldesk.co.ke" target="_blank" style="color:rgba(255,255,255,.45);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">OvalDesk Ventures</a>. All rights reserved.</span>
+            <a href="{{ route('home') }}" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+                <img src="/images/logo.svg" alt="Mwalimu" style="height:20px;width:auto;">
+                <span style="font-size:11px;color:rgba(255,255,255,.35);">by <a href="https://ovaldesk.co.ke" target="_blank" style="color:rgba(255,255,255,.45);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">OvalDesk Ventures</a></span>
+            </a>
             <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-certificate fa-xs" style="color:#10B981;"></i> TSC Verified</span>
                 <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-lock fa-xs" style="color:#10B981;"></i> Secure</span>

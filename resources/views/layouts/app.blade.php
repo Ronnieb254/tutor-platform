@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Tutor Platform')</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.svg">
     {{-- Use Tailwind CDN instead of @vite since build manifest may not exist on production --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -20,9 +22,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="{{ route('dashboard') }}" class="flex items-center">
-                        <span class="text-2xl font-bold bg-gradient-to-r from-black to-gray-800 bg-clip-text text-transparent">
-                            Mwalimu
-                        </span>
+                        <img src="/images/logo.svg" alt="Mwalimu" style="height:36px;width:auto;">
                     </a>
                 </div>
 
@@ -59,7 +59,7 @@
                             <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-2xl z-50 border border-gray-200">
                                 <div class="p-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
                                     <h3 class="font-semibold text-gray-900 flex items-center">
-                                        <i class="fas fa-bell text-black mr-2"></i>Notifications
+                                        <i class="fa-solid fa-bell text-black mr-2"></i>Notifications
                                     </h3>
                                 </div>
                                 <div id="notificationsList" class="max-h-96 overflow-y-auto">
@@ -90,16 +90,16 @@
                                     <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
                                 </div>
                                 <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                                    <i class="fas fa-user mr-2"></i>Profile
+                                    <i class="fa-solid fa-user mr-2"></i>Profile
                                 </a>
                                 <a href="{{ route('notifications.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                                    <i class="fas fa-bell mr-2"></i>Notifications
+                                    <i class="fa-solid fa-bell mr-2"></i>Notifications
                                 </a>
                                 <hr class="my-1">
                                 <form action="{{ route('logout') }}" method="POST" class="inline-block w-full">
                                     @csrf
                                     <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
-                                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                        <i class="fa-solid fa-sign-out-alt mr-2"></i>Logout
                                     </button>
                                 </form>
                             </div>
@@ -132,13 +132,13 @@
         <div x-show="mobileOpen" x-cloak x-transition class="md:hidden bg-white border-t border-gray-200 px-4 py-3 space-y-1">
             @auth
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                    <i class="fas fa-gauge-high mr-2 text-gray-500"></i>Dashboard
+                    <i class="fa-solid fa-gauge-high mr-2 text-gray-500"></i>Dashboard
                 </a>
                 <a href="{{ route('sessions.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                    <i class="fas fa-calendar mr-2 text-gray-500"></i>Sessions
+                    <i class="fa-solid fa-calendar mr-2 text-gray-500"></i>Sessions
                 </a>
                 <a href="{{ route('inbox.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                    <i class="fas fa-envelope mr-2 text-gray-500"></i>Messages
+                    <i class="fa-solid fa-envelope mr-2 text-gray-500"></i>Messages
                 </a>
             @else
                 <a href="{{ route('login') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
@@ -166,22 +166,24 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center lg:text-left">
                     <!-- Brand Section -->
                     <div class="space-y-4 flex flex-col items-center lg:items-start">
-                        <h3 class="text-white font-bold text-xl">Mwalimu</h3>
+                        <a href="{{ route('home') }}" class="inline-block">
+                            <img src="/images/logo.svg" alt="Mwalimu" style="height:40px;width:auto;filter:brightness(0) invert(1);">
+                        </a>
                         <p class="text-sm text-gray-500">
                             Connecting students with qualified tutors for personalized learning experiences.
                         </p>
                         <div class="flex space-x-4 pt-4 justify-center lg:justify-start">
                             <a href="#" class="text-gray-500 hover:text-black transition-colors duration-200">
-                                <i class="fab fa-facebook-f text-lg"></i>
+                                <i class="fa-brands fa-facebook-f text-lg"></i>
                             </a>
                             <a href="#" class="text-gray-500 hover:text-black transition-colors duration-200">
-                                <i class="fab fa-twitter text-lg"></i>
+                                <i class="fa-brands fa-twitter text-lg"></i>
                             </a>
                             <a href="#" class="text-gray-500 hover:text-black transition-colors duration-200">
-                                <i class="fab fa-linkedin-in text-lg"></i>
+                                <i class="fa-brands fa-linkedin-in text-lg"></i>
                             </a>
                             <a href="#" class="text-gray-500 hover:text-black transition-colors duration-200">
-                                <i class="fab fa-instagram text-lg"></i>
+                                <i class="fa-brands fa-instagram text-lg"></i>
                             </a>
                         </div>
                     </div>
@@ -290,7 +292,7 @@
                     &copy; 2026 Mwalimu. All rights reserved.
                 </p>
                 <p class="text-gray-500 text-sm mt-4 md:mt-0">
-                    Made with <i class="fas fa-heart text-red-500"></i> for educators and learners
+                    Made with <i class="fa-solid fa-heart text-red-500"></i> for educators and learners
                 </p>
             </div>
         </div>
@@ -326,13 +328,13 @@
                                 <a href="${bookingUrl}" class="block px-4 py-3 hover:bg-gray-50 border-b border-gray-100 transition-colors duration-150">
                                     <p class="text-sm font-medium text-gray-900">${notif.data.message}</p>
                                     <p class="text-xs text-gray-500 mt-1">
-                                        <i class="fas fa-clock mr-1"></i>${timeAgo}
+                                        <i class="fa-solid fa-clock mr-1"></i>${timeAgo}
                                     </p>
                                 </a>
                             `;
                         });
                     } else {
-                        html = '<p class="p-4 text-center text-gray-500 text-sm"><i class="fas fa-inbox mr-2"></i>No new notifications</p>';
+                        html = '<p class="p-4 text-center text-gray-500 text-sm"><i class="fa-solid fa-inbox mr-2"></i>No new notifications</p>';
                     }
                     notificationsList.innerHTML = html;
                 }

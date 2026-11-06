@@ -37,7 +37,7 @@
       style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;align-items:flex-end;">
     <div style="flex:1;min-width:180px;">
         <label class="form-label">Search</label>
-        <input type="text" name="search" value="{{ $search }}" placeholder="Title or description…" class="form-input" style="height:38px;">
+        <input type="text" name="search" value="{{ $search }}" placeholder="Title or descriptionâ€¦" class="form-input" style="height:38px;">
     </div>
     <div>
         <label class="form-label">Status</label>
@@ -88,7 +88,7 @@
                         <div style="font-weight:600;font-size:13px;">{{ $session->title }}</div>
                         @if($session->subject)<div style="font-size:11px;color:var(--muted);">{{ $session->subject->name }}</div>@endif
                     </td>
-                    <td style="font-size:13px;color:var(--muted);">{{ $session->tutor?->name ?? '—' }}</td>
+                    <td style="font-size:13px;color:var(--muted);">{{ $session->tutor?->name ?? 'â€”' }}</td>
                     <td style="white-space:nowrap;font-size:13px;">
                         <div>{{ $session->scheduled_at->format('M j, Y') }}</div>
                         <div style="font-size:11px;color:var(--muted);">{{ $session->scheduled_at->format('g:i a') }}</div>

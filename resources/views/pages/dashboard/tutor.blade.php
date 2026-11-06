@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Tutor Dashboard – Mwalimu</title>
@@ -137,7 +138,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 .flash{padding:12px 16px;border-radius:12px;font-size:13.5px;font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
 .flash-ok{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;}
 
-/* ── Responsive overrides (mobile-first additions, desktop untouched) ── */
+/* -- Responsive overrides (mobile-first additions, desktop untouched) -- */
 @media(max-width:639px){
   /* booking mini-stat grid: 2-col on small mobile */
   .booking-stats-g{grid-template-columns:repeat(2,1fr)!important;}
@@ -145,7 +146,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
   .content{padding:14px;}
 }
 @media(max-width:479px){
-  /* any 2-col quick/stat grids → 1 col on very small screens */
+  /* any 2-col quick/stat grids ? 1 col on very small screens */
   .quick-g{grid-template-columns:1fr!important;}
   .stats-g{grid-template-columns:1fr!important;}
 }
@@ -172,7 +173,7 @@ $activeTab = request('tab','overview');
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
     <div class="sb-logo">
-        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
         <div>
             <div class="sb-logo-text">Mwalimu</div>
             <div class="sb-logo-sub">Tutor Portal</div>
@@ -311,7 +312,7 @@ $activeTab = request('tab','overview');
         </div>
         @endif
 
-{{-- ═══════════════════════ OVERVIEW TAB ═══════════════════════ --}}
+{{-- ----------------------- OVERVIEW TAB ----------------------- --}}
 <div x-show="tab==='overview'">
     @php
     $wallet = $user->wallet;
@@ -348,7 +349,7 @@ $activeTab = request('tab','overview');
             <div style="font-size:13px;color:var(--muted);margin-top:3px;line-height:1.6;">
                 @if($verificationStatus==='action_required')
                     One or more documents were rejected. Please re-upload the required documents to continue.
-                    <button @click="tab='documents'" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">View Documents →</button>
+                    <button @click="tab='documents'" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">View Documents ?</button>
                 @elseif($verificationStatus==='under_review')
                     Our team is reviewing your profile and documents. You'll receive an email once approved — usually within 24–48 hours.
                 @else
@@ -356,7 +357,7 @@ $activeTab = request('tab','overview');
                     @if($missingCount > 0)
                         <span style="color:var(--coral);font-weight:700;">{{ $missingCount }} remaining: {{ implode(', ', $missingNames) }}</span>
                     @endif
-                    <button @click="tab='documents'" style="background:none;border:none;color:#92400E;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">Upload Now →</button>
+                    <button @click="tab='documents'" style="background:none;border:none;color:#92400E;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">Upload Now ?</button>
                 @endif
             </div>
         </div>
@@ -395,7 +396,7 @@ $activeTab = request('tab','overview');
             </div>
             <div class="stat-lbl">Completed Sessions</div>
             <div class="stat-val">{{ $completedCount }}</div>
-            <div class="stat-sub">Rating: ★ {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>
+            <div class="stat-sub">Rating: ? {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>
         </div>
         
     </div>
@@ -460,11 +461,11 @@ $activeTab = request('tab','overview');
     <style>.quick-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.quick-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 </div>
 
-{{-- ═══════════════════════ DOCUMENTS TAB ═══════════════════════ --}}
-{{-- 📁 pages/dashboard/partials/documents.blade.php --}}
+{{-- ----------------------- DOCUMENTS TAB ----------------------- --}}
+{{-- ?? pages/dashboard/partials/documents.blade.php --}}
 @include('pages.dashboard.partials.documents')
 
-{{-- ═══════════════════════ BOOKINGS TAB ═══════════════════════ --}}
+{{-- ----------------------- BOOKINGS TAB ----------------------- --}}
 <div x-show="tab==='bookings' || tab==='history'" x-cloak>
     @php
     $bFilter = request('bstatus','all');
@@ -579,7 +580,7 @@ $activeTab = request('tab','overview');
     </div>
 </div>
 
-{{-- ═══════════════════════ CHATS TAB ═══════════════════════ --}}
+{{-- ----------------------- CHATS TAB ----------------------- --}}
 <div x-show="tab==='chats'" x-cloak>
     @php
     $chatBookings = $user->bookingsAsTutor()
@@ -618,7 +619,7 @@ $activeTab = request('tab','overview');
                 </div>
                 @empty
                 <div style="padding:40px 20px;text-align:center;color:var(--muted);">
-                    <div style="font-size:32px;margin-bottom:8px;">💬</div>
+                    <div style="font-size:32px;margin-bottom:8px;">??</div>
                     <div style="font-size:14px;">No conversations yet</div>
                     <div style="font-size:12px;margin-top:4px;">Messages appear here after a booking is confirmed</div>
                 </div>
@@ -667,7 +668,7 @@ $activeTab = request('tab','overview');
             </form>
             @else
             <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--muted);">
-                <div style="font-size:48px;">💬</div>
+                <div style="font-size:48px;">??</div>
                 <div style="font-size:16px;font-weight:600;color:var(--ink);">No messages yet</div>
                 <div style="font-size:14px;">Messages will appear here once a booking is confirmed</div>
             </div>
@@ -677,7 +678,7 @@ $activeTab = request('tab','overview');
     <style>.chat-layout{grid-template-columns:1fr!important;}@media(min-width:768px){.chat-layout{grid-template-columns:300px 1fr!important;}}</style>
 </div>
 
-{{-- ═══════════════════════ EARNINGS TAB ═══════════════════════ --}}
+{{-- ----------------------- EARNINGS TAB ----------------------- --}}
 <div x-show="tab==='earnings'" x-cloak>
     @php
     $wallet = $user->wallet;
@@ -734,7 +735,7 @@ $activeTab = request('tab','overview');
                             <td style="font-size:12px;color:var(--muted);white-space:nowrap;">{{ $tx->created_at->format('M j, Y') }}</td>
                             <td>
                                 <span class="bdg {{ $tx->type==='credit' ? 'bdg-green' : 'bdg-red' }}">
-                                    {{ $tx->type==='credit' ? '↑ Credit' : '↓ Debit' }}
+                                    {{ $tx->type==='credit' ? '? Credit' : '? Debit' }}
                                 </span>
                             </td>
                             <td style="font-weight:700;color:{{ $tx->type==='credit' ? 'var(--mint)' : 'var(--coral)' }};">
@@ -816,7 +817,7 @@ $activeTab = request('tab','overview');
     <style>.earn-grid{grid-template-columns:1fr!important;}@media(min-width:1024px){.earn-grid{grid-template-columns:1fr 320px!important;}}</style>
 </div>
 
-{{-- ═══════════════════════ NOTIFICATIONS TAB ═══════════════════════ --}}
+{{-- ----------------------- NOTIFICATIONS TAB ----------------------- --}}
 <div x-show="tab==='notifications'" x-cloak>
     @php
     $notifications = $user->notifications()->latest()->paginate(20);
@@ -857,7 +858,7 @@ $activeTab = request('tab','overview');
                         </div>
                         @endif
                         @if(!empty($data['scheduled_at']))
-                        <div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fas fa-calendar" style="margin-right:4px;"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-calendar" style="margin-right:4px;"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
                         @endif
                     </div>
                     <div style="text-align:right;flex-shrink:0;">
@@ -883,7 +884,7 @@ $activeTab = request('tab','overview');
     @endif
 </div>
 
-{{-- ═══════════════════════ AVAILABILITY TAB ═══════════════════════ --}}
+{{-- ----------------------- AVAILABILITY TAB ----------------------- --}}
 <div x-show="tab==='availability'" x-cloak>
     @php $avails = $profile?->availabilities()->get()->keyBy('day_of_week') ?? collect(); @endphp
     <div style="margin-bottom:20px;">
@@ -929,7 +930,7 @@ $activeTab = request('tab','overview');
     </form>
 </div>
 
-{{-- ═══════════════════════ PROFILE TAB ═══════════════════════ --}}
+{{-- ----------------------- PROFILE TAB ----------------------- --}}
 <div x-show="tab==='profile'" x-cloak>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="profile-grid">
         {{-- Personal Info --}}
@@ -937,6 +938,7 @@ $activeTab = request('tab','overview');
             <div class="sec-title" style="margin-bottom:20px;">Personal Information</div>
             <form method="POST" action="/tutor/profile/update">
                 @csrf @method('PATCH')
+                <input type="hidden" name="_redirect" value="{{ route('tutor.dashboard') }}?tab=profile">
                 <div style="margin-bottom:12px;">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Full Name</label>
                     <input type="text" name="name" value="{{ $user->name }}"
@@ -971,6 +973,7 @@ $activeTab = request('tab','overview');
             <form method="POST" action="{{ route('tutor.documents.upload') }}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="type" value="passport_photo">
+                <input type="hidden" name="_redirect" value="{{ route('tutor.dashboard') }}?tab=profile">
                 {{-- Current photo --}}
                 <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
                     <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}"
@@ -993,6 +996,7 @@ $activeTab = request('tab','overview');
             <div class="sec-title" style="margin-bottom:20px;">Teaching Profile</div>
             <form method="POST" action="/tutor/profile/tutor-update">
                 @csrf @method('PATCH')
+                <input type="hidden" name="_redirect" value="{{ route('tutor.dashboard') }}?tab=profile">
                 <div style="margin-bottom:12px;">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Bio</label>
                     <textarea name="bio" rows="4" maxlength="255" placeholder="Tell students about your experience and teaching style…"

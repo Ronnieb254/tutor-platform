@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session Completed</title>
 </head>
@@ -18,7 +19,7 @@
         @php
           $delivery = $booking->delivery_status ?? 'fully_delivered';
           $iconColor = $delivery === 'fully_delivered' ? '#10B981' : ($delivery === 'not_delivered' ? '#E8522A' : '#EEBE15');
-          $icon = $delivery === 'fully_delivered' ? '✅' : ($delivery === 'not_delivered' ? '❌' : '⚠️');
+          $icon = $delivery === 'fully_delivered' ? 'âœ…' : ($delivery === 'not_delivered' ? 'âŒ' : 'âš ï¸');
         @endphp
 
         <h1 style="font-size:24px;font-weight:700;color:#15281F;margin:0 0 8px;">{{ $icon }} Session

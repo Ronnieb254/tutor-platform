@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Group Sessions – Mwalimu Tutor Portal</title>
+<title>Group Sessions â€“ Mwalimu Tutor Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -62,7 +63,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
     <div class="sb-logo">
-        <svg width="30" height="30" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FBF5E6"/><circle cx="50" cy="50" r="34" fill="#0A64BC"/><circle cx="38" cy="38" r="6" fill="#FBF5E6"/></svg>
+        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
         <div><div class="sb-logo-text">Mwalimu</div><div class="sb-logo-sub">Tutor Portal</div></div>
     </div>
     <nav class="sb-nav">
@@ -242,7 +243,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                             </td>
                             <td style="padding:14px 12px;white-space:nowrap;color:var(--muted);">
                                 {{ $session->scheduled_at->format('M j, Y') }}<br>
-                                <span style="font-size:11px;">{{ $session->scheduled_at->format('g:ia') }} · {{ $session->duration_minutes }}min</span>
+                                <span style="font-size:11px;">{{ $session->scheduled_at->format('g:ia') }} Â· {{ $session->duration_minutes }}min</span>
                             </td>
                             <td style="padding:14px 12px;text-align:center;">
                                 <span style="font-weight:700;color:{{ $enrolled >= $max ? '#991B1B' : '#10B981' }};">{{ $enrolled }}/{{ $max }}</span>

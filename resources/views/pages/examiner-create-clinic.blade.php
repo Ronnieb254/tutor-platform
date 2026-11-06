@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Create Examiner Clinic – Mwalimu</title>
+<title>Create Examiner Clinic â€“ Mwalimu</title>
 </head>
 <body>
 @include('partials.nav')
@@ -44,7 +44,7 @@
                         Subject <span style="color:#dc2626;">*</span>
                     </label>
                     <select name="subject_id" required style="width:100%;height:44px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:#15281F;background:#fff;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
-                        <option value="">— Select subject —</option>
+                        <option value="">â€” Select subject â€”</option>
                         @foreach($subjects as $s)
                         <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                         @endforeach
@@ -72,7 +72,7 @@
                     Clinic Title <span style="color:#dc2626;">*</span>
                 </label>
                 <input type="text" name="title" value="{{ old('title') }}" required
-                    placeholder="e.g. Mathematics PP1 – Algebra &amp; Calculus Mastery"
+                    placeholder="e.g. Mathematics PP1 â€“ Algebra &amp; Calculus Mastery"
                     style="width:100%;height:44px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:#15281F;outline:none;transition:border-color .15s;"
                     onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">
             </div>
@@ -81,7 +81,7 @@
             <div style="margin-bottom:18px;">
                 <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.5);margin-bottom:6px;display:block;">Description</label>
                 <textarea name="description" rows="3"
-                    placeholder="What will students gain from this session? Exam strategies, key topics, marking scheme insights…"
+                    placeholder="What will students gain from this session? Exam strategies, key topics, marking scheme insightsâ€¦"
                     style="width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:#15281F;outline:none;resize:vertical;transition:border-color .15s;"
                     onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">{{ old('description') }}</textarea>
             </div>
@@ -121,7 +121,7 @@
             <div style="background:rgba(10,100,188,.06);border:1px solid rgba(10,100,188,.15);border-radius:12px;padding:14px 16px;margin-bottom:24px;display:flex;gap:10px;align-items:flex-start;">
                 <i class="fa-solid fa-circle-info" style="color:#0A64BC;flex-shrink:0;margin-top:1px;"></i>
                 <div style="font-size:13px;color:#0A64BC;line-height:1.65;">
-                    <strong>30 slots · Auto-overflow.</strong> When all 30 spots are taken the system creates an identical session starting 30 minutes after this one ends. The session goes live in Jitsi at the scheduled time — no action needed from you.
+                    <strong>30 slots Â· Auto-overflow.</strong> When all 30 spots are taken the system creates an identical session starting 30 minutes after this one ends. The session goes live in Jitsi at the scheduled time â€” no action needed from you.
                 </div>
             </div>
 
