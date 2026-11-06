@@ -239,11 +239,11 @@
                 @if($doc)
                     @php $bc = ['pending'=>'bdg-amber','approved'=>'bdg-green','rejected'=>'bdg-red'][$doc->status] ?? 'bdg-gray'; @endphp
                     <span class="bdg {{ $bc }}">{{ ucfirst($doc->status) }}</span>
-                    <a href="{{ route('tutor.documents.view', $doc->id) }}"
-                       target="_blank"
-                       class="btn btn-o btn-sm">
+                    <button type="button"
+                            onclick="viewDocPopup('{{ route('tutor.documents.view', $doc->id) }}', {{ $doc->file_path && str_ends_with(strtolower($doc->file_path), '.pdf') ? 'true' : 'false' }}, '{{ addslashes($label) }}')"
+                            class="btn btn-o btn-sm">
                         <i class="fa-solid fa-eye fa-fw"></i> View
-                    </a>
+                    </button>
                 @endif
 
                 @if(!$doc || $doc->status !== 'approved')

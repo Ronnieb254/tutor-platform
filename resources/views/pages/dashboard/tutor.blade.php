@@ -1028,6 +1028,21 @@ $activeTab = request('tab','overview');
 // Auto-scroll chat to bottom
 const chatEl = document.getElementById('chat-messages');
 if (chatEl) chatEl.scrollTop = chatEl.scrollHeight;
+
+// Document viewer popup (uses SweetAlert2)
+window.viewDocPopup = function(url, isPdf, docName) {
+    const content = isPdf
+        ? `<iframe src="${url}" style="width:100%;height:68vh;border:none;border-radius:8px;"></iframe>`
+        : `<img src="${url}" style="max-width:100%;max-height:68vh;border-radius:8px;object-fit:contain;" onerror="this.outerHTML='<p style=\'color:#E8522A;padding:20px\'>Could not load image.</p>'">`;
+    Swal.fire({
+        title: docName || 'Document',
+        html: content,
+        width: '820px',
+        showConfirmButton: false,
+        showCloseButton: true,
+        padding: '20px',
+    });
+};
 </script>
 </body>
 </html>

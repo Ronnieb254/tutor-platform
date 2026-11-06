@@ -315,12 +315,14 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                         @endphp
                         
                         @if($isPdf)
-                        <div class="doc-thumb-placeholder" onclick="window.open('{{ route('tutor.documents.view', $doc->id) }}', '_blank')">
+                        <div class="doc-thumb-placeholder" style="cursor:pointer;" onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', true, '{{ $docLabel }}')">
                             <i class="fa-solid fa-file-pdf" style="color:#dc2626;"></i>
                         </div>
                         @else
-                        <img src="{{ route('tutor.documents.view', $doc->id) }}" class="doc-thumb" onclick="window.open('{{ route('tutor.documents.view', $doc->id) }}', '_blank')" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                        <div class="doc-thumb-placeholder" style="display:none;" onclick="window.open('{{ route('tutor.documents.view', $doc->id) }}', '_blank')">
+                        <img src="{{ route('tutor.documents.view', $doc->id) }}" class="doc-thumb" style="cursor:pointer;"
+                             onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', false, '{{ $docLabel }}')"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <div class="doc-thumb-placeholder" style="display:none;cursor:pointer;" onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', false, '{{ $docLabel }}')">
                             <i class="fa-solid fa-file"></i>
                         </div>
                         @endif

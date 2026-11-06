@@ -350,6 +350,36 @@ const Toast = Swal.mixin({
     }
 });
 
+// Global helpers
+window.showSuccess = (msg, title = 'Success!') => Swal.fire({ icon: 'success', title, text: msg, confirmButtonColor: '#0A64BC' });
+window.showError   = (msg, title = 'Error!')   => Swal.fire({ icon: 'error',   title, text: msg, confirmButtonColor: '#0A64BC' });
+window.showInfo    = (msg, title = 'Info')      => Swal.fire({ icon: 'info',    title, text: msg, confirmButtonColor: '#0A64BC' });
+window.showConfirm = (title, text, confirmText = 'Yes', cancelText = 'Cancel') =>
+    Swal.fire({
+        title, text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0A64BC',
+        cancelButtonColor: '#E8522A',
+        confirmButtonText: confirmText,
+        cancelButtonText: cancelText,
+    });
+
+// Document lightbox — view docs in-page without redirect
+window.viewDocModal = function(url, isPdf, docName) {
+    const content = isPdf
+        ? `<iframe src="${url}" style="width:100%;height:70vh;border:none;border-radius:8px;"></iframe>`
+        : `<img src="${url}" style="max-width:100%;max-height:70vh;border-radius:8px;object-fit:contain;" onerror="this.outerHTML='<p style=\'color:#E8522A\'>Could not load image.</p>'">`;
+    Swal.fire({
+        title: docName || 'Document',
+        html: content,
+        width: '860px',
+        showConfirmButton: false,
+        showCloseButton: true,
+        padding: '20px',
+    });
+};
+
 // Auto-show flash messages
 @if(session('success'))
     Toast.fire({
