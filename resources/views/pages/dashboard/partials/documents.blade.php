@@ -15,11 +15,18 @@
         'passport_photo'               => ['Passport Photo',             'fa-camera', 'Required'],
     ];
 
-    // Check which required docs are uploaded
+    // Check which required docs are uploaded/approved
     $uploadedTypes       = $docs->pluck('type')->toArray();
+    $approvedTypes       = $docs->where('status', 'approved')->pluck('type')->toArray();
     $requiredTypes       = array_keys(array_filter($docTypes, fn($v) => $v[2] === 'Required'));
     $missingTypes        = array_diff($requiredTypes, $uploadedTypes);
     $allRequiredUploaded = count($missingTypes) === 0;
+    $allRequiredApproved = count(array_diff($requiredTypes, $approvedTypes)) === 0;
+
+    // Subject count
+    $subjectCount        = $profile?->subjects()->count() ?? 0;
+    $needsSubjects       = $allRequiredApproved && !$isApproved && ($subjectCount < 1 || $subjectCount > 2);
+    $canSubmitForReview  = $allRequiredUploaded && $subjectCount >= 1 && $subjectCount <= 2;
     @endphp
 
     {{-- ── Header ─────────────────────────────────────────────── --}}
@@ -28,8 +35,7 @@
             Verification Documents
         </h2>
         <p style="font-size:14px;color:var(--muted);">
-            Upload your documents below. Our team reviews them within 24–48 hours.
-            Once <strong>all 5</strong> required documents are approved, your profile goes live.
+            Upload your documents and select 1–2 teaching subjects. Our team reviews your profile within 24–48 hours.
         </p>
     </div>
 
@@ -81,6 +87,59 @@
                 </div>
             </div>
         </div>
+    @endif
+
+    {{-- ── Subject requirement banner (shown when all docs approved but no subjects) ── --}}
+    @if($needsSubjects && !$isApproved)
+    <div class="status-banner" style="background:#FEF3C7;border:1px solid #FDE68A;margin-bottom:24px;">
+        <span style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-book-open" style="color:#D97706;"></i></span>
+        <div style="flex:1;">
+            <div style="font-weight:700;color:#92400E;font-size:15px;">Select Your Teaching Subjects</div>
+            <div style="font-size:13px;color:#78350F;margin-top:3px;line-height:1.6;">
+                @if($subjectCount === 0)
+                    Your documents look good! Before your profile can go live, you must select <strong>1 to 2 subjects</strong> you intend to teach.
+                @else
+                    You have {{ $subjectCount }} subjects selected — the maximum allowed is 2. Please remove one.
+                @endif
+            </div>
+            <a href="{{ route('tutor.subjects') }}"
+               style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 16px;background:#D97706;color:#fff;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;">
+                <i class="fa-solid fa-arrow-right fa-xs"></i>
+                Go to My Subjects
+            </a>
+        </div>
+    </div>
+    @endif
+
+    {{-- ── Requirements checklist ─────────────────────────────── --}}
+    @if(!$isApproved)
+    <div class="card card-p" style="margin-bottom:20px;">
+        <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;">
+            <i class="fa-solid fa-clipboard-list fa-xs" style="color:var(--trust-blue);margin-right:6px;"></i> Requirements before review
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+            @foreach([
+                ['4 required documents uploaded', $allRequiredUploaded, route('tutor.dashboard').'?tab=documents'],
+                ['1–2 teaching subjects selected', $subjectCount >= 1 && $subjectCount <= 2, route('tutor.subjects')],
+            ] as [$label, $done, $link])
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+                            background:{{ $done ? 'rgba(16,185,129,.15)' : 'rgba(232,82,42,.1)' }};">
+                    <i class="fa-solid {{ $done ? 'fa-check' : 'fa-xmark' }} fa-xs"
+                       style="color:{{ $done ? '#059669' : '#E8522A' }};"></i>
+                </div>
+                <span style="font-size:13px;color:{{ $done ? '#059669' : 'var(--ink)' }};font-weight:{{ $done ? '500' : '600' }};">
+                    {{ $label }}
+                    @if(!$done)
+                        <a href="{{ $link }}" style="color:var(--trust-blue);font-size:12px;font-weight:600;margin-left:6px;">
+                            Fix this →
+                        </a>
+                    @endif
+                </span>
+            </div>
+            @endforeach
+        </div>
+    </div>
     @endif
 
     {{-- ── Progress stepper ────────────────────────────────────── --}}
@@ -187,6 +246,7 @@
                     </a>
                 @endif
 
+                @if(!$doc || $doc->status !== 'approved')
                 <form method="POST"
                       action="{{ route('tutor.documents.upload') }}"
                       enctype="multipart/form-data"
@@ -210,6 +270,7 @@
                                onchange="this.closest('form').submit()">
                     </label>
                 </form>
+                @endif
             </div>
         </div>
         @endforeach

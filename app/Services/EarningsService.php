@@ -24,7 +24,7 @@ class EarningsService
             })
             ->sum('tutor_amount');
 
-        // Exam clinic earnings (40%)
+        // Exam clinic earnings (25% tutor share)
         $clinicEarnings = Payment::successful()
             ->where('payment_type', 'clinic')
             ->whereHas('clinic', function ($q) use ($tutor) {

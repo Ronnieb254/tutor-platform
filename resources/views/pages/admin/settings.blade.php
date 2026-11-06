@@ -122,27 +122,39 @@ use App\Models\PlatformSetting;
     {{-- Session Durations info --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            ⏱ Session Duration Pricing
+            <i class="fa-solid fa-stopwatch" style="color:var(--trust-blue);margin-right:8px;"></i> Session Duration Pricing
         </h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Session prices are calculated automatically from each tutor's hourly rate using these fixed multipliers:</p>
-        <table id="pricing-multipliers-table" style="width:100%;border-collapse:collapse;">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">
+            Mwalimu uses <strong>fixed platform rates</strong> for all sessions. Tutors do not set their own prices. All rates are inclusive of the platform commission.
+        </p>
+        <table style="width:100%;border-collapse:collapse;">
             <thead>
                 <tr>
-                    <th style="text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--hairline);">Duration</th>
-                    <th style="text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--hairline);">Multiplier</th>
-                    <th style="text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--hairline);">Example (KSh 2,000/hr)</th>
+                    <th style="text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--hairline);background:rgba(21,40,31,.02);">Duration</th>
+                    <th style="text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--hairline);background:rgba(21,40,31,.02);">Session Type</th>
+                    <th style="text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--hairline);background:rgba(21,40,31,.02);">Price (KSh)</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach([[15,'25%','KSh 500'],[30,'50%','KSh 1,000'],[45,'75%','KSh 1,500'],[60,'100%','KSh 2,000']] as [$m,$pct,$ex])
-                <tr style="border-bottom:1px solid rgba(21,40,31,0.05);">
-                    <td style="padding:10px 0;font-weight:600;">{{ $m }} min</td>
-                    <td style="padding:10px 0;color:var(--trust-blue);font-weight:600;">{{ $pct }}</td>
-                    <td style="padding:10px 0;color:var(--muted);">{{ $ex }}</td>
+                @foreach(\App\Models\TutorProfile::sessionPrices() as $key => $session)
+                <tr style="border-bottom:1px solid rgba(21,40,31,.05);">
+                    <td style="padding:11px 12px;font-weight:600;color:var(--ink);">{{ $session['duration'] }} min</td>
+                    <td style="padding:11px 12px;color:var(--muted);font-size:13px;">{{ $session['name'] }}</td>
+                    <td style="padding:11px 12px;text-align:right;">
+                        @if(($session['price'] ?? 0) == 0)
+                            <span style="background:rgba(16,185,129,.1);color:#059669;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;">FREE</span>
+                        @else
+                            <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--trust-blue);">KSh {{ number_format($session['price']) }}</span>
+                        @endif
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+        <p style="font-size:12px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline);">
+            <i class="fa-solid fa-info-circle fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i>
+            To change session prices, update the <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">sessionPrices()</code> method in <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">app/Models/TutorProfile.php</code>.
+        </p>
     </div>
 
     {{-- Maintenance --}}

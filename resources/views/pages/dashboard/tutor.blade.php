@@ -159,6 +159,8 @@ $isApproved = $profile?->is_approved ?? false;
 $verificationStatus = $profile?->verification_status ?? 'no_documents';
 $pendingBookings = $user->bookingsAsTutor()->where('status','pending')->count();
 $unreadNotifs = $user->unreadNotifications()->count();
+$subjectCount = $profile?->subjects()->count() ?? 0;
+$needsSubjectsBadge = !$isApproved && $subjectCount === 0;
 $activeTab = request('tab','overview');
 @endphp
 
@@ -194,6 +196,7 @@ $activeTab = request('tab','overview');
             <a href="{{ route('tutor.subjects') }}" class="sb-item">
                 <i class="fa-solid fa-book-open fa-fw" style="font-size:14px;"></i>
                 My Subjects
+                @if($needsSubjectsBadge)<span class="sb-badge">!</span>@endif
             </a>
         </div>
 
@@ -394,16 +397,9 @@ $activeTab = request('tab','overview');
             <div class="stat-val">{{ $completedCount }}</div>
             <div class="stat-sub">Rating: ★ {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>
         </div>
-        <div class="stat">
-            <div class="stat-icon" style="background:rgba(212,160,23,.1);">
-                <i class="fa-solid fa-star" style="color:#EEBE15;font-size:18px;"></i>
-            </div>
-            <div class="stat-lbl">My Rate</div>
-            <div class="stat-val" style="font-size:22px;">KSh {{ number_format($profile?->hourly_rate ?? 0) }}/hr</div>
-            <div class="stat-sub">{{ $profile?->experience_years ?? 0 }} years experience</div>
-        </div>
+        
     </div>
-    <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:640px){.stats-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.stats-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
+    <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:640px){.stats-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.stats-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
 
     {{-- Earnings Widget --}}
     @if(isset($earnings))
@@ -968,45 +964,55 @@ $activeTab = request('tab','overview');
             </form>
         </div>
 
-        {{-- Tutor profile details --}}
+        {{-- Passport photo update --}}
+        <div class="card card-p">
+            <div class="sec-title" style="margin-bottom:6px;">Profile Photo</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Update your passport photo. This is shown on your public tutor profile.</p>
+            <form method="POST" action="{{ route('tutor.documents.upload') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="type" value="passport_photo">
+                {{-- Current photo --}}
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+                    <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}"
+                         style="width:72px;height:72px;border-radius:14px;object-fit:cover;border:2px solid var(--hair);">
+                    <div>
+                        <div style="font-size:14px;font-weight:600;color:var(--ink);">{{ $user->name }}</div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:2px;">JPG, PNG or PDF · Max 5 MB · Must be a clear headshot</div>
+                    </div>
+                </div>
+                <label style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:var(--trust-blue);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s;"
+                       onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                    <i class="fa-solid fa-upload fa-sm"></i> Upload New Photo
+                    <input type="file" name="document" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="this.closest('form').submit()">
+                </label>
+            </form>
+        </div>
+
+        {{-- Bio & Experience --}}
         <div class="card card-p">
             <div class="sec-title" style="margin-bottom:20px;">Teaching Profile</div>
             <form method="POST" action="/tutor/profile/tutor-update">
                 @csrf @method('PATCH')
                 <div style="margin-bottom:12px;">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Bio</label>
-                    <textarea name="bio" rows="4" placeholder="Tell students about your experience and teaching style…"
-                              style="width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:vertical;line-height:1.6;"
+                    <textarea name="bio" rows="4" maxlength="255" placeholder="Tell students about your experience and teaching style…"
+                              x-data="{ count: {{ strlen($profile?->bio ?? '') }} }"
+                              x-on:input="count = $el.value.length"
+                              style="width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;"
                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">{{ $profile?->bio }}</textarea>
+                    <p style="font-size:11px;color:var(--muted);margin-top:4px;text-align:right;">
+                        <span x-text="count">{{ strlen($profile?->bio ?? '') }}</span> / 255
+                    </p>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-                    <div>
-                        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Hourly Rate (KSh)</label>
-                        <input type="number" name="hourly_rate" value="{{ $profile?->hourly_rate }}" min="500"
-                               style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
-                    </div>
-                    <div>
-                        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Exp. Years</label>
-                        <input type="number" name="experience_years" value="{{ $profile?->experience_years }}" min="0"
-                               style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
-                    </div>
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Years of Experience</label>
+                    <input type="number" name="experience_years" value="{{ $profile?->experience_years }}" min="0" max="50"
+                           style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
+                           onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 </div>
-                @if($profile)
-                <div style="margin-bottom:16px;padding:12px 14px;background:#F9FAF9;border-radius:11px;border:1px solid var(--hair);">
-                    <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Session Pricing</div>
-                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
-                        @foreach(\App\Models\TutorProfile::sessionPrices() as $key => $session)
-                        <div style="text-align:center;background:#fff;border-radius:9px;border:1px solid var(--hair);padding:8px 4px;">
-                            <div style="font-size:11px;font-weight:700;color:var(--ink);">{{ $session['icon'] }} {{ $session['duration'] }}min</div>
-                            <div style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-top:2px;">KSh {{ $session['price'] }}</div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-                <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;">Update Profile</button>
+                <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;">
+                    <i class="fa-solid fa-floppy-disk fa-sm"></i> Save Teaching Profile
+                </button>
             </form>
         </div>
     </div>

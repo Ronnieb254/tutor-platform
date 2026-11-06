@@ -20,7 +20,8 @@ class BookingService
 
     public function calculateFees(float $amount): array
     {
-        $commissionRate = (float) PlatformSetting::get('commission_rate', 0.15);
+        // Normal 1-on-1 session: 40% platform, 60% tutor
+        $commissionRate = 0.40;
         $platformFee    = round($amount * $commissionRate, 2);
         $tutorEarning   = round($amount - $platformFee, 2);
 

@@ -89,6 +89,24 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
     $pendingDocs = $docs->where('status', 'pending')->count();
     $rejectedDocs = $docs->where('status', 'rejected')->count();
     $isSpeedy = $profile->speedy_verification_paid;
+
+    // Approval gate: 4 required docs approved + 1–2 subjects
+    $requiredDocTypes    = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
+    $approvedDocTypes    = $docs->where('status', 'approved')->pluck('type')->toArray();
+    $allRequiredApproved = count(array_diff($requiredDocTypes, $approvedDocTypes)) === 0;
+    $subjectCnt          = $profile->subjects->count();
+    $canApprove          = $allRequiredApproved && $subjectCnt >= 1 && $subjectCnt <= 2 && !$profile->is_approved;
+
+    // Tooltip explaining why the button is locked
+    $approveBlockReason  = '';
+    if (!$allRequiredApproved) {
+        $missing = array_diff($requiredDocTypes, $approvedDocTypes);
+        $approveBlockReason = 'Missing approved docs: ' . implode(', ', array_map(fn($t) => ucwords(str_replace('_', ' ', $t)), $missing));
+    } elseif ($subjectCnt === 0) {
+        $approveBlockReason = 'Tutor has not selected any subjects yet';
+    } elseif ($subjectCnt > 2) {
+        $approveBlockReason = 'Tutor has ' . $subjectCnt . ' subjects (max 2)';
+    }
     @endphp
     
     <div class="card" style="overflow:hidden;transition:all .2s;position:relative;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 16px rgba(0,0,0,.08)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">
@@ -149,11 +167,11 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
         </div>
         
         {{-- Documents Status --}}
-        <div style="padding:16px 20px;border-bottom:1px solid var(--hairline);background:{{ $approvedDocs === 5 ? 'rgba(16,185,129,.05)' : ($rejectedDocs > 0 ? 'rgba(239,68,68,.05)' : 'rgba(251,191,36,.05)') }};">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--hairline);background:{{ $allRequiredApproved ? 'rgba(16,185,129,.05)' : ($rejectedDocs > 0 ? 'rgba(239,68,68,.05)' : 'rgba(251,191,36,.05)') }};">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                 <span style="font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;">Documents</span>
-                <span class="badge {{ $approvedDocs === 5 ? 'badge-green' : ($pendingDocs > 0 ? 'badge-amber' : 'badge-gray') }}" style="font-size:10px;">
-                    {{ $approvedDocs }}/{{ max(5, $docCount) }} Approved
+                <span class="badge {{ $allRequiredApproved ? 'badge-green' : ($pendingDocs > 0 ? 'badge-amber' : 'badge-gray') }}" style="font-size:10px;">
+                    {{ $approvedDocs }}/{{ max(4, $docCount) }} Approved
                 </span>
             </div>
             
@@ -196,7 +214,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='block'" class="btn btn-outline" style="flex:1;font-size:13px;">
                 <i class="fa-solid fa-eye"></i> Review
             </button>
-            @if($approvedDocs === 5)
+            @if($canApprove)
             <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmApproval{{ $profile->id }}(this, '{{ $profile->user->name }}')">
                 @csrf @method('PATCH')
                 <button type="submit" class="btn btn-primary" style="width:100%;font-size:13px;">
@@ -211,7 +229,8 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             }
             </script>
             @else
-            <button disabled class="btn" style="flex:1;background:rgba(0,0,0,.05);color:var(--muted);cursor:not-allowed;font-size:13px;">
+            <button disabled class="btn" style="flex:1;background:rgba(0,0,0,.05);color:var(--muted);cursor:not-allowed;font-size:13px;"
+                    title="{{ $approveBlockReason }}">
                 <i class="fa-solid fa-lock"></i> Approve
             </button>
             @endif
@@ -352,8 +371,8 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     </script>
                     <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmFinalApproval{{ $profile->id }}(this)">
                         @csrf @method('PATCH')
-                        <button type="submit" class="btn btn-primary" style="width:100%;" {{ $approvedDocs < 5 ? 'disabled' : '' }}>
-                            <i class="fa-solid fa-circle-check"></i> {{ $approvedDocs === 5 ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/5 docs)' }}
+                        <button type="submit" class="btn btn-primary" style="width:100%;" {{ !$canApprove ? 'disabled title="'.$approveBlockReason.'"' : '' }}>
+                            <i class="fa-solid fa-circle-check"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs · '.$subjectCnt.' subjects)' }}
                         </button>
                     </form>
                     <script>
@@ -378,7 +397,30 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
 
 {{-- Pagination --}}
 @if($pending->hasPages())
-<div style="margin-top:20px;">{{ $pending->links() }}</div>
+<div style="margin-top:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div style="font-size:13px;color:var(--muted);">
+        Showing {{ $pending->firstItem() }} to {{ $pending->lastItem() }} of {{ $pending->total() }} results
+    </div>
+    <div style="display:flex;align-items:center;gap:4px;">
+        @if($pending->onFirstPage())
+            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fa-solid fa-chevron-left fa-xs"></i></span>
+        @else
+            <a href="{{ $pending->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><i class="fa-solid fa-chevron-left fa-xs"></i></a>
+        @endif
+        @foreach($pending->getUrlRange(1, $pending->lastPage()) as $page => $url)
+            @if($page == $pending->currentPage())
+                <span style="padding:6px 12px;border-radius:8px;border:1px solid #0A64BC;font-size:13px;font-weight:700;color:#fff;background:#0A64BC;">{{ $page }}</span>
+            @else
+                <a href="{{ $url }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">{{ $page }}</a>
+            @endif
+        @endforeach
+        @if($pending->hasMorePages())
+            <a href="{{ $pending->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><i class="fa-solid fa-chevron-right fa-xs"></i></a>
+        @else
+            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fa-solid fa-chevron-right fa-xs"></i></span>
+        @endif
+    </div>
+</div>
 @endif
 
 {{-- Reject doc modal --}}

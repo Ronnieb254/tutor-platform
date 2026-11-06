@@ -111,9 +111,9 @@ class ClinicController extends Controller
 
                 // Only set commission fields if the columns exist (guards against missing migration)
                 if (\Schema::hasColumn('payments', 'commission_rate')) {
-                    $paymentData['commission_rate']  = 60.00;
-                    $paymentData['tutor_amount']      = round($clinic->price * 0.40, 2);
-                    $paymentData['platform_amount']   = round($clinic->price * 0.60, 2);
+                    $paymentData['commission_rate']  = 75.00;
+                    $paymentData['tutor_amount']      = round($clinic->price * 0.25, 2);
+                    $paymentData['platform_amount']   = round($clinic->price * 0.75, 2);
                 }
 
                 $payment = Payment::create($paymentData);

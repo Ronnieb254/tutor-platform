@@ -38,10 +38,13 @@ class TutorController extends Controller
 
         $path = $request->file('document')->store("documents/{$user->id}", 'public');
 
-        // Delete old document of same type
+        // Delete old document of same type — but NOT if it's already approved
         $old = TutorDocument::where('tutor_profile_id', $profile->id)
             ->where('type', $request->type)->first();
         if ($old) {
+            if ($old->status === 'approved') {
+                return back()->with('error', 'This document has already been approved and cannot be replaced.');
+            }
             Storage::disk('public')->delete($old->file_path);
             $old->delete();
         }
@@ -149,9 +152,8 @@ class TutorController extends Controller
     public function updateTutorProfile(Request $request)
     {
         $request->validate([
-            'bio'              => 'nullable|string|min:20',
-            'hourly_rate'      => 'required|numeric|min:500',
-            'experience_years' => 'required|integer|min:0',
+            'bio'              => 'nullable|string|min:20|max:255',
+            'experience_years' => 'required|integer|min:0|max:50',
         ]);
 
         $profile = auth()->user()->tutorProfile;
@@ -159,7 +161,6 @@ class TutorController extends Controller
 
         $profile->update([
             'bio'              => $request->bio,
-            'hourly_rate'      => $request->hourly_rate,
             'experience_years' => $request->experience_years,
         ]);
 

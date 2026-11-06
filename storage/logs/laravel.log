@@ -21155,3 +21155,84 @@
 "} 
 [2026-11-05 05:09:57] production.INFO: Daraja STK Push response {"reference":"TL-ARIIKK7CMQYZ-1793855394","phone":"254708374149","amount":300,"response":{"MerchantRequestID":"135b-4679-8ea6-1c3dca88c6a41148284","CheckoutRequestID":"ws_CO_051120260809573708374149","ResponseCode":"0","ResponseDescription":"Success. Request accepted for processing","CustomerMessage":"Success. Request accepted for processing"}} 
 [2026-11-05 05:09:57] production.INFO: Daraja STK Push response {"result":{"MerchantRequestID":"135b-4679-8ea6-1c3dca88c6a41148284","CheckoutRequestID":"ws_CO_051120260809573708374149","ResponseCode":"0","ResponseDescription":"Success. Request accepted for processing","CustomerMessage":"Success. Request accepted for processing"}} 
+[2026-11-06 06:40:48] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:40:48] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:40:48] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:40:48] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:40:48] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:40:48] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:17] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:41:17] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:41:17] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:17] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:17] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:41:17] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:26] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:41:26] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:41:26] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:26] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:26] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:41:26] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:41] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:41:41] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:41:41] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:41] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:41] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:41:41] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:44] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:41:44] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:41:44] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:44] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:44] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:41:44] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:53] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:41:53] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:41:53] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:53] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:53] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:41:53] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:57] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:41:57] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:41:57] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:57] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:41:57] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:41:57] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 06:42:22] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:42:22] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:42:22] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:42:22] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:42:22] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:42:22] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 06:43:32] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 06:43:32] production.INFO: viewDocument called {"document_id":6,"user_id":1,"is_admin":true,"file_path":"documents/24/gPWJzBx6xxE0bAILbA4w5lBIkF7fw9pW1KME46HO.jpg"} 
+[2026-11-06 06:43:32] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 06:43:32] production.INFO: Document served successfully {"document_id":6,"mime_type":"image/jpeg"} 
+[2026-11-06 06:43:32] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 06:43:32] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 08:21:02] production.INFO: viewDocument called {"document_id":9,"user_id":24,"is_admin":false,"file_path":"documents/24/YxPaE7Htce6qLdAwGjbwpz9qhVVMPXll0fW46QoF.pdf"} 
+[2026-11-06 08:21:02] production.INFO: Document served successfully {"document_id":9,"mime_type":"application/pdf"} 
+[2026-11-06 08:25:00] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 08:25:00] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 08:25:00] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 08:25:00] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 08:25:08] production.INFO: viewDocument called {"document_id":11,"user_id":1,"is_admin":true,"file_path":"documents/24/dZzRcSanhNo2JEahommmOFgaElTLVGp83ZKLxTUr.pdf"} 
+[2026-11-06 08:25:08] production.INFO: Document served successfully {"document_id":11,"mime_type":"application/pdf"} 
+[2026-11-06 08:25:17] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 08:25:17] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 08:25:17] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 08:25:17] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 08:37:27] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 08:37:27] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 08:37:27] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 08:37:27] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 08:40:23] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 08:40:23] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 08:40:23] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 08:44:59] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 08:44:59] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 08:44:59] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 08:44:59] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-06 08:46:24] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-06 08:46:24] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-06 08:46:24] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-06 08:46:24] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 

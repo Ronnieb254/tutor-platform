@@ -127,7 +127,57 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
         </table>
     </div>
     @if($users->hasPages())
-    <div style="padding:16px 24px;border-top:1px solid var(--hairline);">{{ $users->withQueryString()->links() }}</div>
+    <div style="padding:16px 24px;border-top:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        {{-- Result count --}}
+        <div style="font-size:13px;color:var(--muted);">
+            Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} results
+        </div>
+        {{-- Page links --}}
+        <div style="display:flex;align-items:center;gap:4px;">
+            {{-- Previous --}}
+            @if($users->onFirstPage())
+                <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;">
+                    <i class="fa-solid fa-chevron-left fa-xs"></i>
+                </span>
+            @else
+                <a href="{{ $users->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">
+                    <i class="fa-solid fa-chevron-left fa-xs"></i>
+                </a>
+            @endif
+
+            {{-- Page numbers --}}
+            @php
+                $current = $users->currentPage();
+                $last    = $users->lastPage();
+                $window  = collect(range(1, $last))->filter(fn($p) =>
+                    $p === 1 || $p === $last || abs($p - $current) <= 2
+                );
+            @endphp
+            @php $prev = null; @endphp
+            @foreach($window as $page)
+                @if($prev !== null && $page - $prev > 1)
+                    <span style="padding:6px 8px;font-size:13px;color:var(--muted);">…</span>
+                @endif
+                @if($page == $users->currentPage())
+                    <span style="padding:6px 12px;border-radius:8px;border:1px solid #0A64BC;font-size:13px;font-weight:700;color:#fff;background:#0A64BC;">{{ $page }}</span>
+                @else
+                    <a href="{{ $users->url($page) }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">{{ $page }}</a>
+                @endif
+                @php $prev = $page; @endphp
+            @endforeach
+
+            {{-- Next --}}
+            @if($users->hasMorePages())
+                <a href="{{ $users->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">
+                    <i class="fa-solid fa-chevron-right fa-xs"></i>
+                </a>
+            @else
+                <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;">
+                    <i class="fa-solid fa-chevron-right fa-xs"></i>
+                </span>
+            @endif
+        </div>
+    </div>
     @endif
 </div>
 

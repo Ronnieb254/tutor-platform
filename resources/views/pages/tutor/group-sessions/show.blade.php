@@ -234,7 +234,7 @@ $canJoin = $groupSession->canJoin($user);
             <div>
                 <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:20px;position:sticky;top:20px;">
                     <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:14px;">Quick Stats</p>
-                    @foreach([['Seats Filled',$enrolledCount.'/'.$groupSession->max_students,'#10B981'],['Price per Seat','KSh '.number_format($groupSession->price),'#EEBE15'],['Est. Earnings','KSh '.number_format($enrolledCount * $groupSession->price),'#0A64BC'],['Your Cut (40%)','KSh '.number_format($enrolledCount * $groupSession->price * 0.40),'#EEBE15']] as [$lbl,$val,$col])
+                    @foreach([['Seats Filled',$enrolledCount.'/'.$groupSession->max_students,'#10B981'],['Price per Seat','KSh '.number_format($groupSession->price),'#EEBE15'],['Est. Earnings','KSh '.number_format($enrolledCount * $groupSession->price),'#0A64BC'],['Your Cut (25%)','KSh '.number_format($enrolledCount * $groupSession->price * 0.25),'#EEBE15']] as [$lbl,$val,$col])
                     <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair);">
                         <span style="font-size:13px;color:var(--muted);">{{ $lbl }}</span>
                         <span style="font-size:14px;font-weight:700;color:{{ $col }};">{{ $val }}</span>

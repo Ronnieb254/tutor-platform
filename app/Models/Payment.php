@@ -36,14 +36,15 @@ class Payment extends Model
      */
     public function calculateCommission(): void
     {
-        if ($this->payment_type === 'clinic') {
-            $this->commission_rate = 60.00; // Platform takes 60%
-            $this->tutor_amount = $this->amount * 0.40;
-            $this->platform_amount = $this->amount * 0.60;
+        if ($this->payment_type === 'clinic' || $this->payment_type === 'group_session') {
+            $this->commission_rate = 75.00; // Platform takes 75%
+            $this->tutor_amount    = round($this->amount * 0.25, 2);
+            $this->platform_amount = round($this->amount * 0.75, 2);
         } else {
-            $this->commission_rate = 25.00; // Platform takes 25%
-            $this->tutor_amount = $this->amount * 0.75;
-            $this->platform_amount = $this->amount * 0.25;
+            // Normal 1-on-1 booking: 40% platform, 60% tutor
+            $this->commission_rate = 40.00;
+            $this->tutor_amount    = round($this->amount * 0.60, 2);
+            $this->platform_amount = round($this->amount * 0.40, 2);
         }
     }
 

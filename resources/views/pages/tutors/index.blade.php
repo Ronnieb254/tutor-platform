@@ -62,7 +62,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
         </div>
 
         {{-- Curriculum Track Tabs --}}
-        <div style="display:flex;gap:8px;margin-top:24px;flex-wrap:wrap;">
+        <!-- <div style="display:flex;gap:8px;margin-top:24px;flex-wrap:wrap;">
             <a href="{{ route('tutors.index') }}"
                style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
                       {{ !$track ? 'background:rgba(255,255,255,.9);color:var(--ink);' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
@@ -78,7 +78,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                       {{ $track==='international' ? 'background:#6366F1;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
                 <i class="fa-solid fa-globe fa-xs"></i> International
             </a>
-        </div>
+        </div> -->
     </div>
 </div>
 

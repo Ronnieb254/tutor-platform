@@ -14,13 +14,35 @@ class TutorApprovalController extends Controller
     /** Approve a tutor profile → make it live */
     public function approve(TutorProfile $profile)
     {
+        $requiredTypes   = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
+        $approvedTypes   = $profile->documents()->where('status', 'approved')->pluck('type')->toArray();
+        $missingRequired = array_diff($requiredTypes, $approvedTypes);
+
+        // Block if any required doc is missing or not yet approved
+        if (!empty($missingRequired)) {
+            $missing = implode(', ', array_map(fn($t) => ucwords(str_replace('_', ' ', $t)), $missingRequired));
+            return back()->with('error', "Cannot approve — the following required documents are missing or not yet approved: {$missing}.");
+        }
+
+        $subjectCount = $profile->subjects()->count();
+
+        // Block if no subjects or more than 2
+        if ($subjectCount < 1) {
+            try { $profile->user->notify(new \App\Notifications\TutorNeedsSubjects()); } catch (\Exception $e) {}
+            return back()->with('info', "{$profile->user->name} has no subjects selected. They have been notified to choose 1–2 subjects before going live.");
+        }
+
+        if ($subjectCount > 2) {
+            return back()->with('error', "{$profile->user->name} has {$subjectCount} subjects selected. Maximum allowed is 2. Ask them to reduce their selection.");
+        }
+
         $profile->update([
-            'is_approved' => true,
-            'approved_at' => now(),
+            'is_approved'         => true,
+            'approved_at'         => now(),
+            'verification_status' => 'approved',
         ]);
 
-        // Notify tutor
-        $profile->user->notify(new \App\Notifications\TutorApproved($profile));
+        try { $profile->user->notify(new \App\Notifications\TutorApproved($profile)); } catch (\Exception $e) {}
 
         return back()->with('success', "{$profile->user->name}'s profile has been approved and is now live.");
     }
@@ -42,15 +64,43 @@ class TutorApprovalController extends Controller
             'admin_note'  => null,
         ]);
 
-        // Check if all docs are now approved — auto-approve profile
         $profile = $document->tutorProfile;
-        $allApproved = $profile->documents()->where('status', '!=', 'approved')->doesntExist()
-            && $profile->documents()->count() >= 5;
 
-        if ($allApproved) {
-            $profile->update(['is_approved' => true, 'approved_at' => now()]);
+        // Required doc types (good conduct is optional)
+        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
+
+        $approvedTypes = $profile->documents()
+            ->where('status', 'approved')
+            ->pluck('type')
+            ->toArray();
+
+        $allRequiredApproved = count(array_diff($requiredTypes, $approvedTypes)) === 0;
+
+        if ($allRequiredApproved && !$profile->is_approved) {
+            $subjectCount = $profile->subjects()->count();
+
+            if ($subjectCount < 1) {
+                // Docs all approved but no subjects — notify tutor
+                try {
+                    $profile->user->notify(new \App\Notifications\TutorNeedsSubjects());
+                } catch (\Exception $e) {
+                    \Log::warning('Failed to send TutorNeedsSubjects notification: ' . $e->getMessage());
+                }
+                return back()->with('success', 'Document approved. All 4 required documents verified — tutor notified to select 1–2 teaching subjects before going live.');
+            }
+
+            if ($subjectCount > 2) {
+                return back()->with('success', 'Document approved. All 4 required documents verified — but tutor has ' . $subjectCount . ' subjects (max 2). Admin must ask them to reduce before approving.');
+            }
+
+            // All required docs approved + 1–2 subjects → go live
+            $profile->update([
+                'is_approved'         => true,
+                'approved_at'         => now(),
+                'verification_status' => 'approved',
+            ]);
             try { $profile->user->notify(new \App\Notifications\TutorApproved($profile)); } catch (\Exception $e) {}
-            return back()->with('success', 'Document approved. All documents verified — tutor profile is now live!');
+            return back()->with('success', 'Document approved. All 4 required documents verified — tutor profile is now live!');
         }
 
         return back()->with('success', 'Document approved.');

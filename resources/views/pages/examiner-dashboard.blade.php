@@ -260,7 +260,7 @@
                                     @php
                                         $clinicTitle = $clinic->title ?? $clinic->name ?? 'Untitled Clinic';
                                         $enrolled = $clinic->enrollments_count;
-                                        $clinicEarn = $enrolled * ($clinic->price * 0.40);
+                                        $clinicEarn = $enrolled * ($clinic->price * 0.25);
                                     @endphp
                                     <tr>
                                         <td>

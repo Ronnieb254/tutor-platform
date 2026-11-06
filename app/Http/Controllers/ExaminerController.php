@@ -93,7 +93,7 @@ class ExaminerController extends Controller
         })->count();
         $upcomingCount = ExaminerClinic::where('created_by', $user->id)->upcoming()->count();
 
-        // Earnings (clinic share = tutor_amount = amount minus the 60% platform fee)
+        // Earnings (clinic share = tutor_amount = 25% of price)
         $earningsService = new \App\Services\EarningsService();
         $allEarnings    = $earningsService->calculateTutorEarnings($user);
         $recentEarnings = $earningsService->getRecentEarnings($user);

@@ -131,8 +131,42 @@
             <div style="font-size:13px;color:var(--muted);">
                 Showing {{ $subjects->firstItem() }} to {{ $subjects->lastItem() }} of {{ $subjects->total() }} results
             </div>
-            <div>
-                {{ $subjects->links() }}
+            <div style="display:flex;align-items:center;gap:4px;">
+                {{-- Previous --}}
+                @if($subjects->onFirstPage())
+                    <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fa-solid fa-chevron-left fa-xs"></i></span>
+                @else
+                    <a href="{{ $subjects->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fa-solid fa-chevron-left fa-xs"></i></a>
+                @endif
+
+                {{-- Page window: always show first, last, current ±2, with ellipsis --}}
+                @php
+                    $current  = $subjects->currentPage();
+                    $last     = $subjects->lastPage();
+                    $window   = collect(range(1, $last))->filter(fn($p) =>
+                        $p === 1 || $p === $last || abs($p - $current) <= 2
+                    );
+                @endphp
+
+                @php $prev = null; @endphp
+                @foreach($window as $page)
+                    @if($prev !== null && $page - $prev > 1)
+                        <span style="padding:6px 8px;font-size:13px;color:var(--muted);">…</span>
+                    @endif
+                    @if($page == $current)
+                        <span style="padding:6px 12px;border-radius:8px;border:1px solid #0A64BC;font-size:13px;font-weight:700;color:#fff;background:#0A64BC;">{{ $page }}</span>
+                    @else
+                        <a href="{{ $subjects->url($page) }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'">{{ $page }}</a>
+                    @endif
+                    @php $prev = $page; @endphp
+                @endforeach
+
+                {{-- Next --}}
+                @if($subjects->hasMorePages())
+                    <a href="{{ $subjects->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fa-solid fa-chevron-right fa-xs"></i></a>
+                @else
+                    <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fa-solid fa-chevron-right fa-xs"></i></span>
+                @endif
             </div>
         </div>
         @endif
