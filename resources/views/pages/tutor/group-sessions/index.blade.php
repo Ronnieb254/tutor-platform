@@ -64,7 +64,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
     <div class="sb-logo">
         <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-        <div><div class="sb-logo-text">Mwalimu</div><div class="sb-logo-sub">Tutor Portal</div></div>
+        <div><div class="sb-logo-sub">Tutor Portal</div></div>
     </div>
     <nav class="sb-nav">
         <div class="sb-section">

@@ -72,7 +72,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 <aside class="sidebar">
     <div class="sb-logo">
         <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-        <div><div class="sb-logo-text">Mwalimu</div><div style="font-size:10px;color:rgba(255,255,255,.3);">Tutor Portal</div></div>
+        <div><div style="font-size:10px;color:rgba(255,255,255,.3);">Tutor Portal</div></div>
     </div>
     <nav class="sb-nav">
         <div class="sb-section">
