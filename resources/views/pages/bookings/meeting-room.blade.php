@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Session Room â€“ Mwalimu</title>
+<title>Session Room Ã¢â‚¬â€œ Mwalimu</title>
 <style>
 :root{--ink:#15281F;--trust-blue:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -52,7 +52,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     {{-- Closing-buffer banner (hidden until 5 min left) --}}
     <div id="closing-banner">
         <i class="fa-solid fa-triangle-exclamation fa-sm"></i>
-        <span>Session ending soon â€“ closing buffer active. You may finish your lesson.</span>
+        <span>Session ending soon Ã¢â‚¬â€œ closing buffer active. You may finish your lesson.</span>
         @if(auth()->id() === $booking->tutor_id)
         <button onclick="document.getElementById('closing-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 14px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:600;">Dismiss</button>
         @endif
@@ -65,7 +65,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 <i class="fa-solid fa-arrow-left fa-xs"></i> Back
             </a>
             <div class="session-title">
-                {{ $booking->subject ? $booking->subject->name : 'Session' }} Â· {{ $booking->duration_minutes }} min
+                {{ $booking->subject ? $booking->subject->name : 'Session' }} Ã‚Â· {{ $booking->duration_minutes }} min
             </div>
             <div class="session-meta">
                 <span class="dot"></span>
@@ -98,7 +98,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                     <div class="tp-val" id="remaining-timer">--:--</div>
                 </div>
                 <div>
-                    <div class="tp-label" id="timer-status">Waitingâ€¦</div>
+                    <div class="tp-label" id="timer-status">WaitingÃ¢â‚¬Â¦</div>
                     <div id="progress-bar-wrap"><div id="progress-bar" style="width:0%;"></div></div>
                 </div>
             </div>
@@ -154,7 +154,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     @endphp
     const sessionStartTs = {{ $sessionStartTs }};
 
-    // â”€â”€ Timer state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Ã¢â€â‚¬Ã¢â€â‚¬ Timer state Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
     let teachingTimer = null;
     let elapsedSeconds = 0;
     let bothJoined = false;
@@ -180,7 +180,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         if (progEl) {
             const pct = Math.min(100, (elapsedSeconds / scheduledSeconds) * 100);
             progEl.style.width = pct + '%';
-            // Colour: green â†’ amber (last 20%) â†’ red (closing buffer)
+            // Colour: green Ã¢â€ â€™ amber (last 20%) Ã¢â€ â€™ red (closing buffer)
             if (remaining <= closingBufferSeconds) {
                 progEl.style.background = '#E8522A';
             } else if (remaining <= scheduledSeconds * 0.2) {
@@ -193,7 +193,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         // Show closing-buffer warning
         if (remaining <= closingBufferSeconds && !inClosingBuffer) {
             inClosingBuffer = true;
-            showToast('â° Session ending in ' + formatTime(remaining) + ' â€“ closing buffer started.', 'warning');
+            showToast('Ã¢ÂÂ° Session ending in ' + formatTime(remaining) + ' Ã¢â‚¬â€œ closing buffer started.', 'warning');
             document.getElementById('closing-banner').style.display = 'flex';
         }
 
@@ -217,7 +217,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
             updateTimerUI();
         }, 1000);
         document.getElementById('timer-panel').style.display = 'flex';
-        document.getElementById('timer-status').textContent = 'Teaching timer runningâ€¦';
+        document.getElementById('timer-status').textContent = 'Teaching timer runningÃ¢â‚¬Â¦';
     }
 
     // Poll attendance status every 10 s
@@ -320,7 +320,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
     const api = new JitsiMeetExternalAPI(domain, options);
 
-    // â”€â”€ Joined event â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Ã¢â€â‚¬Ã¢â€â‚¬ Joined event Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
     api.addEventListener('videoConferenceJoined', () => {
         if (!hasJoined) {
             hasJoined = true;

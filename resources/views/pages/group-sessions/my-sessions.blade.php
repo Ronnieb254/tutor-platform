@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>My Group Sessions â€“ Mwalimu</title>
+<title>My Group Sessions Ã¢â‚¬â€œ Mwalimu</title>
 </head>
 <body>
 @include('partials.nav')
@@ -89,7 +89,7 @@
                 @else
                 <span style="font-size:12px;color:rgba(21,40,31,.45);font-weight:500;">Starts {{ $session->scheduled_at->diffForHumans() }}</span>
                 @endif
-                <a href="{{ route('group-sessions.show', $session) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:500;">View details â†—</a>
+                <a href="{{ route('group-sessions.show', $session) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:500;">View details Ã¢â€ â€”</a>
             </div>
         </div>
         @endforeach

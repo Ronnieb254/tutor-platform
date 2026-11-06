@@ -3,7 +3,7 @@
 @section('content')
 
 <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-    <a href="{{ route('admin.examiner-clinics.index') }}" class="btn btn-outline btn-sm">â† Back</a>
+    <a href="{{ route('admin.examiner-clinics.index') }}" class="btn btn-outline btn-sm">Ã¢â€ Â Back</a>
     <div>
         <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);">Create Examiner Clinic</h2>
         <p style="font-size:13px;color:var(--muted);margin-top:2px;">Clinics are capped at 30 student slots. Overflow sessions auto-create when full.</p>
@@ -29,7 +29,7 @@
                 <div>
                     <label class="form-label">Subject <span style="color:#E8522A;">*</span></label>
                     <select name="subject_id" required class="form-input form-select">
-                        <option value="">â€” Select subject â€”</option>
+                        <option value="">Ã¢â‚¬â€ Select subject Ã¢â‚¬â€</option>
                         @foreach($subjects as $s)
                         <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                         @endforeach
@@ -38,7 +38,7 @@
                 <div>
                     <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
                     <select name="curriculum_id" class="form-input form-select">
-                        <option value="">â€” All tracks â€”</option>
+                        <option value="">Ã¢â‚¬â€ All tracks Ã¢â‚¬â€</option>
                         @foreach($curricula->groupBy('track') as $track => $group)
                         <optgroup label="{{ ucfirst($track) }}">
                             @foreach($group as $c)
@@ -55,14 +55,14 @@
             <div style="margin-bottom:18px;">
                 <label class="form-label">Clinic Title <span style="color:#E8522A;">*</span></label>
                 <input type="text" name="title" class="form-input" value="{{ old('title') }}" required
-                       placeholder="e.g. Mathematics PP1 â€“ Algebra & Calculus Mastery">
+                       placeholder="e.g. Mathematics PP1 Ã¢â‚¬â€œ Algebra & Calculus Mastery">
             </div>
 
             {{-- Description --}}
             <div style="margin-bottom:18px;">
                 <label class="form-label">Description</label>
                 <textarea name="description" rows="3" class="form-input" style="height:auto;padding:12px 14px;resize:vertical;"
-                    placeholder="Topics covered, exam strategies, what students will gainâ€¦">{{ old('description') }}</textarea>
+                    placeholder="Topics covered, exam strategies, what students will gainÃ¢â‚¬Â¦">{{ old('description') }}</textarea>
             </div>
 
             {{-- Scheduled date + Duration --}}

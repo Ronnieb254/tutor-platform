@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Group Sessions â€“ Mwalimu Tutor Portal</title>
+<title>Group Sessions Ã¢â‚¬â€œ Mwalimu Tutor Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -243,7 +243,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                             </td>
                             <td style="padding:14px 12px;white-space:nowrap;color:var(--muted);">
                                 {{ $session->scheduled_at->format('M j, Y') }}<br>
-                                <span style="font-size:11px;">{{ $session->scheduled_at->format('g:ia') }} Â· {{ $session->duration_minutes }}min</span>
+                                <span style="font-size:11px;">{{ $session->scheduled_at->format('g:ia') }} Ã‚Â· {{ $session->duration_minutes }}min</span>
                             </td>
                             <td style="padding:14px 12px;text-align:center;">
                                 <span style="font-weight:700;color:{{ $enrolled >= $max ? '#991B1B' : '#10B981' }};">{{ $enrolled }}/{{ $max }}</span>

@@ -24,7 +24,7 @@
     <form wire:submit="sendMessage" class="flex gap-2">
         <input type="text" wire:model="newMessage"
                class="form-input flex-1 h-11"
-               placeholder="Type a messageâ€¦">
+               placeholder="Type a messageÃ¢â‚¬Â¦">
         <button type="submit" class="pill-btn-primary px-5 py-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>

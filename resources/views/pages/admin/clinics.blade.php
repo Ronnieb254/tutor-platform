@@ -59,7 +59,7 @@
     <form method="GET" style="background:#fff;border-radius:14px;border:1px solid rgba(21,40,31,.08);padding:14px 18px;margin-bottom:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
         <div style="flex:2;min-width:160px;">
             <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px;display:block;">Search</label>
-            <input type="text" name="search" value="{{ $search }}" placeholder="Title, subjectâ€¦" style="width:100%;height:38px;padding:0 11px;border-radius:8px;border:1.5px solid rgba(21,40,31,.1);font-size:13px;font-family:inherit;">
+            <input type="text" name="search" value="{{ $search }}" placeholder="Title, subjectÃ¢â‚¬Â¦" style="width:100%;height:38px;padding:0 11px;border-radius:8px;border:1.5px solid rgba(21,40,31,.1);font-size:13px;font-family:inherit;">
         </div>
         <div style="min-width:140px;">
             <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px;display:block;">Status</label>
@@ -127,10 +127,10 @@
                         <div style="font-weight:600;color:{{ $isToday ? '#0A64BC' : 'var(--ink)' }};">
                             {{ $clinic->scheduled_at->format('D, M j') }}
                         </div>
-                        <div style="font-size:11px;color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }} Â· {{ $clinic->duration_minutes }}min</div>
+                        <div style="font-size:11px;color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }} Ã‚Â· {{ $clinic->duration_minutes }}min</div>
                     </td>
                     <td style="padding:14px 16px;">
-                        <div style="font-size:13px;color:var(--ink);">{{ $clinic->tutor?->name ?? 'â€”' }}</div>
+                        <div style="font-size:13px;color:var(--ink);">{{ $clinic->tutor?->name ?? 'Ã¢â‚¬â€' }}</div>
                     </td>
                     <td style="padding:14px 16px;text-align:center;">
                         <div style="font-weight:700;color:{{ $isFull ? '#E8522A' : 'var(--ink)' }};">
@@ -218,7 +218,7 @@
 
 @push('scripts')
 <script>
-// No DataTables â€” table uses server-side filtering and pagination
+// No DataTables Ã¢â‚¬â€ table uses server-side filtering and pagination
 </script>
 @endpush
 @endsection

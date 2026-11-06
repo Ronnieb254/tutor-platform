@@ -34,7 +34,7 @@
     </div>
     <div style="flex:1;min-width:200px;">
         <label class="form-label">Search</label>
-        <input type="text" name="search" value="{{ $search }}" placeholder="Student or tutor nameâ€¦" class="form-input" style="height:38px;">
+        <input type="text" name="search" value="{{ $search }}" placeholder="Student or tutor nameÃ¢â‚¬Â¦" class="form-input" style="height:38px;">
     </div>
     <button type="submit" class="btn btn-primary">Search</button>
     @if($search || $status)
@@ -93,7 +93,7 @@
                         <div style="font-weight:500;font-size:13px;">{{ $booking->tutor->name }}</div>
                         <div style="font-size:11px;color:var(--muted);">{{ $booking->tutor->email }}</div>
                     </td>
-                    <td style="color:var(--muted);">{{ $booking->subject?->name ?? 'â€”' }}</td>
+                    <td style="color:var(--muted);">{{ $booking->subject?->name ?? 'Ã¢â‚¬â€' }}</td>
                     <td data-order="{{ $booking->scheduled_at->timestamp }}" style="white-space:nowrap;font-size:13px;">
                         <div>{{ $booking->scheduled_at->format('M j, Y') }}</div>
                         <div style="color:var(--muted);font-size:11px;">{{ $booking->scheduled_at->format('g:i a') }} EAT</div>
@@ -117,7 +117,7 @@
                             <button onclick="confirmBooking('{{ $booking->uuid }}', this)"
                                     class="btn btn-sm confirm-btn-{{ $booking->uuid }}"
                                     style="background:#10B981;color:#fff;border:none;cursor:pointer;font-size:11px;padding:5px 10px;border-radius:8px;font-family:inherit;font-weight:700;white-space:nowrap;">
-                                âœ“ Confirm & Send Codes
+                                Ã¢Å“â€œ Confirm & Send Codes
                             </button>
                             @elseif($booking->status === 'confirmed')
                             <button onclick="resendCodes('{{ $booking->uuid }}', this)"
@@ -168,7 +168,7 @@ function confirmBooking(uuid, btn) {
         if (!result.isConfirmed) return;
 
         const originalHtml = btn.innerHTML;
-        btn.innerHTML = 'â³ Confirmingâ€¦';
+        btn.innerHTML = 'Ã¢ÂÂ³ ConfirmingÃ¢â‚¬Â¦';
         btn.disabled = true;
         btn.style.opacity = '0.7';
 
@@ -183,7 +183,7 @@ function confirmBooking(uuid, btn) {
         .then(r => r.json())
         .then(res => {
             if (res.status === 'ok') {
-                btn.innerHTML = 'âœ“ Confirmed!';
+                btn.innerHTML = 'Ã¢Å“â€œ Confirmed!';
                 btn.style.background = '#059669';
                 btn.style.opacity = '1';
 
@@ -198,7 +198,7 @@ function confirmBooking(uuid, btn) {
                 setTimeout(() => btn.remove(), 2000);
 
                 // Show success toast
-                showToast('âœ“ Booking confirmed! Codes emailed to tutor and student.', 'success');
+                showToast('Ã¢Å“â€œ Booking confirmed! Codes emailed to tutor and student.', 'success');
         } else {
             btn.innerHTML = originalHtml;
             btn.disabled = false;
@@ -225,7 +225,7 @@ function resendCodes(uuid, btn) {
         if (!result.isConfirmed) return;
 
         const originalHtml = btn.innerHTML;
-        btn.innerHTML = 'â³ Sendingâ€¦';
+        btn.innerHTML = 'Ã¢ÂÂ³ SendingÃ¢â‚¬Â¦';
         btn.disabled = true;
 
     fetch(`/bookings/${uuid}/force-confirm`, {
@@ -241,7 +241,7 @@ function resendCodes(uuid, btn) {
         btn.innerHTML = originalHtml;
         btn.disabled = false;
         if (res.status === 'ok') {
-            showToast('âœ“ Session codes resent to tutor and student.', 'success');
+            showToast('Ã¢Å“â€œ Session codes resent to tutor and student.', 'success');
         } else {
             showToast('Error: ' + (res.message || 'Failed to resend codes.'), 'error');
         }

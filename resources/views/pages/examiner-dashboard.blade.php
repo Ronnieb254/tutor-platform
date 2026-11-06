@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Examiner Dashboard – Mwalimu</title>
+<title>Examiner Dashboard â€“ Mwalimu</title>
 <style>
 /* Page-specific dashboard styles (self-contained; design tokens come from partials.head) */
 .session-hero{background:linear-gradient(135deg,#111C16,#15281F);padding:48px 0;position:relative;overflow:hidden;}
@@ -29,7 +29,7 @@
 @media(max-width:600px){.clinic-row{flex-direction:column;}}
 .clinic-actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;}
 .pill{padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:5px;}
-/* Phase 6 — additional responsive rules */
+/* Phase 6 â€” additional responsive rules */
 @media(max-width:639px){
     .clinic-cards,.clinic-grid,[class*="clinic-list"]{
         grid-template-columns:1fr !important;
@@ -54,7 +54,7 @@
 
 @include('partials.nav')
 
-{{-- ─── HERO ─── --}}
+{{-- â”€â”€â”€ HERO â”€â”€â”€ --}}
 <div class="session-hero">
     <div style="max-width:1360px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
         <a href="{{ route('dashboard') }}" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;margin-bottom:18px;transition:color .15s;" onmouseover="this.style.color='rgba(255,255,255,.85)'" onmouseout="this.style.color='rgba(255,255,255,.5)'">
@@ -74,7 +74,7 @@
                     Welcome back, {{ $user->name }}
                 </h1>
                 <p style="font-size:15px;color:rgba(255,255,255,.6);max-width:520px;">
-                    Run your examiner clinics, track enrollments and earnings, and start live sessions — all in one place.
+                    Run your examiner clinics, track enrollments and earnings, and start live sessions â€” all in one place.
                 </p>
             </div>
             <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint" style="flex-shrink:0;">
@@ -84,7 +84,7 @@
     </div>
 </div>
 
-{{-- ─── MAIN ─── --}}
+{{-- â”€â”€â”€ MAIN â”€â”€â”€ --}}
 <div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;">
 
     {{-- Flash messages --}}
@@ -98,7 +98,7 @@
         <div class="flash flash-err"><i class="fa-solid fa-triangle-exclamation"></i> {{ session('error') }}</div>
     @endif
 
-    {{-- ─── STATS ROW ─── --}}
+    {{-- â”€â”€â”€ STATS ROW â”€â”€â”€ --}}
     <div class="dash-stats" style="margin-bottom:36px;">
         <div class="stat-card">
             <div class="stat-icon" style="background:rgba(10,100,188,.1);color:#0A64BC;"><i class="fa-solid fa-chalkboard-user"></i></div>
@@ -131,21 +131,21 @@
     </div>
 
     @if($totalClinics === 0)
-        {{-- ─── NO CLINICS EMPTY STATE ─── --}}
+        {{-- â”€â”€â”€ NO CLINICS EMPTY STATE â”€â”€â”€ --}}
         <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:64px 24px;text-align:center;box-shadow:0 2px 16px rgba(21,40,31,.06);">
             <div style="width:88px;height:88px;border-radius:24px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;">
                 <i class="fa-solid fa-chalkboard-user" style="font-size:38px;color:#0A64BC;"></i>
             </div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:10px;">Create your first clinic</h2>
             <p style="font-size:15px;color:rgba(21,40,31,.55);max-width:480px;margin:0 auto 26px;line-height:1.7;">
-                You're approved as an examiner. Set up your first examiner clinic — choose a subject and paper (PP1, PP2, PP3), set the time, and students can start booking right away.
+                You're approved as an examiner. Set up your first examiner clinic â€” choose a subject and paper (PP1, PP2, PP3), set the time, and students can start booking right away.
             </p>
             <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint" style="font-size:15px;padding:13px 32px;">
                 <i class="fa-solid fa-plus fa-sm"></i> Create Your First Clinic
             </a>
         </div>
     @else
-        {{-- ─── UPCOMING CLINICS ─── --}}
+        {{-- â”€â”€â”€ UPCOMING CLINICS â”€â”€â”€ --}}
         <div style="margin-bottom:40px;">
             <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
                 <div>
@@ -231,7 +231,7 @@
             @endif
         </div>
 
-        {{-- ─── PAST CLINICS ─── --}}
+        {{-- â”€â”€â”€ PAST CLINICS â”€â”€â”€ --}}
         <div style="margin-bottom:40px;">
             <div style="margin-bottom:20px;">
                 <h2 style="font-family:'Fraunces',serif;font-size:clamp(22px,3vw,30px);color:#15281F;margin-bottom:4px;">Past Clinics</h2>
@@ -270,7 +270,7 @@
                                                 </div>
                                                 <div>
                                                     <div style="font-weight:600;color:#15281F;">{{ $clinicTitle }}</div>
-                                                    <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $clinic->subject->name ?? 'N/A' }}{{ $clinic->paper_type ? ' · ' . $clinic->paper_type : '' }}</div>
+                                                    <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $clinic->subject->name ?? 'N/A' }}{{ $clinic->paper_type ? ' Â· ' . $clinic->paper_type : '' }}</div>
                                                 </div>
                                             </div>
                                         </td>
@@ -289,7 +289,7 @@
             </div>
         </div>
 
-        {{-- ─── RECENT ENROLLMENTS ─── --}}
+        {{-- â”€â”€â”€ RECENT ENROLLMENTS â”€â”€â”€ --}}
         <div>
             <div style="margin-bottom:20px;">
                 <h2 style="font-family:'Fraunces',serif;font-size:clamp(22px,3vw,30px);color:#15281F;margin-bottom:4px;">Recent Enrollments</h2>

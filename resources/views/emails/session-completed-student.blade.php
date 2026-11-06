@@ -19,7 +19,7 @@
         @php
           $delivery = $booking->delivery_status ?? 'fully_delivered';
           $iconColor = $delivery === 'fully_delivered' ? '#10B981' : ($delivery === 'not_delivered' ? '#E8522A' : '#EEBE15');
-          $icon = $delivery === 'fully_delivered' ? 'âœ…' : ($delivery === 'not_delivered' ? 'âŒ' : 'âš ï¸');
+          $icon = $delivery === 'fully_delivered' ? 'Ã¢Å“â€¦' : ($delivery === 'not_delivered' ? 'Ã¢ÂÅ’' : 'Ã¢Å¡Â Ã¯Â¸Â');
         @endphp
 
         <h1 style="font-size:24px;font-weight:700;color:#15281F;margin:0 0 8px;">{{ $icon }} Session

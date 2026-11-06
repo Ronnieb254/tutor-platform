@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Create Group Session â€“ Mwalimu Tutor Portal</title>
+<title>Create Group Session Ã¢â‚¬â€œ Mwalimu Tutor Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -163,7 +163,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                     <div class="field">
                         <label>Subject <span class="req">*</span></label>
                         <select name="subject_id" required>
-                            <option value="">â€” Select a subject â€”</option>
+                            <option value="">Ã¢â‚¬â€ Select a subject Ã¢â‚¬â€</option>
                             @foreach($subjects as $s)
                             <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                             @endforeach
@@ -173,8 +173,8 @@ $unreadNotifs = $user->unreadNotifications()->count();
 
                     <div class="field">
                         <label>Session Title <span class="req">*</span></label>
-                        <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. Algebra Made Easy â€“ Form 4" required maxlength="200">
-                        <p class="hint">Be specific â€” this is what students see when browsing sessions.</p>
+                        <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. Algebra Made Easy Ã¢â‚¬â€œ Form 4" required maxlength="200">
+                        <p class="hint">Be specific Ã¢â‚¬â€ this is what students see when browsing sessions.</p>
                         @error('title')<p class="error">{{ $message }}</p>@enderror
                     </div>
 
@@ -251,7 +251,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                             <div class="field" style="margin-bottom:0;">
                                 <label>Number of Sessions</label>
                                 <input type="number" name="series_count" value="{{ old('series_count', 4) }}" min="2" max="12" x-bind:required="isSeries">
-                                <p class="hint">2â€“12 sessions per series.</p>
+                                <p class="hint">2Ã¢â‚¬â€œ12 sessions per series.</p>
                                 @error('series_count')<p class="error">{{ $message }}</p>@enderror
                             </div>
                             <div class="field" style="margin-bottom:0;">

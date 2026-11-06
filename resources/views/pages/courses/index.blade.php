@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Courses – Mwalimu</title>
+<title>Courses â€“ Mwalimu</title>
 <meta name="description" content="Browse pre-recorded courses from TSC-registered tutors. Learn at your own pace across the Kenyan curriculum.">
 </head>
 <body>
@@ -20,7 +20,7 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
     <div class="w" style="position:relative;z-index:1;">
         <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-play-circle"></i> Pre-Recorded Courses</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Learn at your own pace</h1>
-        <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">Video courses from TSC-registered tutors and national examiners — covering the full Kenyan curriculum.</p>
+        <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">Video courses from TSC-registered tutors and national examiners â€” covering the full Kenyan curriculum.</p>
     </div>
 </section>
 
@@ -56,7 +56,7 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                 <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:12px;">
                     <img src="{{ $course->tutor->avatar_url }}" style="width:20px;height:20px;border-radius:999px;object-fit:cover;">
                     <span>{{ $course->tutor->name }}</span>
-                    <span>·</span>
+                    <span>Â·</span>
                     <span><i class="fa-solid fa-play fa-xs"></i> {{ $course->total_lessons }} lessons</span>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;">

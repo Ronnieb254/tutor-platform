@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Blog – Mwalimu</title>
+<title>Blog â€“ Mwalimu</title>
 <meta name="description" content="Study tips, exam strategies, and learning guides from Kenya's top tutors and national examiners.">
 <style>
 .post-card{background:#fff;border-radius:20px;border:1px solid var(--hair);overflow:hidden;transition:all .2s;display:block;}
@@ -25,7 +25,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
     <div class="w" style="position:relative;z-index:1;">
         <div class="badge badge-white" style="margin-bottom:16px;"><i class="fa-solid fa-newspaper"></i> Learning Resources</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Study tips & exam strategies</h1>
-        <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">From Kenya's top tutors and national examiners — practical guides to help you score higher.</p>
+        <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">From Kenya's top tutors and national examiners â€” practical guides to help you score higher.</p>
     </div>
 </section>
 
@@ -66,7 +66,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                         <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);border-top:1px solid var(--hair);padding-top:12px;">
                             <img src="{{ $post->author->avatar_url }}" style="width:24px;height:24px;border-radius:999px;object-fit:cover;">
                             <span>{{ $post->author->name }}</span>
-                            <span>·</span>
+                            <span>Â·</span>
                             <span><i class="fa-regular fa-calendar fa-xs"></i> {{ $post->published_at->format('M j, Y') }}</span>
                         </div>
                     </div>

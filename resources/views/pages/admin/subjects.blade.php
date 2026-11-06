@@ -15,14 +15,14 @@
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:20px;"><i class="fa-solid fa-check-circle" style="color:#10B981;"></i></span>
+        <span style="font-size:20px;"><i class="fa-solid fa-circle-check" style="color:#10B981;"></i></span>
         <span style="color:#059669;font-weight:600;">{{ session('success') }}</span>
     </div>
     @endif
 
     @if(session('error'))
     <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:20px;"><i class="fa-solid fa-times-circle" style="color:#dc2626;"></i></span>
+        <span style="font-size:20px;"><i class="fa-solid fa-circle-xmark" style="color:#dc2626;"></i></span>
         <span style="color:#dc2626;font-weight:600;">{{ session('error') }}</span>
     </div>
     @endif
@@ -94,11 +94,11 @@
                 <tbody>
                     @forelse($subjects as $subject)
                     <tr>
-                        <td><span style="font-size:22px;">{{ $subject->icon ?? 'ðŸ“–' }}</span></td>
+                        <td><span style="font-size:22px;">{{ $subject->icon ?? 'Ã°Å¸â€œâ€“' }}</span></td>
                         <td><span style="font-weight:600;font-size:14px;">{{ $subject->name }}</span></td>
                         <td>
                             <div style="display:flex;align-items:center;gap:8px;">
-                                <span style="font-size:18px;">{{ $subject->category->icon ?? 'ðŸ“š' }}</span>
+                                <span style="font-size:18px;">{{ $subject->category->icon ?? 'Ã°Å¸â€œÅ¡' }}</span>
                                 <span style="font-size:13px;color:var(--muted);">{{ $subject->category->name }}</span>
                             </div>
                         </td>
@@ -139,7 +139,7 @@
                     <a href="{{ $subjects->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fa-solid fa-chevron-left fa-xs"></i></a>
                 @endif
 
-                {{-- Page window: always show first, last, current Â±2, with ellipsis --}}
+                {{-- Page window: always show first, last, current Ã‚Â±2, with ellipsis --}}
                 @php
                     $current  = $subjects->currentPage();
                     $last     = $subjects->lastPage();
@@ -151,7 +151,7 @@
                 @php $prev = null; @endphp
                 @foreach($window as $page)
                     @if($prev !== null && $page - $prev > 1)
-                        <span style="padding:6px 8px;font-size:13px;color:var(--muted);">â€¦</span>
+                        <span style="padding:6px 8px;font-size:13px;color:var(--muted);">Ã¢â‚¬Â¦</span>
                     @endif
                     @if($page == $current)
                         <span style="padding:6px 12px;border-radius:8px;border:1px solid #0A64BC;font-size:13px;font-weight:700;color:#fff;background:#0A64BC;">{{ $page }}</span>
@@ -227,8 +227,8 @@
             </div>
             <div style="margin-bottom:14px;">
                 <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Icon Emoji</label>
-                <input type="text" name="icon" placeholder="ðŸ“–" maxlength="10" style="width:100%;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:15px;font-family:inherit;outline:none;">
-                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use a single emoji (e.g. ðŸ“– ðŸ”¢ ðŸ§¬ ðŸ—ºï¸)</div>
+                <input type="text" name="icon" placeholder="Ã°Å¸â€œâ€“" maxlength="10" style="width:100%;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:15px;font-family:inherit;outline:none;">
+                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use a single emoji (e.g. Ã°Å¸â€œâ€“ Ã°Å¸â€Â¢ Ã°Å¸Â§Â¬ Ã°Å¸â€”ÂºÃ¯Â¸Â)</div>
             </div>
             <div style="margin-bottom:20px;">
                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
@@ -290,12 +290,12 @@
 .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:white;border-radius:50%;transition:.3s;}
 input:checked + .slider{background-color:#10B981;}
 input:checked + .slider:before{transform:translateX(20px);}
-/* accordion / category triggers â€” touch friendly */
+/* accordion / category triggers Ã¢â‚¬â€ touch friendly */
 [data-accordion-trigger],[data-toggle],[data-category-toggle],
 .accordion-trigger,.category-trigger{
     min-height:44px;display:flex;align-items:center;
 }
-/* subjects filter grid â†’ stack on mobile */
+/* subjects filter grid Ã¢â€ â€™ stack on mobile */
 @media(max-width:639px){
     .card form > div[style*="grid-template-columns"]{
         grid-template-columns:1fr !important;

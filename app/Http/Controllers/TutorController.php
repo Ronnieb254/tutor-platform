@@ -43,7 +43,9 @@ class TutorController extends Controller
             ->where('type', $request->type)->first();
         if ($old) {
             if ($old->status === 'approved') {
-                return back()->with('error', 'This document has already been approved and cannot be replaced.');
+                $redirect = $request->input('_redirect');
+                $target   = $redirect ? redirect($redirect) : back();
+                return $target->with('error', 'This document has already been approved and cannot be replaced.');
             }
             Storage::disk('public')->delete($old->file_path);
             $old->delete();
@@ -57,7 +59,10 @@ class TutorController extends Controller
             'status'           => 'pending',
         ]);
 
-        return back()->with('success', 'Document uploaded successfully. Our team will review it within 24–48 hours.');
+        $redirect = $request->input('_redirect');
+        $target   = $redirect ? redirect($redirect) : back();
+
+        return $target->with('success', 'Document uploaded successfully. Our team will review it within 24–48 hours.');
     }
 
     public function viewDocument(TutorDocument $document)
@@ -146,7 +151,8 @@ class TutorController extends Controller
             $user->tutorProfile->update(['city' => $request->city]);
         }
 
-        return back()->with('success', 'Personal information updated.');
+        $redirect = $request->input('_redirect');
+        return ($redirect ? redirect($redirect) : back())->with('success', 'Personal information updated.');
     }
 
     public function updateTutorProfile(Request $request)
@@ -164,7 +170,8 @@ class TutorController extends Controller
             'experience_years' => $request->experience_years,
         ]);
 
-        return back()->with('success', 'Teaching profile updated.');
+        $redirect = $request->input('_redirect');
+        return ($redirect ? redirect($redirect) : back())->with('success', 'Teaching profile updated.');
     }
 
     public function requestPayout(Request $request)

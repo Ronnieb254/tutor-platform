@@ -116,7 +116,7 @@
                     <li>All fees are in Kenyan Shillings (KSh)</li>
                 </ul>
 
-                <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">5.4 Cancellations and Refunds â€” On-Demand Bookings</h3>
+                <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">5.4 Cancellations and Refunds Ã¢â‚¬â€ On-Demand Bookings</h3>
                 <p style="line-height:1.8;color:var(--muted);margin-bottom:12px;">
                     Because tutors make themselves available at short notice, the following applies:
                 </p>
@@ -138,7 +138,7 @@
                     </table>
                 </div>
 
-                <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">5.5 Cancellations and Refunds â€” Scheduled Bookings</h3>
+                <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">5.5 Cancellations and Refunds Ã¢â‚¬â€ Scheduled Bookings</h3>
                 <div style="overflow-x:auto;margin-bottom:16px;">
                     <table style="width:100%;border-collapse:collapse;font-size:14px;color:var(--muted);">
                         <thead>
@@ -156,7 +156,7 @@
                     </table>
                 </div>
 
-                <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">5.6 Cancellations â€” Group Sessions</h3>
+                <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">5.6 Cancellations Ã¢â‚¬â€ Group Sessions</h3>
                 <div style="overflow-x:auto;margin-bottom:16px;">
                     <table style="width:100%;border-collapse:collapse;font-size:14px;color:var(--muted);">
                         <thead>
@@ -176,7 +176,7 @@
                     If Mwalimu cancels a group session, learners receive a full refund or a place in an alternative session. If the tutor cancels, Mwalimu will try to arrange a replacement tutor or reschedule; a learner who does not accept the replacement or new time is entitled to a full refund.
                 </p>
 
-                <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">5.7 Cancellations â€” Examination Clinics</h3>
+                <h3 style="font-size:18px;font-weight:700;color:var(--ink);margin:20px 0 12px;">5.7 Cancellations Ã¢â‚¬â€ Examination Clinics</h3>
                 <p style="line-height:1.8;color:var(--muted);margin-bottom:12px;">
                     Clinics may require tutor preparation, materials, and reserved capacity.
                 </p>

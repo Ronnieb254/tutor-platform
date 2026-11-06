@@ -20,7 +20,7 @@ use App\Models\PlatformSetting;
     {{-- General --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            ðŸŒ General
+            Ã°Å¸Å’Â General
         </h3>
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
@@ -41,7 +41,7 @@ use App\Models\PlatformSetting;
     {{-- Payments --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            ðŸ’³ Payments
+            Ã°Å¸â€™Â³ Payments
         </h3>
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
@@ -69,10 +69,10 @@ use App\Models\PlatformSetting;
     {{-- Daraja M-Pesa --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            ðŸ“± Daraja M-Pesa Integration
+            Ã°Å¸â€œÂ± Daraja M-Pesa Integration
         </h3>
         <div style="background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.3);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#92400E;">
-            âš  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
+            Ã¢Å¡Â  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
         </div>
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
@@ -81,7 +81,7 @@ use App\Models\PlatformSetting;
             </div>
             <div>
                 <label class="form-label">Consumer Key (from .env)</label>
-                <input type="text" class="form-input" value="{{ config('daraja.consumer_key') ? substr(config('daraja.consumer_key'),0,8).'â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢' : 'Not configured' }}" disabled style="background:#F4F6F4;color:var(--muted);">
+                <input type="text" class="form-input" value="{{ config('daraja.consumer_key') ? substr(config('daraja.consumer_key'),0,8).'Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢' : 'Not configured' }}" disabled style="background:#F4F6F4;color:var(--muted);">
             </div>
             <div>
                 <label class="form-label">Business Short Code</label>
@@ -101,7 +101,7 @@ use App\Models\PlatformSetting;
     {{-- Jitsi --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            ðŸŽ¥ Jitsi Live Sessions
+            Ã°Å¸Å½Â¥ Jitsi Live Sessions
         </h3>
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
@@ -111,10 +111,10 @@ use App\Models\PlatformSetting;
             </div>
             <div>
                 <label class="form-label">App ID</label>
-                <input type="text" class="form-input" value="{{ config('jitsi.app_id') ? 'â€¢â€¢â€¢â€¢â€¢â€¢' : 'Not set (using public Jitsi)' }}" disabled style="background:#F4F6F4;color:var(--muted);">
+                <input type="text" class="form-input" value="{{ config('jitsi.app_id') ? 'Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢' : 'Not set (using public Jitsi)' }}" disabled style="background:#F4F6F4;color:var(--muted);">
             </div>
             <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:12px;padding:12px 14px;font-size:13px;color:#065F46;">
-                âœ“ Sessions use <strong>meet.jit.si</strong> (public) by default. Set JITSI_APP_ID and JITSI_APP_SECRET in .env for a private server with JWT auth.
+                Ã¢Å“â€œ Sessions use <strong>meet.jit.si</strong> (public) by default. Set JITSI_APP_ID and JITSI_APP_SECRET in .env for a private server with JWT auth.
             </div>
         </div>
     </div>
@@ -152,7 +152,7 @@ use App\Models\PlatformSetting;
             </tbody>
         </table>
         <p style="font-size:12px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline);">
-            <i class="fa-solid fa-info-circle fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i>
+            <i class="fa-solid fa-circle-info fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i>
             To change session prices, update the <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">sessionPrices()</code> method in <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">app/Models/TutorProfile.php</code>.
         </p>
     </div>
@@ -160,7 +160,7 @@ use App\Models\PlatformSetting;
     {{-- Maintenance --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            ðŸ”§ Maintenance
+            Ã°Å¸â€Â§ Maintenance
         </h3>
         <div style="display:flex;flex-direction:column;gap:12px;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:#F4F6F4;border-radius:12px;">

@@ -27,7 +27,7 @@
       </td></tr>
 
       <tr><td style="padding:32px;">
-        <h1 style="font-size:26px;font-weight:700;color:#15281F;margin:0 0 8px;">Booking Confirmed! <i class="fa-solid fa-check-circle" style="color:#10B981;"></i></h1>
+        <h1 style="font-size:26px;font-weight:700;color:#15281F;margin:0 0 8px;">Booking Confirmed! <i class="fa-solid fa-circle-check" style="color:#10B981;"></i></h1>
         <p style="color:rgba(21,40,31,0.65);font-size:15px;margin:0 0 24px;">
           Hi {{ $booking->student->name }}, your session with <strong style="color:#15281F;">{{ $booking->tutor->name }}</strong> is confirmed and paid.
         </p>
@@ -61,7 +61,7 @@
             <li>Go to your Mwalimu dashboard</li>
             <li>Find this booking under "Upcoming Sessions"</li>
             <li>Click "Join Session" and enter your code: <strong>{{ $booking->session_code_student }}</strong></li>
-            <li>Your live session opens in the browser — no downloads needed!</li>
+            <li>Your live session opens in the browser â€” no downloads needed!</li>
           </ol>
         </div>
 

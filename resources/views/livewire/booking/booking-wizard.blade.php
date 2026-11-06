@@ -1,8 +1,8 @@
 @php
 $sessionTiers = [
-    20 => ['name' => 'Quick Help',      'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question'],
-    40 => ['name' => 'Guided Practice', 'price' => 600, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A'],
-    60 => ['name' => 'Deep Dive',       'price' => 900, 'icon' => '🏆', 'desc' => 'Maximum learning, best value'],
+    20 => ['name' => 'Quick Help',      'price' => 300, 'icon' => 'âš¡', 'desc' => 'Rapid revision or a quick question'],
+    40 => ['name' => 'Guided Practice', 'price' => 600, 'icon' => 'ðŸŽ¯', 'desc' => 'Full structured lesson with Q&A'],
+    60 => ['name' => 'Deep Dive',       'price' => 900, 'icon' => 'ðŸ†', 'desc' => 'Maximum learning, best value'],
 ];
 @endphp
 
@@ -16,7 +16,7 @@ $sessionTiers = [
                 <div style="width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
                     background:{{ $step > $i+1 ? 'var(--mint)' : ($step === $i+1 ? 'var(--trust-blue)' : 'rgba(21,40,31,.08)') }};
                     color:{{ ($step > $i+1 || $step === $i+1) ? '#fff' : 'var(--muted)' }};">
-                    {{ $step > $i+1 ? '✓' : $i+1 }}
+                    {{ $step > $i+1 ? 'âœ“' : $i+1 }}
                 </div>
                 <span style="font-size:12px;font-weight:{{ $step === $i+1 ? '700' : '500' }};color:{{ $step === $i+1 ? 'var(--ink)' : 'var(--muted)' }};">{{ $label }}</span>
             </div>
@@ -24,7 +24,7 @@ $sessionTiers = [
         @endforeach
     </div>
 
-    {{-- ── STEP 1: Pick duration + date/time ── --}}
+    {{-- â”€â”€ STEP 1: Pick duration + date/time â”€â”€ --}}
     @if($step === 1)
     <div style="display:flex;flex-direction:column;gap:18px;">
 
@@ -47,7 +47,7 @@ $sessionTiers = [
                             </div>
                             <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:{{ $duration == $mins ? 'var(--trust-blue)' : 'var(--ink)' }};">KSh {{ $tier['price'] }}</span>
                         </div>
-                        <div style="font-size:11px;color:var(--muted);">{{ $mins }} min — {{ $tier['desc'] }}</div>
+                        <div style="font-size:11px;color:var(--muted);">{{ $mins }} min â€” {{ $tier['desc'] }}</div>
                     </div>
                 </label>
                 @endforeach
@@ -120,7 +120,7 @@ $sessionTiers = [
             <select wire:model="subjectId"
                     style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
                     onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
-                <option value="">Select a subject…</option>
+                <option value="">Select a subjectâ€¦</option>
                 @foreach($subjects as $subject)
                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                 @endforeach
@@ -134,7 +134,7 @@ $sessionTiers = [
                 <i class="fa-solid fa-note-sticky fa-xs" style="color:var(--trust-blue);margin-right:4px;"></i> Notes for tutor <span style="color:var(--coral);">*</span>
             </p>
             <textarea wire:model="notes" rows="2"
-                      placeholder="Topics to cover, past exam areas, specific questions…"
+                      placeholder="Topics to cover, past exam areas, specific questionsâ€¦"
                       required
                       style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
@@ -150,7 +150,7 @@ $sessionTiers = [
     </div>
     @endif
 
-    {{-- ── STEP 2: Review & Pay ── --}}
+    {{-- â”€â”€ STEP 2: Review & Pay â”€â”€ --}}
     @if($step === 2)
     @php $tier = $sessionTiers[$duration] ?? $sessionTiers[60]; @endphp
     <div style="display:flex;flex-direction:column;gap:14px;">
@@ -164,7 +164,7 @@ $sessionTiers = [
                     ['Session type', $tier['icon'].' '.$tier['name'].' ('.$duration.' min)'],
                     ['Date', \Carbon\Carbon::parse($scheduledDate)->format('D, M j, Y')],
                     ['Time', \Carbon\Carbon::parse($scheduledTime)->format('g:i a').' (EAT)'],
-                    ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? '—') : 'General'],
+                    ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? 'â€”') : 'General'],
                 ] as [$label, $value])
                 <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.06);">
                     <span style="font-size:13px;color:var(--muted);">{{ $label }}</span>
@@ -216,7 +216,7 @@ $sessionTiers = [
             </p>
             <div style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--muted);">
                 <span style="width:8px;height:8px;border-radius:50%;background:var(--mint);animation:pulse 1.2s infinite;"></span>
-                Waiting for confirmation…
+                Waiting for confirmationâ€¦
             </div>
         </div>
         <style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
@@ -235,18 +235,18 @@ $sessionTiers = [
                     Pay KSh {{ $tier['price'] }}
                 </span>
                 <span wire:loading wire:target="initPayment" style="display:flex;align-items:center;gap:6px;">
-                    <i class="fa-solid fa-spinner fa-spin fa-sm"></i> Processing…
+                    <i class="fa-solid fa-spinner fa-spin fa-sm"></i> Processingâ€¦
                 </span>
             </button>
         </div>
         <p style="font-size:11px;text-align:center;color:var(--muted);">
             <i class="fa-solid fa-lock fa-xs" style="color:var(--mint);"></i>
-            Secured by M-Pesa · Lipa Na M-Pesa STK Push
+            Secured by M-Pesa Â· Lipa Na M-Pesa STK Push
         </p>
     </div>
     @endif
 
-    {{-- ── STEP 3: Confirmed ── --}}
+    {{-- â”€â”€ STEP 3: Confirmed â”€â”€ --}}
     @if($step === 3 && $bookingConfirmed)
     <div style="text-align:center;padding:8px 0;">
         <div style="width:64px;height:64px;border-radius:999px;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -276,7 +276,7 @@ $sessionTiers = [
 <script>
 document.addEventListener('livewire:initialized', () => {
 
-    // ── STK Push sent — start polling ────────────────────────────────────────
+    // â”€â”€ STK Push sent â€” start polling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Livewire.on('stk-sent', (data) => {
         const reference  = data.reference;
         const statusUrl  = '/api/daraja/status?reference=' + encodeURIComponent(reference);
@@ -292,14 +292,14 @@ document.addEventListener('livewire:initialized', () => {
         }
 
         function poll() {
-            if (polls >= maxPolls) return; // timed out — user can retry
+            if (polls >= maxPolls) return; // timed out â€” user can retry
             polls++;
 
             fetch(statusUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
                 .then(r => r.json())
                 .then(result => {
                     if (result.status === 'success') {
-                        // Confirm on the Livewire component → advances to step 3
+                        // Confirm on the Livewire component â†’ advances to step 3
                         @this.paymentSuccess(reference);
                     } else if (result.status === 'failed') {
                         if (banner) banner.style.display = 'none';

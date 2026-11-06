@@ -62,7 +62,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
         <div class="stat-label">Pending Actions</div>
         <div class="stat-value">{{ $pendingTutors + $pendingPayouts }}</div>
         <div class="stat-trend" style="color:var(--muted);">
-            {{ $pendingTutors }} tutors · {{ $pendingPayouts }} payouts
+            {{ $pendingTutors }} tutors Â· {{ $pendingPayouts }} payouts
         </div>
     </div>
 </div>
@@ -132,7 +132,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                             </div>
                         </td>
                         <td style="color:var(--muted);">{{ $booking->tutor->name }}</td>
-                        <td>{{ $booking->subject?->name ?? '—' }}</td>
+                        <td>{{ $booking->subject?->name ?? 'â€”' }}</td>
                         <td style="color:var(--muted);white-space:nowrap;">{{ $booking->scheduled_at->format('M j, g:ia') }}</td>
                         <td style="font-weight:600;">KSh {{ number_format($booking->total_amount) }}</td>
                         <td>
@@ -150,7 +150,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                                         class="btn btn-sm"
                                         style="background:#10B981;color:#fff;border:none;cursor:pointer;font-size:11px;padding:5px 10px;border-radius:8px;font-family:inherit;font-weight:700;white-space:nowrap;"
                                         title="Confirm booking and send session codes to tutor & student">
-                                    ✓ Confirm
+                                    âœ“ Confirm
                                 </button>
                                 @endif
                             </div>
@@ -180,20 +180,20 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                 <div class="avatar" style="background:#{{ ['0A64BC','10B981','E8522A','EEBE15'][$loop->index % 4] }};">{{ substr($profile->user->name,0,1) }}</div>
                 <div style="flex:1;min-width:0;">
                     <div style="font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $profile->user->name }}</div>
-                    <div style="font-size:11px;color:var(--muted);">{{ $profile->city }} · {{ $profile->documents->count() }} doc(s)</div>
+                    <div style="font-size:11px;color:var(--muted);">{{ $profile->city }} Â· {{ $profile->documents->count() }} doc(s)</div>
                 </div>
                 <a href="{{ route('admin.tutors') }}" class="btn btn-outline btn-sm" style="font-size:11px;padding:5px 10px;">Review</a>
             </div>
             @empty
             <div style="text-align:center;padding:28px 16px;color:var(--muted);font-size:14px;">
-                <div style="font-size:28px;margin-bottom:8px;">🎉</div>
+                <div style="font-size:28px;margin-bottom:8px;">ðŸŽ‰</div>
                 All tutors reviewed!
             </div>
             @endforelse
         </div>
         @if($pendingTutors > 5)
         <div style="padding:12px 20px;border-top:1px solid var(--hairline);text-align:center;">
-            <a href="{{ route('admin.tutors') }}" style="font-size:13px;color:var(--trust-blue);font-weight:600;">View all {{ $pendingTutors }} pending →</a>
+            <a href="{{ route('admin.tutors') }}" style="font-size:13px;color:var(--trust-blue);font-weight:600;">View all {{ $pendingTutors }} pending â†’</a>
         </div>
         @endif
     </div>
@@ -217,9 +217,9 @@ $(document).ready(function() {
 
 @push('styles')
 <style>
-/* Phase 6 — admin dashboard responsive */
+/* Phase 6 â€” admin dashboard responsive */
 @media(max-width:639px){
-    /* 3-col second row → 1-col */
+    /* 3-col second row â†’ 1-col */
     .admin-stats,
     .stat-cards{
         grid-template-columns:1fr !important;
@@ -227,7 +227,7 @@ $(document).ready(function() {
     div[style*="repeat(3,1fr)"]{
         grid-template-columns:1fr !important;
     }
-    /* 2-col content layout (bookings + approvals) → single column */
+    /* 2-col content layout (bookings + approvals) â†’ single column */
     div[style*="1fr 380px"]{
         grid-template-columns:1fr !important;
     }
@@ -253,7 +253,7 @@ function confirmBooking(uuid, btn) {
         if (!result.isConfirmed) return;
 
         const originalHtml = btn.innerHTML;
-        btn.innerHTML = '<svg style="width:12px;height:12px;animation:spin 1s linear infinite;display:inline-block;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Confirming…';
+        btn.innerHTML = '<svg style="width:12px;height:12px;animation:spin 1s linear infinite;display:inline-block;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Confirmingâ€¦';
         btn.disabled = true;
 
         fetch(`/bookings/${uuid}/force-confirm`, {
@@ -267,7 +267,7 @@ function confirmBooking(uuid, btn) {
         .then(r => r.json())
         .then(res => {
             if (res.status === 'ok') {
-                btn.innerHTML = '✓ Confirmed!';
+                btn.innerHTML = 'âœ“ Confirmed!';
                 btn.style.background = '#059669';
 
                 // Replace the status badge in the same row

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Complete Your Tutor Profile – Mwalimu</title>
+<title>Complete Your Tutor Profile â€“ Mwalimu</title>
 <style>
 html,body{min-height:100%;}
 .page{min-height:100vh;background:var(--cream);display:flex;flex-direction:column;}
@@ -162,7 +162,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                             <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--muted);">KSh</span>
                             <input type="number" x-model="form.hourly_rate" class="finput" style="padding-left:46px;" placeholder="e.g. 2000" min="500">
                         </div>
-                        <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-info-circle fa-xs" style="color:var(--trust-blue);"></i> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
+                        <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-circle-info fa-xs" style="color:var(--trust-blue);"></i> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
                     </div>
                 </div>
                 <div style="display:flex;gap:12px;">
@@ -189,7 +189,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
                                     <input type="checkbox" x-model="form.curricula_tracks" value="kenyan" style="width:18px;height:18px;accent-color:#10B981;flex-shrink:0;">
                                     <span style="font-size:15px;font-weight:700;color:var(--ink);">???? Kenyan Curriculum</span>
-                                    <span style="margin-left:auto;font-size:12px;color:var(--muted);">8-4-4 · CBE JSS · CBE Senior</span>
+                                    <span style="margin-left:auto;font-size:12px;color:var(--muted);">8-4-4 Â· CBE JSS Â· CBE Senior</span>
                                 </label>
                                 <div x-show="form.curricula_tracks.includes('kenyan')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
                                     <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
@@ -206,7 +206,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                         @endforeach
                                     </div>
                                     <div style="padding:10px 14px;background:rgba(16,185,129,.06);border-radius:10px;font-size:12px;color:#065F46;">
-                                        <strong>Required docs:</strong> National ID · TSC Certificate · Certificate of Good Conduct · Passport Photo · Degree (recommended)
+                                        <strong>Required docs:</strong> National ID Â· TSC Certificate Â· Certificate of Good Conduct Â· Passport Photo Â· Degree (recommended)
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +216,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
                                     <input type="checkbox" x-model="form.curricula_tracks" value="international" style="width:18px;height:18px;accent-color:#6366F1;flex-shrink:0;">
                                     <span style="font-size:15px;font-weight:700;color:var(--ink);">?? International Curriculum</span>
-                                    <span style="margin-left:auto;font-size:12px;color:var(--muted);">IGCSE · IB MYP · IB Diploma</span>
+                                    <span style="margin-left:auto;font-size:12px;color:var(--muted);">IGCSE Â· IB MYP Â· IB Diploma</span>
                                 </label>
                                 <div x-show="form.curricula_tracks.includes('international')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
                                     <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
@@ -233,7 +233,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                         @endforeach
                                     </div>
                                     <div style="padding:10px 14px;background:rgba(99,102,241,.06);border-radius:10px;font-size:12px;color:#3730A3;">
-                                        <strong>Required docs:</strong> National ID · Degree Certificate · Teaching Qualification (PGCE or IB cert) · Proof of IGCSE/IB experience · Certificate of Good Conduct · Passport Photo · Examiner credentials (optional)
+                                        <strong>Required docs:</strong> National ID Â· Degree Certificate Â· Teaching Qualification (PGCE or IB cert) Â· Proof of IGCSE/IB experience Â· Certificate of Good Conduct Â· Passport Photo Â· Examiner credentials (optional)
                                     </div>
                                 </div>
                             </div>
@@ -289,7 +289,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             <div x-show="step === 3" x-cloak>
                 <div class="ob-card">
                     <h2><i class="fa-solid fa-file-shield" style="color:var(--trust-blue);font-size:18px;margin-right:8px;"></i>Verification Documents</h2>
-                    <p class="sub">Upload your documents so we can verify your credentials. All files are stored securely. Accepted: JPG, PNG, PDF — max 5MB each.</p>
+                    <p class="sub">Upload your documents so we can verify your credentials. All files are stored securely. Accepted: JPG, PNG, PDF â€” max 5MB each.</p>
 
                     <div style="display:flex;flex-direction:column;gap:16px;">
 
@@ -310,7 +310,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.national_id">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.national_id.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.national_id.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -336,7 +336,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.academic_certificate">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.academic_certificate.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.academic_certificate.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -362,7 +362,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.tsc_certificate">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.tsc_certificate.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.tsc_certificate.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -388,7 +388,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.certificate_of_good_conduct">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.certificate_of_good_conduct.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.certificate_of_good_conduct.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -414,7 +414,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                 </template>
                                 <template x-if="files.passport_photo">
                                     <div>
-                                        <div class="upload-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:32px;"></i></div>
+                                        <div class="upload-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:32px;"></i></div>
                                         <div class="upload-title" x-text="files.passport_photo.name"></div>
                                         <div class="upload-hint" x-text="formatSize(files.passport_photo.size)"></div>
                                         <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fa-solid fa-check fa-xs"></i> Ready to upload</span>
@@ -569,7 +569,7 @@ function tutorOnboarding() {
     return {
         step: 1,
         submitting: false,
-        uploadStatus: 'Uploading documents…',
+        uploadStatus: 'Uploading documentsâ€¦',
         form: {
             name:            '{{ auth()->user()?->name ?? '' }}',
             phone:           '{{ auth()->user()?->phone ?? '' }}',
@@ -668,7 +668,7 @@ function tutorOnboarding() {
 
         async submitApplication() {
             this.submitting = true;
-            this.uploadStatus = 'Uploading documents…';
+            this.uploadStatus = 'Uploading documentsâ€¦';
 
             try {
                 const fd = new FormData();
@@ -683,7 +683,7 @@ function tutorOnboarding() {
                 });
                 fd.append('_token', document.querySelector('meta[name=csrf-token]').content);
 
-                this.uploadStatus = 'Saving profile…';
+                this.uploadStatus = 'Saving profileâ€¦';
                 const res = await fetch('/tutor/onboarding/submit', {
                     method: 'POST',
                     body: fd,
@@ -693,7 +693,7 @@ function tutorOnboarding() {
                 if (data.status === 'ok') {
                     this.submitting = false;
                     if (this.form.speedy && data.stk_sent) {
-                        // STK Push sent for speedy verification fee — advance to success
+                        // STK Push sent for speedy verification fee â€” advance to success
                         // Enrollment is confirmed once Daraja callback arrives
                         this.step = 5;
                     } else {

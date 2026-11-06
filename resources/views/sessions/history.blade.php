@@ -43,7 +43,7 @@
                             </span>
                             @if($session->status === 'completed')
                                 <span class="text-sm font-medium text-yellow-600 flex items-center">
-                                    â­ 
+                                    Ã¢Â­Â 
                                     @if($session->review)
                                         {{ $session->review->rating }}/5
                                     @else
@@ -64,7 +64,7 @@
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="font-medium text-gray-900">{{ $session->review->reviewer->name }}</span>
-                                    <span class="text-yellow-600 font-semibold">â­ {{ $session->review->rating }}/5</span>
+                                    <span class="text-yellow-600 font-semibold">Ã¢Â­Â {{ $session->review->rating }}/5</span>
                                 </div>
                                 <p class="text-sm text-gray-700">{{ $session->review->comment }}</p>
                             </div>

@@ -50,13 +50,13 @@
                 <div>
                     <p class="text-sm text-gray-500">Student Joined</p>
                     <p class="text-lg font-semibold {{ $booking->student_joined ? 'text-green-600' : 'text-gray-400' }}">
-                        {{ $booking->student_joined ? 'âœ“ Yes' : 'âœ— No' }}
+                        {{ $booking->student_joined ? 'Ã¢Å“â€œ Yes' : 'Ã¢Å“â€” No' }}
                     </p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Tutor Joined</p>
                     <p class="text-lg font-semibold {{ $booking->tutor_joined ? 'text-green-600' : 'text-gray-400' }}">
-                        {{ $booking->tutor_joined ? 'âœ“ Yes' : 'âœ— No' }}
+                        {{ $booking->tutor_joined ? 'Ã¢Å“â€œ Yes' : 'Ã¢Å“â€” No' }}
                     </p>
                 </div>
             </div>

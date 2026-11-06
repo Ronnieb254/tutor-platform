@@ -15,14 +15,14 @@
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:20px;">✅</span>
+        <span style="font-size:20px;">âœ…</span>
         <span style="color:#059669;font-weight:600;">{{ session('success') }}</span>
     </div>
     @endif
 
     @if(session('error'))
     <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:20px;">❌</span>
+        <span style="font-size:20px;">âŒ</span>
         <span style="color:#dc2626;font-weight:600;">{{ session('error') }}</span>
     </div>
     @endif
@@ -44,7 +44,7 @@
                 <tbody>
                     @forelse($categories as $category)
                     <tr>
-                        <td><span style="font-size:24px;">{{ $category->icon ?? '📚' }}</span></td>
+                        <td><span style="font-size:24px;">{{ $category->icon ?? 'ðŸ“š' }}</span></td>
                         <td>
                             <div style="font-weight:600;font-size:14px;">{{ $category->name }}</div>
                             @if($category->description)
@@ -96,7 +96,7 @@
         </div>
         <div id="delete-warning" style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:14px 16px;margin-bottom:20px;">
             <p style="font-size:14px;color:#7f1d1d;margin:0;">Are you sure you want to delete <strong id="delete-category-name"></strong>?</p>
-            <p id="delete-subjects-warning" style="font-size:13px;color:#991b1b;margin:8px 0 0 0;display:none;">⚠️ This category has <strong id="delete-subjects-count"></strong> subjects. Delete them first.</p>
+            <p id="delete-subjects-warning" style="font-size:13px;color:#991b1b;margin:8px 0 0 0;display:none;">âš ï¸ This category has <strong id="delete-subjects-count"></strong> subjects. Delete them first.</p>
         </div>
         <form id="delete-form" method="POST">
             @csrf @method('DELETE')
@@ -126,8 +126,8 @@
             </div>
             <div style="margin-bottom:14px;">
                 <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Icon Emoji</label>
-                <input type="text" name="icon" placeholder="📚" maxlength="10" style="width:100%;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:15px;font-family:inherit;outline:none;">
-                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use a single emoji (e.g. 📚 🎓 🔬 🌍 🎨)</div>
+                <input type="text" name="icon" placeholder="ðŸ“š" maxlength="10" style="width:100%;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:15px;font-family:inherit;outline:none;">
+                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use a single emoji (e.g. ðŸ“š ðŸŽ“ ðŸ”¬ ðŸŒ ðŸŽ¨)</div>
             </div>
             <div style="margin-bottom:14px;">
                 <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Description</label>

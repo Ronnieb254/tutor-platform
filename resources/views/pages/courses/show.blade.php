@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $course->title }} â€“ Mwalimu</title>
+<title>{{ $course->title }} Ã¢â‚¬â€œ Mwalimu</title>
 <meta name="description" content="{{ Str::limit($course->description ?? $course->title, 160) }}">
 </head>
 <body>
@@ -70,7 +70,7 @@
                     @csrf
                     <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;padding:14px;font-size:15px;">
                         <i class="fa-solid fa-{{ $course->is_free ? 'play-circle' : 'credit-card' }}"></i>
-                        {{ $course->is_free ? 'Enrol Free' : 'Enrol â€“ KSh '.number_format($course->price) }}
+                        {{ $course->is_free ? 'Enrol Free' : 'Enrol Ã¢â‚¬â€œ KSh '.number_format($course->price) }}
                     </button>
                 </form>
                 @else

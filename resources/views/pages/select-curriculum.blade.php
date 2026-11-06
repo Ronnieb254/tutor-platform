@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Choose Your Curriculum â€“ Mwalimu</title>
+<title>Choose Your Curriculum Ã¢â‚¬â€œ Mwalimu</title>
 <meta name="description" content="Select your curriculum track: Kenyan (8-4-4, CBE) or International (IGCSE, IB). Find the right tutor for your learning path.">
 <style>
 .curr-page { min-height: 100vh; background: var(--cream); display: flex; flex-direction: column; }
@@ -111,7 +111,7 @@
                         <i class="fa-solid fa-flag"></i> Kenyan Curriculum
                     </div>
                     <div class="curr-card__title">Learn the<br>Kenyan Way</div>
-                    <p class="curr-card__sub">Kenya's national education system â€” from secondary school through senior school.</p>
+                    <p class="curr-card__sub">Kenya's national education system Ã¢â‚¬â€ from secondary school through senior school.</p>
                     <div class="curr-tag-list">
                         <span class="curr-tag"><i class="fa-solid fa-book fa-xs"></i> 8-4-4</span>
                         <span class="curr-tag"><i class="fa-solid fa-star fa-xs"></i> CBC Junior Secondary</span>

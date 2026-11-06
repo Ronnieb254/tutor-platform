@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $tutor->user->name }} – Verified Tutor | Mwalimu</title>
+<title>{{ $tutor->user->name }} â€“ Verified Tutor | Mwalimu</title>
 <meta name="description" content="{{ Str::limit($tutor->bio ?? 'Book a session with '.$tutor->user->name.' on Mwalimu.', 160) }}">
 <style>
-/* ── Page-level styles ── */
+/* â”€â”€ Page-level styles â”€â”€ */
 .profile-hero{background:linear-gradient(135deg,#111C16 0%,#15281F 60%,#1a2e22 100%);padding:48px 0 0;position:relative;overflow:hidden;}
 .profile-hero::before{content:'';position:absolute;top:-120px;right:-80px;width:400px;height:400px;background:rgba(10,100,188,.12);border-radius:50%;pointer-events:none;}
 .profile-hero::after{content:'';position:absolute;bottom:-60px;left:20%;width:200px;height:200px;background:rgba(212,160,23,.06);border-radius:50%;pointer-events:none;}
@@ -37,7 +37,7 @@
 $prices    = [20=>300,40=>600,60=>900];
 $sessNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 $sessDesc  = [20=>'Rapid revision or a quick question',40=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
-// No free first session — 100% money-back guarantee if unsatisfied
+// No free first session â€” 100% money-back guarantee if unsatisfied
 $isFreeFirstSession = false;
 $colors    = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6'];
 $avColor   = $colors[$tutor->id % count($colors)];
@@ -46,7 +46,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
 
 @include('partials.nav')
 
-{{-- ── PROFILE HERO ────────────────────────────────────────────────── --}}
+{{-- â”€â”€ PROFILE HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div class="profile-hero">
     <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
 
@@ -143,14 +143,14 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
     </div>
 </div>
 
-{{-- ── MAIN CONTENT ─────────────────────────────────────────────────── --}}
+{{-- â”€â”€ MAIN CONTENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 <div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;" class="w">
     <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="show-grid session-layout">
 
         {{-- LEFT: Tab content --}}
         <div>
 
-            {{-- ── ABOUT TAB ── --}}
+            {{-- â”€â”€ ABOUT TAB â”€â”€ --}}
             <div id="tab-about">
                 {{-- Stats cards --}}
                 <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;" class="stat-mini-g">
@@ -211,13 +211,13 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 </div>
             </div>
 
-            {{-- ── AVAILABILITY TAB ── --}}
+            {{-- â”€â”€ AVAILABILITY TAB â”€â”€ --}}
             <div id="tab-availability" style="display:none;">
                 <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
                     <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
                         <i class="fa-solid fa-calendar-week" style="color:#0A64BC;font-size:16px;"></i> Weekly Schedule
                     </h2>
-                    <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">Nairobi, Kenya Time (EAT · UTC+3)</p>
+                    <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">Nairobi, Kenya Time (EAT Â· UTC+3)</p>
                     @php
                     $avails = $tutor->availabilities()->where('is_active',true)->orderBy('day_of_week')->get();
                     $days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -225,7 +225,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                     @if($avails->isEmpty())
                     <div style="text-align:center;padding:40px;color:rgba(21,40,31,.45);">
                         <i class="fa-regular fa-calendar-xmark" style="font-size:36px;margin-bottom:12px;display:block;color:rgba(21,40,31,.15);"></i>
-                        <p style="font-size:14px;">Availability not set. Book anyway — the tutor will confirm a time that works.</p>
+                        <p style="font-size:14px;">Availability not set. Book anyway â€” the tutor will confirm a time that works.</p>
                     </div>
                     @else
                     @foreach($days as $i => $day)
@@ -235,7 +235,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         @if($av)
                         <span style="font-size:14px;font-weight:500;color:#0A64BC;display:flex;align-items:center;gap:6px;">
                             <i class="fa-regular fa-clock fa-xs"></i>
-                            {{ substr($av->start_time,0,5) }} – {{ substr($av->end_time,0,5) }}
+                            {{ substr($av->start_time,0,5) }} â€“ {{ substr($av->end_time,0,5) }}
                         </span>
                         <span style="margin-left:auto;background:rgba(16,185,129,.1);color:#10B981;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;">
                             <i class="fa-solid fa-check fa-xs"></i> Available
@@ -250,7 +250,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 </div>
             </div>
 
-            {{-- ── REVIEWS TAB ── --}}
+            {{-- â”€â”€ REVIEWS TAB â”€â”€ --}}
             <div id="tab-reviews" style="display:none;">
                 {{-- Rating overview --}}
                 <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
@@ -310,7 +310,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 @endif
             </div>
 
-            {{-- ── BOOK SESSION TAB ── --}}
+            {{-- â”€â”€ BOOK SESSION TAB â”€â”€ --}}
             <div id="tab-book" style="display:none;" x-data="{
                 step: 1,
                 dur: 20,
@@ -383,7 +383,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                             <i class="fa-solid fa-clock" style="color:#0A64BC;font-size:16px;"></i> 1. Choose Session Type
                         </h3>
                         <div style="display:grid;grid-template-columns:1fr;gap:10px;" class="tier-grid">
-                            @foreach([20=>['⚡','Quick Help'],40=>['🎯','Guided Practice'],60=>['🏆','Deep Dive']] as $mins => [$icon,$tname])
+                            @foreach([20=>['âš¡','Quick Help'],40=>['ðŸŽ¯','Guided Practice'],60=>['ðŸ†','Deep Dive']] as $mins => [$icon,$tname])
                             @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $prices[$mins]; @endphp
                             <button @click="dur={{ $mins }}"
                                     :class="dur==={{ $mins }} ? 'tier-card selected' : 'tier-card'"
@@ -429,7 +429,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         {{-- Time slot picker --}}
                         <div style="margin-bottom:14px;">
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">
-                                Available Time Slots (Nairobi, Kenya · EAT UTC+3)
+                                Available Time Slots (Nairobi, Kenya Â· EAT UTC+3)
                             </label>
 
                             {{-- Loading state --}}
@@ -478,7 +478,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                             <select x-model="subject"
                                     style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
                                     onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
-                                <option value="">Select a subject…</option>
+                                <option value="">Select a subjectâ€¦</option>
                                 @foreach($tutor->subjects as $s)
                                 <option value="{{ $s->id }}">{{ $s->name }}</option>
                                 @endforeach
@@ -488,7 +488,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
 
                         <div>
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Notes for tutor <span style="color:#E8522A;">*</span></label>
-                            <textarea x-model="notes" rows="2" placeholder="Topics to cover, past exam areas, specific questions…"
+                            <textarea x-model="notes" rows="2" placeholder="Topics to cover, past exam areas, specific questionsâ€¦"
                                       required
                                       style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
                                       onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
@@ -519,9 +519,9 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         <div style="background:#F9FAF9;border-radius:14px;padding:18px;margin-bottom:18px;">
                             @foreach([
                                 ['fa-user','Tutor',$tutor->user->name],
-                                ['fa-clock','Session','<span x-text="dur+\' min — \'+sessionName"></span>'],
-                                ['fa-calendar','Date','<span x-text="date ? new Date(date).toDateString() : \'—\'"></span>'],
-                                ['fa-clock','Time','<span x-text="time || \'—\'"></span> EAT'],
+                                ['fa-clock','Session','<span x-text="dur+\' min â€” \'+sessionName"></span>'],
+                                ['fa-calendar','Date','<span x-text="date ? new Date(date).toDateString() : \'â€”\'"></span>'],
+                                ['fa-clock','Time','<span x-text="time || \'â€”\'"></span> EAT'],
                             ] as [$ic,$label,$val])
                             <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(21,40,31,.07);">
                                 <span style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(21,40,31,.55);">
@@ -583,7 +583,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                                 </template>
                                 <template x-if="processing">
                                     <span style="display:flex;align-items:center;gap:8px;">
-                                        <i class="fa-solid fa-spinner fa-spin fa-xs"></i> Processing…
+                                        <i class="fa-solid fa-spinner fa-spin fa-xs"></i> Processingâ€¦
                                     </span>
                                 </template>
                             </button>
@@ -617,7 +617,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                             <i class="fa-solid fa-circle-check" style="font-size:30px;color:#10B981;"></i>
                         </div>
                         <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:8px;">Booking Confirmed!</h2>
-                        <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Payment received. Your session codes have been emailed to you. Redirecting to your session in 3 seconds…</p>
+                        <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Payment received. Your session codes have been emailed to you. Redirecting to your session in 3 secondsâ€¦</p>
 
                         {{-- Session code --}}
                         <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.25);border-radius:20px;padding:24px;margin-bottom:24px;">
@@ -631,7 +631,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         {{-- What happens next --}}
                         <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;margin-bottom:24px;">
                             <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;"><i class="fa-solid fa-list-check" style="color:#0A64BC;margin-right:5px;"></i> What happens next</p>
-                            @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard → click Join Session → enter your code','Your private classroom opens instantly in your browser — no download required'] as $step)
+                            @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard â†’ click Join Session â†’ enter your code','Your private classroom opens instantly in your browser â€” no download required'] as $step)
                             <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
                                 <i class="fa-solid fa-circle-check" style="color:#10B981;margin-top:2px;flex-shrink:0;font-size:11px;"></i>{{ $step }}
                             </div>
@@ -667,7 +667,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
 
                 {{-- Tier quick reference --}}
                 <!-- <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
-                    @foreach([20=>['⚡','Quick Help',300],40=>['🎯','Guided Practice',500],60=>['🏆','Deep Dive',700]] as $mins=>[$ic,$n,$p])
+                    @foreach([20=>['âš¡','Quick Help',300],40=>['ðŸŽ¯','Guided Practice',500],60=>['ðŸ†','Deep Dive',700]] as $mins=>[$ic,$n,$p])
                     @php $sidePrice = ($mins===20 && $isFreeFirstSession) ? 0 : $p; @endphp
                     <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:{{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.06)':'#F9FAF9' }};border:1px solid {{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.2)':'rgba(21,40,31,.07)' }};position:relative;">
                         @if($mins===15 && $isFreeFirstSession)
@@ -782,7 +782,7 @@ function processPayment(data) {
             return;
         }
         if (res.status === 'ok' && res.reference) {
-            // STK Push sent — start polling
+            // STK Push sent â€” start polling
             data.stkSent  = true;
             data.stkMsg   = res.message || 'Check your phone for the M-Pesa prompt.';
             const ref     = res.reference;

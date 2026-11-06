@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $post->title }} – Mwalimu Blog</title>
+<title>{{ $post->title }} â€“ Mwalimu Blog</title>
 <meta name="description" content="{{ $post->excerpt ?? Str::limit(strip_tags($post->content), 160) }}">
 <style>
 .prose{font-size:16px;line-height:1.85;color:var(--ink);}
@@ -60,7 +60,7 @@
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><i class="fa-solid fa-book-open fa-sm" style="color:var(--trust-blue);margin-right:6px;"></i>Related Articles</h3>
                 @foreach($related as $r)
                 <a href="{{ route('blog.show', $r->slug) }}" style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);transition:opacity .15s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-                    <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📝</div>
+                    <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">ðŸ“</div>
                     <div>
                         <div style="font-size:13px;font-weight:600;color:var(--ink);line-height:1.4;">{{ Str::limit($r->title,55) }}</div>
                         <div style="font-size:11px;color:var(--muted);margin-top:3px;">{{ $r->published_at->format('M j') }}</div>

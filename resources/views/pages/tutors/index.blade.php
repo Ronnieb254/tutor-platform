@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Find a Tutor – Mwalimu</title>
+<title>Find a Tutor â€“ Mwalimu</title>
 <meta name="description" content="Browse TSC-registered tutors across all Kenyan curriculum subjects. Book sessions from KSh 300.">
 <style>
 .hero-band{background:var(--ink);padding:52px 0;position:relative;overflow:hidden;}
@@ -92,7 +92,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                     <span class="f-label"><i class="fa-solid fa-magnifying-glass fa-xs" style="color:var(--trust-blue);"></i> Search</span>
                     <div style="position:relative;">
                         <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;"></i>
-                        <input type="text" name="search" value="{{ $search }}" class="f-input" placeholder="Tutor name or subject…" style="padding-left:34px;">
+                        <input type="text" name="search" value="{{ $search }}" class="f-input" placeholder="Tutor name or subjectâ€¦" style="padding-left:34px;">
                     </div>
                 </div>
                 <div style="min-width:160px;">
@@ -131,7 +131,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
         @if($search)<span class="filter-tag"><i class="fa-solid fa-magnifying-glass fa-xs"></i>"{{ $search }}"</span>@endif
         @if($catId)<span class="filter-tag"><i class="fa-solid fa-layer-group fa-xs"></i>{{ $categories->find($catId)?->name }}</span>@endif
-        @if($minR)<span class="filter-tag"><i class="fa-solid fa-star fa-xs"></i>★ {{ $minR }}+</span>@endif
+        @if($minR)<span class="filter-tag"><i class="fa-solid fa-star fa-xs"></i>â˜… {{ $minR }}+</span>@endif
         @if($minP)<span class="filter-tag">From KSh {{ number_format($minP) }}</span>@endif
         @if($maxP)<span class="filter-tag">To KSh {{ number_format($maxP) }}</span>@endif
     </div>
@@ -161,7 +161,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 </div>
                             <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
                                 <span style="font-size:11px;font-weight:600;color:var(--mint);"><i class="fa-solid fa-certificate fa-xs"></i> TSC Verified</span>
-                                <span style="color:var(--muted);font-size:11px;">· {{ $tutor->experience_years }}yr exp</span>
+                                <span style="color:var(--muted);font-size:11px;">Â· {{ $tutor->experience_years }}yr exp</span>
                             </div>
                         </div>
                         <!-- <div style="text-align:right;flex-shrink:0;">
@@ -178,15 +178,15 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
                         @foreach($tutor->approvedCurricula->take(2) as $curr)
                         <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;
                             {{ $curr->track==='kenyan' ? 'background:rgba(16,185,129,.12);color:#065F46;' : 'background:rgba(99,102,241,.12);color:#3730A3;' }}">
-                            {{ $curr->track==='kenyan' ? '🇰🇪' : '🌐' }} {{ $curr->name }}
+                            {{ $curr->track==='kenyan' ? 'ðŸ‡°ðŸ‡ª' : 'ðŸŒ' }} {{ $curr->name }}
                         </span>
                         @endforeach
                     </div>
                     <div style="display:flex;align-items:center;gap:10px;margin-top:7px;font-size:12px;color:var(--muted);">
                         <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star fa-xs"></i> {{ number_format($tutor->rating_avg,1) }}</span>
                         <span>({{ $tutor->total_reviews }})</span>
-                        <span>·</span><span>{{ $tutor->total_sessions }} sessions</span>
-                        <!-- @if($tutor->city)<span>·</span><span><i class="fa-solid fa-location-dot fa-xs"></i> {{ $tutor->city }}</span>@endif -->
+                        <span>Â·</span><span>{{ $tutor->total_sessions }} sessions</span>
+                        <!-- @if($tutor->city)<span>Â·</span><span><i class="fa-solid fa-location-dot fa-xs"></i> {{ $tutor->city }}</span>@endif -->
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
             <!-- <div class="dur-pills">
                 @foreach([20=>['Quick Help',300],40=>['Guided Practice',500],60=>['Deep Dive',700]] as $mins=>[$name,$price])
                 @php
-                $isFreeForUser = false; // No free first session — 100% money-back guarantee instead
+                $isFreeForUser = false; // No free first session â€” 100% money-back guarantee instead
                 @endphp
                 <div class="dp" title="{{ $name }}">
                     <div class="dp-min">{{ $mins }}m</div>

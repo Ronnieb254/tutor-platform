@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     @include('partials.head')
-    <title>Waiting for Payment â€“ Mwalimu</title>
+    <title>Waiting for Payment Ã¢â‚¬â€œ Mwalimu</title>
     <style>
         .pending-card {
             max-width: 480px;
@@ -43,7 +43,7 @@
         <div id="stateWaiting">
             <div class="spinner"></div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
-                Waiting for M-Pesaâ€¦
+                Waiting for M-PesaÃ¢â‚¬Â¦
             </h2>
             <p style="color:var(--muted);line-height:1.7;margin-bottom:24px;">
                 An STK Push has been sent to your phone.
@@ -60,7 +60,7 @@
 
         {{-- Success state (shown by JS) --}}
         <div id="stateSuccess" style="display:none;">
-            <div class="status-icon"><i class="fa-solid fa-check-circle" style="color:#10B981;font-size:64px;"></i></div>
+            <div class="status-icon"><i class="fa-solid fa-circle-check" style="color:#10B981;font-size:64px;"></i></div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
                 Payment Confirmed!
             </h2>
@@ -74,7 +74,7 @@
 
         {{-- Failed state (shown by JS) --}}
         <div id="stateFailed" style="display:none;">
-            <div class="status-icon"><i class="fa-solid fa-times-circle" style="color:#E8522A;font-size:64px;"></i></div>
+            <div class="status-icon"><i class="fa-solid fa-circle-xmark" style="color:#E8522A;font-size:64px;"></i></div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
                 Payment Not Completed
             </h2>
@@ -127,12 +127,12 @@
                     data.message || 'Your M-Pesa payment was not completed. Please try again.';
                 show('stateFailed');
             } else {
-                // Still pending â€” keep polling
+                // Still pending Ã¢â‚¬â€ keep polling
                 setTimeout(poll, 5000);
             }
         })
         .catch(function() {
-            // Network error â€” retry
+            // Network error Ã¢â‚¬â€ retry
             setTimeout(poll, 5000);
         });
     }

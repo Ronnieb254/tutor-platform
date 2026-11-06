@@ -35,7 +35,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
             <div class="session-title">
                 <i class="fa-solid fa-chalkboard-user"></i> {{ $clinic->title ?? $clinic->name }}
             </div>
-            <span style="color:var(--muted);margin:0 12px;font-size:10px;">•</span>
+            <span style="color:var(--muted);margin:0 12px;font-size:10px;">â€¢</span>
             <span style="color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}</span>
             @if($isModerator)
                 <span class="moderator-badge">
@@ -48,7 +48,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         <form method="POST" action="{{ route('logout') }}" style="display:inline;">
             @csrf
             <button type="submit" class="exit-btn">
-                <i class="fa-solid fa-sign-out-alt" style="margin-right:6px;"></i> Leave Session
+                <i class="fa-solid fa-right-from-bracket" style="margin-right:6px;"></i> Leave Session
             </button>
         </form>
     </div>
@@ -58,7 +58,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
 <div class="access-warning">
     <i class="fa-solid fa-shield-check"></i>
-    <span>Platform-only session · Encrypted end-to-end</span>
+    <span>Platform-only session Â· Encrypted end-to-end</span>
 </div>
 
 <script>

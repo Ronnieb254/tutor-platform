@@ -90,7 +90,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
     $rejectedDocs = $docs->where('status', 'rejected')->count();
     $isSpeedy = $profile->speedy_verification_paid;
 
-    // Approval gate: 4 required docs approved + 1–2 subjects
+    // Approval gate: 4 required docs approved + 1â€“2 subjects
     $requiredDocTypes    = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
     $approvedDocTypes    = $docs->where('status', 'approved')->pluck('type')->toArray();
     $allRequiredApproved = count(array_diff($requiredDocTypes, $approvedDocTypes)) === 0;
@@ -148,7 +148,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
         <div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--hairline);">
             <div style="padding:14px;text-align:center;border-right:1px solid var(--hairline);">
                 <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">
-                    {{ $profile->hourly_rate ? 'KSh '.number_format($profile->hourly_rate) : '—' }}
+                    {{ $profile->hourly_rate ? 'KSh '.number_format($profile->hourly_rate) : 'â€”' }}
                 </div>
                 <div style="font-size:11px;color:var(--muted);margin-top:2px;">Hourly Rate</div>
             </div>
@@ -256,11 +256,11 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     </div>
                     <div>
                         <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Phone</div>
-                        <div style="font-size:14px;">{{ $profile->phone ?? '—' }}</div>
+                        <div style="font-size:14px;">{{ $profile->phone ?? 'â€”' }}</div>
                     </div>
                     <div>
                         <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Hourly Rate</div>
-                        <div style="font-size:14px;">{{ $profile->hourly_rate ? 'KSh '.number_format($profile->hourly_rate) : '—' }}</div>
+                        <div style="font-size:14px;">{{ $profile->hourly_rate ? 'KSh '.number_format($profile->hourly_rate) : 'â€”' }}</div>
                     </div>
                     <div>
                         <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Experience</div>
@@ -374,7 +374,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmFinalApproval{{ $profile->id }}(this)">
                         @csrf @method('PATCH')
                         <button type="submit" class="btn btn-primary" style="width:100%;" {{ !$canApprove ? 'disabled title="'.$approveBlockReason.'"' : '' }}>
-                            <i class="fa-solid fa-circle-check"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs · '.$subjectCnt.' subjects)' }}
+                            <i class="fa-solid fa-circle-check"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs Â· '.$subjectCnt.' subjects)' }}
                         </button>
                     </form>
                     <script>
@@ -438,7 +438,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 </label>
                 <select name="reason" required
                         style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;margin-bottom:10px;appearance:none;">
-                    <option value="">Select reason…</option>
+                    <option value="">Select reasonâ€¦</option>
                     <option>Document is blurry or unreadable</option>
                     <option>Wrong document uploaded</option>
                     <option>Document appears altered or invalid</option>
@@ -446,7 +446,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     <option>Name on document does not match profile</option>
                     <option>Other (specify below)</option>
                 </select>
-                <textarea name="admin_note" rows="2" placeholder="Add a note for the tutor (optional)…"
+                <textarea name="admin_note" rows="2" placeholder="Add a note for the tutor (optional)â€¦"
                           style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;"></textarea>
             </div>
             <div style="display:flex;gap:10px;">

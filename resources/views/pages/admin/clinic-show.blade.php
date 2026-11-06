@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Clinic â€“ ' . ($clinic->title ?? 'Detail'))
+@section('title', 'Clinic Ã¢â‚¬â€œ ' . ($clinic->title ?? 'Detail'))
 @section('content')
 <div style="max-width:1100px;margin:0 auto;padding:24px;">
 
@@ -94,7 +94,7 @@
                         <tr style="border-top:1px solid rgba(21,40,31,.05);">
                             <td style="padding:12px 16px;color:var(--muted);">{{ $i + 1 }}</td>
                             <td style="padding:12px 16px;">
-                                <div style="font-weight:600;color:var(--ink);">{{ $enrollment->student?->name ?? 'â€”' }}</div>
+                                <div style="font-weight:600;color:var(--ink);">{{ $enrollment->student?->name ?? 'Ã¢â‚¬â€' }}</div>
                                 <div style="font-size:11px;color:var(--muted);">{{ $enrollment->student?->email }}</div>
                             </td>
                             <td style="padding:12px 16px;">
@@ -125,7 +125,7 @@
                 <div style="padding:14px 20px;border-bottom:1px solid rgba(21,40,31,.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
                     <div>
                         <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $child->title }}</div>
-                        <div style="font-size:12px;color:var(--muted);">{{ $child->scheduled_at->format('D, M j \a\t g:ia') }} Â· {{ $child->enrollments_count ?? $child->enrollments()->count() }}/30 enrolled</div>
+                        <div style="font-size:12px;color:var(--muted);">{{ $child->scheduled_at->format('D, M j \a\t g:ia') }} Ã‚Â· {{ $child->enrollments_count ?? $child->enrollments()->count() }}/30 enrolled</div>
                     </div>
                     <a href="{{ route('admin.clinics.show', $child) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:600;">View <i class="fa-solid fa-arrow-right fa-xs"></i></a>
                 </div>
@@ -146,7 +146,7 @@
                     ['Price',         'KSh ' . number_format($clinic->price)],
                     ['Duration',      $clinic->duration_minutes . ' minutes'],
                     ['Max Students',  '30'],
-                    ['Meeting Room',  $clinic->meeting_room ?? 'â€”'],
+                    ['Meeting Room',  $clinic->meeting_room ?? 'Ã¢â‚¬â€'],
                 ] as [$k,$v])
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(21,40,31,.05);font-size:13px;">
                     <span style="color:var(--muted);">{{ $k }}</span>

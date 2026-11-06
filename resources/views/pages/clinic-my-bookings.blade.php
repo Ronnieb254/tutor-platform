@@ -123,7 +123,7 @@ a{color:inherit;text-decoration:none;}
                 </span>
                 @else
                 <span class="status-badge status-past">
-                    <i class="fa-solid fa-check-circle fa-xs"></i> Completed
+                    <i class="fa-solid fa-circle-check fa-xs"></i> Completed
                 </span>
                 @endif
 

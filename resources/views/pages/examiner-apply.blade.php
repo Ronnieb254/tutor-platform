@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
-                        <h5><i class="fa-solid fa-info-circle"></i> What is an Examiner?</h5>
+                        <h5><i class="fa-solid fa-circle-info"></i> What is an Examiner?</h5>
                         <p class="mb-0">
                             As an examiner, you can create and host group revision clinics for students preparing for exams.
                             Each clinic focuses on a specific subject and paper type (PP1, PP2, PP3), with a maximum of 30 students per session.
