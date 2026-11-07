@@ -87,7 +87,7 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
  <td data-order="{{ $user->created_at->timestamp }}" style="color:var(--muted);font-size:13px;">{{ $user->created_at->format('M j, Y') }}</td>
  <td>
  @if($user->email_verified_at)
- <span class="badge badge-green">âœ- Verified</span>
+ <span class="badge badge-green"><i class="fa-solid fa-check"></i> Verified</span>
  @else
  <span class="badge badge-amber">Unverified</span>
  @endif

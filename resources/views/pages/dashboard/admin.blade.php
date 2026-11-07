@@ -150,7 +150,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
  class="btn btn-sm"
  style="background:#10B981;color:#fff;border:none;cursor:pointer;font-size:11px;padding:5px 10px;border-radius:8px;font-family:inherit;font-weight:700;white-space:nowrap;"
  title="Confirm booking and send session codes to tutor & student">
- âœ- Confirm
+ <i class="fa-solid fa-check"></i> Confirm
  </button>
  @endif
  </div>
@@ -267,7 +267,7 @@ function confirmBooking(uuid, btn) {
  .then(r => r.json())
  .then(res => {
  if (res.status === 'ok') {
- btn.innerHTML = 'âœ- Confirmed!';
+ btn.innerHTML = '<i class="fa-solid fa-check"></i> Confirmed!';
  btn.style.background = '#059669';
 
  // Replace the status badge in the same row

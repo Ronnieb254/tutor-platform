@@ -558,11 +558,11 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  <div style="display:flex;gap:12px;">
  <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#15281F;">
  <span style="width:8px;height:8px;border-radius:50%;background:{{ $booking->tutor_joined ? '#10B981' : '#E5E7EB' }};"></span>
- Tutor {{ $booking->tutor_joined ? 'âœ-' : '-' }}
+ Tutor {{ $booking->tutor_joined ? '✓' : '-' }}
  </div>
  <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#15281F;">
  <span style="width:8px;height:8px;border-radius:50%;background:{{ $booking->student_joined ? '#10B981' : '#E5E7EB' }};"></span>
- Student {{ $booking->student_joined ? 'âœ-' : '-' }}
+ Student {{ $booking->student_joined ? '✓' : '-' }}
  </div>
  </div>
  </div>

@@ -16,7 +16,7 @@ $sessionTiers = [
  <div style="width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
  background:{{ $step > $i+1 ? 'var(--mint)' : ($step === $i+1 ? 'var(--trust-blue)' : 'rgba(21,40,31,.08)') }};
  color:{{ ($step > $i+1 || $step === $i+1) ? '#fff' : 'var(--muted)' }};">
- {{ $step > $i+1 ? 'âœ-' : $i+1 }}
+ {{ $step > $i+1 ? '✓' : $i+1 }}
  </div>
  <span style="font-size:12px;font-weight:{{ $step === $i+1 ? '700' : '500' }};color:{{ $step === $i+1 ? 'var(--ink)' : 'var(--muted)' }};">{{ $label }}</span>
  </div>

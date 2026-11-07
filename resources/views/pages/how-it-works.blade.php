@@ -48,7 +48,7 @@
  </div>
  {{-- Trust stats --}}
  <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;padding-top:36px;border-top:1px solid rgba(255,255,255,.1);">
- @foreach([['500+','Verified Tutors'],['4.9<i class="fa-solid fa-star" style="font-size:inherit;color:#EEBE15;"></i>','Average Rating'],['10,000+','Sessions Done'],['48hr','Max Approval Time'],['80+','Subjects']] as [$n,$l])
+ @foreach([['500+','Verified Tutors'],['4.9<i class="fa-solid fa-star" style="font-size:inherit; color:#EEBE15;"></i>','Average Rating'],['10,000+','Sessions Done'],['48hr','Max Approval Time'],['80+','Subjects']] as [$n,$l])
  <div style="text-align:center;">
  <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#fff;">{{ $n }}</div>
  <div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:3px;">{{ $l }}</div>
@@ -263,7 +263,7 @@
  <thead>
  <tr style="background:#F9FAF9;">
  <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.5);width:40%;border-bottom:1.5px solid rgba(21,40,31,.08);">Feature</th>
- <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0A64BC;border-bottom:1.5px solid rgba(21,40,31,.08);">âœ- Mwalimu</th>
+ <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0A64BC;border-bottom:1.5px solid rgba(21,40,31,.08);"><i class="fa-solid fa-check"></i> Mwalimu</th>
  <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.4);border-bottom:1.5px solid rgba(21,40,31,.08);">Traditional</th>
  </tr>
  </thead>
