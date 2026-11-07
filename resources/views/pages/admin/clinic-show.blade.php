@@ -17,7 +17,7 @@
  </h1>
  <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--muted);">
  @if($clinic->subject)<span><i class="fa-solid fa-book-open"></i> {{ $clinic->subject->name }}</span>@endif
- @if($clinic->paper_type)<span><i class="fa-solid fa-file-alt"></i> {{ $clinic->paper_type }}</span>@endif
+ @if($clinic->paper_type)<span><i class="fa-solid fa-file-lines"></i> {{ $clinic->paper_type }}</span>@endif
  <span><i class="fa-solid fa-calendar"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
  <span><i class="fa-solid fa-clock"></i> {{ $clinic->duration_minutes }} min</span>
  </div>
@@ -49,7 +49,7 @@
 
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px 16px;margin-bottom:18px;color:#059669;font-weight:600;">
- <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
+ <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
  </div>
  @endif
 
@@ -102,7 +102,7 @@
  </td>
  <td style="padding:12px 16px;text-align:center;">
  @if($enrollment->attended)
- <span style="color:#10B981;"><i class="fa-solid fa-check-circle"></i></span>
+ <span style="color:#10B981;"><i class="fa-solid fa-circle-check"></i></span>
  @else
  <span style="color:rgba(21,40,31,.2);"><i class="fa-solid fa-minus"></i></span>
  @endif

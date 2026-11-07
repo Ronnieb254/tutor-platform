@@ -20,7 +20,7 @@
 
  @if($errors->any())
  <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:14px 18px;margin-bottom:20px;">
- <div style="font-weight:700;color:#dc2626;margin-bottom:6px;"><i class="fa-solid fa-exclamation-triangle"></i> Please fix the following</div>
+ <div style="font-weight:700;color:#dc2626;margin-bottom:6px;"><i class="fa-solid fa-triangle-exclamation"></i> Please fix the following</div>
  <ul style="margin:0;padding-left:20px;font-size:13px;color:#dc2626;">
  @foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach
  </ul>
@@ -29,7 +29,7 @@
 
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:14px;padding:14px 18px;margin-bottom:20px;color:#059669;font-weight:600;">
- <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
+ <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
  </div>
  @endif
 
@@ -119,7 +119,7 @@
 
  {{-- Info box --}}
  <div style="background:rgba(10,100,188,.06);border:1px solid rgba(10,100,188,.15);border-radius:12px;padding:14px 16px;margin-bottom:24px;display:flex;gap:10px;align-items:flex-start;">
- <i class="fa-solid fa-info-circle"></i>
+ <i class="fa-solid fa-circle-info"></i>
  <div style="font-size:13px;color:#0A64BC;line-height:1.65;">
  <strong>30 slots · Auto-overflow.</strong> When all 30 spots are taken the system creates an identical session starting 30 minutes after this one ends. The session goes live in Jitsi at the scheduled time â‚¬" no action needed from you.
  </div>

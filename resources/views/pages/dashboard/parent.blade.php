@@ -239,7 +239,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @else
  <div class="card card-p" style="text-align:center;padding:48px;margin-bottom:20px;">
- <div style="font-size:48px;margin-bottom:12px;"><i class="fa-solid fa-times-circle"></i></div>
+ <div style="font-size:48px;margin-bottom:12px;"><i class="fa-solid fa-circle-xmark"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink);margin-bottom:8px;">No upcoming sessions</h3>
  <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Book a session with one of our verified tutors to get started.</p>
  <a href="{{ route('tutors.index') }}" class="btn btn-v">Find a Tutor</a>

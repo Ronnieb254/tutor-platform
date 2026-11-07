@@ -10,7 +10,7 @@
  style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .15s;"
  onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'"
  aria-label="Dismiss">
- <i class="fa-solid fa-times-circle"></i>
+ <i class="fa-solid fa-circle-xmark"></i>
  </button>
 </div>
 
@@ -101,7 +101,7 @@
  <form method="POST" action="{{ route('logout') }}">
  @csrf
  <button type="submit" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;color:#E8522A;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='#FEF2F2'" onmouseout="this.style.background='transparent'">
- <i class="fa-solid fa-sign-out-alt"></i> Sign Out
+ <i class="fa-solid fa-right-from-bracket"></i> Sign Out
  </button>
  </form>
  </div>

@@ -26,7 +26,7 @@
  </h1>
  <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:rgba(21,40,31,.55);">
  @if($clinic->subject)<span><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span> {{ $clinic->subject->name }}</span>@endif
- @if($clinic->paper_type)<span><i class="fa-solid fa-file-alt"></i> {{ $clinic->paper_type }}</span>@endif
+ @if($clinic->paper_type)<span><i class="fa-solid fa-file-lines"></i> {{ $clinic->paper_type }}</span>@endif
  <span><i class="fa-solid fa-calendar"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
  <span><i class="fa-solid fa-clock"></i> {{ $clinic->duration_minutes ?? 60 }} min</span>
  </div>
@@ -58,7 +58,7 @@
 
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px 16px;margin-bottom:18px;color:#059669;font-weight:600;">
- <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
+ <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
  </div>
  @endif
 
@@ -109,9 +109,9 @@
  </td>
  <td style="padding:12px 16px;text-align:center;">
  @if($en->attended)
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  @else
- <i class="fa-solid fa-times-circle"></i>
+ <i class="fa-solid fa-circle-xmark"></i>
  @endif
  </td>
  </tr>
@@ -153,7 +153,7 @@
  {{-- Overflow info --}}
  @if($clinic->hasOverflowClinic())
  <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:14px;padding:16px;">
- <h3 style="font-size:12px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;"><i class="fa-solid fa-check-circle"></i> Overflow Created</h3>
+ <h3 style="font-size:12px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;"><i class="fa-solid fa-circle-check"></i> Overflow Created</h3>
  @php $overflow = $clinic->childSessions()->latest()->first(); @endphp
  @if($overflow)
  <div style="font-size:13px;font-weight:600;color:#15281F;margin-bottom:3px;">{{ $overflow->title }}</div>

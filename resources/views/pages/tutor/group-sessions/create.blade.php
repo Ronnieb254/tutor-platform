@@ -157,7 +157,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  {{-- SESSION BASICS --}}
  <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
  <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
- <i class="fa-solid fa-info-circle"></i>Session Details
+ <i class="fa-solid fa-circle-info"></i>Session Details
  </h2>
 
  <div class="field">
@@ -265,7 +265,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  </div>
  </div>
  <div style="margin-top:12px;padding:12px 14px;background:rgba(212,160,23,.07);border-radius:10px;border:1px solid rgba(212,160,23,.2);">
- <p style="font-size:13px;color:#B7870A;"><i class="fa-solid fa-info-circle"></i>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
+ <p style="font-size:13px;color:#B7870A;"><i class="fa-solid fa-circle-info"></i>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
  </div>
  </div>
  </div>
@@ -273,7 +273,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  {{-- SUBMIT --}}
  <div style="display:flex;gap:12px;align-items:center;">
  <button type="submit" class="btn btn-primary" style="padding:13px 32px;font-size:15px;">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  <span x-text="isSeries ? 'Create Series' : 'Create Session'">Create Session</span>
  </button>
  <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost">Cancel</a>

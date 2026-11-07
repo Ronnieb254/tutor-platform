@@ -52,7 +52,7 @@ $sessionTiers = [
  </label>
  @endforeach
  </div>
- @error('duration')<p style="font-size:12px;color:var(--coral);margin-top:4px;"><i class="fa-solid fa-exclamation-triangle"></i> {{ $message }}</p>@enderror
+ @error('duration')<p style="font-size:12px;color:var(--coral);margin-top:4px;"><i class="fa-solid fa-triangle-exclamation"></i> {{ $message }}</p>@enderror
  </div>
 
  {{-- Date + Time --}}
@@ -131,7 +131,7 @@ $sessionTiers = [
  {{-- Notes --}}
  <div>
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
- <i class="fa-solid fa-sticky-note"></i> Notes for tutor <span style="color:var(--coral);">*</span>
+ <i class="fa-solid fa-note-sticky"></i> Notes for tutor <span style="color:var(--coral);">*</span>
  </p>
  <textarea wire:model="notes" rows="2"
  placeholder="Topics to cover, past exam areas, specific questions…"
@@ -189,7 +189,7 @@ $sessionTiers = [
  {{-- M-Pesa phone number input --}}
  <div>
  <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-mobile-alt"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-mobile-screen"></i></span>
  M-Pesa Phone Number
  </label>
  <input type="tel"
@@ -209,7 +209,7 @@ $sessionTiers = [
  {{-- STK sent banner (shown by JS once push is dispatched) --}}
  <div id="stkBanner" style="display:none;background:rgba(16,185,129,.08);border:1.5px solid var(--mint);border-radius:14px;padding:14px 16px;text-align:center;">
  <p style="font-size:14px;font-weight:700;color:#059669;margin-bottom:4px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-mobile-alt"></i></span> Check your phone!
+ <span style="font-size:inherit;"><i class="fa-solid fa-mobile-screen"></i></span> Check your phone!
  </p>
  <p id="stkBannerMsg" style="font-size:13px;color:var(--muted);">
  Enter your M-Pesa PIN to complete payment.
@@ -250,7 +250,7 @@ $sessionTiers = [
  @if($step === 3 && $bookingConfirmed)
  <div style="text-align:center;padding:8px 0;">
  <div style="width:64px;height:64px;border-radius:999px;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  </div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:8px;">Booking Confirmed!</h3>
  <p style="font-size:14px;color:var(--muted);margin-bottom:22px;">Check your email and SMS for full session details.</p>
@@ -266,7 +266,7 @@ $sessionTiers = [
 
  <a href="{{ route('bookings.show', $bookingUuid) }}"
  style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
- <i class="fa-solid fa-check-circle"></i> View Booking Details
+ <i class="fa-solid fa-circle-check"></i> View Booking Details
  </a>
  </div>
  @endif

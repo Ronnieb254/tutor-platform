@@ -39,7 +39,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <span style="color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}</span>
  @if($isModerator)
  <span class="moderator-badge">
- <i class="fa-solid fa-shield-alt"></i> MODERATOR
+ <i class="fa-solid fa-shield-halved"></i> MODERATOR
  </span>
  @else
  <span class="session-code">{{ $sessionCode }}</span>
@@ -48,7 +48,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <form method="POST" action="{{ route('logout') }}" style="display:inline;">
  @csrf
  <button type="submit" class="exit-btn">
- <i class="fa-solid fa-sign-out-alt"></i> Leave Session
+ <i class="fa-solid fa-right-from-bracket"></i> Leave Session
  </button>
  </form>
  </div>
@@ -57,7 +57,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 </div>
 
 <div class="access-warning">
- <i class="fa-solid fa-shield-alt"></i>
+ <i class="fa-solid fa-shield-halved"></i>
  <span>Platform-only session · Encrypted end-to-end</span>
 </div>
 

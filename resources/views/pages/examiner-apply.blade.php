@@ -12,7 +12,7 @@
  </div>
  <div class="card-body">
  <div class="alert alert-info">
- <h5><i class="fa-solid fa-info-circle"></i> What is an Examiner?</h5>
+ <h5><i class="fa-solid fa-circle-info"></i> What is an Examiner?</h5>
  <p class="mb-0">
  As an examiner, you can create and host group revision clinics for students preparing for exams.
  Each clinic focuses on a specific subject and paper type (PP1, PP2, PP3), with a maximum of 30 students per session.
@@ -21,9 +21,9 @@
 
  <h5 class="mt-4">Requirements:</h5>
  <ul class="list-group list-group-flush mb-4">
- <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-check-circle"></i></span> Verified tutor status</li>
- <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-check-circle"></i></span> Active teaching profile</li>
- <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-check-circle"></i></span> Good standing with platform</li>
+ <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-circle-check"></i></span> Verified tutor status</li>
+ <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-circle-check"></i></span> Active teaching profile</li>
+ <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-circle-check"></i></span> Good standing with platform</li>
  </ul>
 
  <h5 class="mt-4">Benefits:</h5>

@@ -129,7 +129,7 @@ a{color:inherit;text-decoration:none;}
  <span class="count">{{ $resources->total() }}</span>
  </a>
  @php
- $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','notes'=>'<i class="fa-solid fa-sticky-note"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>','video'=>'<i class="fa-solid fa-video"></i>'];
+ $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','notes'=>'<i class="fa-solid fa-note-sticky"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>','video'=>'<i class="fa-solid fa-video"></i>'];
  $typeLabels = ['article'=>'Articles','notes'=>'Notes','past_paper'=>'Past Papers','video'=>'Videos'];
  @endphp
  @foreach($resourceTypes as $type)
@@ -181,7 +181,7 @@ a{color:inherit;text-decoration:none;}
  @if($resource->thumbnail)
  <img src="{{ asset('storage/'.$resource->thumbnail) }}" alt="{{ $resource->title }}">
  @else
- @php $icons = ['article'=>'<i class="fa-solid fa-book"></i>','notes'=>'<i class="fa-solid fa-sticky-note"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>','video'=>'<i class="fa-solid fa-video"></i>']; @endphp
+ @php $icons = ['article'=>'<i class="fa-solid fa-book"></i>','notes'=>'<i class="fa-solid fa-note-sticky"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>','video'=>'<i class="fa-solid fa-video"></i>']; @endphp
  {{ $icons[$resource->resource_type] ?? '<i class="fa-solid fa-book"></i>' }}
  @endif
  @php

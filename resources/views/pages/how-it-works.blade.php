@@ -20,7 +20,7 @@
  <div style="position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:rgba(10,100,188,.1);border-radius:50%;pointer-events:none;"></div>
  <div style="max-width:1360px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(10,100,188,.3);color:rgba(255,255,255,.9);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:20px;">
- <i class="fa-solid fa-info-circle"></i> Simple · Secure · Effective
+ <i class="fa-solid fa-circle-info"></i> Simple · Secure · Effective
  </div>
  <h1 style="font-family:'Fraunces',serif;font-size:clamp(36px,6vw,64px);color:#fff;margin-bottom:16px;line-height:1.1;">Learning made <span style="color:#EEBE15;">simple.</span></h1>
  <p style="font-size:18px;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto 32px;line-height:1.8;">
@@ -29,7 +29,7 @@
  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:48px;">
  @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fa-solid fa-search"></i> Find a Tutor
+ <i class="fa-solid fa-magnifying-glass"></i> Find a Tutor
  </a>
  @if(!auth()->check() || auth()->user()->role === 'parent')
  <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
@@ -104,7 +104,7 @@
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;" class="pt-g">
  @foreach([$p1,$p2,$p3,$p4] as $pt)
  <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;color:#15281F;">
- <i class="fa-solid fa-check-circle"></i>{{ $pt }}
+ <i class="fa-solid fa-circle-check"></i>{{ $pt }}
  </div>
  @endforeach
  </div>
@@ -140,7 +140,7 @@
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;" class="pt-g">
  @foreach([$p1,$p2,$p3,$p4] as $pt)
  <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;color:#15281F;">
- <i class="fa-solid fa-check-circle"></i>{{ $pt }}
+ <i class="fa-solid fa-circle-check"></i>{{ $pt }}
  </div>
  @endforeach
  </div>
@@ -179,7 +179,7 @@
  
  </div>
  <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:10px;">{{ $desc }}</p>
- <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fa-solid fa-check-circle"></i>{{ $ideal }}</p>
+ <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fa-solid fa-circle-check"></i>{{ $ideal }}</p>
  <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
  </div>
  @endforeach
@@ -187,7 +187,7 @@
  <div style="text-align:center;margin-top:28px;">
  @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
- <i class="fa-solid fa-search"></i> Browse Tutors & Book Now
+ <i class="fa-solid fa-magnifying-glass"></i> Browse Tutors & Book Now
  </a>
  @endif
  </div>
@@ -329,7 +329,7 @@
  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
  @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:#0A64BC;color:#fff;font-size:16px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fa-solid fa-search"></i> Find a Tutor
+ <i class="fa-solid fa-magnifying-glass"></i> Find a Tutor
  </a>
  <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.3);font-size:16px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
  <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Become a Tutor

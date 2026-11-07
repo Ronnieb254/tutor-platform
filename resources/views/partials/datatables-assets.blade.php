@@ -327,7 +327,7 @@
  },
  { 
  extend: 'csv', 
- text: '<i class="fa-solid fa-file-alt"></i> CSV', 
+ text: '<i class="fa-solid fa-file-lines"></i> CSV', 
  className: 'btn-dt',
  exportOptions: {
  columns: ':visible:not(.no-export)'
@@ -335,7 +335,7 @@
  },
  { 
  extend: 'excel', 
- text: '<i class="fa-solid fa-file-alt"></i> Excel', 
+ text: '<i class="fa-solid fa-file-lines"></i> Excel', 
  className: 'btn-dt',
  exportOptions: {
  columns: ':visible:not(.no-export)'
@@ -343,7 +343,7 @@
  },
  { 
  extend: 'pdf', 
- text: '<i class="fa-solid fa-file-alt"></i> PDF', 
+ text: '<i class="fa-solid fa-file-lines"></i> PDF', 
  className: 'btn-dt',
  exportOptions: {
  columns: ':visible:not(.no-export)'

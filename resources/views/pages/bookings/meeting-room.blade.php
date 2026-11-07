@@ -51,7 +51,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
  {{-- Closing-buffer banner (hidden until 5 min left) --}}
  <div id="closing-banner">
- <i class="fa-solid fa-exclamation-triangle"></i>
+ <i class="fa-solid fa-triangle-exclamation"></i>
  <span>Session ending soon â‚¬" closing buffer active. You may finish your lesson.</span>
  @if(auth()->id() === $booking->tutor_id)
  <button onclick="document.getElementById('closing-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 14px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:600;">Dismiss</button>
@@ -77,7 +77,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  @endif
  </span>
  @if(auth()->id() === $booking->tutor_id)
- <span class="moderator-badge"><i class="fa-solid fa-shield-alt"></i> MODERATOR</span>
+ <span class="moderator-badge"><i class="fa-solid fa-shield-halved"></i> MODERATOR</span>
  @endif
  <span class="recording-indicator" id="recIndicator">
  <i class="fa-solid fa-circle" style="color:#ff4444;"></i> REC
@@ -378,7 +378,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  function copySessionCode() {
  navigator.clipboard.writeText(sessionCode).then(() => {
  const btn = document.getElementById('copyBtn');
- btn.innerHTML = '<i class="fa-solid fa-check-circle"></i>';
+ btn.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
  btn.classList.add('copied');
  setTimeout(() => {
  btn.innerHTML = '<i class="fa-solid fa-copy"></i>';

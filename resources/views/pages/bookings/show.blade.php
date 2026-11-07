@@ -158,7 +158,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  style="width:100%;height:56px;text-align:center;font-family:monospace;font-size:22px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:16px;border:2px solid rgba(21,40,31,.18);background:#fff;outline:none;transition:all .18s;color:#15281F;margin-bottom:10px;"
  onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 3px rgba(10,100,188,.1)'"
  onblur="this.style.borderColor='rgba(21,40,31,.18)';this.style.boxShadow='none'">
- <p x-show="codeError" x-text="codeError" style="font-size:13px;color:#E8522A;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-exclamation-triangle"></i></p>
+ <p x-show="codeError" x-text="codeError" style="font-size:13px;color:#E8522A;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-triangle-exclamation"></i></p>
  <button @click="verify()"
  style="width:100%;height:52px;border-radius:999px;background:#10B981;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;"
  onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10B981'">
@@ -172,7 +172,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  </div>
  <div x-show="verified" x-cloak style="padding:20px 0;">
  <div style="width:72px;height:72px;border-radius:999px;background:rgba(16,185,129,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  </div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">Code Verified - You're In!</h3>
  <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;">Your classroom is ready. Click below to join the live session.</p>
@@ -258,7 +258,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if(auth()->user()->isAdmin() || auth()->id() === $booking->tutor_id)
  <div style="background:#fff;border-radius:14px;border:1.5px solid rgba(21,40,31,.1);padding:18px;margin-top:4px;" x-data="{ confirming: false, done: false, error: '' }">
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:12px;">
- <i class="fa-solid fa-shield-alt"></i>
+ <i class="fa-solid fa-shield-halved"></i>
  {{ auth()->user()->isAdmin() ? 'Admin Action' : 'Tutor Action' }}
  </p>
  <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:14px;">
@@ -266,7 +266,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  </p>
  <template x-if="done">
  <div style="display:flex;align-items:center;gap:8px;color:#10B981;font-weight:700;font-size:14px;justify-content:center;">
- <i class="fa-solid fa-check-circle"></i> Confirmed! Codes sent. Page refreshing…
+ <i class="fa-solid fa-circle-check"></i> Confirmed! Codes sent. Page refreshing…
  </div>
  </template>
  <template x-if="error">
@@ -303,7 +303,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Confirming…</span>
  </template>
  <template x-if="!confirming">
- <span style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-check-circle"></i> Confirm Booking & Send Codes</span>
+ <span style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-circle-check"></i> Confirm Booking & Send Codes</span>
  </template>
  </button>
  </template>
@@ -324,7 +324,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:8px;">Session Cancelled</h3>
  <p style="font-size:14px;color:rgba(21,40,31,.6);">This session was cancelled. {{ $booking->cancellation_reason ?? '' }}</p>
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
- <i class="fa-solid fa-search"></i> Book a New Session
+ <i class="fa-solid fa-magnifying-glass"></i> Book a New Session
  </a>
  </div>
  @endif
@@ -397,7 +397,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  </template>
  <template x-if="submitted">
  <div style="text-align:center;padding:20px;">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  <p style="font-size:15px;font-weight:600;color:#15281F;">Thank you for your review!</p>
  </div>
  </template>
@@ -419,7 +419,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  {{-- Session details --}}
  <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:24px;">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
- <i class="fa-solid fa-info-circle"></i> Session Details
+ <i class="fa-solid fa-circle-info"></i> Session Details
  </h3>
  <dl style="display:flex;flex-direction:column;gap:0;">
  @foreach([
@@ -456,7 +456,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  <div style="display:flex;flex-direction:column;gap:8px;">
  <div style="display:flex;justify-content:space-between;font-size:13px;">
  <span style="color:rgba(21,40,31,.5);">Status</span>
- <span style="font-weight:600;color:#10B981;"><i class="fa-solid fa-check-circle"></i> Paid</span>
+ <span style="font-weight:600;color:#10B981;"><i class="fa-solid fa-circle-check"></i> Paid</span>
  </div>
  <div style="display:flex;justify-content:space-between;font-size:13px;">
  <span style="color:rgba(21,40,31,.5);">Amount</span>
@@ -592,7 +592,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if(in_array($stageNow, ['session_ending','overdue','in_progress']) && ($isTutor || auth()->user()->isAdmin()))
  <div style="margin-top:12px;" x-data="{ finalising: false, done: false, err: '' }">
  <template x-if="done">
- <p style="font-size:13px;color:#10B981;font-weight:700;text-align:center;"><i class="fa-solid fa-check-circle"></i> Session finalised!</p>
+ <p style="font-size:13px;color:#10B981;font-weight:700;text-align:center;"><i class="fa-solid fa-circle-check"></i> Session finalised!</p>
  </template>
  <template x-if="!done">
  <button @click="

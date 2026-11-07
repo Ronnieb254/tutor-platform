@@ -64,7 +64,7 @@
  <div>
  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
  <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(16,185,129,.2);color:#4ADE80;border:1px solid rgba(16,185,129,.3);">
- <i class="fa-solid fa-check-circle"></i> Approved Examiner
+ <i class="fa-solid fa-circle-check"></i> Approved Examiner
  </span>
  <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.25);">
  <i class="fa-solid fa-star"></i> KNEC Examiner
@@ -89,13 +89,13 @@
 
  {{-- Flash messages --}}
  @if(session('success'))
- <div class="flash flash-ok"><i class="fa-solid fa-check-circle"></i> {{ session('success') }}</div>
+ <div class="flash flash-ok"><i class="fa-solid fa-circle-check"></i> {{ session('success') }}</div>
  @endif
  @if(session('info'))
- <div class="flash flash-info"><i class="fa-solid fa-info-circle"></i> {{ session('info') }}</div>
+ <div class="flash flash-info"><i class="fa-solid fa-circle-info"></i> {{ session('info') }}</div>
  @endif
  @if(session('error'))
- <div class="flash flash-err"><i class="fa-solid fa-exclamation-triangle"></i> {{ session('error') }}</div>
+ <div class="flash flash-err"><i class="fa-solid fa-triangle-exclamation"></i> {{ session('error') }}</div>
  @endif
 
  {{-- â-€â-€â-€ STATS ROW â-€â-€â-€ --}}
@@ -157,7 +157,7 @@
 
  @if($upcomingClinics->isEmpty())
  <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:48px 24px;text-align:center;">
- <div style="font-size:44px;margin-bottom:12px;color:rgba(21,40,31,.12);"><i class="fa-solid fa-times-circle"></i></div>
+ <div style="font-size:44px;margin-bottom:12px;color:rgba(21,40,31,.12);"><i class="fa-solid fa-circle-xmark"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;">No upcoming clinics</h3>
  <p style="color:rgba(21,40,31,.55);margin-bottom:18px;">Schedule a new clinic so students can book a spot.</p>
  <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint"><i class="fa-solid fa-plus"></i> Create New Clinic</a>
@@ -202,7 +202,7 @@
  <span class="pill" style="background:rgba(21,40,31,.06);color:#15281F;"><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span>{{ $clinic->subject->name }}</span>
  @endif
  @if($clinic->paper_type)
- <span class="pill" style="background:rgba(212,160,23,.1);color:#EEBE15;font-weight:700;"><i class="fa-solid fa-file-alt"></i>{{ $clinic->paper_type }}</span>
+ <span class="pill" style="background:rgba(212,160,23,.1);color:#EEBE15;font-weight:700;"><i class="fa-solid fa-file-lines"></i>{{ $clinic->paper_type }}</span>
  @endif
  @if($isFull)
  <span class="pill" style="background:#FEE2E2;color:#991B1B;font-weight:700;"><i class="fa-solid fa-lock"></i> FULL</span>

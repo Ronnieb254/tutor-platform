@@ -137,7 +137,7 @@
  <div style="display:flex;align-items:center;gap:14px;">
  <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-scroll"></i> TSC Verified</span>
  <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-lock"></i> Secure</span>
- <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-shield-alt"></i> Verified</span>
+ <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-shield-halved"></i> Verified</span>
  </div>
  </div>
  </div>
@@ -165,7 +165,7 @@
  <button @click="localStorage.setItem('mw_cookie','all');show=false"
  style="padding:9px 20px;border-radius:999px;font-size:13px;font-weight:700;background:#0A64BC;color:#fff;border:1.5px solid #15281F;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all .18s;"
  onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
- <i class="fa-solid fa-check-circle"></i> Accept All
+ <i class="fa-solid fa-circle-check"></i> Accept All
  </button>
  </div>
  </div>

@@ -119,11 +119,11 @@ a{color:inherit;text-decoration:none;}
  </span>
  @elseif($booking->attended)
  <span class="status-badge status-completed">
- <i class="fa-solid fa-check-circle"></i> Attended
+ <i class="fa-solid fa-circle-check"></i> Attended
  </span>
  @else
  <span class="status-badge status-past">
- <i class="fa-solid fa-check-circle"></i> Completed
+ <i class="fa-solid fa-circle-check"></i> Completed
  </span>
  @endif
 
@@ -172,11 +172,11 @@ a{color:inherit;text-decoration:none;}
  @endif
  @else
  <div class="empty">
- <div class="empty-icon"><i class="fa-solid fa-times-circle"></i></div>
+ <div class="empty-icon"><i class="fa-solid fa-circle-xmark"></i></div>
  <h2 class="empty-title">No Bookings Yet</h2>
  <p class="empty-text">You haven't booked any clinic sessions. Start learning from national examiners today!</p>
  <a href="{{ route('examiner-clinic') }}" class="btn btn-primary" style="width:auto;margin:0 auto;">
- <i class="fa-solid fa-check-circle"></i> Browse Clinics
+ <i class="fa-solid fa-circle-check"></i> Browse Clinics
  </a>
  </div>
  @endif
@@ -188,7 +188,7 @@ function copyCode(code) {
  // Show confirmation
  const btn = event.target.closest('button');
  const original = btn.innerHTML;
- btn.innerHTML = '<i class="fa-solid fa-check-circle"></i> Copied!';
+ btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Copied!';
  setTimeout(() => {
  btn.innerHTML = original;
  }, 2000);

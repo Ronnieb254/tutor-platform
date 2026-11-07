@@ -89,9 +89,9 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  <div class="filter-card">
  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
  <div style="flex:2;min-width:190px;">
- <span class="f-label"><i class="fa-solid fa-search"></i> Search</span>
+ <span class="f-label"><i class="fa-solid fa-magnifying-glass"></i> Search</span>
  <div style="position:relative;">
- <i class="fa-solid fa-search"></i>
+ <i class="fa-solid fa-magnifying-glass"></i>
  <input type="text" name="search" value="{{ $search }}" class="f-input" placeholder="Tutor name or subject…" style="padding-left:34px;">
  </div>
  </div>
@@ -117,9 +117,9 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  @endif
  
  <div style="display:flex;gap:6px;align-items:flex-end;">
- <button type="submit" class="btn btn-v btn-sm" style="height:42px;"><i class="fa-solid fa-search"></i> Search</button>
+ <button type="submit" class="btn btn-v btn-sm" style="height:42px;"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
  @if($search||$catId||$subjId||$minP||$maxP||$minR)
- <a href="{{ route('tutors.index') }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--ink);border:none;height:42px;"><i class="fa-solid fa-times-circle"></i> Clear</a>
+ <a href="{{ route('tutors.index') }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--ink);border:none;height:42px;"><i class="fa-solid fa-circle-xmark"></i> Clear</a>
  @endif
  </div>
  </div>
@@ -129,7 +129,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  {{-- Active tags --}}
  @if($search||$catId||$subjId||$minP||$maxP||$minR)
  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
- @if($search)<span class="filter-tag"><i class="fa-solid fa-search"></i>"{{ $search }}"</span>@endif
+ @if($search)<span class="filter-tag"><i class="fa-solid fa-magnifying-glass"></i>"{{ $search }}"</span>@endif
  @if($catId)<span class="filter-tag"><i class="fa-solid fa-tag"></i>{{ $categories->find($catId)?->name }}</span>@endif
  @if($minR)<span class="filter-tag"><i class="fa-solid fa-star"></i>â˜… {{ $minR }}+</span>@endif
  @if($minP)<span class="filter-tag">From KSh {{ number_format($minP) }}</span>@endif
@@ -140,7 +140,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  {{-- Tutors grid --}}
  @if($tutors->isEmpty())
  <div class="card" style="padding:64px;text-align:center;">
- <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-search"></i></div>
+ <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-magnifying-glass"></i></div>
  <h3 style="font-size:22px;color:var(--ink);margin-bottom:8px;">No tutors found</h3>
  <p style="color:var(--muted);margin-bottom:20px;">Try adjusting your filters or search term.</p>
  <a href="{{ route('tutors.index') }}" class="btn btn-v"><span style="font-size:inherit;">←</span> Clear Filters</a>
@@ -186,7 +186,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star"></i> {{ number_format($tutor->rating_avg,1) }}</span>
  <span>({{ $tutor->total_reviews }})</span>
  <span>·</span><span>{{ $tutor->total_sessions }} sessions</span>
- <!-- @if($tutor->city)<span>·</span><span><i class="fa-solid fa-map-marker-alt"></i> {{ $tutor->city }}</span>@endif -->
+ <!-- @if($tutor->city)<span>·</span><span><i class="fa-solid fa-location-dot"></i> {{ $tutor->city }}</span>@endif -->
  </div>
  </div>
  </div>
@@ -206,7 +206,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  @endforeach
  </div> -->
  <div style="display:flex;gap:8px;">
- <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fa-solid fa-check-circle"></i> View & Book</a>
+ <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fa-solid fa-circle-check"></i> View & Book</a>
  @auth
  <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
  <i class="fa-solid fa-heart"></i>

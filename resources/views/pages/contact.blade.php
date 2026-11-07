@@ -107,7 +107,7 @@
 
  @if(session('contact_success'))
  <div style="background:#DCFCE7;border:1px solid #BBF7D0;border-radius:14px;padding:16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;color:#166534;font-size:14px;font-weight:500;">
- <i class="fa-solid fa-check-circle"></i> Message sent! We'll get back to you within 24 hours.
+ <i class="fa-solid fa-circle-check"></i> Message sent! We'll get back to you within 24 hours.
  </div>
  @endif
 

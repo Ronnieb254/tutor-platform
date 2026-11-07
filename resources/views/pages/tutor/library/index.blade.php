@@ -116,7 +116,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
  <div class="content">
  @if(session('success'))
- <div class="flash flash-ok"><i class="fa-solid fa-check-circle"></i>{{ session('success') }}</div>
+ <div class="flash flash-ok"><i class="fa-solid fa-circle-check"></i>{{ session('success') }}</div>
  @endif
 
  {{-- Stats --}}
@@ -156,7 +156,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </thead>
  <tbody>
  @php
- $typeIcons = ['article'=>'<i class=\"fa-solid fa-book\"></i>','pdf'=>'<i class=\"fa-solid fa-file-pdf\"></i>','video'=>'<i class=\"fa-solid fa-video\"></i>','notes'=>'<i class=\"fa-solid fa-sticky-note\"></i>','past_paper'=>'<i class=\"fa-solid fa-file-lines\"></i>'];
+ $typeIcons = ['article'=>'<i class=\"fa-solid fa-book\"></i>','pdf'=>'<i class=\"fa-solid fa-file-pdf\"></i>','video'=>'<i class=\"fa-solid fa-video\"></i>','notes'=>'<i class=\"fa-solid fa-note-sticky\"></i>','past_paper'=>'<i class=\"fa-solid fa-file-lines\"></i>'];
  $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
  $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
  @endphp

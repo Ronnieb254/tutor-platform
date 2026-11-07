@@ -101,7 +101,7 @@
  <tbody>
  @forelse($resources as $resource)
  @php
- $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','video'=>'<i class="fa-solid fa-video"></i>','notes'=>'<i class="fa-solid fa-sticky-note"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>'];
+ $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','video'=>'<i class="fa-solid fa-video"></i>','notes'=>'<i class="fa-solid fa-note-sticky"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>'];
  $typeClasses = ['article'=>'badge-primary','video'=>'badge-purple','notes'=>'badge-warning','past_paper'=>'badge-success'];
  @endphp
  <tr>
@@ -331,7 +331,7 @@
  </div>
  <div>
  <label class="form-label">Emoji Icon (optional)</label>
- <input type="text" name="icon" class="form-input" placeholder="e.g. <i class="fa-solid fa-sticky-note"></i>" maxlength="10">
+ <input type="text" name="icon" class="form-input" placeholder="e.g. <i class="fa-solid fa-note-sticky"></i>" maxlength="10">
  </div>
  <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;">
  <button type="button" onclick="document.getElementById('cat-modal').style.display='none'" class="btn btn-secondary">Cancel</button>

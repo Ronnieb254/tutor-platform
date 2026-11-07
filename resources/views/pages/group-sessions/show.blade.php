@@ -34,7 +34,7 @@
  {{-- FLASH MESSAGES --}}
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#065F46;padding:14px 18px;border-radius:12px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  <p style="margin:0;font-size:14px;">{{ session('success') }}</p>
  </div>
  @endif
@@ -169,7 +169,7 @@
 
  @elseif($isEnrolled)
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);padding:14px;border-radius:12px;text-align:center;margin-bottom:16px;">
- <p style="font-size:14px;font-weight:700;color:#065F46;margin:0 0 4px;"><i class="fa-solid fa-check-circle"></i> You're enrolled!</p>
+ <p style="font-size:14px;font-weight:700;color:#065F46;margin:0 0 4px;"><i class="fa-solid fa-circle-check"></i> You're enrolled!</p>
  <p style="font-size:13px;color:rgba(6,95,70,.7);margin:0;">Check your email for the session code.</p>
  </div>
  @if($canJoin)

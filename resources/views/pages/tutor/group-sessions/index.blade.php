@@ -163,7 +163,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  {{-- Flash --}}
  @if(session('success'))
  <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
+ <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
  </div>
  @endif
  @if(session('error'))
@@ -175,7 +175,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  {{-- STATS --}}
  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;" class="stats-g">
  <div class="stat-card">
- <div class="stat-icon" style="background:rgba(10,100,188,.1);"><i class="fa-solid fa-check-circle"></i></div>
+ <div class="stat-icon" style="background:rgba(10,100,188,.1);"><i class="fa-solid fa-circle-check"></i></div>
  <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Upcoming</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">{{ $upcomingCount }}</p></div>
  </div>
  <div class="stat-card">

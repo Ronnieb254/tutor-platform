@@ -26,7 +26,7 @@
  </p>
  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
  <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
- <i class="fa-solid fa-check-circle"></i> Book a Clinic Spot
+ <i class="fa-solid fa-circle-check"></i> Book a Clinic Spot
  </a>
  @auth
  <a href="{{ route('clinic.my-bookings') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.2)';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(255,255,255,.12)';this.style.transform='translateY(0)'">
@@ -52,7 +52,7 @@
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">What each clinic covers</p>
  @foreach(['Exam strategy & question time management','High-frequency exam questions by topic','Examiner traps - mistakes and NRT areas','Marking scheme analysis - how marks are awarded','Common student errors and how to avoid them','How KNEC examiners grade papers'] as $item)
  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
  </div>
  @endforeach
@@ -78,7 +78,7 @@
  <h3 style="font-size:15px;font-weight:700;color:rgba(21,40,31,.5);margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-book-open"></i> Regular Revision</h3>
  @foreach(['Focuses on what to study','Content-heavy, little strategy','No insight into examiner expectations','Expensive private tuition per session'] as $item)
  <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:13px;color:rgba(21,40,31,.6);">
- <i class="fa-solid fa-times-circle"></i>{{ $item }}
+ <i class="fa-solid fa-circle-xmark"></i>{{ $item }}
  </div>
  @endforeach
  </div>
@@ -86,7 +86,7 @@
  <h3 style="font-size:15px;font-weight:700;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-star"></i> Examiner's Clinic</h3>
  @foreach(['Focuses on HOW to answer','Strategic, marks-focused teaching','Direct insight into KNEC marking criteria','KSh 1,000 for a 60-minute group session'] as $item)
  <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:13px;color:#15281F;">
- <i class="fa-solid fa-check-circle"></i>{{ $item }}
+ <i class="fa-solid fa-circle-check"></i>{{ $item }}
  </div>
  @endforeach
  </div>
@@ -108,7 +108,7 @@
  {{-- FILTER BAR --}}
  <!-- <form method="GET" action="{{ route('examiner-clinic') }}" style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;box-shadow:0 2px 12px rgba(21,40,31,.04);">
  <div style="flex:2;min-width:180px;">
- <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-search"></i> Search</label>
+ <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-magnifying-glass"></i> Search</label>
  <input type="text" name="search" value="{{ $search }}" placeholder="Subject or title…" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">
  </div>
  <div style="min-width:160px;">
@@ -121,7 +121,7 @@
  </select>
  </div>
  <div style="min-width:140px;">
- <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-file-alt"></i> Paper</label>
+ <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-file-lines"></i> Paper</label>
  <select name="paper" onchange="this.form.submit()" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;background:#fff;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
  <option value="">All papers</option>
  @foreach($paperTypes as $code => $label)
@@ -130,9 +130,9 @@
  </select>
  </div>
  <div style="display:flex;gap:6px;">
- <button type="submit" style="height:42px;padding:0 18px;border-radius:10px;background:#0A64BC;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;"><i class="fa-solid fa-search"></i> Filter</button>
+ <button type="submit" style="height:42px;padding:0 18px;border-radius:10px;background:#0A64BC;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;"><i class="fa-solid fa-magnifying-glass"></i> Filter</button>
  @if($search || $subjectId || $paperType)
- <a href="{{ route('examiner-clinic') }}" style="height:42px;padding:0 16px;border-radius:10px;background:#F4F6F4;color:#15281F;font-size:13px;font-weight:500;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-times-circle"></i> Clear</a>
+ <a href="{{ route('examiner-clinic') }}" style="height:42px;padding:0 16px;border-radius:10px;background:#F4F6F4;color:#15281F;font-size:13px;font-weight:500;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-circle-xmark"></i> Clear</a>
  @endif
  </div>
  </form> -->
@@ -142,7 +142,7 @@
 
  @if($clinics->isEmpty())
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:64px;text-align:center;">
- <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-times-circle"></i></div>
+ <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-circle-xmark"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">No clinics scheduled</h3>
  <p style="color:rgba(21,40,31,.55);margin-bottom:20px;">No clinics match your filters. Try adjusting your search or check back soon - new clinics are added weekly.</p>
  <a href="{{ route('examiner-clinic') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><span style="font-size:inherit;">←</span> Clear Filters</a>
@@ -178,7 +178,7 @@
  <span style="background:rgba(21,40,31,.06);color:#15281F;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;"><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span>{{ $clinic->subject->name }}</span>
  @endif
  @if($clinic->paper_type)
- <span style="background:rgba(212,160,23,.1);color:#EEBE15;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-file-alt"></i>{{ $clinic->paper_type }}</span>
+ <span style="background:rgba(212,160,23,.1);color:#EEBE15;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-file-lines"></i>{{ $clinic->paper_type }}</span>
  @endif
  @if(\Schema::hasColumn('examiner_clinics','curriculum_id') && $clinic->curriculum_id)
  <span style="background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 11px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;"><i class="fa-solid fa-graduation-cap"></i>{{ optional($clinic->curriculum)->name }}</span>
@@ -203,7 +203,7 @@
  @auth
  @if($clinic->isEnrolledBy(auth()->user()))
  <span style="background:rgba(16,185,129,.1);color:#10B981;border:1px solid rgba(16,185,129,.3);padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
- <i class="fa-solid fa-check-circle"></i> Enrolled
+ <i class="fa-solid fa-circle-check"></i> Enrolled
  </span>
  @elseif($isFull)
  <span style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">

@@ -48,7 +48,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <span class="dot"></span>
  <span class="time">{{ $clinic->scheduled_at->format('D, M j · g:ia') }}</span>
  @if($isModerator)
- <span class="moderator-badge"><i class="fa-solid fa-shield-alt"></i> MODERATOR</span>
+ <span class="moderator-badge"><i class="fa-solid fa-shield-halved"></i> MODERATOR</span>
  @endif
  <span class="recording-indicator" id="recIndicator">
  <i class="fa-solid fa-circle" style="color:#ff4444;"></i> REC
@@ -187,7 +187,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  function copySessionCode() {
  navigator.clipboard.writeText(sessionCode).then(() => {
  const btn = document.getElementById('copyBtn');
- btn.innerHTML = '<i class="fa-solid fa-check-circle"></i>';
+ btn.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
  btn.classList.add('copied');
  setTimeout(() => {
  btn.innerHTML = '<i class="fa-solid fa-copy"></i>';

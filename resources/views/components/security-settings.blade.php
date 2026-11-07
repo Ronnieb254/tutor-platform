@@ -11,7 +11,7 @@ $has2FA = $user->has2FAEnabled();
 
  @if(session('success'))
  <div style="background:rgba(16,185,129,0.1);border-left:4px solid var(--mint);padding:12px 16px;border-radius:8px;margin-bottom:20px;font-size:14px;color:var(--ink);">
- <i class="fa-solid fa-check-circle"></i>{{ session('success') }}
+ <i class="fa-solid fa-circle-check"></i>{{ session('success') }}
  </div>
  @endif
 

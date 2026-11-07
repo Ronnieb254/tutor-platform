@@ -99,7 +99,7 @@
  <form action="{{ route('logout') }}" method="POST" class="inline-block w-full">
  @csrf
  <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
- <i class="fa-solid fa-sign-out-alt mr-2"></i>Logout
+ <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
  </button>
  </form>
  </div>

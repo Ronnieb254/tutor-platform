@@ -60,7 +60,7 @@
 
  {{-- Success state (shown by JS) --}}
  <div id="stateSuccess" style="display:none;">
- <div class="status-icon"><i class="fa-solid fa-check-circle"></i></div>
+ <div class="status-icon"><i class="fa-solid fa-circle-check"></i></div>
  <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
  Payment Confirmed!
  </h2>
@@ -68,13 +68,13 @@
  Your booking is confirmed. Check your email for details.
  </p>
  <a href="{{ route('clinic.my-bookings') }}" class="btn-primary">
- <i class="fa-solid fa-check-circle"></i> View My Bookings
+ <i class="fa-solid fa-circle-check"></i> View My Bookings
  </a>
  </div>
 
  {{-- Failed state (shown by JS) --}}
  <div id="stateFailed" style="display:none;">
- <div class="status-icon"><i class="fa-solid fa-times-circle"></i></div>
+ <div class="status-icon"><i class="fa-solid fa-circle-xmark"></i></div>
  <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
  Payment Not Completed
  </h2>

@@ -1,5 +1,5 @@
 ﻿{{-- •Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â
- <i class="fa-solid fa-sticky-note"></i> pages/dashboard/partials/documents.blade.php
+ <i class="fa-solid fa-note-sticky"></i> pages/dashboard/partials/documents.blade.php
  Included by: pages/dashboard/tutor.blade.php
  Variables expected: $profile, $isApproved, $verificationStatus
 •Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â --}}
@@ -10,7 +10,7 @@
  $docTypes = [
  'national_id' => ['National ID / Passport', '🪪', 'Required'],
  'tsc_certificate' => ['TSC Certificate', '<i class="fa-solid fa-scroll"></i>', 'Required'],
- 'certificate_of_good_conduct' => ['Certificate of Good Conduct', '<i class="fa-solid fa-shield-alt"></i>', 'Optional'],
+ 'certificate_of_good_conduct' => ['Certificate of Good Conduct', '<i class="fa-solid fa-shield-halved"></i>', 'Optional'],
  'degree_certificate' => ['Academic Certificate', '<i class="fa-solid fa-graduation-cap"></i>', 'Required'],
  'passport_photo' => ['Passport Photo', '<i class="fa-solid fa-camera"></i>', 'Required'],
  ];
@@ -42,7 +42,7 @@
  {{-- "â‚¬"â‚¬ Overall status banner "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
  @if($isApproved)
  <div class="status-banner status-approved" style="margin-bottom:24px;">
- <span style="font-size:24px;"><i class="fa-solid fa-check-circle"></i></span>
+ <span style="font-size:24px;"><i class="fa-solid fa-circle-check"></i></span>
  <div>
  <div style="font-weight:700;color:#166534;font-size:15px;">Fully Verified</div>
  <div style="font-size:13px;color:#4ADE80;">
@@ -53,7 +53,7 @@
 
  @elseif(!$allRequiredUploaded)
  <div class="status-banner status-pending" style="margin-bottom:24px;">
- <span style="font-size:24px;"><i class="fa-solid fa-file-alt"></i></span>
+ <span style="font-size:24px;"><i class="fa-solid fa-file-lines"></i></span>
  <div>
  <div style="font-weight:700;color:#854D0E;font-size:15px;">Upload All Required Documents</div>
  <div style="font-size:13px;color:#92400E;">
@@ -79,7 +79,7 @@
 
  @elseif($verificationStatus === 'action_required')
  <div class="status-banner status-rejected" style="margin-bottom:24px;">
- <span style="font-size:24px;"><i class="fa-solid fa-exclamation-triangle"></i></span>
+ <span style="font-size:24px;"><i class="fa-solid fa-triangle-exclamation"></i></span>
  <div>
  <div style="font-weight:700;color:#991B1B;font-size:15px;">Action Required</div>
  <div style="font-size:13px;color:#B91C1C;">
@@ -125,7 +125,7 @@
  <div style="display:flex;align-items:center;gap:10px;">
  <div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
  background:{{ $done ? 'rgba(16,185,129,.15)' : 'rgba(232,82,42,.1)' }};">
- <span class="{{ $done ? 'fa-check' : 'fa-xmark' }}" style="font-size:inherit;"><i class="fa-solid fa-check-circle"></i></span>
+ <span class="{{ $done ? 'fa-check' : 'fa-xmark' }}" style="font-size:inherit;"><i class="fa-solid fa-circle-check"></i></span>
  </div>
  <span style="font-size:13px;color:{{ $done ? '#059669' : 'var(--ink)' }};font-weight:{{ $done ? '500' : '600' }};">
  {{ $label }}
@@ -158,7 +158,7 @@
  background:{{ $stepDone ? 'var(--mint)' : ($stepActive ? 'var(--trust-blue)' : '#fff') }};
  color:{{ ($stepDone || $stepActive) ? '#fff' : 'var(--muted)' }};
  border-right:{{ !$loop->last ? '1px solid var(--hair)' : 'none' }};">
- {!! $stepDone ? '<i class="fa-solid fa-check-circle"></i>' : $num !!}. {{ $step }}
+ {!! $stepDone ? '<i class="fa-solid fa-circle-check"></i>' : $num !!}. {{ $step }}
  </div>
  @endforeach
  </div>
@@ -224,7 +224,7 @@
  color:{{ $isMissing ? 'var(--coral)' : 'var(--muted)' }};
  font-weight:{{ $isMissing ? '600' : '400' }};">
  @if($isMissing)
- <i class="fa-solid fa-exclamation-triangle"></i>Required â‚¬" please upload this document
+ <i class="fa-solid fa-triangle-exclamation"></i>Required â‚¬" please upload this document
  @else
  No document uploaded yet
  @endif

@@ -30,7 +30,7 @@
 
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#065F46;padding:14px 18px;border-radius:12px;margin-bottom:20px;font-size:14px;">
- <i class="fa-solid fa-check-circle"></i>{{ session('success') }}
+ <i class="fa-solid fa-circle-check"></i>{{ session('success') }}
  </div>
  @endif
 
@@ -40,7 +40,7 @@
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">No sessions yet</h3>
  <p style="color:rgba(21,40,31,.55);margin-bottom:20px;">You haven't enrolled in any group sessions. Browse upcoming classes and book your first seat.</p>
  <a href="{{ route('group-sessions.index') }}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 28px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;text-decoration:none;">
- <i class="fa-solid fa-check-circle"></i> Browse Sessions
+ <i class="fa-solid fa-circle-check"></i> Browse Sessions
  </a>
  </div>
  @else

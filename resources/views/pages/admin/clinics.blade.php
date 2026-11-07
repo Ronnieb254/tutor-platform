@@ -17,19 +17,19 @@
  {{-- Flash messages --}}
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  <span style="color:#059669;font-weight:600;">{{ session('success') }}</span>
  </div>
  @endif
  @if(session('error'))
  <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
- <i class="fa-solid fa-times-circle"></i>
+ <i class="fa-solid fa-circle-xmark"></i>
  <span style="color:#dc2626;font-weight:600;">{{ session('error') }}</span>
  </div>
  @endif
  @if(session('info'))
  <div style="background:rgba(10,100,188,.1);border:1px solid rgba(10,100,188,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
- <i class="fa-solid fa-info-circle"></i>
+ <i class="fa-solid fa-circle-info"></i>
  <span style="color:#0A64BC;font-weight:600;">{{ session('info') }}</span>
  </div>
  @endif
@@ -116,7 +116,7 @@
  <span><i class="fa-solid fa-book-open"></i> {{ $clinic->subject->name }}</span>
  @endif
  @if($clinic->paper_type)
- <span><i class="fa-solid fa-file-alt"></i> {{ $clinic->paper_type }}</span>
+ <span><i class="fa-solid fa-file-lines"></i> {{ $clinic->paper_type }}</span>
  @endif
  @if($clinic->batch_number > 1)
  <span>Batch {{ $clinic->batch_number }}</span>
@@ -187,7 +187,7 @@
  @empty
  <tr>
  <td colspan="6" style="padding:48px;text-align:center;color:var(--muted);">
- <i class="fa-solid fa-times-circle"></i>
+ <i class="fa-solid fa-circle-xmark"></i>
  No clinics found. <a href="{{ route('admin.clinics.create') }}" style="color:#0A64BC;font-weight:600;">Create one now.</a>
  </td>
  </tr>

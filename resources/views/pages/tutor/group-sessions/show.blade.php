@@ -137,7 +137,7 @@ $canJoin = $groupSession->canJoin($user);
  <div class="content">
  @if(session('success'))
  <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
+ <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
  </div>
  @endif
 

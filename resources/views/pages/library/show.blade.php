@@ -93,7 +93,7 @@ a{color:inherit;text-decoration:none;}
 
  {{-- Hero banner --}}
  @php
- $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','pdf'=>'<i class="fa-solid fa-file-pdf"></i>','video'=>'<i class="fa-solid fa-video"></i>','notes'=>'<i class="fa-solid fa-sticky-note"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>'];
+ $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','pdf'=>'<i class="fa-solid fa-file-pdf"></i>','video'=>'<i class="fa-solid fa-video"></i>','notes'=>'<i class="fa-solid fa-note-sticky"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>'];
  $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
  $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
  $bgColors = ['article'=>'rgba(37,99,235,.15)','pdf'=>'rgba(220,38,38,.15)','video'=>'rgba(124,58,237,.15)','notes'=>'rgba(217,119,6,.15)','past_paper'=>'rgba(22,163,74,.15)'];

@@ -30,7 +30,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
  <i class="fa-solid fa-video" style="font-size:48px;color:var(--muted);margin-bottom:16px;display:block;"></i>
  <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:10px;">Courses coming soon</h2>
  <p style="color:var(--muted);font-size:16px;margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;">Our tutors are preparing high-quality course content. In the meantime, book a live 1-on-1 session.</p>
- <a href="{{ route('tutors.index') }}" class="btn btn-v"><i class="fa-solid fa-search"></i> Find a Tutor Instead</a>
+ <a href="{{ route('tutors.index') }}" class="btn btn-v"><i class="fa-solid fa-magnifying-glass"></i> Find a Tutor Instead</a>
  </div>
  @else
  <div style="display:grid;grid-template-columns:1fr;gap:20px;" class="course-g">
@@ -41,7 +41,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
  @else
  <div style="width:100%;height:180px;background:{{ $colors[$loop->index%count($colors)] }}22;display:flex;align-items:center;justify-content:center;font-size:52px;">
  @php 
- $icons = ['<i class="fa-solid fa-ruler"></i>','<i class="fa-solid fa-flask"></i>','<i class="fa-solid fa-book-open"></i>','<i class="fa-solid fa-pencil-alt"></i>','<i class="fa-solid fa-bullseye"></i>','<i class="fa-solid fa-lightbulb"></i>'];
+ $icons = ['<i class="fa-solid fa-ruler"></i>','<i class="fa-solid fa-flask"></i>','<i class="fa-solid fa-book-open"></i>','<i class="fa-solid fa-pencil"></i>','<i class="fa-solid fa-bullseye"></i>','<i class="fa-solid fa-lightbulb"></i>'];
  $iconColors = ['#0A64BC','#10B981','#D4A017','#E8522A','#8B5CF6','#F59E0B'];
  @endphp
  <span style="color:{{ $iconColors[$loop->index%6] }};">{{ $icons[$loop->index%6] }}</span>

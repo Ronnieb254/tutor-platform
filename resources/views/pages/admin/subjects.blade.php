@@ -15,14 +15,14 @@
 
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
- <span style="font-size:20px;"><i class="fa-solid fa-check-circle"></i></span>
+ <span style="font-size:20px;"><i class="fa-solid fa-circle-check"></i></span>
  <span style="color:#059669;font-weight:600;">{{ session('success') }}</span>
  </div>
  @endif
 
  @if(session('error'))
  <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
- <span style="font-size:20px;"><i class="fa-solid fa-times-circle"></i></span>
+ <span style="font-size:20px;"><i class="fa-solid fa-circle-xmark"></i></span>
  <span style="color:#dc2626;font-weight:600;">{{ session('error') }}</span>
  </div>
  @endif
@@ -56,11 +56,11 @@
  </div>
  <div style="display:flex;gap:8px;">
  <button type="submit" class="btn btn-v" style="height:42px;">
- <i class="fa-solid fa-search"></i> Search
+ <i class="fa-solid fa-magnifying-glass"></i> Search
  </button>
  @if(request()->hasAny(['search', 'category_id', 'status']))
  <a href="{{ route('admin.subjects') }}" class="btn btn-o" style="height:42px;">
- <i class="fa-solid fa-times-circle"></i> Clear
+ <i class="fa-solid fa-circle-xmark"></i> Clear
  </a>
  @endif
  </div>

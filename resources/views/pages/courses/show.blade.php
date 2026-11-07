@@ -61,7 +61,7 @@
  </div>
  @if($enrolled)
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:14px;padding:14px;text-align:center;margin-bottom:14px;">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  <span style="font-weight:700;color:var(--mint);">You're enrolled!</span>
  </div>
  @else
@@ -69,7 +69,7 @@
  <form method="POST" action="{{ route('courses.enroll', $course->slug) }}" style="margin-bottom:12px;">
  @csrf
  <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;padding:14px;font-size:15px;">
- <i class="fa-solid {{ $course->is_free ? 'fa-play-circle' : 'fa-credit-card' }}"></i>
+ <i class="fa-solid {{ $course->is_free ? 'fa-circle-play' : 'fa-credit-card' }}"></i>
  {{ $course->is_free ? 'Enrol Free' : 'Enrol â‚¬" KSh '.number_format($course->price) }}
  </button>
  </form>
@@ -82,7 +82,7 @@
  <div style="background:#F9FAF9;border-radius:12px;padding:14px;">
  @foreach(['Full lifetime access to all lessons','Learn at your own pace','TSC-registered instructor','Certificate upon completion'] as $f)
  <div style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);margin-bottom:7px;">
- <i class="fa-solid fa-check-circle"></i>{{ $f }}
+ <i class="fa-solid fa-circle-check"></i>{{ $f }}
  </div>
  @endforeach
  </div>

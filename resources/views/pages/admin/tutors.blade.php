@@ -218,7 +218,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmApproval{{ $profile->id }}(this, '{{ $profile->user->name }}')">
  @csrf @method('PATCH')
  <button type="submit" class="btn btn-primary" style="width:100%;font-size:13px;">
- <i class="fa-solid fa-check-circle"></i> Approve
+ <i class="fa-solid fa-circle-check"></i> Approve
  </button>
  </form>
  <script>
@@ -244,7 +244,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <div class="modal-head">
  <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;">Review: {{ $profile->user->name }}</h3>
  <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='none'" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
- <i class="fa-solid fa-times-circle"></i>
+ <i class="fa-solid fa-circle-xmark"></i>
  </button>
  </div>
  <div class="modal-body">
@@ -272,7 +272,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
  <div style="font-size:12px;color:var(--muted);font-weight:600;">Subjects ({{ $profile->subjects->count() }})</div>
  <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline btn-sm" style="text-decoration:none;">
- <i class="fa-solid fa-pencil-alt"></i> Manage
+ <i class="fa-solid fa-pencil"></i> Manage
  </a>
  </div>
  <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -281,7 +281,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  @empty
  <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:12px;width:100%;">
  <p style="font-size:13px;color:#991B1B;margin:0;">
- <i class="fa-solid fa-exclamation-triangle"></i> No subjects selected. Click "Manage" to add subjects.
+ <i class="fa-solid fa-triangle-exclamation"></i> No subjects selected. Click "Manage" to add subjects.
  </p>
  </div>
  @endforelse
@@ -316,14 +316,14 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  
  @if($isPdf)
  <div class="doc-thumb-placeholder" style="cursor:pointer;" onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', true, '{{ $docLabel }}')">
- <i class="fa-solid fa-file-alt"></i>
+ <i class="fa-solid fa-file-lines"></i>
  </div>
  @else
  <img src="{{ route('tutor.documents.view', $doc->id) }}" class="doc-thumb" style="cursor:pointer;"
  onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', false, '{{ $docLabel }}')"
  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
  <div class="doc-thumb-placeholder" style="display:none;cursor:pointer;" onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', false, '{{ $docLabel }}')">
- <i class="fa-solid fa-file-alt"></i>
+ <i class="fa-solid fa-file-lines"></i>
  </div>
  @endif
  
@@ -340,11 +340,11 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <form method="POST" action="{{ route('admin.documents.approve', $doc->id) }}" style="display:inline;">
  @csrf @method('PATCH')
  <button type="submit" class="btn btn-success btn-sm">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  </button>
  </form>
  <button type="button" onclick="rejectDoc({{ $doc->id }}, '{{ addslashes($docLabel) }}')" class="btn btn-danger btn-sm">
- <i class="fa-solid fa-times-circle"></i>
+ <i class="fa-solid fa-circle-xmark"></i>
  </button>
  </div>
  @endif
@@ -374,7 +374,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmFinalApproval{{ $profile->id }}(this)">
  @csrf @method('PATCH')
  <button type="submit" class="btn btn-primary" style="width:100%;" {{ !$canApprove ? 'disabled title="'.$approveBlockReason.'"' : '' }}>
- <i class="fa-solid fa-check-circle"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs · '.$subjectCnt.' subjects)' }}
+ <i class="fa-solid fa-circle-check"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs · '.$subjectCnt.' subjects)' }}
  </button>
  </form>
  <script>
@@ -452,7 +452,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <div style="display:flex;gap:10px;">
  <button type="button" onclick="document.getElementById('reject-modal').style.display='none'" class="btn btn-o" style="flex:1;justify-content:center;">Cancel</button>
  <button type="submit" class="btn btn-danger" style="flex:1;justify-content:center;">
- <i class="fa-solid fa-times-circle"></i> Reject Document
+ <i class="fa-solid fa-circle-xmark"></i> Reject Document
  </button>
  </div>
  </form>

@@ -188,7 +188,7 @@ $activeTab = request('tab','overview');
  Overview
  </button>
  <button class="sb-item" :class="tab==='documents'?'active':''" @click="tab='documents';sidebarOpen=false">
- <i class="fa-solid fa-file-alt"></i>
+ <i class="fa-solid fa-file-lines"></i>
  My Documents
  @if($verificationStatus === 'action_required')
  <span class="sb-badge">!</span>
@@ -205,7 +205,7 @@ $activeTab = request('tab','overview');
  <div class="sb-section">
  <div class="sb-label">Sessions</div>
  <button class="sb-item" :class="tab==='bookings'?'active':''" @click="tab='bookings';sidebarOpen=false">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  Bookings
  @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
  </button>
@@ -261,7 +261,7 @@ $activeTab = request('tab','overview');
  <div class="sb-uname">{{ $user->name }}</div>
  <div class="sb-urole">
  @if($isApproved)
- <span style="color:var(--mint);"><i class="fa-solid fa-check-circle"></i>Verified Tutor</span>
+ <span style="color:var(--mint);"><i class="fa-solid fa-circle-check"></i>Verified Tutor</span>
  @else
  <span style="color:rgba(255,255,255,.35);">Pending Verification</span>
  @endif
@@ -270,7 +270,7 @@ $activeTab = request('tab','overview');
  <form method="POST" action="{{ route('logout') }}">
  @csrf
  <button type="submit" class="sb-logout" title="Sign out">
- <i class="fa-solid fa-sign-out-alt"></i>
+ <i class="fa-solid fa-right-from-bracket"></i>
  </button>
  </form>
  </div>
@@ -307,7 +307,7 @@ $activeTab = request('tab','overview');
  <div class="content">
  @if(session('success'))
  <div class="flash flash-ok">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  {{ session('success') }}
  </div>
  @endif
@@ -335,11 +335,11 @@ $activeTab = request('tab','overview');
  <div class="status-banner {{ $verificationStatus==='action_required' ? 'status-rejected' : ($verificationStatus==='under_review' ? 'status-pending' : 'status-pending') }}">
  <div style="font-size:28px;flex-shrink:0;">
  @if($verificationStatus==='action_required')
- <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-exclamation-triangle"></i></div>
+ <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-triangle-exclamation"></i></div>
  @elseif($verificationStatus==='under_review')
  <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-clock"></i></div>
  @else
- <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-file-alt"></i></div>
+ <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-file-lines"></i></div>
  @endif
  </div>
  <div>
@@ -364,7 +364,7 @@ $activeTab = request('tab','overview');
  </div>
  @else
  <div class="status-banner status-approved" style="margin-bottom:20px;">
- <div style="font-size:24px;flex-shrink:0;"><i class="fa-solid fa-check-circle"></i></div>
+ <div style="font-size:24px;flex-shrink:0;"><i class="fa-solid fa-circle-check"></i></div>
  <div>
  <div style="font-weight:700;font-size:15px;color:#166534;">Your profile is live!</div>
  <div style="font-size:13px;color:#4ADE80;margin-top:2px;">Students can find and book sessions with you. {{ $pendingBookings > 0 ? "You have $pendingBookings pending booking(s)." : '' }}</div>
@@ -384,7 +384,7 @@ $activeTab = request('tab','overview');
  </div>
  <div class="stat">
  <div class="stat-icon" style="background:rgba(16,185,129,.1);">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  </div>
  <div class="stat-lbl">Upcoming Sessions</div>
  <div class="stat-val">{{ $upcoming->count() }}</div>
@@ -392,7 +392,7 @@ $activeTab = request('tab','overview');
  </div>
  <div class="stat">
  <div class="stat-icon" style="background:rgba(232,82,42,.1);">
- <i class="fa-solid fa-check-circle"></i>
+ <i class="fa-solid fa-circle-check"></i>
  </div>
  <div class="stat-lbl">Completed Sessions</div>
  <div class="stat-val">{{ $completedCount }}</div>
@@ -567,7 +567,7 @@ $activeTab = request('tab','overview');
 <tr>
  <td colspan="8">
  <div style="padding:48px 20px;text-align:center;">
- <i class="fa-solid fa-times-circle"></i>
+ <i class="fa-solid fa-circle-xmark"></i>
  <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;">No sessions yet</div>
  <div style="font-size:13px;color:var(--muted);">Your bookings will appear here once students schedule sessions with you</div>
  </div>

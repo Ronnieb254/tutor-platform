@@ -36,7 +36,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
  <div>
  @if($posts->isEmpty())
  <div class="card" style="padding:64px;text-align:center;">
- <i class="fa-solid fa-pencil-alt"></i>
+ <i class="fa-solid fa-pencil"></i>
  <h3 style="font-size:20px;color:var(--ink);margin-bottom:8px;">Coming soon</h3>
  <p style="color:var(--muted);">Study guides and exam tips are on their way. Check back soon!</p>
  </div>
@@ -49,7 +49,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
  @else
  <div class="post-thumb-placeholder" style="background:{{ $colors[$loop->index%count($colors)] }}22;">
  @php 
- $icons = ['<i class="fa-solid fa-ruler"></i>','<i class="fa-solid fa-flask"></i>','<i class="fa-solid fa-book-open"></i>','<i class="fa-solid fa-pencil-alt"></i>','<i class="fa-solid fa-bullseye"></i>','<i class="fa-solid fa-file-alt"></i>'];
+ $icons = ['<i class="fa-solid fa-ruler"></i>','<i class="fa-solid fa-flask"></i>','<i class="fa-solid fa-book-open"></i>','<i class="fa-solid fa-pencil"></i>','<i class="fa-solid fa-bullseye"></i>','<i class="fa-solid fa-file-lines"></i>'];
  $iconColors = ['#0A64BC','#10B981','#D4A017','#E8522A','#8B5CF6','#F59E0B'];
  @endphp
  <span style="font-size:48px;color:{{ $iconColors[$loop->index%6] }};">{{ $icons[$loop->index%6] }}</span>
@@ -96,7 +96,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
  <div class="card card-p" style="background:var(--trust-blue);border-color:var(--trust-blue);">
  <h3 style="font-size:16px;font-family:'Fraunces',serif;color:#fff;margin-bottom:8px;"><i class="fa-solid fa-star"></i>Examiner's Clinic</h3>
  <p style="font-size:13px;color:rgba(255,255,255,.75);margin-bottom:14px;line-height:1.65;">Learn directly from the national examiners who set and mark KCSE papers. Only KSh 1,000 per session.</p>
- <a href="{{ route('examiner-clinic') }}" class="btn btn-gold btn-sm" style="width:100%;justify-content:center;"><i class="fa-solid fa-check-circle"></i> View Clinics</a>
+ <a href="{{ route('examiner-clinic') }}" class="btn btn-gold btn-sm" style="width:100%;justify-content:center;"><i class="fa-solid fa-circle-check"></i> View Clinics</a>
  </div>
  </aside>
  </div>
