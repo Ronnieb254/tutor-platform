@@ -319,7 +319,7 @@
                 buttons: [
                     { 
                         extend: 'copy', 
-                        text: '<span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Copy', 
+                        text: '<i class="fas fa-copy"></i> Copy', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -351,7 +351,7 @@
                     },
                     { 
                         extend: 'print', 
-                        text: '<span style="font-size:inherit;"><i class="fas fa-print"></i></span> Print', 
+                        text: '<i class="fas fa-print"></i> Print', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'

@@ -20,7 +20,7 @@
                             ['fa-rotate-left','100% Money-Back Guarantee','#10B981'],
                         ] as [$ic,$label,$color])
                         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);">
-                            <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                            <i class="fas {{ $ic }}"></i>
                             {{ $label }}
                         </div>
                         @endforeach
@@ -34,7 +34,7 @@
                             ['fa-location-dot','Suite 11, Samima Suites, Nairobi West',null],
                         ] as [$ic,$text,$href])
                         <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,.5);">
-                            <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                            <i class="fas {{ $ic }}"></i>
                             @if($href)
                             <a href="{{ $href }}" style="color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">{{ $text }}</a>
                             @else
@@ -57,7 +57,7 @@
                         ['fa-envelope',        'Contact Us',           route('contact')],
                     ] as [$ic,$label,$url])
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
-                        <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                        <i class="fas {{ $ic }}"></i>
                         {{ $label }}
                     </a>
                     @endforeach
@@ -85,7 +85,7 @@
                         @continue
                     @endif
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
-                        <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                        <i class="fas {{ $ic }}"></i>
                         {{ $label }}
                     </a>
                     @endforeach
@@ -102,7 +102,7 @@
                         ['fa-cookie-bite',   'Cookie Policy',        route('cookie-policy')],
                     ] as [$ic,$label,$url])
                     <a href="{{ $url }}" {{ str_starts_with($url,'http') ? 'target="_blank"' : '' }} style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
-                        <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                        <i class="fas {{ $ic }}"></i>
                         {{ $label }}
                     </a>
                     @endforeach
@@ -149,7 +149,7 @@
     <div style="background:#FFFDF5;border:2px solid #15281F;border-radius:22px;padding:18px 20px;box-shadow:0 16px 48px rgba(21,40,31,.2);">
         <div style="display:flex;gap:12px;align-items:flex-start;">
             <div style="width:38px;height:38px;border-radius:11px;background:rgba(212,160,23,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                <i class="fas fa-cookie-bite"></i>
             </div>
             <div style="flex:1;">
                 <p style="font-weight:700;font-size:14px;color:#15281F;margin-bottom:3px;">We value your privacy</p>

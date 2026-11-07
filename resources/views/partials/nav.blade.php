@@ -38,7 +38,7 @@
                 <a href="{{ route($route) }}"
                    style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-size:14px;font-weight:500;color:{{ Str::startsWith($cr,$route)||$cr===$route ? '#0A64BC' : '#15281F' }};background:{{ Str::startsWith($cr,$route)||$cr===$route ? 'rgba(10,100,188,.08)' : 'transparent' }};font-weight:{{ Str::startsWith($cr,$route)||$cr===$route ? '700' : '500' }};transition:all .15s;text-decoration:none;"
                    onmouseover="this.style.background='rgba(21,40,31,.07)'" onmouseout="this.style.background='{{ Str::startsWith($cr,$route)||$cr===$route ? 'rgba(10,100,188,.08)' : 'transparent' }}'">
-                    <span class="{{ $icon }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                    <i class="fas {{ $icon }}"></i>
                     {{ $label }}
                 </a>
                 @endforeach
@@ -90,7 +90,7 @@
                                 onmouseover="this.style.borderColor='rgba(10,100,188,.4)'" onmouseout="this.style.borderColor='rgba(21,40,31,.12)'">
                             <img src="{{ auth()->user()->avatar_url }}" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;">
                             <span style="font-size:13px;font-weight:600;color:#15281F;display:none;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" class="mw-uname">{{ Str::limit(auth()->user()->name,15) }}</span>
-                            <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                            <i class="fas fa-chevron-down"></i>
                         </button>
                         <div x-show="uopen" x-transition x-cloak
                              style="position:absolute;right:0;top:calc(100% + 8px);width:200px;background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.1);box-shadow:0 8px 32px rgba(21,40,31,.12);padding:6px;z-index:200;">
@@ -140,7 +140,7 @@
             ] as [$route, $icon, $label])
             <a href="{{ route($route) }}"
                style="display:flex;align-items:center;gap:10px;padding:12px 0;font-size:15px;font-weight:500;color:#15281F;border-bottom:1px solid rgba(21,40,31,.07);text-decoration:none;">
-                <span class="{{ $icon }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                <i class="fas {{ $icon }}"></i>
                 {{ $label }}
             </a>
             @endforeach
