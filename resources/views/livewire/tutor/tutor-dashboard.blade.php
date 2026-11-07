@@ -14,13 +14,13 @@
         <div class="text-2xl">
             @if($status === 'action_required')âš ï¸
             @elseif($status === 'under_review')â³
-            @elseðŸ“„
+            @elseðŸ-„
             @endif
         </div>
         <div>
             <p class="font-semibold text-ink">
                 @if($status === 'action_required')
-                    Action Required "” Document Rejected
+                    Action Required "- Document Rejected
                 @elseif($status === 'under_review')
                     Profile Under Review
                 @else
@@ -31,7 +31,7 @@
                 @if($status === 'action_required')
                     One or more documents were rejected. Please re-upload the required documents.
                 @elseif($status === 'under_review')
-                    Our team is reviewing your profile and documents. You'll be notified once approved "” usually within 24-48 hours.
+                    Our team is reviewing your profile and documents. You'll be notified once approved "- usually within 24-48 hours.
                 @else
                     You need to upload all 5 required documents before we can review your profile.
                     @if($missingCount > 0)

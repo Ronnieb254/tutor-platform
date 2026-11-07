@@ -518,7 +518,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                         <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? 'â‚¬"' }}</td>
                         <td style="font-size:13px;color:var(--muted);">{{ $pb?->duration_minutes }}min · {{ $pb?->subject?->name ?? 'General' }}</td>
                         <td style="font-weight:700;color:var(--ink);">KSh {{ number_format($payment->amount) }}</td>
-                        <td><span class="bdg bdg-green">Å“" Paid</span></td>
+                        <td><span class="bdg bdg-green">Å-" Paid</span></td>
                         <td>@if($pb)<a href="{{ route('bookings.show',$pb->uuid) }}" class="btn btn-o btn-sm">View</a>@endif</td>
                     </tr>
                     @empty
@@ -574,7 +574,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
             <div style="flex:1;min-width:0;">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
                     <span style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">{{ $profile->user->name }}</span>
-                    <span style="font-size:11px;font-weight:600;color:var(--mint);">Å“" Verified</span>
+                    <span style="font-size:11px;font-weight:600;color:var(--mint);">Å-" Verified</span>
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">
                     @foreach($profile->subjects->take(3) as $s)

@@ -117,7 +117,7 @@
                             <button onclick="confirmBooking('{{ $booking->uuid }}', this)"
                                     class="btn btn-sm confirm-btn-{{ $booking->uuid }}"
                                     style="background:#10B981;color:#fff;border:none;cursor:pointer;font-size:11px;padding:5px 10px;border-radius:8px;font-family:inherit;font-weight:700;white-space:nowrap;">
-                                Å“" Confirm & Send Codes
+                                Å-" Confirm & Send Codes
                             </button>
                             @elseif($booking->status === 'confirmed')
                             <button onclick="resendCodes('{{ $booking->uuid }}', this)"
@@ -183,7 +183,7 @@ function confirmBooking(uuid, btn) {
         .then(r => r.json())
         .then(res => {
             if (res.status === 'ok') {
-                btn.innerHTML = 'Å“" Confirmed!';
+                btn.innerHTML = 'Å-" Confirmed!';
                 btn.style.background = '#059669';
                 btn.style.opacity = '1';
 
@@ -198,7 +198,7 @@ function confirmBooking(uuid, btn) {
                 setTimeout(() => btn.remove(), 2000);
 
                 // Show success toast
-                showToast('Å“" Booking confirmed! Codes emailed to tutor and student.', 'success');
+                showToast('Å-" Booking confirmed! Codes emailed to tutor and student.', 'success');
         } else {
             btn.innerHTML = originalHtml;
             btn.disabled = false;
@@ -241,7 +241,7 @@ function resendCodes(uuid, btn) {
         btn.innerHTML = originalHtml;
         btn.disabled = false;
         if (res.status === 'ok') {
-            showToast('Å“" Session codes resent to tutor and student.', 'success');
+            showToast('Å-" Session codes resent to tutor and student.', 'success');
         } else {
             showToast('Error: ' + (res.message || 'Failed to resend codes.'), 'error');
         }

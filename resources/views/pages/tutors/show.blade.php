@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $tutor->user->name }} "“ Verified Tutor | Mwalimu</title>
+<title>{{ $tutor->user->name }} "- Verified Tutor | Mwalimu</title>
 <meta name="description" content="{{ Str::limit($tutor->bio ?? 'Book a session with '.$tutor->user->name.' on Mwalimu.', 160) }}">
 <style>
-/* â”€â”€ Page-level styles â”€â”€ */
+/* â-€â-€ Page-level styles â-€â-€ */
 .profile-hero{background:linear-gradient(135deg,#111C16 0%,#15281F 60%,#1a2e22 100%);padding:48px 0 0;position:relative;overflow:hidden;}
 .profile-hero::before{content:'';position:absolute;top:-120px;right:-80px;width:400px;height:400px;background:rgba(10,100,188,.12);border-radius:50%;pointer-events:none;}
 .profile-hero::after{content:'';position:absolute;bottom:-60px;left:20%;width:200px;height:200px;background:rgba(212,160,23,.06);border-radius:50%;pointer-events:none;}
@@ -37,7 +37,7 @@
 $prices    = [20=>300,40=>600,60=>900];
 $sessNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 $sessDesc  = [20=>'Rapid revision or a quick question',40=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
-// No free first session "” 100% money-back guarantee if unsatisfied
+// No free first session "- 100% money-back guarantee if unsatisfied
 $isFreeFirstSession = false;
 $colors    = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6'];
 $avColor   = $colors[$tutor->id % count($colors)];
@@ -46,7 +46,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
 
 @include('partials.nav')
 
-{{-- â”€â”€ PROFILE HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+{{-- â-€â-€ PROFILE HERO â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€ --}}
 <div class="profile-hero">
     <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
 
@@ -143,14 +143,14 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
     </div>
 </div>
 
-{{-- â”€â”€ MAIN CONTENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
+{{-- â-€â-€ MAIN CONTENT â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€ --}}
 <div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;" class="w">
     <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="show-grid session-layout">
 
         {{-- LEFT: Tab content --}}
         <div>
 
-            {{-- â”€â”€ ABOUT TAB â”€â”€ --}}
+            {{-- â-€â-€ ABOUT TAB â-€â-€ --}}
             <div id="tab-about">
                 {{-- Stats cards --}}
                 <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;" class="stat-mini-g">
@@ -211,7 +211,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 </div>
             </div>
 
-            {{-- â”€â”€ AVAILABILITY TAB â”€â”€ --}}
+            {{-- â-€â-€ AVAILABILITY TAB â-€â-€ --}}
             <div id="tab-availability" style="display:none;">
                 <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
                     <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
@@ -225,7 +225,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                     @if($avails->isEmpty())
                     <div style="text-align:center;padding:40px;color:rgba(21,40,31,.45);">
                         <i class="fas fa-times-circle"></i>
-                        <p style="font-size:14px;">Availability not set. Book anyway "” the tutor will confirm a time that works.</p>
+                        <p style="font-size:14px;">Availability not set. Book anyway "- the tutor will confirm a time that works.</p>
                     </div>
                     @else
                     @foreach($days as $i => $day)
@@ -235,7 +235,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         @if($av)
                         <span style="font-size:14px;font-weight:500;color:#0A64BC;display:flex;align-items:center;gap:6px;">
                             <i class="fas fa-clock"></i>
-                            {{ substr($av->start_time,0,5) }} "“ {{ substr($av->end_time,0,5) }}
+                            {{ substr($av->start_time,0,5) }} "- {{ substr($av->end_time,0,5) }}
                         </span>
                         <span style="margin-left:auto;background:rgba(16,185,129,.1);color:#10B981;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;">
                             <i class="fas fa-check-circle"></i> Available
@@ -250,7 +250,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 </div>
             </div>
 
-            {{-- â”€â”€ REVIEWS TAB â”€â”€ --}}
+            {{-- â-€â-€ REVIEWS TAB â-€â-€ --}}
             <div id="tab-reviews" style="display:none;">
                 {{-- Rating overview --}}
                 <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
@@ -310,7 +310,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                 @endif
             </div>
 
-            {{-- â”€â”€ BOOK SESSION TAB â”€â”€ --}}
+            {{-- â-€â-€ BOOK SESSION TAB â-€â-€ --}}
             <div id="tab-book" style="display:none;" x-data="{
                 step: 1,
                 dur: 20,
@@ -519,9 +519,9 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         <div style="background:#F9FAF9;border-radius:14px;padding:18px;margin-bottom:18px;">
                             @foreach([
                                 ['fa-user','Tutor',$tutor->user->name],
-                                ['fa-clock','Session','<span x-text="dur+\' min "” \'+sessionName"></span>'],
-                                ['fa-calendar','Date','<span x-text="date ? new Date(date).toDateString() : \'"”\'"></span>'],
-                                ['fa-clock','Time','<span x-text="time || \'"”\'"></span> EAT'],
+                                ['fa-clock','Session','<span x-text="dur+\' min "- \'+sessionName"></span>'],
+                                ['fa-calendar','Date','<span x-text="date ? new Date(date).toDateString() : \'"-\'"></span>'],
+                                ['fa-clock','Time','<span x-text="time || \'"-\'"></span> EAT'],
                             ] as [$ic,$label,$val])
                             <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(21,40,31,.07);">
                                 <span style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(21,40,31,.55);">
@@ -631,7 +631,7 @@ $reviews   = $tutor->reviews()->where('is_visible',true)->with('student')->lates
                         {{-- What happens next --}}
                         <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;margin-bottom:24px;">
                             <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;"><span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span> What happens next</p>
-                            @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard â†’ click Join Session â†’ enter your code','Your private classroom opens instantly in your browser "” no download required'] as $step)
+                            @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard â†’ click Join Session â†’ enter your code','Your private classroom opens instantly in your browser "- no download required'] as $step)
                             <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
                                 <i class="fas fa-check-circle"></i>{{ $step }}
                             </div>
@@ -782,7 +782,7 @@ function processPayment(data) {
             return;
         }
         if (res.status === 'ok' && res.reference) {
-            // STK Push sent "” start polling
+            // STK Push sent "- start polling
             data.stkSent  = true;
             data.stkMsg   = res.message || 'Check your phone for the M-Pesa prompt.';
             const ref     = res.reference;

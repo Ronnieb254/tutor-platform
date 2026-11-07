@@ -36,7 +36,7 @@
                         {{-- What's next box --}}
                         <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:20px 24px;margin:0 0 24px;">
                             <div style="font-weight:700;color:#166534;font-size:14px;margin-bottom:12px;">
-                                Å“… What's next
+                                Å-… What's next
                             </div>
                             <ul style="margin:0;padding-left:18px;color:#374151;font-size:14px;line-height:1.9;">
                                 <li>Set your weekly availability in your dashboard</li>

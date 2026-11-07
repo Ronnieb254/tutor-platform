@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Session #{{ substr($booking->uuid,0,8) }} "“ Mwalimu</title>
+<title>Session #{{ substr($booking->uuid,0,8) }} "- Mwalimu</title>
 <style>
 .session-hero{background:linear-gradient(135deg,#111C16,#15281F);padding:48px 0;position:relative;overflow:hidden;}
 .session-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:rgba(10,100,188,.1);border-radius:50%;pointer-events:none;}
@@ -78,7 +78,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                 </h1>
                 <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:rgba(255,255,255,.6);">
                     <span><i class="fas fa-calendar"></i>{{ $sessionStart->format('D, M j, Y') }}</span>
-                    <span><i class="fas fa-clock"></i>{{ $sessionStart->format('g:i a') }} "“ {{ $sessionEnd->format('g:i a') }} EAT</span>
+                    <span><i class="fas fa-clock"></i>{{ $sessionStart->format('g:i a') }} "- {{ $sessionEnd->format('g:i a') }} EAT</span>
                     <span><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ $booking->duration_minutes }} minutes</span>
                     <span><span class="($booking->session_type ?? 'individual') === 'group' ? 'users' : 'user' }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ ucfirst($booking->session_type ?? 'individual') }} Session</span>
                     @if($booking->subject)<span><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>{{ $booking->subject->name }}</span>@endif
@@ -100,7 +100,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
         {{-- LEFT COLUMN --}}
         <div style="display:flex;flex-direction:column;gap:20px;">
 
-            {{-- â”€â”€ SESSION JOIN PANEL â”€â”€ --}}
+            {{-- â-€â-€ SESSION JOIN PANEL â-€â-€ --}}
             @if($booking->status === 'confirmed')
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);overflow:hidden;box-shadow:0 4px 24px rgba(21,40,31,.06);"
                  x-data="{ codeInput: '{{$myCode}}', codeError: '', verified: false, myCode: '{{$myCode}}',
@@ -174,7 +174,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                         <div style="width:72px;height:72px;border-radius:999px;background:rgba(16,185,129,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
                             <i class="fas fa-check-circle"></i>
                         </div>
-                        <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">Code Verified "” You're In!</h3>
+                        <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">Code Verified "- You're In!</h3>
                         <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;">Your classroom is ready. Click below to join the live session.</p>
                         @if($booking->meeting_room)
                         <a href="{{ route('bookings.room', $booking->uuid) }}"
@@ -213,7 +213,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                 </div>
             </div>
 
-            {{-- â”€â”€ YOUR SESSION CODE â”€â”€ --}}
+            {{-- â-€â-€ YOUR SESSION CODE â-€â-€ --}}
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;">
                 <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
                     <span style="font-size:inherit;"><i class="fas fa-key"></i></span> Your Session Code
@@ -329,7 +329,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
             </div>
             @endif
 
-            {{-- â”€â”€ MESSAGES â”€â”€ --}}
+            {{-- â-€â-€ MESSAGES â-€â-€ --}}
             @if(in_array($booking->status, ['confirmed','completed']))
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);overflow:hidden;" x-data="chatRoom()">
                 <div style="padding:18px 22px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;gap:12px;">
@@ -365,7 +365,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
             </div>
             @endif
 
-            {{-- â”€â”€ LEAVE REVIEW â”€â”€ --}}
+            {{-- â-€â-€ LEAVE REVIEW â-€â-€ --}}
             @if($booking->status === 'completed' && $isStudent && !$booking->review)
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;" x-data="{ rating:5, comment:'', submitted:false }">
                 <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
@@ -426,7 +426,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                         ['fa-user',''.($isTutor?'Student':'Tutor'),$otherName],
                         ['fa-book-open','Subject',$booking->subject?->name ?? 'General'],
                         ['fa-calendar','Date',$sessionStart->format('D, M j, Y')],
-                        ['fa-clock','Time',$sessionStart->format('g:i a').' "“ '.$sessionEnd->format('g:i a').' EAT'],
+                        ['fa-clock','Time',$sessionStart->format('g:i a').' "- '.$sessionEnd->format('g:i a').' EAT'],
                         ['fa-hourglass-half','Duration',$booking->duration_minutes.' minutes · '.$sessionName],
                         ['fa-money-bill','Amount Paid','KSh '.number_format($booking->total_amount)],
                     ] as [$icon,$label,$val])
@@ -464,7 +464,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     </div>
                     <div style="display:flex;justify-content:space-between;font-size:13px;">
                         <span style="color:rgba(21,40,31,.5);">Reference</span>
-                        <code style="font-size:11px;background:#F4F6F4;padding:2px 7px;border-radius:5px;color:#15281F;">{{ Str::limit($booking->payment->mpesa_reference ?? $booking->payment->mpesa_receipt ?? '"”', 18) }}</code>
+                        <code style="font-size:11px;background:#F4F6F4;padding:2px 7px;border-radius:5px;color:#15281F;">{{ Str::limit($booking->payment->mpesa_reference ?? $booking->payment->mpesa_receipt ?? '"-', 18) }}</code>
                     </div>
                     @if($booking->payment->paid_at)
                     <div style="display:flex;justify-content:space-between;font-size:13px;">
@@ -558,11 +558,11 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     <div style="display:flex;gap:12px;">
                         <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#15281F;">
                             <span style="width:8px;height:8px;border-radius:50%;background:{{ $booking->tutor_joined ? '#10B981' : '#E5E7EB' }};"></span>
-                            Tutor {{ $booking->tutor_joined ? 'âœ“' : '"“' }}
+                            Tutor {{ $booking->tutor_joined ? 'âœ-' : '"-' }}
                         </div>
                         <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#15281F;">
                             <span style="width:8px;height:8px;border-radius:50%;background:{{ $booking->student_joined ? '#10B981' : '#E5E7EB' }};"></span>
-                            Student {{ $booking->student_joined ? 'âœ“' : '"“' }}
+                            Student {{ $booking->student_joined ? 'âœ-' : '"-' }}
                         </div>
                     </div>
                 </div>

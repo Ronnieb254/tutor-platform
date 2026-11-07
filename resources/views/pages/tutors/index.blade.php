@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Find a Tutor "“ Mwalimu</title>
+<title>Find a Tutor "- Mwalimu</title>
 <meta name="description" content="Browse TSC-registered tutors across all Kenyan curriculum subjects. Book sessions from KSh 300.">
 <style>
 .hero-band{background:var(--ink);padding:52px 0;position:relative;overflow:hidden;}
@@ -196,7 +196,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
             <!-- <div class="dur-pills">
                 @foreach([20=>['Quick Help',300],40=>['Guided Practice',500],60=>['Deep Dive',700]] as $mins=>[$name,$price])
                 @php
-                $isFreeForUser = false; // No free first session "” 100% money-back guarantee instead
+                $isFreeForUser = false; // No free first session "- 100% money-back guarantee instead
                 @endphp
                 <div class="dp" title="{{ $name }}">
                     <div class="dp-min">{{ $mins }}m</div>

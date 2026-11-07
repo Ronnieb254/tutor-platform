@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Courses "“ Mwalimu</title>
+<title>Courses "- Mwalimu</title>
 <meta name="description" content="Browse pre-recorded courses from TSC-registered tutors. Learn at your own pace across the Kenyan curriculum.">
 </head>
 <body>
@@ -20,7 +20,7 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
     <div class="w" style="position:relative;z-index:1;">
         <div class="badge badge-white" style="margin-bottom:16px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Pre-Recorded Courses</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Learn at your own pace</h1>
-        <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">Video courses from TSC-registered tutors and national examiners "” covering the full Kenyan curriculum.</p>
+        <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">Video courses from TSC-registered tutors and national examiners "- covering the full Kenyan curriculum.</p>
     </div>
 </section>
 

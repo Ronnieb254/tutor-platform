@@ -27,7 +27,7 @@
         </div>
         @if($upcoming->isEmpty())
         <div class="text-center py-8">
-            <div class="text-4xl mb-3">ðŸ“…</div>
+            <div class="text-4xl mb-3">ðŸ-…</div>
             <p class="font-serif text-lg font-semibold text-ink mb-2">No upcoming sessions</p>
             <p class="text-muted text-sm mb-5">Find a tutor and book your first session.</p>
             <a href="{{ route('tutors.index') }}" class="pill-btn-primary">Find a Tutor</a>

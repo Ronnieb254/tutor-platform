@@ -132,7 +132,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                             </div>
                         </td>
                         <td style="color:var(--muted);">{{ $booking->tutor->name }}</td>
-                        <td>{{ $booking->subject?->name ?? '"”' }}</td>
+                        <td>{{ $booking->subject?->name ?? '"-' }}</td>
                         <td style="color:var(--muted);white-space:nowrap;">{{ $booking->scheduled_at->format('M j, g:ia') }}</td>
                         <td style="font-weight:600;">KSh {{ number_format($booking->total_amount) }}</td>
                         <td>
@@ -150,7 +150,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                                         class="btn btn-sm"
                                         style="background:#10B981;color:#fff;border:none;cursor:pointer;font-size:11px;padding:5px 10px;border-radius:8px;font-family:inherit;font-weight:700;white-space:nowrap;"
                                         title="Confirm booking and send session codes to tutor & student">
-                                    âœ“ Confirm
+                                    âœ- Confirm
                                 </button>
                                 @endif
                             </div>
@@ -217,7 +217,7 @@ $(document).ready(function() {
 
 @push('styles')
 <style>
-/* Phase 6 "” admin dashboard responsive */
+/* Phase 6 "- admin dashboard responsive */
 @media(max-width:639px){
     /* 3-col second row â†’ 1-col */
     .admin-stats,
@@ -267,7 +267,7 @@ function confirmBooking(uuid, btn) {
         .then(r => r.json())
         .then(res => {
             if (res.status === 'ok') {
-                btn.innerHTML = 'âœ“ Confirmed!';
+                btn.innerHTML = 'âœ- Confirmed!';
                 btn.style.background = '#059669';
 
                 // Replace the status badge in the same row

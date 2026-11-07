@@ -44,7 +44,7 @@
                 <tbody>
                     @forelse($categories as $category)
                     <tr>
-                        <td><span style="font-size:24px;">{{ $category->icon ?? 'ðŸ“š' }}</span></td>
+                        <td><span style="font-size:24px;">{{ $category->icon ?? 'ðŸ-š' }}</span></td>
                         <td>
                             <div style="font-weight:600;font-size:14px;">{{ $category->name }}</div>
                             @if($category->description)
@@ -126,8 +126,8 @@
             </div>
             <div style="margin-bottom:14px;">
                 <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Icon Emoji</label>
-                <input type="text" name="icon" placeholder="ðŸ“š" maxlength="10" style="width:100%;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:15px;font-family:inherit;outline:none;">
-                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use a single emoji (e.g. ðŸ“š ðŸŽ“ ðŸ”¬ ðŸŒ ðŸŽ¨)</div>
+                <input type="text" name="icon" placeholder="ðŸ-š" maxlength="10" style="width:100%;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:15px;font-family:inherit;outline:none;">
+                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use a single emoji (e.g. ðŸ-š ðŸŽ- ðŸ-¬ ðŸŒ ðŸŽ¨)</div>
             </div>
             <div style="margin-bottom:14px;">
                 <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Description</label>

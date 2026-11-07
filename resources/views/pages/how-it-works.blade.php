@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>How It Works "“ Mwalimu</title>
+<title>How It Works "- Mwalimu</title>
 <meta name="description" content="Learn how Mwalimu connects students and parents with TSC-registered tutors in Kenya. Book, pay, and learn in 3 simple steps.">
 <style>
 .faq-answer{display:none;padding:0 22px 18px;font-size:14px;color:rgba(21,40,31,.65);line-height:1.85;}
@@ -85,10 +85,10 @@
             <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="steps-grid">
                 @php $studentSteps = [
                     ['1','fa-magnifying-glass','#0A64BC','Find Your Tutor','Browse TSC-registered tutors by subject. Read real reviews from students and parents who have already booked.','Filter by Kenyan curriculum subject','View reviews and availability','Choose from 500+ verified tutors','Background-checked for your safety'],
-                    ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block "” Quick Help (20min), Guided Practice (40min), Deep Dive (60min), or Group Session (60min). Fixed pricing, no surprises.','Quick Help "“ 20 min "“ KSh 300','Guided Practice "“ 40 min "“ KSh 600','Deep Dive "“ 60 min "“ KSh 900','Group Session ðŸ‘¥ "“ 60 min "“ KSh 600'],
-                    ['3','fa-mobile-screen-button','#E8522A','Pay via M-Pesa','Complete your booking by paying through M-Pesa STK Push "” Kenya\'s mobile money standard. An instant prompt is sent to your phone; enter your PIN to confirm.','M-Pesa STK Push "” enter your PIN on your phone','Payments processed via Safaricom Daraja API','Full refund if tutor cancels','Booking confirmed immediately after payment'],
+                    ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block "- Quick Help (20min), Guided Practice (40min), Deep Dive (60min), or Group Session (60min). Fixed pricing, no surprises.','Quick Help "- 20 min "- KSh 300','Guided Practice "- 40 min "- KSh 600','Deep Dive "- 60 min "- KSh 900','Group Session ðŸ‘¥ "- 60 min "- KSh 600'],
+                    ['3','fa-mobile-screen-button','#E8522A','Pay via M-Pesa','Complete your booking by paying through M-Pesa STK Push "- Kenya\'s mobile money standard. An instant prompt is sent to your phone; enter your PIN to confirm.','M-Pesa STK Push "- enter your PIN on your phone','Payments processed via Safaricom Daraja API','Full refund if tutor cancels','Booking confirmed immediately after payment'],
                     ['4','fa-envelope','#EEBE15','Receive Your Session Code','Immediately after payment, you and the tutor both receive unique session access codes by email. Yours is STU-XXXXXX. The tutor\'s is TUT-XXXXXX.','Unique STU-XXXXXX code emailed to you','Tutor receives TUT-XXXXXX separately','Session date, time and duration confirmed','Receive a session code via email and system notification.'],
-                    ['5','fa-video','#3B82F6','Join Your Live Session','On session day, open your booking and enter your STU-XXXXXX code. Your private classroom opens instantly in your browser "” no download needed.','Enter STU-XXXXXX code to verify identity','Private video room opens instantly','Screen sharing and whiteboard available','No app download required'],
+                    ['5','fa-video','#3B82F6','Join Your Live Session','On session day, open your booking and enter your STU-XXXXXX code. Your private classroom opens instantly in your browser "- no download needed.','Enter STU-XXXXXX code to verify identity','Private video room opens instantly','Screen sharing and whiteboard available','No app download required'],
                     ['6','fa-star','#EC4899','Review & Rebook','After your session, leave a star rating and written review to help other students. Rebook your favourite tutor directly from your dashboard with one click.','Star rating + written review','Tutor appears in Saved for easy rebook','Session history tracked in dashboard','Message tutor directly for follow-up'],
                 ]; @endphp
                 @foreach($studentSteps as [$num,$icon,$color,$title,$desc,$p1,$p2,$p3,$p4])
@@ -119,9 +119,9 @@
         <div x-show="role==='tutor'" x-cloak>
             <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="steps-grid">
                 @php $tutorSteps = [
-                    ['1','fa-pen-to-square','#0A64BC','Register','Sign up and select Tutor as your role. Complete your profile with your name, email, phone, subjects (max 2), and level (JSS/SS/F3/F4).','Free to join "” no upfront fees','Enter name exactly as on National ID','Select up to 2 subjects you teach','Set your availability schedule'],
+                    ['1','fa-pen-to-square','#0A64BC','Register','Sign up and select Tutor as your role. Complete your profile with your name, email, phone, subjects (max 2), and level (JSS/SS/F3/F4).','Free to join "- no upfront fees','Enter name exactly as on National ID','Select up to 2 subjects you teach','Set your availability schedule'],
                     ['2','fa-id-card-clip','#10B981','Upload Documents','Upload your National ID, Degree Certificate, TSC Certificate, Certificate of Good Conduct, and a recent passport photo. Our team reviews within 72 hours.','National ID / Passport required','TSC Certificate required','Degree Certificate recommended','Certificate of Good Conduct required'],
-                    ['3','fa-clock','#EEBE15','Get Verified','Standard verification takes up to 72 hours. Need it faster? Pay KSh 1,000 for Speedy Verification "” approved within 24 hours.','Standard: up to 72 hours','Speedy: 24 hours (KSh 1,000 fee)','Email notification when approved','Action required if any doc rejected'],
+                    ['3','fa-clock','#EEBE15','Get Verified','Standard verification takes up to 72 hours. Need it faster? Pay KSh 1,000 for Speedy Verification "- approved within 24 hours.','Standard: up to 72 hours','Speedy: 24 hours (KSh 1,000 fee)','Email notification when approved','Action required if any doc rejected'],
                     ['4','fa-calendar-check','#E8522A','Profile Goes Live','Once approved, your profile is visible to thousands of students and parents searching for tutors. Students can book sessions with you instantly.','Profile listed in search results','Students can book & pay instantly','You receive booking notifications','Dashboard to manage all sessions'],
                     ['5','fa-bell','#3B82F6','Receive Bookings & Codes','When a student books and pays, you receive an email notification with session details, your earnings, and your unique TUT-XXXXXX session access code.','Email: "New Session Booked"','Your TUT-XXXXXX code included','Session details and date/time shown','Also visible in your dashboard'],
                     ['6','fa-video','#EC4899','Host Your Session','On session day, enter your TUT-XXXXXX code to open the private Jitsi classroom as the moderator. You control recording and screen sharing.','Enter TUT-XXXXXX to join as moderator','Full video, audio, screen share','Earnings credited after completion','Request payout via M-Pesa anytime'],
@@ -204,7 +204,7 @@
                     <span style="font-size:inherit;"><i class="fas fa-key"></i></span> Secure Session Access
                 </div>
                 <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#15281F;margin-bottom:16px;">Your unique session access code</h2>
-                <p style="font-size:16px;color:rgba(21,40,31,.6);line-height:1.85;margin-bottom:28px;">After booking and payment, both tutor and student receive a unique one-time access code by email. This ensures only the right people join each private session "” no uninvited guests.</p>
+                <p style="font-size:16px;color:rgba(21,40,31,.6);line-height:1.85;margin-bottom:28px;">After booking and payment, both tutor and student receive a unique one-time access code by email. This ensures only the right people join each private session "- no uninvited guests.</p>
                 <div style="display:flex;flex-direction:column;gap:16px;">
                     @foreach([
                         ['fa-envelope','Sent instantly by email','Codes arrive in your inbox immediately after payment confirmation.'],
@@ -263,7 +263,7 @@
                 <thead>
                     <tr style="background:#F9FAF9;">
                         <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.5);width:40%;border-bottom:1.5px solid rgba(21,40,31,.08);">Feature</th>
-                        <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0A64BC;border-bottom:1.5px solid rgba(21,40,31,.08);">âœ“ Mwalimu</th>
+                        <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0A64BC;border-bottom:1.5px solid rgba(21,40,31,.08);">âœ- Mwalimu</th>
                         <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.4);border-bottom:1.5px solid rgba(21,40,31,.08);">Traditional</th>
                     </tr>
                 </thead>
@@ -271,17 +271,17 @@
                     @foreach([
                         ['Tutor verification','TSC-registered & background-checked','Often unverified'],
                         ['Booking process','Online, instant, 24/7','Phone calls, scheduling hassle'],
-                        ['Payment security','M-Pesa STK Push "” secure & instant','Cash, often no receipt'],
+                        ['Payment security','M-Pesa STK Push "- secure & instant','Cash, often no receipt'],
                         ['Session lengths','20, 40 or 60 min fixed blocks','Usually 1hr fixed, wasted time'],
                         ['Access codes','Unique code per session','No access control'],
-                        ['Live classroom','Jitsi "” no download','Physical or WhatsApp'],
+                        ['Live classroom','Jitsi "- no download','Physical or WhatsApp'],
                         ['Session records','Full dashboard history','No records'],
                         ['Reviews & ratings','Verified student reviews','No accountability'],
                         ['Pricing','Clear KSh fixed pricing upfront','Negotiated, opaque'],
                     ] as [$feature,$mw,$trad])
                     <tr style="border-bottom:1px solid rgba(21,40,31,.05);" onmouseover="this.style.background='#FAFCFA'" onmouseout="this.style.background='transparent'">
                         <td style="padding:13px 20px;font-size:14px;font-weight:500;color:#15281F;">{{ $feature }}</td>
-                        <td style="padding:13px 20px;font-size:13px;color:#15281F;"><span style="color:#10B981;margin-right:6px;font-weight:700;">âœ“</span>{{ $mw }}</td>
+                        <td style="padding:13px 20px;font-size:13px;color:#15281F;"><span style="color:#10B981;margin-right:6px;font-weight:700;">âœ-</span>{{ $mw }}</td>
                         <td style="padding:13px 20px;font-size:13px;color:rgba(21,40,31,.5);"><span style="color:#DC2626;margin-right:6px;font-weight:700;">âœ—</span>{{ $trad }}</td>
                     </tr>
                     @endforeach
@@ -300,7 +300,7 @@
 
         @foreach([
             ['How do I know tutors are trustworthy?','Every tutor on Mwalimu is TSC-registered, has submitted a National ID, and passes a background check including a Certificate of Good Conduct. Our academic team manually reviews all documents before approving any tutor profile.'],
-            ['What if I\'m not happy with my session?','Contact our support team within 24 hours of your session. We review all disputes fairly. If you are unsatisfied with your first lesson, we offer a 100% money-back guarantee "” no questions asked.'],
+            ['What if I\'m not happy with my session?','Contact our support team within 24 hours of your session. We review all disputes fairly. If you are unsatisfied with your first lesson, we offer a 100% money-back guarantee "- no questions asked.'],
             ['Do I need to download anything to join a session?','No. Sessions run in your browser using Jitsi. Just enter your access code on the booking page and your session opens in a new browser tab. Works on mobile and desktop.'],
             ['Can parents book sessions for their children?','Yes. Select "Parent" when creating your account. You can add child profiles (name, age, grade level) and book sessions on their behalf. Your session code is sent to your email.'],
             ['How are session prices calculated?','Mwalimu uses fixed pricing for all sessions: Quick Help (20min) = KSh 300, Guided Practice (40min) = KSh 600, Deep Dive (60min) = KSh 900. The same price applies regardless of which tutor you choose.'],

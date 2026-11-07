@@ -16,7 +16,7 @@ $sessionTiers = [
                 <div style="width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
                     background:{{ $step > $i+1 ? 'var(--mint)' : ($step === $i+1 ? 'var(--trust-blue)' : 'rgba(21,40,31,.08)') }};
                     color:{{ ($step > $i+1 || $step === $i+1) ? '#fff' : 'var(--muted)' }};">
-                    {{ $step > $i+1 ? 'âœ“' : $i+1 }}
+                    {{ $step > $i+1 ? 'âœ-' : $i+1 }}
                 </div>
                 <span style="font-size:12px;font-weight:{{ $step === $i+1 ? '700' : '500' }};color:{{ $step === $i+1 ? 'var(--ink)' : 'var(--muted)' }};">{{ $label }}</span>
             </div>
@@ -24,7 +24,7 @@ $sessionTiers = [
         @endforeach
     </div>
 
-    {{-- â”€â”€ STEP 1: Pick duration + date/time â”€â”€ --}}
+    {{-- â-€â-€ STEP 1: Pick duration + date/time â-€â-€ --}}
     @if($step === 1)
     <div style="display:flex;flex-direction:column;gap:18px;">
 
@@ -47,7 +47,7 @@ $sessionTiers = [
                             </div>
                             <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:{{ $duration == $mins ? 'var(--trust-blue)' : 'var(--ink)' }};">KSh {{ $tier['price'] }}</span>
                         </div>
-                        <div style="font-size:11px;color:var(--muted);">{{ $mins }} min "” {{ $tier['desc'] }}</div>
+                        <div style="font-size:11px;color:var(--muted);">{{ $mins }} min "- {{ $tier['desc'] }}</div>
                     </div>
                 </label>
                 @endforeach
@@ -150,7 +150,7 @@ $sessionTiers = [
     </div>
     @endif
 
-    {{-- â”€â”€ STEP 2: Review & Pay â”€â”€ --}}
+    {{-- â-€â-€ STEP 2: Review & Pay â-€â-€ --}}
     @if($step === 2)
     @php $tier = $sessionTiers[$duration] ?? $sessionTiers[60]; @endphp
     <div style="display:flex;flex-direction:column;gap:14px;">
@@ -164,7 +164,7 @@ $sessionTiers = [
                     ['Session type', $tier['icon'].' '.$tier['name'].' ('.$duration.' min)'],
                     ['Date', \Carbon\Carbon::parse($scheduledDate)->format('D, M j, Y')],
                     ['Time', \Carbon\Carbon::parse($scheduledTime)->format('g:i a').' (EAT)'],
-                    ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? '"”') : 'General'],
+                    ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? '"-') : 'General'],
                 ] as [$label, $value])
                 <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.06);">
                     <span style="font-size:13px;color:var(--muted);">{{ $label }}</span>
@@ -246,7 +246,7 @@ $sessionTiers = [
     </div>
     @endif
 
-    {{-- â”€â”€ STEP 3: Confirmed â”€â”€ --}}
+    {{-- â-€â-€ STEP 3: Confirmed â-€â-€ --}}
     @if($step === 3 && $bookingConfirmed)
     <div style="text-align:center;padding:8px 0;">
         <div style="width:64px;height:64px;border-radius:999px;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -276,7 +276,7 @@ $sessionTiers = [
 <script>
 document.addEventListener('livewire:initialized', () => {
 
-    // â”€â”€ STK Push sent "” start polling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // â-€â-€ STK Push sent "- start polling â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€
     Livewire.on('stk-sent', (data) => {
         const reference  = data.reference;
         const statusUrl  = '/api/daraja/status?reference=' + encodeURIComponent(reference);
@@ -292,7 +292,7 @@ document.addEventListener('livewire:initialized', () => {
         }
 
         function poll() {
-            if (polls >= maxPolls) return; // timed out "” user can retry
+            if (polls >= maxPolls) return; // timed out "- user can retry
             polls++;
 
             fetch(statusUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })

@@ -87,7 +87,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                     <td data-order="{{ $user->created_at->timestamp }}" style="color:var(--muted);font-size:13px;">{{ $user->created_at->format('M j, Y') }}</td>
                     <td>
                         @if($user->email_verified_at)
-                        <span class="badge badge-green">âœ“ Verified</span>
+                        <span class="badge badge-green">âœ- Verified</span>
                         @else
                         <span class="badge badge-amber">Unverified</span>
                         @endif
@@ -104,7 +104,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                                     {{ $user->is_active ? 'Suspend' : 'Activate' }}
                                 </button>
                             </form>
-                            {{-- Change Role "” only super-admin can do this --}}
+                            {{-- Change Role "- only super-admin can do this --}}
                             @if(auth()->user()->isSuperAdmin())
                             <form method="POST" action="/admin/users/{{ $user->id }}/change-role" style="display:inline;display:flex;align-items:center;gap:4px;">
                                 @csrf @method('PATCH')

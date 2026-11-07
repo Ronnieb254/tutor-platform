@@ -243,7 +243,7 @@ h1{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);
             <div class="divider"></div>
 
             <button type="submit" class="btn-submit" id="submit-btn" disabled>
-                <span class="btn-text">Å“" Verify &amp; Create Account</span>
+                <span class="btn-text">Å-" Verify &amp; Create Account</span>
                 <div class="spinner"></div>
             </button>
         </form>

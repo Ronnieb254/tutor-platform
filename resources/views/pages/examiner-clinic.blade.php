@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Examiner's Clinic "“ Mwalimu</title>
+<title>Examiner's Clinic "- Mwalimu</title>
 <meta name="description" content="Learn directly from Kenya's national examiners and markers. Group sessions per paper (PP1, PP2, PP3). KSh 1,000 per session. Max 30 students per session.">
 </head>
 <body>
@@ -22,7 +22,7 @@
                     Learn from the experts who <span style="color:#EEBE15;">set and mark the exams.</span>
                 </h1>
                 <p style="font-size:17px;color:rgba(255,255,255,.65);max-width:560px;margin-bottom:28px;line-height:1.85;">
-                    Most revision resources focus on <em style="font-style:italic;">what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> "” delivered by national examiners and markers, structured per paper (PP1, PP2, PP3) as it applies.
+                    Most revision resources focus on <em style="font-style:italic;">what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> "- delivered by national examiners and markers, structured per paper (PP1, PP2, PP3) as it applies.
                 </p>
                 <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
                     <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
@@ -50,7 +50,7 @@
             </div>
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;">
                 <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">What each clinic covers</p>
-                @foreach(['Exam strategy & question time management','High-frequency exam questions by topic','Examiner traps "” mistakes and NRT areas','Marking scheme analysis "” how marks are awarded','Common student errors and how to avoid them','How KNEC examiners grade papers'] as $item)
+                @foreach(['Exam strategy & question time management','High-frequency exam questions by topic','Examiner traps "- mistakes and NRT areas','Marking scheme analysis "- how marks are awarded','Common student errors and how to avoid them','How KNEC examiners grade papers'] as $item)
                 <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
                     <i class="fas fa-check-circle"></i>
                     <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
@@ -101,7 +101,7 @@
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px;">
             <div>
                 <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,38px);color:#15281F;margin-bottom:6px;">Upcoming Clinics</h2>
-                <p style="color:rgba(21,40,31,.55);">Structured per paper (PP1, PP2, PP3). Max 30 students per session "” new sessions open automatically when one fills up.</p>
+                <p style="color:rgba(21,40,31,.55);">Structured per paper (PP1, PP2, PP3). Max 30 students per session "- new sessions open automatically when one fills up.</p>
             </div>
         </div>
 
@@ -144,7 +144,7 @@
         <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:64px;text-align:center;">
             <div style="font-size:48px;margin-bottom:14px;"><i class="fas fa-times-circle"></i></div>
             <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">No clinics scheduled</h3>
-            <p style="color:rgba(21,40,31,.55);margin-bottom:20px;">No clinics match your filters. Try adjusting your search or check back soon "” new clinics are added weekly.</p>
+            <p style="color:rgba(21,40,31,.55);margin-bottom:20px;">No clinics match your filters. Try adjusting your search or check back soon "- new clinics are added weekly.</p>
             <a href="{{ route('examiner-clinic') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><span style="font-size:inherit;">←</span> Clear Filters</a>
         </div>
         @else
@@ -212,7 +212,7 @@
                     @else
                     <a href="{{ route('clinic.checkout', $clinic) }}"
                        style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
-                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Book Spot "” KSh {{ number_format($clinic->price) }}
+                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Book Spot "- KSh {{ number_format($clinic->price) }}
                     </a>
                     @endif
                     @else

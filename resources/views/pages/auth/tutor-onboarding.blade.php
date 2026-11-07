@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Complete Your Tutor Profile "“ Mwalimu</title>
+<title>Complete Your Tutor Profile "- Mwalimu</title>
 <style>
 html,body{min-height:100%;}
 .page{min-height:100vh;background:var(--cream);display:flex;flex-direction:column;}
@@ -289,7 +289,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
             <div x-show="step === 3" x-cloak>
                 <div class="ob-card">
                     <h2><i class="fas fa-file-alt"></i>Verification Documents</h2>
-                    <p class="sub">Upload your documents so we can verify your credentials. All files are stored securely. Accepted: JPG, PNG, PDF "” max 5MB each.</p>
+                    <p class="sub">Upload your documents so we can verify your credentials. All files are stored securely. Accepted: JPG, PNG, PDF "- max 5MB each.</p>
 
                     <div style="display:flex;flex-direction:column;gap:16px;">
 
@@ -693,7 +693,7 @@ function tutorOnboarding() {
                 if (data.status === 'ok') {
                     this.submitting = false;
                     if (this.form.speedy && data.stk_sent) {
-                        // STK Push sent for speedy verification fee "” advance to success
+                        // STK Push sent for speedy verification fee "- advance to success
                         // Enrollment is confirmed once Daraja callback arrives
                         this.step = 5;
                     } else {

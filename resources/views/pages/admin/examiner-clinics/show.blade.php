@@ -69,7 +69,7 @@
             @if($examinerClinic->status === 'scheduled')
             <form method="POST" action="{{ route('admin.examiner-clinics.start', $examinerClinic) }}" style="margin-bottom:8px;">
                 @csrf
-                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">"“Â¶ Start Session</button>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">"-Â¶ Start Session</button>
             </form>
             <form method="POST" action="{{ route('admin.examiner-clinics.cancel', $examinerClinic) }}">
                 @csrf
@@ -79,7 +79,7 @@
             @elseif($examinerClinic->status === 'in_progress')
             <form method="POST" action="{{ route('admin.examiner-clinics.complete', $examinerClinic) }}">
                 @csrf
-                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Å“… Mark Complete</button>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Å-… Mark Complete</button>
             </form>
             @endif
         </div>

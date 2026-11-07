@@ -7,7 +7,7 @@
             <div class="flex flex-col items-center gap-1">
                 <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition
                     {{ $step > $i+1 ? 'bg-mint text-white' : ($step === $i+1 ? 'bg-trust-blue text-white' : 'bg-hairline text-muted') }}">
-                    {{ $step > $i+1 ? 'Å“"' : $i+1 }}
+                    {{ $step > $i+1 ? 'Å-"' : $i+1 }}
                 </div>
                 <span class="text-[10px] font-medium {{ $step === $i+1 ? 'text-ink' : 'text-muted' }} hidden sm:block">{{ $label }}</span>
             </div>
@@ -138,7 +138,7 @@
                 <p class="text-xs text-muted mt-1">Upload a clear photo of your National ID or Passport</p>
             </div>
             <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
-                <label class="form-label">Ã°Å¸"Å“ TSC Certificate <span class="text-coral">* Required</span></label>
+                <label class="form-label">Ã°Å¸"Å- TSC Certificate <span class="text-coral">* Required</span></label>
                 <input type="file" wire:model="tscCertificate" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
                 @error('tscCertificate')<p class="form-error">{{ $message }}</p>@enderror
                 <p class="text-xs text-muted mt-1">Teachers Service Commission certificate</p>

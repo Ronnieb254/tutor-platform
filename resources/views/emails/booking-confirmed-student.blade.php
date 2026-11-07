@@ -61,7 +61,7 @@
             <li>Go to your Mwalimu dashboard</li>
             <li>Find this booking under "Upcoming Sessions"</li>
             <li>Click "Join Session" and enter your code: <strong>{{ $booking->session_code_student }}</strong></li>
-            <li>Your live session opens in the browser "” no downloads needed!</li>
+            <li>Your live session opens in the browser "- no downloads needed!</li>
           </ol>
         </div>
 

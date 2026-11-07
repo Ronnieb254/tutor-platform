@@ -243,7 +243,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
             </div>
 
             <button type="submit" class="btn-submit">
-                Å“" Verify & Continue
+                Å-" Verify & Continue
             </button>
         </form>
 

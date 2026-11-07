@@ -201,7 +201,7 @@
             </div>
             <form method="POST" action="{{ route('admin.library.categories.destroy', $cat) }}" onsubmit="return confirm('Delete category?')">
                 @csrf @method('DELETE')
-                <button type="submit" style="background:none;border:none;color:#DC2626;cursor:pointer;font-size:16px;" title="Delete">Å“•</button>
+                <button type="submit" style="background:none;border:none;color:#DC2626;cursor:pointer;font-size:16px;" title="Delete">Å-•</button>
             </form>
         </div>
         @endforeach
@@ -216,7 +216,7 @@
     <div style="background:#fff;border-radius:20px;padding:32px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
             <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;">Add Resource</h2>
-            <button onclick="document.getElementById('add-modal').style.display='none'" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);">Å“•</button>
+            <button onclick="document.getElementById('add-modal').style.display='none'" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);">Å-•</button>
         </div>
         <form method="POST" action="{{ route('admin.library.store') }}" enctype="multipart/form-data">
             @csrf
@@ -316,7 +316,7 @@
     <div style="background:#fff;border-radius:20px;padding:32px;max-width:420px;width:100%;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
             <h2 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;">Add Category</h2>
-            <button onclick="document.getElementById('cat-modal').style.display='none'" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);">Å“•</button>
+            <button onclick="document.getElementById('cat-modal').style.display='none'" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);">Å-•</button>
         </div>
         <form method="POST" action="{{ route('admin.library.categories.store') }}">
             @csrf

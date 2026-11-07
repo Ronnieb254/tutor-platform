@@ -32,9 +32,9 @@ $has2FA = $user->has2FAEnabled();
             <div style="font-weight:600;font-size:15px;color:var(--ink);margin-bottom:6px;">
                 Status: 
                 @if($has2FA)
-                    <span style="color:var(--mint);">"”Â Enabled</span>
+                    <span style="color:var(--mint);">"-Â Enabled</span>
                 @else
-                    <span style="color:var(--muted);">"”"¹ Disabled</span>
+                    <span style="color:var(--muted);">"-"¹ Disabled</span>
                 @endif
             </div>
             <p style="font-size:13px;color:var(--muted);line-height:1.5;">
@@ -94,7 +94,7 @@ $has2FA = $user->has2FAEnabled();
     @else
         {{-- Disabled state - show enable option --}}
         <a href="{{ route('2fa.setup') }}" class="btn btn-primary" style="display:inline-block;width:fit-content;">
-            Å“" Enable Two-Factor Authentication
+            Å-" Enable Two-Factor Authentication
         </a>
     @endif
 </div>

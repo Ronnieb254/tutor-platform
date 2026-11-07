@@ -216,9 +216,9 @@ select.form-input{cursor:pointer;}
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:16px;">Cover Image (optional)</h3>
                 <div class="upload-zone">
                     <input type="file" name="thumbnail" accept="image/*">
-                    <div style="font-size:32px;margin-bottom:8px;">Ã°Å¸"“Â¼Ã¯Â¸Â</div>
+                    <div style="font-size:32px;margin-bottom:8px;">Ã°Å¸"-Â¼Ã¯Â¸Â</div>
                     <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Upload a cover image</p>
-                    <p style="font-size:12px;color:var(--muted);">JPG, PNG, WebP â‚¬" max 5 MB. Recommended: 800Ãƒ"”500px</p>
+                    <p style="font-size:12px;color:var(--muted);">JPG, PNG, WebP â‚¬" max 5 MB. Recommended: 800Ãƒ"-500px</p>
                 </div>
             </div>
 

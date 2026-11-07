@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Tutor Dashboard "“ Mwalimu</title>
+<title>Tutor Dashboard "- Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -344,14 +344,14 @@ $activeTab = request('tab','overview');
         </div>
         <div>
             <div style="font-weight:700;font-size:15px;color:var(--ink);">
-                {{ $verificationStatus==='action_required' ? 'Action Required "” Document Rejected' : ($verificationStatus==='under_review' ? 'Profile Under Review' : 'Upload All Required Documents') }}
+                {{ $verificationStatus==='action_required' ? 'Action Required "- Document Rejected' : ($verificationStatus==='under_review' ? 'Profile Under Review' : 'Upload All Required Documents') }}
             </div>
             <div style="font-size:13px;color:var(--muted);margin-top:3px;line-height:1.6;">
                 @if($verificationStatus==='action_required')
                     One or more documents were rejected. Please re-upload the required documents to continue.
                     <button @click="tab='documents'" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">View Documents ?</button>
                 @elseif($verificationStatus==='under_review')
-                    Our team is reviewing your profile and documents. You'll receive an email once approved "” usually within 24"“48 hours.
+                    Our team is reviewing your profile and documents. You'll receive an email once approved "- usually within 24"-48 hours.
                 @else
                     You need to upload <strong>all 5 required documents</strong> before we can review your profile.
                     @if($missingCount > 0)
@@ -548,7 +548,7 @@ $activeTab = request('tab','overview');
                             @if($b->session_code_tutor)
                             <code style="background:rgba(10,100,188,.08);color:var(--trust-blue);padding:2px 7px;border-radius:6px;font-size:12px;font-weight:700;">{{ $b->session_code_tutor }}</code>
                             @else
-                            <span style="color:var(--muted);font-size:12px;">"”</span>
+                            <span style="color:var(--muted);font-size:12px;">"-</span>
                             @endif
                         </td>
                         <td>
@@ -729,7 +729,7 @@ $activeTab = request('tab','overview');
                             <td style="font-size:12px;color:var(--muted);white-space:nowrap;">
                                 @if($tx->reference)
                                 <code style="background:#F4F6F4;padding:2px 6px;border-radius:5px;font-size:11px;">{{ Str::limit($tx->reference,16) }}</code>
-                                @else "”
+                                @else "-
                                 @endif
                             </td>
                             <td style="font-size:12px;color:var(--muted);white-space:nowrap;">{{ $tx->created_at->format('M j, Y') }}</td>

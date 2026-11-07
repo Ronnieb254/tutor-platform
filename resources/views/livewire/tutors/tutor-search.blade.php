@@ -92,7 +92,7 @@
                             <div>
                                 <p class="font-serif font-semibold text-ink">{{ $tutor->user->name }}</p>
                                 <div class="flex items-center gap-1 mt-0.5">
-                                    <span class="text-mint text-xs font-semibold">Å“" Verified</span>
+                                    <span class="text-mint text-xs font-semibold">Å-" Verified</span>
                                     @if($tutor->experience_years > 0)
                                     <span class="text-muted text-xs">· {{ $tutor->experience_years }}y exp</span>
                                     @endif

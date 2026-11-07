@@ -145,7 +145,7 @@
                         @if($isThis)
                         <span style="font-size:12px;font-weight:700;color:#B7870A;background:rgba(212,160,23,.12);padding:4px 12px;border-radius:999px;">Current</span>
                         @else
-                        <a href="{{ route('group-sessions.show', $s) }}" style="font-size:12px;font-weight:600;color:#0A64BC;text-decoration:none;">View " "”</a>
+                        <a href="{{ route('group-sessions.show', $s) }}" style="font-size:12px;font-weight:600;color:#0A64BC;text-decoration:none;">View " "-</a>
                         @endif
                     </div>
                     @endforeach

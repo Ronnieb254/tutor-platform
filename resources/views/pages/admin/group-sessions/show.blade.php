@@ -26,19 +26,19 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
         <a href="{{ route('admin.group-sessions.edit', $groupSession) }}" class="btn btn-outline">Edit</a>
         <form method="POST" action="{{ route('admin.group-sessions.start', $groupSession) }}" style="display:inline;">
             @csrf
-            <button class="btn btn-success" onclick="return confirm('Start this session now?')">"“Â¶ Start Session</button>
+            <button class="btn btn-success" onclick="return confirm('Start this session now?')">"-Â¶ Start Session</button>
         </form>
         @endif
         @if($groupSession->status === 'in_progress')
         <form method="POST" action="{{ route('admin.group-sessions.complete', $groupSession) }}" style="display:inline;">
             @csrf
-            <button class="btn btn-primary" onclick="return confirm('Mark session as completed?')">Å“" Mark Complete</button>
+            <button class="btn btn-primary" onclick="return confirm('Mark session as completed?')">Å-" Mark Complete</button>
         </form>
         @endif
         @if(!in_array($groupSession->status, ['completed','cancelled']))
         <form method="POST" action="{{ route('admin.group-sessions.cancel', $groupSession) }}" style="display:inline;">
             @csrf
-            <button class="btn btn-danger" onclick="return confirm('Cancel this group session?')">Å“• Cancel</button>
+            <button class="btn btn-danger" onclick="return confirm('Cancel this group session?')">Å-• Cancel</button>
         </form>
         @endif
         @if($groupSession->status === 'scheduled' && $groupSession->enrollments->count() === 0)
@@ -50,7 +50,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
     </div>
 </div>
 
-@if(session('success'))<div style="background:#D1FAE5;border:1px solid #6EE7B7;border-radius:10px;padding:12px 16px;margin-bottom:16px;color:#065F46;font-size:13px;">Å“" {{ session('success') }}</div>@endif
+@if(session('success'))<div style="background:#D1FAE5;border:1px solid #6EE7B7;border-radius:10px;padding:12px 16px;margin-bottom:16px;color:#065F46;font-size:13px;">Å-" {{ session('success') }}</div>@endif
 @if(session('error'))<div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;padding:12px 16px;margin-bottom:16px;color:#991B1B;font-size:13px;">Å¡Â  {{ session('error') }}</div>@endif
 
 <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;" class="show-grid">
