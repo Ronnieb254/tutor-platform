@@ -131,7 +131,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     </div>
 
                     <div class="field">
-                        <div class="flabel"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Level(s) You Teach <span style="color:var(--coral);">*</span></div>
+                        <div class="flabel"><i class="fas fa-layer-group"></i> Level(s) You Teach <span style="color:var(--coral);">*</span></div>
                         <div style="display:flex;flex-wrap:wrap;gap:8px;">
                             @foreach(['JSS (Grade 7-9)','Senior School (Grade 10-12)','Form 3','Form 4','Primary (Class 1-6)'] as $level)
                             <label style="cursor:pointer;">
@@ -157,7 +157,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                     </div>
 
                     <div class="field">
-                        <div class="flabel"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Hourly Rate (KSh) <span style="color:var(--coral);">*</span></div>
+                        <div class="flabel"><i class="fas fa-money-bill"></i> Hourly Rate (KSh) <span style="color:var(--coral);">*</span></div>
                         <div style="position:relative;">
                             <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--muted);">KSh</span>
                             <input type="number" x-model="form.hourly_rate" class="finput" style="padding-left:46px;" placeholder="e.g. 2000" min="500">
@@ -295,7 +295,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                         {{-- National ID --}}
                         <div>
-                            <div class="flabel"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> National ID / Passport <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><i class="fas fa-id-card"></i> National ID / Passport <span style="color:var(--coral);">*</span></div>
                             <div class="upload-zone" :class="files.national_id ? 'has-file' : ''"
                                  @dragover.prevent="$el.classList.add('drag')"
                                  @dragleave="$el.classList.remove('drag')"
@@ -399,7 +399,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                         {{-- Passport Photo --}}
                         <div>
-                            <div class="flabel"><span style="font-size:inherit;"><i class="fas fa-camera"></i></span> Passport Size Photo <span style="color:var(--coral);">*</span></div>
+                            <div class="flabel"><i class="fas fa-camera"></i> Passport Size Photo <span style="color:var(--coral);">*</span></div>
                             <div class="upload-zone" :class="files.passport_photo ? 'has-file' : ''"
                                  @dragover.prevent="$el.classList.add('drag')"
                                  @dragleave="$el.classList.remove('drag')"
@@ -467,7 +467,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                                     <span class="speedy-badge"><i class="fas fa-bolt"></i> Priority Queue</span>
                                 </div>
                                 <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--ink);margin-bottom:6px;">KSh 1,000</div>
-                                <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Within 24 hours</div>
+                                <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fas fa-clock"></i> Within 24 hours</div>
                                 <p style="font-size:13px;color:rgba(21,40,31,.65);line-height:1.6;">Skip the queue. Your application is prioritised and reviewed within 24 hours by a senior verifier.</p>
                             </div>
                         </div>
@@ -482,7 +482,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                         </p>
                         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
                             <span style="background:#fff;border:1px solid rgba(21,40,31,.12);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:5px;">
-                                <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span>M-Pesa
+                                <i class="fas fa-mobile-alt"></i>M-Pesa
                             </span>
                         </div>
                         <p style="font-size:12px;color:rgba(21,40,31,.6);">Payment is processed via M-Pesa STK Push after you submit your application. You will receive a prompt on your phone.</p>
@@ -490,7 +490,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 
                     {{-- What happens next --}}
                     <div style="margin-top:18px;padding:16px;background:#F9FAF9;border-radius:14px;">
-                        <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span> What happens after submission</p>
+                        <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fas fa-clipboard"></i> What happens after submission</p>
                         @foreach(['We review your profile, subjects and all uploaded documents','You receive an email when approved (or if action is required)','Your profile goes live and students can book sessions with you','Earnings are credited to your wallet after each completed session'] as $item)
                         <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
                             <i class="fas fa-check-circle"></i>{{ $item }}
@@ -509,7 +509,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                 <div style="display:flex;gap:12px;" x-show="!submitting">
                     <button class="btn-back" @click="step=3"><span style="font-size:inherit;">←</span> Back</button>
                     <button class="btn-next" @click="submitApplication()" :disabled="submitting">
-                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                        <i class="fas fa-paper-plane"></i>
                         <span x-text="form.speedy ? 'Submit & Pay KSh 1,000' : 'Submit Application'"></span>
                     </button>
                 </div>
@@ -539,7 +539,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
                             ] as [$ic,$col,$title,$desc])
                             <div style="display:flex;align-items:flex-start;gap:12px;">
                                 <div style="width:32px;height:32px;border-radius:10px;background:{{ $col }}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                    <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                                    <i class="fas {{ $ic }}"></i>
                                 </div>
                                 <div>
                                     <div style="font-size:13px;font-weight:600;color:var(--ink);">{{ $title }}</div>
