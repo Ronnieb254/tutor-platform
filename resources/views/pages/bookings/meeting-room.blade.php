@@ -80,7 +80,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                     <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
                 @endif
                 <span class="recording-indicator" id="recIndicator">
-                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> REC
+                    <i class="fas fa-circle" style="color:#ff4444;"></i> REC
                 </span>
             </div>
         </div>
@@ -120,7 +120,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 </p>
             </div>
             <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
-                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                <i class="fas fa-copy"></i>
             </button>
             <button onclick="leaveSession()" class="exit-btn">
                 <i class="fas fa-phone"></i> Leave
@@ -381,7 +381,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
             btn.innerHTML = '<i class="fas fa-check-circle"></i>';
             btn.classList.add('copied');
             setTimeout(() => {
-                btn.innerHTML = '<span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>';
+                btn.innerHTML = '<i class="fas fa-copy"></i>';
                 btn.classList.remove('copied');
             }, 2000);
         }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));

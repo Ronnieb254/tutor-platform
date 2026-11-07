@@ -59,7 +59,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     [$bclass,$bicon,$blabel] = $statusConfig[$booking->status] ?? ['bdg gray','fa-circle','Unknown'];
                     @endphp
                     <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(255,255,255,.15);color:#fff;">
-                        <span class="$bicon }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> {{ $blabel }}
+                        <i class="fas fa-{{ $bicon }}"></i> {{ $blabel }}
                     </span>
                     @if($canJoin && $booking->status === 'confirmed')
                     <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(16,185,129,.2);color:#4ADE80;border:1px solid rgba(16,185,129,.3);">
@@ -79,8 +79,8 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                 <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:rgba(255,255,255,.6);">
                     <span><i class="fas fa-calendar"></i>{{ $sessionStart->format('D, M j, Y') }}</span>
                     <span><i class="fas fa-clock"></i>{{ $sessionStart->format('g:i a') }} "- {{ $sessionEnd->format('g:i a') }} EAT</span>
-                    <span><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ $booking->duration_minutes }} minutes</span>
-                    <span><span class="($booking->session_type ?? 'individual') === 'group' ? 'users' : 'user' }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ ucfirst($booking->session_type ?? 'individual') }} Session</span>
+                    <span><i class="fas fa-hourglass-half"></i>{{ $booking->duration_minutes }} minutes</span>
+                    <span><i class="fas {{ ($booking->session_type ?? 'individual') === 'group' ? 'fa-users' : 'fa-user' }}"></i>{{ ucfirst($booking->session_type ?? 'individual') }} Session</span>
                     @if($booking->subject)<span><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>{{ $booking->subject->name }}</span>@endif
                     <span><span style="font-size:inherit;"><i class="fas fa-money-bill"></i></span>KSh {{ number_format($booking->total_amount) }}</span>
                 </div>
@@ -190,7 +190,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     @else
                     {{-- Session not yet open --}}
                     <div style="min-height:280px;background:#111C16;border-radius:16px;padding:48px 20px;text-align:center;">
-                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                        <i class="fas fa-hourglass-half" style="font-size:2.5rem;color:rgba(255,255,255,.4);margin-bottom:16px;display:block;"></i>
                         <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#fff;margin-bottom:8px;">Session Room Waiting</h3>
                         <p style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">This room opens 5 minutes before your session starts. Your access code is already on this page.</p>
                         <div style="background:rgba(255,255,255,.08);border-radius:16px;padding:16px 24px;display:inline-block;">
@@ -204,7 +204,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                                 ['fa-globe','No download required'],
                             ] as [$ic,$tip])
                             <span style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);padding:7px 14px;border-radius:999px;font-size:12px;color:rgba(255,255,255,.6);">
-                                <span class="{{$ic}}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{$tip}}
+                                <i class="fas {{$ic}}"></i>{{$tip}}
                             </span>
                             @endforeach
                         </div>
@@ -227,7 +227,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     @if($myCode)
                     <button onclick="navigator.clipboard.writeText('{{ $myCode }}');this.innerHTML='<i class=\'fa-solid fa-check fa-xs\'></i> Copied!';setTimeout(()=>this.innerHTML='<i class=\'fa-solid fa-copy fa-xs\'></i> Copy Code',2000)"
                             style="margin-top:12px;background:none;border:1.5px solid rgba(10,100,188,.3);color:#0A64BC;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;">
-                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Copy Code
+                        <i class="fas fa-copy"></i> Copy Code
                     </button>
                     @endif
                 </div>
@@ -243,7 +243,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                         '5. Your private classroom opens instantly in your browser',
                     ] as $s)
                     <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:5px;display:flex;align-items:flex-start;gap:7px;">
-                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ $s }}
+                        <i class="fas fa-chevron-right" style="margin-top:3px;flex-shrink:0;"></i>{{ $s }}
                     </p>
                     @endforeach
                 </div>
@@ -359,7 +359,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                            style="flex:1;height:44px;padding:0 15px;border-radius:12px;border:1.5px solid rgba(21,40,31,.15);font-size:14px;font-family:inherit;outline:none;background:#fff;"
                            onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.15)'">
                     <button type="submit" style="height:44px;padding:0 18px;border-radius:12px;background:#0A64BC;color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:600;display:flex;align-items:center;gap:6px;transition:background .15s;" onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
-                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Send
+                        <i class="fas fa-paper-plane"></i> Send
                     </button>
                 </form>
             </div>
@@ -432,7 +432,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     ] as [$icon,$label,$val])
                     <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.06);gap:8px;">
                         <span style="display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(21,40,31,.5);flex-shrink:0;">
-                            <span class="$icon }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ $label }}
+                            <i class="fas fa-{{ $icon }}"></i>{{ $label }}
                         </span>
                         <span style="font-size:13px;font-weight:600;color:#15281F;text-align:right;">{{ $val }}</span>
                     </div>
@@ -543,7 +543,7 @@ $sessionName    = $tutorProfile ? $tutorProfile->getSessionNameForSession($booki
                     @endphp
                     <div style="display:flex;align-items:center;gap:12px;padding:8px 0;{{ $idx < count($stages)-1 ? 'border-bottom:1px solid rgba(21,40,31,.05);' : '' }}">
                         <div style="width:28px;height:28px;border-radius:50%;border:2px solid {{ $dotColor }};background:{{ $isDone ? '#10B981' : ($isActive ? 'rgba(10,100,188,.1)' : 'transparent') }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <span class="$isDone ? 'check' : $icon }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                            <i class="fas fa-{{ $isDone ? 'check' : $icon }}" style="font-size:11px;color:{{ $isDone ? '#fff' : ($isActive ? '#0A64BC' : 'rgba(21,40,31,.3)') }};"></i>
                         </div>
                         <span style="font-size:13px;font-weight:{{ $isActive ? '700' : '500' }};color:{{ $textColor }};">{{ $label }}</span>
                         @if($isActive)<span style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:#0A64BC;animation:pulse-green 1.5s infinite;"></span>@endif

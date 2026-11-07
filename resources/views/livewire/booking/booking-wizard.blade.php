@@ -131,7 +131,7 @@ $sessionTiers = [
         {{-- Notes --}}
         <div>
             <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Notes for tutor <span style="color:var(--coral);">*</span>
+                <i class="fas fa-sticky-note"></i> Notes for tutor <span style="color:var(--coral);">*</span>
             </p>
             <textarea wire:model="notes" rows="2"
                       placeholder="Topics to cover, past exam areas, specific questions…"
