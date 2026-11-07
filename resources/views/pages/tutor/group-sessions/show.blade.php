@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>{{ Str::limit($groupSession->title, 50) }} â‚¬" Mwalimu Tutor Portal</title>
@@ -49,7 +49,7 @@ a{color:inherit;text-decoration:none;}
 </head>
 <body>
 @php
-$user    = auth()->user();
+$user = auth()->user();
 $profile = $user->tutorProfile;
 $isApproved = $profile?->is_approved ?? false;
 $pendingBookings = $user->bookingsAsTutor()->where('status','pending')->count();
@@ -64,223 +64,223 @@ $canJoin = $groupSession->canJoin($user);
 
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
-    <div class="sb-logo">
-        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-        <div><div class="sb-logo-sub">Tutor Portal</div></div>
-    </div>
-    <nav class="sb-nav">
-        <div class="sb-section">
-            <div class="sb-label">Main</div>
-            <a href="{{ route('tutor.dashboard') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                Overview
-            </a>
-        </div>
-        @if($isApproved)
-        <div class="sb-section">
-            <div class="sb-label">Group Classes</div>
-            <a href="{{ route('tutor.group-sessions.index') }}" class="sb-item active">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                My Group Sessions
-            </a>
-            <a href="{{ route('tutor.group-sessions.create') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                Create Session
-            </a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Examiner</div>
-            <a href="{{ route('examiner.dashboard') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                Examiner Clinics
-            </a>
-        </div>
-        @endif
-        <div class="sb-section">
-            <div class="sb-label">Finance</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=earnings" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                Earnings &amp; Wallet
-            </a>
-        </div>
-    </nav>
-    <div class="sb-footer">
-        <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-            <div style="flex:1;min-width:0;"><div class="sb-uname">{{ $user->name }}</div><div class="sb-urole">Tutor</div></div>
-            <form method="POST" action="{{ route('logout') }}">@csrf
-                <button type="submit" class="sb-logout"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
-            </form>
-        </div>
-    </div>
+ <div class="sb-logo">
+ <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
+ <div><div class="sb-logo-sub">Tutor Portal</div></div>
+ </div>
+ <nav class="sb-nav">
+ <div class="sb-section">
+ <div class="sb-label">Main</div>
+ <a href="{{ route('tutor.dashboard') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+ Overview
+ </a>
+ </div>
+ @if($isApproved)
+ <div class="sb-section">
+ <div class="sb-label">Group Classes</div>
+ <a href="{{ route('tutor.group-sessions.index') }}" class="sb-item active">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+ My Group Sessions
+ </a>
+ <a href="{{ route('tutor.group-sessions.create') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+ Create Session
+ </a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Examiner</div>
+ <a href="{{ route('examiner.dashboard') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+ Examiner Clinics
+ </a>
+ </div>
+ @endif
+ <div class="sb-section">
+ <div class="sb-label">Finance</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=earnings" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+ Earnings &amp; Wallet
+ </a>
+ </div>
+ </nav>
+ <div class="sb-footer">
+ <div style="display:flex;align-items:center;gap:10px;">
+ <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+ <div style="flex:1;min-width:0;"><div class="sb-uname">{{ $user->name }}</div><div class="sb-urole">Tutor</div></div>
+ <form method="POST" action="{{ route('logout') }}">@csrf
+ <button type="submit" class="sb-logout"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+ </form>
+ </div>
+ </div>
 </aside>
 
 {{-- MAIN --}}
 <div class="main">
-    <div class="topbar">
-        <div style="display:flex;align-items:center;gap:12px;">
-            <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-            <span class="page-title" style="font-size:15px;">{{ Str::limit($groupSession->title, 45) }}</span>
-        </div>
-        <div style="display:flex;gap:8px;">
-            @if($canJoin)
-            <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="padding:7px 14px;font-size:12px;">
-                <i class="fas fa-video"></i> Join as Moderator
-            </a>
-            @endif
-            <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost" style="padding:7px 14px;font-size:12px;">
-                <span style="font-size:inherit;">←</span> Back
-            </a>
-        </div>
-    </div>
+ <div class="topbar">
+ <div style="display:flex;align-items:center;gap:12px;">
+ <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+ <span class="page-title" style="font-size:15px;">{{ Str::limit($groupSession->title, 45) }}</span>
+ </div>
+ <div style="display:flex;gap:8px;">
+ @if($canJoin)
+ <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="padding:7px 14px;font-size:12px;">
+ <i class="fas fa-video"></i> Join as Moderator
+ </a>
+ @endif
+ <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost" style="padding:7px 14px;font-size:12px;">
+ <span style="font-size:inherit;">←</span> Back
+ </a>
+ </div>
+ </div>
 
-    <div class="content">
-        @if(session('success'))
-        <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-        </div>
-        @endif
+ <div class="content">
+ @if(session('success'))
+ <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+ <i class="fas fa-check-circle"></i> {{ session('success') }}
+ </div>
+ @endif
 
-        <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;" class="show-cols">
+ <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;" class="show-cols">
 
-            {{-- LEFT --}}
-            <div style="display:flex;flex-direction:column;gap:16px;">
+ {{-- LEFT --}}
+ <div style="display:flex;flex-direction:column;gap:16px;">
 
-                {{-- Session info card --}}
-                <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:22px;">
-                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
-                        @if($groupSession->subject)
-                        <span style="background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 12px;border-radius:999px;font-size:11px;font-weight:700;">{{ $groupSession->subject->name }}</span>
-                        @endif
-                        @php
-                            $statusMap=['scheduled'=>['#DCFCE7','#166534','Scheduled'],'cancelled'=>['#FEE2E2','#991B1B','Cancelled'],'completed'=>['rgba(21,40,31,.06)','rgba(21,40,31,.5)','Completed'],'active'=>['rgba(10,100,188,.1)','#0A64BC','Live']];
-                            [$sbg,$sfc,$slbl]=$statusMap[$groupSession->status]??['rgba(21,40,31,.06)','rgba(21,40,31,.5)',$groupSession->status];
-                        @endphp
-                        <span style="background:{{ $sbg }};color:{{ $sfc }};padding:3px 12px;border-radius:999px;font-size:11px;font-weight:700;">{{ $slbl }}</span>
-                    </div>
-                    <h2 style="font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:14px;">{{ $groupSession->title }}</h2>
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;" class="meta-g">
-                        @foreach([['fa-calendar','Date',$groupSession->scheduled_at->format('M j, Y')],['fa-clock','Time',$groupSession->scheduled_at->format('g:ia')],['fa-hourglass','Duration',$groupSession->duration_minutes.' min']] as [$ic,$lbl,$val])
-                        <div style="background:rgba(21,40,31,.02);border-radius:10px;padding:12px;">
-                            <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;"><span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ $lbl }}</p>
-                            <p style="font-size:15px;font-weight:700;color:var(--ink);">{{ $val }}</p>
-                        </div>
-                        @endforeach
-                    </div>
-                    <style>.meta-g{grid-template-columns:1fr!important;}@media(min-width:400px){.meta-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
-                    @if($groupSession->description)
-                    <p style="font-size:14px;color:var(--muted);line-height:1.75;">{{ $groupSession->description }}</p>
-                    @endif
-                    @if($groupSession->status === 'scheduled')
-                    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--hair);">
-                        <form method="POST" action="{{ route('tutor.group-sessions.cancel', $groupSession) }}" onsubmit="return confirm('Are you sure you want to cancel this session? Enrolled students will be notified.');">
-                            @csrf
-                            <button type="submit" class="btn btn-danger" style="padding:8px 16px;font-size:12px;">
-                                <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancel Session
-                            </button>
-                        </form>
-                    </div>
-                    @endif
-                </div>
+ {{-- Session info card --}}
+ <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:22px;">
+ <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+ @if($groupSession->subject)
+ <span style="background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 12px;border-radius:999px;font-size:11px;font-weight:700;">{{ $groupSession->subject->name }}</span>
+ @endif
+ @php
+ $statusMap=['scheduled'=>['#DCFCE7','#166534','Scheduled'],'cancelled'=>['#FEE2E2','#991B1B','Cancelled'],'completed'=>['rgba(21,40,31,.06)','rgba(21,40,31,.5)','Completed'],'active'=>['rgba(10,100,188,.1)','#0A64BC','Live']];
+ [$sbg,$sfc,$slbl]=$statusMap[$groupSession->status]??['rgba(21,40,31,.06)','rgba(21,40,31,.5)',$groupSession->status];
+ @endphp
+ <span style="background:{{ $sbg }};color:{{ $sfc }};padding:3px 12px;border-radius:999px;font-size:11px;font-weight:700;">{{ $slbl }}</span>
+ </div>
+ <h2 style="font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:14px;">{{ $groupSession->title }}</h2>
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;" class="meta-g">
+ @foreach([['fa-calendar','Date',$groupSession->scheduled_at->format('M j, Y')],['fa-clock','Time',$groupSession->scheduled_at->format('g:ia')],['fa-hourglass','Duration',$groupSession->duration_minutes.' min']] as [$ic,$lbl,$val])
+ <div style="background:rgba(21,40,31,.02);border-radius:10px;padding:12px;">
+ <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;"><i class="fas {{ $ic }}"></i>{{ $lbl }}</p>
+ <p style="font-size:15px;font-weight:700;color:var(--ink);">{{ $val }}</p>
+ </div>
+ @endforeach
+ </div>
+ <style>.meta-g{grid-template-columns:1fr!important;}@media(min-width:400px){.meta-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
+ @if($groupSession->description)
+ <p style="font-size:14px;color:var(--muted);line-height:1.75;">{{ $groupSession->description }}</p>
+ @endif
+ @if($groupSession->status === 'scheduled')
+ <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--hair);">
+ <form method="POST" action="{{ route('tutor.group-sessions.cancel', $groupSession) }}" onsubmit="return confirm('Are you sure you want to cancel this session? Enrolled students will be notified.');">
+ @csrf
+ <button type="submit" class="btn btn-danger" style="padding:8px 16px;font-size:12px;">
+ <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancel Session
+ </button>
+ </form>
+ </div>
+ @endif
+ </div>
 
-                {{-- Enrolled students --}}
-                <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);overflow:hidden;">
-                    <div style="padding:16px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;">
-                        <h3 style="font-family:'Fraunces',serif;font-size:16px;color:var(--ink);">Enrolled Students</h3>
-                        <span style="font-size:12px;font-weight:700;color:{{ $isFull ? '#991B1B' : '#10B981' }};">{{ $enrolledCount }}/{{ $groupSession->max_students }}</span>
-                    </div>
-                    @if($groupSession->enrollments->isEmpty())
-                    <div style="padding:32px;text-align:center;">
-                        <i class="fas fa-user"></i>
-                        <p style="font-size:13px;color:var(--muted);">No students enrolled yet.</p>
-                    </div>
-                    @else
-                    <div style="overflow-x:auto;">
-                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
-                            <thead>
-                                <tr style="background:rgba(21,40,31,.02);">
-                                    <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Student</th>
-                                    <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Session Code</th>
-                                    <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Paid</th>
-                                    <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Enrolled At</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($groupSession->enrollments as $enroll)
-                                <tr style="border-top:1px solid var(--hair);">
-                                    <td style="padding:12px 16px;">
-                                        <div style="display:flex;align-items:center;gap:8px;">
-                                            <div style="width:28px;height:28px;border-radius:8px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-user"></i></div>
-                                            <div>
-                                                <p style="font-weight:600;color:var(--ink);margin:0;">{{ $enroll->student?->name ?? 'Unknown' }}</p>
-                                                <p style="font-size:11px;color:var(--muted);margin:0;">{{ $enroll->student?->email }}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="padding:12px;font-family:monospace;font-size:13px;font-weight:700;color:var(--ink);">{{ $enroll->session_code ?? 'â‚¬"' }}</td>
-                                    <td style="padding:12px;text-align:right;font-weight:700;color:#EEBE15;font-family:'Fraunces',serif;">
-                                        KSh {{ number_format($enroll->payment?->amount ?? $groupSession->price) }}
-                                    </td>
-                                    <td style="padding:12px;font-size:12px;color:var(--muted);">{{ $enroll->created_at->format('M j, Y g:ia') }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    @endif
-                </div>
-            </div>
+ {{-- Enrolled students --}}
+ <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);overflow:hidden;">
+ <div style="padding:16px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;">
+ <h3 style="font-family:'Fraunces',serif;font-size:16px;color:var(--ink);">Enrolled Students</h3>
+ <span style="font-size:12px;font-weight:700;color:{{ $isFull ? '#991B1B' : '#10B981' }};">{{ $enrolledCount }}/{{ $groupSession->max_students }}</span>
+ </div>
+ @if($groupSession->enrollments->isEmpty())
+ <div style="padding:32px;text-align:center;">
+ <i class="fas fa-user"></i>
+ <p style="font-size:13px;color:var(--muted);">No students enrolled yet.</p>
+ </div>
+ @else
+ <div style="overflow-x:auto;">
+ <table style="width:100%;border-collapse:collapse;font-size:13px;">
+ <thead>
+ <tr style="background:rgba(21,40,31,.02);">
+ <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Student</th>
+ <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Session Code</th>
+ <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Paid</th>
+ <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Enrolled At</th>
+ </tr>
+ </thead>
+ <tbody>
+ @foreach($groupSession->enrollments as $enroll)
+ <tr style="border-top:1px solid var(--hair);">
+ <td style="padding:12px 16px;">
+ <div style="display:flex;align-items:center;gap:8px;">
+ <div style="width:28px;height:28px;border-radius:8px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-user"></i></div>
+ <div>
+ <p style="font-weight:600;color:var(--ink);margin:0;">{{ $enroll->student?->name ?? 'Unknown' }}</p>
+ <p style="font-size:11px;color:var(--muted);margin:0;">{{ $enroll->student?->email }}</p>
+ </div>
+ </div>
+ </td>
+ <td style="padding:12px;font-family:monospace;font-size:13px;font-weight:700;color:var(--ink);">{{ $enroll->session_code ?? 'â‚¬"' }}</td>
+ <td style="padding:12px;text-align:right;font-weight:700;color:#EEBE15;font-family:'Fraunces',serif;">
+ KSh {{ number_format($enroll->payment?->amount ?? $groupSession->price) }}
+ </td>
+ <td style="padding:12px;font-size:12px;color:var(--muted);">{{ $enroll->created_at->format('M j, Y g:ia') }}</td>
+ </tr>
+ @endforeach
+ </tbody>
+ </table>
+ </div>
+ @endif
+ </div>
+ </div>
 
-            {{-- RIGHT: sidebar summary --}}
-            <div>
-                <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:20px;position:sticky;top:20px;">
-                    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:14px;">Quick Stats</p>
-                    @foreach([['Seats Filled',$enrolledCount.'/'.$groupSession->max_students,'#10B981'],['Price per Seat','KSh '.number_format($groupSession->price),'#EEBE15'],['Est. Earnings','KSh '.number_format($enrolledCount * $groupSession->price),'#0A64BC'],['Your Cut (25%)','KSh '.number_format($enrolledCount * $groupSession->price * 0.25),'#EEBE15']] as [$lbl,$val,$col])
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair);">
-                        <span style="font-size:13px;color:var(--muted);">{{ $lbl }}</span>
-                        <span style="font-size:14px;font-weight:700;color:{{ $col }};">{{ $val }}</span>
-                    </div>
-                    @endforeach
+ {{-- RIGHT: sidebar summary --}}
+ <div>
+ <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:20px;position:sticky;top:20px;">
+ <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:14px;">Quick Stats</p>
+ @foreach([['Seats Filled',$enrolledCount.'/'.$groupSession->max_students,'#10B981'],['Price per Seat','KSh '.number_format($groupSession->price),'#EEBE15'],['Est. Earnings','KSh '.number_format($enrolledCount * $groupSession->price),'#0A64BC'],['Your Cut (25%)','KSh '.number_format($enrolledCount * $groupSession->price * 0.25),'#EEBE15']] as [$lbl,$val,$col])
+ <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair);">
+ <span style="font-size:13px;color:var(--muted);">{{ $lbl }}</span>
+ <span style="font-size:14px;font-weight:700;color:{{ $col }};">{{ $val }}</span>
+ </div>
+ @endforeach
 
-                    <div style="margin-top:16px;">
-                        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Capacity</p>
-                        <div style="width:100%;height:8px;background:rgba(21,40,31,.06);border-radius:999px;overflow:hidden;">
-                            <div style="width:{{ $fillPct }}%;height:100%;background:{{ $isFull ? '#E8522A' : ($fillPct > 70 ? '#EEBE15' : '#10B981') }};border-radius:999px;"></div>
-                        </div>
-                        <p style="font-size:11px;color:var(--muted);margin-top:5px;">{{ $fillPct }}% filled</p>
-                    </div>
+ <div style="margin-top:16px;">
+ <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Capacity</p>
+ <div style="width:100%;height:8px;background:rgba(21,40,31,.06);border-radius:999px;overflow:hidden;">
+ <div style="width:{{ $fillPct }}%;height:100%;background:{{ $isFull ? '#E8522A' : ($fillPct > 70 ? '#EEBE15' : '#10B981') }};border-radius:999px;"></div>
+ </div>
+ <p style="font-size:11px;color:var(--muted);margin-top:5px;">{{ $fillPct }}% filled</p>
+ </div>
 
-                    @if($canJoin)
-                    <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="width:100%;justify-content:center;margin-top:16px;">
-                        <i class="fas fa-video"></i> Join as Moderator
-                    </a>
-                    @endif
+ @if($canJoin)
+ <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="width:100%;justify-content:center;margin-top:16px;">
+ <i class="fas fa-video"></i> Join as Moderator
+ </a>
+ @endif
 
-                    {{-- series siblings --}}
-                    @if($seriesSessions->count() > 1)
-                    <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--hair);">
-                        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;">Series Sessions</p>
-                        @foreach($seriesSessions as $s)
-                        @php $isThis = $s->id === $groupSession->id; @endphp
-                        <div style="padding:8px 10px;border-radius:9px;background:{{ $isThis ? 'rgba(212,160,23,.08)' : 'rgba(21,40,31,.02)' }};border:1px solid {{ $isThis ? 'rgba(212,160,23,.25)' : 'transparent' }};margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
-                            <div>
-                                <p style="font-size:12px;font-weight:600;color:var(--ink);margin:0;">Session {{ $s->session_number }}</p>
-                                <p style="font-size:11px;color:var(--muted);margin:0;">{{ $s->scheduled_at->format('M j') }} · {{ $s->enrolledCount() }}/{{ $s->max_students }}</p>
-                            </div>
-                            @if(!$isThis)
-                            <a href="{{ route('tutor.group-sessions.show', $s) }}" style="font-size:11px;color:#0A64BC;font-weight:600;">View</a>
-                            @else
-                            <span style="font-size:11px;color:#B7870A;font-weight:600;">Current</span>
-                            @endif
-                        </div>
-                        @endforeach
-                    </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-        <style>.show-cols{grid-template-columns:1fr!important;}@media(min-width:900px){.show-cols{grid-template-columns:1fr 320px!important;}}</style>
-    </div>{{-- /content --}}
+ {{-- series siblings --}}
+ @if($seriesSessions->count() > 1)
+ <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--hair);">
+ <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;">Series Sessions</p>
+ @foreach($seriesSessions as $s)
+ @php $isThis = $s->id === $groupSession->id; @endphp
+ <div style="padding:8px 10px;border-radius:9px;background:{{ $isThis ? 'rgba(212,160,23,.08)' : 'rgba(21,40,31,.02)' }};border:1px solid {{ $isThis ? 'rgba(212,160,23,.25)' : 'transparent' }};margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
+ <div>
+ <p style="font-size:12px;font-weight:600;color:var(--ink);margin:0;">Session {{ $s->session_number }}</p>
+ <p style="font-size:11px;color:var(--muted);margin:0;">{{ $s->scheduled_at->format('M j') }} · {{ $s->enrolledCount() }}/{{ $s->max_students }}</p>
+ </div>
+ @if(!$isThis)
+ <a href="{{ route('tutor.group-sessions.show', $s) }}" style="font-size:11px;color:#0A64BC;font-weight:600;">View</a>
+ @else
+ <span style="font-size:11px;color:#B7870A;font-weight:600;">Current</span>
+ @endif
+ </div>
+ @endforeach
+ </div>
+ @endif
+ </div>
+ </div>
+ </div>
+ <style>.show-cols{grid-template-columns:1fr!important;}@media(min-width:900px){.show-cols{grid-template-columns:1fr 320px!important;}}</style>
+ </div>{{-- /content --}}
 </div>{{-- /main --}}
 </div>{{-- /layout --}}
 @livewireScripts

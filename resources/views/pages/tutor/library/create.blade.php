@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Upload Resource â‚¬" Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,173 +68,173 @@ select.form-input{cursor:pointer;}
 <body>
 <div class="layout" x-data="{ resourceType: 'article', hasFile: false }">
 <aside class="sidebar">
-    <div class="sb-logo">
-        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-        <div><div class="sb-logo-text">Mwalimu</div><div style="font-size:10px;color:rgba(255,255,255,.3);">Tutor Portal</div></div>
-    </div>
-    <nav class="sb-nav">
-        <div class="sb-section">
-            <div class="sb-label">Tutor Tools</div>
-            <a href="{{ route('tutor.dashboard') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
-            <a href="{{ route('tutor.library.index') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>My Resources</a>
-            <a href="{{ route('tutor.library.create') }}" class="sb-item active"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Upload Resource</a>
-        </div>
-    </nav>
-    <div class="sb-footer">
-        <div class="sb-user">
-            <img src="{{ auth()->user()->avatar_url }}" class="sb-avatar" alt="">
-            <div style="flex:1;min-width:0;"><div class="sb-uname">{{ auth()->user()->name }}</div><div class="sb-urole">Tutor</div></div>
-            <form method="POST" action="{{ route('logout') }}">@csrf
-                <button type="submit" class="sb-logout"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
-            </form>
-        </div>
-    </div>
+ <div class="sb-logo">
+ <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
+ <div><div class="sb-logo-text">Mwalimu</div><div style="font-size:10px;color:rgba(255,255,255,.3);">Tutor Portal</div></div>
+ </div>
+ <nav class="sb-nav">
+ <div class="sb-section">
+ <div class="sb-label">Tutor Tools</div>
+ <a href="{{ route('tutor.dashboard') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+ <a href="{{ route('tutor.library.index') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>My Resources</a>
+ <a href="{{ route('tutor.library.create') }}" class="sb-item active"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Upload Resource</a>
+ </div>
+ </nav>
+ <div class="sb-footer">
+ <div class="sb-user">
+ <img src="{{ auth()->user()->avatar_url }}" class="sb-avatar" alt="">
+ <div style="flex:1;min-width:0;"><div class="sb-uname">{{ auth()->user()->name }}</div><div class="sb-urole">Tutor</div></div>
+ <form method="POST" action="{{ route('logout') }}">@csrf
+ <button type="submit" class="sb-logout"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+ </form>
+ </div>
+ </div>
 </aside>
 
 <div class="main">
-    <header class="topbar">
-        <div style="display:flex;align-items:center;gap:12px;">
-            <a href="{{ route('tutor.library.index') }}" style="color:var(--muted);">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-            </a>
-            <div class="page-title">Upload Resource</div>
-        </div>
-    </header>
+ <header class="topbar">
+ <div style="display:flex;align-items:center;gap:12px;">
+ <a href="{{ route('tutor.library.index') }}" style="color:var(--muted);">
+ <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+ </a>
+ <div class="page-title">Upload Resource</div>
+ </div>
+ </header>
 
-    <div class="content">
-        @if($errors->any())
-        <div class="flash flash-err">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <div>
-                @foreach($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                @endforeach
-            </div>
-        </div>
-        @endif
+ <div class="content">
+ @if($errors->any())
+ <div class="flash flash-err">
+ <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+ <div>
+ @foreach($errors->all() as $error)
+ <div>{{ $error }}</div>
+ @endforeach
+ </div>
+ </div>
+ @endif
 
-        <form method="POST" action="{{ route('tutor.library.store') }}" enctype="multipart/form-data" style="max-width:800px;">
-            @csrf
+ <form method="POST" action="{{ route('tutor.library.store') }}" enctype="multipart/form-data" style="max-width:800px;">
+ @csrf
 
-            {{-- Resource type selector --}}
-            <div class="card card-p" style="margin-bottom:20px;">
-                <div class="form-label" style="margin-bottom:12px;">Resource Type <span>*</span></div>
-                <div class="type-selector">
-                    @php
-                        $types = [
-                            'article' => ['Ã°Å¸""ž','Article','Written guide or tutorial'],
-                            'pdf'     => ['Ã°Å¸"•','PDF','PDF document or eBook'],
-                            'video'   => ['Ã°Å¸Å½Â¥','Video','Lesson video file'],
-                            'notes'   => ['Ã°Å¸"Â','Notes','Study notes or summaries'],
-                            'past_paper' => ['Ã°Å¸""¹','Past Paper','Exam past paper'],
-                        ];
-                    @endphp
-                    @foreach($types as $value => [$icon, $label, $desc])
-                    <label class="type-option" :class="resourceType === '{{ $value }}' ? 'selected' : ''" @click="resourceType = '{{ $value }}'">
-                        <input type="radio" name="resource_type" value="{{ $value }}" x-model="resourceType" {{ old('resource_type','article') === $value ? 'checked' : '' }}>
-                        <span class="type-icon">{{ $icon }}</span>
-                        <div class="type-name">{{ $label }}</div>
-                        <div class="type-desc">{{ $desc }}</div>
-                    </label>
-                    @endforeach
-                </div>
-            </div>
+ {{-- Resource type selector --}}
+ <div class="card card-p" style="margin-bottom:20px;">
+ <div class="form-label" style="margin-bottom:12px;">Resource Type <span>*</span></div>
+ <div class="type-selector">
+ @php
+ $types = [
+ 'article' => ['<i class="fas fa-book"></i>','Article','Written guide or tutorial'],
+ 'pdf' => ['<i class="fas fa-file-pdf"></i>','PDF','PDF document or eBook'],
+ 'video' => ['<i class="fas fa-video"></i>','Video','Lesson video file'],
+ 'notes' => ['<i class="fas fa-sticky-note"></i>','Notes','Study notes or summaries'],
+ 'past_paper' => ['<i class="fas fa-file-lines"></i>','Past Paper','Exam past paper'],
+ ];
+ @endphp
+ @foreach($types as $value => [$icon, $label, $desc])
+ <label class="type-option" :class="resourceType === '{{ $value }}' ? 'selected' : ''" @click="resourceType = '{{ $value }}'">
+ <input type="radio" name="resource_type" value="{{ $value }}" x-model="resourceType" {{ old('resource_type','article') === $value ? 'checked' : '' }}>
+ <span class="type-icon">{{ $icon }}</span>
+ <div class="type-name">{{ $label }}</div>
+ <div class="type-desc">{{ $desc }}</div>
+ </label>
+ @endforeach
+ </div>
+ </div>
 
-            <div class="card card-p" style="margin-bottom:20px;">
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:20px;">Resource Details</h3>
+ <div class="card card-p" style="margin-bottom:20px;">
+ <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:20px;">Resource Details</h3>
 
-                <div class="form-group">
-                    <label class="form-label">Title <span>*</span></label>
-                    <input type="text" name="title" class="form-input" required value="{{ old('title') }}" placeholder="e.g. Form 4 Mathematics Past Paper 2023">
-                </div>
+ <div class="form-group">
+ <label class="form-label">Title <span>*</span></label>
+ <input type="text" name="title" class="form-input" required value="{{ old('title') }}" placeholder="e.g. Form 4 Mathematics Past Paper 2023">
+ </div>
 
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="two-col">
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select name="blog_category_id" class="form-input">
-                            <option value="">Select categoryâ‚¬Â¦</option>
-                            @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ old('blog_category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Subject</label>
-                        <select name="subject_id" class="form-input">
-                            <option value="">Any subjectâ‚¬Â¦</option>
-                            @foreach($subjects as $subj)
-                            <option value="{{ $subj->id }}" {{ old('subject_id') == $subj->id ? 'selected' : '' }}>{{ $subj->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <style>.two-col{grid-template-columns:1fr!important;}@media(min-width:500px){.two-col{grid-template-columns:1fr 1fr!important;}}</style>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="two-col">
+ <div class="form-group">
+ <label class="form-label">Category</label>
+ <select name="blog_category_id" class="form-input">
+ <option value="">Select categoryâ‚¬Â¦</option>
+ @foreach($categories as $cat)
+ <option value="{{ $cat->id }}" {{ old('blog_category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+ @endforeach
+ </select>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Subject</label>
+ <select name="subject_id" class="form-input">
+ <option value="">Any subjectâ‚¬Â¦</option>
+ @foreach($subjects as $subj)
+ <option value="{{ $subj->id }}" {{ old('subject_id') == $subj->id ? 'selected' : '' }}>{{ $subj->name }}</option>
+ @endforeach
+ </select>
+ </div>
+ </div>
+ <style>.two-col{grid-template-columns:1fr!important;}@media(min-width:500px){.two-col{grid-template-columns:1fr 1fr!important;}}</style>
 
-                <div class="form-group">
-                    <label class="form-label">Grade Level</label>
-                    <select name="grade_level" class="form-input">
-                        <option value="">All Levels</option>
-                        @foreach(['Form 1','Form 2','Form 3','Form 4','Primary','University','All Levels'] as $g)
-                        <option value="{{ $g }}" {{ old('grade_level') === $g ? 'selected' : '' }}>{{ $g }}</option>
-                        @endforeach
-                    </select>
-                </div>
+ <div class="form-group">
+ <label class="form-label">Grade Level</label>
+ <select name="grade_level" class="form-input">
+ <option value="">All Levels</option>
+ @foreach(['Form 1','Form 2','Form 3','Form 4','Primary','University','All Levels'] as $g)
+ <option value="{{ $g }}" {{ old('grade_level') === $g ? 'selected' : '' }}>{{ $g }}</option>
+ @endforeach
+ </select>
+ </div>
 
-                <div class="form-group">
-                    <label class="form-label">Summary / Excerpt</label>
-                    <textarea name="excerpt" class="form-input" rows="3" placeholder="Brief description of what this resource coversâ‚¬Â¦">{{ old('excerpt') }}</textarea>
-                    <div class="form-hint">Shown on the library listing page. Keep it concise.</div>
-                </div>
+ <div class="form-group">
+ <label class="form-label">Summary / Excerpt</label>
+ <textarea name="excerpt" class="form-input" rows="3" placeholder="Brief description of what this resource coversâ‚¬Â¦">{{ old('excerpt') }}</textarea>
+ <div class="form-hint">Shown on the library listing page. Keep it concise.</div>
+ </div>
 
-                {{-- Content only shown for articles/notes --}}
-                <div class="form-group" x-show="resourceType === 'article' || resourceType === 'notes'" style="display:none;" x-cloak>
-                    <label class="form-label">Full Content</label>
-                    <textarea name="content" class="form-input" rows="10" placeholder="Write the full article, study notes, or explanation hereâ‚¬Â¦">{{ old('content') }}</textarea>
-                    <div class="form-hint">HTML is supported for rich formatting.</div>
-                </div>
-            </div>
+ {{-- Content only shown for articles/notes --}}
+ <div class="form-group" x-show="resourceType === 'article' || resourceType === 'notes'" style="display:none;" x-cloak>
+ <label class="form-label">Full Content</label>
+ <textarea name="content" class="form-input" rows="10" placeholder="Write the full article, study notes, or explanation hereâ‚¬Â¦">{{ old('content') }}</textarea>
+ <div class="form-hint">HTML is supported for rich formatting.</div>
+ </div>
+ </div>
 
-            {{-- File upload --}}
-            <div class="card card-p" style="margin-bottom:20px;" x-show="resourceType !== 'article'">
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:16px;">Upload File</h3>
-                <div class="upload-zone" @dragover.prevent="$el.classList.add('drag-over')" @dragleave="$el.classList.remove('drag-over')" @drop.prevent="$el.classList.remove('drag-over');hasFile=true">
-                    <input type="file" name="file" @change="hasFile=true" accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.avi,.mov,.mkv">
-                    <div x-show="!hasFile">
-                        <div style="font-size:40px;margin-bottom:10px;">Ã°Å¸"Å½</div>
-                        <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Drop file here or click to browse</p>
-                        <p style="font-size:12px;color:var(--muted);">PDF, DOC, PPT, MP4, AVI â‚¬" max 50 MB</p>
-                    </div>
-                    <div x-show="hasFile" style="display:none;">
-                        <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
-                        <p style="font-weight:600;font-size:14px;color:var(--mint);">File selected</p>
-                    </div>
-                </div>
-            </div>
+ {{-- File upload --}}
+ <div class="card card-p" style="margin-bottom:20px;" x-show="resourceType !== 'article'">
+ <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:16px;">Upload File</h3>
+ <div class="upload-zone" @dragover.prevent="$el.classList.add('drag-over')" @dragleave="$el.classList.remove('drag-over')" @drop.prevent="$el.classList.remove('drag-over');hasFile=true">
+ <input type="file" name="file" @change="hasFile=true" accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.avi,.mov,.mkv">
+ <div x-show="!hasFile">
+ <div style="font-size:40px;margin-bottom:10px;">¸"Å½</div>
+ <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Drop file here or click to browse</p>
+ <p style="font-size:12px;color:var(--muted);">PDF, DOC, PPT, MP4, AVI â‚¬" max 50 MB</p>
+ </div>
+ <div x-show="hasFile" style="display:none;">
+ <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
+ <p style="font-weight:600;font-size:14px;color:var(--mint);">File selected</p>
+ </div>
+ </div>
+ </div>
 
-            {{-- Thumbnail --}}
-            <div class="card card-p" style="margin-bottom:24px;">
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:16px;">Cover Image (optional)</h3>
-                <div class="upload-zone">
-                    <input type="file" name="thumbnail" accept="image/*">
-                    <div style="font-size:32px;margin-bottom:8px;">Ã°Å¸"-Â¼Ã¯Â¸Â</div>
-                    <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Upload a cover image</p>
-                    <p style="font-size:12px;color:var(--muted);">JPG, PNG, WebP â‚¬" max 5 MB. Recommended: 800Ãƒ"-500px</p>
-                </div>
-            </div>
+ {{-- Thumbnail --}}
+ <div class="card card-p" style="margin-bottom:24px;">
+ <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:16px;">Cover Image (optional)</h3>
+ <div class="upload-zone">
+ <input type="file" name="thumbnail" accept="image/*">
+ <div style="font-size:32px;margin-bottom:8px;">¸-Â¼Ã¯Â¸Â</div>
+ <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Upload a cover image</p>
+ <p style="font-size:12px;color:var(--muted);">JPG, PNG, WebP â‚¬" max 5 MB. Recommended: 800Ãƒ-500px</p>
+ </div>
+ </div>
 
-            <div style="display:flex;align-items:center;gap:12px;">
-                <button type="submit" class="btn btn-v" style="padding:12px 28px;font-size:15px;">
-                    <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    Publish Resource
-                </button>
-                <a href="{{ route('tutor.library.index') }}" class="btn btn-o">Cancel</a>
-            </div>
+ <div style="display:flex;align-items:center;gap:12px;">
+ <button type="submit" class="btn btn-v" style="padding:12px 28px;font-size:15px;">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+ Publish Resource
+ </button>
+ <a href="{{ route('tutor.library.index') }}" class="btn btn-o">Cancel</a>
+ </div>
 
-            <div style="margin-top:16px;padding:14px 16px;background:rgba(10,100,188,.06);border-radius:12px;font-size:13px;color:var(--muted);">
-                Ã°Å¸'Â¡ Resources go live immediately. Ensure content is appropriate and accurate â‚¬" the admin team may remove resources that violate guidelines.
-            </div>
-        </form>
-    </div>
+ <div style="margin-top:16px;padding:14px 16px;background:rgba(10,100,188,.06);border-radius:12px;font-size:13px;color:var(--muted);">
+ ¸'Â¡ Resources go live immediately. Ensure content is appropriate and accurate â‚¬" the admin team may remove resources that violate guidelines.
+ </div>
+ </form>
+ </div>
 </div>
 </div>
 </body>

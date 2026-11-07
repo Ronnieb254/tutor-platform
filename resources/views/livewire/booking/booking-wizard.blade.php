@@ -1,320 +1,320 @@
 ﻿@php
 $sessionTiers = [
-    20 => ['name' => 'Quick Help',      'price' => 300, 'icon' => 'âš¡', 'desc' => 'Rapid revision or a quick question'],
-    40 => ['name' => 'Guided Practice', 'price' => 600, 'icon' => 'ðŸŽ¯', 'desc' => 'Full structured lesson with Q&A'],
-    60 => ['name' => 'Deep Dive',       'price' => 900, 'icon' => 'ðŸ†', 'desc' => 'Maximum learning, best value'],
+ 20 => ['name' => 'Quick Help', 'price' => 300, 'icon' => 'âš¡', 'desc' => 'Rapid revision or a quick question'],
+ 40 => ['name' => 'Guided Practice', 'price' => 600, 'icon' => 'ðŸŽ¯', 'desc' => 'Full structured lesson with Q&A'],
+ 60 => ['name' => 'Deep Dive', 'price' => 900, 'icon' => 'ðŸ†', 'desc' => 'Maximum learning, best value'],
 ];
 @endphp
 
 <div>
-    {{-- Step indicator --}}
-    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px;">
-        @foreach(['Pick Session','Review','Confirmed'] as $i => $label)
-        <div style="display:flex;align-items:center;gap:6px;">
-            @if(!$loop->first)<div style="width:24px;height:1px;background:{{ $step > $i ? 'var(--trust-blue)' : 'rgba(21,40,31,.12)' }};"></div>@endif
-            <div style="display:flex;align-items:center;gap:5px;">
-                <div style="width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
-                    background:{{ $step > $i+1 ? 'var(--mint)' : ($step === $i+1 ? 'var(--trust-blue)' : 'rgba(21,40,31,.08)') }};
-                    color:{{ ($step > $i+1 || $step === $i+1) ? '#fff' : 'var(--muted)' }};">
-                    {{ $step > $i+1 ? 'âœ-' : $i+1 }}
-                </div>
-                <span style="font-size:12px;font-weight:{{ $step === $i+1 ? '700' : '500' }};color:{{ $step === $i+1 ? 'var(--ink)' : 'var(--muted)' }};">{{ $label }}</span>
-            </div>
-        </div>
-        @endforeach
-    </div>
+ {{-- Step indicator --}}
+ <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px;">
+ @foreach(['Pick Session','Review','Confirmed'] as $i => $label)
+ <div style="display:flex;align-items:center;gap:6px;">
+ @if(!$loop->first)<div style="width:24px;height:1px;background:{{ $step > $i ? 'var(--trust-blue)' : 'rgba(21,40,31,.12)' }};"></div>@endif
+ <div style="display:flex;align-items:center;gap:5px;">
+ <div style="width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+ background:{{ $step > $i+1 ? 'var(--mint)' : ($step === $i+1 ? 'var(--trust-blue)' : 'rgba(21,40,31,.08)') }};
+ color:{{ ($step > $i+1 || $step === $i+1) ? '#fff' : 'var(--muted)' }};">
+ {{ $step > $i+1 ? 'âœ-' : $i+1 }}
+ </div>
+ <span style="font-size:12px;font-weight:{{ $step === $i+1 ? '700' : '500' }};color:{{ $step === $i+1 ? 'var(--ink)' : 'var(--muted)' }};">{{ $label }}</span>
+ </div>
+ </div>
+ @endforeach
+ </div>
 
-    {{-- â-€â-€ STEP 1: Pick duration + date/time â-€â-€ --}}
-    @if($step === 1)
-    <div style="display:flex;flex-direction:column;gap:18px;">
+ {{-- â-€â-€ STEP 1: Pick duration + date/time â-€â-€ --}}
+ @if($step === 1)
+ <div style="display:flex;flex-direction:column;gap:18px;">
 
-        {{-- Duration selector --}}
-        <div>
-            <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;">
-                <i class="fas fa-clock"></i> Choose Session Type
-            </p>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
-                @foreach($sessionTiers as $mins => $tier)
-                <label style="cursor:pointer;">
-                    <input type="radio" wire:model.live="duration" value="{{ $mins }}" style="display:none;">
-                    <div style="border:2px solid {{ $duration == $mins ? 'var(--trust-blue)' : 'rgba(21,40,31,.12)' }};
-                                background:{{ $duration == $mins ? 'rgba(10,100,188,.05)' : '#fff' }};
-                                border-radius:14px;padding:14px 12px;transition:all .18s;text-align:left;">
-                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                            <div style="display:flex;align-items:center;gap:6px;">
-                                <span style="font-size:18px;">{{ $tier['icon'] }}</span>
-                                <span style="font-size:14px;font-weight:700;color:var(--ink);">{{ $tier['name'] }}</span>
-                            </div>
-                            <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:{{ $duration == $mins ? 'var(--trust-blue)' : 'var(--ink)' }};">KSh {{ $tier['price'] }}</span>
-                        </div>
-                        <div style="font-size:11px;color:var(--muted);">{{ $mins }} min "- {{ $tier['desc'] }}</div>
-                    </div>
-                </label>
-                @endforeach
-            </div>
-            @error('duration')<p style="font-size:12px;color:var(--coral);margin-top:4px;"><i class="fas fa-exclamation-triangle"></i> {{ $message }}</p>@enderror
-        </div>
+ {{-- Duration selector --}}
+ <div>
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;">
+ <i class="fas fa-clock"></i> Choose Session Type
+ </p>
+ <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+ @foreach($sessionTiers as $mins => $tier)
+ <label style="cursor:pointer;">
+ <input type="radio" wire:model.live="duration" value="{{ $mins }}" style="display:none;">
+ <div style="border:2px solid {{ $duration == $mins ? 'var(--trust-blue)' : 'rgba(21,40,31,.12)' }};
+ background:{{ $duration == $mins ? 'rgba(10,100,188,.05)' : '#fff' }};
+ border-radius:14px;padding:14px 12px;transition:all .18s;text-align:left;">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+ <div style="display:flex;align-items:center;gap:6px;">
+ <span style="font-size:18px;">{{ $tier['icon'] }}</span>
+ <span style="font-size:14px;font-weight:700;color:var(--ink);">{{ $tier['name'] }}</span>
+ </div>
+ <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:{{ $duration == $mins ? 'var(--trust-blue)' : 'var(--ink)' }};">KSh {{ $tier['price'] }}</span>
+ </div>
+ <div style="font-size:11px;color:var(--muted);">{{ $mins }} min - {{ $tier['desc'] }}</div>
+ </div>
+ </label>
+ @endforeach
+ </div>
+ @error('duration')<p style="font-size:12px;color:var(--coral);margin-top:4px;"><i class="fas fa-exclamation-triangle"></i> {{ $message }}</p>@enderror
+ </div>
 
-        {{-- Date + Time --}}
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div>
-                <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                    <i class="fas fa-calendar"></i> Date
-                </p>
-                <input type="date" wire:model="scheduledDate"
-                       id="bw-date"
-                       min="{{ now()->format('Y-m-d') }}"
-                       style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
-                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"
-                       oninput="bwSyncTimeMin(this.value)">
-                @error('scheduledDate')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
-            </div>
-            <div>
-                <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                    <i class="fas fa-clock"></i> Time
-                </p>
-                <input type="time" wire:model="scheduledTime"
-                       id="bw-time"
-                       style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
-                       onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
-                @error('scheduledTime')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
-            </div>
-        </div>
-        <script>
-        (function () {
-            var today = '{{ now()->format('Y-m-d') }}';
+ {{-- Date + Time --}}
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+ <div>
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
+ <i class="fas fa-calendar"></i> Date
+ </p>
+ <input type="date" wire:model="scheduledDate"
+ id="bw-date"
+ min="{{ now()->format('Y-m-d') }}"
+ style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
+ onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"
+ oninput="bwSyncTimeMin(this.value)">
+ @error('scheduledDate')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
+ </div>
+ <div>
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
+ <i class="fas fa-clock"></i> Time
+ </p>
+ <input type="time" wire:model="scheduledTime"
+ id="bw-time"
+ style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
+ onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+ @error('scheduledTime')<p style="font-size:12px;color:var(--coral);margin-top:4px;">{{ $message }}</p>@enderror
+ </div>
+ </div>
+ <script>
+ (function () {
+ var today = '{{ now()->format('Y-m-d') }}';
 
-            function nowTimeStr() {
-                var d = new Date();
-                return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
-            }
+ function nowTimeStr() {
+ var d = new Date();
+ return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+ }
 
-            window.bwSyncTimeMin = function (dateVal) {
-                var timeInput = document.getElementById('bw-time');
-                if (!timeInput) return;
-                if (dateVal === today) {
-                    timeInput.min = nowTimeStr();
-                    // If current value is already in the past, clear it
-                    if (timeInput.value && timeInput.value < timeInput.min) {
-                        timeInput.value = '';
-                    }
-                } else {
-                    timeInput.min = '';
-                }
-            };
+ window.bwSyncTimeMin = function (dateVal) {
+ var timeInput = document.getElementById('bw-time');
+ if (!timeInput) return;
+ if (dateVal === today) {
+ timeInput.min = nowTimeStr();
+ // If current value is already in the past, clear it
+ if (timeInput.value && timeInput.value < timeInput.min) {
+ timeInput.value = '';
+ }
+ } else {
+ timeInput.min = '';
+ }
+ };
 
-            // Run on page load in case today is already selected
-            document.addEventListener('livewire:init', function () {
-                var dateInput = document.getElementById('bw-date');
-                if (dateInput) bwSyncTimeMin(dateInput.value);
-            });
-        })();
-        </script>
+ // Run on page load in case today is already selected
+ document.addEventListener('livewire:init', function () {
+ var dateInput = document.getElementById('bw-date');
+ if (dateInput) bwSyncTimeMin(dateInput.value);
+ });
+ })();
+ </script>
 
-        {{-- Subject --}}
-        @if($subjects->isNotEmpty())
-        <div>
-            <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subject <span style="font-weight:400;text-transform:none;">(optional)</span>
-            </p>
-            <select wire:model="subjectId"
-                    style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
-                    onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
-                <option value="">Select a subject…</option>
-                @foreach($subjects as $subject)
-                <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        @endif
+ {{-- Subject --}}
+ @if($subjects->isNotEmpty())
+ <div>
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
+ <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subject <span style="font-weight:400;text-transform:none;">(optional)</span>
+ </p>
+ <select wire:model="subjectId"
+ style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
+ onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+ <option value="">Select a subject…</option>
+ @foreach($subjects as $subject)
+ <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+ @endforeach
+ </select>
+ </div>
+ @endif
 
-        {{-- Notes --}}
-        <div>
-            <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
-                <i class="fas fa-sticky-note"></i> Notes for tutor <span style="color:var(--coral);">*</span>
-            </p>
-            <textarea wire:model="notes" rows="2"
-                      placeholder="Topics to cover, past exam areas, specific questions…"
-                      required
-                      style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
-                      onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
-            @error('notes') <span style="font-size:12px;color:var(--coral);margin-top:4px;display:block;">{{ $message }}</span> @enderror
-        </div>
+ {{-- Notes --}}
+ <div>
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
+ <i class="fas fa-sticky-note"></i> Notes for tutor <span style="color:var(--coral);">*</span>
+ </p>
+ <textarea wire:model="notes" rows="2"
+ placeholder="Topics to cover, past exam areas, specific questions…"
+ required
+ style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
+ onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
+ @error('notes') <span style="font-size:12px;color:var(--coral);margin-top:4px;display:block;">{{ $message }}</span> @enderror
+ </div>
 
-        <button wire:click="nextStep"
-                style="width:100%;height:50px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
-                onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
-            Continue to Review
-            <span style="font-size:inherit;">→</span>
-        </button>
-    </div>
-    @endif
+ <button wire:click="nextStep"
+ style="width:100%;height:50px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
+ onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
+ Continue to Review
+ <span style="font-size:inherit;">→</span>
+ </button>
+ </div>
+ @endif
 
-    {{-- â-€â-€ STEP 2: Review & Pay â-€â-€ --}}
-    @if($step === 2)
-    @php $tier = $sessionTiers[$duration] ?? $sessionTiers[60]; @endphp
-    <div style="display:flex;flex-direction:column;gap:14px;">
+ {{-- â-€â-€ STEP 2: Review & Pay â-€â-€ --}}
+ @if($step === 2)
+ @php $tier = $sessionTiers[$duration] ?? $sessionTiers[60]; @endphp
+ <div style="display:flex;flex-direction:column;gap:14px;">
 
-        {{-- Summary card --}}
-        <div style="background:#F9FAF9;border-radius:16px;border:1px solid var(--hair);padding:20px;">
-            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px;">Session Summary</p>
-            <div style="display:flex;flex-direction:column;gap:0;">
-                @foreach([
-                    ['Tutor', $tutorProfile->user->name],
-                    ['Session type', $tier['icon'].' '.$tier['name'].' ('.$duration.' min)'],
-                    ['Date', \Carbon\Carbon::parse($scheduledDate)->format('D, M j, Y')],
-                    ['Time', \Carbon\Carbon::parse($scheduledTime)->format('g:i a').' (EAT)'],
-                    ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? '"-') : 'General'],
-                ] as [$label, $value])
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.06);">
-                    <span style="font-size:13px;color:var(--muted);">{{ $label }}</span>
-                    <span style="font-size:13px;font-weight:600;color:var(--ink);">{{ $value }}</span>
-                </div>
-                @endforeach
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;">
-                    <span style="font-size:15px;font-weight:700;color:var(--ink);">Total</span>
-                    <span style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--trust-blue);">KSh {{ $tier['price'] }}</span>
-                </div>
-            </div>
-        </div>
+ {{-- Summary card --}}
+ <div style="background:#F9FAF9;border-radius:16px;border:1px solid var(--hair);padding:20px;">
+ <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px;">Session Summary</p>
+ <div style="display:flex;flex-direction:column;gap:0;">
+ @foreach([
+ ['Tutor', $tutorProfile->user->name],
+ ['Session type', $tier['icon'].' '.$tier['name'].' ('.$duration.' min)'],
+ ['Date', \Carbon\Carbon::parse($scheduledDate)->format('D, M j, Y')],
+ ['Time', \Carbon\Carbon::parse($scheduledTime)->format('g:i a').' (EAT)'],
+ ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? '-') : 'General'],
+ ] as [$label, $value])
+ <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.06);">
+ <span style="font-size:13px;color:var(--muted);">{{ $label }}</span>
+ <span style="font-size:13px;font-weight:600;color:var(--ink);">{{ $value }}</span>
+ </div>
+ @endforeach
+ <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;">
+ <span style="font-size:15px;font-weight:700;color:var(--ink);">Total</span>
+ <span style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--trust-blue);">KSh {{ $tier['price'] }}</span>
+ </div>
+ </div>
+ </div>
 
-        {{-- Code notice --}}
-        <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:14px 16px;">
-            <p style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-bottom:4px;">
-                <span style="font-size:inherit;"><i class="fas fa-key"></i></span> After payment
-            </p>
-            <p style="font-size:12px;color:var(--muted);line-height:1.65;">You'll receive a unique <strong style="color:var(--ink);">STU-XXXXXX</strong> session access code by email and SMS. Use it to enter your live class on session day.</p>
-        </div>
+ {{-- Code notice --}}
+ <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:14px 16px;">
+ <p style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-bottom:4px;">
+ <span style="font-size:inherit;"><i class="fas fa-key"></i></span> After payment
+ </p>
+ <p style="font-size:12px;color:var(--muted);line-height:1.65;">You'll receive a unique <strong style="color:var(--ink);">STU-XXXXXX</strong> session access code by email and SMS. Use it to enter your live class on session day.</p>
+ </div>
 
-        {{-- M-Pesa phone number input --}}
-        <div>
-            <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
-                <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span>
-                M-Pesa Phone Number
-            </label>
-            <input type="tel"
-                   wire:model.live="phone"
-                   placeholder="e.g. 0712 345 678"
-                   style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:14px;font-family:inherit;outline:none;"
-                   onfocus="this.style.borderColor='var(--trust-blue)'"
-                   onblur="this.style.borderColor='rgba(21,40,31,.18)'">
-            @error('phone')
-                <p style="font-size:12px;color:var(--coral);margin-top:5px;">{{ $message }}</p>
-            @enderror
-            <p style="font-size:11px;color:var(--muted);margin-top:5px;">
-                You will receive an STK Push prompt on this number. Enter your M-Pesa PIN to pay.
-            </p>
-        </div>
+ {{-- M-Pesa phone number input --}}
+ <div>
+ <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
+ <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span>
+ M-Pesa Phone Number
+ </label>
+ <input type="tel"
+ wire:model.live="phone"
+ placeholder="e.g. 0712 345 678"
+ style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:14px;font-family:inherit;outline:none;"
+ onfocus="this.style.borderColor='var(--trust-blue)'"
+ onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+ @error('phone')
+ <p style="font-size:12px;color:var(--coral);margin-top:5px;">{{ $message }}</p>
+ @enderror
+ <p style="font-size:11px;color:var(--muted);margin-top:5px;">
+ You will receive an STK Push prompt on this number. Enter your M-Pesa PIN to pay.
+ </p>
+ </div>
 
-        {{-- STK sent banner (shown by JS once push is dispatched) --}}
-        <div id="stkBanner" style="display:none;background:rgba(16,185,129,.08);border:1.5px solid var(--mint);border-radius:14px;padding:14px 16px;text-align:center;">
-            <p style="font-size:14px;font-weight:700;color:#059669;margin-bottom:4px;">
-                <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span> Check your phone!
-            </p>
-            <p id="stkBannerMsg" style="font-size:13px;color:var(--muted);">
-                Enter your M-Pesa PIN to complete payment.
-            </p>
-            <div style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--muted);">
-                <span style="width:8px;height:8px;border-radius:50%;background:var(--mint);animation:pulse 1.2s infinite;"></span>
-                Waiting for confirmation…
-            </div>
-        </div>
-        <style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
+ {{-- STK sent banner (shown by JS once push is dispatched) --}}
+ <div id="stkBanner" style="display:none;background:rgba(16,185,129,.08);border:1.5px solid var(--mint);border-radius:14px;padding:14px 16px;text-align:center;">
+ <p style="font-size:14px;font-weight:700;color:#059669;margin-bottom:4px;">
+ <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span> Check your phone!
+ </p>
+ <p id="stkBannerMsg" style="font-size:13px;color:var(--muted);">
+ Enter your M-Pesa PIN to complete payment.
+ </p>
+ <div style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--muted);">
+ <span style="width:8px;height:8px;border-radius:50%;background:var(--mint);animation:pulse 1.2s infinite;"></span>
+ Waiting for confirmation…
+ </div>
+ </div>
+ <style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
 
-        <div style="display:flex;gap:10px;">
-            <button wire:click="prevStep"
-                    style="flex:1;height:48px;border-radius:999px;background:#fff;color:var(--ink);border:2px solid rgba(21,40,31,.18);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .18s;">
-                <span style="font-size:inherit;">←</span> Back
-            </button>
-            <button wire:click="initPayment"
-                    wire:loading.attr="disabled"
-                    style="flex:2;height:48px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;"
-                    onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
-                <span wire:loading.remove wire:target="initPayment">
-                    <i class="fas fa-credit-card"></i>
-                    Pay KSh {{ $tier['price'] }}
-                </span>
-                <span wire:loading wire:target="initPayment" style="display:flex;align-items:center;gap:6px;">
-                    <span style="font-size:inherit;"><i class="fas fa-hourglass-half"></i></span> Processing…
-                </span>
-            </button>
-        </div>
-        <p style="font-size:11px;text-align:center;color:var(--muted);">
-            <i class="fas fa-lock"></i>
-            Secured by M-Pesa · Lipa Na M-Pesa STK Push
-        </p>
-    </div>
-    @endif
+ <div style="display:flex;gap:10px;">
+ <button wire:click="prevStep"
+ style="flex:1;height:48px;border-radius:999px;background:#fff;color:var(--ink);border:2px solid rgba(21,40,31,.18);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .18s;">
+ <span style="font-size:inherit;">←</span> Back
+ </button>
+ <button wire:click="initPayment"
+ wire:loading.attr="disabled"
+ style="flex:2;height:48px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;"
+ onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
+ <span wire:loading.remove wire:target="initPayment">
+ <i class="fas fa-credit-card"></i>
+ Pay KSh {{ $tier['price'] }}
+ </span>
+ <span wire:loading wire:target="initPayment" style="display:flex;align-items:center;gap:6px;">
+ <span style="font-size:inherit;"><i class="fas fa-hourglass-half"></i></span> Processing…
+ </span>
+ </button>
+ </div>
+ <p style="font-size:11px;text-align:center;color:var(--muted);">
+ <i class="fas fa-lock"></i>
+ Secured by M-Pesa · Lipa Na M-Pesa STK Push
+ </p>
+ </div>
+ @endif
 
-    {{-- â-€â-€ STEP 3: Confirmed â-€â-€ --}}
-    @if($step === 3 && $bookingConfirmed)
-    <div style="text-align:center;padding:8px 0;">
-        <div style="width:64px;height:64px;border-radius:999px;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-            <i class="fas fa-check-circle"></i>
-        </div>
-        <h3 style="font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:8px;">Booking Confirmed!</h3>
-        <p style="font-size:14px;color:var(--muted);margin-bottom:22px;">Check your email and SMS for full session details.</p>
+ {{-- â-€â-€ STEP 3: Confirmed â-€â-€ --}}
+ @if($step === 3 && $bookingConfirmed)
+ <div style="text-align:center;padding:8px 0;">
+ <div style="width:64px;height:64px;border-radius:999px;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+ <i class="fas fa-check-circle"></i>
+ </div>
+ <h3 style="font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:8px;">Booking Confirmed!</h3>
+ <p style="font-size:14px;color:var(--muted);margin-bottom:22px;">Check your email and SMS for full session details.</p>
 
-        {{-- Session code --}}
-        <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.25);border-radius:18px;padding:20px;margin-bottom:18px;">
-            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">
-                <span style="font-size:inherit;"><i class="fas fa-key"></i></span> Your Session Access Code
-            </p>
-            <p style="font-family:monospace;font-size:32px;font-weight:800;color:var(--trust-blue);letter-spacing:.12em;line-height:1;">{{ $studentCode }}</p>
-            <p style="font-size:12px;color:var(--muted);margin-top:8px;">Enter this code to join your live session on the day</p>
-        </div>
+ {{-- Session code --}}
+ <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.25);border-radius:18px;padding:20px;margin-bottom:18px;">
+ <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">
+ <span style="font-size:inherit;"><i class="fas fa-key"></i></span> Your Session Access Code
+ </p>
+ <p style="font-family:monospace;font-size:32px;font-weight:800;color:var(--trust-blue);letter-spacing:.12em;line-height:1;">{{ $studentCode }}</p>
+ <p style="font-size:12px;color:var(--muted);margin-top:8px;">Enter this code to join your live session on the day</p>
+ </div>
 
-        <a href="{{ route('bookings.show', $bookingUuid) }}"
-           style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
-            <i class="fas fa-check-circle"></i> View Booking Details
-        </a>
-    </div>
-    @endif
+ <a href="{{ route('bookings.show', $bookingUuid) }}"
+ style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
+ <i class="fas fa-check-circle"></i> View Booking Details
+ </a>
+ </div>
+ @endif
 </div>
 
 @push('scripts')
 <script>
 document.addEventListener('livewire:initialized', () => {
 
-    // â-€â-€ STK Push sent "- start polling â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€
-    Livewire.on('stk-sent', (data) => {
-        const reference  = data.reference;
-        const statusUrl  = '/api/daraja/status?reference=' + encodeURIComponent(reference);
-        const maxPolls   = 60;   // 5 minutes at 5-second intervals
-        let   polls      = 0;
+ // â-€â-€ STK Push sent - start polling â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€
+ Livewire.on('stk-sent', (data) => {
+ const reference = data.reference;
+ const statusUrl = '/api/daraja/status?reference=' + encodeURIComponent(reference);
+ const maxPolls = 60; // 5 minutes at 5-second intervals
+ let polls = 0;
 
-        // Show the "check your phone" banner
-        const banner = document.getElementById('stkBanner');
-        const bannerMsg = document.getElementById('stkBannerMsg');
-        if (banner) {
-            banner.style.display = '';
-            if (bannerMsg && data.message) bannerMsg.textContent = data.message;
-        }
+ // Show the "check your phone" banner
+ const banner = document.getElementById('stkBanner');
+ const bannerMsg = document.getElementById('stkBannerMsg');
+ if (banner) {
+ banner.style.display = '';
+ if (bannerMsg && data.message) bannerMsg.textContent = data.message;
+ }
 
-        function poll() {
-            if (polls >= maxPolls) return; // timed out "- user can retry
-            polls++;
+ function poll() {
+ if (polls >= maxPolls) return; // timed out - user can retry
+ polls++;
 
-            fetch(statusUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(r => r.json())
-                .then(result => {
-                    if (result.status === 'success') {
-                        // Confirm on the Livewire component â†’ advances to step 3
-                        @this.paymentSuccess(reference);
-                    } else if (result.status === 'failed') {
-                        if (banner) banner.style.display = 'none';
-                        // Surface error via Livewire
-                        @this.addError('phone', result.message || 'M-Pesa payment was not completed. Please try again.');
-                    } else {
-                        setTimeout(poll, 5000);
-                    }
-                })
-                .catch(() => setTimeout(poll, 5000));
-        }
+ fetch(statusUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+ .then(r => r.json())
+ .then(result => {
+ if (result.status === 'success') {
+ // Confirm on the Livewire component â†’ advances to step 3
+ @this.paymentSuccess(reference);
+ } else if (result.status === 'failed') {
+ if (banner) banner.style.display = 'none';
+ // Surface error via Livewire
+ @this.addError('phone', result.message || 'M-Pesa payment was not completed. Please try again.');
+ } else {
+ setTimeout(poll, 5000);
+ }
+ })
+ .catch(() => setTimeout(poll, 5000));
+ }
 
-        // First poll after 5 s to allow Safaricom callback to arrive
-        setTimeout(poll, 5000);
-    });
+ // First poll after 5 s to allow Safaricom callback to arrive
+ setTimeout(poll, 5000);
+ });
 });
 </script>
 @endpush

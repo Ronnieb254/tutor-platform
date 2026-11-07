@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Clinic Booking "- Checkout</title>
+<title>Clinic Booking - Checkout</title>
 <style>
 :root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -56,126 +56,126 @@ a{color:inherit;text-decoration:none;}
 @include('partials.nav')
 
 <div class="container">
-    <div class="card">
-        <h1 class="title">Clinic Booking</h1>
-        <p class="subtitle">Complete your registration for the examiner's clinic</p>
+ <div class="card">
+ <h1 class="title">Clinic Booking</h1>
+ <p class="subtitle">Complete your registration for the examiner's clinic</p>
 
-        @if(session('error'))
-        <div class="error"><i class="fas fa-times-circle"></i> {{ session('error') }}</div>
-        @endif
+ @if(session('error'))
+ <div class="error"><i class="fas fa-times-circle"></i> {{ session('error') }}</div>
+ @endif
 
-        {{-- Clinic Information --}}
-        <div class="clinic-info">
-            <div class="clinic-title">{{ $clinic->title }}</div>
-            <div class="clinic-detail"><i class="fas fa-check-circle"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</div>
-            <div class="clinic-detail"><i class="fas fa-clock"></i> {{ $clinic->duration_minutes }} minutes</div>
-            <div class="clinic-detail"><i class="fas fa-user"></i> {{ $clinic->tutor->name }}</div>
-            @if($clinic->subject)
-            <div class="clinic-detail"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> {{ $clinic->subject->name }}</div>
-            @endif
-            @if($clinic->paper_type)
-            <div class="clinic-detail"><i class="fas fa-file-alt"></i> {{ $clinic->paper_type }}</div>
-            @endif
-        </div>
+ {{-- Clinic Information --}}
+ <div class="clinic-info">
+ <div class="clinic-title">{{ $clinic->title }}</div>
+ <div class="clinic-detail"><i class="fas fa-check-circle"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</div>
+ <div class="clinic-detail"><i class="fas fa-clock"></i> {{ $clinic->duration_minutes }} minutes</div>
+ <div class="clinic-detail"><i class="fas fa-user"></i> {{ $clinic->tutor->name }}</div>
+ @if($clinic->subject)
+ <div class="clinic-detail"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> {{ $clinic->subject->name }}</div>
+ @endif
+ @if($clinic->paper_type)
+ <div class="clinic-detail"><i class="fas fa-file-alt"></i> {{ $clinic->paper_type }}</div>
+ @endif
+ </div>
 
-        {{-- Order Summary --}}
-        <div class="summary">
-            <div class="summary-row">
-                <span class="summary-label">Clinic Session</span>
-                <span class="summary-value">KSh {{ number_format($clinic->price) }}</span>
-            </div>
-            <div class="divider"></div>
-            <div class="summary-row total-row">
-                <span>Total Payment</span>
-                <span>KSh {{ number_format($clinic->price) }}</span>
-            </div>
-        </div>
+ {{-- Order Summary --}}
+ <div class="summary">
+ <div class="summary-row">
+ <span class="summary-label">Clinic Session</span>
+ <span class="summary-value">KSh {{ number_format($clinic->price) }}</span>
+ </div>
+ <div class="divider"></div>
+ <div class="summary-row total-row">
+ <span>Total Payment</span>
+ <span>KSh {{ number_format($clinic->price) }}</span>
+ </div>
+ </div>
 
-        {{-- Payment Method --}}
-        <div style="margin-bottom:24px;">
-            <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;">Payment Method</h3>
-            <div class="payment-method selected" data-method="mpesa">
-                <div class="payment-icon">ðŸ-±</div>
-                <div class="payment-name">M-Pesa (Lipa Na M-Pesa)</div>
-                <div class="payment-desc">Secure STK Push "- enter your M-Pesa PIN on your phone to pay</div>
-            </div>
-        </div>
+ {{-- Payment Method --}}
+ <div style="margin-bottom:24px;">
+ <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;">Payment Method</h3>
+ <div class="payment-method selected" data-method="mpesa">
+ <div class="payment-icon">ðŸ-±</div>
+ <div class="payment-name">M-Pesa (Lipa Na M-Pesa)</div>
+ <div class="payment-desc">Secure STK Push - enter your M-Pesa PIN on your phone to pay</div>
+ </div>
+ </div>
 
-        {{-- Payment Form --}}
-        <form id="paymentForm" method="POST" action="{{ route('clinic.pay', $clinic) }}">
-            @csrf
+ {{-- Payment Form --}}
+ <form id="paymentForm" method="POST" action="{{ route('clinic.pay', $clinic) }}">
+ @csrf
 
-            {{-- M-Pesa Phone --}}
-            <div style="margin-bottom:18px;">
-                <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
-                    <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span>
-                    M-Pesa Phone Number
-                </label>
-                <input type="tel" name="phone" required
-                       placeholder="e.g. 0712 345 678"
-                       style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;"
-                       onfocus="this.style.borderColor='var(--trust-blue)'"
-                       onblur="this.style.borderColor='rgba(21,40,31,.18)'">
-                @error('phone')
-                    <p style="font-size:12px;color:var(--coral);margin-top:5px;">{{ $message }}</p>
-                @enderror
-                <p style="font-size:11px;color:var(--muted);margin-top:5px;">
-                    You'll receive an STK Push on this number. Enter your PIN to complete payment.
-                </p>
-            </div>
+ {{-- M-Pesa Phone --}}
+ <div style="margin-bottom:18px;">
+ <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
+ <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span>
+ M-Pesa Phone Number
+ </label>
+ <input type="tel" name="phone" required
+ placeholder="e.g. 0712 345 678"
+ style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;"
+ onfocus="this.style.borderColor='var(--trust-blue)'"
+ onblur="this.style.borderColor='rgba(21,40,31,.18)'">
+ @error('phone')
+ <p style="font-size:12px;color:var(--coral);margin-top:5px;">{{ $message }}</p>
+ @enderror
+ <p style="font-size:11px;color:var(--muted);margin-top:5px;">
+ You'll receive an STK Push on this number. Enter your PIN to complete payment.
+ </p>
+ </div>
 
-            {{-- User Verification --}}
-            <div style="background:#F9FAFB;border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;">
-                <div style="color:var(--muted);margin-bottom:6px;">Logged in as:</div>
-                <div style="font-weight:600;color:var(--ink);">{{ $user->name }} ({{ $user->email }})</div>
-                <div style="font-size:12px;color:var(--muted);margin-top:4px;"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();" style="color:var(--trust-blue);">Sign out</a></div>
-            </div>
+ {{-- User Verification --}}
+ <div style="background:#F9FAFB;border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;">
+ <div style="color:var(--muted);margin-bottom:6px;">Logged in as:</div>
+ <div style="font-weight:600;color:var(--ink);">{{ $user->name }} ({{ $user->email }})</div>
+ <div style="font-size:12px;color:var(--muted);margin-top:4px;"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();" style="color:var(--trust-blue);">Sign out</a></div>
+ </div>
 
-            {{-- Terms & Conditions --}}
-            <div class="terms">
-                <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
-                    <input type="checkbox" name="terms" required style="margin-top:3px;cursor:pointer;width:16px;height:16px;">
-                    <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this booking is subject to the Mwalimu cancellation policy.</span>
-                </label>
-            </div>
+ {{-- Terms & Conditions --}}
+ <div class="terms">
+ <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+ <input type="checkbox" name="terms" required style="margin-top:3px;cursor:pointer;width:16px;height:16px;">
+ <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this booking is subject to the Mwalimu cancellation policy.</span>
+ </label>
+ </div>
 
-            {{-- Submit Button --}}
-            <button type="submit" class="btn btn-primary" id="submitBtn">
-                <i class="fas fa-lock"></i> Pay KSh {{ number_format($clinic->price) }} via M-Pesa
-            </button>
-            <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
-                <span style="font-size:inherit;">←</span> Back
-            </a>
-        </form>
+ {{-- Submit Button --}}
+ <button type="submit" class="btn btn-primary" id="submitBtn">
+ <i class="fas fa-lock"></i> Pay KSh {{ number_format($clinic->price) }} via M-Pesa
+ </button>
+ <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
+ <span style="font-size:inherit;">←</span> Back
+ </a>
+ </form>
 
-        {{-- Loading State --}}
-        <div class="loading" id="loadingState">
-            <div class="spinner"></div>
-            <p style="margin-top:16px;font-size:14px;color:var(--muted);">Processing your payment...</p>
-        </div>
+ {{-- Loading State --}}
+ <div class="loading" id="loadingState">
+ <div class="spinner"></div>
+ <p style="margin-top:16px;font-size:14px;color:var(--muted);">Processing your payment...</p>
+ </div>
 
-        {{-- Security Badge --}}
-        <div style="text-align:center;margin-top:24px;font-size:12px;color:var(--muted);">
-            <i class="fas fa-shield-alt"></i> Your payment is secure and encrypted
-        </div>
-    </div>
+ {{-- Security Badge --}}
+ <div style="text-align:center;margin-top:24px;font-size:12px;color:var(--muted);">
+ <i class="fas fa-shield-alt"></i> Your payment is secure and encrypted
+ </div>
+ </div>
 </div>
 
 <form id="logoutForm" method="POST" action="{{ route('logout') }}" style="display:none;">@csrf</form>
 
 <script>
 document.getElementById('paymentForm').addEventListener('submit', function() {
-    document.getElementById('submitBtn').disabled = true;
-    document.getElementById('loadingState').style.display = 'block';
+ document.getElementById('submitBtn').disabled = true;
+ document.getElementById('loadingState').style.display = 'block';
 });
 
 // Payment method selection (for future multi-method support)
 document.querySelectorAll('.payment-method').forEach(el => {
-    el.addEventListener('click', function() {
-        document.querySelectorAll('.payment-method').forEach(e => e.classList.remove('selected'));
-        this.classList.add('selected');
-        document.querySelector('input[name="method"]').value = this.dataset.method;
-    });
+ el.addEventListener('click', function() {
+ document.querySelectorAll('.payment-method').forEach(e => e.classList.remove('selected'));
+ this.classList.add('selected');
+ document.querySelector('input[name="method"]').value = this.dataset.method;
+ });
 });
 </script>
 

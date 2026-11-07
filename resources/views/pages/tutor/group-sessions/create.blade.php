@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Create Group Session â‚¬" Mwalimu Tutor Portal</title>
@@ -55,7 +55,7 @@ a{color:inherit;text-decoration:none;}
 </head>
 <body>
 @php
-$user    = auth()->user();
+$user = auth()->user();
 $profile = $user->tutorProfile;
 $isApproved = $profile?->is_approved ?? false;
 $pendingBookings = $user->bookingsAsTutor()->where('status','pending')->count();
@@ -66,221 +66,221 @@ $unreadNotifs = $user->unreadNotifications()->count();
 
 {{-- SIDEBAR (same as index view) --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
-    <div class="sb-logo">
-        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-        <div><div class="sb-logo-text">Mwalimu</div><div class="sb-logo-sub">Tutor Portal</div></div>
-    </div>
-    <nav class="sb-nav">
-        <div class="sb-section">
-            <div class="sb-label">Main</div>
-            <a href="{{ route('tutor.dashboard') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                Overview
-            </a>
-            <a href="{{ route('tutor.subjects') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                My Subjects
-            </a>
-        </div>
-        @if($isApproved)
-        <div class="sb-section">
-            <div class="sb-label">Group Classes</div>
-            <a href="{{ route('tutor.group-sessions.index') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                My Group Sessions
-            </a>
-            <a href="{{ route('tutor.group-sessions.create') }}" class="sb-item active">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                Create Session
-            </a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Examiner</div>
-            <a href="{{ route('examiner.dashboard') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                Examiner Clinics
-            </a>
-        </div>
-        @endif
-        <div class="sb-section">
-            <div class="sb-label">Finance</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=earnings" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                Earnings &amp; Wallet
-            </a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Account</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=profile" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Profile Settings
-            </a>
-        </div>
-    </nav>
-    <div class="sb-footer">
-        <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-            <div style="flex:1;min-width:0;"><div class="sb-uname">{{ $user->name }}</div><div class="sb-urole">Tutor</div></div>
-            <form method="POST" action="{{ route('logout') }}">@csrf
-                <button type="submit" class="sb-logout" title="Logout"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
-            </form>
-        </div>
-    </div>
+ <div class="sb-logo">
+ <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
+ <div><div class="sb-logo-text">Mwalimu</div><div class="sb-logo-sub">Tutor Portal</div></div>
+ </div>
+ <nav class="sb-nav">
+ <div class="sb-section">
+ <div class="sb-label">Main</div>
+ <a href="{{ route('tutor.dashboard') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+ Overview
+ </a>
+ <a href="{{ route('tutor.subjects') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+ My Subjects
+ </a>
+ </div>
+ @if($isApproved)
+ <div class="sb-section">
+ <div class="sb-label">Group Classes</div>
+ <a href="{{ route('tutor.group-sessions.index') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+ My Group Sessions
+ </a>
+ <a href="{{ route('tutor.group-sessions.create') }}" class="sb-item active">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+ Create Session
+ </a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Examiner</div>
+ <a href="{{ route('examiner.dashboard') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+ Examiner Clinics
+ </a>
+ </div>
+ @endif
+ <div class="sb-section">
+ <div class="sb-label">Finance</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=earnings" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+ Earnings &amp; Wallet
+ </a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Account</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=profile" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+ Profile Settings
+ </a>
+ </div>
+ </nav>
+ <div class="sb-footer">
+ <div style="display:flex;align-items:center;gap:10px;">
+ <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+ <div style="flex:1;min-width:0;"><div class="sb-uname">{{ $user->name }}</div><div class="sb-urole">Tutor</div></div>
+ <form method="POST" action="{{ route('logout') }}">@csrf
+ <button type="submit" class="sb-logout" title="Logout"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+ </form>
+ </div>
+ </div>
 </aside>
 
 {{-- MAIN --}}
 <div class="main">
-    <div class="topbar">
-        <div style="display:flex;align-items:center;gap:12px;">
-            <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-            <span class="page-title">Create Group Session</span>
-        </div>
-        <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost" style="padding:7px 16px;font-size:13px;">
-            <span style="font-size:inherit;">←</span> Back
-        </a>
-    </div>
+ <div class="topbar">
+ <div style="display:flex;align-items:center;gap:12px;">
+ <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+ <span class="page-title">Create Group Session</span>
+ </div>
+ <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost" style="padding:7px 16px;font-size:13px;">
+ <span style="font-size:inherit;">←</span> Back
+ </a>
+ </div>
 
-    <div class="content">
-        @if($errors->any())
-        <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:14px 18px;border-radius:12px;margin-bottom:20px;">
-            <p style="font-weight:700;margin-bottom:6px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Please fix the following errors:</p>
-            <ul style="padding-left:18px;font-size:13px;">
-                @foreach($errors->all() as $err)<li>{{ $err }}</li>@endforeach
-            </ul>
-        </div>
-        @endif
+ <div class="content">
+ @if($errors->any())
+ <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:14px 18px;border-radius:12px;margin-bottom:20px;">
+ <p style="font-weight:700;margin-bottom:6px;"><i class="fas fa-triangle-exclamation"></i> Please fix the following errors:</p>
+ <ul style="padding-left:18px;font-size:13px;">
+ @foreach($errors->all() as $err)<li>{{ $err }}</li>@endforeach
+ </ul>
+ </div>
+ @endif
 
-        <div style="max-width:700px;">
-            <form method="POST" action="{{ route('tutor.group-sessions.store') }}">
-                @csrf
+ <div style="max-width:700px;">
+ <form method="POST" action="{{ route('tutor.group-sessions.store') }}">
+ @csrf
 
-                {{-- SESSION BASICS --}}
-                <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
-                    <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
-                        <i class="fas fa-info-circle"></i>Session Details
-                    </h2>
+ {{-- SESSION BASICS --}}
+ <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
+ <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
+ <i class="fas fa-info-circle"></i>Session Details
+ </h2>
 
-                    <div class="field">
-                        <label>Subject <span class="req">*</span></label>
-                        <select name="subject_id" required>
-                            <option value="">â‚¬" Select a subject â‚¬"</option>
-                            @foreach($subjects as $s)
-                            <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('subject_id')<p class="error">{{ $message }}</p>@enderror
-                    </div>
+ <div class="field">
+ <label>Subject <span class="req">*</span></label>
+ <select name="subject_id" required>
+ <option value="">â‚¬" Select a subject â‚¬"</option>
+ @foreach($subjects as $s)
+ <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
+ @endforeach
+ </select>
+ @error('subject_id')<p class="error">{{ $message }}</p>@enderror
+ </div>
 
-                    <div class="field">
-                        <label>Session Title <span class="req">*</span></label>
-                        <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. Algebra Made Easy â‚¬" Form 4" required maxlength="200">
-                        <p class="hint">Be specific â‚¬" this is what students see when browsing sessions.</p>
-                        @error('title')<p class="error">{{ $message }}</p>@enderror
-                    </div>
+ <div class="field">
+ <label>Session Title <span class="req">*</span></label>
+ <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. Algebra Made Easy â‚¬" Form 4" required maxlength="200">
+ <p class="hint">Be specific â‚¬" this is what students see when browsing sessions.</p>
+ @error('title')<p class="error">{{ $message }}</p>@enderror
+ </div>
 
-                    <div class="field">
-                        <label>Description <span class="req">*</span></label>
-                        <textarea name="description" rows="4" placeholder="What will students learn? Who is this session for?" required maxlength="2000" style="resize:vertical;">{{ old('description') }}</textarea>
-                        @error('description')<p class="error">{{ $message }}</p>@enderror
-                    </div>
+ <div class="field">
+ <label>Description <span class="req">*</span></label>
+ <textarea name="description" rows="4" placeholder="What will students learn? Who is this session for?" required maxlength="2000" style="resize:vertical;">{{ old('description') }}</textarea>
+ @error('description')<p class="error">{{ $message }}</p>@enderror
+ </div>
 
-                    <div class="field">
-                        <label>Topics Covered</label>
-                        <input type="text" name="topics_covered" value="{{ old('topics_covered') }}" placeholder="e.g. Quadratics, Surds, Algebra (comma-separated)">
-                        <p class="hint">Comma-separated list of topics. Shown as chips on the detail page.</p>
-                        @error('topics_covered')<p class="error">{{ $message }}</p>@enderror
-                    </div>
-                </div>
+ <div class="field">
+ <label>Topics Covered</label>
+ <input type="text" name="topics_covered" value="{{ old('topics_covered') }}" placeholder="e.g. Quadratics, Surds, Algebra (comma-separated)">
+ <p class="hint">Comma-separated list of topics. Shown as chips on the detail page.</p>
+ @error('topics_covered')<p class="error">{{ $message }}</p>@enderror
+ </div>
+ </div>
 
-                {{-- SCHEDULE --}}
-                <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
-                    <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
-                        <i class="fas fa-calendar"></i>Schedule & Pricing
-                    </h2>
+ {{-- SCHEDULE --}}
+ <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
+ <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
+ <i class="fas fa-calendar"></i>Schedule & Pricing
+ </h2>
 
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-2col">
-                        <div class="field" style="margin-bottom:0;">
-                            <label>Start Date & Time <span class="req">*</span></label>
-                            <input type="datetime-local" name="scheduled_at" value="{{ old('scheduled_at') }}" required>
-                            @error('scheduled_at')<p class="error">{{ $message }}</p>@enderror
-                        </div>
-                        <div class="field" style="margin-bottom:0;">
-                            <label>Duration (minutes) <span class="req">*</span></label>
-                            <select name="duration_minutes" required>
-                                @foreach([30,45,60,90,120,180,240] as $d)
-                                <option value="{{ $d }}" {{ old('duration_minutes', 60) == $d ? 'selected' : '' }}>{{ $d }} min</option>
-                                @endforeach
-                            </select>
-                            @error('duration_minutes')<p class="error">{{ $message }}</p>@enderror
-                        </div>
-                    </div>
-                    <style>.form-2col{grid-template-columns:1fr!important;}@media(min-width:540px){.form-2col{grid-template-columns:1fr 1fr!important;}}</style>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-2col">
+ <div class="field" style="margin-bottom:0;">
+ <label>Start Date & Time <span class="req">*</span></label>
+ <input type="datetime-local" name="scheduled_at" value="{{ old('scheduled_at') }}" required>
+ @error('scheduled_at')<p class="error">{{ $message }}</p>@enderror
+ </div>
+ <div class="field" style="margin-bottom:0;">
+ <label>Duration (minutes) <span class="req">*</span></label>
+ <select name="duration_minutes" required>
+ @foreach([30,45,60,90,120,180,240] as $d)
+ <option value="{{ $d }}" {{ old('duration_minutes', 60) == $d ? 'selected' : '' }}>{{ $d }} min</option>
+ @endforeach
+ </select>
+ @error('duration_minutes')<p class="error">{{ $message }}</p>@enderror
+ </div>
+ </div>
+ <style>.form-2col{grid-template-columns:1fr!important;}@media(min-width:540px){.form-2col{grid-template-columns:1fr 1fr!important;}}</style>
 
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;" class="form-2col">
-                        <div class="field" style="margin-bottom:0;">
-                            <label>Price per Seat (KSh) <span class="req">*</span></label>
-                            <input type="number" name="price" value="{{ old('price', 600) }}" min="0" step="50" required>
-                            @error('price')<p class="error">{{ $message }}</p>@enderror
-                        </div>
-                        <div class="field" style="margin-bottom:0;">
-                            <label>Max Students <span class="req">*</span></label>
-                            <input type="number" name="max_students" value="{{ old('max_students', 20) }}" min="2" max="100" required>
-                            <p class="hint">Up to 100 per session.</p>
-                            @error('max_students')<p class="error">{{ $message }}</p>@enderror
-                        </div>
-                    </div>
-                </div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;" class="form-2col">
+ <div class="field" style="margin-bottom:0;">
+ <label>Price per Seat (KSh) <span class="req">*</span></label>
+ <input type="number" name="price" value="{{ old('price', 600) }}" min="0" step="50" required>
+ @error('price')<p class="error">{{ $message }}</p>@enderror
+ </div>
+ <div class="field" style="margin-bottom:0;">
+ <label>Max Students <span class="req">*</span></label>
+ <input type="number" name="max_students" value="{{ old('max_students', 20) }}" min="2" max="100" required>
+ <p class="hint">Up to 100 per session.</p>
+ @error('max_students')<p class="error">{{ $message }}</p>@enderror
+ </div>
+ </div>
+ </div>
 
-                {{-- SERIES TOGGLE --}}
-                <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:24px;">
-                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-                        <div>
-                            <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:4px;">
-                                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>Multi-Session Series
-                            </h2>
-                            <p style="font-size:13px;color:var(--muted);">Create a recurring cohort (e.g. 6-week series). Students enroll per session.</p>
-                        </div>
-                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-                            <input type="checkbox" name="is_series" value="1" x-model="isSeries" style="width:18px;height:18px;accent-color:#0A64BC;" {{ old('is_series') ? 'checked' : '' }}>
-                            <span style="font-size:13px;font-weight:600;color:var(--ink);">Enable series</span>
-                        </label>
-                    </div>
+ {{-- SERIES TOGGLE --}}
+ <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:24px;">
+ <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+ <div>
+ <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:4px;">
+ <i class="fas fa-layer-group"></i>Multi-Session Series
+ </h2>
+ <p style="font-size:13px;color:var(--muted);">Create a recurring cohort (e.g. 6-week series). Students enroll per session.</p>
+ </div>
+ <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+ <input type="checkbox" name="is_series" value="1" x-model="isSeries" style="width:18px;height:18px;accent-color:#0A64BC;" {{ old('is_series') ? 'checked' : '' }}>
+ <span style="font-size:13px;font-weight:600;color:var(--ink);">Enable series</span>
+ </label>
+ </div>
 
-                    <div x-show="isSeries" x-cloak style="margin-top:18px;padding-top:18px;border-top:1px solid var(--hair);">
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-2col">
-                            <div class="field" style="margin-bottom:0;">
-                                <label>Number of Sessions</label>
-                                <input type="number" name="series_count" value="{{ old('series_count', 4) }}" min="2" max="12" x-bind:required="isSeries">
-                                <p class="hint">2â‚¬"12 sessions per series.</p>
-                                @error('series_count')<p class="error">{{ $message }}</p>@enderror
-                            </div>
-                            <div class="field" style="margin-bottom:0;">
-                                <label>Session Interval</label>
-                                <select name="series_interval">
-                                    <option value="weekly" {{ old('series_interval','weekly') === 'weekly' ? 'selected' : '' }}>Weekly (every 7 days)</option>
-                                    <option value="daily" {{ old('series_interval') === 'daily' ? 'selected' : '' }}>Daily (every day)</option>
-                                </select>
-                                <p class="hint">Subsequent sessions are spaced from the start date.</p>
-                                @error('series_interval')<p class="error">{{ $message }}</p>@enderror
-                            </div>
-                        </div>
-                        <div style="margin-top:12px;padding:12px 14px;background:rgba(212,160,23,.07);border-radius:10px;border:1px solid rgba(212,160,23,.2);">
-                            <p style="font-size:13px;color:#B7870A;"><i class="fas fa-info-circle"></i>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
-                        </div>
-                    </div>
-                </div>
+ <div x-show="isSeries" x-cloak style="margin-top:18px;padding-top:18px;border-top:1px solid var(--hair);">
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-2col">
+ <div class="field" style="margin-bottom:0;">
+ <label>Number of Sessions</label>
+ <input type="number" name="series_count" value="{{ old('series_count', 4) }}" min="2" max="12" x-bind:required="isSeries">
+ <p class="hint">2â‚¬"12 sessions per series.</p>
+ @error('series_count')<p class="error">{{ $message }}</p>@enderror
+ </div>
+ <div class="field" style="margin-bottom:0;">
+ <label>Session Interval</label>
+ <select name="series_interval">
+ <option value="weekly" {{ old('series_interval','weekly') === 'weekly' ? 'selected' : '' }}>Weekly (every 7 days)</option>
+ <option value="daily" {{ old('series_interval') === 'daily' ? 'selected' : '' }}>Daily (every day)</option>
+ </select>
+ <p class="hint">Subsequent sessions are spaced from the start date.</p>
+ @error('series_interval')<p class="error">{{ $message }}</p>@enderror
+ </div>
+ </div>
+ <div style="margin-top:12px;padding:12px 14px;background:rgba(212,160,23,.07);border-radius:10px;border:1px solid rgba(212,160,23,.2);">
+ <p style="font-size:13px;color:#B7870A;"><i class="fas fa-info-circle"></i>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
+ </div>
+ </div>
+ </div>
 
-                {{-- SUBMIT --}}
-                <div style="display:flex;gap:12px;align-items:center;">
-                    <button type="submit" class="btn btn-primary" style="padding:13px 32px;font-size:15px;">
-                        <i class="fas fa-check-circle"></i>
-                        <span x-text="isSeries ? 'Create Series' : 'Create Session'">Create Session</span>
-                    </button>
-                    <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </div>{{-- /content --}}
+ {{-- SUBMIT --}}
+ <div style="display:flex;gap:12px;align-items:center;">
+ <button type="submit" class="btn btn-primary" style="padding:13px 32px;font-size:15px;">
+ <i class="fas fa-check-circle"></i>
+ <span x-text="isSeries ? 'Create Series' : 'Create Session'">Create Session</span>
+ </button>
+ <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost">Cancel</a>
+ </div>
+ </form>
+ </div>
+ </div>{{-- /content --}}
 </div>{{-- /main --}}
 </div>{{-- /layout --}}
 @livewireScripts

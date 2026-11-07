@@ -58,174 +58,174 @@ a{color:inherit;text-decoration:none;}
 @include('partials.nav')
 
 <div class="container">
-    {{-- Header --}}
-    <div class="header">
-        <h1 class="title">My Clinic Bookings</h1>
-        <a href="{{ route('examiner-clinic') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Book New Clinic
-        </a>
-    </div>
+ {{-- Header --}}
+ <div class="header">
+ <h1 class="title">My Clinic Bookings</h1>
+ <a href="{{ route('examiner-clinic') }}" class="btn btn-primary">
+ <i class="fas fa-plus"></i> Book New Clinic
+ </a>
+ </div>
 
-    {{-- Upcoming Count --}}
-    @if($upcomingCount > 0)
-    <div class="upcoming-section">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;font-weight:700;letter-spacing:.06em;">Upcoming Sessions</div>
-        <div class="upcoming-count">{{ $upcomingCount }} clinic{{ $upcomingCount !== 1 ? 's' : '' }}</div>
-    </div>
-    @endif
+ {{-- Upcoming Count --}}
+ @if($upcomingCount > 0)
+ <div class="upcoming-section">
+ <div style="font-size:12px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;font-weight:700;letter-spacing:.06em;">Upcoming Sessions</div>
+ <div class="upcoming-count">{{ $upcomingCount }} clinic{{ $upcomingCount !== 1 ? 's' : '' }}</div>
+ </div>
+ @endif
 
-    {{-- Bookings List --}}
-    @if($bookings->isNotEmpty())
-        @foreach($bookings as $booking)
-        @php
-            $isUpcoming = $booking->clinic->scheduled_at->isFuture();
-            $isPast = $booking->clinic->scheduled_at->isPast();
-            $canJoin = $isUpcoming && $booking->clinic->scheduled_at->diffInMinutes(now(), false) <= 15;
-        @endphp
-        <div class="booking-card" data-scheduled-at="{{ $booking->clinic->scheduled_at->toIso8601String() }}">
-            <div class="booking-icon">
-                <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
-            </div>
+ {{-- Bookings List --}}
+ @if($bookings->isNotEmpty())
+ @foreach($bookings as $booking)
+ @php
+ $isUpcoming = $booking->clinic->scheduled_at->isFuture();
+ $isPast = $booking->clinic->scheduled_at->isPast();
+ $canJoin = $isUpcoming && $booking->clinic->scheduled_at->diffInMinutes(now(), false) <= 15;
+ @endphp
+ <div class="booking-card" data-scheduled-at="{{ $booking->clinic->scheduled_at->toIso8601String() }}">
+ <div class="booking-icon">
+ <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
+ </div>
 
-            <div class="booking-info">
-                <div class="booking-title">{{ $booking->clinic->title }}</div>
-                <div class="booking-meta">
-                    <span><i class="fas fa-calendar"></i> {{ $booking->clinic->scheduled_at->format('D, M j, Y') }}</span>
-                    <span><i class="fas fa-clock"></i> {{ $booking->clinic->scheduled_at->format('g:ia') }}</span>
-                    <span><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> {{ $booking->clinic->duration_minutes }}min</span>
-                    @if($booking->clinic->tutor)
-                    <span><span style="font-size:inherit;"><i class="fas fa-user-tie"></i></span> {{ $booking->clinic->tutor->name }}</span>
-                    @endif
-                </div>
+ <div class="booking-info">
+ <div class="booking-title">{{ $booking->clinic->title }}</div>
+ <div class="booking-meta">
+ <span><i class="fas fa-calendar"></i> {{ $booking->clinic->scheduled_at->format('D, M j, Y') }}</span>
+ <span><i class="fas fa-clock"></i> {{ $booking->clinic->scheduled_at->format('g:ia') }}</span>
+ <span><i class="fas fa-hourglass-half"></i> {{ $booking->clinic->duration_minutes }}min</span>
+ @if($booking->clinic->tutor)
+ <span><i class="fas fa-user-tie"></i> {{ $booking->clinic->tutor->name }}</span>
+ @endif
+ </div>
 
-                {{-- Session Code --}}
-                <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
-                    <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--muted);">Code:</span>
-                    <div class="code-box" title="Your session access code">{{ $booking->session_code }}</div>
-                </div>
-            </div>
+ {{-- Session Code --}}
+ <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
+ <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--muted);">Code:</span>
+ <div class="code-box" title="Your session access code">{{ $booking->session_code }}</div>
+ </div>
+ </div>
 
-            {{-- Status & Actions --}}
-            <div style="flex-shrink:0;display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
-                {{-- Status Badge --}}
-                @if($canJoin)
-                <span class="status-badge status-upcoming" style="background:rgba(16,185,129,.2);color:#10B981;">
-                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> LIVE NOW
-                </span>
-                @elseif($isUpcoming)
-                <span class="status-badge status-upcoming" id="badge-{{ $booking->id }}">
-                    <i class="fas fa-clock"></i>
-                    <span id="countdown-{{ $booking->id }}">{{ $booking->clinic->scheduled_at->diffForHumans() }}</span>
-                </span>
-                @elseif($booking->attended)
-                <span class="status-badge status-completed">
-                    <i class="fas fa-check-circle"></i> Attended
-                </span>
-                @else
-                <span class="status-badge status-past">
-                    <i class="fas fa-check-circle"></i> Completed
-                </span>
-                @endif
+ {{-- Status & Actions --}}
+ <div style="flex-shrink:0;display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+ {{-- Status Badge --}}
+ @if($canJoin)
+ <span class="status-badge status-upcoming" style="background:rgba(16,185,129,.2);color:#10B981;">
+ <i class="fas fa-signal"></i> LIVE NOW
+ </span>
+ @elseif($isUpcoming)
+ <span class="status-badge status-upcoming" id="badge-{{ $booking->id }}">
+ <i class="fas fa-clock"></i>
+ <span id="countdown-{{ $booking->id }}">{{ $booking->clinic->scheduled_at->diffForHumans() }}</span>
+ </span>
+ @elseif($booking->attended)
+ <span class="status-badge status-completed">
+ <i class="fas fa-check-circle"></i> Attended
+ </span>
+ @else
+ <span class="status-badge status-past">
+ <i class="fas fa-check-circle"></i> Completed
+ </span>
+ @endif
 
-                {{-- Action Buttons --}}
-                <div class="booking-action">
-                    @if($canJoin || $isUpcoming)
-                    <a href="{{ route('clinic.join', $booking->clinic) }}" class="btn btn-join" style="font-size:12px;padding:8px 14px;">
-                        <i class="fas fa-video"></i> {{ $canJoin ? 'Join Session' : 'Join Early' }}
-                    </a>
-                    @endif
-                    <button onclick="copyCode('{{ $booking->session_code }}')" class="btn btn-share" style="font-size:12px;padding:8px 14px;">
-                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Copy Code
-                    </button>
-                </div>
+ {{-- Action Buttons --}}
+ <div class="booking-action">
+ @if($canJoin || $isUpcoming)
+ <a href="{{ route('clinic.join', $booking->clinic) }}" class="btn btn-join" style="font-size:12px;padding:8px 14px;">
+ <i class="fas fa-video"></i> {{ $canJoin ? 'Join Session' : 'Join Early' }}
+ </a>
+ @endif
+ <button onclick="copyCode('{{ $booking->session_code }}')" class="btn btn-share" style="font-size:12px;padding:8px 14px;">
+ <i class="fas fa-copy"></i> Copy Code
+ </button>
+ </div>
 
-                {{-- Payment Info --}}
-                @if($booking->payment)
-                <div style="font-size:11px;color:var(--muted);text-align:right;">
-                    Paid: KSh {{ number_format($booking->payment->amount) }}
-                    <br>{{ $booking->payment->paid_at->format('M j, Y') }}
-                </div>
-                @endif
-            </div>
-        </div>
-        @endforeach
+ {{-- Payment Info --}}
+ @if($booking->payment)
+ <div style="font-size:11px;color:var(--muted);text-align:right;">
+ Paid: KSh {{ number_format($booking->payment->amount) }}
+ <br>{{ $booking->payment->paid_at->format('M j, Y') }}
+ </div>
+ @endif
+ </div>
+ </div>
+ @endforeach
 
-        {{-- Pagination --}}
-        @if($bookings->hasPages())
-        <div class="pagination">
-            @if($bookings->onFirstPage())
-            <span class="page-link disabled"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
-            @else
-            <a href="{{ $bookings->previousPageUrl() }}" class="page-link"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
-            @endif
+ {{-- Pagination --}}
+ @if($bookings->hasPages())
+ <div class="pagination">
+ @if($bookings->onFirstPage())
+ <span class="page-link disabled"><i class="fas fa-chevron-left"></i></span>
+ @else
+ <a href="{{ $bookings->previousPageUrl() }}" class="page-link"><i class="fas fa-chevron-left"></i></a>
+ @endif
 
-            @foreach($bookings->getUrlRange(max(1, $bookings->currentPage()-2), min($bookings->lastPage(), $bookings->currentPage()+2)) as $page => $url)
-            <a href="{{ $url }}" class="page-link {{ $page == $bookings->currentPage() ? 'active' : '' }}">{{ $page }}</a>
-            @endforeach
+ @foreach($bookings->getUrlRange(max(1, $bookings->currentPage()-2), min($bookings->lastPage(), $bookings->currentPage()+2)) as $page => $url)
+ <a href="{{ $url }}" class="page-link {{ $page == $bookings->currentPage() ? 'active' : '' }}">{{ $page }}</a>
+ @endforeach
 
-            @if($bookings->hasMorePages())
-            <a href="{{ $bookings->nextPageUrl() }}" class="page-link"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
-            @else
-            <span class="page-link disabled"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
-            @endif
-        </div>
-        @endif
-    @else
-        <div class="empty">
-            <div class="empty-icon"><i class="fas fa-times-circle"></i></div>
-            <h2 class="empty-title">No Bookings Yet</h2>
-            <p class="empty-text">You haven't booked any clinic sessions. Start learning from national examiners today!</p>
-            <a href="{{ route('examiner-clinic') }}" class="btn btn-primary" style="width:auto;margin:0 auto;">
-                <i class="fas fa-check-circle"></i> Browse Clinics
-            </a>
-        </div>
-    @endif
+ @if($bookings->hasMorePages())
+ <a href="{{ $bookings->nextPageUrl() }}" class="page-link"><i class="fas fa-chevron-right"></i></a>
+ @else
+ <span class="page-link disabled"><i class="fas fa-chevron-right"></i></span>
+ @endif
+ </div>
+ @endif
+ @else
+ <div class="empty">
+ <div class="empty-icon"><i class="fas fa-times-circle"></i></div>
+ <h2 class="empty-title">No Bookings Yet</h2>
+ <p class="empty-text">You haven't booked any clinic sessions. Start learning from national examiners today!</p>
+ <a href="{{ route('examiner-clinic') }}" class="btn btn-primary" style="width:auto;margin:0 auto;">
+ <i class="fas fa-check-circle"></i> Browse Clinics
+ </a>
+ </div>
+ @endif
 </div>
 
 <script>
 function copyCode(code) {
-    navigator.clipboard.writeText(code).then(() => {
-        // Show confirmation
-        const btn = event.target.closest('button');
-        const original = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check-circle"></i> Copied!';
-        setTimeout(() => {
-            btn.innerHTML = original;
-        }, 2000);
-    });
+ navigator.clipboard.writeText(code).then(() => {
+ // Show confirmation
+ const btn = event.target.closest('button');
+ const original = btn.innerHTML;
+ btn.innerHTML = '<i class="fas fa-check-circle"></i> Copied!';
+ setTimeout(() => {
+ btn.innerHTML = original;
+ }, 2000);
+ });
 }
 
 // Live countdown timers
 document.querySelectorAll('[id^="countdown-"]').forEach(function(el) {
-    var id = el.id.replace('countdown-', '');
-    var badge = document.getElementById('badge-' + id);
-    var targetAttr = el.closest('.booking-card')?.dataset?.scheduledAt;
-    if (!targetAttr) return;
+ var id = el.id.replace('countdown-', '');
+ var badge = document.getElementById('badge-' + id);
+ var targetAttr = el.closest('.booking-card')?.dataset?.scheduledAt;
+ if (!targetAttr) return;
 
-    var target = new Date(targetAttr).getTime();
+ var target = new Date(targetAttr).getTime();
 
-    function tick() {
-        var diff = target - Date.now();
-        if (diff <= -900000) { // 15 min past start
-            // Auto-reload to show LIVE NOW badge
-            window.location.reload();
-            return;
-        }
-        if (diff <= 0) {
-            el.textContent = 'Starting now';
-            if (badge) {
-                badge.style.background = 'rgba(16,185,129,.2)';
-                badge.style.color = '#10B981';
-            }
-            return;
-        }
-        var h = Math.floor(diff / 3600000);
-        var m = Math.floor((diff % 3600000) / 60000);
-        var s = Math.floor((diff % 60000) / 1000);
-        el.textContent = h > 0 ? (h + 'h ' + m + 'm') : (m + 'm ' + s + 's');
-        setTimeout(tick, 1000);
-    }
-    tick();
+ function tick() {
+ var diff = target - Date.now();
+ if (diff <= -900000) { // 15 min past start
+ // Auto-reload to show LIVE NOW badge
+ window.location.reload();
+ return;
+ }
+ if (diff <= 0) {
+ el.textContent = 'Starting now';
+ if (badge) {
+ badge.style.background = 'rgba(16,185,129,.2)';
+ badge.style.color = '#10B981';
+ }
+ return;
+ }
+ var h = Math.floor(diff / 3600000);
+ var m = Math.floor((diff % 3600000) / 60000);
+ var s = Math.floor((diff % 60000) / 1000);
+ el.textContent = h > 0 ? (h + 'h ' + m + 'm') : (m + 'm ' + s + 's');
+ setTimeout(tick, 1000);
+ }
+ tick();
 });
 </script>
 

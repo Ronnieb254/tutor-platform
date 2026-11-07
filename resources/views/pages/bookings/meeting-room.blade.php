@@ -49,354 +49,354 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
 <div class="room-container">
 
-    {{-- Closing-buffer banner (hidden until 5 min left) --}}
-    <div id="closing-banner">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span>Session ending soon â‚¬" closing buffer active. You may finish your lesson.</span>
-        @if(auth()->id() === $booking->tutor_id)
-        <button onclick="document.getElementById('closing-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 14px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:600;">Dismiss</button>
-        @endif
-    </div>
+ {{-- Closing-buffer banner (hidden until 5 min left) --}}
+ <div id="closing-banner">
+ <i class="fas fa-exclamation-triangle"></i>
+ <span>Session ending soon â‚¬" closing buffer active. You may finish your lesson.</span>
+ @if(auth()->id() === $booking->tutor_id)
+ <button onclick="document.getElementById('closing-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 14px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:600;">Dismiss</button>
+ @endif
+ </div>
 
-    {{-- Session Header --}}
-    <div class="session-header">
-        <div class="left">
-            <a href="{{ route('bookings.show', $booking->uuid) }}" class="back-btn">
-                <span style="font-size:inherit;">←</span> Back
-            </a>
-            <div class="session-title">
-                {{ $booking->subject ? $booking->subject->name : 'Session' }} · {{ $booking->duration_minutes }} min
-            </div>
-            <div class="session-meta">
-                <span class="dot"></span>
-                <span class="time">
-                    @if(auth()->id() === $booking->tutor_id)
-                        Student: {{ $booking->student->name }}
-                    @else
-                        Tutor: {{ $booking->tutor->name }}
-                    @endif
-                </span>
-                @if(auth()->id() === $booking->tutor_id)
-                    <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
-                @endif
-                <span class="recording-indicator" id="recIndicator">
-                    <i class="fas fa-circle" style="color:#ff4444;"></i> REC
-                </span>
-            </div>
-        </div>
+ {{-- Session Header --}}
+ <div class="session-header">
+ <div class="left">
+ <a href="{{ route('bookings.show', $booking->uuid) }}" class="back-btn">
+ <span style="font-size:inherit;">←</span> Back
+ </a>
+ <div class="session-title">
+ {{ $booking->subject ? $booking->subject->name : 'Session' }} · {{ $booking->duration_minutes }} min
+ </div>
+ <div class="session-meta">
+ <span class="dot"></span>
+ <span class="time">
+ @if(auth()->id() === $booking->tutor_id)
+ Student: {{ $booking->student->name }}
+ @else
+ Tutor: {{ $booking->tutor->name }}
+ @endif
+ </span>
+ @if(auth()->id() === $booking->tutor_id)
+ <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
+ @endif
+ <span class="recording-indicator" id="recIndicator">
+ <i class="fas fa-circle" style="color:#ff4444;"></i> REC
+ </span>
+ </div>
+ </div>
 
-        <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+ <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
 
-            {{-- Teaching timer (shown once both parties join) --}}
-            <div id="timer-panel">
-                <div>
-                    <div class="tp-label">Teaching</div>
-                    <div class="tp-val" id="elapsed-timer">00:00</div>
-                </div>
-                <div>
-                    <div class="tp-label">Remaining</div>
-                    <div class="tp-val" id="remaining-timer">--:--</div>
-                </div>
-                <div>
-                    <div class="tp-label" id="timer-status">Waitingâ‚¬Â¦</div>
-                    <div id="progress-bar-wrap"><div id="progress-bar" style="width:0%;"></div></div>
-                </div>
-            </div>
+ {{-- Teaching timer (shown once both parties join) --}}
+ <div id="timer-panel">
+ <div>
+ <div class="tp-label">Teaching</div>
+ <div class="tp-val" id="elapsed-timer">00:00</div>
+ </div>
+ <div>
+ <div class="tp-label">Remaining</div>
+ <div class="tp-val" id="remaining-timer">--:--</div>
+ </div>
+ <div>
+ <div class="tp-label" id="timer-status">Waitingâ‚¬Â¦</div>
+ <div id="progress-bar-wrap"><div id="progress-bar" style="width:0%;"></div></div>
+ </div>
+ </div>
 
-            {{-- Attendance dots --}}
-            <div style="font-size:11px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:10px;flex-shrink:0;">
-                <span><span class="att-dot" id="tutor-dot"></span>Tutor</span>
-                <span><span class="att-dot" id="student-dot"></span>Student</span>
-            </div>
+ {{-- Attendance dots --}}
+ <div style="font-size:11px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:10px;flex-shrink:0;">
+ <span><span class="att-dot" id="tutor-dot"></span>Tutor</span>
+ <span><span class="att-dot" id="student-dot"></span>Student</span>
+ </div>
 
-            <div style="text-align:right;">
-                <p style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:2px;">Session Code</p>
-                <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">
-                    @if(auth()->id() === $booking->tutor_id)
-                        {{ $booking->session_code_tutor }}
-                    @else
-                        {{ $booking->session_code_student }}
-                    @endif
-                </p>
-            </div>
-            <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
-                <i class="fas fa-copy"></i>
-            </button>
-            <button onclick="leaveSession()" class="exit-btn">
-                <i class="fas fa-phone"></i> Leave
-            </button>
-        </div>
-    </div>
+ <div style="text-align:right;">
+ <p style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:2px;">Session Code</p>
+ <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">
+ @if(auth()->id() === $booking->tutor_id)
+ {{ $booking->session_code_tutor }}
+ @else
+ {{ $booking->session_code_student }}
+ @endif
+ </p>
+ </div>
+ <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
+ <i class="fas fa-copy"></i>
+ </button>
+ <button onclick="leaveSession()" class="exit-btn">
+ <i class="fas fa-phone"></i> Leave
+ </button>
+ </div>
+ </div>
 
-    {{-- Jitsi Meet Container --}}
-    <div id="jitsi-container"></div>
+ {{-- Jitsi Meet Container --}}
+ <div id="jitsi-container"></div>
 </div>
 
 <script src="https://meet.jit.si/external_api.js"></script>
 <script>
-    const domain = 'meet.jit.si';
-    const meetingRoom = '{{ $booking->meeting_room }}';
-    const userDisplayName = '{{ addslashes(auth()->user()->name) }}';
-    const userEmail = '{{ addslashes(auth()->user()->email) }}';
-    const isModerator = {{ auth()->id() === $booking->tutor_id ? 'true' : 'false' }};
-    const sessionCode = '{{ auth()->id() === $booking->tutor_id ? $booking->session_code_tutor : $booking->session_code_student }}';
-    const bookingUrl = '{{ route("bookings.show", $booking->uuid) }}';
-    const attendanceUrl = '{{ route("bookings.attendance", $booking->uuid) }}';
-    const joinedUrl = '{{ route("bookings.joined", $booking->uuid) }}';
-    const leftUrl = '{{ route("bookings.left", $booking->uuid) }}';
-    const csrfToken = document.querySelector('meta[name=csrf-token]').content;
+ const domain = 'meet.jit.si';
+ const meetingRoom = '{{ $booking->meeting_room }}';
+ const userDisplayName = '{{ addslashes(auth()->user()->name) }}';
+ const userEmail = '{{ addslashes(auth()->user()->email) }}';
+ const isModerator = {{ auth()->id() === $booking->tutor_id ? 'true' : 'false' }};
+ const sessionCode = '{{ auth()->id() === $booking->tutor_id ? $booking->session_code_tutor : $booking->session_code_student }}';
+ const bookingUrl = '{{ route("bookings.show", $booking->uuid) }}';
+ const attendanceUrl = '{{ route("bookings.attendance", $booking->uuid) }}';
+ const joinedUrl = '{{ route("bookings.joined", $booking->uuid) }}';
+ const leftUrl = '{{ route("bookings.left", $booking->uuid) }}';
+ const csrfToken = document.querySelector('meta[name=csrf-token]').content;
 
-    // Scheduled session parameters
-    const scheduledSeconds = {{ $booking->duration_minutes * 60 }};
-    const closingBufferSeconds = 300; // 5 min
-    @php
-        $sessionStartTs = $booking->scheduled_at->timestamp;
-    @endphp
-    const sessionStartTs = {{ $sessionStartTs }};
+ // Scheduled session parameters
+ const scheduledSeconds = {{ $booking->duration_minutes * 60 }};
+ const closingBufferSeconds = 300; // 5 min
+ @php
+ $sessionStartTs = $booking->scheduled_at->timestamp;
+ @endphp
+ const sessionStartTs = {{ $sessionStartTs }};
 
-    // "â‚¬"â‚¬ Timer state "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬
-    let teachingTimer = null;
-    let elapsedSeconds = 0;
-    let bothJoined = false;
-    let hasJoined = false;
-    let inClosingBuffer = false;
+ // "â‚¬"â‚¬ Timer state "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬
+ let teachingTimer = null;
+ let elapsedSeconds = 0;
+ let bothJoined = false;
+ let hasJoined = false;
+ let inClosingBuffer = false;
 
-    function formatTime(secs) {
-        const h = Math.floor(secs / 3600);
-        const m = Math.floor((secs % 3600) / 60);
-        const s = secs % 60;
-        if (h > 0) return `${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
-        return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    }
+ function formatTime(secs) {
+ const h = Math.floor(secs / 3600);
+ const m = Math.floor((secs % 3600) / 60);
+ const s = secs % 60;
+ if (h > 0) return `${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+ return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+ }
 
-    function updateTimerUI() {
-        const remaining = Math.max(0, scheduledSeconds - elapsedSeconds);
-        const elEl   = document.getElementById('elapsed-timer');
-        const remEl  = document.getElementById('remaining-timer');
-        const progEl = document.getElementById('progress-bar');
+ function updateTimerUI() {
+ const remaining = Math.max(0, scheduledSeconds - elapsedSeconds);
+ const elEl = document.getElementById('elapsed-timer');
+ const remEl = document.getElementById('remaining-timer');
+ const progEl = document.getElementById('progress-bar');
 
-        if (elEl) elEl.textContent = formatTime(elapsedSeconds);
-        if (remEl) remEl.textContent = formatTime(remaining);
-        if (progEl) {
-            const pct = Math.min(100, (elapsedSeconds / scheduledSeconds) * 100);
-            progEl.style.width = pct + '%';
-            // Colour: green " ' amber (last 20%) " ' red (closing buffer)
-            if (remaining <= closingBufferSeconds) {
-                progEl.style.background = '#E8522A';
-            } else if (remaining <= scheduledSeconds * 0.2) {
-                progEl.style.background = '#EEBE15';
-            } else {
-                progEl.style.background = '#10B981';
-            }
-        }
+ if (elEl) elEl.textContent = formatTime(elapsedSeconds);
+ if (remEl) remEl.textContent = formatTime(remaining);
+ if (progEl) {
+ const pct = Math.min(100, (elapsedSeconds / scheduledSeconds) * 100);
+ progEl.style.width = pct + '%';
+ // Colour: green " ' amber (last 20%) " ' red (closing buffer)
+ if (remaining <= closingBufferSeconds) {
+ progEl.style.background = '#E8522A';
+ } else if (remaining <= scheduledSeconds * 0.2) {
+ progEl.style.background = '#EEBE15';
+ } else {
+ progEl.style.background = '#10B981';
+ }
+ }
 
-        // Show closing-buffer warning
-        if (remaining <= closingBufferSeconds && !inClosingBuffer) {
-            inClosingBuffer = true;
-            showToast('ÂÂ° Session ending in ' + formatTime(remaining) + ' â‚¬" closing buffer started.', 'warning');
-            document.getElementById('closing-banner').style.display = 'flex';
-        }
+ // Show closing-buffer warning
+ if (remaining <= closingBufferSeconds && !inClosingBuffer) {
+ inClosingBuffer = true;
+ showToast('ÂÂ° Session ending in ' + formatTime(remaining) + ' â‚¬" closing buffer started.', 'warning');
+ document.getElementById('closing-banner').style.display = 'flex';
+ }
 
-        // Auto-end when remaining hits 0
-        if (remaining === 0 && bothJoined) {
-            clearInterval(teachingTimer);
-            // Notify backend the session time has ended
-            fetch(leftUrl, {
-                method: 'POST',
-                headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
-            });
-        }
-    }
+ // Auto-end when remaining hits 0
+ if (remaining === 0 && bothJoined) {
+ clearInterval(teachingTimer);
+ // Notify backend the session time has ended
+ fetch(leftUrl, {
+ method: 'POST',
+ headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
+ });
+ }
+ }
 
-    function startTeachingTimer(serverElapsed) {
-        if (teachingTimer) return; // already running
-        elapsedSeconds = serverElapsed || 0;
-        updateTimerUI();
-        teachingTimer = setInterval(() => {
-            elapsedSeconds++;
-            updateTimerUI();
-        }, 1000);
-        document.getElementById('timer-panel').style.display = 'flex';
-        document.getElementById('timer-status').textContent = 'Teaching timer runningâ‚¬Â¦';
-    }
+ function startTeachingTimer(serverElapsed) {
+ if (teachingTimer) return; // already running
+ elapsedSeconds = serverElapsed || 0;
+ updateTimerUI();
+ teachingTimer = setInterval(() => {
+ elapsedSeconds++;
+ updateTimerUI();
+ }, 1000);
+ document.getElementById('timer-panel').style.display = 'flex';
+ document.getElementById('timer-status').textContent = 'Teaching timer runningâ‚¬Â¦';
+ }
 
-    // Poll attendance status every 10 s
-    function pollAttendance() {
-        fetch(attendanceUrl)
-            .then(r => r.json())
-            .then(data => {
-                const tutorDot = document.getElementById('tutor-dot');
-                const stuDot   = document.getElementById('student-dot');
+ // Poll attendance status every 10 s
+ function pollAttendance() {
+ fetch(attendanceUrl)
+ .then(r => r.json())
+ .then(data => {
+ const tutorDot = document.getElementById('tutor-dot');
+ const stuDot = document.getElementById('student-dot');
 
-                if (tutorDot) tutorDot.style.background = data.tutor_joined ? '#10B981' : '#6b7280';
-                if (stuDot)   stuDot.style.background   = data.student_joined ? '#10B981' : '#6b7280';
+ if (tutorDot) tutorDot.style.background = data.tutor_joined ? '#10B981' : '#6b7280';
+ if (stuDot) stuDot.style.background = data.student_joined ? '#10B981' : '#6b7280';
 
-                if (data.both_joined && !bothJoined) {
-                    bothJoined = true;
-                    startTeachingTimer(data.elapsed_seconds);
-                } else if (bothJoined && teachingTimer) {
-                    // Keep elapsed in sync with server (drift correction)
-                    if (Math.abs(data.elapsed_seconds - elapsedSeconds) > 5) {
-                        elapsedSeconds = data.elapsed_seconds;
-                    }
-                }
-            })
-            .catch(() => {}); // silently ignore
-    }
+ if (data.both_joined && !bothJoined) {
+ bothJoined = true;
+ startTeachingTimer(data.elapsed_seconds);
+ } else if (bothJoined && teachingTimer) {
+ // Keep elapsed in sync with server (drift correction)
+ if (Math.abs(data.elapsed_seconds - elapsedSeconds) > 5) {
+ elapsedSeconds = data.elapsed_seconds;
+ }
+ }
+ })
+ .catch(() => {}); // silently ignore
+ }
 
-    // Toast helper
-    function showToast(msg, type) {
-        const t = document.createElement('div');
-        t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;color:#fff;max-width:360px;box-shadow:0 4px 20px rgba(0,0,0,.3);';
-        t.style.background = type === 'warning' ? '#EEBE15' : (type === 'error' ? '#E8522A' : '#10B981');
-        t.style.color = type === 'warning' ? '#15281F' : '#fff';
-        t.textContent = msg;
-        document.body.appendChild(t);
-        setTimeout(() => t.remove(), 6000);
-    }
+ // Toast helper
+ function showToast(msg, type) {
+ const t = document.createElement('div');
+ t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;color:#fff;max-width:360px;box-shadow:0 4px 20px rgba(0,0,0,.3);';
+ t.style.background = type === 'warning' ? '#EEBE15' : (type === 'error' ? '#E8522A' : '#10B981');
+ t.style.color = type === 'warning' ? '#15281F' : '#fff';
+ t.textContent = msg;
+ document.body.appendChild(t);
+ setTimeout(() => t.remove(), 6000);
+ }
 
-    const options = {
-        roomName: meetingRoom,
-        width: '100%',
-        height: '100%',
-        parentNode: document.querySelector('#jitsi-container'),
-        @if(app(\App\Services\JitsiService::class)->isConfigured() && env('JITSI_USE_JWT'))
-        jwt: '{{ $jitsiJwt ?? "" }}',
-        @endif
-        configOverwrite: {
-            startWithAudioMuted: false,
-            startWithVideoMuted: false,
-            enableWelcomePage: false,
-            prejoinPageEnabled: false,
-            enableNoisyMicDetection: true,
-            resolution: 720,
-            constraints: {
-                video: {
-                    height: { ideal: 720, max: 1080, min: 240 },
-                    width: { ideal: 1280, max: 1920, min: 320 }
-                }
-            },
-            desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
-            desktopSharingChromeSources: ['screen', 'window', 'tab'],
-            desktopSharingChromeExtId: null,
-            desktopSharingFirefoxDisabled: false,
-            fileRecordingsEnabled: true,
-            liveStreamingEnabled: false,
-            whiteboardEnabled: true,
-            etherpadEnabled: true,
-            breakoutRoomsEnabled: true,
-        },
-        interfaceConfigOverwrite: {
-            SHOW_JITSI_WATERMARK: false,
-            SHOW_WATERMARK_FOR_GUESTS: false,
-            SHOW_BRAND_WATERMARK: false,
-            SHOW_POWERED_BY: false,
-            DEFAULT_BACKGROUND: '#15281F',
-            DISPLAY_WELCOME_PAGE_CONTENT: false,
-            DISPLAY_INVITE_MORE_HEADER: false,
-            HIDE_INVITE_MORE_HEADER: true,
-            MOBILE_APP_PROMO: false,
-            SHOW_CHROME_EXTENSION_BANNER: false,
-            RECENT_LIST_ENABLED: false,
-            SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
-            VIDEO_LAYOUT_FIT: 'both',
-            TOOLBAR_BUTTONS: [
-                'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
-                'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
-                'etherpad', 'sharedvideo', 'settings', 'raisehand', 'videoquality',
-                'filmstrip', 'stats', 'shortcuts', 'tileview', 'videobackgroundblur',
-                'download', 'help', 'mute-everyone', 'mute-video-everyone',
-                'security', 'toggle-camera', 'whiteboard', 'participants-pane',
-            ],
-            TOOLBAR_ALWAYS_VISIBLE: false,
-            INITIAL_TOOLBAR_TIMEOUT: 5000,
-            TOOLBAR_TIMEOUT: 4000,
-        },
-        userInfo: {
-            displayName: userDisplayName,
-            email: userEmail,
-        },
-    };
+ const options = {
+ roomName: meetingRoom,
+ width: '100%',
+ height: '100%',
+ parentNode: document.querySelector('#jitsi-container'),
+ @if(app(\App\Services\JitsiService::class)->isConfigured() && env('JITSI_USE_JWT'))
+ jwt: '{{ $jitsiJwt ?? "" }}',
+ @endif
+ configOverwrite: {
+ startWithAudioMuted: false,
+ startWithVideoMuted: false,
+ enableWelcomePage: false,
+ prejoinPageEnabled: false,
+ enableNoisyMicDetection: true,
+ resolution: 720,
+ constraints: {
+ video: {
+ height: { ideal: 720, max: 1080, min: 240 },
+ width: { ideal: 1280, max: 1920, min: 320 }
+ }
+ },
+ desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
+ desktopSharingChromeSources: ['screen', 'window', 'tab'],
+ desktopSharingChromeExtId: null,
+ desktopSharingFirefoxDisabled: false,
+ fileRecordingsEnabled: true,
+ liveStreamingEnabled: false,
+ whiteboardEnabled: true,
+ etherpadEnabled: true,
+ breakoutRoomsEnabled: true,
+ },
+ interfaceConfigOverwrite: {
+ SHOW_JITSI_WATERMARK: false,
+ SHOW_WATERMARK_FOR_GUESTS: false,
+ SHOW_BRAND_WATERMARK: false,
+ SHOW_POWERED_BY: false,
+ DEFAULT_BACKGROUND: '#15281F',
+ DISPLAY_WELCOME_PAGE_CONTENT: false,
+ DISPLAY_INVITE_MORE_HEADER: false,
+ HIDE_INVITE_MORE_HEADER: true,
+ MOBILE_APP_PROMO: false,
+ SHOW_CHROME_EXTENSION_BANNER: false,
+ RECENT_LIST_ENABLED: false,
+ SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
+ VIDEO_LAYOUT_FIT: 'both',
+ TOOLBAR_BUTTONS: [
+ 'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+ 'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
+ 'etherpad', 'sharedvideo', 'settings', 'raisehand', 'videoquality',
+ 'filmstrip', 'stats', 'shortcuts', 'tileview', 'videobackgroundblur',
+ 'download', 'help', 'mute-everyone', 'mute-video-everyone',
+ 'security', 'toggle-camera', 'whiteboard', 'participants-pane',
+ ],
+ TOOLBAR_ALWAYS_VISIBLE: false,
+ INITIAL_TOOLBAR_TIMEOUT: 5000,
+ TOOLBAR_TIMEOUT: 4000,
+ },
+ userInfo: {
+ displayName: userDisplayName,
+ email: userEmail,
+ },
+ };
 
-    const api = new JitsiMeetExternalAPI(domain, options);
+ const api = new JitsiMeetExternalAPI(domain, options);
 
-    // "â‚¬"â‚¬ Joined event "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬
-    api.addEventListener('videoConferenceJoined', () => {
-        if (!hasJoined) {
-            hasJoined = true;
-            fetch(joinedUrl, {
-                method: 'POST',
-                headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.both_joined) {
-                    startTeachingTimer(0);
-                }
-            });
-            pollAttendance();
-            setInterval(pollAttendance, 10000);
-        }
-    });
+ // "â‚¬"â‚¬ Joined event "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬
+ api.addEventListener('videoConferenceJoined', () => {
+ if (!hasJoined) {
+ hasJoined = true;
+ fetch(joinedUrl, {
+ method: 'POST',
+ headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
+ })
+ .then(r => r.json())
+ .then(data => {
+ if (data.both_joined) {
+ startTeachingTimer(0);
+ }
+ });
+ pollAttendance();
+ setInterval(pollAttendance, 10000);
+ }
+ });
 
-    // Recording status
-    api.addEventListener('recordingStatusChanged', (e) => {
-        const indicator = document.getElementById('recIndicator');
-        if (e.on && isModerator) {
-            indicator.classList.add('active');
-        } else {
-            indicator.classList.remove('active');
-        }
-    });
+ // Recording status
+ api.addEventListener('recordingStatusChanged', (e) => {
+ const indicator = document.getElementById('recIndicator');
+ if (e.on && isModerator) {
+ indicator.classList.add('active');
+ } else {
+ indicator.classList.remove('active');
+ }
+ });
 
-    // Participant joined/left events
-    api.addEventListener('participantJoined', () => { pollAttendance(); });
-    api.addEventListener('participantLeft', () => {
-        fetch(leftUrl, {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
-        });
-        pollAttendance();
-    });
+ // Participant joined/left events
+ api.addEventListener('participantJoined', () => { pollAttendance(); });
+ api.addEventListener('participantLeft', () => {
+ fetch(leftUrl, {
+ method: 'POST',
+ headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
+ });
+ pollAttendance();
+ });
 
-    // Leave handling
-    api.addEventListener('readyToClose', () => {
-        fetch(leftUrl, {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
-        }).finally(() => { window.location.href = bookingUrl; });
-    });
-    api.addEventListener('hangup', () => {
-        window.location.href = bookingUrl;
-    });
+ // Leave handling
+ api.addEventListener('readyToClose', () => {
+ fetch(leftUrl, {
+ method: 'POST',
+ headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
+ }).finally(() => { window.location.href = bookingUrl; });
+ });
+ api.addEventListener('hangup', () => {
+ window.location.href = bookingUrl;
+ });
 
-    api.addEventListener('errorOccurred', (error) => {
-        console.error('Jitsi error:', error);
-    });
+ api.addEventListener('errorOccurred', (error) => {
+ console.error('Jitsi error:', error);
+ });
 
-    // Copy session code
-    function copySessionCode() {
-        navigator.clipboard.writeText(sessionCode).then(() => {
-            const btn = document.getElementById('copyBtn');
-            btn.innerHTML = '<i class="fas fa-check-circle"></i>';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-copy"></i>';
-                btn.classList.remove('copied');
-            }, 2000);
-        }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));
-    }
+ // Copy session code
+ function copySessionCode() {
+ navigator.clipboard.writeText(sessionCode).then(() => {
+ const btn = document.getElementById('copyBtn');
+ btn.innerHTML = '<i class="fas fa-check-circle"></i>';
+ btn.classList.add('copied');
+ setTimeout(() => {
+ btn.innerHTML = '<i class="fas fa-copy"></i>';
+ btn.classList.remove('copied');
+ }, 2000);
+ }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));
+ }
 
-    // Leave session
-    function leaveSession() {
-        try { api.executeCommand('hangup'); } catch(e) {}
-        setTimeout(() => { window.location.href = bookingUrl; }, 500);
-    }
+ // Leave session
+ function leaveSession() {
+ try { api.executeCommand('hangup'); } catch(e) {}
+ setTimeout(() => { window.location.href = bookingUrl; }, 500);
+ }
 
-    // Cleanup
-    window.addEventListener('beforeunload', () => {
-        try { api.dispose(); } catch(err) {}
-    });
+ // Cleanup
+ window.addEventListener('beforeunload', () => {
+ try { api.dispose(); } catch(err) {}
+ });
 </script>
 
 </body>

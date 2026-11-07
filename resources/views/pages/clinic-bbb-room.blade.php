@@ -34,176 +34,176 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 <body>
 
 <div class="room-container">
-    {{-- Session Header --}}
-    <div class="session-header">
-        <div class="left">
-            <a href="{{ route('examiner-clinic', $clinic->slug) }}" class="back-btn">
-                <span style="font-size:inherit;">←</span> Back
-            </a>
-            <div class="session-title">
-                <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
-                {{ $clinic->title ?? $clinic->name }}
-            </div>
-            <div class="session-meta">
-                <span class="dot"></span>
-                <span class="time">{{ $clinic->scheduled_at->format('D, M j · g:ia') }}</span>
-                @if($isModerator)
-                    <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
-                @endif
-                <span class="recording-indicator" id="recIndicator">
-                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> REC
-                </span>
-            </div>
-        </div>
+ {{-- Session Header --}}
+ <div class="session-header">
+ <div class="left">
+ <a href="{{ route('examiner-clinic', $clinic->slug) }}" class="back-btn">
+ <span style="font-size:inherit;">←</span> Back
+ </a>
+ <div class="session-title">
+ <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
+ {{ $clinic->title ?? $clinic->name }}
+ </div>
+ <div class="session-meta">
+ <span class="dot"></span>
+ <span class="time">{{ $clinic->scheduled_at->format('D, M j · g:ia') }}</span>
+ @if($isModerator)
+ <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
+ @endif
+ <span class="recording-indicator" id="recIndicator">
+ <i class="fas fa-circle" style="color:#ff4444;"></i> REC
+ </span>
+ </div>
+ </div>
 
-        <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
-            @if(!$isModerator && !empty($sessionCode))
-            <div style="text-align:right;">
-                <p style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:2px;">Session Code</p>
-                <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">{{ $sessionCode }}</p>
-            </div>
-            <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
-                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
-            </button>
-            @endif
-            <button onclick="leaveSession()" class="exit-btn">
-                <i class="fas fa-phone"></i> Leave
-            </button>
-        </div>
-    </div>
+ <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+ @if(!$isModerator && !empty($sessionCode))
+ <div style="text-align:right;">
+ <p style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:2px;">Session Code</p>
+ <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">{{ $sessionCode }}</p>
+ </div>
+ <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
+ <i class="fas fa-copy"></i>
+ </button>
+ @endif
+ <button onclick="leaveSession()" class="exit-btn">
+ <i class="fas fa-phone"></i> Leave
+ </button>
+ </div>
+ </div>
 
-    {{-- Jitsi Meet Container --}}
-    <div id="jitsi-container"></div>
+ {{-- Jitsi Meet Container --}}
+ <div id="jitsi-container"></div>
 </div>
 
 <script src="https://meet.jit.si/external_api.js"></script>
 <script>
-    const domain = 'meet.jit.si';
-    const meetingRoom = '{{ $clinic->meeting_room }}';
-    const userDisplayName = '{{ addslashes(auth()->user()->name) }}';
-    const userEmail = '{{ addslashes(auth()->user()->email) }}';
-    const isModerator = {{ $isModerator ? 'true' : 'false' }};
-    const sessionCode = '{{ $sessionCode ?? '' }}';
-    const clinicUrl = '{{ route("examiner-clinic", $clinic->slug) }}';
+ const domain = 'meet.jit.si';
+ const meetingRoom = '{{ $clinic->meeting_room }}';
+ const userDisplayName = '{{ addslashes(auth()->user()->name) }}';
+ const userEmail = '{{ addslashes(auth()->user()->email) }}';
+ const isModerator = {{ $isModerator ? 'true' : 'false' }};
+ const sessionCode = '{{ $sessionCode ?? '' }}';
+ const clinicUrl = '{{ route("examiner-clinic", $clinic->slug) }}';
 
-    const options = {
-        roomName: meetingRoom,
-        width: '100%',
-        height: '100%',
-        parentNode: document.querySelector('#jitsi-container'),
-        configOverwrite: {
-            startWithAudioMuted: false,
-            startWithVideoMuted: false,
-            enableWelcomePage: false,
-            prejoinPageEnabled: false,
-            enableNoisyMicDetection: true,
-            resolution: 720,
-            constraints: {
-                video: {
-                    height: { ideal: 720, max: 1080, min: 240 },
-                    width: { ideal: 1280, max: 1920, min: 320 }
-                }
-            },
-            // Screen sharing â‚¬" all sources
-            desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
-            desktopSharingChromeSources: ['screen', 'window', 'tab'],
-            desktopSharingChromeExtId: null,
-            desktopSharingFirefoxDisabled: false,
-            desktopSharingFirefoxMaxExtensionIframeSize: 600,
-            // Recording (moderators only)
-            fileRecordingsEnabled: true,
-            liveStreamingEnabled: false,
-            // All collaboration tools
-            whiteboardEnabled: true,
-            etherpadEnabled: true,
-            breakoutRoomsEnabled: true,
-        },
-        interfaceConfigOverwrite: {
-            SHOW_JITSI_WATERMARK: false,
-            SHOW_WATERMARK_FOR_GUESTS: false,
-            SHOW_BRAND_WATERMARK: false,
-            SHOW_POWERED_BY: false,
-            BRAND_WATERMARK_LINK: '',
-            JITSI_WATERMARK_LINK: '',
-            DEFAULT_BACKGROUND: '#15281F',
-            DEFAULT_LOCAL_DISPLAY_NAME: 'me',
-            DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',
-            DISABLE_PRESENCE_STATUS: false,
-            DISPLAY_WELCOME_PAGE_CONTENT: false,
-            DISPLAY_INVITE_MORE_HEADER: false,
-            HIDE_INVITE_MORE_HEADER: true,
-            MOBILE_APP_PROMO: false,
-            SHOW_CHROME_EXTENSION_BANNER: false,
-            SHOW_DEEP_LINKING_IMAGE: false,
-            RECENT_LIST_ENABLED: false,
-            SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
-            VIDEO_LAYOUT_FIT: 'both',
-            // Full toolbar â‚¬" all tools visible and available
-            TOOLBAR_BUTTONS: [
-                'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
-                'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
-                'etherpad', 'sharedvideo', 'settings', 'raisehand', 'videoquality',
-                'filmstrip', 'stats', 'shortcuts', 'tileview', 'videobackgroundblur',
-                'download', 'help', 'mute-everyone', 'mute-video-everyone',
-                'security', 'toggle-camera', 'whiteboard', 'participants-pane',
-            ],
-            TOOLBAR_ALWAYS_VISIBLE: false,
-            INITIAL_TOOLBAR_TIMEOUT: 5000,
-            TOOLBAR_TIMEOUT: 4000,
-        },
-        userInfo: {
-            displayName: userDisplayName,
-            email: userEmail,
-        },
-    };
+ const options = {
+ roomName: meetingRoom,
+ width: '100%',
+ height: '100%',
+ parentNode: document.querySelector('#jitsi-container'),
+ configOverwrite: {
+ startWithAudioMuted: false,
+ startWithVideoMuted: false,
+ enableWelcomePage: false,
+ prejoinPageEnabled: false,
+ enableNoisyMicDetection: true,
+ resolution: 720,
+ constraints: {
+ video: {
+ height: { ideal: 720, max: 1080, min: 240 },
+ width: { ideal: 1280, max: 1920, min: 320 }
+ }
+ },
+ // Screen sharing â‚¬" all sources
+ desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
+ desktopSharingChromeSources: ['screen', 'window', 'tab'],
+ desktopSharingChromeExtId: null,
+ desktopSharingFirefoxDisabled: false,
+ desktopSharingFirefoxMaxExtensionIframeSize: 600,
+ // Recording (moderators only)
+ fileRecordingsEnabled: true,
+ liveStreamingEnabled: false,
+ // All collaboration tools
+ whiteboardEnabled: true,
+ etherpadEnabled: true,
+ breakoutRoomsEnabled: true,
+ },
+ interfaceConfigOverwrite: {
+ SHOW_JITSI_WATERMARK: false,
+ SHOW_WATERMARK_FOR_GUESTS: false,
+ SHOW_BRAND_WATERMARK: false,
+ SHOW_POWERED_BY: false,
+ BRAND_WATERMARK_LINK: '',
+ JITSI_WATERMARK_LINK: '',
+ DEFAULT_BACKGROUND: '#15281F',
+ DEFAULT_LOCAL_DISPLAY_NAME: 'me',
+ DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',
+ DISABLE_PRESENCE_STATUS: false,
+ DISPLAY_WELCOME_PAGE_CONTENT: false,
+ DISPLAY_INVITE_MORE_HEADER: false,
+ HIDE_INVITE_MORE_HEADER: true,
+ MOBILE_APP_PROMO: false,
+ SHOW_CHROME_EXTENSION_BANNER: false,
+ SHOW_DEEP_LINKING_IMAGE: false,
+ RECENT_LIST_ENABLED: false,
+ SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
+ VIDEO_LAYOUT_FIT: 'both',
+ // Full toolbar â‚¬" all tools visible and available
+ TOOLBAR_BUTTONS: [
+ 'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+ 'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
+ 'etherpad', 'sharedvideo', 'settings', 'raisehand', 'videoquality',
+ 'filmstrip', 'stats', 'shortcuts', 'tileview', 'videobackgroundblur',
+ 'download', 'help', 'mute-everyone', 'mute-video-everyone',
+ 'security', 'toggle-camera', 'whiteboard', 'participants-pane',
+ ],
+ TOOLBAR_ALWAYS_VISIBLE: false,
+ INITIAL_TOOLBAR_TIMEOUT: 5000,
+ TOOLBAR_TIMEOUT: 4000,
+ },
+ userInfo: {
+ displayName: userDisplayName,
+ email: userEmail,
+ },
+ };
 
-    const api = new JitsiMeetExternalAPI(domain, options);
+ const api = new JitsiMeetExternalAPI(domain, options);
 
-    api.addEventListener('videoConferenceJoined', () => {
-        console.log('Joined as ' + (isModerator ? 'moderator' : 'participant'));
-    });
+ api.addEventListener('videoConferenceJoined', () => {
+ console.log('Joined as ' + (isModerator ? 'moderator' : 'participant'));
+ });
 
-    // Recording status
-    api.addEventListener('recordingStatusChanged', (e) => {
-        const indicator = document.getElementById('recIndicator');
-        if (e.on && isModerator) {
-            indicator.classList.add('active');
-        } else {
-            indicator.classList.remove('active');
-        }
-    });
+ // Recording status
+ api.addEventListener('recordingStatusChanged', (e) => {
+ const indicator = document.getElementById('recIndicator');
+ if (e.on && isModerator) {
+ indicator.classList.add('active');
+ } else {
+ indicator.classList.remove('active');
+ }
+ });
 
-    api.addEventListener('readyToClose', () => {
-        window.location.href = clinicUrl;
-    });
-    api.addEventListener('hangup', () => {
-        window.location.href = clinicUrl;
-    });
+ api.addEventListener('readyToClose', () => {
+ window.location.href = clinicUrl;
+ });
+ api.addEventListener('hangup', () => {
+ window.location.href = clinicUrl;
+ });
 
-    api.addEventListener('errorOccurred', (error) => {
-        console.error('Jitsi error:', error);
-    });
+ api.addEventListener('errorOccurred', (error) => {
+ console.error('Jitsi error:', error);
+ });
 
-    function copySessionCode() {
-        navigator.clipboard.writeText(sessionCode).then(() => {
-            const btn = document.getElementById('copyBtn');
-            btn.innerHTML = '<i class="fas fa-check-circle"></i>';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.innerHTML = '<span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>';
-                btn.classList.remove('copied');
-            }, 2000);
-        }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));
-    }
+ function copySessionCode() {
+ navigator.clipboard.writeText(sessionCode).then(() => {
+ const btn = document.getElementById('copyBtn');
+ btn.innerHTML = '<i class="fas fa-check-circle"></i>';
+ btn.classList.add('copied');
+ setTimeout(() => {
+ btn.innerHTML = '<i class="fas fa-copy"></i>';
+ btn.classList.remove('copied');
+ }, 2000);
+ }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));
+ }
 
-    function leaveSession() {
-        try { api.executeCommand('hangup'); } catch(e) {}
-        setTimeout(() => { window.location.href = clinicUrl; }, 500);
-    }
+ function leaveSession() {
+ try { api.executeCommand('hangup'); } catch(e) {}
+ setTimeout(() => { window.location.href = clinicUrl; }, 500);
+ }
 
-    window.addEventListener('beforeunload', (e) => {
-        try { api.dispose(); } catch(err) {}
-    });
+ window.addEventListener('beforeunload', (e) => {
+ try { api.dispose(); } catch(err) {}
+ });
 </script>
 
 </body>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Group Sessions â‚¬" Mwalimu Tutor Portal</title>
@@ -51,7 +51,7 @@ a{color:inherit;text-decoration:none;}
 </head>
 <body>
 @php
-$user    = auth()->user();
+$user = auth()->user();
 $profile = $user->tutorProfile;
 $isApproved = $profile?->is_approved ?? false;
 $pendingBookings = $user->bookingsAsTutor()->where('status','pending')->count();
@@ -62,244 +62,244 @@ $unreadNotifs = $user->unreadNotifications()->count();
 
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
-    <div class="sb-logo">
-        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-        <div><div class="sb-logo-sub">Tutor Portal</div></div>
-    </div>
-    <nav class="sb-nav">
-        <div class="sb-section">
-            <div class="sb-label">Main</div>
-            <a href="{{ route('tutor.dashboard') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                Overview
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=documents" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                My Documents
-                @if(($profile?->verification_status ?? 'no_documents') === 'action_required')<span class="sb-badge">!</span>@endif
-            </a>
-            <a href="{{ route('tutor.subjects') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                My Subjects
-            </a>
-        </div>
-        @if($isApproved)
-        <div class="sb-section">
-            <div class="sb-label">Sessions</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=bookings" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                Bookings
-                @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=history" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Session History
-            </a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Group Classes</div>
-            <a href="{{ route('tutor.group-sessions.index') }}" class="sb-item active">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                My Group Sessions
-            </a>
-            <a href="{{ route('tutor.group-sessions.create') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                Create Session
-            </a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Examiner</div>
-            <a href="{{ route('examiner.dashboard') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                Examiner Clinics
-            </a>
-        </div>
-        @endif
-        <div class="sb-section">
-            <div class="sb-label">Finance</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=earnings" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                Earnings &amp; Wallet
-            </a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Account</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=notifications" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                Notifications
-                @if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=profile" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Profile Settings
-            </a>
-        </div>
-    </nav>
-    <div class="sb-footer">
-        <div class="sb-user">
-            <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-            <div style="flex:1;min-width:0;"><div class="sb-uname">{{ $user->name }}</div><div class="sb-urole">Tutor</div></div>
-            <form method="POST" action="{{ route('logout') }}">@csrf
-                <button type="submit" class="sb-logout" title="Logout"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
-            </form>
-        </div>
-    </div>
+ <div class="sb-logo">
+ <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
+ <div><div class="sb-logo-sub">Tutor Portal</div></div>
+ </div>
+ <nav class="sb-nav">
+ <div class="sb-section">
+ <div class="sb-label">Main</div>
+ <a href="{{ route('tutor.dashboard') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+ Overview
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=documents" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+ My Documents
+ @if(($profile?->verification_status ?? 'no_documents') === 'action_required')<span class="sb-badge">!</span>@endif
+ </a>
+ <a href="{{ route('tutor.subjects') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+ My Subjects
+ </a>
+ </div>
+ @if($isApproved)
+ <div class="sb-section">
+ <div class="sb-label">Sessions</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=bookings" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+ Bookings
+ @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=history" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+ Session History
+ </a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Group Classes</div>
+ <a href="{{ route('tutor.group-sessions.index') }}" class="sb-item active">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+ My Group Sessions
+ </a>
+ <a href="{{ route('tutor.group-sessions.create') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+ Create Session
+ </a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Examiner</div>
+ <a href="{{ route('examiner.dashboard') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+ Examiner Clinics
+ </a>
+ </div>
+ @endif
+ <div class="sb-section">
+ <div class="sb-label">Finance</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=earnings" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+ Earnings &amp; Wallet
+ </a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Account</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=notifications" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+ Notifications
+ @if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=profile" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+ Profile Settings
+ </a>
+ </div>
+ </nav>
+ <div class="sb-footer">
+ <div class="sb-user">
+ <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+ <div style="flex:1;min-width:0;"><div class="sb-uname">{{ $user->name }}</div><div class="sb-urole">Tutor</div></div>
+ <form method="POST" action="{{ route('logout') }}">@csrf
+ <button type="submit" class="sb-logout" title="Logout"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+ </form>
+ </div>
+ </div>
 </aside>
 
 {{-- MAIN --}}
 <div class="main">
-    <div class="topbar">
-        <div style="display:flex;align-items:center;gap:12px;">
-            <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-            <span class="page-title">Group Sessions</span>
-        </div>
-        <a href="{{ route('tutor.group-sessions.create') }}" class="btn btn-primary" style="padding:8px 16px;font-size:13px;">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Session
-        </a>
-    </div>
+ <div class="topbar">
+ <div style="display:flex;align-items:center;gap:12px;">
+ <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+ <span class="page-title">Group Sessions</span>
+ </div>
+ <a href="{{ route('tutor.group-sessions.create') }}" class="btn btn-primary" style="padding:8px 16px;font-size:13px;">
+ <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+ New Session
+ </a>
+ </div>
 
-    <div class="content">
-        {{-- Flash --}}
-        @if(session('success'))
-        <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-        </div>
-        @endif
-        @if(session('error'))
-        <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-            <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> {{ session('error') }}
-        </div>
-        @endif
+ <div class="content">
+ {{-- Flash --}}
+ @if(session('success'))
+ <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+ <i class="fas fa-check-circle"></i> {{ session('success') }}
+ </div>
+ @endif
+ @if(session('error'))
+ <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+ <i class="fas fa-triangle-exclamation"></i> {{ session('error') }}
+ </div>
+ @endif
 
-        {{-- STATS --}}
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;" class="stats-g">
-            <div class="stat-card">
-                <div class="stat-icon" style="background:rgba(10,100,188,.1);"><i class="fas fa-check-circle"></i></div>
-                <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Upcoming</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">{{ $upcomingCount }}</p></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background:rgba(16,185,129,.1);"><i class="fas fa-user"></i></div>
-                <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Total Enrollments</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">{{ $totalEnrollments }}</p></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background:rgba(212,160,23,.1);"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></div>
-                <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Total Earnings</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">KSh {{ number_format($totalEarnings) }}</p></div>
-            </div>
-        </div>
-        <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:640px){.stats-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
+ {{-- STATS --}}
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;" class="stats-g">
+ <div class="stat-card">
+ <div class="stat-icon" style="background:rgba(10,100,188,.1);"><i class="fas fa-check-circle"></i></div>
+ <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Upcoming</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">{{ $upcomingCount }}</p></div>
+ </div>
+ <div class="stat-card">
+ <div class="stat-icon" style="background:rgba(16,185,129,.1);"><i class="fas fa-user"></i></div>
+ <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Total Enrollments</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">{{ $totalEnrollments }}</p></div>
+ </div>
+ <div class="stat-card">
+ <div class="stat-icon" style="background:rgba(212,160,23,.1);"><i class="fas fa-coins"></i></div>
+ <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Total Earnings</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">KSh {{ number_format($totalEarnings) }}</p></div>
+ </div>
+ </div>
+ <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:640px){.stats-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
 
-        {{-- SESSIONS LIST --}}
-        <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);overflow:hidden;">
-            <div style="padding:18px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-                <div>
-                    <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);">All Group Sessions</h2>
-                    <p style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $sessions->total() }} session{{ $sessions->total() != 1 ? 's' : '' }} total</p>
-                </div>
-                <a href="{{ route('tutor.group-sessions.create') }}" class="btn btn-primary" style="padding:8px 16px;font-size:13px;">
-                    <i class="fas fa-plus"></i> Create Session
-                </a>
-            </div>
+ {{-- SESSIONS LIST --}}
+ <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);overflow:hidden;">
+ <div style="padding:18px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+ <div>
+ <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);">All Group Sessions</h2>
+ <p style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $sessions->total() }} session{{ $sessions->total() != 1 ? 's' : '' }} total</p>
+ </div>
+ <a href="{{ route('tutor.group-sessions.create') }}" class="btn btn-primary" style="padding:8px 16px;font-size:13px;">
+ <i class="fas fa-plus"></i> Create Session
+ </a>
+ </div>
 
-            @if($sessions->isEmpty())
-            <div style="padding:64px;text-align:center;">
-                <div style="font-size:40px;margin-bottom:12px;"><i class="fas fa-user"></i></div>
-                <h3 style="font-family:'Fraunces',serif;font-size:19px;color:var(--ink);margin-bottom:8px;">No group sessions yet</h3>
-                <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Create your first live group class and start earning.</p>
-                <a href="{{ route('tutor.group-sessions.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Create Your First Session
-                </a>
-            </div>
-            @else
-            <div style="overflow-x:auto;">
-                <table style="width:100%;border-collapse:collapse;font-size:13.5px;">
-                    <thead>
-                        <tr style="background:rgba(21,40,31,.02);">
-                            <th style="padding:11px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Session</th>
-                            <th style="padding:11px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Date</th>
-                            <th style="padding:11px 12px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Enrolled</th>
-                            <th style="padding:11px 12px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Price</th>
-                            <th style="padding:11px 12px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Status</th>
-                            <th style="padding:11px 16px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($sessions as $session)
-                        @php
-                            $enrolled = $session->enrolledCount();
-                            $max      = $session->max_students;
-                        @endphp
-                        <tr style="border-top:1px solid var(--hair);">
-                            <td style="padding:14px 16px;">
-                                <div style="display:flex;align-items:flex-start;gap:10px;">
-                                    <div style="width:38px;height:38px;border-radius:10px;background:rgba(212,160,23,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                    <div>
-                                        <p style="font-weight:600;color:var(--ink);margin-bottom:2px;">{{ Str::limit($session->title, 50) }}</p>
-                                        @if($session->subject)<p style="font-size:11px;color:var(--muted);">{{ $session->subject->name }}</p>@endif
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="padding:14px 12px;white-space:nowrap;color:var(--muted);">
-                                {{ $session->scheduled_at->format('M j, Y') }}<br>
-                                <span style="font-size:11px;">{{ $session->scheduled_at->format('g:ia') }} · {{ $session->duration_minutes }}min</span>
-                            </td>
-                            <td style="padding:14px 12px;text-align:center;">
-                                <span style="font-weight:700;color:{{ $enrolled >= $max ? '#991B1B' : '#10B981' }};">{{ $enrolled }}/{{ $max }}</span>
-                            </td>
-                            <td style="padding:14px 12px;text-align:right;font-weight:700;color:#EEBE15;font-family:'Fraunces',serif;">
-                                KSh {{ number_format($session->price) }}
-                            </td>
-                            <td style="padding:14px 12px;text-align:center;">
-                                @php
-                                    $statusMap = ['scheduled'=>['#DCFCE7','#166534','Scheduled'],'cancelled'=>['#FEE2E2','#991B1B','Cancelled'],'completed'=>['rgba(21,40,31,.06)','rgba(21,40,31,.5)','Completed'],'active'=>['rgba(10,100,188,.1)','#0A64BC','Live']];
-                                    [$bg,$fc,$label] = $statusMap[$session->status] ?? ['rgba(21,40,31,.06)','rgba(21,40,31,.5)',$session->status];
-                                @endphp
-                                <span style="background:{{ $bg }};color:{{ $fc }};padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;">{{ $label }}</span>
-                            </td>
-                            <td style="padding:14px 16px;text-align:right;">
-                                <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
-                                    <a href="{{ route('tutor.group-sessions.show', $session) }}" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;background:rgba(10,100,188,.08);color:#0A64BC;font-size:12px;font-weight:600;border:1px solid rgba(10,100,188,.15);">
-                                        <span style="font-size:inherit;"><i class="fas fa-eye"></i></span> View
-                                    </a>
-                                    @if($session->status === 'scheduled')
-                                    <form method="POST" action="{{ route('tutor.group-sessions.cancel', $session) }}" onsubmit="return confirm('Cancel this group session?');">
-                                        @csrf
-                                        <button type="submit" style="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:8px;background:rgba(220,38,38,.06);color:#DC2626;font-size:12px;font-weight:600;border:1px solid rgba(220,38,38,.15);cursor:pointer;font-family:inherit;">
-                                            <span style="font-size:inherit;"><i class="fas fa-ban"></i></span>
-                                        </button>
-                                    </form>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+ @if($sessions->isEmpty())
+ <div style="padding:64px;text-align:center;">
+ <div style="font-size:40px;margin-bottom:12px;"><i class="fas fa-user"></i></div>
+ <h3 style="font-family:'Fraunces',serif;font-size:19px;color:var(--ink);margin-bottom:8px;">No group sessions yet</h3>
+ <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Create your first live group class and start earning.</p>
+ <a href="{{ route('tutor.group-sessions.create') }}" class="btn btn-primary">
+ <i class="fas fa-plus"></i> Create Your First Session
+ </a>
+ </div>
+ @else
+ <div style="overflow-x:auto;">
+ <table style="width:100%;border-collapse:collapse;font-size:13.5px;">
+ <thead>
+ <tr style="background:rgba(21,40,31,.02);">
+ <th style="padding:11px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Session</th>
+ <th style="padding:11px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Date</th>
+ <th style="padding:11px 12px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Enrolled</th>
+ <th style="padding:11px 12px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Price</th>
+ <th style="padding:11px 12px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Status</th>
+ <th style="padding:11px 16px;text-align:right;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Actions</th>
+ </tr>
+ </thead>
+ <tbody>
+ @foreach($sessions as $session)
+ @php
+ $enrolled = $session->enrolledCount();
+ $max = $session->max_students;
+ @endphp
+ <tr style="border-top:1px solid var(--hair);">
+ <td style="padding:14px 16px;">
+ <div style="display:flex;align-items:flex-start;gap:10px;">
+ <div style="width:38px;height:38px;border-radius:10px;background:rgba(212,160,23,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+ <i class="fas fa-user"></i>
+ </div>
+ <div>
+ <p style="font-weight:600;color:var(--ink);margin-bottom:2px;">{{ Str::limit($session->title, 50) }}</p>
+ @if($session->subject)<p style="font-size:11px;color:var(--muted);">{{ $session->subject->name }}</p>@endif
+ </div>
+ </div>
+ </td>
+ <td style="padding:14px 12px;white-space:nowrap;color:var(--muted);">
+ {{ $session->scheduled_at->format('M j, Y') }}<br>
+ <span style="font-size:11px;">{{ $session->scheduled_at->format('g:ia') }} · {{ $session->duration_minutes }}min</span>
+ </td>
+ <td style="padding:14px 12px;text-align:center;">
+ <span style="font-weight:700;color:{{ $enrolled >= $max ? '#991B1B' : '#10B981' }};">{{ $enrolled }}/{{ $max }}</span>
+ </td>
+ <td style="padding:14px 12px;text-align:right;font-weight:700;color:#EEBE15;font-family:'Fraunces',serif;">
+ KSh {{ number_format($session->price) }}
+ </td>
+ <td style="padding:14px 12px;text-align:center;">
+ @php
+ $statusMap = ['scheduled'=>['#DCFCE7','#166534','Scheduled'],'cancelled'=>['#FEE2E2','#991B1B','Cancelled'],'completed'=>['rgba(21,40,31,.06)','rgba(21,40,31,.5)','Completed'],'active'=>['rgba(10,100,188,.1)','#0A64BC','Live']];
+ [$bg,$fc,$label] = $statusMap[$session->status] ?? ['rgba(21,40,31,.06)','rgba(21,40,31,.5)',$session->status];
+ @endphp
+ <span style="background:{{ $bg }};color:{{ $fc }};padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;">{{ $label }}</span>
+ </td>
+ <td style="padding:14px 16px;text-align:right;">
+ <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+ <a href="{{ route('tutor.group-sessions.show', $session) }}" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;background:rgba(10,100,188,.08);color:#0A64BC;font-size:12px;font-weight:600;border:1px solid rgba(10,100,188,.15);">
+ <span style="font-size:inherit;"><i class="fas fa-eye"></i></span> View
+ </a>
+ @if($session->status === 'scheduled')
+ <form method="POST" action="{{ route('tutor.group-sessions.cancel', $session) }}" onsubmit="return confirm('Cancel this group session?');">
+ @csrf
+ <button type="submit" style="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:8px;background:rgba(220,38,38,.06);color:#DC2626;font-size:12px;font-weight:600;border:1px solid rgba(220,38,38,.15);cursor:pointer;font-family:inherit;">
+ <span style="font-size:inherit;"><i class="fas fa-ban"></i></span>
+ </button>
+ </form>
+ @endif
+ </div>
+ </td>
+ </tr>
+ @endforeach
+ </tbody>
+ </table>
+ </div>
 
-            {{-- pagination --}}
-            @if($sessions->hasPages())
-            <div style="padding:16px 20px;border-top:1px solid var(--hair);display:flex;justify-content:flex-end;gap:5px;flex-wrap:wrap;">
-                @if($sessions->onFirstPage())
-                <span style="padding:6px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:12px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
-                @else
-                <a href="{{ $sessions->previousPageUrl() }}" style="padding:6px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:12px;border:1px solid var(--hair);"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
-                @endif
-                @foreach($sessions->getUrlRange(max(1,$sessions->currentPage()-2),min($sessions->lastPage(),$sessions->currentPage()+2)) as $pg => $url)
-                <a href="{{ $url }}" style="padding:6px 14px;border-radius:8px;background:{{ $pg==$sessions->currentPage()?'#0A64BC':'#fff' }};color:{{ $pg==$sessions->currentPage()?'#fff':'var(--ink)' }};font-size:12px;border:1px solid {{ $pg==$sessions->currentPage()?'#0A64BC':'var(--hair)' }};">{{ $pg }}</a>
-                @endforeach
-                @if($sessions->hasMorePages())
-                <a href="{{ $sessions->nextPageUrl() }}" style="padding:6px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:12px;border:1px solid var(--hair);"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
-                @else
-                <span style="padding:6px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:12px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
-                @endif
-            </div>
-            @endif
-            @endif
-        </div>
-    </div>{{-- /content --}}
+ {{-- pagination --}}
+ @if($sessions->hasPages())
+ <div style="padding:16px 20px;border-top:1px solid var(--hair);display:flex;justify-content:flex-end;gap:5px;flex-wrap:wrap;">
+ @if($sessions->onFirstPage())
+ <span style="padding:6px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:12px;"><i class="fas fa-circle-info"></i></span>
+ @else
+ <a href="{{ $sessions->previousPageUrl() }}" style="padding:6px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:12px;border:1px solid var(--hair);"><i class="fas fa-circle-info"></i></a>
+ @endif
+ @foreach($sessions->getUrlRange(max(1,$sessions->currentPage()-2),min($sessions->lastPage(),$sessions->currentPage()+2)) as $pg => $url)
+ <a href="{{ $url }}" style="padding:6px 14px;border-radius:8px;background:{{ $pg==$sessions->currentPage()?'#0A64BC':'#fff' }};color:{{ $pg==$sessions->currentPage()?'#fff':'var(--ink)' }};font-size:12px;border:1px solid {{ $pg==$sessions->currentPage()?'#0A64BC':'var(--hair)' }};">{{ $pg }}</a>
+ @endforeach
+ @if($sessions->hasMorePages())
+ <a href="{{ $sessions->nextPageUrl() }}" style="padding:6px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:12px;border:1px solid var(--hair);"><i class="fas fa-circle-info"></i></a>
+ @else
+ <span style="padding:6px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:12px;"><i class="fas fa-circle-info"></i></span>
+ @endif
+ </div>
+ @endif
+ @endif
+ </div>
+ </div>{{-- /content --}}
 </div>{{-- /main --}}
 </div>{{-- /layout --}}
 @livewireScripts

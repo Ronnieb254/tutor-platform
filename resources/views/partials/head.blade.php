@@ -11,10 +11,10 @@
 <style>
 /* â-€â-€ MWALIMU DESIGN SYSTEM â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€ */
 :root{
-  --ink:#15281F; --cream:#FBF5E6; --trust-blue:#0A64BC;
-  --coral:#E8522A; --gold:#EEBE15; --mint:#10B981;
-  --muted:rgba(21,40,31,.55); --hair:rgba(21,40,31,.1);
-  --sidebar:#111C16;
+ --ink:#15281F; --cream:#FBF5E6; --trust-blue:#0A64BC;
+ --coral:#E8522A; --gold:#EEBE15; --mint:#10B981;
+ --muted:rgba(21,40,31,.55); --hair:rgba(21,40,31,.1);
+ --sidebar:#111C16;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{background:var(--cream);scroll-behavior:smooth;}

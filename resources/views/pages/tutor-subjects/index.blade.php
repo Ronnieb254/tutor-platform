@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>My Subjects â‚¬" Mwalimu Tutor Portal</title>
@@ -79,7 +79,7 @@ button{font-family:inherit;cursor:pointer;}
 </head>
 <body>
 @php
-$user    = auth()->user();
+$user = auth()->user();
 $profile = $user->tutorProfile;
 $isApproved = $profile?->is_approved ?? false;
 $pendingBookings = $user->bookingsAsTutor()->where('status','pending')->count();
@@ -90,228 +90,228 @@ $unreadNotifs = $user->unreadNotifications()->count();
 
 {{-- SIDEBAR --}}
 <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
-    <div class="sb-logo">
-        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-        <div><div class="sb-logo-text">Mwalimu</div><div class="sb-logo-sub">Tutor Portal</div></div>
-    </div>
-    <nav class="sb-nav">
-        <div class="sb-section">
-            <div class="sb-label">Main</div>
-            <a href="{{ route('tutor.dashboard') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                Overview
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=documents" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                My Documents
-                @if(($profile?->verification_status ?? 'no_documents') === 'action_required')<span class="sb-badge">!</span>@endif
-            </a>
-            <a href="{{ route('tutor.subjects') }}" class="sb-item active">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                My Subjects
-            </a>
-        </div>
-        @if($isApproved)
-        <div class="sb-section">
-            <div class="sb-label">Sessions</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=bookings" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                Bookings
-                @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=history" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Session History
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=chats" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                Messages
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=availability" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Availability
-            </a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Finance</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=earnings" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                Earnings &amp; Wallet
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=payouts" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                Payout Requests
-            </a>
-        </div>
-        @endif
-        @if($isApproved)
-        <div class="sb-section">
-            <div class="sb-label">Examiner</div>
-            <a href="{{ route('examiner.dashboard') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                Examiner Clinics
-            </a>
-        </div>
-        @endif
-        <div class="sb-section">
-            <div class="sb-label">Account</div>
-            <a href="{{ route('tutor.dashboard') }}?tab=notifications" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                Notifications
-                @if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif
-            </a>
-            <a href="{{ route('tutor.dashboard') }}?tab=profile" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                My Profile
-            </a>
-            <a href="{{ route('home') }}" class="sb-item">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                View Public Site
-            </a>
-        </div>
-    </nav>
-    <div class="sb-footer">
-        <div class="sb-user">
-            <img src="{{ $user->avatar_url }}" class="sb-avatar" alt="{{ $user->name }}">
-            <div style="flex:1;min-width:0;">
-                <div class="sb-uname">{{ $user->name }}</div>
-                <div class="sb-urole">
-                    @if($isApproved)
-                    <span style="color:var(--mint);">&#10003; Verified Tutor</span>
-                    @else
-                    <span style="color:rgba(255,255,255,.35);">Pending Verification</span>
-                    @endif
-                </div>
-            </div>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="sb-logout" title="Sign out">
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                </button>
-            </form>
-        </div>
-    </div>
+ <div class="sb-logo">
+ <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
+ <div><div class="sb-logo-text">Mwalimu</div><div class="sb-logo-sub">Tutor Portal</div></div>
+ </div>
+ <nav class="sb-nav">
+ <div class="sb-section">
+ <div class="sb-label">Main</div>
+ <a href="{{ route('tutor.dashboard') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+ Overview
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=documents" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+ My Documents
+ @if(($profile?->verification_status ?? 'no_documents') === 'action_required')<span class="sb-badge">!</span>@endif
+ </a>
+ <a href="{{ route('tutor.subjects') }}" class="sb-item active">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+ My Subjects
+ </a>
+ </div>
+ @if($isApproved)
+ <div class="sb-section">
+ <div class="sb-label">Sessions</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=bookings" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+ Bookings
+ @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=history" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+ Session History
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=chats" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+ Messages
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=availability" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+ Availability
+ </a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Finance</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=earnings" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+ Earnings &amp; Wallet
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=payouts" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+ Payout Requests
+ </a>
+ </div>
+ @endif
+ @if($isApproved)
+ <div class="sb-section">
+ <div class="sb-label">Examiner</div>
+ <a href="{{ route('examiner.dashboard') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+ Examiner Clinics
+ </a>
+ </div>
+ @endif
+ <div class="sb-section">
+ <div class="sb-label">Account</div>
+ <a href="{{ route('tutor.dashboard') }}?tab=notifications" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+ Notifications
+ @if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif
+ </a>
+ <a href="{{ route('tutor.dashboard') }}?tab=profile" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+ My Profile
+ </a>
+ <a href="{{ route('home') }}" class="sb-item">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+ View Public Site
+ </a>
+ </div>
+ </nav>
+ <div class="sb-footer">
+ <div class="sb-user">
+ <img src="{{ $user->avatar_url }}" class="sb-avatar" alt="{{ $user->name }}">
+ <div style="flex:1;min-width:0;">
+ <div class="sb-uname">{{ $user->name }}</div>
+ <div class="sb-urole">
+ @if($isApproved)
+ <span style="color:var(--mint);">&#10003; Verified Tutor</span>
+ @else
+ <span style="color:rgba(255,255,255,.35);">Pending Verification</span>
+ @endif
+ </div>
+ </div>
+ <form method="POST" action="{{ route('logout') }}">
+ @csrf
+ <button type="submit" class="sb-logout" title="Sign out">
+ <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+ </button>
+ </form>
+ </div>
+ </div>
 </aside>
 {{-- MAIN --}}
 <div class="main">
-    <header class="topbar">
-        <div class="topbar-left">
-            <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-            </button>
-            <div class="page-title">My Subjects</div>
-        </div>
-        <div class="topbar-right">
-            <a href="{{ route('tutor.dashboard') }}?tab=notifications" class="tb-btn" title="Notifications">
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                @if($unreadNotifs > 0)<span class="notif-dot"></span>@endif
-            </a>
-            <div style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;border:1.5px solid var(--hair);">
-                <img src="{{ $user->avatar_url }}" style="width:26px;height:26px;border-radius:999px;object-fit:cover;">
-                <span style="font-size:13px;font-weight:600;">{{ Illuminate\Support\Str::limit($user->name,18) }}</span>
-            </div>
-        </div>
-    </header>
+ <header class="topbar">
+ <div class="topbar-left">
+ <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+ </button>
+ <div class="page-title">My Subjects</div>
+ </div>
+ <div class="topbar-right">
+ <a href="{{ route('tutor.dashboard') }}?tab=notifications" class="tb-btn" title="Notifications">
+ <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+ @if($unreadNotifs > 0)<span class="notif-dot"></span>@endif
+ </a>
+ <div style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;border:1.5px solid var(--hair);">
+ <img src="{{ $user->avatar_url }}" style="width:26px;height:26px;border-radius:999px;object-fit:cover;">
+ <span style="font-size:13px;font-weight:600;">{{ Illuminate\Support\Str::limit($user->name,18) }}</span>
+ </div>
+ </div>
+ </header>
 
-    <div class="content">
-        @if(session('success'))
-        <div class="flash flash-ok">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            {{ session('success') }}
-        </div>
-        @endif
-        @if(session('error'))
-        <div class="flash flash-err">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-            {{ session('error') }}
-        </div>
-        @endif
+ <div class="content">
+ @if(session('success'))
+ <div class="flash flash-ok">
+ <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+ {{ session('success') }}
+ </div>
+ @endif
+ @if(session('error'))
+ <div class="flash flash-err">
+ <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+ {{ session('error') }}
+ </div>
+ @endif
 
-        <div class="sec-hdr">
-            <div>
-                <div class="sec-title">Manage Your Subjects</div>
-                <div class="sec-sub">Select up to 2 subjects you teach â‚¬" these appear on your public profile for students to find.</div>
-            </div>
-            <a href="{{ route('tutor.dashboard') }}" class="btn btn-o btn-sm">
-                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
-                Back to Dashboard
-            </a>
-        </div>
+ <div class="sec-hdr">
+ <div>
+ <div class="sec-title">Manage Your Subjects</div>
+ <div class="sec-sub">Select up to 2 subjects you teach â‚¬" these appear on your public profile for students to find.</div>
+ </div>
+ <a href="{{ route('tutor.dashboard') }}" class="btn btn-o btn-sm">
+ <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+ Back to Dashboard
+ </a>
+ </div>
 
-        {{-- Selected subjects preview --}}
-        <div class="card" style="margin-bottom:20px;">
-            <div style="padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--hair);">
-                <div>
-                    <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:2px;">
-                        Currently Teaching <span id="subject-count" style="color:var(--trust-blue);">{{ $tutorProfile->subjects->count() }}</span> Subject{{ $tutorProfile->subjects->count() !== 1 ? 's' : '' }}
-                    </h3>
-                    <p style="font-size:13px;color:var(--muted);">Click a subject below to add or remove it</p>
-                </div>
-                <div style="width:100%;max-width:280px;">
-                    <div class="search-wrap">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="search-subjects" placeholder="Search subjects..." class="search-input">
-                    </div>
-                </div>
-            </div>
-            <div style="padding:18px 22px;background:#F9FAF9;">
-                <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;">Your Selected Subjects (Max 2)</p>
-                <div id="selected-preview" style="display:flex;flex-wrap:wrap;gap:6px;min-height:30px;">
-                    @forelse($tutorProfile->subjects as $subject)
-                    <span class="subject-chip" data-subject-id="{{ $subject->id }}">
-                        {{ $subject->name }}
-                        <i class="fa-solid fa-xmark" onclick="deselectSubject({{ $subject->id }})"></i>
-                    </span>
-                    @empty
-                    <span style="font-size:13px;color:var(--muted);">No subjects selected yet. Choose from the categories below.</span>
-                    @endforelse
-                </div>
-            </div>
-        </div>
+ {{-- Selected subjects preview --}}
+ <div class="card" style="margin-bottom:20px;">
+ <div style="padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--hair);">
+ <div>
+ <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:2px;">
+ Currently Teaching <span id="subject-count" style="color:var(--trust-blue);">{{ $tutorProfile->subjects->count() }}</span> Subject{{ $tutorProfile->subjects->count() !== 1 ? 's' : '' }}
+ </h3>
+ <p style="font-size:13px;color:var(--muted);">Click a subject below to add or remove it</p>
+ </div>
+ <div style="width:100%;max-width:280px;">
+ <div class="search-wrap">
+ <i class="fas fa-search"></i>
+ <input type="text" id="search-subjects" placeholder="Search subjects..." class="search-input">
+ </div>
+ </div>
+ </div>
+ <div style="padding:18px 22px;background:#F9FAF9;">
+ <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;">Your Selected Subjects (Max 2)</p>
+ <div id="selected-preview" style="display:flex;flex-wrap:wrap;gap:6px;min-height:30px;">
+ @forelse($tutorProfile->subjects as $subject)
+ <span class="subject-chip" data-subject-id="{{ $subject->id }}">
+ {{ $subject->name }}
+ <i class="fa-solid fa-xmark" onclick="deselectSubject({{ $subject->id }})"></i>
+ </span>
+ @empty
+ <span style="font-size:13px;color:var(--muted);">No subjects selected yet. Choose from the categories below.</span>
+ @endforelse
+ </div>
+ </div>
+ </div>
 
-        {{-- Subject categories --}}
-        <form id="subjects-form" method="POST" action="{{ auth()->user()->isAdmin() ? route('admin.tutors.subjects.store', $tutorProfile) : route('tutor.subjects.store') }}">
-            @csrf
-            <div id="subjects-container">
-                @foreach($categories as $category)
-                <div class="category-section" data-category="{{ strtolower($category->name) }}" style="margin-bottom:24px;">
-                    <h4 style="font-family:'Fraunces',serif;font-size:16px;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-                        <div style="width:28px;height:28px;border-radius:8px;background:rgba(212,160,23,.12);display:flex;align-items:center;justify-content:center;">
-                            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                        </div>
-                        {{ $category->name }}
-                        <span style="font-size:12px;color:var(--muted);font-weight:400;">({{ $category->subjects->count() }})</span>
-                    </h4>
-                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;">
-                        @foreach($category->subjects as $subject)
-                        <div class="subject-card {{ $tutorProfile->subjects->contains($subject->id) ? 'selected' : '' }}"
-                             data-subject-id="{{ $subject->id }}"
-                             data-subject-name="{{ strtolower($subject->name) }}"
-                             onclick="toggleSubject({{ $subject->id }}, '{{ addslashes($subject->name) }}')">
-                            <div style="display:flex;align-items:center;gap:10px;flex:1;">
-                                <div style="width:36px;height:36px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                                </div>
-                                <div>
-                                    <div style="font-size:14px;font-weight:600;color:var(--ink);">{{ $subject->name }}</div>
-                                    <div style="font-size:11px;color:var(--muted);">{{ $category->name }}</div>
-                                </div>
-                            </div>
-                            <input type="checkbox" name="subject_ids[]" value="{{ $subject->id }}"
-                                   {{ $tutorProfile->subjects->contains($subject->id) ? 'checked' : '' }}>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endforeach
-            </div>
+ {{-- Subject categories --}}
+ <form id="subjects-form" method="POST" action="{{ auth()->user()->isAdmin() ? route('admin.tutors.subjects.store', $tutorProfile) : route('tutor.subjects.store') }}">
+ @csrf
+ <div id="subjects-container">
+ @foreach($categories as $category)
+ <div class="category-section" data-category="{{ strtolower($category->name) }}" style="margin-bottom:24px;">
+ <h4 style="font-family:'Fraunces',serif;font-size:16px;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+ <div style="width:28px;height:28px;border-radius:8px;background:rgba(212,160,23,.12);display:flex;align-items:center;justify-content:center;">
+ <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+ </div>
+ {{ $category->name }}
+ <span style="font-size:12px;color:var(--muted);font-weight:400;">({{ $category->subjects->count() }})</span>
+ </h4>
+ <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;">
+ @foreach($category->subjects as $subject)
+ <div class="subject-card {{ $tutorProfile->subjects->contains($subject->id) ? 'selected' : '' }}"
+ data-subject-id="{{ $subject->id }}"
+ data-subject-name="{{ strtolower($subject->name) }}"
+ onclick="toggleSubject({{ $subject->id }}, '{{ addslashes($subject->name) }}')">
+ <div style="display:flex;align-items:center;gap:10px;flex:1;">
+ <div style="width:36px;height:36px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+ <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+ </div>
+ <div>
+ <div style="font-size:14px;font-weight:600;color:var(--ink);">{{ $subject->name }}</div>
+ <div style="font-size:11px;color:var(--muted);">{{ $category->name }}</div>
+ </div>
+ </div>
+ <input type="checkbox" name="subject_ids[]" value="{{ $subject->id }}"
+ {{ $tutorProfile->subjects->contains($subject->id) ? 'checked' : '' }}>
+ </div>
+ @endforeach
+ </div>
+ </div>
+ @endforeach
+ </div>
 
-            <button type="submit" class="save-fab" id="save-btn">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Save Changes
-            </button>
-        </form>
-    </div>
+ <button type="submit" class="save-fab" id="save-btn">
+ <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+ Save Changes
+ </button>
+ </form>
+ </div>
 </div>
 
 </div>
@@ -321,109 +321,109 @@ const selectedSubjects = new Set({{ json_encode($tutorProfile->subjects->pluck('
 const subjectNames = {};
 
 document.querySelectorAll('.subject-card').forEach(card => {
-    const id = parseInt(card.dataset.subjectId);
-    const nameEl = card.querySelector('div > div > div > div:first-child');
-    if (nameEl) subjectNames[id] = nameEl.textContent.trim();
+ const id = parseInt(card.dataset.subjectId);
+ const nameEl = card.querySelector('div > div > div > div:first-child');
+ if (nameEl) subjectNames[id] = nameEl.textContent.trim();
 });
 
 function toggleSubject(id, name) {
-    const card = document.querySelector('.subject-card[data-subject-id="' + id + '"]');
-    const checkbox = card.querySelector('input[type="checkbox"]');
-    if (selectedSubjects.has(id)) {
-        selectedSubjects.delete(id);
-        card.classList.remove('selected');
-        checkbox.checked = false;
-        delete subjectNames[id];
-    } else {
-        if (selectedSubjects.size >= 2) {
-            showToast('You can only select up to 2 subjects. Please deselect a subject first.', 'warning');
-            return;
-        }
-        selectedSubjects.add(id);
-        card.classList.add('selected');
-        checkbox.checked = true;
-        subjectNames[id] = name;
-    }
-    updatePreview();
-    updateCount();
-    updateMaxReachedState();
+ const card = document.querySelector('.subject-card[data-subject-id="' + id + '"]');
+ const checkbox = card.querySelector('input[type="checkbox"]');
+ if (selectedSubjects.has(id)) {
+ selectedSubjects.delete(id);
+ card.classList.remove('selected');
+ checkbox.checked = false;
+ delete subjectNames[id];
+ } else {
+ if (selectedSubjects.size >= 2) {
+ showToast('You can only select up to 2 subjects. Please deselect a subject first.', 'warning');
+ return;
+ }
+ selectedSubjects.add(id);
+ card.classList.add('selected');
+ checkbox.checked = true;
+ subjectNames[id] = name;
+ }
+ updatePreview();
+ updateCount();
+ updateMaxReachedState();
 }
 
 function deselectSubject(id) {
-    selectedSubjects.delete(id);
-    const card = document.querySelector('.subject-card[data-subject-id="' + id + '"]');
-    if (card) {
-        card.classList.remove('selected');
-        card.querySelector('input[type="checkbox"]').checked = false;
-    }
-    delete subjectNames[id];
-    updatePreview();
-    updateCount();
-    updateMaxReachedState();
+ selectedSubjects.delete(id);
+ const card = document.querySelector('.subject-card[data-subject-id="' + id + '"]');
+ if (card) {
+ card.classList.remove('selected');
+ card.querySelector('input[type="checkbox"]').checked = false;
+ }
+ delete subjectNames[id];
+ updatePreview();
+ updateCount();
+ updateMaxReachedState();
 }
 
 function updatePreview() {
-    const preview = document.getElementById('selected-preview');
-    if (selectedSubjects.size === 0) {
-        preview.innerHTML = '<span style="font-size:13px;color:var(--muted);">No subjects selected yet. Choose from the categories below.</span>';
-        return;
-    }
-    preview.innerHTML = Array.from(selectedSubjects).map(function(id) {
-        var name = subjectNames[id] || document.querySelector('.subject-card[data-subject-id="' + id + '"]')?.dataset.subjectName || 'Subject';
-        return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<i class="fas fa-times-circle"></i></span>';
-    }).join('');
+ const preview = document.getElementById('selected-preview');
+ if (selectedSubjects.size === 0) {
+ preview.innerHTML = '<span style="font-size:13px;color:var(--muted);">No subjects selected yet. Choose from the categories below.</span>';
+ return;
+ }
+ preview.innerHTML = Array.from(selectedSubjects).map(function(id) {
+ var name = subjectNames[id] || document.querySelector('.subject-card[data-subject-id="' + id + '"]')?.dataset.subjectName || 'Subject';
+ return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<i class="fas fa-times-circle"></i></span>';
+ }).join('');
 }
 
 function updateCount() {
-    const countSpan = document.getElementById('subject-count');
-    countSpan.textContent = selectedSubjects.size;
-    if (selectedSubjects.size >= 2) {
-        countSpan.innerHTML = selectedSubjects.size + '/2 <span style="color:var(--mint);margin-left:6px;"><i class="fas fa-check-circle"></i> Max reached</span>';
-    } else {
-        countSpan.textContent = selectedSubjects.size + '/2';
-    }
+ const countSpan = document.getElementById('subject-count');
+ countSpan.textContent = selectedSubjects.size;
+ if (selectedSubjects.size >= 2) {
+ countSpan.innerHTML = selectedSubjects.size + '/2 <span style="color:var(--mint);margin-left:6px;"><i class="fas fa-check-circle"></i> Max reached</span>';
+ } else {
+ countSpan.textContent = selectedSubjects.size + '/2';
+ }
 }
 
 function updateMaxReachedState() {
-    const isMaxReached = selectedSubjects.size >= 2;
-    document.querySelectorAll('.subject-card').forEach(function(card) {
-        const id = parseInt(card.dataset.subjectId);
-        if (!selectedSubjects.has(id)) {
-            if (isMaxReached) {
-                card.style.opacity = '0.4';
-                card.style.cursor = 'not-allowed';
-            } else {
-                card.style.opacity = '1';
-                card.style.cursor = 'pointer';
-            }
-        }
-    });
+ const isMaxReached = selectedSubjects.size >= 2;
+ document.querySelectorAll('.subject-card').forEach(function(card) {
+ const id = parseInt(card.dataset.subjectId);
+ if (!selectedSubjects.has(id)) {
+ if (isMaxReached) {
+ card.style.opacity = '0.4';
+ card.style.cursor = 'not-allowed';
+ } else {
+ card.style.opacity = '1';
+ card.style.cursor = 'pointer';
+ }
+ }
+ });
 }
 
 document.getElementById('search-subjects').addEventListener('input', function(e) {
-    var query = e.target.value.toLowerCase();
-    document.querySelectorAll('.category-section').forEach(function(cat) {
-        var hasVisible = false;
-        cat.querySelectorAll('.subject-card').forEach(function(card) {
-            var name = card.dataset.subjectName;
-            if (name.includes(query)) { card.style.display = 'flex'; hasVisible = true; }
-            else { card.style.display = 'none'; }
-        });
-        cat.style.display = hasVisible ? 'block' : 'none';
-    });
+ var query = e.target.value.toLowerCase();
+ document.querySelectorAll('.category-section').forEach(function(cat) {
+ var hasVisible = false;
+ cat.querySelectorAll('.subject-card').forEach(function(card) {
+ var name = card.dataset.subjectName;
+ if (name.includes(query)) { card.style.display = 'flex'; hasVisible = true; }
+ else { card.style.display = 'none'; }
+ });
+ cat.style.display = hasVisible ? 'block' : 'none';
+ });
 });
 
 document.getElementById('subjects-form').addEventListener('submit', function(e) {
-    if (selectedSubjects.size === 0) {
-        e.preventDefault();
-        showError('Selection Required', 'Please select at least one subject');
-        return false;
-    }
-    if (selectedSubjects.size > 2) {
-        e.preventDefault();
-        showError('Too Many Subjects', 'You can only select up to 2 subjects');
-        return false;
-    }
+ if (selectedSubjects.size === 0) {
+ e.preventDefault();
+ showError('Selection Required', 'Please select at least one subject');
+ return false;
+ }
+ if (selectedSubjects.size > 2) {
+ e.preventDefault();
+ showError('Too Many Subjects', 'You can only select up to 2 subjects');
+ return false;
+ }
 });
 
 // Initialize on page load

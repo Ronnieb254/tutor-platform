@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ $resource->meta_title ?? $resource->title }} â‚¬" Mwalimu Library</title>
 @if($resource->meta_description)
@@ -82,173 +82,173 @@ a{color:inherit;text-decoration:none;}
 
 <div class="container">
 
-    {{-- Breadcrumb --}}
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Home</a>
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-        <a href="{{ route('library.index') }}">Library</a>
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-        <span>{{ Str::limit($resource->title, 40) }}</span>
-    </div>
+ {{-- Breadcrumb --}}
+ <div class="breadcrumb">
+ <a href="{{ route('home') }}">Home</a>
+ <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+ <a href="{{ route('library.index') }}">Library</a>
+ <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+ <span>{{ Str::limit($resource->title, 40) }}</span>
+ </div>
 
-    {{-- Hero banner --}}
-    @php
-        $typeIcons = ['article'=>'Ã°Å¸""ž','pdf'=>'Ã°Å¸"•','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸""¹'];
-        $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
-        $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
-        $bgColors = ['article'=>'rgba(37,99,235,.15)','pdf'=>'rgba(220,38,38,.15)','video'=>'rgba(124,58,237,.15)','notes'=>'rgba(217,119,6,.15)','past_paper'=>'rgba(22,163,74,.15)'];
-    @endphp
-    <div class="resource-hero">
-        <div class="resource-hero-icon" style="background:{{ $bgColors[$resource->resource_type] ?? 'rgba(10,100,188,.15)' }};">
-            {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸""ž' }}
-        </div>
-        <div>
-            <h1>{{ $resource->title }}</h1>
-            <div class="resource-hero-meta">
-                <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">
-                    {{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}
-                </span>
-                @if($resource->category)
-                <span class="bdg bdg-gray">{{ $resource->category->name }}</span>
-                @endif
-                @if($resource->grade_level)
-                <span class="bdg bdg-gray">{{ $resource->grade_level }}</span>
-                @endif
-                @if($resource->subject)
-                <span class="bdg" style="background:rgba(16,185,129,.15);color:#065f46;">{{ $resource->subject->name }}</span>
-                @endif
-                <span style="font-size:13px;color:rgba(255,255,255,.5);">
-                    By {{ $resource->author->name }} · {{ $resource->published_at?->format('M j, Y') }}
-                </span>
-            </div>
-        </div>
-    </div>
+ {{-- Hero banner --}}
+ @php
+ $typeIcons = ['article'=>'<i class="fas fa-book"></i>','pdf'=>'<i class="fas fa-file-pdf"></i>','video'=>'<i class="fas fa-video"></i>','notes'=>'<i class="fas fa-sticky-note"></i>','past_paper'=>'<i class="fas fa-file-lines"></i>'];
+ $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
+ $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
+ $bgColors = ['article'=>'rgba(37,99,235,.15)','pdf'=>'rgba(220,38,38,.15)','video'=>'rgba(124,58,237,.15)','notes'=>'rgba(217,119,6,.15)','past_paper'=>'rgba(22,163,74,.15)'];
+ @endphp
+ <div class="resource-hero">
+ <div class="resource-hero-icon" style="background:{{ $bgColors[$resource->resource_type] ?? 'rgba(10,100,188,.15)' }};">
+ {{ $typeIcons[$resource->resource_type] ?? '<i class="fas fa-book"></i>' }}
+ </div>
+ <div>
+ <h1>{{ $resource->title }}</h1>
+ <div class="resource-hero-meta">
+ <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">
+ {{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}
+ </span>
+ @if($resource->category)
+ <span class="bdg bdg-gray">{{ $resource->category->name }}</span>
+ @endif
+ @if($resource->grade_level)
+ <span class="bdg bdg-gray">{{ $resource->grade_level }}</span>
+ @endif
+ @if($resource->subject)
+ <span class="bdg" style="background:rgba(16,185,129,.15);color:#065f46;">{{ $resource->subject->name }}</span>
+ @endif
+ <span style="font-size:13px;color:rgba(255,255,255,.5);">
+ By {{ $resource->author->name }} · {{ $resource->published_at?->format('M j, Y') }}
+ </span>
+ </div>
+ </div>
+ </div>
 
-    <div class="layout">
-        {{-- Main content --}}
-        <div>
-            @if($resource->excerpt)
-            <div class="card card-p" style="margin-bottom:20px;background:rgba(10,100,188,.04);border-color:rgba(10,100,188,.15);">
-                <p style="font-size:15px;font-style:italic;color:var(--muted);line-height:1.7;">{{ $resource->excerpt }}</p>
-            </div>
-            @endif
+ <div class="layout">
+ {{-- Main content --}}
+ <div>
+ @if($resource->excerpt)
+ <div class="card card-p" style="margin-bottom:20px;background:rgba(10,100,188,.04);border-color:rgba(10,100,188,.15);">
+ <p style="font-size:15px;font-style:italic;color:var(--muted);line-height:1.7;">{{ $resource->excerpt }}</p>
+ </div>
+ @endif
 
-            @if($resource->content)
-            <div class="card card-p" style="margin-bottom:20px;">
-                <div class="prose">{!! $resource->content !!}</div>
-            </div>
-            @endif
+ @if($resource->content)
+ <div class="card card-p" style="margin-bottom:20px;">
+ <div class="prose">{!! $resource->content !!}</div>
+ </div>
+ @endif
 
-            @if($resource->resource_type === 'video' && $resource->file_path)
-            <div class="card card-p" style="margin-bottom:20px;">
-                <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:16px;">Watch Video</h3>
-                <video controls style="width:100%;border-radius:10px;background:#000;">
-                    <source src="{{ asset('storage/'.$resource->file_path) }}">
-                    Your browser doesn't support video playback.
-                </video>
-            </div>
-            @endif
+ @if($resource->resource_type === 'video' && $resource->file_path)
+ <div class="card card-p" style="margin-bottom:20px;">
+ <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:16px;">Watch Video</h3>
+ <video controls style="width:100%;border-radius:10px;background:#000;">
+ <source src="{{ asset('storage/'.$resource->file_path) }}">
+ Your browser doesn't support video playback.
+ </video>
+ </div>
+ @endif
 
-            {{-- Related resources --}}
-            @if($related->isNotEmpty())
-            <div class="card card-p">
-                <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:16px;">Related Resources</h3>
-                @foreach($related as $r)
-                <a href="{{ route('library.show', $r->slug) }}" class="related-card" style="display:flex;">
-                    <div class="related-icon">{{ $typeIcons[$r->resource_type] ?? 'Ã°Å¸""ž' }}</div>
-                    <div>
-                        <div class="related-title">{{ $r->title }}</div>
-                        <div class="related-meta">
-                            <span class="bdg {{ $typeClasses[$r->resource_type] ?? 'bdg-gray' }}" style="font-size:10px;padding:2px 8px;">{{ $typeLabels[$r->resource_type] ?? ucfirst($r->resource_type) }}</span>
-                            @if($r->grade_level) &nbsp;·&nbsp; {{ $r->grade_level }}@endif
-                        </div>
-                    </div>
-                </a>
-                @endforeach
-            </div>
-            @endif
-        </div>
+ {{-- Related resources --}}
+ @if($related->isNotEmpty())
+ <div class="card card-p">
+ <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:16px;">Related Resources</h3>
+ @foreach($related as $r)
+ <a href="{{ route('library.show', $r->slug) }}" class="related-card" style="display:flex;">
+ <div class="related-icon">{{ $typeIcons[$r->resource_type] ?? '<i class="fas fa-book"></i>' }}</div>
+ <div>
+ <div class="related-title">{{ $r->title }}</div>
+ <div class="related-meta">
+ <span class="bdg {{ $typeClasses[$r->resource_type] ?? 'bdg-gray' }}" style="font-size:10px;padding:2px 8px;">{{ $typeLabels[$r->resource_type] ?? ucfirst($r->resource_type) }}</span>
+ @if($r->grade_level) &nbsp;·&nbsp; {{ $r->grade_level }}@endif
+ </div>
+ </div>
+ </a>
+ @endforeach
+ </div>
+ @endif
+ </div>
 
-        {{-- Sidebar --}}
-        <aside>
-            {{-- Download / Access --}}
-            @if($resource->file_path)
-            <div class="download-card">
-                <h3>
-                    {{ $resource->resource_type === 'video' ? 'Ã°Å¸Å½Â¥ Watch Video' : 'Ã°Å¸"Â¥ Download ' . ($typeLabels[$resource->resource_type] ?? 'File') }}
-                </h3>
-                <p>
-                    @if($resource->file_size)
-                        File size: {{ number_format($resource->file_size / 1048576, 1) }} MB
-                    @endif
-                    · {{ $resource->download_count }} download{{ $resource->download_count != 1 ? 's' : '' }}
-                </p>
-                @auth
-                <a href="{{ route('library.download', $resource->slug) }}" class="download-btn">
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download Now
-                </a>
-                @else
-                <a href="{{ route('login') }}" class="download-btn">
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                    Login to Download
-                </a>
-                @endauth
-            </div>
-            @endif
+ {{-- Sidebar --}}
+ <aside>
+ {{-- Download / Access --}}
+ @if($resource->file_path)
+ <div class="download-card">
+ <h3>
+ {{ $resource->resource_type === 'video' ? '<i class=\'fas fa-video\'></i> Watch Video' : '<i class=\'fas fa-download\'></i> Download ' . ($typeLabels[$resource->resource_type] ?? 'File') }}
+ </h3>
+ <p>
+ @if($resource->file_size)
+ File size: {{ number_format($resource->file_size / 1048576, 1) }} MB
+ @endif
+ · {{ $resource->download_count }} download{{ $resource->download_count != 1 ? 's' : '' }}
+ </p>
+ @auth
+ <a href="{{ route('library.download', $resource->slug) }}" class="download-btn">
+ <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+ Download Now
+ </a>
+ @else
+ <a href="{{ route('login') }}" class="download-btn">
+ <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+ Login to Download
+ </a>
+ @endauth
+ </div>
+ @endif
 
-            {{-- Resource details --}}
-            <div class="card card-p" style="margin-bottom:20px;">
-                <h3 style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:14px;">Resource Details</h3>
-                <ul class="meta-list">
-                    <li>
-                        <span class="meta-label">Type</span>
-                        <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}" style="font-size:11px;">{{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}</span>
-                    </li>
-                    @if($resource->category)
-                    <li>
-                        <span class="meta-label">Category</span>
-                        <span class="meta-value">{{ $resource->category->name }}</span>
-                    </li>
-                    @endif
-                    @if($resource->subject)
-                    <li>
-                        <span class="meta-label">Subject</span>
-                        <span class="meta-value">{{ $resource->subject->name }}</span>
-                    </li>
-                    @endif
-                    @if($resource->grade_level)
-                    <li>
-                        <span class="meta-label">Grade</span>
-                        <span class="meta-value">{{ $resource->grade_level }}</span>
-                    </li>
-                    @endif
-                    <li>
-                        <span class="meta-label">Posted by</span>
-                        <span class="meta-value">{{ $resource->author->name }}</span>
-                    </li>
-                    <li>
-                        <span class="meta-label">Published</span>
-                        <span class="meta-value">{{ $resource->published_at?->format('M j, Y') }}</span>
-                    </li>
-                    <li>
-                        <span class="meta-label">Downloads</span>
-                        <span class="meta-value">{{ number_format($resource->download_count) }}</span>
-                    </li>
-                </ul>
-            </div>
+ {{-- Resource details --}}
+ <div class="card card-p" style="margin-bottom:20px;">
+ <h3 style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:14px;">Resource Details</h3>
+ <ul class="meta-list">
+ <li>
+ <span class="meta-label">Type</span>
+ <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}" style="font-size:11px;">{{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}</span>
+ </li>
+ @if($resource->category)
+ <li>
+ <span class="meta-label">Category</span>
+ <span class="meta-value">{{ $resource->category->name }}</span>
+ </li>
+ @endif
+ @if($resource->subject)
+ <li>
+ <span class="meta-label">Subject</span>
+ <span class="meta-value">{{ $resource->subject->name }}</span>
+ </li>
+ @endif
+ @if($resource->grade_level)
+ <li>
+ <span class="meta-label">Grade</span>
+ <span class="meta-value">{{ $resource->grade_level }}</span>
+ </li>
+ @endif
+ <li>
+ <span class="meta-label">Posted by</span>
+ <span class="meta-value">{{ $resource->author->name }}</span>
+ </li>
+ <li>
+ <span class="meta-label">Published</span>
+ <span class="meta-value">{{ $resource->published_at?->format('M j, Y') }}</span>
+ </li>
+ <li>
+ <span class="meta-label">Downloads</span>
+ <span class="meta-value">{{ number_format($resource->download_count) }}</span>
+ </li>
+ </ul>
+ </div>
 
-            {{-- CTA --}}
-            <div class="card card-p" style="text-align:center;background:linear-gradient(135deg,rgba(10,100,188,.05) 0%,rgba(10,100,188,.1) 100%);border-color:rgba(10,100,188,.2);">
-                <div style="font-size:32px;margin-bottom:10px;">Ã°Å¸Å½"</div>
-                <h3 style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px;">Need a tutor?</h3>
-                <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Find verified tutors who can help you master this subject.</p>
-                <a href="{{ route('tutors.index') }}" class="btn btn-v" style="width:100%;justify-content:center;">
-                    Find a Tutor
-                </a>
-            </div>
-        </aside>
-    </div>
+ {{-- CTA --}}
+ <div class="card card-p" style="text-align:center;background:linear-gradient(135deg,rgba(10,100,188,.05) 0%,rgba(10,100,188,.1) 100%);border-color:rgba(10,100,188,.2);">
+ <div style="font-size:32px;margin-bottom:10px;"><i class="fas fa-graduation-cap"></i></div>
+ <h3 style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px;">Need a tutor?</h3>
+ <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Find verified tutors who can help you master this subject.</p>
+ <a href="{{ route('tutors.index') }}" class="btn btn-v" style="width:100%;justify-content:center;">
+ Find a Tutor
+ </a>
+ </div>
+ </aside>
+ </div>
 </div>
 
 @include('partials.footer')

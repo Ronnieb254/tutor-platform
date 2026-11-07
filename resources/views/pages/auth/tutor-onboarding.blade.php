@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Complete Your Tutor Profile "- Mwalimu</title>
+<title>Complete Your Tutor Profile - Mwalimu</title>
 <style>
 html,body{min-height:100%;}
 .page{min-height:100vh;background:var(--cream);display:flex;flex-direction:column;}
@@ -69,496 +69,496 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 </head>
 <body>
 <div class="page">
-    {{-- Header --}}
-    <div class="ob-head">
-        <a href="{{ route('home') }}" class="ob-logo">
-            <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-            <em>Mw</em>alimu
-        </a>
-        <span style="font-size:13px;color:rgba(255,255,255,.5);">Tutor Onboarding</span>
-    </div>
+ {{-- Header --}}
+ <div class="ob-head">
+ <a href="{{ route('home') }}" class="ob-logo">
+ <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
+ <em>Mw</em>alimu
+ </a>
+ <span style="font-size:13px;color:rgba(255,255,255,.5);">Tutor Onboarding</span>
+ </div>
 
-    <div class="ob-main" x-data="tutorOnboarding()" x-init="init()">
-        <div class="ob-wrap">
+ <div class="ob-main" x-data="tutorOnboarding()" x-init="init()">
+ <div class="ob-wrap">
 
-            {{-- Progress --}}
-            <div class="prog-bar">
-                @foreach(['Profile','Subjects','Documents','Verification'] as $i => $label)
-                <div class="pstep">
-                    <div class="pstep-dot"
-                         :style="step > {{ $i+1 }} ? 'background:#10B981;color:#fff;' : step === {{ $i+1 }} ? 'background:#0A64BC;color:#fff;' : 'background:rgba(21,40,31,.08);color:rgba(21,40,31,.4);'">
-                        <template x-if="step > {{ $i+1 }}"><i class="fas fa-check-circle"></i></template>
-                        <template x-if="step <= {{ $i+1 }}"><span>{{ $i+1 }}</span></template>
-                    </div>
-                    <span class="pstep-label"
-                          :style="step === {{ $i+1 }} ? 'color:#0A64BC;' : 'color:rgba(21,40,31,.4);'">
-                        {{ $label }}
-                    </span>
-                </div>
-                @if(!$loop->last)
-                <div class="pline" :style="step > {{ $i+1 }} ? 'background:#10B981;' : 'background:rgba(21,40,31,.1);'"></div>
-                @endif
-                @endforeach
-            </div>
+ {{-- Progress --}}
+ <div class="prog-bar">
+ @foreach(['Profile','Subjects','Documents','Verification'] as $i => $label)
+ <div class="pstep">
+ <div class="pstep-dot"
+ :style="step > {{ $i+1 }} ? 'background:#10B981;color:#fff;' : step === {{ $i+1 }} ? 'background:#0A64BC;color:#fff;' : 'background:rgba(21,40,31,.08);color:rgba(21,40,31,.4);'">
+ <template x-if="step > {{ $i+1 }}"><i class="fas fa-check-circle"></i></template>
+ <template x-if="step <= {{ $i+1 }}"><span>{{ $i+1 }}</span></template>
+ </div>
+ <span class="pstep-label"
+ :style="step === {{ $i+1 }} ? 'color:#0A64BC;' : 'color:rgba(21,40,31,.4);'">
+ {{ $label }}
+ </span>
+ </div>
+ @if(!$loop->last)
+ <div class="pline" :style="step > {{ $i+1 }} ? 'background:#10B981;' : 'background:rgba(21,40,31,.1);'"></div>
+ @endif
+ @endforeach
+ </div>
 
-            {{-- -- STEP 1: Profile -- --}}
-            <div x-show="step === 1">
-                <div class="ob-card">
-                    <h2><i class="fas fa-user"></i>Your Profile</h2>
-                    <p class="sub">Tell students about yourself. This will appear on your public tutor profile.</p>
+ {{-- -- STEP 1: Profile -- --}}
+ <div x-show="step === 1">
+ <div class="ob-card">
+ <h2><i class="fas fa-user"></i>Your Profile</h2>
+ <p class="sub">Tell students about yourself. This will appear on your public tutor profile.</p>
 
-                    <div class="row2">
-                        <div class="field">
-                            <div class="flabel"><i class="fas fa-user"></i> Full Name <span style="color:var(--coral);">*</span></div>
-                            <input type="text" x-model="form.name" class="finput" placeholder="As on National ID" required>
-                            <p class="ferr" x-show="errors.name" x-text="errors.name"></p>
-                        </div>
-                        <div class="field">
-                            <div class="flabel"><i class="fas fa-phone"></i> Phone Number <span style="color:var(--coral);">*</span></div>
-                            <input type="tel" x-model="form.phone" class="finput" placeholder="+254 7XX XXX XXX" required>
-                        </div>
-                    </div>
+ <div class="row2">
+ <div class="field">
+ <div class="flabel"><i class="fas fa-user"></i> Full Name <span style="color:var(--coral);">*</span></div>
+ <input type="text" x-model="form.name" class="finput" placeholder="As on National ID" required>
+ <p class="ferr" x-show="errors.name" x-text="errors.name"></p>
+ </div>
+ <div class="field">
+ <div class="flabel"><i class="fas fa-phone"></i> Phone Number <span style="color:var(--coral);">*</span></div>
+ <input type="tel" x-model="form.phone" class="finput" placeholder="+254 7XX XXX XXX" required>
+ </div>
+ </div>
 
-                    <div class="row2">
-                        <div class="field">
-                            <div class="flabel"><i class="fas fa-map-marker-alt"></i> City</div>
-                            <input type="text" x-model="form.city" class="finput" placeholder="e.g. Nairobi">
-                        </div>
-                        <div class="field">
-                            <div class="flabel"><i class="fas fa-clock"></i> Years of Experience</div>
-                            <input type="number" x-model="form.experience_years" class="finput" placeholder="e.g. 5" min="0" max="50">
-                        </div>
-                    </div>
+ <div class="row2">
+ <div class="field">
+ <div class="flabel"><i class="fas fa-map-marker-alt"></i> City</div>
+ <input type="text" x-model="form.city" class="finput" placeholder="e.g. Nairobi">
+ </div>
+ <div class="field">
+ <div class="flabel"><i class="fas fa-clock"></i> Years of Experience</div>
+ <input type="number" x-model="form.experience_years" class="finput" placeholder="e.g. 5" min="0" max="50">
+ </div>
+ </div>
 
-                    <div class="field">
-                        <div class="flabel"><i class="fas fa-layer-group"></i> Level(s) You Teach <span style="color:var(--coral);">*</span></div>
-                        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-                            @foreach(['JSS (Grade 7-9)','Senior School (Grade 10-12)','Form 3','Form 4','Primary (Class 1-6)'] as $level)
-                            <label style="cursor:pointer;">
-                                <input type="checkbox" :value="'{{ $level }}'" x-model="form.levels" style="display:none;">
-                                <span :class="form.levels.includes('{{ $level }}') ? 's-chip sel' : 's-chip'"
-                                      @click="toggleLevel('{{ $level }}')">
-                                    <i class="fas fa-graduation-cap"></i>
-                                    {{ $level }}
-                                </span>
-                            </label>
-                            @endforeach
-                        </div>
-                    </div>
+ <div class="field">
+ <div class="flabel"><i class="fas fa-layer-group"></i> Level(s) You Teach <span style="color:var(--coral);">*</span></div>
+ <div style="display:flex;flex-wrap:wrap;gap:8px;">
+ @foreach(['JSS (Grade 7-9)','Senior School (Grade 10-12)','Form 3','Form 4','Primary (Class 1-6)'] as $level)
+ <label style="cursor:pointer;">
+ <input type="checkbox" :value="'{{ $level }}'" x-model="form.levels" style="display:none;">
+ <span :class="form.levels.includes('{{ $level }}') ? 's-chip sel' : 's-chip'"
+ @click="toggleLevel('{{ $level }}')">
+ <i class="fas fa-graduation-cap"></i>
+ {{ $level }}
+ </span>
+ </label>
+ @endforeach
+ </div>
+ </div>
 
-                    <div class="field">
-                        <div class="flabel"><i class="fas fa-pencil-alt"></i> Professional Bio <span style="color:var(--coral);">*</span></div>
-                        <textarea x-model="form.bio" class="finput" rows="4"
-                                  placeholder="Describe your teaching experience, qualifications, approach and what makes your lessons effective... (minimum 50 characters)"></textarea>
-                        <div style="display:flex;justify-content:space-between;margin-top:4px;">
-                            <p class="ferr" x-show="errors.bio" x-text="errors.bio"></p>
-                            <span style="font-size:11px;color:var(--muted);" x-text="(form.bio||'').length + ' / 50 min'"></span>
-                        </div>
-                    </div>
+ <div class="field">
+ <div class="flabel"><i class="fas fa-pencil-alt"></i> Professional Bio <span style="color:var(--coral);">*</span></div>
+ <textarea x-model="form.bio" class="finput" rows="4"
+ placeholder="Describe your teaching experience, qualifications, approach and what makes your lessons effective... (minimum 50 characters)"></textarea>
+ <div style="display:flex;justify-content:space-between;margin-top:4px;">
+ <p class="ferr" x-show="errors.bio" x-text="errors.bio"></p>
+ <span style="font-size:11px;color:var(--muted);" x-text="(form.bio||'').length + ' / 50 min'"></span>
+ </div>
+ </div>
 
-                    <div class="field">
-                        <div class="flabel"><i class="fas fa-money-bill"></i> Hourly Rate (KSh) <span style="color:var(--coral);">*</span></div>
-                        <div style="position:relative;">
-                            <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--muted);">KSh</span>
-                            <input type="number" x-model="form.hourly_rate" class="finput" style="padding-left:46px;" placeholder="e.g. 2000" min="500">
-                        </div>
-                        <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fas fa-info-circle"></i> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
-                    </div>
-                </div>
-                <div style="display:flex;gap:12px;">
-                    <button class="btn-next" @click="validateStep1()">
-                        Continue <span style="font-size:inherit;">→</span>
-                    </button>
-                </div>
-            </div>
+ <div class="field">
+ <div class="flabel"><i class="fas fa-money-bill"></i> Hourly Rate (KSh) <span style="color:var(--coral);">*</span></div>
+ <div style="position:relative;">
+ <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--muted);">KSh</span>
+ <input type="number" x-model="form.hourly_rate" class="finput" style="padding-left:46px;" placeholder="e.g. 2000" min="500">
+ </div>
+ <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fas fa-info-circle"></i> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
+ </div>
+ </div>
+ <div style="display:flex;gap:12px;">
+ <button class="btn-next" @click="validateStep1()">
+ Continue <span style="font-size:inherit;">→</span>
+ </button>
+ </div>
+ </div>
 
-            {{-- -- STEP 2: Subjects -- --}}
-            <div x-show="step === 2" x-cloak>
-                <div class="ob-card">
-                    <h2><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>Curriculum &amp; Subjects</h2>
-                    <p class="sub">Tell us which curriculum(s) you teach, then select your subjects.</p>
+ {{-- -- STEP 2: Subjects -- --}}
+ <div x-show="step === 2" x-cloak>
+ <div class="ob-card">
+ <h2><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>Curriculum &amp; Subjects</h2>
+ <p class="sub">Tell us which curriculum(s) you teach, then select your subjects.</p>
 
-                    {{-- Curriculum Selection --}}
-                    <div class="field" style="margin-bottom:24px;">
-                        <div class="flabel"><i class="fas fa-graduation-cap"></i> Which curriculum do you teach? <span style="color:var(--coral);">*</span></div>
-                        <p class="ferr" x-show="errors.curricula" x-text="errors.curricula" style="margin-bottom:8px;"></p>
-                        <div style="display:flex;flex-direction:column;gap:12px;">
+ {{-- Curriculum Selection --}}
+ <div class="field" style="margin-bottom:24px;">
+ <div class="flabel"><i class="fas fa-graduation-cap"></i> Which curriculum do you teach? <span style="color:var(--coral);">*</span></div>
+ <p class="ferr" x-show="errors.curricula" x-text="errors.curricula" style="margin-bottom:8px;"></p>
+ <div style="display:flex;flex-direction:column;gap:12px;">
 
-                            {{-- Kenyan Curriculum --}}
-                            <div :style="form.curricula_tracks.includes('kenyan') ? 'border:2px solid #10B981;background:rgba(16,185,129,.04);border-radius:16px;padding:16px;' : 'border:1.5px solid rgba(21,40,31,.15);border-radius:16px;padding:16px;'">
-                                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-                                    <input type="checkbox" x-model="form.curricula_tracks" value="kenyan" style="width:18px;height:18px;accent-color:#10B981;flex-shrink:0;">
-                                    <span style="font-size:15px;font-weight:700;color:var(--ink);">???? Kenyan Curriculum</span>
-                                    <span style="margin-left:auto;font-size:12px;color:var(--muted);">8-4-4 · CBE JSS · CBE Senior</span>
-                                </label>
-                                <div x-show="form.curricula_tracks.includes('kenyan')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
-                                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
-                                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
-                                        @php
-                                        $kenyanCurricula = \App\Models\Curriculum::where('track','kenyan')->orderBy('sort_order')->get();
-                                        @endphp
-                                        @foreach($kenyanCurricula as $curr)
-                                        <span :class="form.curriculum_ids.includes({{ $curr->id }}) ? 's-chip sel' : 's-chip'"
-                                              @click="toggleCurriculum({{ $curr->id }})">
-                                            <span class="fa-xs" style="font-size:inherit;" x-show="form.curriculum_ids.includes({{ $curr->id }})"><i class="fas fa-check-circle"></i></span>
-                                            {{ $curr->name }}
-                                        </span>
-                                        @endforeach
-                                    </div>
-                                    <div style="padding:10px 14px;background:rgba(16,185,129,.06);border-radius:10px;font-size:12px;color:#065F46;">
-                                        <strong>Required docs:</strong> National ID · TSC Certificate · Certificate of Good Conduct · Passport Photo · Degree (recommended)
-                                    </div>
-                                </div>
-                            </div>
+ {{-- Kenyan Curriculum --}}
+ <div :style="form.curricula_tracks.includes('kenyan') ? 'border:2px solid #10B981;background:rgba(16,185,129,.04);border-radius:16px;padding:16px;' : 'border:1.5px solid rgba(21,40,31,.15);border-radius:16px;padding:16px;'">
+ <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+ <input type="checkbox" x-model="form.curricula_tracks" value="kenyan" style="width:18px;height:18px;accent-color:#10B981;flex-shrink:0;">
+ <span style="font-size:15px;font-weight:700;color:var(--ink);">???? Kenyan Curriculum</span>
+ <span style="margin-left:auto;font-size:12px;color:var(--muted);">8-4-4 · CBE JSS · CBE Senior</span>
+ </label>
+ <div x-show="form.curricula_tracks.includes('kenyan')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
+ <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+ @php
+ $kenyanCurricula = \App\Models\Curriculum::where('track','kenyan')->orderBy('sort_order')->get();
+ @endphp
+ @foreach($kenyanCurricula as $curr)
+ <span :class="form.curriculum_ids.includes({{ $curr->id }}) ? 's-chip sel' : 's-chip'"
+ @click="toggleCurriculum({{ $curr->id }})">
+ <span class="fa-xs" style="font-size:inherit;" x-show="form.curriculum_ids.includes({{ $curr->id }})"><i class="fas fa-check-circle"></i></span>
+ {{ $curr->name }}
+ </span>
+ @endforeach
+ </div>
+ <div style="padding:10px 14px;background:rgba(16,185,129,.06);border-radius:10px;font-size:12px;color:#065F46;">
+ <strong>Required docs:</strong> National ID · TSC Certificate · Certificate of Good Conduct · Passport Photo · Degree (recommended)
+ </div>
+ </div>
+ </div>
 
-                            {{-- International Curriculum --}}
-                            <div :style="form.curricula_tracks.includes('international') ? 'border:2px solid #6366F1;background:rgba(99,102,241,.04);border-radius:16px;padding:16px;' : 'border:1.5px solid rgba(21,40,31,.15);border-radius:16px;padding:16px;'">
-                                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-                                    <input type="checkbox" x-model="form.curricula_tracks" value="international" style="width:18px;height:18px;accent-color:#6366F1;flex-shrink:0;">
-                                    <span style="font-size:15px;font-weight:700;color:var(--ink);">?? International Curriculum</span>
-                                    <span style="margin-left:auto;font-size:12px;color:var(--muted);">IGCSE · IB MYP · IB Diploma</span>
-                                </label>
-                                <div x-show="form.curricula_tracks.includes('international')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
-                                    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
-                                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
-                                        @php
-                                        $intlCurricula = \App\Models\Curriculum::where('track','international')->orderBy('sort_order')->get();
-                                        @endphp
-                                        @foreach($intlCurricula as $curr)
-                                        <span :class="form.curriculum_ids.includes({{ $curr->id }}) ? 's-chip sel' : 's-chip'"
-                                              @click="toggleCurriculum({{ $curr->id }})">
-                                            <span class="fa-xs" style="font-size:inherit;" x-show="form.curriculum_ids.includes({{ $curr->id }})"><i class="fas fa-check-circle"></i></span>
-                                            {{ $curr->name }}
-                                        </span>
-                                        @endforeach
-                                    </div>
-                                    <div style="padding:10px 14px;background:rgba(99,102,241,.06);border-radius:10px;font-size:12px;color:#3730A3;">
-                                        <strong>Required docs:</strong> National ID · Degree Certificate · Teaching Qualification (PGCE or IB cert) · Proof of IGCSE/IB experience · Certificate of Good Conduct · Passport Photo · Examiner credentials (optional)
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+ {{-- International Curriculum --}}
+ <div :style="form.curricula_tracks.includes('international') ? 'border:2px solid #6366F1;background:rgba(99,102,241,.04);border-radius:16px;padding:16px;' : 'border:1.5px solid rgba(21,40,31,.15);border-radius:16px;padding:16px;'">
+ <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+ <input type="checkbox" x-model="form.curricula_tracks" value="international" style="width:18px;height:18px;accent-color:#6366F1;flex-shrink:0;">
+ <span style="font-size:15px;font-weight:700;color:var(--ink);">?? International Curriculum</span>
+ <span style="margin-left:auto;font-size:12px;color:var(--muted);">IGCSE · IB MYP · IB Diploma</span>
+ </label>
+ <div x-show="form.curricula_tracks.includes('international')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
+ <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+ @php
+ $intlCurricula = \App\Models\Curriculum::where('track','international')->orderBy('sort_order')->get();
+ @endphp
+ @foreach($intlCurricula as $curr)
+ <span :class="form.curriculum_ids.includes({{ $curr->id }}) ? 's-chip sel' : 's-chip'"
+ @click="toggleCurriculum({{ $curr->id }})">
+ <span class="fa-xs" style="font-size:inherit;" x-show="form.curriculum_ids.includes({{ $curr->id }})"><i class="fas fa-check-circle"></i></span>
+ {{ $curr->name }}
+ </span>
+ @endforeach
+ </div>
+ <div style="padding:10px 14px;background:rgba(99,102,241,.06);border-radius:10px;font-size:12px;color:#3730A3;">
+ <strong>Required docs:</strong> National ID · Degree Certificate · Teaching Qualification (PGCE or IB cert) · Proof of IGCSE/IB experience · Certificate of Good Conduct · Passport Photo · Examiner credentials (optional)
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
 
-                    <div style="padding:10px 14px;background:rgba(238,190,21,.08);border-radius:10px;font-size:12px;color:#78350F;margin-bottom:20px;">
-                        <i class="fas fa-clock"></i>
-                        <strong>Verification:</strong> Standard 72 hrs. Speedy Verification (KSh 1,000) takes 24 hrs.
-                    </div>
+ <div style="padding:10px 14px;background:rgba(238,190,21,.08);border-radius:10px;font-size:12px;color:#78350F;margin-bottom:20px;">
+ <i class="fas fa-clock"></i>
+ <strong>Verification:</strong> Standard 72 hrs. Speedy Verification (KSh 1,000) takes 24 hrs.
+ </div>
 
-                    <div style="border-top:1px solid rgba(21,40,31,.1);padding-top:20px;">
-                        <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);margin-bottom:4px;">Subjects You Teach</h3>
-                        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Select up to 2 subjects. Students will be matched with you based on these.</p>
-                    </div>
+ <div style="border-top:1px solid rgba(21,40,31,.1);padding-top:20px;">
+ <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);margin-bottom:4px;">Subjects You Teach</h3>
+ <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Select up to 2 subjects. Students will be matched with you based on these.</p>
+ </div>
 
-                    @php $subjectsByCategory = \App\Models\Subject::active()->with('category')->get()->groupBy('category.name'); @endphp
+ @php $subjectsByCategory = \App\Models\Subject::active()->with('category')->get()->groupBy('category.name'); @endphp
 
-                    <div style="max-height:400px;overflow-y:auto;padding-right:4px;">
-                        @foreach($subjectsByCategory as $catName => $subjects)
-                        <div style="margin-bottom:18px;">
-                            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;">{{ $catName }}</p>
-                            <div class="subject-grid">
-                                @foreach($subjects as $subject)
-                                <span :class="form.subjects.includes({{ $subject->id }}) ? 's-chip sel' : 's-chip'"
-                                      @click="toggleSubject({{ $subject->id }})"
-                                      :style="!form.subjects.includes({{ $subject->id }}) && form.subjects.length >= 2 ? 'opacity:.4;cursor:not-allowed;' : ''">
-                                    <span class="fa-xs" style="font-size:inherit;" x-show="form.subjects.includes({{ $subject->id }})"><i class="fas fa-check-circle"></i></span>
-                                    {{ $subject->name }}
-                                </span>
-                                @endforeach
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
+ <div style="max-height:400px;overflow-y:auto;padding-right:4px;">
+ @foreach($subjectsByCategory as $catName => $subjects)
+ <div style="margin-bottom:18px;">
+ <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;">{{ $catName }}</p>
+ <div class="subject-grid">
+ @foreach($subjects as $subject)
+ <span :class="form.subjects.includes({{ $subject->id }}) ? 's-chip sel' : 's-chip'"
+ @click="toggleSubject({{ $subject->id }})"
+ :style="!form.subjects.includes({{ $subject->id }}) && form.subjects.length >= 2 ? 'opacity:.4;cursor:not-allowed;' : ''">
+ <span class="fa-xs" style="font-size:inherit;" x-show="form.subjects.includes({{ $subject->id }})"><i class="fas fa-check-circle"></i></span>
+ {{ $subject->name }}
+ </span>
+ @endforeach
+ </div>
+ </div>
+ @endforeach
+ </div>
 
-                    <div style="margin-top:14px;padding:12px 14px;background:rgba(10,100,188,.05);border-radius:12px;border:1px solid rgba(10,100,188,.12);">
-                        <span style="font-size:13px;font-weight:600;color:var(--trust-blue);">
-                            <i class="fas fa-info-circle"></i>
-                            <span x-text="form.subjects.length"></span>/2 subjects selected
-                            <span x-show="form.subjects.length === 2" style="color:var(--mint);margin-left:8px;"><i class="fas fa-check-circle"></i> Maximum reached</span>
-                        </span>
-                    </div>
-                    <p class="ferr" x-show="errors.subjects" x-text="errors.subjects" style="margin-top:8px;"></p>
-                </div>
-                <div style="display:flex;gap:12px;">
-                    <button class="btn-back" @click="step=1"><span style="font-size:inherit;">←</span> Back</button>
-                    <button class="btn-next" @click="validateStep2()">Continue <span style="font-size:inherit;">→</span></button>
-                </div>
-            </div>
+ <div style="margin-top:14px;padding:12px 14px;background:rgba(10,100,188,.05);border-radius:12px;border:1px solid rgba(10,100,188,.12);">
+ <span style="font-size:13px;font-weight:600;color:var(--trust-blue);">
+ <i class="fas fa-info-circle"></i>
+ <span x-text="form.subjects.length"></span>/2 subjects selected
+ <span x-show="form.subjects.length === 2" style="color:var(--mint);margin-left:8px;"><i class="fas fa-check-circle"></i> Maximum reached</span>
+ </span>
+ </div>
+ <p class="ferr" x-show="errors.subjects" x-text="errors.subjects" style="margin-top:8px;"></p>
+ </div>
+ <div style="display:flex;gap:12px;">
+ <button class="btn-back" @click="step=1"><span style="font-size:inherit;">←</span> Back</button>
+ <button class="btn-next" @click="validateStep2()">Continue <span style="font-size:inherit;">→</span></button>
+ </div>
+ </div>
 
-            {{-- -- STEP 3: Documents -- --}}
-            <div x-show="step === 3" x-cloak>
-                <div class="ob-card">
-                    <h2><i class="fas fa-file-alt"></i>Verification Documents</h2>
-                    <p class="sub">Upload your documents so we can verify your credentials. All files are stored securely. Accepted: JPG, PNG, PDF "- max 5MB each.</p>
+ {{-- -- STEP 3: Documents -- --}}
+ <div x-show="step === 3" x-cloak>
+ <div class="ob-card">
+ <h2><i class="fas fa-file-alt"></i>Verification Documents</h2>
+ <p class="sub">Upload your documents so we can verify your credentials. All files are stored securely. Accepted: JPG, PNG, PDF - max 5MB each.</p>
 
-                    <div style="display:flex;flex-direction:column;gap:16px;">
+ <div style="display:flex;flex-direction:column;gap:16px;">
 
-                        {{-- National ID --}}
-                        <div>
-                            <div class="flabel"><i class="fas fa-id-card"></i> National ID / Passport <span style="color:var(--coral);">*</span></div>
-                            <div class="upload-zone" :class="files.national_id ? 'has-file' : ''"
-                                 @dragover.prevent="$el.classList.add('drag')"
-                                 @dragleave="$el.classList.remove('drag')"
-                                 @drop.prevent="handleDrop($event,'national_id')">
-                                <input type="file" @change="handleFile($event,'national_id')" accept=".jpg,.jpeg,.png,.pdf">
-                                <template x-if="!files.national_id">
-                                    <div>
-                                        <div class="upload-icon">??</div>
-                                        <div class="upload-title">Click to upload or drag & drop</div>
-                                        <div class="upload-hint">National ID (front & back) or Passport bio page</div>
-                                    </div>
-                                </template>
-                                <template x-if="files.national_id">
-                                    <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
-                                        <div class="upload-title" x-text="files.national_id.name"></div>
-                                        <div class="upload-hint" x-text="formatSize(files.national_id.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
+ {{-- National ID --}}
+ <div>
+ <div class="flabel"><i class="fas fa-id-card"></i> National ID / Passport <span style="color:var(--coral);">*</span></div>
+ <div class="upload-zone" :class="files.national_id ? 'has-file' : ''"
+ @dragover.prevent="$el.classList.add('drag')"
+ @dragleave="$el.classList.remove('drag')"
+ @drop.prevent="handleDrop($event,'national_id')">
+ <input type="file" @change="handleFile($event,'national_id')" accept=".jpg,.jpeg,.png,.pdf">
+ <template x-if="!files.national_id">
+ <div>
+ <div class="upload-icon">??</div>
+ <div class="upload-title">Click to upload or drag & drop</div>
+ <div class="upload-hint">National ID (front & back) or Passport bio page</div>
+ </div>
+ </template>
+ <template x-if="files.national_id">
+ <div>
+ <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
+ <div class="upload-title" x-text="files.national_id.name"></div>
+ <div class="upload-hint" x-text="formatSize(files.national_id.size)"></div>
+ <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
+ </div>
+ </template>
+ </div>
+ </div>
 
-                        {{-- Degree / Academic --}}
-                        <div>
-                            <div class="flabel"><i class="fas fa-graduation-cap"></i> Degree Certificate <span style="color:var(--coral);">*</span></div>
-                            <div class="upload-zone" :class="files.academic_certificate ? 'has-file' : ''"
-                                 @dragover.prevent="$el.classList.add('drag')"
-                                 @dragleave="$el.classList.remove('drag')"
-                                 @drop.prevent="handleDrop($event,'academic_certificate')">
-                                <input type="file" @change="handleFile($event,'academic_certificate')" accept=".jpg,.jpeg,.png,.pdf">
-                                <template x-if="!files.academic_certificate">
-                                    <div>
-                                        <div class="upload-icon">??</div>
-                                        <div class="upload-title">Click to upload or drag & drop</div>
-                                        <div class="upload-hint">Bachelor's degree or higher academic qualification</div>
-                                    </div>
-                                </template>
-                                <template x-if="files.academic_certificate">
-                                    <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
-                                        <div class="upload-title" x-text="files.academic_certificate.name"></div>
-                                        <div class="upload-hint" x-text="formatSize(files.academic_certificate.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
+ {{-- Degree / Academic --}}
+ <div>
+ <div class="flabel"><i class="fas fa-graduation-cap"></i> Degree Certificate <span style="color:var(--coral);">*</span></div>
+ <div class="upload-zone" :class="files.academic_certificate ? 'has-file' : ''"
+ @dragover.prevent="$el.classList.add('drag')"
+ @dragleave="$el.classList.remove('drag')"
+ @drop.prevent="handleDrop($event,'academic_certificate')">
+ <input type="file" @change="handleFile($event,'academic_certificate')" accept=".jpg,.jpeg,.png,.pdf">
+ <template x-if="!files.academic_certificate">
+ <div>
+ <div class="upload-icon">??</div>
+ <div class="upload-title">Click to upload or drag & drop</div>
+ <div class="upload-hint">Bachelor's degree or higher academic qualification</div>
+ </div>
+ </template>
+ <template x-if="files.academic_certificate">
+ <div>
+ <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
+ <div class="upload-title" x-text="files.academic_certificate.name"></div>
+ <div class="upload-hint" x-text="formatSize(files.academic_certificate.size)"></div>
+ <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
+ </div>
+ </template>
+ </div>
+ </div>
 
-                        {{-- TSC Certificate --}}
-                        <div>
-                            <div class="flabel"><i class="fas fa-scroll"></i> TSC Certificate <span style="color:var(--coral);">*</span></div>
-                            <div class="upload-zone" :class="files.tsc_certificate ? 'has-file' : ''"
-                                 @dragover.prevent="$el.classList.add('drag')"
-                                 @dragleave="$el.classList.remove('drag')"
-                                 @drop.prevent="handleDrop($event,'tsc_certificate')">
-                                <input type="file" @change="handleFile($event,'tsc_certificate')" accept=".jpg,.jpeg,.png,.pdf">
-                                <template x-if="!files.tsc_certificate">
-                                    <div>
-                                        <div class="upload-icon">??</div>
-                                        <div class="upload-title">Click to upload or drag & drop</div>
-                                        <div class="upload-hint">Teachers Service Commission registration certificate</div>
-                                    </div>
-                                </template>
-                                <template x-if="files.tsc_certificate">
-                                    <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
-                                        <div class="upload-title" x-text="files.tsc_certificate.name"></div>
-                                        <div class="upload-hint" x-text="formatSize(files.tsc_certificate.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
+ {{-- TSC Certificate --}}
+ <div>
+ <div class="flabel"><i class="fas fa-scroll"></i> TSC Certificate <span style="color:var(--coral);">*</span></div>
+ <div class="upload-zone" :class="files.tsc_certificate ? 'has-file' : ''"
+ @dragover.prevent="$el.classList.add('drag')"
+ @dragleave="$el.classList.remove('drag')"
+ @drop.prevent="handleDrop($event,'tsc_certificate')">
+ <input type="file" @change="handleFile($event,'tsc_certificate')" accept=".jpg,.jpeg,.png,.pdf">
+ <template x-if="!files.tsc_certificate">
+ <div>
+ <div class="upload-icon">??</div>
+ <div class="upload-title">Click to upload or drag & drop</div>
+ <div class="upload-hint">Teachers Service Commission registration certificate</div>
+ </div>
+ </template>
+ <template x-if="files.tsc_certificate">
+ <div>
+ <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
+ <div class="upload-title" x-text="files.tsc_certificate.name"></div>
+ <div class="upload-hint" x-text="formatSize(files.tsc_certificate.size)"></div>
+ <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
+ </div>
+ </template>
+ </div>
+ </div>
 
-                        {{-- Certificate of Good Conduct --}}
-                        <div>
-                            <div class="flabel"><i class="fas fa-shield-alt"></i> Certificate of Good Conduct <span style="color:var(--coral);">*</span></div>
-                            <div class="upload-zone" :class="files.certificate_of_good_conduct ? 'has-file' : ''"
-                                 @dragover.prevent="$el.classList.add('drag')"
-                                 @dragleave="$el.classList.remove('drag')"
-                                 @drop.prevent="handleDrop($event,'certificate_of_good_conduct')">
-                                <input type="file" @change="handleFile($event,'certificate_of_good_conduct')" accept=".jpg,.jpeg,.png,.pdf">
-                                <template x-if="!files.certificate_of_good_conduct">
-                                    <div>
-                                        <div class="upload-icon">???</div>
-                                        <div class="upload-title">Click to upload or drag & drop</div>
-                                        <div class="upload-hint">DCI Certificate of Good Conduct (must be current)</div>
-                                    </div>
-                                </template>
-                                <template x-if="files.certificate_of_good_conduct">
-                                    <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
-                                        <div class="upload-title" x-text="files.certificate_of_good_conduct.name"></div>
-                                        <div class="upload-hint" x-text="formatSize(files.certificate_of_good_conduct.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
+ {{-- Certificate of Good Conduct --}}
+ <div>
+ <div class="flabel"><i class="fas fa-shield-alt"></i> Certificate of Good Conduct <span style="color:var(--coral);">*</span></div>
+ <div class="upload-zone" :class="files.certificate_of_good_conduct ? 'has-file' : ''"
+ @dragover.prevent="$el.classList.add('drag')"
+ @dragleave="$el.classList.remove('drag')"
+ @drop.prevent="handleDrop($event,'certificate_of_good_conduct')">
+ <input type="file" @change="handleFile($event,'certificate_of_good_conduct')" accept=".jpg,.jpeg,.png,.pdf">
+ <template x-if="!files.certificate_of_good_conduct">
+ <div>
+ <div class="upload-icon">???</div>
+ <div class="upload-title">Click to upload or drag & drop</div>
+ <div class="upload-hint">DCI Certificate of Good Conduct (must be current)</div>
+ </div>
+ </template>
+ <template x-if="files.certificate_of_good_conduct">
+ <div>
+ <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
+ <div class="upload-title" x-text="files.certificate_of_good_conduct.name"></div>
+ <div class="upload-hint" x-text="formatSize(files.certificate_of_good_conduct.size)"></div>
+ <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
+ </div>
+ </template>
+ </div>
+ </div>
 
-                        {{-- Passport Photo --}}
-                        <div>
-                            <div class="flabel"><i class="fas fa-camera"></i> Passport Size Photo <span style="color:var(--coral);">*</span></div>
-                            <div class="upload-zone" :class="files.passport_photo ? 'has-file' : ''"
-                                 @dragover.prevent="$el.classList.add('drag')"
-                                 @dragleave="$el.classList.remove('drag')"
-                                 @drop.prevent="handleDrop($event,'passport_photo')">
-                                <input type="file" @change="handleFile($event,'passport_photo')" accept=".jpg,.jpeg,.png">
-                                <template x-if="!files.passport_photo">
-                                    <div>
-                                        <div class="upload-icon">??</div>
-                                        <div class="upload-title">Click to upload or drag & drop</div>
-                                        <div class="upload-hint">Recent clear photo, white background preferred</div>
-                                    </div>
-                                </template>
-                                <template x-if="files.passport_photo">
-                                    <div>
-                                        <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
-                                        <div class="upload-title" x-text="files.passport_photo.name"></div>
-                                        <div class="upload-hint" x-text="formatSize(files.passport_photo.size)"></div>
-                                        <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-                    </div>
+ {{-- Passport Photo --}}
+ <div>
+ <div class="flabel"><i class="fas fa-camera"></i> Passport Size Photo <span style="color:var(--coral);">*</span></div>
+ <div class="upload-zone" :class="files.passport_photo ? 'has-file' : ''"
+ @dragover.prevent="$el.classList.add('drag')"
+ @dragleave="$el.classList.remove('drag')"
+ @drop.prevent="handleDrop($event,'passport_photo')">
+ <input type="file" @change="handleFile($event,'passport_photo')" accept=".jpg,.jpeg,.png">
+ <template x-if="!files.passport_photo">
+ <div>
+ <div class="upload-icon">??</div>
+ <div class="upload-title">Click to upload or drag & drop</div>
+ <div class="upload-hint">Recent clear photo, white background preferred</div>
+ </div>
+ </template>
+ <template x-if="files.passport_photo">
+ <div>
+ <div class="upload-icon"><i class="fas fa-check-circle"></i></div>
+ <div class="upload-title" x-text="files.passport_photo.name"></div>
+ <div class="upload-hint" x-text="formatSize(files.passport_photo.size)"></div>
+ <span class="upload-badge" style="background:rgba(16,185,129,.1);color:var(--mint);"><i class="fas fa-check-circle"></i> Ready to upload</span>
+ </div>
+ </template>
+ </div>
+ </div>
+ </div>
 
-                    <p class="ferr" x-show="errors.documents" x-text="errors.documents" style="margin-top:10px;"></p>
-                </div>
-                <div style="display:flex;gap:12px;">
-                    <button class="btn-back" @click="step=2"><span style="font-size:inherit;">←</span> Back</button>
-                    <button class="btn-next" @click="validateStep3()">Continue <span style="font-size:inherit;">→</span></button>
-                </div>
-            </div>
+ <p class="ferr" x-show="errors.documents" x-text="errors.documents" style="margin-top:10px;"></p>
+ </div>
+ <div style="display:flex;gap:12px;">
+ <button class="btn-back" @click="step=2"><span style="font-size:inherit;">←</span> Back</button>
+ <button class="btn-next" @click="validateStep3()">Continue <span style="font-size:inherit;">→</span></button>
+ </div>
+ </div>
 
-            {{-- -- STEP 4: Verification -- --}}
-            <div x-show="step === 4" x-cloak>
-                <div class="ob-card">
-                    <h2><i class="fas fa-clock"></i>Choose Verification Speed</h2>
-                    <p class="sub">Your documents will be reviewed by our academic team. Choose how quickly you want to get started.</p>
+ {{-- -- STEP 4: Verification -- --}}
+ <div x-show="step === 4" x-cloak>
+ <div class="ob-card">
+ <h2><i class="fas fa-clock"></i>Choose Verification Speed</h2>
+ <p class="sub">Your documents will be reviewed by our academic team. Choose how quickly you want to get started.</p>
 
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;" class="ver-g">
-                        {{-- Standard --}}
-                        <div style="border:2px solid rgba(21,40,31,.12);border-radius:18px;padding:22px;cursor:pointer;transition:all .2s;"
-                             :class="form.speedy ? '' : 'selected-ver'"
-                             :style="!form.speedy ? 'border-color:#0A64BC;background:rgba(10,100,188,.04);' : ''"
-                             @click="form.speedy=false">
-                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-                                <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="!form.speedy ? 'border-color:#0A64BC;background:#0A64BC;' : 'border-color:rgba(21,40,31,.3);'">
-                                    <div x-show="!form.speedy" style="width:100%;height:100%;border-radius:50%;background:#fff;transform:scale(.45);"></div>
-                                </div>
-                                <span style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">Standard</span>
-                            </div>
-                            <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--mint);margin-bottom:6px;">Free</div>
-                            <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fas fa-clock"></i> Up to 3 working days</div>
-                            <p style="font-size:13px;color:var(--muted);line-height:1.6;">Our team reviews your documents and verifies your credentials within 3 business days.</p>
-                        </div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;" class="ver-g">
+ {{-- Standard --}}
+ <div style="border:2px solid rgba(21,40,31,.12);border-radius:18px;padding:22px;cursor:pointer;transition:all .2s;"
+ :class="form.speedy ? '' : 'selected-ver'"
+ :style="!form.speedy ? 'border-color:#0A64BC;background:rgba(10,100,188,.04);' : ''"
+ @click="form.speedy=false">
+ <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+ <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="!form.speedy ? 'border-color:#0A64BC;background:#0A64BC;' : 'border-color:rgba(21,40,31,.3);'">
+ <div x-show="!form.speedy" style="width:100%;height:100%;border-radius:50%;background:#fff;transform:scale(.45);"></div>
+ </div>
+ <span style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">Standard</span>
+ </div>
+ <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--mint);margin-bottom:6px;">Free</div>
+ <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fas fa-clock"></i> Up to 3 working days</div>
+ <p style="font-size:13px;color:var(--muted);line-height:1.6;">Our team reviews your documents and verifies your credentials within 3 business days.</p>
+ </div>
 
-                        {{-- Speedy --}}
-                        <div class="speedy-card" style="cursor:pointer;transition:all .2s;"
-                             :style="form.speedy ? 'border-color:var(--gold);' : 'border-color:rgba(212,160,23,.4);'"
-                             @click="form.speedy=true">
-                            <div style="position:relative;z-index:1;">
-                                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                                    <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="form.speedy ? 'border-color:var(--gold);background:var(--gold);' : 'border-color:rgba(21,40,31,.3);'">
-                                        <div x-show="form.speedy" style="width:100%;height:100%;border-radius:50%;background:#fff;transform:scale(.45);"></div>
-                                    </div>
-                                    <span class="speedy-badge"><i class="fas fa-bolt"></i> Priority Queue</span>
-                                </div>
-                                <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--ink);margin-bottom:6px;">KSh 1,000</div>
-                                <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fas fa-clock"></i> Within 24 hours</div>
-                                <p style="font-size:13px;color:rgba(21,40,31,.65);line-height:1.6;">Skip the queue. Your application is prioritised and reviewed within 24 hours by a senior verifier.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <style>.ver-g{grid-template-columns:1fr!important;}@media(min-width:540px){.ver-g{grid-template-columns:1fr 1fr!important;}}</style>
+ {{-- Speedy --}}
+ <div class="speedy-card" style="cursor:pointer;transition:all .2s;"
+ :style="form.speedy ? 'border-color:var(--gold);' : 'border-color:rgba(212,160,23,.4);'"
+ @click="form.speedy=true">
+ <div style="position:relative;z-index:1;">
+ <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+ <div style="width:18px;height:18px;border-radius:50%;border:2px solid;" :style="form.speedy ? 'border-color:var(--gold);background:var(--gold);' : 'border-color:rgba(21,40,31,.3);'">
+ <div x-show="form.speedy" style="width:100%;height:100%;border-radius:50%;background:#fff;transform:scale(.45);"></div>
+ </div>
+ <span class="speedy-badge"><i class="fas fa-bolt"></i> Priority Queue</span>
+ </div>
+ <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--ink);margin-bottom:6px;">KSh 1,000</div>
+ <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;"><i class="fas fa-clock"></i> Within 24 hours</div>
+ <p style="font-size:13px;color:rgba(21,40,31,.65);line-height:1.6;">Skip the queue. Your application is prioritised and reviewed within 24 hours by a senior verifier.</p>
+ </div>
+ </div>
+ </div>
+ <style>.ver-g{grid-template-columns:1fr!important;}@media(min-width:540px){.ver-g{grid-template-columns:1fr 1fr!important;}}</style>
 
-                    {{-- Speedy payment form --}}
-                    <div x-show="form.speedy" x-cloak style="background:rgba(212,160,23,.08);border:1px solid rgba(212,160,23,.3);border-radius:16px;padding:20px;margin-bottom:0;">
-                        <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-                            <i class="fas fa-credit-card"></i>
-                            Pay KSh 1,000 via M-Pesa or card to activate priority verification
-                        </p>
-                        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-                            <span style="background:#fff;border:1px solid rgba(21,40,31,.12);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:5px;">
-                                <i class="fas fa-mobile-alt"></i>M-Pesa
-                            </span>
-                        </div>
-                        <p style="font-size:12px;color:rgba(21,40,31,.6);">Payment is processed via M-Pesa STK Push after you submit your application. You will receive a prompt on your phone.</p>
-                    </div>
+ {{-- Speedy payment form --}}
+ <div x-show="form.speedy" x-cloak style="background:rgba(212,160,23,.08);border:1px solid rgba(212,160,23,.3);border-radius:16px;padding:20px;margin-bottom:0;">
+ <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+ <i class="fas fa-credit-card"></i>
+ Pay KSh 1,000 via M-Pesa or card to activate priority verification
+ </p>
+ <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+ <span style="background:#fff;border:1px solid rgba(21,40,31,.12);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:5px;">
+ <i class="fas fa-mobile-alt"></i>M-Pesa
+ </span>
+ </div>
+ <p style="font-size:12px;color:rgba(21,40,31,.6);">Payment is processed via M-Pesa STK Push after you submit your application. You will receive a prompt on your phone.</p>
+ </div>
 
-                    {{-- What happens next --}}
-                    <div style="margin-top:18px;padding:16px;background:#F9FAF9;border-radius:14px;">
-                        <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fas fa-clipboard"></i> What happens after submission</p>
-                        @foreach(['We review your profile, subjects and all uploaded documents','You receive an email when approved (or if action is required)','Your profile goes live and students can book sessions with you','Earnings are credited to your wallet after each completed session'] as $item)
-                        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
-                            <i class="fas fa-check-circle"></i>{{ $item }}
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
+ {{-- What happens next --}}
+ <div style="margin-top:18px;padding:16px;background:#F9FAF9;border-radius:14px;">
+ <p style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="fas fa-clipboard"></i> What happens after submission</p>
+ @foreach(['We review your profile, subjects and all uploaded documents','You receive an email when approved (or if action is required)','Your profile goes live and students can book sessions with you','Earnings are credited to your wallet after each completed session'] as $item)
+ <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
+ <i class="fas fa-check-circle"></i>{{ $item }}
+ </div>
+ @endforeach
+ </div>
+ </div>
 
-                {{-- Upload progress --}}
-                <div x-show="submitting" style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.1);padding:20px;margin-bottom:16px;text-align:center;">
-                    <div style="width:48px;height:48px;border:3px solid rgba(10,100,188,.2);border-top-color:var(--trust-blue);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;"></div>
-                    <p style="font-size:14px;font-weight:600;color:var(--ink);" x-text="uploadStatus"></p>
-                    <p style="font-size:12px;color:var(--muted);margin-top:4px;">Please don't close this page</p>
-                </div>
+ {{-- Upload progress --}}
+ <div x-show="submitting" style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.1);padding:20px;margin-bottom:16px;text-align:center;">
+ <div style="width:48px;height:48px;border:3px solid rgba(10,100,188,.2);border-top-color:var(--trust-blue);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;"></div>
+ <p style="font-size:14px;font-weight:600;color:var(--ink);" x-text="uploadStatus"></p>
+ <p style="font-size:12px;color:var(--muted);margin-top:4px;">Please don't close this page</p>
+ </div>
 
-                <div style="display:flex;gap:12px;" x-show="!submitting">
-                    <button class="btn-back" @click="step=3"><span style="font-size:inherit;">←</span> Back</button>
-                    <button class="btn-next" @click="submitApplication()" :disabled="submitting">
-                        <i class="fas fa-paper-plane"></i>
-                        <span x-text="form.speedy ? 'Submit & Pay KSh 1,000' : 'Submit Application'"></span>
-                    </button>
-                </div>
-            </div>
+ <div style="display:flex;gap:12px;" x-show="!submitting">
+ <button class="btn-back" @click="step=3"><span style="font-size:inherit;">←</span> Back</button>
+ <button class="btn-next" @click="submitApplication()" :disabled="submitting">
+ <i class="fas fa-paper-plane"></i>
+ <span x-text="form.speedy ? 'Submit & Pay KSh 1,000' : 'Submit Application'"></span>
+ </button>
+ </div>
+ </div>
 
-            {{-- -- STEP 5: Success -- --}}
-            <div x-show="step === 5" x-cloak>
-                <div class="ob-card" style="text-align:center;padding:48px 32px;">
-                    <div style="width:72px;height:72px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h2 style="margin-bottom:8px;">Application Submitted!</h2>
-                    <p style="font-size:15px;color:var(--muted);max-width:440px;margin:0 auto 28px;line-height:1.75;">
-                        Thank you for applying. Our team will review your documents and profile.
-                        <strong style="color:var(--ink);" x-text="form.speedy ? 'You\'ll hear from us within 24 hours.' : 'Verification takes up to 3 working days.'"></strong>
-                    </p>
+ {{-- -- STEP 5: Success -- --}}
+ <div x-show="step === 5" x-cloak>
+ <div class="ob-card" style="text-align:center;padding:48px 32px;">
+ <div style="width:72px;height:72px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+ <i class="fas fa-check-circle"></i>
+ </div>
+ <h2 style="margin-bottom:8px;">Application Submitted!</h2>
+ <p style="font-size:15px;color:var(--muted);max-width:440px;margin:0 auto 28px;line-height:1.75;">
+ Thank you for applying. Our team will review your documents and profile.
+ <strong style="color:var(--ink);" x-text="form.speedy ? 'You\'ll hear from us within 24 hours.' : 'Verification takes up to 3 working days.'"></strong>
+ </p>
 
-                    {{-- Timeline --}}
-                    <div style="background:#F9FAF9;border-radius:16px;padding:20px;text-align:left;margin-bottom:24px;">
-                        <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px;">What happens next</p>
-                        <div style="display:flex;flex-direction:column;gap:12px;">
-                            @foreach([
-                                ['fa-magnifying-glass','#0A64BC','Documents reviewed','Our academic team checks all your uploaded documents'],
-                                ['fa-envelope','#10B981','Email notification','You\'ll receive an email with your approval or any actions needed'],
-                                ['fa-globe','#E8522A','Profile goes live','Students can find and book sessions with you immediately'],
-                                ['fa-money-bill-wave','#EEBE15','Start earning','Accept bookings and earn per completed session'],
-                            ] as [$ic,$col,$title,$desc])
-                            <div style="display:flex;align-items:flex-start;gap:12px;">
-                                <div style="width:32px;height:32px;border-radius:10px;background:{{ $col }}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                    <i class="fas {{ $ic }}"></i>
-                                </div>
-                                <div>
-                                    <div style="font-size:13px;font-weight:600;color:var(--ink);">{{ $title }}</div>
-                                    <div style="font-size:12px;color:var(--muted);margin-top:1px;">{{ $desc }}</div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
+ {{-- Timeline --}}
+ <div style="background:#F9FAF9;border-radius:16px;padding:20px;text-align:left;margin-bottom:24px;">
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px;">What happens next</p>
+ <div style="display:flex;flex-direction:column;gap:12px;">
+ @foreach([
+ ['fa-magnifying-glass','#0A64BC','Documents reviewed','Our academic team checks all your uploaded documents'],
+ ['fa-envelope','#10B981','Email notification','You\'ll receive an email with your approval or any actions needed'],
+ ['fa-globe','#E8522A','Profile goes live','Students can find and book sessions with you immediately'],
+ ['fa-money-bill-wave','#EEBE15','Start earning','Accept bookings and earn per completed session'],
+ ] as [$ic,$col,$title,$desc])
+ <div style="display:flex;align-items:flex-start;gap:12px;">
+ <div style="width:32px;height:32px;border-radius:10px;background:{{ $col }}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+ <i class="fas {{ $ic }}"></i>
+ </div>
+ <div>
+ <div style="font-size:13px;font-weight:600;color:var(--ink);">{{ $title }}</div>
+ <div style="font-size:12px;color:var(--muted);margin-top:1px;">{{ $desc }}</div>
+ </div>
+ </div>
+ @endforeach
+ </div>
+ </div>
 
-                    <a href="{{ route('tutor.dashboard') }}"
-                       style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .18s;"
-                       onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
-                        <i class="fas fa-chart-bar"></i> Go to Dashboard
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+ <a href="{{ route('tutor.dashboard') }}"
+ style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .18s;"
+ onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
+ <i class="fas fa-chart-bar"></i> Go to Dashboard
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
 </div>
 
 <style>
@@ -566,150 +566,150 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
 </style>
 <script>
 function tutorOnboarding() {
-    return {
-        step: 1,
-        submitting: false,
-        uploadStatus: 'Uploading documents…',
-        form: {
-            name:            '{{ auth()->user()?->name ?? '' }}',
-            phone:           '{{ auth()->user()?->phone ?? '' }}',
-            city:            '',
-            experience_years:'',
-            levels:          [],
-            bio:             '',
-            hourly_rate:     '',
-            subjects:        [],
-            curricula_tracks: [],
-            curriculum_ids:   [],
-            speedy:          false,
-        },
-        files: {
-            national_id: null,
-            tsc_certificate: null,
-            certificate_of_good_conduct: null,
-            academic_certificate: null,
-            passport_photo: null,
-        },
-        errors: {},
+ return {
+ step: 1,
+ submitting: false,
+ uploadStatus: 'Uploading documents…',
+ form: {
+ name: '{{ auth()->user()?->name ?? '' }}',
+ phone: '{{ auth()->user()?->phone ?? '' }}',
+ city: '',
+ experience_years:'',
+ levels: [],
+ bio: '',
+ hourly_rate: '',
+ subjects: [],
+ curricula_tracks: [],
+ curriculum_ids: [],
+ speedy: false,
+ },
+ files: {
+ national_id: null,
+ tsc_certificate: null,
+ certificate_of_good_conduct: null,
+ academic_certificate: null,
+ passport_photo: null,
+ },
+ errors: {},
 
-        init() {},
+ init() {},
 
-        toggleLevel(level) {
-            const i = this.form.levels.indexOf(level);
-            if (i > -1) this.form.levels.splice(i, 1);
-            else this.form.levels.push(level);
-        },
+ toggleLevel(level) {
+ const i = this.form.levels.indexOf(level);
+ if (i > -1) this.form.levels.splice(i, 1);
+ else this.form.levels.push(level);
+ },
 
-        toggleCurriculum(id) {
-            const i = this.form.curriculum_ids.indexOf(id);
-            if (i > -1) this.form.curriculum_ids.splice(i, 1);
-            else this.form.curriculum_ids.push(id);
-        },
+ toggleCurriculum(id) {
+ const i = this.form.curriculum_ids.indexOf(id);
+ if (i > -1) this.form.curriculum_ids.splice(i, 1);
+ else this.form.curriculum_ids.push(id);
+ },
 
-        toggleSubject(id) {
-            const i = this.form.subjects.indexOf(id);
-            if (i > -1) {
-                this.form.subjects.splice(i, 1);
-            } else if (this.form.subjects.length < 2) {
-                this.form.subjects.push(id);
-            }
-        },
+ toggleSubject(id) {
+ const i = this.form.subjects.indexOf(id);
+ if (i > -1) {
+ this.form.subjects.splice(i, 1);
+ } else if (this.form.subjects.length < 2) {
+ this.form.subjects.push(id);
+ }
+ },
 
-        handleFile(event, field) {
-            const file = event.target.files[0];
-            if (!file) return;
-            if (file.size > 5 * 1024 * 1024) {
-                showError('File Too Large', 'Maximum 5MB allowed.');
-                return;
-            }
-            this.files[field] = file;
-        },
+ handleFile(event, field) {
+ const file = event.target.files[0];
+ if (!file) return;
+ if (file.size > 5 * 1024 * 1024) {
+ showError('File Too Large', 'Maximum 5MB allowed.');
+ return;
+ }
+ this.files[field] = file;
+ },
 
-        handleDrop(event, field) {
-            event.currentTarget.classList.remove('drag');
-            const file = event.dataTransfer.files[0];
-            if (!file) return;
-            if (file.size > 5 * 1024 * 1024) { showError('File Too Large', 'Maximum 5MB allowed.'); return; }
-            this.files[field] = file;
-        },
+ handleDrop(event, field) {
+ event.currentTarget.classList.remove('drag');
+ const file = event.dataTransfer.files[0];
+ if (!file) return;
+ if (file.size > 5 * 1024 * 1024) { showError('File Too Large', 'Maximum 5MB allowed.'); return; }
+ this.files[field] = file;
+ },
 
-        formatSize(bytes) {
-            if (bytes < 1024) return bytes + ' B';
-            if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
-            return (bytes/(1024*1024)).toFixed(1) + ' MB';
-        },
+ formatSize(bytes) {
+ if (bytes < 1024) return bytes + ' B';
+ if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+ return (bytes/(1024*1024)).toFixed(1) + ' MB';
+ },
 
-        validateStep1() {
-            this.errors = {};
-            if (!this.form.name.trim()) { this.errors.name = 'Full name is required'; return; }
-            if (!this.form.bio.trim() || this.form.bio.length < 50) { this.errors.bio = 'Bio must be at least 50 characters'; return; }
-            if (!this.form.hourly_rate || parseInt(this.form.hourly_rate) < 500) { this.errors.hourly_rate = 'Minimum hourly rate is KSh 500'; return; }
-            this.step = 2;
-        },
+ validateStep1() {
+ this.errors = {};
+ if (!this.form.name.trim()) { this.errors.name = 'Full name is required'; return; }
+ if (!this.form.bio.trim() || this.form.bio.length < 50) { this.errors.bio = 'Bio must be at least 50 characters'; return; }
+ if (!this.form.hourly_rate || parseInt(this.form.hourly_rate) < 500) { this.errors.hourly_rate = 'Minimum hourly rate is KSh 500'; return; }
+ this.step = 2;
+ },
 
-        validateStep2() {
-            this.errors = {};
-            if (this.form.curricula_tracks.length === 0) { this.errors.curricula = 'Please select at least one curriculum track'; return; }
-            if (this.form.subjects.length === 0) { this.errors.subjects = 'Please select at least 1 subject'; return; }
-            if (this.form.subjects.length > 2) { this.errors.subjects = 'Maximum 2 subjects allowed'; return; }
-            this.step = 3;
-        },
+ validateStep2() {
+ this.errors = {};
+ if (this.form.curricula_tracks.length === 0) { this.errors.curricula = 'Please select at least one curriculum track'; return; }
+ if (this.form.subjects.length === 0) { this.errors.subjects = 'Please select at least 1 subject'; return; }
+ if (this.form.subjects.length > 2) { this.errors.subjects = 'Maximum 2 subjects allowed'; return; }
+ this.step = 3;
+ },
 
-        validateStep3() {
-            this.errors = {};
-            const required = ['national_id','tsc_certificate','certificate_of_good_conduct','academic_certificate','passport_photo'];
-            const missing = required.filter(f => !this.files[f]);
-            if (missing.length > 0) {
-                this.errors.documents = 'Please upload all 5 required documents (' + missing.join(', ').replace(/_/g,' ') + ')';
-                return;
-            }
-            this.step = 4;
-        },
+ validateStep3() {
+ this.errors = {};
+ const required = ['national_id','tsc_certificate','certificate_of_good_conduct','academic_certificate','passport_photo'];
+ const missing = required.filter(f => !this.files[f]);
+ if (missing.length > 0) {
+ this.errors.documents = 'Please upload all 5 required documents (' + missing.join(', ').replace(/_/g,' ') + ')';
+ return;
+ }
+ this.step = 4;
+ },
 
-        async submitApplication() {
-            this.submitting = true;
-            this.uploadStatus = 'Uploading documents…';
+ async submitApplication() {
+ this.submitting = true;
+ this.uploadStatus = 'Uploading documents…';
 
-            try {
-                const fd = new FormData();
-                // Profile data
-                Object.entries(this.form).forEach(([k,v]) => {
-                    if (Array.isArray(v)) v.forEach(i => fd.append(k+'[]', i));
-                    else fd.append(k, v);
-                });
-                // Files
-                Object.entries(this.files).forEach(([k,v]) => {
-                    if (v) fd.append('doc_'+k, v, v.name);
-                });
-                fd.append('_token', document.querySelector('meta[name=csrf-token]').content);
+ try {
+ const fd = new FormData();
+ // Profile data
+ Object.entries(this.form).forEach(([k,v]) => {
+ if (Array.isArray(v)) v.forEach(i => fd.append(k+'[]', i));
+ else fd.append(k, v);
+ });
+ // Files
+ Object.entries(this.files).forEach(([k,v]) => {
+ if (v) fd.append('doc_'+k, v, v.name);
+ });
+ fd.append('_token', document.querySelector('meta[name=csrf-token]').content);
 
-                this.uploadStatus = 'Saving profile…';
-                const res = await fetch('/tutor/onboarding/submit', {
-                    method: 'POST',
-                    body: fd,
-                });
-                const data = await res.json();
+ this.uploadStatus = 'Saving profile…';
+ const res = await fetch('/tutor/onboarding/submit', {
+ method: 'POST',
+ body: fd,
+ });
+ const data = await res.json();
 
-                if (data.status === 'ok') {
-                    this.submitting = false;
-                    if (this.form.speedy && data.stk_sent) {
-                        // STK Push sent for speedy verification fee "- advance to success
-                        // Enrollment is confirmed once Daraja callback arrives
-                        this.step = 5;
-                    } else {
-                        this.step = 5;
-                    }
-                } else {
-                    this.submitting = false;
-                    showError('Submission Failed', data.message || 'Please try again.');
-                }
-            } catch (e) {
-                this.submitting = false;
-                console.error(e);
-                showError('Error', 'An error occurred. Please try again.');
-            }
-        }
-    }
+ if (data.status === 'ok') {
+ this.submitting = false;
+ if (this.form.speedy && data.stk_sent) {
+ // STK Push sent for speedy verification fee - advance to success
+ // Enrollment is confirmed once Daraja callback arrives
+ this.step = 5;
+ } else {
+ this.step = 5;
+ }
+ } else {
+ this.submitting = false;
+ showError('Submission Failed', data.message || 'Please try again.');
+ }
+ } catch (e) {
+ this.submitting = false;
+ console.error(e);
+ showError('Error', 'An error occurred. Please try again.');
+ }
+ }
+ }
 }
 </script>
 @livewireScripts

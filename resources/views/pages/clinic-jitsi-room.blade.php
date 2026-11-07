@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ $clinic->title ?? $clinic->name }} - Clinic Session</title>
 <script src="https://meet.jitsi.org/external_api.js"></script>
@@ -30,35 +30,35 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 <body>
 
 <div class="jitsi-container">
-    <div class="session-header">
-        <div style="display:flex;align-items:center;flex:1;">
-            <div class="session-title">
-                <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span> {{ $clinic->title ?? $clinic->name }}
-            </div>
-            <span style="color:var(--muted);margin:0 12px;font-size:10px;">•</span>
-            <span style="color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}</span>
-            @if($isModerator)
-                <span class="moderator-badge">
-                    <i class="fas fa-shield-alt"></i> MODERATOR
-                </span>
-            @else
-                <span class="session-code">{{ $sessionCode }}</span>
-            @endif
-        </div>
-        <form method="POST" action="{{ route('logout') }}" style="display:inline;">
-            @csrf
-            <button type="submit" class="exit-btn">
-                <i class="fas fa-sign-out-alt"></i> Leave Session
-            </button>
-        </form>
-    </div>
+ <div class="session-header">
+ <div style="display:flex;align-items:center;flex:1;">
+ <div class="session-title">
+ <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span> {{ $clinic->title ?? $clinic->name }}
+ </div>
+ <span style="color:var(--muted);margin:0 12px;font-size:10px;">•</span>
+ <span style="color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}</span>
+ @if($isModerator)
+ <span class="moderator-badge">
+ <i class="fas fa-shield-alt"></i> MODERATOR
+ </span>
+ @else
+ <span class="session-code">{{ $sessionCode }}</span>
+ @endif
+ </div>
+ <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+ @csrf
+ <button type="submit" class="exit-btn">
+ <i class="fas fa-sign-out-alt"></i> Leave Session
+ </button>
+ </form>
+ </div>
 
-    <div class="jitsi-room" id="jitsi-room"></div>
+ <div class="jitsi-room" id="jitsi-room"></div>
 </div>
 
 <div class="access-warning">
-    <i class="fas fa-shield-alt"></i>
-    <span>Platform-only session · Encrypted end-to-end</span>
+ <i class="fas fa-shield-alt"></i>
+ <span>Platform-only session · Encrypted end-to-end</span>
 </div>
 
 <script>
@@ -69,49 +69,49 @@ const isModerator = {{ $isModerator ? 'true' : 'false' }};
 const clinicTitle = "{{ $clinic->title ?? $clinic->name }}";
 
 const options = {
-    roomName: roomName,
-    width: '100%',
-    height: '100%',
-    parentNode: document.querySelector('#jitsi-room'),
-    userInfo: {
-        displayName: displayName,
-        moderator: isModerator
-    },
-    configOverwrite: {
-        prejoinPageEnabled: false,
-        disableModeratorIndicator: false,
-        startAudioMuted: isModerator ? 0 : 1,
-        startVideoMuted: 1,
-        disableAudioLevels: false,
-        enableNoAudioDetection: true,
-        enableNoiseSuppression: true,
-        // Disable P2P for clinic sessions (always use server)
-        p2p: {
-            enabled: false
-        },
-        // Recording controls (only moderators can record)
-        recordingService: {
-            enabled: isModerator,
-            sharingEnabled: isModerator
-        }
-    },
-    interfaceConfigOverwrite: {
-        DEFAULT_BACKGROUND: "#1a1a1a",
-        TOOLBAR_BUTTONS: isModerator ? [
-            'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
-            'fodeviceselection', 'hangup', 'chat', 'recording', 'livestreaming',
-            'etherpad', 'sharedvideo', 'settings', 'raisehand',
-            'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-            'tileview', 'security'
-        ] : [
-            'microphone', 'camera', 'closedcaptions', 'fullscreen',
-            'fodeviceselection', 'hangup', 'chat', 'raisehand',
-            'videoquality', 'filmstrip', 'settings', 'tileview'
-        ],
-        HIDE_INVITE_MORE_HEADER: true,
-        LANG_DETECTION: false,
-        DEFAULT_LANGUAGE: 'en'
-    }
+ roomName: roomName,
+ width: '100%',
+ height: '100%',
+ parentNode: document.querySelector('#jitsi-room'),
+ userInfo: {
+ displayName: displayName,
+ moderator: isModerator
+ },
+ configOverwrite: {
+ prejoinPageEnabled: false,
+ disableModeratorIndicator: false,
+ startAudioMuted: isModerator ? 0 : 1,
+ startVideoMuted: 1,
+ disableAudioLevels: false,
+ enableNoAudioDetection: true,
+ enableNoiseSuppression: true,
+ // Disable P2P for clinic sessions (always use server)
+ p2p: {
+ enabled: false
+ },
+ // Recording controls (only moderators can record)
+ recordingService: {
+ enabled: isModerator,
+ sharingEnabled: isModerator
+ }
+ },
+ interfaceConfigOverwrite: {
+ DEFAULT_BACKGROUND: "#1a1a1a",
+ TOOLBAR_BUTTONS: isModerator ? [
+ 'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+ 'fodeviceselection', 'hangup', 'chat', 'recording', 'livestreaming',
+ 'etherpad', 'sharedvideo', 'settings', 'raisehand',
+ 'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
+ 'tileview', 'security'
+ ] : [
+ 'microphone', 'camera', 'closedcaptions', 'fullscreen',
+ 'fodeviceselection', 'hangup', 'chat', 'raisehand',
+ 'videoquality', 'filmstrip', 'settings', 'tileview'
+ ],
+ HIDE_INVITE_MORE_HEADER: true,
+ LANG_DETECTION: false,
+ DEFAULT_LANGUAGE: 'en'
+ }
 };
 
 // Initialize Jitsi Meet
@@ -119,39 +119,39 @@ const jitsiAPI = new JitsiMeetExternalAPI(domain, options);
 
 // Log session start
 jitsiAPI.addEventListener('videoConferenceJoined', function() {
-    console.log('User joined clinic session: ' + roomName);
-    // Mark attendance in backend if not already done
+ console.log('User joined clinic session: ' + roomName);
+ // Mark attendance in backend if not already done
 });
 
 // Track leaving
 jitsiAPI.addEventListener('videoConferenceLeft', function() {
-    // Session ended
+ // Session ended
 });
 
 // For moderators: listen for recording events
 if (isModerator) {
-    jitsiAPI.addEventListener('recordingStatusChanged', function(data) {
-        console.log('Recording status changed:', data);
-        // Optionally: send recording status to backend
-    });
+ jitsiAPI.addEventListener('recordingStatusChanged', function(data) {
+ console.log('Recording status changed:', data);
+ // Optionally: send recording status to backend
+ });
 }
 
 // Handle fullscreen (optional button)
 const fullscreenBtn = document.querySelector('.fullscreen');
 if (fullscreenBtn) {
-    fullscreenBtn.addEventListener('click', function() {
-        const jitsiContainer = document.querySelector('.jitsi-room');
-        if (jitsiContainer.requestFullscreen) {
-            jitsiContainer.requestFullscreen();
-        }
-    });
+ fullscreenBtn.addEventListener('click', function() {
+ const jitsiContainer = document.querySelector('.jitsi-room');
+ if (jitsiContainer.requestFullscreen) {
+ jitsiContainer.requestFullscreen();
+ }
+ });
 }
 
 // Prevent back navigation (clinic sessions should be exited properly)
 window.addEventListener('beforeunload', function(e) {
-    // Optional: confirm if user tries to close
-    // e.preventDefault();
-    // e.returnValue = '';
+ // Optional: confirm if user tries to close
+ // e.preventDefault();
+ // e.returnValue = '';
 });
 </script>
 

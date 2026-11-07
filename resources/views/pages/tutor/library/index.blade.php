@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Resources â‚¬" Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,179 +61,179 @@ tbody tr:last-child{border-bottom:none;}
 td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 @media(max-width:1023px){.sidebar{display:none;}}
 @media(max-width:639px){
-    .topbar{flex-wrap:wrap;height:auto;padding:12px 16px;gap:8px;}
-    .content{padding:16px;}
-    .stats-g{grid-template-columns:1fr !important;}
+ .topbar{flex-wrap:wrap;height:auto;padding:12px 16px;gap:8px;}
+ .content{padding:16px;}
+ .stats-g{grid-template-columns:1fr !important;}
 }
 </style>
 </head>
 <body>
 <div class="layout">
 <aside class="sidebar">
-    <div class="sb-logo">
-        <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
-        <div><div style="font-size:10px;color:rgba(255,255,255,.3);">Tutor Portal</div></div>
-    </div>
-    <nav class="sb-nav">
-        <div class="sb-section">
-            <div class="sb-label">Tutor Tools</div>
-            <a href="{{ route('tutor.dashboard') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
-            <a href="{{ route('tutor.library.index') }}" class="sb-item active">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                My Resources
-            </a>
-            <a href="{{ route('tutor.library.create') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Upload Resource</a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Sessions</div>
-            <a href="{{ route('tutor.group-sessions.index') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Group Sessions</a>
-        </div>
-        <div class="sb-section">
-            <div class="sb-label">Navigation</div>
-            <a href="{{ route('library.index') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Public Library</a>
-            <a href="{{ route('home') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Back to Site</a>
-        </div>
-    </nav>
-    <div class="sb-footer">
-        <div class="sb-user">
-            <img src="{{ auth()->user()->avatar_url }}" class="sb-avatar" alt="">
-            <div style="flex:1;min-width:0;"><div class="sb-uname">{{ auth()->user()->name }}</div><div class="sb-urole">Tutor</div></div>
-            <form method="POST" action="{{ route('logout') }}">@csrf
-                <button type="submit" class="sb-logout"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
-            </form>
-        </div>
-    </div>
+ <div class="sb-logo">
+ <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
+ <div><div style="font-size:10px;color:rgba(255,255,255,.3);">Tutor Portal</div></div>
+ </div>
+ <nav class="sb-nav">
+ <div class="sb-section">
+ <div class="sb-label">Tutor Tools</div>
+ <a href="{{ route('tutor.dashboard') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+ <a href="{{ route('tutor.library.index') }}" class="sb-item active">
+ <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+ My Resources
+ </a>
+ <a href="{{ route('tutor.library.create') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Upload Resource</a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Sessions</div>
+ <a href="{{ route('tutor.group-sessions.index') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Group Sessions</a>
+ </div>
+ <div class="sb-section">
+ <div class="sb-label">Navigation</div>
+ <a href="{{ route('library.index') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Public Library</a>
+ <a href="{{ route('home') }}" class="sb-item"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Back to Site</a>
+ </div>
+ </nav>
+ <div class="sb-footer">
+ <div class="sb-user">
+ <img src="{{ auth()->user()->avatar_url }}" class="sb-avatar" alt="">
+ <div style="flex:1;min-width:0;"><div class="sb-uname">{{ auth()->user()->name }}</div><div class="sb-urole">Tutor</div></div>
+ <form method="POST" action="{{ route('logout') }}">@csrf
+ <button type="submit" class="sb-logout"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+ </form>
+ </div>
+ </div>
 </aside>
 
 <div class="main">
-    <header class="topbar">
-        <div class="page-title"><i class="fas fa-book-open"></i>My Resources</div>
-        <a href="{{ route('tutor.library.create') }}" class="btn btn-v">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Upload Resource
-        </a>
-    </header>
+ <header class="topbar">
+ <div class="page-title"><i class="fas fa-book-open"></i>My Resources</div>
+ <a href="{{ route('tutor.library.create') }}" class="btn btn-v">
+ <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+ Upload Resource
+ </a>
+ </header>
 
-    <div class="content">
-        @if(session('success'))
-        <div class="flash flash-ok"><i class="fas fa-check-circle"></i>{{ session('success') }}</div>
-        @endif
+ <div class="content">
+ @if(session('success'))
+ <div class="flash flash-ok"><i class="fas fa-check-circle"></i>{{ session('success') }}</div>
+ @endif
 
-        {{-- Stats --}}
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;" class="stats-g">
-            <div class="stat">
-                <div class="stat-lbl">Total Resources</div>
-                <div class="stat-val">{{ $stats['total'] }}</div>
-            </div>
-            <div class="stat">
-                <div class="stat-lbl">Published</div>
-                <div class="stat-val" style="color:var(--mint);">{{ $stats['published'] }}</div>
-            </div>
-            <div class="stat">
-                <div class="stat-lbl">Total Downloads</div>
-                <div class="stat-val" style="color:var(--trust-blue);">{{ number_format($stats['download_count']) }}</div>
-            </div>
-        </div>
-        <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:500px){.stats-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
+ {{-- Stats --}}
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;" class="stats-g">
+ <div class="stat">
+ <div class="stat-lbl">Total Resources</div>
+ <div class="stat-val">{{ $stats['total'] }}</div>
+ </div>
+ <div class="stat">
+ <div class="stat-lbl">Published</div>
+ <div class="stat-val" style="color:var(--mint);">{{ $stats['published'] }}</div>
+ </div>
+ <div class="stat">
+ <div class="stat-lbl">Total Downloads</div>
+ <div class="stat-val" style="color:var(--trust-blue);">{{ number_format($stats['download_count']) }}</div>
+ </div>
+ </div>
+ <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:500px){.stats-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
 
-        {{-- Resources table --}}
-        <div class="card">
-            <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
-                <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;">My Uploaded Resources</h3>
-            </div>
-            <div style="overflow-x:auto;">
-                <table id="tutor-library-table">
-                    <thead>
-                        <tr>
-                            <th>Resource</th>
-                            <th>Type</th>
-                            <th>Category</th>
-                            <th>Grade</th>
-                            <th>Downloads</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $typeIcons = ['article'=>'Ã°Å¸""ž','pdf'=>'Ã°Å¸"•','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸""¹'];
-                            $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
-                            $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
-                        @endphp
-                        @forelse($resources as $resource)
-                        <tr>
-                            <td style="max-width:260px;">
-                                <div style="display:flex;align-items:center;gap:10px;">
-                                    <div style="width:36px;height:36px;border-radius:9px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
-                                        {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸""ž' }}
-                                    </div>
-                                    <div>
-                                        <div style="font-weight:600;font-size:13.5px;">{{ Str::limit($resource->title, 45) }}</div>
-                                        <div style="font-size:12px;color:var(--muted);">{{ $resource->created_at->format('M j, Y') }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">{{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}</span>
-                            </td>
-                            <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? 'â‚¬"' }}</td>
-                            <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? 'â‚¬"' }}</td>
-                            <td style="font-weight:600;">{{ number_format($resource->download_count) }}</td>
-                            <td>
-                                @if(!$resource->is_approved)
-                                    <span class="bdg bdg-amber">Pending</span>
-                                @elseif($resource->is_published)
-                                    <span class="bdg bdg-green">Live</span>
-                                @else
-                                    <span class="bdg bdg-gray">Draft</span>
-                                @endif
-                            </td>
-                            <td>
-                                <div style="display:flex;gap:6px;">
-                                    @if($resource->is_published && $resource->is_approved)
-                                    <a href="{{ route('library.show', $resource->slug) }}" target="_blank" class="btn btn-o btn-sm">View</a>
-                                    @endif
-                                    <form method="POST" action="{{ route('tutor.library.destroy', $resource) }}" onsubmit="return confirm('Delete this resource?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-sm" style="background:#FEF2F2;color:#991B1B;border:none;">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" style="text-align:center;padding:60px;">
-                                <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-book-open"></i></div>
-                                <p style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;">No resources yet</p>
-                                <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Share study materials, past papers, or notes with students.</p>
-                                <a href="{{ route('tutor.library.create') }}" class="btn btn-v">Upload Your First Resource</a>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            @if($resources->hasPages())
-            <div style="padding:16px 20px;border-top:1px solid var(--hair);">
-                {{ $resources->links() }}
-            </div>
-            @endif
-        </div>
-    </div>
+ {{-- Resources table --}}
+ <div class="card">
+ <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
+ <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;">My Uploaded Resources</h3>
+ </div>
+ <div style="overflow-x:auto;">
+ <table id="tutor-library-table">
+ <thead>
+ <tr>
+ <th>Resource</th>
+ <th>Type</th>
+ <th>Category</th>
+ <th>Grade</th>
+ <th>Downloads</th>
+ <th>Status</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+ <tbody>
+ @php
+ $typeIcons = ['article'=>'<i class=\"fas fa-book\"></i>','pdf'=>'<i class=\"fas fa-file-pdf\"></i>','video'=>'<i class=\"fas fa-video\"></i>','notes'=>'<i class=\"fas fa-sticky-note\"></i>','past_paper'=>'<i class=\"fas fa-file-lines\"></i>'];
+ $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
+ $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
+ @endphp
+ @forelse($resources as $resource)
+ <tr>
+ <td style="max-width:260px;">
+ <div style="display:flex;align-items:center;gap:10px;">
+ <div style="width:36px;height:36px;border-radius:9px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+ {{ $typeIcons[$resource->resource_type] ?? '<i class=\"fas fa-book\"></i>' }}
+ </div>
+ <div>
+ <div style="font-weight:600;font-size:13.5px;">{{ Str::limit($resource->title, 45) }}</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $resource->created_at->format('M j, Y') }}</div>
+ </div>
+ </div>
+ </td>
+ <td>
+ <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">{{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}</span>
+ </td>
+ <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? 'â‚¬"' }}</td>
+ <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? 'â‚¬"' }}</td>
+ <td style="font-weight:600;">{{ number_format($resource->download_count) }}</td>
+ <td>
+ @if(!$resource->is_approved)
+ <span class="bdg bdg-amber">Pending</span>
+ @elseif($resource->is_published)
+ <span class="bdg bdg-green">Live</span>
+ @else
+ <span class="bdg bdg-gray">Draft</span>
+ @endif
+ </td>
+ <td>
+ <div style="display:flex;gap:6px;">
+ @if($resource->is_published && $resource->is_approved)
+ <a href="{{ route('library.show', $resource->slug) }}" target="_blank" class="btn btn-o btn-sm">View</a>
+ @endif
+ <form method="POST" action="{{ route('tutor.library.destroy', $resource) }}" onsubmit="return confirm('Delete this resource?')">
+ @csrf @method('DELETE')
+ <button type="submit" class="btn btn-sm" style="background:#FEF2F2;color:#991B1B;border:none;">Delete</button>
+ </form>
+ </div>
+ </td>
+ </tr>
+ @empty
+ <tr>
+ <td colspan="7" style="text-align:center;padding:60px;">
+ <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-book-open"></i></div>
+ <p style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;">No resources yet</p>
+ <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Share study materials, past papers, or notes with students.</p>
+ <a href="{{ route('tutor.library.create') }}" class="btn btn-v">Upload Your First Resource</a>
+ </td>
+ </tr>
+ @endforelse
+ </tbody>
+ </table>
+ </div>
+ @if($resources->hasPages())
+ <div style="padding:16px 20px;border-top:1px solid var(--hair);">
+ {{ $resources->links() }}
+ </div>
+ @endif
+ </div>
+ </div>
 </div>
 </div>
 
 <script>
 $(document).ready(function() {
-    if ($('#tutor-library-table').length) {
-        initDataTable('#tutor-library-table', {
-            order: [[2, 'desc']],
-            columnDefs: [
-                { type: 'num', targets: 5 }, // Downloads
-                { orderable: false, targets: 6 } // Actions
-            ]
-        });
-    }
+ if ($('#tutor-library-table').length) {
+ initDataTable('#tutor-library-table', {
+ order: [[2, 'desc']],
+ columnDefs: [
+ { type: 'num', targets: 5 }, // Downloads
+ { orderable: false, targets: 6 } // Actions
+ ]
+ });
+ }
 });
 </script>
 </body>

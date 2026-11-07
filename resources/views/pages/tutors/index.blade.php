@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Find a Tutor "- Mwalimu</title>
+<title>Find a Tutor - Mwalimu</title>
 <meta name="description" content="Browse TSC-registered tutors across all Kenyan curriculum subjects. Book sessions from KSh 300.">
 <style>
 .hero-band{background:var(--ink);padding:52px 0;position:relative;overflow:hidden;}
@@ -34,13 +34,13 @@ if($track && in_array($track,['kenyan','international'])){session(['curriculum_t
 $categories=Category::active()->with('subjects')->get();
 $subjects=$catId?Subject::where('category_id',$catId)->active()->get():collect();
 $q=TutorProfile::approved()->with(['user','subjects','approvedCurricula'])
-    ->when($search,fn($x)=>$x->search($search))
-    ->when($subjId,fn($x)=>$x->whereHas('subjects',fn($s)=>$s->where('subjects.id',$subjId)))
-    ->when($catId&&!$subjId,fn($x)=>$x->whereHas('subjects',fn($s)=>$s->where('category_id',$catId)))
-    ->when($minP,fn($x)=>$x->where('hourly_rate','>=',$minP))
-    ->when($maxP,fn($x)=>$x->where('hourly_rate','<=',$maxP))
-    ->when($minR,fn($x)=>$x->where('rating_avg','>=',$minR))
-    ->when($track,fn($x)=>$x->whereHas('approvedCurricula',fn($c)=>$c->where('track',$track)));
+ ->when($search,fn($x)=>$x->search($search))
+ ->when($subjId,fn($x)=>$x->whereHas('subjects',fn($s)=>$s->where('subjects.id',$subjId)))
+ ->when($catId&&!$subjId,fn($x)=>$x->whereHas('subjects',fn($s)=>$s->where('category_id',$catId)))
+ ->when($minP,fn($x)=>$x->where('hourly_rate','>=',$minP))
+ ->when($maxP,fn($x)=>$x->where('hourly_rate','<=',$maxP))
+ ->when($minR,fn($x)=>$x->where('rating_avg','>=',$minR))
+ ->when($track,fn($x)=>$x->whereHas('approvedCurricula',fn($c)=>$c->where('track',$track)));
 $q=$sort==='price_asc'?$q->orderBy('hourly_rate'):($sort==='sessions'?$q->orderByDesc('total_sessions'):$q->orderByDesc('rating_avg'));
 $tutors=$q->paginate(12)->withQueryString();
 $colors=['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899','#0EA5E9','#8B5CF6'];
@@ -52,190 +52,190 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 
 {{-- HERO --}}
 <div class="hero-band">
-    <div class="w" style="position:relative;z-index:1;">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:32px;flex-wrap:wrap;">
-            <div>
-                <div class="badge badge-white" style="margin-bottom:16px;"><i class="fas fa-scroll"></i> TSC-Registered Tutors Only</div>
-                <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">Find your perfect tutor</h1>
-                <p style="font-size:14px;color:rgba(255,255,255,.6);max-width:460px;">Personalised Learning, Proven Teaching Expertise, Affordable Prices.</p>
-            </div>
-        </div>
+ <div class="w" style="position:relative;z-index:1;">
+ <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:32px;flex-wrap:wrap;">
+ <div>
+ <div class="badge badge-white" style="margin-bottom:16px;"><i class="fas fa-scroll"></i> TSC-Registered Tutors Only</div>
+ <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">Find your perfect tutor</h1>
+ <p style="font-size:14px;color:rgba(255,255,255,.6);max-width:460px;">Personalised Learning, Proven Teaching Expertise, Affordable Prices.</p>
+ </div>
+ </div>
 
-        {{-- Curriculum Track Tabs --}}
-        <!-- <div style="display:flex;gap:8px;margin-top:24px;flex-wrap:wrap;">
-            <a href="{{ route('tutors.index') }}"
-               style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
-                      {{ !$track ? 'background:rgba(255,255,255,.9);color:var(--ink);' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
-                <span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span> All Tutors
-            </a>
-            <a href="{{ route('tutors.index') }}?track=kenyan"
-               style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
-                      {{ $track==='kenyan' ? 'background:#10B981;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
-                <span style="font-size:inherit;"><i class="fas fa-flag"></i></span> Kenyan Curriculum
-            </a>
-            <a href="{{ route('tutors.index') }}?track=international"
-               style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
-                      {{ $track==='international' ? 'background:#6366F1;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
-                <i class="fas fa-globe"></i> International
-            </a>
-        </div> -->
-    </div>
+ {{-- Curriculum Track Tabs --}}
+ <!-- <div style="display:flex;gap:8px;margin-top:24px;flex-wrap:wrap;">
+ <a href="{{ route('tutors.index') }}"
+ style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
+ {{ !$track ? 'background:rgba(255,255,255,.9);color:var(--ink);' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
+ <span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span> All Tutors
+ </a>
+ <a href="{{ route('tutors.index') }}?track=kenyan"
+ style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
+ {{ $track==='kenyan' ? 'background:#10B981;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
+ <span style="font-size:inherit;"><i class="fas fa-flag"></i></span> Kenyan Curriculum
+ </a>
+ <a href="{{ route('tutors.index') }}?track=international"
+ style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;transition:all .15s;
+ {{ $track==='international' ? 'background:#6366F1;color:#fff;' : 'background:rgba(255,255,255,.12);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);' }}">
+ <i class="fas fa-globe"></i> International
+ </a>
+ </div> -->
+ </div>
 </div>
 
 <div class="w" style="padding-top:28px;padding-bottom:60px;">
 
-    {{-- FILTER BAR --}}
-    <form method="GET" action="{{ route('tutors.index') }}">
-        <div class="filter-card">
-            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
-                <div style="flex:2;min-width:190px;">
-                    <span class="f-label"><i class="fas fa-search"></i> Search</span>
-                    <div style="position:relative;">
-                        <i class="fas fa-search"></i>
-                        <input type="text" name="search" value="{{ $search }}" class="f-input" placeholder="Tutor name or subject…" style="padding-left:34px;">
-                    </div>
-                </div>
-                <div style="min-width:160px;">
-                    <span class="f-label"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Category</span>
-                    <select name="category" class="f-input" onchange="this.form.submit()">
-                        <option value="">All categories</option>
-                        @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}" {{ $catId==$cat->id?'selected':'' }}>{{ $cat->icon }} {{ $cat->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                @if($subjects->isNotEmpty())
-                <div style="min-width:150px;">
-                    <span class="f-label"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subject</span>
-                    <select name="subject" class="f-input">
-                        <option value="">All subjects</option>
-                        @foreach($subjects as $s)
-                        <option value="{{ $s->id }}" {{ $subjId==$s->id?'selected':'' }}>{{ $s->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                @endif
-                
-                <div style="display:flex;gap:6px;align-items:flex-end;">
-                    <button type="submit" class="btn btn-v btn-sm" style="height:42px;"><i class="fas fa-search"></i> Search</button>
-                    @if($search||$catId||$subjId||$minP||$maxP||$minR)
-                    <a href="{{ route('tutors.index') }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--ink);border:none;height:42px;"><i class="fas fa-times-circle"></i> Clear</a>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </form>
+ {{-- FILTER BAR --}}
+ <form method="GET" action="{{ route('tutors.index') }}">
+ <div class="filter-card">
+ <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+ <div style="flex:2;min-width:190px;">
+ <span class="f-label"><i class="fas fa-search"></i> Search</span>
+ <div style="position:relative;">
+ <i class="fas fa-search"></i>
+ <input type="text" name="search" value="{{ $search }}" class="f-input" placeholder="Tutor name or subject…" style="padding-left:34px;">
+ </div>
+ </div>
+ <div style="min-width:160px;">
+ <span class="f-label"><i class="fas fa-filter"></i> Category</span>
+ <select name="category" class="f-input" onchange="this.form.submit()">
+ <option value="">All categories</option>
+ @foreach($categories as $cat)
+ <option value="{{ $cat->id }}" {{ $catId==$cat->id?'selected':'' }}>{{ $cat->icon }} {{ $cat->name }}</option>
+ @endforeach
+ </select>
+ </div>
+ @if($subjects->isNotEmpty())
+ <div style="min-width:150px;">
+ <span class="f-label"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subject</span>
+ <select name="subject" class="f-input">
+ <option value="">All subjects</option>
+ @foreach($subjects as $s)
+ <option value="{{ $s->id }}" {{ $subjId==$s->id?'selected':'' }}>{{ $s->name }}</option>
+ @endforeach
+ </select>
+ </div>
+ @endif
+ 
+ <div style="display:flex;gap:6px;align-items:flex-end;">
+ <button type="submit" class="btn btn-v btn-sm" style="height:42px;"><i class="fas fa-search"></i> Search</button>
+ @if($search||$catId||$subjId||$minP||$maxP||$minR)
+ <a href="{{ route('tutors.index') }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--ink);border:none;height:42px;"><i class="fas fa-times-circle"></i> Clear</a>
+ @endif
+ </div>
+ </div>
+ </div>
+ </form>
 
-    {{-- Active tags --}}
-    @if($search||$catId||$subjId||$minP||$maxP||$minR)
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-        @if($search)<span class="filter-tag"><i class="fas fa-search"></i>"{{ $search }}"</span>@endif
-        @if($catId)<span class="filter-tag"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ $categories->find($catId)?->name }}</span>@endif
-        @if($minR)<span class="filter-tag"><i class="fas fa-star"></i>â˜… {{ $minR }}+</span>@endif
-        @if($minP)<span class="filter-tag">From KSh {{ number_format($minP) }}</span>@endif
-        @if($maxP)<span class="filter-tag">To KSh {{ number_format($maxP) }}</span>@endif
-    </div>
-    @endif
+ {{-- Active tags --}}
+ @if($search||$catId||$subjId||$minP||$maxP||$minR)
+ <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+ @if($search)<span class="filter-tag"><i class="fas fa-search"></i>"{{ $search }}"</span>@endif
+ @if($catId)<span class="filter-tag"><i class="fas fa-tag"></i>{{ $categories->find($catId)?->name }}</span>@endif
+ @if($minR)<span class="filter-tag"><i class="fas fa-star"></i>â˜… {{ $minR }}+</span>@endif
+ @if($minP)<span class="filter-tag">From KSh {{ number_format($minP) }}</span>@endif
+ @if($maxP)<span class="filter-tag">To KSh {{ number_format($maxP) }}</span>@endif
+ </div>
+ @endif
 
-    {{-- Tutors grid --}}
-    @if($tutors->isEmpty())
-    <div class="card" style="padding:64px;text-align:center;">
-        <div style="font-size:48px;margin-bottom:14px;"><i class="fas fa-search"></i></div>
-        <h3 style="font-size:22px;color:var(--ink);margin-bottom:8px;">No tutors found</h3>
-        <p style="color:var(--muted);margin-bottom:20px;">Try adjusting your filters or search term.</p>
-        <a href="{{ route('tutors.index') }}" class="btn btn-v"><span style="font-size:inherit;">←</span> Clear Filters</a>
-    </div>
-    @else
-    <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="tgrid">
-        @foreach($tutors as $tutor)
-        @php $col=$colors[($tutor->id-1)%count($colors)]; @endphp
-        <div class="tc">
-            <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
-                <div style="width:58px;height:58px;border-radius:16px;background:{{ $col }};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;">{{ substr($tutor->user->name,0,1) }}</div>
-                <div style="flex:1;min-width:0;">
-                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
-                        <div>
-                            <!-- <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">{{ $tutor->user->name }}</div> -->
-                             <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">
-    {{ implode(' ', array_slice(explode(' ', trim($tutor->user->name)), 0, 2)) }}
+ {{-- Tutors grid --}}
+ @if($tutors->isEmpty())
+ <div class="card" style="padding:64px;text-align:center;">
+ <div style="font-size:48px;margin-bottom:14px;"><i class="fas fa-search"></i></div>
+ <h3 style="font-size:22px;color:var(--ink);margin-bottom:8px;">No tutors found</h3>
+ <p style="color:var(--muted);margin-bottom:20px;">Try adjusting your filters or search term.</p>
+ <a href="{{ route('tutors.index') }}" class="btn btn-v"><span style="font-size:inherit;">←</span> Clear Filters</a>
+ </div>
+ @else
+ <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="tgrid">
+ @foreach($tutors as $tutor)
+ @php $col=$colors[($tutor->id-1)%count($colors)]; @endphp
+ <div class="tc">
+ <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+ <div style="width:58px;height:58px;border-radius:16px;background:{{ $col }};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0;">{{ substr($tutor->user->name,0,1) }}</div>
+ <div style="flex:1;min-width:0;">
+ <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+ <div>
+ <!-- <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">{{ $tutor->user->name }}</div> -->
+ <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">
+ {{ implode(' ', array_slice(explode(' ', trim($tutor->user->name)), 0, 2)) }}
 </div>
-                            <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
-                                <span style="font-size:11px;font-weight:600;color:var(--mint);"><i class="fas fa-scroll"></i> TSC Verified</span>
-                                <span style="color:var(--muted);font-size:11px;">· {{ $tutor->experience_years }}yr exp</span>
-                            </div>
-                        </div>
-                        <!-- <div style="text-align:right;flex-shrink:0;">
-                            <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);">KSh {{ number_format($tutor->hourly_rate) }}</div>
-                            <div style="font-size:11px;color:var(--muted);">/hr</div>
-                        </div> -->
-                    </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
-                        @foreach($tutor->subjects->take(3) as $s)
-                        <span class="badge badge-v" style="font-size:10px;">{{ $s->name }}</span>
-                        @endforeach
-                        @if($tutor->subjects->count()>3)<span class="badge badge-dark" style="font-size:10px;">+{{ $tutor->subjects->count()-3 }}</span>@endif
-                        {{-- Curriculum badges --}}
-                        @foreach($tutor->approvedCurricula->take(2) as $curr)
-                        <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;
-                            {{ $curr->track==='kenyan' ? 'background:rgba(16,185,129,.12);color:#065F46;' : 'background:rgba(99,102,241,.12);color:#3730A3;' }}">
-                            {{ $curr->track==='kenyan' ? 'ðŸ‡°ðŸ‡ª' : 'ðŸŒ' }} {{ $curr->name }}
-                        </span>
-                        @endforeach
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;margin-top:7px;font-size:12px;color:var(--muted);">
-                        <span style="color:var(--gold);font-weight:700;"><i class="fas fa-star"></i> {{ number_format($tutor->rating_avg,1) }}</span>
-                        <span>({{ $tutor->total_reviews }})</span>
-                        <span>·</span><span>{{ $tutor->total_sessions }} sessions</span>
-                        <!-- @if($tutor->city)<span>·</span><span><i class="fas fa-map-marker-alt"></i> {{ $tutor->city }}</span>@endif -->
-                    </div>
-                </div>
-            </div>
-            @if($tutor->bio)
-            <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $tutor->bio }}</p>
-            @endif
-            <!-- <div class="dur-pills">
-                @foreach([20=>['Quick Help',300],40=>['Guided Practice',500],60=>['Deep Dive',700]] as $mins=>[$name,$price])
-                @php
-                $isFreeForUser = false; // No free first session "- 100% money-back guarantee instead
-                @endphp
-                <div class="dp" title="{{ $name }}">
-                    <div class="dp-min">{{ $mins }}m</div>
-                    <div style="font-size:9px;font-weight:700;margin:1px 0;line-height:1.2;color:var(--trust-blue)">{{ $name }}</div>
-                    <div class="dp-price">KSh {{ $price }}</div>
-                </div>
-                @endforeach
-            </div> -->
-            <div style="display:flex;gap:8px;">
-                <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fas fa-check-circle"></i> View & Book</a>
-                @auth
-                <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
-                    <i class="fas fa-heart"></i>
-                </a>
-                @endauth
-            </div>
-        </div>
-        @endforeach
-    </div>
+ <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
+ <span style="font-size:11px;font-weight:600;color:var(--mint);"><i class="fas fa-scroll"></i> TSC Verified</span>
+ <span style="color:var(--muted);font-size:11px;">· {{ $tutor->experience_years }}yr exp</span>
+ </div>
+ </div>
+ <!-- <div style="text-align:right;flex-shrink:0;">
+ <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);">KSh {{ number_format($tutor->hourly_rate) }}</div>
+ <div style="font-size:11px;color:var(--muted);">/hr</div>
+ </div> -->
+ </div>
+ <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
+ @foreach($tutor->subjects->take(3) as $s)
+ <span class="badge badge-v" style="font-size:10px;">{{ $s->name }}</span>
+ @endforeach
+ @if($tutor->subjects->count()>3)<span class="badge badge-dark" style="font-size:10px;">+{{ $tutor->subjects->count()-3 }}</span>@endif
+ {{-- Curriculum badges --}}
+ @foreach($tutor->approvedCurricula->take(2) as $curr)
+ <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;
+ {{ $curr->track==='kenyan' ? 'background:rgba(16,185,129,.12);color:#065F46;' : 'background:rgba(99,102,241,.12);color:#3730A3;' }}">
+ {{ $curr->track==='kenyan' ? 'ðŸ‡°ðŸ‡ª' : 'ðŸŒ' }} {{ $curr->name }}
+ </span>
+ @endforeach
+ </div>
+ <div style="display:flex;align-items:center;gap:10px;margin-top:7px;font-size:12px;color:var(--muted);">
+ <span style="color:var(--gold);font-weight:700;"><i class="fas fa-star"></i> {{ number_format($tutor->rating_avg,1) }}</span>
+ <span>({{ $tutor->total_reviews }})</span>
+ <span>·</span><span>{{ $tutor->total_sessions }} sessions</span>
+ <!-- @if($tutor->city)<span>·</span><span><i class="fas fa-map-marker-alt"></i> {{ $tutor->city }}</span>@endif -->
+ </div>
+ </div>
+ </div>
+ @if($tutor->bio)
+ <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $tutor->bio }}</p>
+ @endif
+ <!-- <div class="dur-pills">
+ @foreach([20=>['Quick Help',300],40=>['Guided Practice',500],60=>['Deep Dive',700]] as $mins=>[$name,$price])
+ @php
+ $isFreeForUser = false; // No free first session - 100% money-back guarantee instead
+ @endphp
+ <div class="dp" title="{{ $name }}">
+ <div class="dp-min">{{ $mins }}m</div>
+ <div style="font-size:9px;font-weight:700;margin:1px 0;line-height:1.2;color:var(--trust-blue)">{{ $name }}</div>
+ <div class="dp-price">KSh {{ $price }}</div>
+ </div>
+ @endforeach
+ </div> -->
+ <div style="display:flex;gap:8px;">
+ <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-v btn-sm" style="flex:1;justify-content:center;"><i class="fas fa-check-circle"></i> View & Book</a>
+ @auth
+ <a href="{{ route('tutors.show', $tutor->id) }}" class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;" title="Save tutor">
+ <i class="fas fa-heart"></i>
+ </a>
+ @endauth
+ </div>
+ </div>
+ @endforeach
+ </div>
 
-    {{-- Pagination --}}
-    @if($tutors->hasPages())
-    <div style="margin-top:32px;display:flex;justify-content:center;gap:5px;flex-wrap:wrap;">
-        @if($tutors->onFirstPage())
-        <span class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;pointer-events:none;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Prev</span>
-        @else
-        <a href="{{ $tutors->previousPageUrl() }}" class="btn btn-sm btn-o"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Prev</a>
-        @endif
-        @foreach($tutors->getUrlRange(max(1,$tutors->currentPage()-2),min($tutors->lastPage(),$tutors->currentPage()+2)) as $page=>$url)
-        <a href="{{ $url }}" class="btn btn-sm" style="background:{{ $page==$tutors->currentPage()?'var(--trust-blue)':'#fff' }};color:{{ $page==$tutors->currentPage()?'#fff':'var(--ink)' }};border:1.5px solid {{ $page==$tutors->currentPage()?'var(--trust-blue)':'var(--hair)' }};">{{ $page }}</a>
-        @endforeach
-        @if($tutors->hasMorePages())
-        <a href="{{ $tutors->nextPageUrl() }}" class="btn btn-sm btn-o">Next <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
-        @else
-        <span class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;pointer-events:none;">Next <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
-        @endif
-    </div>
-    @endif
-    @endif
+ {{-- Pagination --}}
+ @if($tutors->hasPages())
+ <div style="margin-top:32px;display:flex;justify-content:center;gap:5px;flex-wrap:wrap;">
+ @if($tutors->onFirstPage())
+ <span class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;pointer-events:none;"><i class="fas fa-chevron-left"></i> Prev</span>
+ @else
+ <a href="{{ $tutors->previousPageUrl() }}" class="btn btn-sm btn-o"><i class="fas fa-chevron-left"></i> Prev</a>
+ @endif
+ @foreach($tutors->getUrlRange(max(1,$tutors->currentPage()-2),min($tutors->lastPage(),$tutors->currentPage()+2)) as $page=>$url)
+ <a href="{{ $url }}" class="btn btn-sm" style="background:{{ $page==$tutors->currentPage()?'var(--trust-blue)':'#fff' }};color:{{ $page==$tutors->currentPage()?'#fff':'var(--ink)' }};border:1.5px solid {{ $page==$tutors->currentPage()?'var(--trust-blue)':'var(--hair)' }};">{{ $page }}</a>
+ @endforeach
+ @if($tutors->hasMorePages())
+ <a href="{{ $tutors->nextPageUrl() }}" class="btn btn-sm btn-o">Next <i class="fas fa-chevron-right"></i></a>
+ @else
+ <span class="btn btn-sm" style="background:#F4F6F4;color:var(--muted);border:none;pointer-events:none;">Next <i class="fas fa-chevron-right"></i></span>
+ @endif
+ </div>
+ @endif
+ @endif
 </div>
 <style>.tgrid{grid-template-columns:1fr!important;}@media(min-width:640px){.tgrid{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.tgrid{grid-template-columns:repeat(3,1fr)!important;}}@media(max-width:400px){.dur-pills{grid-template-columns:repeat(2,1fr);}}</style>
 
