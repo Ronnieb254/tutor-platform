@@ -134,9 +134,9 @@
             <div style="display:flex;align-items:center;gap:4px;">
                 {{-- Previous --}}
                 @if($subjects->onFirstPage())
-                    <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
+                    <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fas fa-chevron-left"></i></span>
                 @else
-                    <a href="{{ $subjects->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
+                    <a href="{{ $subjects->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fas fa-chevron-left"></i></a>
                 @endif
 
                 {{-- Page window: always show first, last, current Ã‚Â±2, with ellipsis --}}
@@ -163,9 +163,9 @@
 
                 {{-- Next --}}
                 @if($subjects->hasMorePages())
-                    <a href="{{ $subjects->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
+                    <a href="{{ $subjects->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fas fa-chevron-right"></i></a>
                 @else
-                    <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
+                    <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fas fa-chevron-right"></i></span>
                 @endif
             </div>
         </div>

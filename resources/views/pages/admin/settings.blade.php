@@ -122,7 +122,7 @@ use App\Models\PlatformSetting;
     {{-- Session Durations info --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Session Duration Pricing
+            <i class="fas fa-clock"></i> Session Duration Pricing
         </h3>
         <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">
             Mwalimu uses <strong>fixed platform rates</strong> for all sessions. Tutors do not set their own prices. All rates are inclusive of the platform commission.

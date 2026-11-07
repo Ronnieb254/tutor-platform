@@ -44,7 +44,7 @@
         ] as [$label,$val,$color,$icon,$bg])
         <div style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:18px 22px;display:flex;align-items:center;gap:14px;">
             <div style="width:44px;height:44px;border-radius:12px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <span class="{{ $icon }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                <i class="fas {{ $icon }}"></i>
             </div>
             <div>
                 <div style="font-size:24px;font-weight:800;color:var(--ink);">{{ $val }}</div>
@@ -113,7 +113,7 @@
                         </div>
                         <div style="font-size:11px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;">
                             @if($clinic->subject)
-                            <span><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> {{ $clinic->subject->name }}</span>
+                            <span><i class="fas fa-book-open"></i> {{ $clinic->subject->name }}</span>
                             @endif
                             @if($clinic->paper_type)
                             <span><i class="fas fa-file-alt"></i> {{ $clinic->paper_type }}</span>
@@ -146,7 +146,7 @@
                         @elseif($isPast && $clinic->status !== 'cancelled')
                         <span style="background:rgba(21,40,31,.08);color:var(--muted);padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;">Completed</span>
                         @elseif($isToday)
-                        <span style="background:rgba(16,185,129,.1);color:#10B981;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Today</span>
+                        <span style="background:rgba(16,185,129,.1);color:#10B981;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;"><i class="fas fa-circle-dot"></i> Today</span>
                         @else
                         <span style="background:rgba(10,100,188,.1);color:#0A64BC;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;">Scheduled</span>
                         @endif
@@ -154,7 +154,7 @@
                     <td style="padding:14px 16px;text-align:right;">
                         <div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;">
                             <a href="{{ route('admin.clinics.show', $clinic) }}" style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:7px;background:rgba(10,100,188,.1);color:#0A64BC;font-size:12px;font-weight:600;text-decoration:none;">
-                                <span style="font-size:inherit;"><i class="fas fa-eye"></i></span> View
+                                <i class="fas fa-eye"></i> View
                             </a>
                             @if($isFull && $clinic->status !== 'cancelled' && !$clinic->is_auto_created)
                             <form method="POST" action="{{ route('admin.clinics.overflow', $clinic) }}" style="display:inline;">
@@ -168,7 +168,7 @@
                             <form method="POST" action="{{ route('admin.clinics.cancel', $clinic) }}" style="display:inline;" onsubmit="return confirm('Cancel this clinic? Students will need to be notified manually.')">
                                 @csrf
                                 <button type="submit" style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:7px;background:rgba(239,68,68,.1);color:#dc2626;font-size:12px;font-weight:600;border:none;cursor:pointer;font-family:inherit;">
-                                    <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancel
+                                    <i class="fas fa-ban"></i> Cancel
                                 </button>
                             </form>
                             @endif
@@ -200,17 +200,17 @@
     @if($clinics->hasPages())
     <div style="margin-top:20px;display:flex;justify-content:center;gap:5px;flex-wrap:wrap;">
         @if($clinics->onFirstPage())
-        <span style="padding:7px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:13px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
+        <span style="padding:7px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:13px;"><i class="fas fa-chevron-left"></i></span>
         @else
-        <a href="{{ $clinics->previousPageUrl() }}" style="padding:7px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:13px;border:1px solid rgba(21,40,31,.1);text-decoration:none;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
+        <a href="{{ $clinics->previousPageUrl() }}" style="padding:7px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:13px;border:1px solid rgba(21,40,31,.1);text-decoration:none;"><i class="fas fa-chevron-left"></i></a>
         @endif
         @foreach($clinics->getUrlRange(max(1,$clinics->currentPage()-2), min($clinics->lastPage(),$clinics->currentPage()+2)) as $page => $url)
         <a href="{{ $url }}" style="padding:7px 14px;border-radius:8px;background:{{ $page==$clinics->currentPage() ? '#0A64BC' : '#fff' }};color:{{ $page==$clinics->currentPage() ? '#fff' : 'var(--ink)' }};font-size:13px;border:1px solid {{ $page==$clinics->currentPage() ? '#0A64BC' : 'rgba(21,40,31,.1)' }};text-decoration:none;font-weight:600;">{{ $page }}</a>
         @endforeach
         @if($clinics->hasMorePages())
-        <a href="{{ $clinics->nextPageUrl() }}" style="padding:7px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:13px;border:1px solid rgba(21,40,31,.1);text-decoration:none;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
+        <a href="{{ $clinics->nextPageUrl() }}" style="padding:7px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:13px;border:1px solid rgba(21,40,31,.1);text-decoration:none;"><i class="fas fa-chevron-right"></i></a>
         @else
-        <span style="padding:7px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:13px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
+        <span style="padding:7px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:13px;"><i class="fas fa-chevron-right"></i></span>
         @endif
     </div>
     @endif

@@ -55,7 +55,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 ] as [$label,$val,$col,$ic,$bg])
                 <div style="background:#fff;border-radius:14px;border:1px solid rgba(21,40,31,.07);padding:16px;display:flex;align-items:center;gap:12px;">
                     <div style="width:40px;height:40px;border-radius:11px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                        <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                        <i class="fas {{ $ic }}"></i>
                     </div>
                     <div>
                         <div style="font-size:11px;color:rgba(21,40,31,.5);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">{{ $label }}</div>
@@ -67,7 +67,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
 {{-- Pending applications list --}}
 @if($pending->isEmpty())
 <div class="card card-p" style="text-align:center;padding:56px;">
-    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+    <i class="fas fa-inbox" style="font-size:48px;color:var(--muted);margin-bottom:16px;display:block;"></i>
     <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;">All caught up!</h3>
     <p style="color:rgba(21,40,31,.5);font-size:14px;">No pending tutor applications right now.</p>
 </div>
@@ -177,7 +177,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             
             @if($docCount === 0)
             <div style="font-size:12px;color:var(--muted);text-align:center;padding:8px;">
-                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> No documents uploaded yet
+                <i class="fas fa-folder-open"></i> No documents uploaded yet
             </div>
             @else
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -209,10 +209,10 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             </div>
             @else
             <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline" style="flex:1;font-size:13px;justify-content:center;text-decoration:none;">
-                <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subjects ({{ $profile->subjects->count() }})
+                <i class="fas fa-book-open"></i> Subjects ({{ $profile->subjects->count() }})
             </a>
             <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='block'" class="btn btn-outline" style="flex:1;font-size:13px;">
-                <span style="font-size:inherit;"><i class="fas fa-eye"></i></span> Review
+                <i class="fas fa-eye"></i> Review
             </button>
             @if($canApprove)
             <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmApproval{{ $profile->id }}(this, '{{ $profile->user->name }}')">
@@ -356,12 +356,12 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 {{-- Final Actions --}}
                 <div style="display:flex;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--hairline);flex-wrap:wrap;">
                     <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline" style="flex:1;justify-content:center;text-decoration:none;">
-                        <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Manage Subjects ({{ $profile->subjects->count() }})
+                        <i class="fas fa-book-open"></i> Manage Subjects ({{ $profile->subjects->count() }})
                     </a>
                     <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmSuspend{{ $profile->id }}(this)">
                         @csrf @method('PATCH')
                         <button type="submit" class="btn btn-danger" style="width:100%;">
-                            <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Suspend
+                            <i class="fas fa-ban"></i> Suspend
                         </button>
                     </form>
                     <script>
@@ -405,9 +405,9 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
     </div>
     <div style="display:flex;align-items:center;gap:4px;">
         @if($pending->onFirstPage())
-            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
+            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fas fa-chevron-left"></i></span>
         @else
-            <a href="{{ $pending->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
+            <a href="{{ $pending->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><i class="fas fa-chevron-left"></i></a>
         @endif
         @foreach($pending->getUrlRange(1, $pending->lastPage()) as $page => $url)
             @if($page == $pending->currentPage())
@@ -417,9 +417,9 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             @endif
         @endforeach
         @if($pending->hasMorePages())
-            <a href="{{ $pending->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
+            <a href="{{ $pending->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><i class="fas fa-chevron-right"></i></a>
         @else
-            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
+            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fas fa-chevron-right"></i></span>
         @endif
     </div>
 </div>

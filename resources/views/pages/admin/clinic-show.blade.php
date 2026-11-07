@@ -16,7 +16,7 @@
                     @endif
                 </h1>
                 <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--muted);">
-                    @if($clinic->subject)<span><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> {{ $clinic->subject->name }}</span>@endif
+                    @if($clinic->subject)<span><i class="fas fa-book-open"></i> {{ $clinic->subject->name }}</span>@endif
                     @if($clinic->paper_type)<span><i class="fas fa-file-alt"></i> {{ $clinic->paper_type }}</span>@endif
                     <span><i class="fas fa-calendar"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
                     <span><i class="fas fa-clock"></i> {{ $clinic->duration_minutes }} min</span>
@@ -39,7 +39,7 @@
                 <form method="POST" action="{{ route('admin.clinics.cancel', $clinic) }}" onsubmit="return confirm('Cancel this clinic?')">
                     @csrf
                     <button type="submit" style="display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;background:rgba(239,68,68,.1);color:#dc2626;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;">
-                        <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancel
+                        <i class="fas fa-ban"></i> Cancel
                     </button>
                 </form>
                 @endif
@@ -104,7 +104,7 @@
                                 @if($enrollment->attended)
                                 <span style="color:#10B981;"><i class="fas fa-check-circle"></i></span>
                                 @else
-                                <span style="color:rgba(21,40,31,.2);"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
+                                <span style="color:rgba(21,40,31,.2);"><i class="fas fa-minus"></i></span>
                                 @endif
                             </td>
                             <td style="padding:12px 16px;font-size:12px;color:var(--muted);">{{ $enrollment->created_at->format('M j, g:ia') }}</td>
