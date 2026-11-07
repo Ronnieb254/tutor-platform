@@ -15,7 +15,7 @@
 
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
- <span style="font-size:20px;">âœ…</span>
+ <span style="font-size:20px;">✅</span>
  <span style="color:#059669;font-weight:600;">{{ session('success') }}</span>
  </div>
  @endif

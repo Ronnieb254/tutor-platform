@@ -572,7 +572,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if($booking->status === 'completed' && $booking->delivery_status)
  @php
  $deliveryLabel = [
- 'fully_delivered' => ['#10B981','âœ… Fully Delivered'],
+ 'fully_delivered' => ['#10B981','✅ Fully Delivered'],
  'partially_delivered'=> ['#EEBE15','âš ï¸ Partially Delivered'],
  'not_delivered' => ['#E8522A','âŒ Not Delivered'],
  ][$booking->delivery_status] ?? ['#6b7280', $booking->delivery_status];
