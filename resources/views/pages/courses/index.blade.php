@@ -18,7 +18,7 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 <section style="background:var(--ink);padding:52px 0;position:relative;overflow:hidden;">
     <div style="position:absolute;bottom:-60px;right:-40px;width:260px;height:260px;background:rgba(10,100,188,.15);border-radius:50%;"></div>
     <div class="w" style="position:relative;z-index:1;">
-        <div class="badge badge-white" style="margin-bottom:16px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Pre-Recorded Courses</div>
+        <div class="badge badge-white" style="margin-bottom:16px;"><i class="fas fa-video"></i> Pre-Recorded Courses</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Learn at your own pace</h1>
         <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">Video courses from TSC-registered tutors and national examiners "- covering the full Kenyan curriculum.</p>
     </div>
@@ -27,7 +27,7 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 <div class="w" style="padding-top:48px;padding-bottom:64px;">
     @if($courses->isEmpty())
     <div class="card" style="padding:80px;text-align:center;">
-        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+        <i class="fas fa-video" style="font-size:48px;color:var(--muted);margin-bottom:16px;display:block;"></i>
         <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:10px;">Courses coming soon</h2>
         <p style="color:var(--muted);font-size:16px;margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;">Our tutors are preparing high-quality course content. In the meantime, book a live 1-on-1 session.</p>
         <a href="{{ route('tutors.index') }}" class="btn btn-v"><i class="fas fa-search"></i> Find a Tutor Instead</a>
@@ -57,7 +57,7 @@ $colors     = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                     <img src="{{ $course->tutor->avatar_url }}" style="width:20px;height:20px;border-radius:999px;object-fit:cover;">
                     <span>{{ $course->tutor->name }}</span>
                     <span>·</span>
-                    <span><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> {{ $course->total_lessons }} lessons</span>
+                    <span><i class="fas fa-hourglass-half"></i> {{ $course->total_lessons }} lessons</span>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;">
                     <span style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:{{ $course->is_free?'var(--mint)':'var(--trust-blue)' }};">

@@ -23,7 +23,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 <section style="background:var(--ink);padding:52px 0;position:relative;overflow:hidden;">
     <div style="position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:rgba(10,100,188,.15);border-radius:50%;"></div>
     <div class="w" style="position:relative;z-index:1;">
-        <div class="badge badge-white" style="margin-bottom:16px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Learning Resources</div>
+        <div class="badge badge-white" style="margin-bottom:16px;"><i class="fas fa-book-open"></i> Learning Resources</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Study tips & exam strategies</h1>
         <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">From Kenya's top tutors and national examiners "- practical guides to help you score higher.</p>
     </div>
@@ -82,7 +82,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
         {{-- SIDEBAR --}}
         <aside>
             <div class="card card-p" style="margin-bottom:16px;">
-                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:var(--ink);margin-bottom:14px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>Categories</h3>
+                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:var(--ink);margin-bottom:14px;"><i class="fas fa-tags"></i> Categories</h3>
                 @forelse($cats as $cat)
                 <a href="{{ route('blog.index') }}?category={{ $cat->id }}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px;color:var(--ink);transition:color .15s;" onmouseover="this.style.color='var(--trust-blue)'" onmouseout="this.style.color='var(--ink)'">
                     <span>{{ $cat->name }}</span>

@@ -24,7 +24,7 @@
                         <img src="{{ $course->tutor->avatar_url }}" style="width:20px;height:20px;border-radius:999px;object-fit:cover;">
                         {{ $course->tutor->name }}
                     </span>
-                    <span style="font-size:12px;color:var(--muted);"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> {{ $course->total_lessons }} lessons</span>
+                    <span style="font-size:12px;color:var(--muted);"><i class="fas fa-hourglass-half"></i> {{ $course->total_lessons }} lessons</span>
                 </div>
                 @if($course->description)
                 <p style="font-size:15px;color:var(--muted);line-height:1.8;">{{ $course->description }}</p>
@@ -69,7 +69,7 @@
                 <form method="POST" action="{{ route('courses.enroll', $course->slug) }}" style="margin-bottom:12px;">
                     @csrf
                     <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;padding:14px;font-size:15px;">
-                        <span class="$course->is_free ? 'play-circle' : 'credit-card' }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
+                        <i class="fas {{ $course->is_free ? 'fa-play-circle' : 'fa-credit-card' }}"></i>
                         {{ $course->is_free ? 'Enrol Free' : 'Enrol â‚¬" KSh '.number_format($course->price) }}
                     </button>
                 </form>
