@@ -184,18 +184,18 @@ $activeTab = request('tab','overview');
  <div class="sb-section">
  <div class="sb-label">Main</div>
  <button class="sb-item" :class="tab==='overview'?'active':''" @click="tab='overview';sidebarOpen=false">
- <i class="fas fa-chart-bar"></i>
+ <i class="fa-solid fa-chart-bar"></i>
  Overview
  </button>
  <button class="sb-item" :class="tab==='documents'?'active':''" @click="tab='documents';sidebarOpen=false">
- <i class="fas fa-file-alt"></i>
+ <i class="fa-solid fa-file-alt"></i>
  My Documents
  @if($verificationStatus === 'action_required')
  <span class="sb-badge">!</span>
  @endif
  </button>
  <a href="{{ route('tutor.subjects') }}" class="sb-item">
- <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span>
  My Subjects
  @if($needsSubjectsBadge)<span class="sb-badge">!</span>@endif
  </a>
@@ -205,20 +205,20 @@ $activeTab = request('tab','overview');
  <div class="sb-section">
  <div class="sb-label">Sessions</div>
  <button class="sb-item" :class="tab==='bookings'?'active':''" @click="tab='bookings';sidebarOpen=false">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  Bookings
  @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
  </button>
  <button class="sb-item" :class="tab==='history'?'active':''" @click="tab='history';sidebarOpen=false">
- <i class="fas fa-clock"></i>
+ <i class="fa-solid fa-clock"></i>
  Session History
  </button>
  <button class="sb-item" :class="tab==='chats'?'active':''" @click="tab='chats';sidebarOpen=false">
- <i class="fas fa-comments"></i>
+ <i class="fa-solid fa-comments"></i>
  Messages
  </button>
  <button class="sb-item" :class="tab==='availability'?'active':''" @click="tab='availability';sidebarOpen=false">
- <i class="fas fa-calendar"></i>
+ <i class="fa-solid fa-calendar"></i>
  Availability
  </button>
  </div>
@@ -226,11 +226,11 @@ $activeTab = request('tab','overview');
  <div class="sb-section">
  <div class="sb-label">Finance</div>
  <button class="sb-item" :class="tab==='earnings'?'active':''" @click="tab='earnings';sidebarOpen=false">
- <span style="font-size:inherit;"><i class="fas fa-wallet"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-wallet"></i></span>
  Earnings & Wallet
  </button>
  <button class="sb-item" :class="tab==='payouts'?'active':''" @click="tab='payouts';sidebarOpen=false">
- <span style="font-size:inherit;"><i class="fas fa-money-bill"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-money-bill"></i></span>
  Payout Requests
  </button>
  </div>
@@ -239,16 +239,16 @@ $activeTab = request('tab','overview');
  <div class="sb-section">
  <div class="sb-label">Account</div>
  <button class="sb-item" :class="tab==='notifications'?'active':''" @click="tab='notifications';sidebarOpen=false">
- <i class="fas fa-bell"></i>
+ <i class="fa-solid fa-bell"></i>
  Notifications
  @if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif
  </button>
  <button class="sb-item" :class="tab==='profile'?'active':''" @click="tab='profile';sidebarOpen=false">
- <i class="fas fa-circle-info"></i>
+ <i class="fa-solid fa-circle-info"></i>
  My Profile
  </button>
  <a href="{{ route('home') }}" class="sb-item">
- <i class="fas fa-globe"></i>
+ <i class="fa-solid fa-globe"></i>
  View Public Site
  </a>
  </div>
@@ -261,7 +261,7 @@ $activeTab = request('tab','overview');
  <div class="sb-uname">{{ $user->name }}</div>
  <div class="sb-urole">
  @if($isApproved)
- <span style="color:var(--mint);"><i class="fas fa-check-circle"></i>Verified Tutor</span>
+ <span style="color:var(--mint);"><i class="fa-solid fa-check-circle"></i>Verified Tutor</span>
  @else
  <span style="color:rgba(255,255,255,.35);">Pending Verification</span>
  @endif
@@ -270,7 +270,7 @@ $activeTab = request('tab','overview');
  <form method="POST" action="{{ route('logout') }}">
  @csrf
  <button type="submit" class="sb-logout" title="Sign out">
- <i class="fas fa-sign-out-alt"></i>
+ <i class="fa-solid fa-sign-out-alt"></i>
  </button>
  </form>
  </div>
@@ -283,7 +283,7 @@ $activeTab = request('tab','overview');
  <header class="topbar">
  <div class="topbar-left">
  <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen">
- <span style="font-size:inherit;"><i class="fas fa-bars"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-bars"></i></span>
  </button>
  <div class="page-title" x-text="{
  overview:'Dashboard Overview',documents:'My Documents',bookings:'Bookings',history:'Session History',
@@ -293,7 +293,7 @@ $activeTab = request('tab','overview');
  </div>
  <div class="topbar-right">
  <button class="tb-btn" @click="tab='notifications'" title="Notifications">
- <i class="fas fa-bell"></i>
+ <i class="fa-solid fa-bell"></i>
  @if($unreadNotifs > 0)<span class="notif-dot"></span>@endif
  </button>
  <div style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;border:1.5px solid var(--hair);">
@@ -307,7 +307,7 @@ $activeTab = request('tab','overview');
  <div class="content">
  @if(session('success'))
  <div class="flash flash-ok">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  {{ session('success') }}
  </div>
  @endif
@@ -335,11 +335,11 @@ $activeTab = request('tab','overview');
  <div class="status-banner {{ $verificationStatus==='action_required' ? 'status-rejected' : ($verificationStatus==='under_review' ? 'status-pending' : 'status-pending') }}">
  <div style="font-size:28px;flex-shrink:0;">
  @if($verificationStatus==='action_required')
- <div style="font-size:22px;flex-shrink:0;"><i class="fas fa-exclamation-triangle"></i></div>
+ <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-exclamation-triangle"></i></div>
  @elseif($verificationStatus==='under_review')
- <div style="font-size:22px;flex-shrink:0;"><i class="fas fa-clock"></i></div>
+ <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-clock"></i></div>
  @else
- <div style="font-size:22px;flex-shrink:0;"><i class="fas fa-file-alt"></i></div>
+ <div style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-file-alt"></i></div>
  @endif
  </div>
  <div>
@@ -364,7 +364,7 @@ $activeTab = request('tab','overview');
  </div>
  @else
  <div class="status-banner status-approved" style="margin-bottom:20px;">
- <div style="font-size:24px;flex-shrink:0;"><i class="fas fa-check-circle"></i></div>
+ <div style="font-size:24px;flex-shrink:0;"><i class="fa-solid fa-check-circle"></i></div>
  <div>
  <div style="font-weight:700;font-size:15px;color:#166534;">Your profile is live!</div>
  <div style="font-size:13px;color:#4ADE80;margin-top:2px;">Students can find and book sessions with you. {{ $pendingBookings > 0 ? "You have $pendingBookings pending booking(s)." : '' }}</div>
@@ -376,7 +376,7 @@ $activeTab = request('tab','overview');
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
  <div class="stat">
  <div class="stat-icon" style="background:rgba(10,100,188,.1);">
- <span style="font-size:inherit;"><i class="fas fa-wallet"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-wallet"></i></span>
  </div>
  <div class="stat-lbl">Wallet Balance</div>
  <div class="stat-val">KSh {{ number_format($wallet?->balance ?? 0) }}</div>
@@ -384,7 +384,7 @@ $activeTab = request('tab','overview');
  </div>
  <div class="stat">
  <div class="stat-icon" style="background:rgba(16,185,129,.1);">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  </div>
  <div class="stat-lbl">Upcoming Sessions</div>
  <div class="stat-val">{{ $upcoming->count() }}</div>
@@ -392,7 +392,7 @@ $activeTab = request('tab','overview');
  </div>
  <div class="stat">
  <div class="stat-icon" style="background:rgba(232,82,42,.1);">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  </div>
  <div class="stat-lbl">Completed Sessions</div>
  <div class="stat-val">{{ $completedCount }}</div>
@@ -513,7 +513,7 @@ $activeTab = request('tab','overview');
  @if($b->status === 'confirmed')
  <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm"><span style="font-size:inherit;">→</span> {{$b->canJoin() ? 'Join Session' : 'Open Session'}}</a>
  @else
- <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm"><span style="font-size:inherit;"><i class="fas fa-eye"></i></span> View</a>
+ <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm"><span style="font-size:inherit;"><i class="fa-solid fa-eye"></i></span> View</a>
  @endif
  </div>
  @endforeach
@@ -559,7 +559,7 @@ $activeTab = request('tab','overview');
  @if($b->status === 'confirmed')
  <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint btn-sm"><span style="font-size:inherit;">→</span> {{ $b->canJoin() ? 'Join' : 'Open' }}</a>
  @else
- <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm"><span style="font-size:inherit;"><i class="fas fa-eye"></i></span> View</a>
+ <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm"><span style="font-size:inherit;"><i class="fa-solid fa-eye"></i></span> View</a>
  @endif
  </td>
  </tr>
@@ -567,7 +567,7 @@ $activeTab = request('tab','overview');
 <tr>
  <td colspan="8">
  <div style="padding:48px 20px;text-align:center;">
- <i class="fas fa-times-circle"></i>
+ <i class="fa-solid fa-times-circle"></i>
  <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;">No sessions yet</div>
  <div style="font-size:13px;color:var(--muted);">Your bookings will appear here once students schedule sessions with you</div>
  </div>
@@ -747,7 +747,7 @@ $activeTab = request('tab','overview');
 <tr>
  <td colspan="6">
  <div style="padding:48px 20px;text-align:center;">
- <i class="fas fa-inbox"></i>
+ <i class="fa-solid fa-inbox"></i>
  <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;">No transactions yet</div>
  <div style="font-size:13px;color:var(--muted);">Your earnings will appear here once students complete payments</div>
  </div>
@@ -846,7 +846,7 @@ $activeTab = request('tab','overview');
  $icons = ['new_booking'=>['fa-calendar','rgba(10,100,188,.1)','#0A64BC'],'booking_confirmed'=>['fa-circle-check','rgba(16,185,129,.1)','#10B981'],'booking_cancelled'=>['fa-circle-xmark','rgba(232,82,42,.1)','#E8522A'],'payout_processed'=>['fa-money-bill-wave','rgba(212,160,23,.1)','#D4A017']];
  [$notifIcon,$notifBg,$notifColor] = $icons[$data['type'] ?? ''] ?? ['fa-bell','rgba(21,40,31,.05)','#15281F'];
  @endphp
- <div style="width:44px;height:44px;border-radius:12px;background:{{ $notifBg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas {{ $notifIcon }}"></i></div>
+ <div style="width:44px;height:44px;border-radius:12px;background:{{ $notifBg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fa-solid {{ $notifIcon }}"></i></div>
  <div style="flex:1;min-width:0;">
  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
  <div>
@@ -858,7 +858,7 @@ $activeTab = request('tab','overview');
  </div>
  @endif
  @if(!empty($data['scheduled_at']))
- <div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fas fa-calendar"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
+ <div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-calendar"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
  @endif
  </div>
  <div style="text-align:right;flex-shrink:0;">
@@ -873,7 +873,7 @@ $activeTab = request('tab','overview');
  </div>
  @empty
  <div style="padding:64px;text-align:center;">
- <div style="font-size:44px;margin-bottom:12px;"><i class="fas fa-bell"></i></div>
+ <div style="font-size:44px;margin-bottom:12px;"><i class="fa-solid fa-bell"></i></div>
  <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;">No notifications yet</div>
  <div style="font-size:14px;color:var(--muted);">You'll be notified here when students book sessions with you</div>
  </div>
@@ -923,7 +923,7 @@ $activeTab = request('tab','overview');
  </div>
  <div style="display:flex;justify-content:flex-end;">
  <button type="submit" class="btn btn-v" style="padding:12px 32px;font-size:15px;">
- <i class="fas fa-circle-info"></i>
+ <i class="fa-solid fa-circle-info"></i>
  Save Availability
  </button>
  </div>
@@ -985,7 +985,7 @@ $activeTab = request('tab','overview');
  </div>
  <label style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:var(--trust-blue);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s;"
  onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
- <i class="fas fa-upload"></i> Upload New Photo
+ <i class="fa-solid fa-upload"></i> Upload New Photo
  <input type="file" name="document" accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="this.closest('form').submit()">
  </label>
  </form>
@@ -1015,7 +1015,7 @@ $activeTab = request('tab','overview');
  onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
  </div>
  <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;">
- <i class="fas fa-floppy-disk"></i> Save Teaching Profile
+ <i class="fa-solid fa-floppy-disk"></i> Save Teaching Profile
  </button>
  </form>
  </div>

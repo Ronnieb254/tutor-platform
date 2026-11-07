@@ -137,11 +137,11 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
  {{-- Previous --}}
  @if($users->onFirstPage())
  <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;">
- <i class="fas fa-chevron-left"></i>
+ <i class="fa-solid fa-chevron-left"></i>
  </span>
  @else
  <a href="{{ $users->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">
- <i class="fas fa-chevron-left"></i>
+ <i class="fa-solid fa-chevron-left"></i>
  </a>
  @endif
 
@@ -169,11 +169,11 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
  {{-- Next --}}
  @if($users->hasMorePages())
  <a href="{{ $users->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">
- <i class="fas fa-chevron-right"></i>
+ <i class="fa-solid fa-chevron-right"></i>
  </a>
  @else
  <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;">
- <i class="fas fa-chevron-right"></i>
+ <i class="fa-solid fa-chevron-right"></i>
  </span>
  @endif
  </div>

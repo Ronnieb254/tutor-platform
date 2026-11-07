@@ -31,7 +31,7 @@ $sessionTiers = [
  {{-- Duration selector --}}
  <div>
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;">
- <i class="fas fa-clock"></i> Choose Session Type
+ <i class="fa-solid fa-clock"></i> Choose Session Type
  </p>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
  @foreach($sessionTiers as $mins => $tier)
@@ -52,14 +52,14 @@ $sessionTiers = [
  </label>
  @endforeach
  </div>
- @error('duration')<p style="font-size:12px;color:var(--coral);margin-top:4px;"><i class="fas fa-exclamation-triangle"></i> {{ $message }}</p>@enderror
+ @error('duration')<p style="font-size:12px;color:var(--coral);margin-top:4px;"><i class="fa-solid fa-exclamation-triangle"></i> {{ $message }}</p>@enderror
  </div>
 
  {{-- Date + Time --}}
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
  <div>
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
- <i class="fas fa-calendar"></i> Date
+ <i class="fa-solid fa-calendar"></i> Date
  </p>
  <input type="date" wire:model="scheduledDate"
  id="bw-date"
@@ -71,7 +71,7 @@ $sessionTiers = [
  </div>
  <div>
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
- <i class="fas fa-clock"></i> Time
+ <i class="fa-solid fa-clock"></i> Time
  </p>
  <input type="time" wire:model="scheduledTime"
  id="bw-time"
@@ -115,7 +115,7 @@ $sessionTiers = [
  @if($subjects->isNotEmpty())
  <div>
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
- <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subject <span style="font-weight:400;text-transform:none;">(optional)</span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span> Subject <span style="font-weight:400;text-transform:none;">(optional)</span>
  </p>
  <select wire:model="subjectId"
  style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
@@ -131,7 +131,7 @@ $sessionTiers = [
  {{-- Notes --}}
  <div>
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;">
- <i class="fas fa-sticky-note"></i> Notes for tutor <span style="color:var(--coral);">*</span>
+ <i class="fa-solid fa-sticky-note"></i> Notes for tutor <span style="color:var(--coral);">*</span>
  </p>
  <textarea wire:model="notes" rows="2"
  placeholder="Topics to cover, past exam areas, specific questions…"
@@ -181,7 +181,7 @@ $sessionTiers = [
  {{-- Code notice --}}
  <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:14px 16px;">
  <p style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-bottom:4px;">
- <span style="font-size:inherit;"><i class="fas fa-key"></i></span> After payment
+ <span style="font-size:inherit;"><i class="fa-solid fa-key"></i></span> After payment
  </p>
  <p style="font-size:12px;color:var(--muted);line-height:1.65;">You'll receive a unique <strong style="color:var(--ink);">STU-XXXXXX</strong> session access code by email and SMS. Use it to enter your live class on session day.</p>
  </div>
@@ -189,7 +189,7 @@ $sessionTiers = [
  {{-- M-Pesa phone number input --}}
  <div>
  <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
- <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-mobile-alt"></i></span>
  M-Pesa Phone Number
  </label>
  <input type="tel"
@@ -209,7 +209,7 @@ $sessionTiers = [
  {{-- STK sent banner (shown by JS once push is dispatched) --}}
  <div id="stkBanner" style="display:none;background:rgba(16,185,129,.08);border:1.5px solid var(--mint);border-radius:14px;padding:14px 16px;text-align:center;">
  <p style="font-size:14px;font-weight:700;color:#059669;margin-bottom:4px;">
- <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span> Check your phone!
+ <span style="font-size:inherit;"><i class="fa-solid fa-mobile-alt"></i></span> Check your phone!
  </p>
  <p id="stkBannerMsg" style="font-size:13px;color:var(--muted);">
  Enter your M-Pesa PIN to complete payment.
@@ -231,16 +231,16 @@ $sessionTiers = [
  style="flex:2;height:48px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;"
  onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='var(--trust-blue)'">
  <span wire:loading.remove wire:target="initPayment">
- <i class="fas fa-credit-card"></i>
+ <i class="fa-solid fa-credit-card"></i>
  Pay KSh {{ $tier['price'] }}
  </span>
  <span wire:loading wire:target="initPayment" style="display:flex;align-items:center;gap:6px;">
- <span style="font-size:inherit;"><i class="fas fa-hourglass-half"></i></span> Processing…
+ <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing…
  </span>
  </button>
  </div>
  <p style="font-size:11px;text-align:center;color:var(--muted);">
- <i class="fas fa-lock"></i>
+ <i class="fa-solid fa-lock"></i>
  Secured by M-Pesa · Lipa Na M-Pesa STK Push
  </p>
  </div>
@@ -250,7 +250,7 @@ $sessionTiers = [
  @if($step === 3 && $bookingConfirmed)
  <div style="text-align:center;padding:8px 0;">
  <div style="width:64px;height:64px;border-radius:999px;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  </div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:8px;">Booking Confirmed!</h3>
  <p style="font-size:14px;color:var(--muted);margin-bottom:22px;">Check your email and SMS for full session details.</p>
@@ -258,7 +258,7 @@ $sessionTiers = [
  {{-- Session code --}}
  <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.25);border-radius:18px;padding:20px;margin-bottom:18px;">
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">
- <span style="font-size:inherit;"><i class="fas fa-key"></i></span> Your Session Access Code
+ <span style="font-size:inherit;"><i class="fa-solid fa-key"></i></span> Your Session Access Code
  </p>
  <p style="font-family:monospace;font-size:32px;font-weight:800;color:var(--trust-blue);letter-spacing:.12em;line-height:1;">{{ $studentCode }}</p>
  <p style="font-size:12px;color:var(--muted);margin-top:8px;">Enter this code to join your live session on the day</p>
@@ -266,7 +266,7 @@ $sessionTiers = [
 
  <a href="{{ route('bookings.show', $bookingUuid) }}"
  style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;border-radius:999px;background:var(--trust-blue);color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
- <i class="fas fa-check-circle"></i> View Booking Details
+ <i class="fa-solid fa-check-circle"></i> View Booking Details
  </a>
  </div>
  @endif

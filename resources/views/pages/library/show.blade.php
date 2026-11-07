@@ -93,14 +93,14 @@ a{color:inherit;text-decoration:none;}
 
  {{-- Hero banner --}}
  @php
- $typeIcons = ['article'=>'<i class="fas fa-book"></i>','pdf'=>'<i class="fas fa-file-pdf"></i>','video'=>'<i class="fas fa-video"></i>','notes'=>'<i class="fas fa-sticky-note"></i>','past_paper'=>'<i class="fas fa-file-lines"></i>'];
+ $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','pdf'=>'<i class="fa-solid fa-file-pdf"></i>','video'=>'<i class="fa-solid fa-video"></i>','notes'=>'<i class="fa-solid fa-sticky-note"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>'];
  $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
  $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
  $bgColors = ['article'=>'rgba(37,99,235,.15)','pdf'=>'rgba(220,38,38,.15)','video'=>'rgba(124,58,237,.15)','notes'=>'rgba(217,119,6,.15)','past_paper'=>'rgba(22,163,74,.15)'];
  @endphp
  <div class="resource-hero">
  <div class="resource-hero-icon" style="background:{{ $bgColors[$resource->resource_type] ?? 'rgba(10,100,188,.15)' }};">
- {{ $typeIcons[$resource->resource_type] ?? '<i class="fas fa-book"></i>' }}
+ {{ $typeIcons[$resource->resource_type] ?? '<i class="fa-solid fa-book"></i>' }}
  </div>
  <div>
  <h1>{{ $resource->title }}</h1>
@@ -155,7 +155,7 @@ a{color:inherit;text-decoration:none;}
  <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:16px;">Related Resources</h3>
  @foreach($related as $r)
  <a href="{{ route('library.show', $r->slug) }}" class="related-card" style="display:flex;">
- <div class="related-icon">{{ $typeIcons[$r->resource_type] ?? '<i class="fas fa-book"></i>' }}</div>
+ <div class="related-icon">{{ $typeIcons[$r->resource_type] ?? '<i class="fa-solid fa-book"></i>' }}</div>
  <div>
  <div class="related-title">{{ $r->title }}</div>
  <div class="related-meta">
@@ -175,7 +175,7 @@ a{color:inherit;text-decoration:none;}
  @if($resource->file_path)
  <div class="download-card">
  <h3>
- {{ $resource->resource_type === 'video' ? '<i class=\'fas fa-video\'></i> Watch Video' : '<i class=\'fas fa-download\'></i> Download ' . ($typeLabels[$resource->resource_type] ?? 'File') }}
+ {{ $resource->resource_type === 'video' ? '<i class=\'fa-solid fa-video\'></i> Watch Video' : '<i class=\'fa-solid fa-download\'></i> Download ' . ($typeLabels[$resource->resource_type] ?? 'File') }}
  </h3>
  <p>
  @if($resource->file_size)
@@ -240,7 +240,7 @@ a{color:inherit;text-decoration:none;}
 
  {{-- CTA --}}
  <div class="card card-p" style="text-align:center;background:linear-gradient(135deg,rgba(10,100,188,.05) 0%,rgba(10,100,188,.1) 100%);border-color:rgba(10,100,188,.2);">
- <div style="font-size:32px;margin-bottom:10px;"><i class="fas fa-graduation-cap"></i></div>
+ <div style="font-size:32px;margin-bottom:10px;"><i class="fa-solid fa-graduation-cap"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px;">Need a tutor?</h3>
  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Find verified tutors who can help you master this subject.</p>
  <a href="{{ route('tutors.index') }}" class="btn btn-v" style="width:100%;justify-content:center;">

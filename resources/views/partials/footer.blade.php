@@ -20,7 +20,7 @@
  ['fa-rotate-left','100% Money-Back Guarantee','#10B981'],
  ] as [$ic,$label,$color])
  <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);">
- <i class="fas {{ $ic }}"></i>
+ <i class="fa-solid {{ $ic }}"></i>
  {{ $label }}
  </div>
  @endforeach
@@ -34,7 +34,7 @@
  ['fa-location-dot','Suite 11, Samima Suites, Nairobi West',null],
  ] as [$ic,$text,$href])
  <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,.5);">
- <i class="fas {{ $ic }}"></i>
+ <i class="fa-solid {{ $ic }}"></i>
  @if($href)
  <a href="{{ $href }}" style="color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">{{ $text }}</a>
  @else
@@ -57,13 +57,13 @@
  ['fa-envelope', 'Contact Us', route('contact')],
  ] as [$ic,$label,$url])
  <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
- <i class="fas {{ $ic }}"></i>
+ <i class="fa-solid {{ $ic }}"></i>
  {{ $label }}
  </a>
  @endforeach
  @auth
  <a href="{{ route('dashboard') }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
- <i class="fas fa-chart-bar"></i>
+ <i class="fa-solid fa-chart-bar"></i>
  Dashboard
  </a>
  @endauth
@@ -85,7 +85,7 @@
  @continue
  @endif
  <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
- <i class="fas {{ $ic }}"></i>
+ <i class="fa-solid {{ $ic }}"></i>
  {{ $label }}
  </a>
  @endforeach
@@ -102,7 +102,7 @@
  ['fa-cookie-bite', 'Cookie Policy', route('cookie-policy')],
  ] as [$ic,$label,$url])
  <a href="{{ $url }}" {{ str_starts_with($url,'http') ? 'target="_blank"' : '' }} style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
- <i class="fas {{ $ic }}"></i>
+ <i class="fa-solid {{ $ic }}"></i>
  {{ $label }}
  </a>
  @endforeach
@@ -135,9 +135,9 @@
  <span style="font-size:11px;color:rgba(255,255,255,.35);">by <a href="https://ovaldesk.co.ke" target="_blank" style="color:rgba(255,255,255,.45);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">OvalDesk Ventures</a></span>
  </a>
  <div style="display:flex;align-items:center;gap:14px;">
- <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fas fa-scroll"></i> TSC Verified</span>
- <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fas fa-lock"></i> Secure</span>
- <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fas fa-shield-alt"></i> Verified</span>
+ <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-scroll"></i> TSC Verified</span>
+ <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-lock"></i> Secure</span>
+ <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-shield-alt"></i> Verified</span>
  </div>
  </div>
  </div>
@@ -149,7 +149,7 @@
  <div style="background:#FFFDF5;border:2px solid #15281F;border-radius:22px;padding:18px 20px;box-shadow:0 16px 48px rgba(21,40,31,.2);">
  <div style="display:flex;gap:12px;align-items:flex-start;">
  <div style="width:38px;height:38px;border-radius:11px;background:rgba(212,160,23,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
- <i class="fas fa-cookie-bite"></i>
+ <i class="fa-solid fa-cookie-bite"></i>
  </div>
  <div style="flex:1;">
  <p style="font-weight:700;font-size:14px;color:#15281F;margin-bottom:3px;">We value your privacy</p>
@@ -165,7 +165,7 @@
  <button @click="localStorage.setItem('mw_cookie','all');show=false"
  style="padding:9px 20px;border-radius:999px;font-size:13px;font-weight:700;background:#0A64BC;color:#fff;border:1.5px solid #15281F;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all .18s;"
  onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
- <i class="fas fa-check-circle"></i> Accept All
+ <i class="fa-solid fa-check-circle"></i> Accept All
  </button>
  </div>
  </div>

@@ -126,7 +126,7 @@
  <div class="card" style="padding:20px;margin-top:12px;">
  <h4 style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;">Session Lifecycle</h4>
  <div style="font-size:12px;color:var(--muted);line-height:1.8;">
- <p><i class="fas fa-calendar"></i> <strong>Scheduled</strong> " ' students can enroll</p>
+ <p><i class="fa-solid fa-calendar"></i> <strong>Scheduled</strong> " ' students can enroll</p>
  <p>-Â¶Ã¯Â¸Â <strong>In Progress</strong> " ' session live (Start it from Show page)</p>
  <p>Å-… <strong>Completed</strong> " ' session ended</p>
  <p>ÂÅ’ <strong>Cancelled</strong> " ' session called off</p>

@@ -15,14 +15,14 @@
 
  @if(session('success'))
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
- <span style="font-size:20px;"><i class="fas fa-check-circle"></i></span>
+ <span style="font-size:20px;"><i class="fa-solid fa-check-circle"></i></span>
  <span style="color:#059669;font-weight:600;">{{ session('success') }}</span>
  </div>
  @endif
 
  @if(session('error'))
  <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
- <span style="font-size:20px;"><i class="fas fa-times-circle"></i></span>
+ <span style="font-size:20px;"><i class="fa-solid fa-times-circle"></i></span>
  <span style="color:#dc2626;font-weight:600;">{{ session('error') }}</span>
  </div>
  @endif
@@ -56,11 +56,11 @@
  </div>
  <div style="display:flex;gap:8px;">
  <button type="submit" class="btn btn-v" style="height:42px;">
- <i class="fas fa-search"></i> Search
+ <i class="fa-solid fa-search"></i> Search
  </button>
  @if(request()->hasAny(['search', 'category_id', 'status']))
  <a href="{{ route('admin.subjects') }}" class="btn btn-o" style="height:42px;">
- <i class="fas fa-times-circle"></i> Clear
+ <i class="fa-solid fa-times-circle"></i> Clear
  </a>
  @endif
  </div>
@@ -134,9 +134,9 @@
  <div style="display:flex;align-items:center;gap:4px;">
  {{-- Previous --}}
  @if($subjects->onFirstPage())
- <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fas fa-chevron-left"></i></span>
+ <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fa-solid fa-chevron-left"></i></span>
  @else
- <a href="{{ $subjects->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fas fa-chevron-left"></i></a>
+ <a href="{{ $subjects->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fa-solid fa-chevron-left"></i></a>
  @endif
 
  {{-- Page window: always show first, last, current ±2, with ellipsis --}}
@@ -163,9 +163,9 @@
 
  {{-- Next --}}
  @if($subjects->hasMorePages())
- <a href="{{ $subjects->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fas fa-chevron-right"></i></a>
+ <a href="{{ $subjects->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hair)'"><i class="fa-solid fa-chevron-right"></i></a>
  @else
- <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fas fa-chevron-right"></i></span>
+ <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hair);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fa-solid fa-chevron-right"></i></span>
  @endif
  </div>
  </div>

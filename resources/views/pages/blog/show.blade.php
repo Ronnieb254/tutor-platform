@@ -48,7 +48,7 @@
  <div style="display:flex;gap:8px;">
  <span style="font-size:13px;color:var(--muted);">Share:</span>
  <button onclick="navigator.share?navigator.share({title:'{{ addslashes($post->title) }}',url:window.location.href}):navigator.clipboard.writeText(window.location.href)" class="btn btn-sm btn-o">
- <i class="fas fa-upload"></i> Share
+ <i class="fa-solid fa-upload"></i> Share
  </button>
  </div>
  </div>
@@ -57,7 +57,7 @@
  <aside>
  @if($related->isNotEmpty())
  <div class="card card-p" style="margin-bottom:16px;">
- <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>Related Articles</h3>
+ <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span>Related Articles</h3>
  @foreach($related as $r)
  <a href="{{ route('blog.show', $r->slug) }}" style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);transition:opacity .15s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
  <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">ðŸ-</div>
@@ -74,7 +74,7 @@
  <div class="card card-p" style="background:var(--ink);border-color:var(--ink);">
  <h3 style="font-family:'Fraunces',serif;font-size:16px;color:#fff;margin-bottom:8px;">Need 1-on-1 help?</h3>
  <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.65;margin-bottom:14px;">Book a session with a TSC-registered tutor from KSh 300.</p>
- <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm" style="width:100%;justify-content:center;"><i class="fas fa-search"></i> Find a Tutor</a>
+ <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm" style="width:100%;justify-content:center;"><i class="fa-solid fa-search"></i> Find a Tutor</a>
  </div>
  @endif
  </aside>

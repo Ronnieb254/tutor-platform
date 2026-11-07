@@ -16,7 +16,7 @@
  <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="hero-g">
  <div>
  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.3);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:22px;">
- <i class="fas fa-user"></i> Live Cohorts
+ <i class="fa-solid fa-user"></i> Live Cohorts
  </div>
  <h1 style="font-family:'Fraunces',serif;font-size:clamp(34px,5vw,58px);color:#fff;margin-bottom:16px;line-height:1.1;">
  Learn together, <span style="color:#EEBE15;">pay less.</span>
@@ -26,16 +26,16 @@
  </p>
  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
  <a href="#sessions" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
- <i class="fas fa-check-circle"></i> Browse Sessions
+ <i class="fa-solid fa-check-circle"></i> Browse Sessions
  </a>
  @auth
  <a href="{{ route('group-sessions.my-sessions') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
- <i class="fas fa-list"></i> My Sessions
+ <i class="fa-solid fa-list"></i> My Sessions
  </a>
  @else
  @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
  <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
- <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span> Host a Class
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Host a Class
  </a>
  @endif
  @endauth
@@ -44,7 +44,7 @@
  @foreach([['fa-users','Small groups','Up to 30 learners'],['fa-clock','60 minutes','Per session'],['fa-video','Live on Jitsi','HD video class'],['fa-arrow-rotate-left','Series ok','Multi-week cohorts']] as [$ic,$val,$lbl])
  <div style="display:flex;align-items:center;gap:8px;">
  <div style="width:34px;height:34px;background:rgba(212,160,23,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
- <i class="fas {{ $ic }}"></i>
+ <i class="fa-solid {{ $ic }}"></i>
  </div>
  <div>
  <div style="font-size:14px;font-weight:700;color:#fff;">{{ $val }}</div>
@@ -58,7 +58,7 @@
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">How group sessions work</p>
  @foreach(['Browse upcoming live classes by subject/topic','Book your seat â‚¬" pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
  </div>
  @endforeach
@@ -84,7 +84,7 @@
 
  @if($sessions->isEmpty())
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:64px;text-align:center;">
- <div style="font-size:48px;margin-bottom:14px;"><i class="fas fa-times-circle"></i></div>
+ <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-times-circle"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">No group sessions scheduled</h3>
  <p style="color:rgba(21,40,31,.55);margin-bottom:20px;">No sessions match your filters. Try adjusting your search or check back soon.</p>
  <a href="{{ route('group-sessions.index') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><span style="font-size:inherit;">←</span> Clear Filters</a>
@@ -104,13 +104,13 @@
  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
  <div style="display:flex;align-items:center;gap:7px;">
  @if($session->subject)
- <span style="background:rgba(21,40,31,.06);color:#15281F;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>{{ $session->subject->name }}</span>
+ <span style="background:rgba(21,40,31,.06);color:#15281F;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span>{{ $session->subject->name }}</span>
  @endif
  @if($isSeries)
- <span style="background:rgba(212,160,23,.12);color:#EEBE15;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fas fa-layer-group"></i>Session {{ $session->session_number }}/{{ $session->total_sessions }}</span>
+ <span style="background:rgba(212,160,23,.12);color:#EEBE15;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-layer-group"></i>Session {{ $session->session_number }}/{{ $session->total_sessions }}</span>
  @endif
  @if(\Schema::hasColumn('examiner_clinics','curriculum_id') && $session->curriculum_id)
- <span style="background:rgba(10,100,188,.08);color:#0A64BC;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fas fa-graduation-cap"></i>{{ optional($session->curriculum)->name }}</span>
+ <span style="background:rgba(10,100,188,.08);color:#0A64BC;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;"><i class="fa-solid fa-graduation-cap"></i>{{ optional($session->curriculum)->name }}</span>
  @endif
  </div>
  <span style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#EEBE15;">KSh {{ number_format($session->price) }}</span>
@@ -123,25 +123,25 @@
  </h3>
  @if($session->tutor)
  <p style="font-size:13px;color:rgba(21,40,31,.55);display:flex;align-items:center;gap:6px;">
- <i class="fas fa-user"></i> with {{ $session->tutor->name }}
+ <i class="fa-solid fa-user"></i> with {{ $session->tutor->name }}
  </p>
  @endif
  </div>
 
  {{-- Meta --}}
  <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:rgba(21,40,31,.55);">
- <span><i class="fas fa-calendar"></i>{{ $session->scheduled_at->format('D, M j · g:ia') }}</span>
- <span><i class="fas fa-clock"></i>{{ $session->duration_minutes }}m</span>
+ <span><i class="fa-solid fa-calendar"></i>{{ $session->scheduled_at->format('D, M j · g:ia') }}</span>
+ <span><i class="fa-solid fa-clock"></i>{{ $session->duration_minutes }}m</span>
  </div>
 
  {{-- Capacity bar --}}
  <div>
  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
  <span style="font-size:12px;color:{{ $isFull ? '#991B1B' : '#10B981' }};font-weight:600;">
- <i class="fas fa-user"></i>{{ $enrolledCount }}/{{ $maxStudents }} enrolled
+ <i class="fa-solid fa-user"></i>{{ $enrolledCount }}/{{ $maxStudents }} enrolled
  </span>
  @if($isFull)
- <span style="font-size:11px;font-weight:700;color:#991B1B;"><i class="fas fa-lock"></i> FULL</span>
+ <span style="font-size:11px;font-weight:700;color:#991B1B;"><i class="fa-solid fa-lock"></i> FULL</span>
  @elseif($fillPct > 70)
  <span style="font-size:11px;font-weight:700;color:#EEBE15;">Almost full</span>
  @endif
@@ -156,23 +156,23 @@
  @auth
  @if($session->isEnrolledBy(auth()->user()))
  <a href="{{ route('group-sessions.show', $session) }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:rgba(16,185,129,.1);color:#10B981;border:1px solid rgba(16,185,129,.3);font-size:13px;font-weight:600;text-decoration:none;">
- <i class="fas fa-check-circle"></i> Enrolled â‚¬" View
+ <i class="fa-solid fa-check-circle"></i> Enrolled â‚¬" View
  </a>
  @elseif($isFull)
  <span style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:999px;background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;font-size:13px;font-weight:600;">
- <i class="fas fa-lock"></i> Session Full
+ <i class="fa-solid fa-lock"></i> Session Full
  </span>
  @else
  <form method="POST" action="{{ route('group-sessions.enroll', $session) }}" style="flex:1;">
  @csrf
  <button type="submit" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
- <i class="fas fa-ticket"></i> Book Seat â‚¬" KSh {{ number_format($session->price) }}
+ <i class="fa-solid fa-ticket"></i> Book Seat â‚¬" KSh {{ number_format($session->price) }}
  </button>
  </form>
  @endif
  @else
  <a href="{{ route('register') }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:13px;font-weight:700;text-decoration:none;">
- <i class="fas fa-ticket"></i> Book Seat
+ <i class="fa-solid fa-ticket"></i> Book Seat
  </a>
  @endauth
  <a href="{{ route('group-sessions.show', $session) }}" style="display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:999px;background:rgba(10,100,188,.08);color:#0A64BC;border:1px solid rgba(10,100,188,.2);font-size:13px;font-weight:600;text-decoration:none;">
@@ -188,17 +188,17 @@
  @if($sessions->hasPages())
  <div style="margin-top:32px;display:flex;justify-content:center;gap:5px;flex-wrap:wrap;">
  @if($sessions->onFirstPage())
- <span style="padding:8px 16px;border-radius:10px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:13px;font-weight:500;border:none;"><i class="fas fa-chevron-left"></i> Prev</span>
+ <span style="padding:8px 16px;border-radius:10px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:13px;font-weight:500;border:none;"><i class="fa-solid fa-chevron-left"></i> Prev</span>
  @else
- <a href="{{ $sessions->previousPageUrl() }}" style="padding:8px 16px;border-radius:10px;background:#fff;color:#15281F;font-size:13px;font-weight:500;border:1.5px solid rgba(21,40,31,.1);text-decoration:none;"><i class="fas fa-chevron-left"></i> Prev</a>
+ <a href="{{ $sessions->previousPageUrl() }}" style="padding:8px 16px;border-radius:10px;background:#fff;color:#15281F;font-size:13px;font-weight:500;border:1.5px solid rgba(21,40,31,.1);text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> Prev</a>
  @endif
  @foreach($sessions->getUrlRange(max(1, $sessions->currentPage()-2), min($sessions->lastPage(), $sessions->currentPage()+2)) as $page => $url)
  <a href="{{ $url }}" style="padding:8px 16px;border-radius:10px;background:{{ $page == $sessions->currentPage() ? '#0A64BC' : '#fff' }};color:{{ $page == $sessions->currentPage() ? '#fff' : '#15281F' }};font-size:13px;font-weight:600;border:1.5px solid {{ $page == $sessions->currentPage() ? '#0A64BC' : 'rgba(21,40,31,.1)' }};text-decoration:none;">{{ $page }}</a>
  @endforeach
  @if($sessions->hasMorePages())
- <a href="{{ $sessions->nextPageUrl() }}" style="padding:8px 16px;border-radius:10px;background:#fff;color:#15281F;font-size:13px;font-weight:500;border:1.5px solid rgba(21,40,31,.1);text-decoration:none;">Next <i class="fas fa-chevron-right"></i></a>
+ <a href="{{ $sessions->nextPageUrl() }}" style="padding:8px 16px;border-radius:10px;background:#fff;color:#15281F;font-size:13px;font-weight:500;border:1.5px solid rgba(21,40,31,.1);text-decoration:none;">Next <i class="fa-solid fa-chevron-right"></i></a>
  @else
- <span style="padding:8px 16px;border-radius:10px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:13px;font-weight:500;border:none;">Next <i class="fas fa-chevron-right"></i></span>
+ <span style="padding:8px 16px;border-radius:10px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:13px;font-weight:500;border:none;">Next <i class="fa-solid fa-chevron-right"></i></span>
  @endif
  </div>
  @endif

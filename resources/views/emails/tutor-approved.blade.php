@@ -22,7 +22,7 @@
  {{-- Body --}}
  <tr>
  <td style="background:#fff;padding:40px;">
- <div style="font-size:32px;text-align:center;margin-bottom:16px;"><i class="fas fa-video"></i></div>
+ <div style="font-size:32px;text-align:center;margin-bottom:16px;"><i class="fa-solid fa-video"></i></div>
  <h1 style="font-family:Georgia,serif;font-size:24px;font-weight:700;color:#15281F;margin:0 0 16px;text-align:center;">
  Your Profile is Live!
  </h1>

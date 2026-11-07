@@ -122,11 +122,11 @@ select.form-input{cursor:pointer;}
  <div class="type-selector">
  @php
  $types = [
- 'article' => ['<i class="fas fa-book"></i>','Article','Written guide or tutorial'],
- 'pdf' => ['<i class="fas fa-file-pdf"></i>','PDF','PDF document or eBook'],
- 'video' => ['<i class="fas fa-video"></i>','Video','Lesson video file'],
- 'notes' => ['<i class="fas fa-sticky-note"></i>','Notes','Study notes or summaries'],
- 'past_paper' => ['<i class="fas fa-file-lines"></i>','Past Paper','Exam past paper'],
+ 'article' => ['<i class="fa-solid fa-book"></i>','Article','Written guide or tutorial'],
+ 'pdf' => ['<i class="fa-solid fa-file-pdf"></i>','PDF','PDF document or eBook'],
+ 'video' => ['<i class="fa-solid fa-video"></i>','Video','Lesson video file'],
+ 'notes' => ['<i class="fa-solid fa-sticky-note"></i>','Notes','Study notes or summaries'],
+ 'past_paper' => ['<i class="fa-solid fa-file-lines"></i>','Past Paper','Exam past paper'],
  ];
  @endphp
  @foreach($types as $value => [$icon, $label, $desc])
@@ -205,7 +205,7 @@ select.form-input{cursor:pointer;}
  <p style="font-size:12px;color:var(--muted);">PDF, DOC, PPT, MP4, AVI â‚¬" max 50 MB</p>
  </div>
  <div x-show="hasFile" style="display:none;">
- <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
+ <div style="font-size:40px;margin-bottom:10px;"><i class="fa-solid fa-check-circle"></i></div>
  <p style="font-weight:600;font-size:14px;color:var(--mint);">File selected</p>
  </div>
  </div>

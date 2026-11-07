@@ -160,7 +160,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 {{-- •Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â OVERVIEW •Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â --}}
 <div x-show="tab==='overview'">
  <div style="margin-bottom:20px;">
- <h2 style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">Hello, {{ explode(' ',$user->name)[0] }} <i class="fas fa-hand"></i></h2>
+ <h2 style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">Hello, {{ explode(' ',$user->name)[0] }} <i class="fa-solid fa-hand"></i></h2>
  <p style="font-size:14px;color:var(--muted);margin-top:4px;">Manage your children's learning journey · {{ now()->format('l, F j, Y') }}</p>
  </div>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
@@ -198,7 +198,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @foreach($children as $child)
  <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid rgba(21,40,31,.05);">
- <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas fa-child"></i></div>
+ <div style="width:44px;height:44px;border-radius:12px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fa-solid fa-child"></i></div>
  <div style="flex:1;min-width:0;">
  <div style="font-weight:600;font-size:14px;">{{ $child->name }}</div>
  <div style="font-size:12px;color:var(--muted);">@if($child->age)Age {{ $child->age }} · @endif @if($child->grade_level){{ $child->grade_level }}@endif</div>
@@ -209,7 +209,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @else
  <div class="card card-p" style="text-align:center;padding:40px;margin-bottom:20px;">
- <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-users"></i></div>
+ <div style="font-size:40px;margin-bottom:10px;"><i class="fa-solid fa-users"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);margin-bottom:6px;">No child profiles yet</h3>
  <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Add a child profile to start booking tutoring sessions on their behalf.</p>
  <button @click="tab='children'" class="btn btn-v">Add Child Profile</button>
@@ -239,7 +239,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @else
  <div class="card card-p" style="text-align:center;padding:48px;margin-bottom:20px;">
- <div style="font-size:48px;margin-bottom:12px;"><i class="fas fa-times-circle"></i></div>
+ <div style="font-size:48px;margin-bottom:12px;"><i class="fa-solid fa-times-circle"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink);margin-bottom:8px;">No upcoming sessions</h3>
  <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Book a session with one of our verified tutors to get started.</p>
  <a href="{{ route('tutors.index') }}" class="btn btn-v">Find a Tutor</a>
@@ -286,7 +286,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @endif
  <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
- @if($b->status === 'confirmed')<a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint">{{ $b->canJoin() ? '<i class=\'fas fa-video\'></i> Join Session' : 'Open Session' }}</a>@else<a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-v">View Booking</a>@endif
+ @if($b->status === 'confirmed')<a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint">{{ $b->canJoin() ? '<i class=\'fa-solid fa-video\'></i> Join Session' : 'Open Session' }}</a>@else<a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-v">View Booking</a>@endif
  @if(in_array($b->status,['pending','confirmed']) && $b->scheduled_at->isFuture())
  <form method="POST" action="{{ route('bookings.cancel',$b->uuid) }}" onsubmit="event.preventDefault(); confirmCancelBooking{{ $b->id }}(this)">@csrf<input type="hidden" name="reason" value="Cancelled by parent"><button type="submit" class="btn btn-sm" style="width:100%;background:#FEF2F2;color:#991B1B;border:none;">Cancel</button></form>
  <script>
@@ -307,7 +307,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @empty
  <div class="card card-p" style="text-align:center;padding:64px;">
- <div style="font-size:48px;margin-bottom:12px;"><i class="fas fa-calendar"></i></div>
+ <div style="font-size:48px;margin-bottom:12px;"><i class="fa-solid fa-calendar"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink);margin-bottom:8px;">No upcoming sessions</h3>
  <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">Find a tutor and book your child's first session today.</p>
  <a href="{{ route('tutors.index') }}" class="btn btn-v">Browse Tutors</a>
@@ -342,7 +342,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @if($hasRefund)
  @php $refund = $b->refund; @endphp
  <div style="font-size:11px;color:{{ $refund->isCompleted() ? '#10B981' : '#EEBE15' }};margin-top:2px;">
- <i class="fas fa-money-bill"></i> {{ $refund->isCompleted() ? 'Refunded' : ucfirst($refund->status) }}
+ <i class="fa-solid fa-money-bill"></i> {{ $refund->isCompleted() ? 'Refunded' : ucfirst($refund->status) }}
  </div>
  @endif
  </td>
@@ -357,7 +357,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <form method="POST" action="{{ route('bookings.refund.first20min', $b->id) }}" style="display:inline;" onsubmit="event.preventDefault(); confirmRefund{{ $b->id }}(this)">
  @csrf
  <button type="submit" class="btn btn-sm" style="background:rgba(236,72,153,.1);color:#EC4899;border:1px solid rgba(236,72,153,.2);font-weight:600;">
- <i class="fas fa-money-bill"></i> Refund
+ <i class="fa-solid fa-money-bill"></i> Refund
  </button>
  </form>
  <script>
@@ -403,7 +403,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  </div>
  @empty
- <div style="padding:40px 16px;text-align:center;color:var(--muted);"><div style="font-size:32px;margin-bottom:8px;"><i class="fas fa-comment"></i></div><div style="font-size:14px;">No conversations yet</div></div>
+ <div style="padding:40px 16px;text-align:center;color:var(--muted);"><div style="font-size:32px;margin-bottom:8px;"><i class="fa-solid fa-comment"></i></div><div style="font-size:14px;">No conversations yet</div></div>
  @endforelse
  </div>
  </div>
@@ -432,7 +432,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </form>
  @else
  <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--muted);">
- <div style="font-size:48px;"><i class="fas fa-comment"></i></div><div style="font-size:16px;font-weight:600;color:var(--ink);">No messages yet</div><div style="font-size:14px;text-align:center;">Messages appear here once a booking is confirmed</div>
+ <div style="font-size:48px;"><i class="fa-solid fa-comment"></i></div><div style="font-size:16px;font-weight:600;color:var(--ink);">No messages yet</div><div style="font-size:14px;text-align:center;">Messages appear here once a booking is confirmed</div>
  </div>
  @endif
  </div>
@@ -454,7 +454,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @if($refunds->isNotEmpty())
  <div class="card" style="margin-bottom:20px;">
  <div style="padding:16px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;">
- <div class="sec-title"><i class="fas fa-money-bill"></i> Refunds</div>
+ <div class="sec-title"><i class="fa-solid fa-money-bill"></i> Refunds</div>
  <span class="bdg bdg-trust-blue">{{ $refunds->total() }} total</span>
  </div>
  <div style="overflow-x:auto;">
@@ -541,18 +541,18 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @php $isUnread = is_null($notif->read_at); $data = $notif->data; @endphp
  <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(21,40,31,.05);background:{{ $isUnread ? 'rgba(10,100,188,.04)' : 'transparent' }};">
  @php $icons=['new_booking'=>['fa-calendar','rgba(10,100,188,.1)','#0A64BC'],'booking_confirmed'=>['fa-circle-check','rgba(16,185,129,.1)','#10B981'],'booking_cancelled'=>['fa-circle-xmark','rgba(232,82,42,.1)','#E8522A']]; [$ic,$bg,$color]=$icons[$data['type']??'']??['fa-bell','rgba(21,40,31,.05)','#15281F']; @endphp
- <div style="width:44px;height:44px;border-radius:12px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fas {{ $ic }}"></i></div>
+ <div style="width:44px;height:44px;border-radius:12px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;"><i class="fa-solid {{ $ic }}"></i></div>
  <div style="flex:1;">
  <div style="font-weight:{{ $isUnread?'700':'500' }};font-size:14px;color:var(--ink);">{{ $data['message'] ?? 'New notification' }}</div>
  @if(!empty($data['code']))<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:8px;padding:4px 10px;margin-top:6px;"><span style="font-size:11px;color:var(--muted);">Your access code:</span><code style="font-size:14px;font-weight:800;color:var(--trust-blue);">{{ $data['code'] }}</code></div>@endif
- @if(!empty($data['scheduled_at']))<div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fas fa-calendar"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>@endif
+ @if(!empty($data['scheduled_at']))<div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-calendar"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>@endif
  <div style="font-size:11px;color:var(--muted);margin-top:6px;">{{ $notif->created_at->diffForHumans() }}</div>
  @if(!empty($data['url']))<a href="{{ $data['url'] }}" class="btn btn-mint btn-sm" style="margin-top:8px;">Join / View Session</a>@endif
  </div>
  @if($isUnread)<div style="width:8px;height:8px;background:var(--trust-blue);border-radius:50%;margin-top:6px;flex-shrink:0;"></div>@endif
  </div>
  @empty
- <div style="padding:64px;text-align:center;"><div style="font-size:44px;margin-bottom:12px;"><i class="fas fa-bell"></i></div><div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;">No notifications yet</div><div style="font-size:14px;color:var(--muted);">You'll be notified here when a booking is confirmed</div></div>
+ <div style="padding:64px;text-align:center;"><div style="font-size:44px;margin-bottom:12px;"><i class="fa-solid fa-bell"></i></div><div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;">No notifications yet</div><div style="font-size:14px;color:var(--muted);">You'll be notified here when a booking is confirmed</div></div>
  @endforelse
  </div>
 </div>
@@ -609,7 +609,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @if($children->isEmpty())
  <div class="card card-p" style="text-align:center;padding:48px;">
- <div style="font-size:44px;margin-bottom:12px;"><i class="fas fa-users"></i></div>
+ <div style="font-size:44px;margin-bottom:12px;"><i class="fa-solid fa-users"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);margin-bottom:8px;">No child profiles yet</h3>
  <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">Add a child profile to book sessions on their behalf.</p>
  <button onclick="document.getElementById('add-child-modal').style.display='flex'" class="btn btn-v">Add Child Profile</button>
@@ -619,7 +619,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @foreach($children as $child)
  <div class="card card-p">
  <div style="display:flex;align-items:center;gap:14px;">
- <div style="width:52px;height:52px;border-radius:14px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;"><i class="fas fa-child"></i></div>
+ <div style="width:52px;height:52px;border-radius:14px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;"><i class="fa-solid fa-child"></i></div>
  <div style="flex:1;">
  <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">{{ $child->name }}</div>
  <div style="font-size:13px;color:var(--muted);margin-top:3px;">

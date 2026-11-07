@@ -4,7 +4,7 @@
 @section('content')
 <div class="page-header">
  <div>
- <h1><i class="fas fa-book-open"></i>Library Management</h1>
+ <h1><i class="fa-solid fa-book-open"></i>Library Management</h1>
  <p>Manage all learning resources, approve tutor submissions, organise categories</p>
  </div>
  <button onclick="document.getElementById('add-modal').style.display='flex'" class="btn btn-primary">
@@ -101,14 +101,14 @@
  <tbody>
  @forelse($resources as $resource)
  @php
- $typeIcons = ['article'=>'<i class="fas fa-book"></i>','video'=>'<i class="fas fa-video"></i>','notes'=>'<i class="fas fa-sticky-note"></i>','past_paper'=>'<i class="fas fa-file-lines"></i>'];
+ $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','video'=>'<i class="fa-solid fa-video"></i>','notes'=>'<i class="fa-solid fa-sticky-note"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>'];
  $typeClasses = ['article'=>'badge-primary','video'=>'badge-purple','notes'=>'badge-warning','past_paper'=>'badge-success'];
  @endphp
  <tr>
  <td style="max-width:280px;">
  <div style="display:flex;align-items:center;gap:10px;">
  <div style="width:36px;height:36px;border-radius:9px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
- {{ $typeIcons[$resource->resource_type] ?? '<i class="fas fa-book"></i>' }}
+ {{ $typeIcons[$resource->resource_type] ?? '<i class="fa-solid fa-book"></i>' }}
  </div>
  <div>
  <div style="font-weight:600;font-size:13.5px;color:var(--text);">{{ Str::limit($resource->title, 50) }}</div>
@@ -331,7 +331,7 @@
  </div>
  <div>
  <label class="form-label">Emoji Icon (optional)</label>
- <input type="text" name="icon" class="form-input" placeholder="e.g. <i class="fas fa-sticky-note"></i>" maxlength="10">
+ <input type="text" name="icon" class="form-input" placeholder="e.g. <i class="fa-solid fa-sticky-note"></i>" maxlength="10">
  </div>
  <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;">
  <button type="button" onclick="document.getElementById('cat-modal').style.display='none'" class="btn btn-secondary">Cancel</button>

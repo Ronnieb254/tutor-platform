@@ -33,13 +33,13 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <div class="session-header">
  <div style="display:flex;align-items:center;flex:1;">
  <div class="session-title">
- <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span> {{ $clinic->title ?? $clinic->name }}
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> {{ $clinic->title ?? $clinic->name }}
  </div>
  <span style="color:var(--muted);margin:0 12px;font-size:10px;">•</span>
  <span style="color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}</span>
  @if($isModerator)
  <span class="moderator-badge">
- <i class="fas fa-shield-alt"></i> MODERATOR
+ <i class="fa-solid fa-shield-alt"></i> MODERATOR
  </span>
  @else
  <span class="session-code">{{ $sessionCode }}</span>
@@ -48,7 +48,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <form method="POST" action="{{ route('logout') }}" style="display:inline;">
  @csrf
  <button type="submit" class="exit-btn">
- <i class="fas fa-sign-out-alt"></i> Leave Session
+ <i class="fa-solid fa-sign-out-alt"></i> Leave Session
  </button>
  </form>
  </div>
@@ -57,7 +57,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 </div>
 
 <div class="access-warning">
- <i class="fas fa-shield-alt"></i>
+ <i class="fa-solid fa-shield-alt"></i>
  <span>Platform-only session · Encrypted end-to-end</span>
 </div>
 

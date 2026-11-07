@@ -88,7 +88,7 @@
  <div class="curr-hero">
  <div class="w" style="text-align:center;">
  <div class="badge bv" style="margin-bottom:16px;">
- <i class="fas fa-graduation-cap"></i> Choose your learning path
+ <i class="fa-solid fa-graduation-cap"></i> Choose your learning path
  </div>
  <h1 style="font-family:'Fraunces',serif;font-size:clamp(28px,5vw,50px);color:#fff;margin-bottom:12px;letter-spacing:-.02em;">
  Which curriculum do you follow?
@@ -108,15 +108,15 @@
  <input type="hidden" name="track" value="kenyan">
  <button type="submit" class="curr-card curr-card-kenyan" style="text-align:left;border:none;">
  <div class="curr-card__badge">
- <span style="font-size:inherit;"><i class="fas fa-flag"></i></span> Kenyan Curriculum
+ <span style="font-size:inherit;"><i class="fa-solid fa-flag"></i></span> Kenyan Curriculum
  </div>
  <div class="curr-card__title">Learn the<br>Kenyan Way</div>
  <p class="curr-card__sub">Kenya's national education system â‚¬" from secondary school through senior school.</p>
  <div class="curr-tag-list">
- <span class="curr-tag"><i class="fas fa-book-open"></i> 8-4-4</span>
- <span class="curr-tag"><i class="fas fa-star"></i> CBC Junior Secondary</span>
- <span class="curr-tag"><i class="fas fa-star"></i> CBC Senior School</span>
- <span class="curr-tag"><i class="fas fa-graduation-cap"></i> KCSE / KNEC</span>
+ <span class="curr-tag"><i class="fa-solid fa-book-open"></i> 8-4-4</span>
+ <span class="curr-tag"><i class="fa-solid fa-star"></i> CBC Junior Secondary</span>
+ <span class="curr-tag"><i class="fa-solid fa-star"></i> CBC Senior School</span>
+ <span class="curr-tag"><i class="fa-solid fa-graduation-cap"></i> KCSE / KNEC</span>
  </div>
  <span class="curr-card__cta">
  <span style="font-size:inherit;">→</span> Find a Kenyan-curriculum tutor
@@ -133,15 +133,15 @@
  <input type="hidden" name="track" value="international">
  <button type="submit" class="curr-card curr-card-intl" style="text-align:left;border:none;">
  <div class="curr-card__badge">
- <i class="fas fa-globe"></i> International Curriculum
+ <i class="fa-solid fa-globe"></i> International Curriculum
  </div>
  <div class="curr-card__title">Learn for<br>the World</div>
  <p class="curr-card__sub">Globally recognised qualifications from Cambridge, Pearson Edexcel and the IB.</p>
  <div class="curr-tag-list">
- <span class="curr-tag"><span style="font-size:inherit;"><i class="fas fa-medal"></i></span> IGCSE Cambridge</span>
- <span class="curr-tag"><span style="font-size:inherit;"><i class="fas fa-medal"></i></span> IGCSE Edexcel</span>
- <span class="curr-tag"><i class="fas fa-graduation-cap"></i> IB MYP</span>
- <span class="curr-tag"><i class="fas fa-graduation-cap"></i> IB Diploma (HL/SL)</span>
+ <span class="curr-tag"><span style="font-size:inherit;"><i class="fa-solid fa-medal"></i></span> IGCSE Cambridge</span>
+ <span class="curr-tag"><span style="font-size:inherit;"><i class="fa-solid fa-medal"></i></span> IGCSE Edexcel</span>
+ <span class="curr-tag"><i class="fa-solid fa-graduation-cap"></i> IB MYP</span>
+ <span class="curr-tag"><i class="fa-solid fa-graduation-cap"></i> IB Diploma (HL/SL)</span>
  </div>
  <span class="curr-card__cta">
  <span style="font-size:inherit;">→</span> Find an international tutor

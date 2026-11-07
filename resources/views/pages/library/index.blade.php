@@ -100,7 +100,7 @@ a{color:inherit;text-decoration:none;}
 <section class="hero">
  <div class="hero-inner">
  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:999px;padding:6px 14px;margin-bottom:20px;">
- <span style="font-size:16px;"><i class="fas fa-book-open"></i></span>
+ <span style="font-size:16px;"><i class="fa-solid fa-book-open"></i></span>
  <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
  </div>
  <h1>The Mwalimu Library</h1>
@@ -129,13 +129,13 @@ a{color:inherit;text-decoration:none;}
  <span class="count">{{ $resources->total() }}</span>
  </a>
  @php
- $typeIcons = ['article'=>'<i class="fas fa-book"></i>','notes'=>'<i class="fas fa-sticky-note"></i>','past_paper'=>'<i class="fas fa-file-lines"></i>','video'=>'<i class="fas fa-video"></i>'];
+ $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','notes'=>'<i class="fa-solid fa-sticky-note"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>','video'=>'<i class="fa-solid fa-video"></i>'];
  $typeLabels = ['article'=>'Articles','notes'=>'Notes','past_paper'=>'Past Papers','video'=>'Videos'];
  @endphp
  @foreach($resourceTypes as $type)
  <a href="{{ route('library.index', array_merge(request()->all(), ['type'=>$type])) }}" class="filter-item {{ request('type') === $type ? 'active' : '' }}">
  <span style="display:flex;align-items:center;gap:8px;">
- <span style="font-size:15px;">{{ $typeIcons[$type] ?? '<i class="fas fa-book"></i>' }}</span>
+ <span style="font-size:15px;">{{ $typeIcons[$type] ?? '<i class="fa-solid fa-book"></i>' }}</span>
  {{ $typeLabels[$type] ?? ucfirst(str_replace('_',' ',$type)) }}
  </span>
  </a>
@@ -181,8 +181,8 @@ a{color:inherit;text-decoration:none;}
  @if($resource->thumbnail)
  <img src="{{ asset('storage/'.$resource->thumbnail) }}" alt="{{ $resource->title }}">
  @else
- @php $icons = ['article'=>'<i class="fas fa-book"></i>','notes'=>'<i class="fas fa-sticky-note"></i>','past_paper'=>'<i class="fas fa-file-lines"></i>','video'=>'<i class="fas fa-video"></i>']; @endphp
- {{ $icons[$resource->resource_type] ?? '<i class="fas fa-book"></i>' }}
+ @php $icons = ['article'=>'<i class="fa-solid fa-book"></i>','notes'=>'<i class="fa-solid fa-sticky-note"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>','video'=>'<i class="fa-solid fa-video"></i>']; @endphp
+ {{ $icons[$resource->resource_type] ?? '<i class="fa-solid fa-book"></i>' }}
  @endif
  @php
  $typeClasses = ['article'=>'bdg-blue','notes'=>'bdg-amber','past_paper'=>'bdg-green','video'=>'bdg-purple'];
@@ -226,7 +226,7 @@ a{color:inherit;text-decoration:none;}
  @if($loop->last)</div>@endif
  @empty
  <div class="empty">
- <div class="empty-icon"><i class="fas fa-book-open"></i></div>
+ <div class="empty-icon"><i class="fa-solid fa-book-open"></i></div>
  <h3>No resources found</h3>
  <p>Try adjusting your filters or search terms.</p>
  @if(request()->hasAny(['search','type','category','grade']))

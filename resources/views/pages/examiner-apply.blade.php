@@ -12,7 +12,7 @@
  </div>
  <div class="card-body">
  <div class="alert alert-info">
- <h5><i class="fas fa-info-circle"></i> What is an Examiner?</h5>
+ <h5><i class="fa-solid fa-info-circle"></i> What is an Examiner?</h5>
  <p class="mb-0">
  As an examiner, you can create and host group revision clinics for students preparing for exams.
  Each clinic focuses on a specific subject and paper type (PP1, PP2, PP3), with a maximum of 30 students per session.
@@ -21,18 +21,18 @@
 
  <h5 class="mt-4">Requirements:</h5>
  <ul class="list-group list-group-flush mb-4">
- <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fas fa-check-circle"></i></span> Verified tutor status</li>
- <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fas fa-check-circle"></i></span> Active teaching profile</li>
- <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fas fa-check-circle"></i></span> Good standing with platform</li>
+ <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-check-circle"></i></span> Verified tutor status</li>
+ <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-check-circle"></i></span> Active teaching profile</li>
+ <li class="list-group-item"><span class="text-success" style="font-size:inherit;"><i class="fa-solid fa-check-circle"></i></span> Good standing with platform</li>
  </ul>
 
  <h5 class="mt-4">Benefits:</h5>
  <ul class="list-group list-group-flush mb-4">
- <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fas fa-star"></i></span> Create unlimited clinics</li>
- <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fas fa-star"></i></span> Set your own pricing</li>
- <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fas fa-star"></i></span> Reach up to 30 students per session</li>
- <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fas fa-star"></i></span> Automated session management</li>
- <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fas fa-star"></i></span> Session recording capabilities</li>
+ <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fa-solid fa-star"></i></span> Create unlimited clinics</li>
+ <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fa-solid fa-star"></i></span> Set your own pricing</li>
+ <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fa-solid fa-star"></i></span> Reach up to 30 students per session</li>
+ <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fa-solid fa-star"></i></span> Automated session management</li>
+ <li class="list-group-item"><span class="text-warning" style="font-size:inherit;"><i class="fa-solid fa-star"></i></span> Session recording capabilities</li>
  </ul>
 
  <form action="{{ route('examiner.apply') }}" method="POST">
@@ -47,7 +47,7 @@
 
  <div class="d-grid gap-2">
  <button type="submit" class="btn btn-primary btn-lg">
- <i class="fas fa-paper-plane"></i> Apply Now
+ <i class="fa-solid fa-paper-plane"></i> Apply Now
  </button>
  <a href="{{ route('tutor.dashboard') }}" class="btn btn-outline-secondary">
  <span style="font-size:inherit;">←</span> Back to Dashboard

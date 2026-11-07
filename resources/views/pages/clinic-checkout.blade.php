@@ -61,20 +61,20 @@ a{color:inherit;text-decoration:none;}
  <p class="subtitle">Complete your registration for the examiner's clinic</p>
 
  @if(session('error'))
- <div class="error"><i class="fas fa-times-circle"></i> {{ session('error') }}</div>
+ <div class="error"><i class="fa-solid fa-times-circle"></i> {{ session('error') }}</div>
  @endif
 
  {{-- Clinic Information --}}
  <div class="clinic-info">
  <div class="clinic-title">{{ $clinic->title }}</div>
- <div class="clinic-detail"><i class="fas fa-check-circle"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</div>
- <div class="clinic-detail"><i class="fas fa-clock"></i> {{ $clinic->duration_minutes }} minutes</div>
- <div class="clinic-detail"><i class="fas fa-user"></i> {{ $clinic->tutor->name }}</div>
+ <div class="clinic-detail"><i class="fa-solid fa-check-circle"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</div>
+ <div class="clinic-detail"><i class="fa-solid fa-clock"></i> {{ $clinic->duration_minutes }} minutes</div>
+ <div class="clinic-detail"><i class="fa-solid fa-user"></i> {{ $clinic->tutor->name }}</div>
  @if($clinic->subject)
- <div class="clinic-detail"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> {{ $clinic->subject->name }}</div>
+ <div class="clinic-detail"><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span> {{ $clinic->subject->name }}</div>
  @endif
  @if($clinic->paper_type)
- <div class="clinic-detail"><i class="fas fa-file-alt"></i> {{ $clinic->paper_type }}</div>
+ <div class="clinic-detail"><i class="fa-solid fa-file-alt"></i> {{ $clinic->paper_type }}</div>
  @endif
  </div>
 
@@ -108,7 +108,7 @@ a{color:inherit;text-decoration:none;}
  {{-- M-Pesa Phone --}}
  <div style="margin-bottom:18px;">
  <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
- <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-mobile-alt"></i></span>
  M-Pesa Phone Number
  </label>
  <input type="tel" name="phone" required
@@ -141,7 +141,7 @@ a{color:inherit;text-decoration:none;}
 
  {{-- Submit Button --}}
  <button type="submit" class="btn btn-primary" id="submitBtn">
- <i class="fas fa-lock"></i> Pay KSh {{ number_format($clinic->price) }} via M-Pesa
+ <i class="fa-solid fa-lock"></i> Pay KSh {{ number_format($clinic->price) }} via M-Pesa
  </button>
  <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
  <span style="font-size:inherit;">←</span> Back
@@ -156,7 +156,7 @@ a{color:inherit;text-decoration:none;}
 
  {{-- Security Badge --}}
  <div style="text-align:center;margin-top:24px;font-size:12px;color:var(--muted);">
- <i class="fas fa-shield-alt"></i> Your payment is secure and encrypted
+ <i class="fa-solid fa-shield-alt"></i> Your payment is secure and encrypted
  </div>
  </div>
 </div>

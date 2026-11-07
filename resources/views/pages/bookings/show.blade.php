@@ -59,7 +59,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  [$bclass,$bicon,$blabel] = $statusConfig[$booking->status] ?? ['bdg gray','fa-circle','Unknown'];
  @endphp
  <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(255,255,255,.15);color:#fff;">
- <i class="fas fa-{{ $bicon }}"></i> {{ $blabel }}
+ <i class="fa-solid fa-{{ $bicon }}"></i> {{ $blabel }}
  </span>
  @if($canJoin && $booking->status === 'confirmed')
  <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(16,185,129,.2);color:#4ADE80;border:1px solid rgba(16,185,129,.3);">
@@ -69,7 +69,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @endif
  @if($booking->tutor?->tutorProfile?->speedy_verification_paid ?? false)
  <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.25);">
- <i class="fas fa-star"></i> TSC Verified
+ <i class="fa-solid fa-star"></i> TSC Verified
  </span>
  @endif
  </div>
@@ -77,12 +77,12 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  {{ $sessionName }} with {{ $otherName }}
  </h1>
  <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:rgba(255,255,255,.6);">
- <span><i class="fas fa-calendar"></i>{{ $sessionStart->format('D, M j, Y') }}</span>
- <span><i class="fas fa-clock"></i>{{ $sessionStart->format('g:i a') }} - {{ $sessionEnd->format('g:i a') }} EAT</span>
- <span><i class="fas fa-hourglass-half"></i>{{ $booking->duration_minutes }} minutes</span>
- <span><i class="fas {{ ($booking->session_type ?? 'individual') === 'group' ? 'fa-users' : 'fa-user' }}"></i>{{ ucfirst($booking->session_type ?? 'individual') }} Session</span>
- @if($booking->subject)<span><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>{{ $booking->subject->name }}</span>@endif
- <span><span style="font-size:inherit;"><i class="fas fa-money-bill"></i></span>KSh {{ number_format($booking->total_amount) }}</span>
+ <span><i class="fa-solid fa-calendar"></i>{{ $sessionStart->format('D, M j, Y') }}</span>
+ <span><i class="fa-solid fa-clock"></i>{{ $sessionStart->format('g:i a') }} - {{ $sessionEnd->format('g:i a') }} EAT</span>
+ <span><i class="fa-solid fa-hourglass-half"></i>{{ $booking->duration_minutes }} minutes</span>
+ <span><i class="fa-solid {{ ($booking->session_type ?? 'individual') === 'group' ? 'fa-users' : 'fa-user' }}"></i>{{ ucfirst($booking->session_type ?? 'individual') }} Session</span>
+ @if($booking->subject)<span><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span>{{ $booking->subject->name }}</span>@endif
+ <span><span style="font-size:inherit;"><i class="fa-solid fa-money-bill"></i></span>KSh {{ number_format($booking->total_amount) }}</span>
  </div>
  </div>
  <div style="text-align:center;flex-shrink:0;">
@@ -119,7 +119,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  <div style="padding:20px 24px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
  <div>
  <h2 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;">
- <i class="fas fa-video"></i>Live Session Room
+ <i class="fa-solid fa-video"></i>Live Session Room
  </h2>
  <p style="font-size:13px;color:rgba(21,40,31,.5);margin-top:2px;">
  Powered by Jitsi Meet &middot; Private &middot; Encrypted &middot; No download needed
@@ -132,7 +132,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  </span>
  @else
  <span style="display:flex;align-items:center;gap:7px;background:rgba(21,40,31,.06);color:rgba(21,40,31,.5);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;">
- <i class="fas fa-clock"></i>
+ <i class="fa-solid fa-clock"></i>
  @if($minutesUntil > 5) Opens in {{ $minutesUntil - 5 }} min @else Opens shortly @endif
  </span>
  @endif
@@ -143,7 +143,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if($canJoin)
  <div x-show="!verified">
  <div style="width:72px;height:72px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
- <span style="font-size:inherit;"><i class="fas fa-key"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-key"></i></span>
  </div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:6px;">Enter Your Session Code</h3>
  <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;">
@@ -158,7 +158,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  style="width:100%;height:56px;text-align:center;font-family:monospace;font-size:22px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:16px;border:2px solid rgba(21,40,31,.18);background:#fff;outline:none;transition:all .18s;color:#15281F;margin-bottom:10px;"
  onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 3px rgba(10,100,188,.1)'"
  onblur="this.style.borderColor='rgba(21,40,31,.18)';this.style.boxShadow='none'">
- <p x-show="codeError" x-text="codeError" style="font-size:13px;color:#E8522A;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fas fa-exclamation-triangle"></i></p>
+ <p x-show="codeError" x-text="codeError" style="font-size:13px;color:#E8522A;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-exclamation-triangle"></i></p>
  <button @click="verify()"
  style="width:100%;height:52px;border-radius:999px;background:#10B981;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;"
  onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10B981'">
@@ -166,13 +166,13 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  </button>
  </div>
  <div style="margin-top:20px;padding:14px;background:#F9FAF9;border-radius:14px;display:inline-block;text-align:left;">
- <p style="font-size:12px;color:rgba(21,40,31,.5);margin-bottom:5px;"><i class="fas fa-envelope"></i> Your code was emailed to <strong>{{auth()->user()->email}}</strong></p>
+ <p style="font-size:12px;color:rgba(21,40,31,.5);margin-bottom:5px;"><i class="fa-solid fa-envelope"></i> Your code was emailed to <strong>{{auth()->user()->email}}</strong></p>
  <p style="font-size:12px;color:rgba(21,40,31,.4);">Can't find it? Check your spam folder or contact support.</p>
  </div>
  </div>
  <div x-show="verified" x-cloak style="padding:20px 0;">
  <div style="width:72px;height:72px;border-radius:999px;background:rgba(16,185,129,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  </div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">Code Verified - You're In!</h3>
  <p style="font-size:14px;color:rgba(21,40,31,.55);margin-bottom:24px;">Your classroom is ready. Click below to join the live session.</p>
@@ -181,7 +181,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  onclick="fetch('/bookings/{{$booking->uuid}}/joined',{method:'POST',headers:{'X-CSRF-TOKEN':document.querySelector('meta[name=csrf-token]').content,'Content-Type':'application/json'}})"
  class="join-btn join-btn-live"
  style="display:inline-flex;align-items:center;gap:10px;padding:16px 40px;border-radius:999px;font-size:16px;font-weight:700;text-decoration:none;background:#10B981;color:#fff;box-shadow:0 0 0 0 rgba(16,185,129,.4);animation:pulse-green 2s infinite;">
- <i class="fas fa-video"></i> Start Session Now
+ <i class="fa-solid fa-video"></i> Start Session Now
  </a>
  @else
  <p style="color:#E8522A;font-size:14px;">Session is not available yet. Please refresh or contact support.</p>
@@ -190,7 +190,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @else
  {{-- Session not yet open --}}
  <div style="min-height:280px;background:#111C16;border-radius:16px;padding:48px 20px;text-align:center;">
- <i class="fas fa-hourglass-half" style="font-size:2.5rem;color:rgba(255,255,255,.4);margin-bottom:16px;display:block;"></i>
+ <i class="fa-solid fa-hourglass-half" style="font-size:2.5rem;color:rgba(255,255,255,.4);margin-bottom:16px;display:block;"></i>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#fff;margin-bottom:8px;">Session Room Waiting</h3>
  <p style="font-size:14px;color:rgba(255,255,255,.5);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">This room opens 5 minutes before your session starts. Your access code is already on this page.</p>
  <div style="background:rgba(255,255,255,.08);border-radius:16px;padding:16px 24px;display:inline-block;">
@@ -204,7 +204,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  ['fa-globe','No download required'],
  ] as [$ic,$tip])
  <span style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);padding:7px 14px;border-radius:999px;font-size:12px;color:rgba(255,255,255,.6);">
- <i class="fas {{$ic}}"></i>{{$tip}}
+ <i class="fa-solid {{$ic}}"></i>{{$tip}}
  </span>
  @endforeach
  </div>
@@ -216,7 +216,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  {{-- â-€â-€ YOUR SESSION CODE â-€â-€ --}}
  <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;">
  <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <span style="font-size:inherit;"><i class="fas fa-key"></i></span> Your Session Code
+ <span style="font-size:inherit;"><i class="fa-solid fa-key"></i></span> Your Session Code
  </h3>
  <div class="code-box" style="margin-bottom:18px;">
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(21,40,31,.4);margin-bottom:10px;">
@@ -227,14 +227,14 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if($myCode)
  <button onclick="navigator.clipboard.writeText('{{ $myCode }}');this.innerHTML='<i class=\'fa-solid fa-check fa-xs\'></i> Copied!';setTimeout(()=>this.innerHTML='<i class=\'fa-solid fa-copy fa-xs\'></i> Copy Code',2000)"
  style="margin-top:12px;background:none;border:1.5px solid rgba(10,100,188,.3);color:#0A64BC;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;">
- <i class="fas fa-copy"></i> Copy Code
+ <i class="fa-solid fa-copy"></i> Copy Code
  </button>
  @endif
  </div>
 
  {{-- How to join steps --}}
  <div style="background:#F9FAF9;border-radius:14px;padding:16px;">
- <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span> How to join</p>
+ <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="font-size:inherit;"><i class="fa-solid fa-clipboard"></i></span> How to join</p>
  @foreach([
  '1. Come back to this page when your session starts',
  '2. Click the "Enter Your Session Code" field',
@@ -243,14 +243,14 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  '5. Your private classroom opens instantly in your browser',
  ] as $s)
  <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:5px;display:flex;align-items:flex-start;gap:7px;">
- <i class="fas fa-chevron-right" style="margin-top:3px;flex-shrink:0;"></i>{{ $s }}
+ <i class="fa-solid fa-chevron-right" style="margin-top:3px;flex-shrink:0;"></i>{{ $s }}
  </p>
  @endforeach
  </div>
  </div>
  @elseif($booking->status === 'pending')
  <div style="background:#FEF9C3;border:1.5px solid #FDE68A;border-radius:22px;padding:28px;text-align:center;">
- <i class="fas fa-clock"></i>
+ <i class="fa-solid fa-clock"></i>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:8px;">Awaiting Confirmation</h3>
  <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:20px;">Your booking is pending payment confirmation. Session codes will be sent once confirmed.</p>
 
@@ -258,7 +258,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if(auth()->user()->isAdmin() || auth()->id() === $booking->tutor_id)
  <div style="background:#fff;border-radius:14px;border:1.5px solid rgba(21,40,31,.1);padding:18px;margin-top:4px;" x-data="{ confirming: false, done: false, error: '' }">
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:12px;">
- <i class="fas fa-shield-alt"></i>
+ <i class="fa-solid fa-shield-alt"></i>
  {{ auth()->user()->isAdmin() ? 'Admin Action' : 'Tutor Action' }}
  </p>
  <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:14px;">
@@ -266,7 +266,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  </p>
  <template x-if="done">
  <div style="display:flex;align-items:center;gap:8px;color:#10B981;font-weight:700;font-size:14px;justify-content:center;">
- <i class="fas fa-check-circle"></i> Confirmed! Codes sent. Page refreshing…
+ <i class="fa-solid fa-check-circle"></i> Confirmed! Codes sent. Page refreshing…
  </div>
  </template>
  <template x-if="error">
@@ -300,10 +300,10 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  :style="confirming ? 'opacity:.7;cursor:not-allowed' : ''"
  onmouseover="if(!this.disabled) this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
  <template x-if="confirming">
- <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:inherit;"><i class="fas fa-hourglass-half"></i></span> Confirming…</span>
+ <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Confirming…</span>
  </template>
  <template x-if="!confirming">
- <span style="display:flex;align-items:center;gap:8px;"><i class="fas fa-check-circle"></i> Confirm Booking & Send Codes</span>
+ <span style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-check-circle"></i> Confirm Booking & Send Codes</span>
  </template>
  </button>
  </template>
@@ -312,7 +312,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  </div>
  @elseif($booking->status === 'completed')
  <div style="background:#DCFCE7;border:1.5px solid #BBF7D0;border-radius:22px;padding:28px;text-align:center;">
- <span style="font-size:inherit;"><i class="fas fa-flag"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-flag"></i></span>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:8px;">Session Completed</h3>
  <p style="font-size:14px;color:rgba(21,40,31,.6);">This session has been completed.
  @if($isStudent && !$booking->review) Leave a review below to help other students. @endif
@@ -320,11 +320,11 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  </div>
  @elseif($booking->status === 'cancelled')
  <div style="background:#FEE2E2;border:1.5px solid #FECACA;border-radius:22px;padding:28px;text-align:center;">
- <span style="font-size:inherit;"><i class="fas fa-ban"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-ban"></i></span>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:8px;">Session Cancelled</h3>
  <p style="font-size:14px;color:rgba(21,40,31,.6);">This session was cancelled. {{ $booking->cancellation_reason ?? '' }}</p>
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
- <i class="fas fa-search"></i> Book a New Session
+ <i class="fa-solid fa-search"></i> Book a New Session
  </a>
  </div>
  @endif
@@ -359,7 +359,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  style="flex:1;height:44px;padding:0 15px;border-radius:12px;border:1.5px solid rgba(21,40,31,.15);font-size:14px;font-family:inherit;outline:none;background:#fff;"
  onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.15)'">
  <button type="submit" style="height:44px;padding:0 18px;border-radius:12px;background:#0A64BC;color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:600;display:flex;align-items:center;gap:6px;transition:background .15s;" onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
- <i class="fas fa-paper-plane"></i> Send
+ <i class="fa-solid fa-paper-plane"></i> Send
  </button>
  </form>
  </div>
@@ -369,7 +369,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if($booking->status === 'completed' && $isStudent && !$booking->review)
  <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;" x-data="{ rating:5, comment:'', submitted:false }">
  <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-star"></i> Leave a Review
+ <i class="fa-solid fa-star"></i> Leave a Review
  </h3>
  <template x-if="!submitted">
  <form @submit.prevent="
@@ -391,22 +391,22 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  style="width:100%;padding:12px 14px;border-radius:13px;border:1.5px solid rgba(21,40,31,.15);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.65;margin-bottom:14px;"
  onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.15)'"></textarea>
  <button type="submit" style="padding:12px 28px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">
- <i class="fas fa-star"></i> Submit Review
+ <i class="fa-solid fa-star"></i> Submit Review
  </button>
  </form>
  </template>
  <template x-if="submitted">
  <div style="text-align:center;padding:20px;">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  <p style="font-size:15px;font-weight:600;color:#15281F;">Thank you for your review!</p>
  </div>
  </template>
  </div>
  @elseif($booking->review)
  <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:24px;">
- <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:14px;"><i class="fas fa-star"></i>Your Review</h3>
+ <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:14px;"><i class="fa-solid fa-star"></i>Your Review</h3>
  <div style="display:flex;gap:2px;margin-bottom:8px;">
- @for($i=1;$i<=5;$i++)<span style="color:{{ $i<=$booking->review->rating?'#EEBE15':'#E5E7EB' }};font-size:18px;"><i class="fas fa-star"></i></span>@endfor
+ @for($i=1;$i<=5;$i++)<span style="color:{{ $i<=$booking->review->rating?'#EEBE15':'#E5E7EB' }};font-size:18px;"><i class="fa-solid fa-star"></i></span>@endfor
  </div>
  <p style="font-size:14px;color:#15281F;line-height:1.75;">{{ $booking->review->comment }}</p>
  </div>
@@ -419,7 +419,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  {{-- Session details --}}
  <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:24px;">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
- <i class="fas fa-info-circle"></i> Session Details
+ <i class="fa-solid fa-info-circle"></i> Session Details
  </h3>
  <dl style="display:flex;flex-direction:column;gap:0;">
  @foreach([
@@ -432,7 +432,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  ] as [$icon,$label,$val])
  <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.06);gap:8px;">
  <span style="display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(21,40,31,.5);flex-shrink:0;">
- <i class="fas fa-{{ $icon }}"></i>{{ $label }}
+ <i class="fa-solid fa-{{ $icon }}"></i>{{ $label }}
  </span>
  <span style="font-size:13px;font-weight:600;color:#15281F;text-align:right;">{{ $val }}</span>
  </div>
@@ -450,13 +450,13 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  {{-- Payment info --}}
  <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:24px;">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
- <i class="fas fa-credit-card"></i> Payment
+ <i class="fa-solid fa-credit-card"></i> Payment
  </h3>
  @if($booking->payment)
  <div style="display:flex;flex-direction:column;gap:8px;">
  <div style="display:flex;justify-content:space-between;font-size:13px;">
  <span style="color:rgba(21,40,31,.5);">Status</span>
- <span style="font-weight:600;color:#10B981;"><i class="fas fa-check-circle"></i> Paid</span>
+ <span style="font-weight:600;color:#10B981;"><i class="fa-solid fa-check-circle"></i> Paid</span>
  </div>
  <div style="display:flex;justify-content:space-between;font-size:13px;">
  <span style="color:rgba(21,40,31,.5);">Amount</span>
@@ -484,7 +484,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @csrf
  <input type="hidden" name="reason" value="Cancelled by {{ $isTutor ? 'tutor' : 'student' }}">
  <button type="submit" style="width:100%;padding:12px;border-radius:14px;background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.background='#FECACA'" onmouseout="this.style.background='#FEE2E2'">
- <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancel Booking
+ <span style="font-size:inherit;"><i class="fa-solid fa-ban"></i></span> Cancel Booking
  </button>
  </form>
  @endif
@@ -530,7 +530,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if($booking->status !== 'cancelled' && $booking->status !== 'pending')
  <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:22px;">
  <h3 style="font-family:'Fraunces',serif;font-size:16px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;">
- <span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span> Session Lifecycle
+ <span style="font-size:inherit;"><i class="fa-solid fa-clipboard"></i></span> Session Lifecycle
  </h3>
  <div style="display:flex;flex-direction:column;gap:0;">
  @foreach($stages as $idx => [$key, $icon, $label])
@@ -543,7 +543,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @endphp
  <div style="display:flex;align-items:center;gap:12px;padding:8px 0;{{ $idx < count($stages)-1 ? 'border-bottom:1px solid rgba(21,40,31,.05);' : '' }}">
  <div style="width:28px;height:28px;border-radius:50%;border:2px solid {{ $dotColor }};background:{{ $isDone ? '#10B981' : ($isActive ? 'rgba(10,100,188,.1)' : 'transparent') }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
- <i class="fas fa-{{ $isDone ? 'check' : $icon }}" style="font-size:11px;color:{{ $isDone ? '#fff' : ($isActive ? '#0A64BC' : 'rgba(21,40,31,.3)') }};"></i>
+ <i class="fa-solid fa-{{ $isDone ? 'check' : $icon }}" style="font-size:11px;color:{{ $isDone ? '#fff' : ($isActive ? '#0A64BC' : 'rgba(21,40,31,.3)') }};"></i>
  </div>
  <span style="font-size:13px;font-weight:{{ $isActive ? '700' : '500' }};color:{{ $textColor }};">{{ $label }}</span>
  @if($isActive)<span style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:#0A64BC;animation:pulse-green 1.5s infinite;"></span>@endif
@@ -592,7 +592,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if(in_array($stageNow, ['session_ending','overdue','in_progress']) && ($isTutor || auth()->user()->isAdmin()))
  <div style="margin-top:12px;" x-data="{ finalising: false, done: false, err: '' }">
  <template x-if="done">
- <p style="font-size:13px;color:#10B981;font-weight:700;text-align:center;"><i class="fas fa-check-circle"></i> Session finalised!</p>
+ <p style="font-size:13px;color:#10B981;font-weight:700;text-align:center;"><i class="fa-solid fa-check-circle"></i> Session finalised!</p>
  </template>
  <template x-if="!done">
  <button @click="
@@ -608,8 +608,8 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  " :disabled="finalising"
  style="width:100%;padding:11px;border-radius:14px;background:#0A64BC;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;"
  :style="finalising?'opacity:.7;cursor:not-allowed':''">
- <template x-if="finalising"><span><span style="font-size:inherit;"><i class="fas fa-hourglass-half"></i></span> Finalising…</span></template>
- <template x-if="!finalising"><span><span style="font-size:inherit;"><i class="fas fa-flag"></i></span> End & Finalise Session</span></template>
+ <template x-if="finalising"><span><span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Finalising…</span></template>
+ <template x-if="!finalising"><span><span style="font-size:inherit;"><i class="fa-solid fa-flag"></i></span> End & Finalise Session</span></template>
  </button>
  </template>
  <template x-if="err"><p style="font-size:12px;color:#E8522A;margin-top:6px;" x-text="err"></p></template>

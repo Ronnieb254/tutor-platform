@@ -13,7 +13,7 @@
 
  @if($errors->any())
  <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:14px 18px;margin-bottom:20px;">
- <div style="font-weight:600;color:#dc2626;margin-bottom:6px;"><i class="fas fa-times-circle"></i> Please fix the errors below</div>
+ <div style="font-weight:600;color:#dc2626;margin-bottom:6px;"><i class="fa-solid fa-times-circle"></i> Please fix the errors below</div>
  <ul style="margin:0;padding-left:20px;font-size:13px;color:#dc2626;">
  @foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach
  </ul>
@@ -113,7 +113,7 @@
 
  {{-- Slots info box --}}
  <div style="background:rgba(10,100,188,.06);border:1px solid rgba(10,100,188,.15);border-radius:12px;padding:14px 16px;margin-bottom:22px;display:flex;gap:10px;">
- <i class="fas fa-info-circle"></i>
+ <i class="fa-solid fa-info-circle"></i>
  <div style="font-size:13px;color:#0A64BC;">
  <strong>Slots are fixed at 30.</strong> Once all 30 spots are booked, the system automatically creates a second session scheduled 30 minutes after this one ends â‚¬" using the same title, tutor, and description.
  </div>
@@ -121,7 +121,7 @@
 
  <div style="display:flex;gap:10px;flex-wrap:wrap;">
  <button type="submit" style="flex:1;min-width:160px;height:46px;border-radius:12px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">
- <i class="fas fa-calendar"></i> Create Clinic
+ <i class="fa-solid fa-calendar"></i> Create Clinic
  </button>
  <a href="{{ route('admin.clinics') }}" style="flex:1;min-width:120px;height:46px;border-radius:12px;background:#F4F6F4;color:var(--ink);font-size:15px;font-weight:600;border:none;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">
  Cancel

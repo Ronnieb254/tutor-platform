@@ -24,7 +24,7 @@
  <img src="{{ $course->tutor->avatar_url }}" style="width:20px;height:20px;border-radius:999px;object-fit:cover;">
  {{ $course->tutor->name }}
  </span>
- <span style="font-size:12px;color:var(--muted);"><i class="fas fa-hourglass-half"></i> {{ $course->total_lessons }} lessons</span>
+ <span style="font-size:12px;color:var(--muted);"><i class="fa-solid fa-hourglass-half"></i> {{ $course->total_lessons }} lessons</span>
  </div>
  @if($course->description)
  <p style="font-size:15px;color:var(--muted);line-height:1.8;">{{ $course->description }}</p>
@@ -34,12 +34,12 @@
  @if($course->lessons->isNotEmpty())
  <div class="card" style="margin-top:20px;overflow:hidden;">
  <div style="padding:18px 22px;border-bottom:1px solid var(--hair);">
- <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);"><span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span>Course Lessons</h3>
+ <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);"><span style="font-size:inherit;"><i class="fa-solid fa-clipboard"></i></span>Course Lessons</h3>
  </div>
  @foreach($course->lessons as $lesson)
  <div style="display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid rgba(21,40,31,.05);">
  <div style="width:32px;height:32px;border-radius:9px;background:{{ $enrolled || $lesson->is_free_preview ? 'var(--trust-blue)' : '#F4F6F4' }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
- <span style="color:{{ $enrolled || $lesson->is_free_preview ? '#fff' : 'var(--muted)' }};font-size:11px;">{{ $enrolled || $lesson->is_free_preview ? '<i class="fas fa-play"></i>' : '<i class="fas fa-lock"></i>' }}</span>
+ <span style="color:{{ $enrolled || $lesson->is_free_preview ? '#fff' : 'var(--muted)' }};font-size:11px;">{{ $enrolled || $lesson->is_free_preview ? '<i class="fa-solid fa-play"></i>' : '<i class="fa-solid fa-lock"></i>' }}</span>
  </div>
  <div style="flex:1;">
  <div style="font-size:14px;font-weight:500;color:var(--ink);">{{ $lesson->title }}</div>
@@ -61,7 +61,7 @@
  </div>
  @if($enrolled)
  <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:14px;padding:14px;text-align:center;margin-bottom:14px;">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  <span style="font-weight:700;color:var(--mint);">You're enrolled!</span>
  </div>
  @else
@@ -69,20 +69,20 @@
  <form method="POST" action="{{ route('courses.enroll', $course->slug) }}" style="margin-bottom:12px;">
  @csrf
  <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;padding:14px;font-size:15px;">
- <i class="fas {{ $course->is_free ? 'fa-play-circle' : 'fa-credit-card' }}"></i>
+ <i class="fa-solid {{ $course->is_free ? 'fa-play-circle' : 'fa-credit-card' }}"></i>
  {{ $course->is_free ? 'Enrol Free' : 'Enrol â‚¬" KSh '.number_format($course->price) }}
  </button>
  </form>
  @else
  <a href="{{ route('register') }}" class="btn btn-v" style="width:100%;justify-content:center;padding:14px;font-size:15px;margin-bottom:12px;display:flex;">
- <i class="fas fa-user"></i> Sign Up to Enrol
+ <i class="fa-solid fa-user"></i> Sign Up to Enrol
  </a>
  @endauth
  @endif
  <div style="background:#F9FAF9;border-radius:12px;padding:14px;">
  @foreach(['Full lifetime access to all lessons','Learn at your own pace','TSC-registered instructor','Certificate upon completion'] as $f)
  <div style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);margin-bottom:7px;">
- <i class="fas fa-check-circle"></i>{{ $f }}
+ <i class="fa-solid fa-check-circle"></i>{{ $f }}
  </div>
  @endforeach
  </div>

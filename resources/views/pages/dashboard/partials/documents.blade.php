@@ -1,5 +1,5 @@
 ﻿{{-- •Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â
- <i class="fas fa-sticky-note"></i> pages/dashboard/partials/documents.blade.php
+ <i class="fa-solid fa-sticky-note"></i> pages/dashboard/partials/documents.blade.php
  Included by: pages/dashboard/tutor.blade.php
  Variables expected: $profile, $isApproved, $verificationStatus
 •Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â•Â --}}
@@ -9,10 +9,10 @@
  $docs = $profile?->documents ?? collect();
  $docTypes = [
  'national_id' => ['National ID / Passport', '🪪', 'Required'],
- 'tsc_certificate' => ['TSC Certificate', '<i class="fas fa-scroll"></i>', 'Required'],
- 'certificate_of_good_conduct' => ['Certificate of Good Conduct', '<i class="fas fa-shield-alt"></i>', 'Optional'],
- 'degree_certificate' => ['Academic Certificate', '<i class="fas fa-graduation-cap"></i>', 'Required'],
- 'passport_photo' => ['Passport Photo', '<i class="fas fa-camera"></i>', 'Required'],
+ 'tsc_certificate' => ['TSC Certificate', '<i class="fa-solid fa-scroll"></i>', 'Required'],
+ 'certificate_of_good_conduct' => ['Certificate of Good Conduct', '<i class="fa-solid fa-shield-alt"></i>', 'Optional'],
+ 'degree_certificate' => ['Academic Certificate', '<i class="fa-solid fa-graduation-cap"></i>', 'Required'],
+ 'passport_photo' => ['Passport Photo', '<i class="fa-solid fa-camera"></i>', 'Required'],
  ];
 
  // Check which required docs are uploaded/approved
@@ -42,7 +42,7 @@
  {{-- "â‚¬"â‚¬ Overall status banner "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
  @if($isApproved)
  <div class="status-banner status-approved" style="margin-bottom:24px;">
- <span style="font-size:24px;"><i class="fas fa-check-circle"></i></span>
+ <span style="font-size:24px;"><i class="fa-solid fa-check-circle"></i></span>
  <div>
  <div style="font-weight:700;color:#166534;font-size:15px;">Fully Verified</div>
  <div style="font-size:13px;color:#4ADE80;">
@@ -53,7 +53,7 @@
 
  @elseif(!$allRequiredUploaded)
  <div class="status-banner status-pending" style="margin-bottom:24px;">
- <span style="font-size:24px;"><i class="fas fa-file-alt"></i></span>
+ <span style="font-size:24px;"><i class="fa-solid fa-file-alt"></i></span>
  <div>
  <div style="font-weight:700;color:#854D0E;font-size:15px;">Upload All Required Documents</div>
  <div style="font-size:13px;color:#92400E;">
@@ -67,7 +67,7 @@
 
  @elseif($verificationStatus === 'under_review')
  <div class="status-banner status-pending" style="margin-bottom:24px;">
- <span style="font-size:24px;"><i class="fas fa-clock"></i></span>
+ <span style="font-size:24px;"><i class="fa-solid fa-clock"></i></span>
  <div>
  <div style="font-weight:700;color:#854D0E;font-size:15px;">Under Review</div>
  <div style="font-size:13px;color:#92400E;">
@@ -79,7 +79,7 @@
 
  @elseif($verificationStatus === 'action_required')
  <div class="status-banner status-rejected" style="margin-bottom:24px;">
- <span style="font-size:24px;"><i class="fas fa-exclamation-triangle"></i></span>
+ <span style="font-size:24px;"><i class="fa-solid fa-exclamation-triangle"></i></span>
  <div>
  <div style="font-weight:700;color:#991B1B;font-size:15px;">Action Required</div>
  <div style="font-size:13px;color:#B91C1C;">
@@ -92,7 +92,7 @@
  {{-- "â‚¬"â‚¬ Subject requirement banner (shown when all docs approved but no subjects) "â‚¬"â‚¬ --}}
  @if($needsSubjects && !$isApproved)
  <div class="status-banner" style="background:#FEF3C7;border:1px solid #FDE68A;margin-bottom:24px;">
- <span style="font-size:22px;flex-shrink:0;"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span></span>
+ <span style="font-size:22px;flex-shrink:0;"><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span></span>
  <div style="flex:1;">
  <div style="font-weight:700;color:#92400E;font-size:15px;">Select Your Teaching Subjects</div>
  <div style="font-size:13px;color:#78350F;margin-top:3px;line-height:1.6;">
@@ -115,7 +115,7 @@
  @if(!$isApproved)
  <div class="card card-p" style="margin-bottom:20px;">
  <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;">
- <i class="fas fa-list-check"></i> Requirements before review
+ <i class="fa-solid fa-list-check"></i> Requirements before review
  </div>
  <div style="display:flex;flex-direction:column;gap:10px;">
  @foreach([
@@ -125,7 +125,7 @@
  <div style="display:flex;align-items:center;gap:10px;">
  <div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
  background:{{ $done ? 'rgba(16,185,129,.15)' : 'rgba(232,82,42,.1)' }};">
- <span class="{{ $done ? 'fa-check' : 'fa-xmark' }}" style="font-size:inherit;"><i class="fas fa-check-circle"></i></span>
+ <span class="{{ $done ? 'fa-check' : 'fa-xmark' }}" style="font-size:inherit;"><i class="fa-solid fa-check-circle"></i></span>
  </div>
  <span style="font-size:13px;color:{{ $done ? '#059669' : 'var(--ink)' }};font-weight:{{ $done ? '500' : '600' }};">
  {{ $label }}
@@ -158,7 +158,7 @@
  background:{{ $stepDone ? 'var(--mint)' : ($stepActive ? 'var(--trust-blue)' : '#fff') }};
  color:{{ ($stepDone || $stepActive) ? '#fff' : 'var(--muted)' }};
  border-right:{{ !$loop->last ? '1px solid var(--hair)' : 'none' }};">
- {!! $stepDone ? '<i class="fas fa-check-circle"></i>' : $num !!}. {{ $step }}
+ {!! $stepDone ? '<i class="fa-solid fa-check-circle"></i>' : $num !!}. {{ $step }}
  </div>
  @endforeach
  </div>
@@ -210,13 +210,13 @@
  {{-- Subtitle --}}
  @if($doc)
  <div style="font-size:12px;color:var(--muted);">
- <i class="fas fa-file"></i>{{ $doc->original_name ?? 'Uploaded file' }}
+ <i class="fa-solid fa-file"></i>{{ $doc->original_name ?? 'Uploaded file' }}
  &nbsp;·&nbsp;
  {{ $doc->created_at->format('M j, Y') }}
  </div>
  @if($doc->admin_note)
  <div style="font-size:12px;color:var(--coral);margin-top:4px;font-weight:500;">
- <i class="fas fa-comments"></i>Admin: {{ $doc->admin_note }}
+ <i class="fa-solid fa-comments"></i>Admin: {{ $doc->admin_note }}
  </div>
  @endif
  @else
@@ -224,7 +224,7 @@
  color:{{ $isMissing ? 'var(--coral)' : 'var(--muted)' }};
  font-weight:{{ $isMissing ? '600' : '400' }};">
  @if($isMissing)
- <i class="fas fa-exclamation-triangle"></i>Required â‚¬" please upload this document
+ <i class="fa-solid fa-exclamation-triangle"></i>Required â‚¬" please upload this document
  @else
  No document uploaded yet
  @endif
@@ -241,7 +241,7 @@
  <button type="button"
  onclick="viewDocPopup('{{ route('tutor.documents.view', $doc->id) }}', {{ $doc->file_path && str_ends_with(strtolower($doc->file_path), '.pdf') ? 'true' : 'false' }}, '{{ addslashes($label) }}')"
  class="btn btn-o btn-sm">
- <span style="font-size:inherit;"><i class="fas fa-eye"></i></span> View
+ <span style="font-size:inherit;"><i class="fa-solid fa-eye"></i></span> View
  </button>
  @endif
 
@@ -261,7 +261,7 @@
  color:{{ $isMissing ? '#fff' : 'inherit' }};"
  onmouseover="this.style.opacity='.85'"
  onmouseout="this.style.opacity='1'">
- <i class="fas fa-upload"></i>
+ <i class="fa-solid fa-upload"></i>
  {{ $doc ? 'Re-upload' : ($isMissing ? 'Upload Now' : 'Upload') }}
  <input type="file"
  name="document"

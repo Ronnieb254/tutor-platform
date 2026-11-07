@@ -125,7 +125,7 @@ $canJoin = $groupSession->canJoin($user);
  <div style="display:flex;gap:8px;">
  @if($canJoin)
  <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="padding:7px 14px;font-size:12px;">
- <i class="fas fa-video"></i> Join as Moderator
+ <i class="fa-solid fa-video"></i> Join as Moderator
  </a>
  @endif
  <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost" style="padding:7px 14px;font-size:12px;">
@@ -137,7 +137,7 @@ $canJoin = $groupSession->canJoin($user);
  <div class="content">
  @if(session('success'))
  <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-check-circle"></i> {{ session('success') }}
+ <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
  </div>
  @endif
 
@@ -162,7 +162,7 @@ $canJoin = $groupSession->canJoin($user);
  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;" class="meta-g">
  @foreach([['fa-calendar','Date',$groupSession->scheduled_at->format('M j, Y')],['fa-clock','Time',$groupSession->scheduled_at->format('g:ia')],['fa-hourglass','Duration',$groupSession->duration_minutes.' min']] as [$ic,$lbl,$val])
  <div style="background:rgba(21,40,31,.02);border-radius:10px;padding:12px;">
- <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;"><i class="fas {{ $ic }}"></i>{{ $lbl }}</p>
+ <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;"><i class="fa-solid {{ $ic }}"></i>{{ $lbl }}</p>
  <p style="font-size:15px;font-weight:700;color:var(--ink);">{{ $val }}</p>
  </div>
  @endforeach
@@ -176,7 +176,7 @@ $canJoin = $groupSession->canJoin($user);
  <form method="POST" action="{{ route('tutor.group-sessions.cancel', $groupSession) }}" onsubmit="return confirm('Are you sure you want to cancel this session? Enrolled students will be notified.');">
  @csrf
  <button type="submit" class="btn btn-danger" style="padding:8px 16px;font-size:12px;">
- <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancel Session
+ <span style="font-size:inherit;"><i class="fa-solid fa-ban"></i></span> Cancel Session
  </button>
  </form>
  </div>
@@ -191,7 +191,7 @@ $canJoin = $groupSession->canJoin($user);
  </div>
  @if($groupSession->enrollments->isEmpty())
  <div style="padding:32px;text-align:center;">
- <i class="fas fa-user"></i>
+ <i class="fa-solid fa-user"></i>
  <p style="font-size:13px;color:var(--muted);">No students enrolled yet.</p>
  </div>
  @else
@@ -210,7 +210,7 @@ $canJoin = $groupSession->canJoin($user);
  <tr style="border-top:1px solid var(--hair);">
  <td style="padding:12px 16px;">
  <div style="display:flex;align-items:center;gap:8px;">
- <div style="width:28px;height:28px;border-radius:8px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-user"></i></div>
+ <div style="width:28px;height:28px;border-radius:8px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-user"></i></div>
  <div>
  <p style="font-weight:600;color:var(--ink);margin:0;">{{ $enroll->student?->name ?? 'Unknown' }}</p>
  <p style="font-size:11px;color:var(--muted);margin:0;">{{ $enroll->student?->email }}</p>
@@ -252,7 +252,7 @@ $canJoin = $groupSession->canJoin($user);
 
  @if($canJoin)
  <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="width:100%;justify-content:center;margin-top:16px;">
- <i class="fas fa-video"></i> Join as Moderator
+ <i class="fa-solid fa-video"></i> Join as Moderator
  </a>
  @endif
 

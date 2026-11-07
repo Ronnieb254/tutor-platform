@@ -20,7 +20,7 @@
  <div style="position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:rgba(10,100,188,.1);border-radius:50%;pointer-events:none;"></div>
  <div style="max-width:1360px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(10,100,188,.3);color:rgba(255,255,255,.9);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:20px;">
- <i class="fas fa-info-circle"></i> Simple · Secure · Effective
+ <i class="fa-solid fa-info-circle"></i> Simple · Secure · Effective
  </div>
  <h1 style="font-family:'Fraunces',serif;font-size:clamp(36px,6vw,64px);color:#fff;margin-bottom:16px;line-height:1.1;">Learning made <span style="color:#EEBE15;">simple.</span></h1>
  <p style="font-size:18px;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto 32px;line-height:1.8;">
@@ -29,26 +29,26 @@
  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:48px;">
  @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fas fa-search"></i> Find a Tutor
+ <i class="fa-solid fa-search"></i> Find a Tutor
  </a>
  @if(!auth()->check() || auth()->user()->role === 'parent')
  <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
- <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span> Become a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @endif
  @elseif(auth()->check() && auth()->user()->role === 'admin')
  <a href="{{ route('admin.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fas fa-chart-bar"></i> Admin Dashboard
+ <i class="fa-solid fa-chart-bar"></i> Admin Dashboard
  </a>
  @else
  <a href="{{ route('tutor.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fas fa-chart-bar"></i> Go to Dashboard
+ <i class="fa-solid fa-chart-bar"></i> Go to Dashboard
  </a>
  @endif
  </div>
  {{-- Trust stats --}}
  <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;padding-top:36px;border-top:1px solid rgba(255,255,255,.1);">
- @foreach([['500+','Verified Tutors'],['4.9â˜…','Average Rating'],['10,000+','Sessions Done'],['48hr','Max Approval Time'],['80+','Subjects']] as [$n,$l])
+ @foreach([['500+','Verified Tutors'],['4.9<i class="fa-solid fa-star" style="font-size:inherit;color:#EEBE15;"></i>','Average Rating'],['10,000+','Sessions Done'],['48hr','Max Approval Time'],['80+','Subjects']] as [$n,$l])
  <div style="text-align:center;">
  <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#fff;">{{ $n }}</div>
  <div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:3px;">{{ $l }}</div>
@@ -71,12 +71,12 @@
  <button type="button" @click="role='student'"
  :style="role==='student' ? 'background:linear-gradient(135deg,#0A64BC,#120A8F);color:#fff;box-shadow:0 4px 16px rgba(10,100,188,.35);' : 'background:transparent;color:rgba(21,40,31,.5);'"
  style="padding:16px 44px;border-radius:999px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:9px;">
- <i class="fas fa-graduation-cap"></i> I'm a Student / Parent
+ <i class="fa-solid fa-graduation-cap"></i> I'm a Student / Parent
  </button>
  <button type="button" @click="role='tutor'"
  :style="role==='tutor' ? 'background:linear-gradient(135deg,#0A64BC,#120A8F);color:#fff;box-shadow:0 4px 16px rgba(10,100,188,.35);' : 'background:transparent;color:rgba(21,40,31,.5);'"
  style="padding:16px 44px;border-radius:999px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:9px;">
- <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span> I'm a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> I'm a Tutor
  </button>
  </div>
 
@@ -94,7 +94,7 @@
  @foreach($studentSteps as [$num,$icon,$color,$title,$desc,$p1,$p2,$p3,$p4])
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;display:flex;gap:20px;align-items:flex-start;box-shadow:0 2px 16px rgba(21,40,31,.04);">
  <div style="width:52px;height:52px;border-radius:16px;background:{{ $color }};display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;">
- <i class="fas {{ $icon }}"></i>
+ <i class="fa-solid {{ $icon }}"></i>
  <span style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#fff;border:2px solid {{ $color }};border-radius:50%;font-size:10px;font-weight:800;color:{{ $color }};display:flex;align-items:center;justify-content:center;">{{ $num }}</span>
  </div>
  <div style="flex:1;">
@@ -104,7 +104,7 @@
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;" class="pt-g">
  @foreach([$p1,$p2,$p3,$p4] as $pt)
  <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;color:#15281F;">
- <i class="fas fa-check-circle"></i>{{ $pt }}
+ <i class="fa-solid fa-check-circle"></i>{{ $pt }}
  </div>
  @endforeach
  </div>
@@ -130,7 +130,7 @@
  @foreach($tutorSteps as [$num,$icon,$color,$title,$desc,$p1,$p2,$p3,$p4])
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;display:flex;gap:20px;align-items:flex-start;box-shadow:0 2px 16px rgba(21,40,31,.04);">
  <div style="width:52px;height:52px;border-radius:16px;background:{{ $color }};display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;">
- <i class="fas {{ $icon }}"></i>
+ <i class="fa-solid {{ $icon }}"></i>
  <span style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#fff;border:2px solid {{ $color }};border-radius:50%;font-size:10px;font-weight:800;color:{{ $color }};display:flex;align-items:center;justify-content:center;">{{ $num }}</span>
  </div>
  <div style="flex:1;">
@@ -140,7 +140,7 @@
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;" class="pt-g">
  @foreach([$p1,$p2,$p3,$p4] as $pt)
  <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;color:#15281F;">
- <i class="fas fa-check-circle"></i>{{ $pt }}
+ <i class="fa-solid fa-check-circle"></i>{{ $pt }}
  </div>
  @endforeach
  </div>
@@ -179,7 +179,7 @@
  
  </div>
  <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:10px;">{{ $desc }}</p>
- <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fas fa-check-circle"></i>{{ $ideal }}</p>
+ <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fa-solid fa-check-circle"></i>{{ $ideal }}</p>
  <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
  </div>
  @endforeach
@@ -187,7 +187,7 @@
  <div style="text-align:center;margin-top:28px;">
  @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
- <i class="fas fa-search"></i> Browse Tutors & Book Now
+ <i class="fa-solid fa-search"></i> Browse Tutors & Book Now
  </a>
  @endif
  </div>
@@ -201,7 +201,7 @@
  <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="code-grid">
  <div>
  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(10,100,188,.1);color:#0A64BC;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:22px;">
- <span style="font-size:inherit;"><i class="fas fa-key"></i></span> Secure Session Access
+ <span style="font-size:inherit;"><i class="fa-solid fa-key"></i></span> Secure Session Access
  </div>
  <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#15281F;margin-bottom:16px;">Your unique session access code</h2>
  <p style="font-size:16px;color:rgba(21,40,31,.6);line-height:1.85;margin-bottom:28px;">After booking and payment, both tutor and student receive a unique one-time access code by email. This ensures only the right people join each private session - no uninvited guests.</p>
@@ -214,7 +214,7 @@
  ] as [$icon,$title,$desc])
  <div style="display:flex;align-items:flex-start;gap:14px;">
  <div style="width:44px;height:44px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
- <i class="fas {{ $icon }}"></i>
+ <i class="fa-solid {{ $icon }}"></i>
  </div>
  <div>
  <div style="font-weight:700;font-size:15px;color:#15281F;">{{ $title }}</div>
@@ -240,7 +240,7 @@
  </div>
  </div>
  <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;">
- <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span> How to join</p>
+ <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><span style="font-size:inherit;"><i class="fa-solid fa-clipboard"></i></span> How to join</p>
  @foreach(['1. Open your booking in your Mwalimu dashboard','2. Click "Join Session" button','3. Enter your code (STU- or TUT-)','4. Classroom opens instantly in your browser'] as $step)
  <p style="font-size:13px;color:rgba(21,40,31,.6);margin-bottom:5px;">{{ $step }}</p>
  @endforeach
@@ -313,7 +313,7 @@
  style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;font-weight:600;font-size:15px;color:#15281F;transition:background .15s;"
  onmouseover="this.style.background='#FAFCFA'" onmouseout="this.style.background='transparent'">
  <span>{{ $q }}</span>
- <i class="fas fa-chevron-down faq-chevron"></i>
+ <i class="fa-solid fa-chevron-down faq-chevron"></i>
  </div>
  <div class="faq-answer">{{ $a }}</div>
  </div>
@@ -329,14 +329,14 @@
  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
  @if(!auth()->check() || !in_array(auth()->user()->role, ['tutor','admin']))
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:#0A64BC;color:#fff;font-size:16px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fas fa-search"></i> Find a Tutor
+ <i class="fa-solid fa-search"></i> Find a Tutor
  </a>
  <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.3);font-size:16px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
- <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span> Become a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @else
  <a href="{{ route('tutor.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:#0A64BC;color:#fff;font-size:16px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fas fa-chart-bar"></i> Go to Dashboard
+ <i class="fa-solid fa-chart-bar"></i> Go to Dashboard
  </a>
  @endif
  </div>

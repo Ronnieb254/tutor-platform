@@ -319,7 +319,7 @@
  buttons: [
  { 
  extend: 'copy', 
- text: '<i class="fas fa-copy"></i> Copy', 
+ text: '<i class="fa-solid fa-copy"></i> Copy', 
  className: 'btn-dt',
  exportOptions: {
  columns: ':visible:not(.no-export)'
@@ -327,7 +327,7 @@
  },
  { 
  extend: 'csv', 
- text: '<i class="fas fa-file-alt"></i> CSV', 
+ text: '<i class="fa-solid fa-file-alt"></i> CSV', 
  className: 'btn-dt',
  exportOptions: {
  columns: ':visible:not(.no-export)'
@@ -335,7 +335,7 @@
  },
  { 
  extend: 'excel', 
- text: '<i class="fas fa-file-alt"></i> Excel', 
+ text: '<i class="fa-solid fa-file-alt"></i> Excel', 
  className: 'btn-dt',
  exportOptions: {
  columns: ':visible:not(.no-export)'
@@ -343,7 +343,7 @@
  },
  { 
  extend: 'pdf', 
- text: '<i class="fas fa-file-alt"></i> PDF', 
+ text: '<i class="fa-solid fa-file-alt"></i> PDF', 
  className: 'btn-dt',
  exportOptions: {
  columns: ':visible:not(.no-export)'
@@ -351,7 +351,7 @@
  },
  { 
  extend: 'print', 
- text: '<i class="fas fa-print"></i> Print', 
+ text: '<i class="fa-solid fa-print"></i> Print', 
  className: 'btn-dt',
  exportOptions: {
  columns: ':visible:not(.no-export)'

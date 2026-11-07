@@ -143,7 +143,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  <div class="content">
  @if($errors->any())
  <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:14px 18px;border-radius:12px;margin-bottom:20px;">
- <p style="font-weight:700;margin-bottom:6px;"><i class="fas fa-triangle-exclamation"></i> Please fix the following errors:</p>
+ <p style="font-weight:700;margin-bottom:6px;"><i class="fa-solid fa-triangle-exclamation"></i> Please fix the following errors:</p>
  <ul style="padding-left:18px;font-size:13px;">
  @foreach($errors->all() as $err)<li>{{ $err }}</li>@endforeach
  </ul>
@@ -157,7 +157,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  {{-- SESSION BASICS --}}
  <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
  <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
- <i class="fas fa-info-circle"></i>Session Details
+ <i class="fa-solid fa-info-circle"></i>Session Details
  </h2>
 
  <div class="field">
@@ -195,7 +195,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  {{-- SCHEDULE --}}
  <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
  <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
- <i class="fas fa-calendar"></i>Schedule & Pricing
+ <i class="fa-solid fa-calendar"></i>Schedule & Pricing
  </h2>
 
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-2col">
@@ -236,7 +236,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
  <div>
  <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:4px;">
- <i class="fas fa-layer-group"></i>Multi-Session Series
+ <i class="fa-solid fa-layer-group"></i>Multi-Session Series
  </h2>
  <p style="font-size:13px;color:var(--muted);">Create a recurring cohort (e.g. 6-week series). Students enroll per session.</p>
  </div>
@@ -265,7 +265,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  </div>
  </div>
  <div style="margin-top:12px;padding:12px 14px;background:rgba(212,160,23,.07);border-radius:10px;border:1px solid rgba(212,160,23,.2);">
- <p style="font-size:13px;color:#B7870A;"><i class="fas fa-info-circle"></i>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
+ <p style="font-size:13px;color:#B7870A;"><i class="fa-solid fa-info-circle"></i>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
  </div>
  </div>
  </div>
@@ -273,7 +273,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  {{-- SUBMIT --}}
  <div style="display:flex;gap:12px;align-items:center;">
  <button type="submit" class="btn btn-primary" style="padding:13px 32px;font-size:15px;">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  <span x-text="isSeries ? 'Create Series' : 'Create Session'">Create Session</span>
  </button>
  <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost">Cancel</a>

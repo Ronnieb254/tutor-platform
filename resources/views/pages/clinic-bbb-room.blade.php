@@ -41,17 +41,17 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <span style="font-size:inherit;">←</span> Back
  </a>
  <div class="session-title">
- <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span>
  {{ $clinic->title ?? $clinic->name }}
  </div>
  <div class="session-meta">
  <span class="dot"></span>
  <span class="time">{{ $clinic->scheduled_at->format('D, M j · g:ia') }}</span>
  @if($isModerator)
- <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
+ <span class="moderator-badge"><i class="fa-solid fa-shield-alt"></i> MODERATOR</span>
  @endif
  <span class="recording-indicator" id="recIndicator">
- <i class="fas fa-circle" style="color:#ff4444;"></i> REC
+ <i class="fa-solid fa-circle" style="color:#ff4444;"></i> REC
  </span>
  </div>
  </div>
@@ -63,11 +63,11 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">{{ $sessionCode }}</p>
  </div>
  <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
- <i class="fas fa-copy"></i>
+ <i class="fa-solid fa-copy"></i>
  </button>
  @endif
  <button onclick="leaveSession()" class="exit-btn">
- <i class="fas fa-phone"></i> Leave
+ <i class="fa-solid fa-phone"></i> Leave
  </button>
  </div>
  </div>
@@ -187,10 +187,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  function copySessionCode() {
  navigator.clipboard.writeText(sessionCode).then(() => {
  const btn = document.getElementById('copyBtn');
- btn.innerHTML = '<i class="fas fa-check-circle"></i>';
+ btn.innerHTML = '<i class="fa-solid fa-check-circle"></i>';
  btn.classList.add('copied');
  setTimeout(() => {
- btn.innerHTML = '<i class="fas fa-copy"></i>';
+ btn.innerHTML = '<i class="fa-solid fa-copy"></i>';
  btn.classList.remove('copied');
  }, 2000);
  }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));

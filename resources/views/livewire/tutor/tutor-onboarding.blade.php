@@ -89,7 +89,7 @@
  </div>
  @endforeach
  </div>
- <p class="text-xs text-muted mt-3">{{ count($selectedSubjects) }}/2 subject(s) selected @if(count($selectedSubjects) >= 2)<span class="text-mint"><i class="fas fa-check-circle"></i> Maximum reached</span>@endif</p>
+ <p class="text-xs text-muted mt-3">{{ count($selectedSubjects) }}/2 subject(s) selected @if(count($selectedSubjects) >= 2)<span class="text-mint"><i class="fa-solid fa-check-circle"></i> Maximum reached</span>@endif</p>
  <div class="flex justify-between mt-6">
  <button wire:click="prevStep" class="pill-btn-outline px-6">" Â Back</button>
  <button wire:click="nextStep" class="pill-btn-primary px-8">Continue " '</button>
@@ -156,7 +156,7 @@
  <p class="text-xs text-muted mt-1">Degree, diploma, or academic qualification certificate</p>
  </div>
  <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
- <label class="form-label"><i class="fas fa-sticky-note"></i>¸ Passport Size Photo <span class="text-coral">* Required</span></label>
+ <label class="form-label"><i class="fa-solid fa-sticky-note"></i>¸ Passport Size Photo <span class="text-coral">* Required</span></label>
  <input type="file" wire:model="passportPhoto" accept=".jpg,.jpeg,.png" class="text-sm text-muted">
  @error('passportPhoto')<p class="form-error">{{ $message }}</p>@enderror
  <p class="text-xs text-muted mt-1">Recent passport-size photograph</p>

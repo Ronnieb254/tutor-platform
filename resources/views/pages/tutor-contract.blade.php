@@ -23,14 +23,14 @@
 <div class="contract-container">
  <div class="contract-card">
  <div style="text-align: center; margin-bottom: 32px;">
- <i class="fas fa-file-alt"></i>
+ <i class="fa-solid fa-file-alt"></i>
  <h1 style="font-family: 'Fraunces', serif; font-size: 32px; color: var(--ink); margin-bottom: 8px;">Tutor Services Agreement</h1>
  <p style="color: var(--muted);">Please read carefully before accepting</p>
  </div>
 
  @if(session('error'))
  <div style="background: rgba(239,68,68,.1); border-left: 3px solid #EF4444; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
- <p style="color: #991B1B; margin: 0;"><i class="fas fa-exclamation-triangle"></i> {{ session('error') }}</p>
+ <p style="color: #991B1B; margin: 0;"><i class="fa-solid fa-exclamation-triangle"></i> {{ session('error') }}</p>
  </div>
  @endif
 
@@ -106,7 +106,7 @@
  <p>6.2 The Tutor's compensation is the percentage of the lesson fee set out in Schedule A.</p>
  <p>6.3 Mwalimu collects payment from the learner or parent/guardian, holds it until the session is completed, deducts its commission as set out in Schedule A, and remits the balance to the Tutor. No other deduction is made except a deduction required by law or permitted by this Agreement.</p>
  <p>6.4 Mwalimu pays the Tutor's net amount to the verified M-Pesa or bank account the Tutor has designated, on the payout schedule in Schedule A.</p>
- <p>6.5 Mwalimu may withhold a disputed amount only as far as reasonably necessary to investigate a genuine complaint, suspected fraud, an undelivered lesson, a review request, or a payment reversal. Mwalimu shall tell the Tutor the reason, resolve the matter within a reasonable time, and pay any amount found due in the next payout.</p>
+ <p>6.5 Mwalimu may withhold a disputed amount only as fa-regular as reasonably necessary to investigate a genuine complaint, suspected fraud, an undelivered lesson, a review request, or a payment reversal. Mwalimu shall tell the Tutor the reason, resolve the matter within a reasonable time, and pay any amount found due in the next payout.</p>
  <p>6.6 If a refund is due because of the Tutor's cancellation, no-show or breach, and the lesson fee has already been paid out, Mwalimu may deduct the amount from future payouts.</p>
  <p>6.7 The Tutor shall not misrepresent lesson completion, collude with a learner to create fraudulent transactions, or claim payment for lessons not delivered.</p>
  <p>6.8 The Tutor shall not collect any additional fee from a parent or learner for a Platform booking.</p>
@@ -161,7 +161,7 @@
  <h3>11. INTELLECTUAL PROPERTY AND TEACHING MATERIALS</h3>
  <p>11.1 Each Party keeps the intellectual property it owned or developed independently before this Agreement.</p>
  <p>11.2 The Tutor keeps ownership of pre-existing teaching materials, original notes, exercises and other resources developed independently of Mwalimu.</p>
- <p>11.3 The Tutor grants Mwalimu a non-exclusive licence to use materials the Tutor supplies only as far as necessary to facilitate booked lessons and provide the agreed services, unless a broader licence is agreed in writing.</p>
+ <p>11.3 The Tutor grants Mwalimu a non-exclusive licence to use materials the Tutor supplies only as fa-regular as necessary to facilitate booked lessons and provide the agreed services, unless a broader licence is agreed in writing.</p>
  <p>11.4 The Tutor shall not upload or distribute copyrighted material unless the Tutor owns it or has permission or another lawful basis.</p>
  <p>11.5 The Tutor shall not reproduce or sell Mwalimu's confidential teaching resources, internal training materials, software or proprietary content without written permission.</p>
  <p>11.6 Neither Party shall use the other's trademarks, logo or branding outside the scope of this Agreement without permission.</p>
@@ -205,7 +205,7 @@
  <p>15.2 Mwalimu may temporarily suspend the Tutor's profile or access where reasonably necessary to investigate: (a) suspected fraud or falsification of credentials; (b) serious or repeated learner complaints; (c) safeguarding concerns; (d) breaches of privacy or confidentiality; (e) repeated cancellations, non-attendance or poor service; or (f) a legal or regulatory concern affecting the Tutor's eligibility.</p>
  <p>15.3 Mwalimu may terminate this Agreement immediately where there is credible evidence of serious misconduct, abuse, exploitation, fraud, deliberate data misuse, material dishonesty or another serious breach that justifies immediate termination.</p>
  <p>15.4 Where a breach can be remedied and does not need immediate protective action, Mwalimu will ordinarily notify the Tutor and allow a reasonable opportunity to respond or remedy it.</p>
- <p>15.5 On termination: (a) the Tutor stops receiving new bookings; (b) the Tutor shall complete or appropriately hand over existing bookings unless Mwalimu directs otherwise; (c) Mwalimu shall pay all amounts due for delivered lessons in the next payout, less lawful deductions; and (d) the clauses on confidentiality, data protection, intellectual property, accrued payment obligations, liability and dispute resolution survive as far as necessary.</p>
+ <p>15.5 On termination: (a) the Tutor stops receiving new bookings; (b) the Tutor shall complete or appropriately hand over existing bookings unless Mwalimu directs otherwise; (c) Mwalimu shall pay all amounts due for delivered lessons in the next payout, less lawful deductions; and (d) the clauses on confidentiality, data protection, intellectual property, accrued payment obligations, liability and dispute resolution survive as fa-regular as necessary.</p>
  </div>
 
  {{-- "â‚¬"â‚¬ 16. Dispute resolution "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
@@ -223,10 +223,10 @@
  <h3>17. GENERAL PROVISIONS</h3>
  <p>17.1 <strong>Entire agreement.</strong> This Agreement, including its Schedules and the policies incorporated under clause 17.7, is the entire agreement between the Parties on its subject matter and replaces earlier discussions on it.</p>
  <p>17.2 <strong>Amendments.</strong> Any material amendment must be communicated in writing and accepted by both Parties, except operational Platform policies, which may be updated in line with their disclosed terms and applicable law.</p>
- <p>17.3 <strong>Severability.</strong> If a provision is held invalid or unenforceable, the rest continues to apply as far as the law allows.</p>
+ <p>17.3 <strong>Severability.</strong> If a provision is held invalid or unenforceable, the rest continues to apply as fa-regular as the law allows.</p>
  <p>17.4 <strong>No waiver.</strong> Failure to enforce a provision immediately is not a permanent waiver.</p>
  <p>17.5 <strong>Electronic acceptance.</strong> The Parties may sign electronically or accept this Agreement through an electronic process that reliably records their identity, consent and the version accepted, subject to applicable law.</p>
- <p>17.6 <strong>Incorporated policies.</strong> The following are part of this Agreement and are made available to the Tutor during onboarding: Schedule A, Schedule B, the Learner Cancellation, Rescheduling and No-Show Policy, Mwalimu's child protection policy, and its privacy and data-handling policies. In a conflict about payment, Schedule A prevails. In a conflict about attendance or cancellation, Schedule B prevails over the Learner Policy as far as it concerns the Tutor's obligations and pay.</p>
+ <p>17.6 <strong>Incorporated policies.</strong> The following are part of this Agreement and are made available to the Tutor during onboarding: Schedule A, Schedule B, the Learner Cancellation, Rescheduling and No-Show Policy, Mwalimu's child protection policy, and its privacy and data-handling policies. In a conflict about payment, Schedule A prevails. In a conflict about attendance or cancellation, Schedule B prevails over the Learner Policy as fa-regular as it concerns the Tutor's obligations and pay.</p>
  </div>
 
  {{-- "â‚¬"â‚¬ Schedule A "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
@@ -361,7 +361,7 @@
  </label>
 
  <button type="submit" class="btn-accept" id="acceptButton" disabled>
- <i class="fas fa-check-circle"></i> Agree &amp; Sign â‚¬" I Accept the Agreement
+ <i class="fa-solid fa-check-circle"></i> Agree &amp; Sign â‚¬" I Accept the Agreement
  </button>
 
  <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px;">

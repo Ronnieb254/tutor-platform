@@ -20,7 +20,7 @@ use App\Models\PlatformSetting;
  {{-- General --}}
  <div class="card card-p">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
- <i class="fas fa-gear"></i> General
+ <i class="fa-solid fa-gear"></i> General
  </h3>
  <div style="display:flex;flex-direction:column;gap:14px;">
  <div>
@@ -69,7 +69,7 @@ use App\Models\PlatformSetting;
  {{-- Daraja M-Pesa --}}
  <div class="card card-p">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
- <i class="fas fa-sticky-note"></i>± Daraja M-Pesa Integration
+ <i class="fa-solid fa-sticky-note"></i>± Daraja M-Pesa Integration
  </h3>
  <div style="background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.3);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#92400E;">
  Å¡Â  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
@@ -122,7 +122,7 @@ use App\Models\PlatformSetting;
  {{-- Session Durations info --}}
  <div class="card card-p">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
- <i class="fas fa-clock"></i> Session Duration Pricing
+ <i class="fa-solid fa-clock"></i> Session Duration Pricing
  </h3>
  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">
  Mwalimu uses <strong>fixed platform rates</strong> for all sessions. Tutors do not set their own prices. All rates are inclusive of the platform commission.
@@ -152,7 +152,7 @@ use App\Models\PlatformSetting;
  </tbody>
  </table>
  <p style="font-size:12px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline);">
- <i class="fas fa-info-circle"></i>
+ <i class="fa-solid fa-info-circle"></i>
  To change session prices, update the <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">sessionPrices()</code> method in <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">app/Models/TutorProfile.php</code>.
  </p>
  </div>

@@ -163,27 +163,27 @@ $unreadNotifs = $user->unreadNotifications()->count();
  {{-- Flash --}}
  @if(session('success'))
  <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-check-circle"></i> {{ session('success') }}
+ <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
  </div>
  @endif
  @if(session('error'))
  <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-triangle-exclamation"></i> {{ session('error') }}
+ <i class="fa-solid fa-triangle-exclamation"></i> {{ session('error') }}
  </div>
  @endif
 
  {{-- STATS --}}
  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;" class="stats-g">
  <div class="stat-card">
- <div class="stat-icon" style="background:rgba(10,100,188,.1);"><i class="fas fa-check-circle"></i></div>
+ <div class="stat-icon" style="background:rgba(10,100,188,.1);"><i class="fa-solid fa-check-circle"></i></div>
  <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Upcoming</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">{{ $upcomingCount }}</p></div>
  </div>
  <div class="stat-card">
- <div class="stat-icon" style="background:rgba(16,185,129,.1);"><i class="fas fa-user"></i></div>
+ <div class="stat-icon" style="background:rgba(16,185,129,.1);"><i class="fa-solid fa-user"></i></div>
  <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Total Enrollments</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">{{ $totalEnrollments }}</p></div>
  </div>
  <div class="stat-card">
- <div class="stat-icon" style="background:rgba(212,160,23,.1);"><i class="fas fa-coins"></i></div>
+ <div class="stat-icon" style="background:rgba(212,160,23,.1);"><i class="fa-solid fa-coins"></i></div>
  <div><p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;">Total Earnings</p><p style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">KSh {{ number_format($totalEarnings) }}</p></div>
  </div>
  </div>
@@ -197,17 +197,17 @@ $unreadNotifs = $user->unreadNotifications()->count();
  <p style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $sessions->total() }} session{{ $sessions->total() != 1 ? 's' : '' }} total</p>
  </div>
  <a href="{{ route('tutor.group-sessions.create') }}" class="btn btn-primary" style="padding:8px 16px;font-size:13px;">
- <i class="fas fa-plus"></i> Create Session
+ <i class="fa-solid fa-plus"></i> Create Session
  </a>
  </div>
 
  @if($sessions->isEmpty())
  <div style="padding:64px;text-align:center;">
- <div style="font-size:40px;margin-bottom:12px;"><i class="fas fa-user"></i></div>
+ <div style="font-size:40px;margin-bottom:12px;"><i class="fa-solid fa-user"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:19px;color:var(--ink);margin-bottom:8px;">No group sessions yet</h3>
  <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Create your first live group class and start earning.</p>
  <a href="{{ route('tutor.group-sessions.create') }}" class="btn btn-primary">
- <i class="fas fa-plus"></i> Create Your First Session
+ <i class="fa-solid fa-plus"></i> Create Your First Session
  </a>
  </div>
  @else
@@ -233,7 +233,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  <td style="padding:14px 16px;">
  <div style="display:flex;align-items:flex-start;gap:10px;">
  <div style="width:38px;height:38px;border-radius:10px;background:rgba(212,160,23,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
- <i class="fas fa-user"></i>
+ <i class="fa-solid fa-user"></i>
  </div>
  <div>
  <p style="font-weight:600;color:var(--ink);margin-bottom:2px;">{{ Str::limit($session->title, 50) }}</p>
@@ -261,13 +261,13 @@ $unreadNotifs = $user->unreadNotifications()->count();
  <td style="padding:14px 16px;text-align:right;">
  <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
  <a href="{{ route('tutor.group-sessions.show', $session) }}" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;background:rgba(10,100,188,.08);color:#0A64BC;font-size:12px;font-weight:600;border:1px solid rgba(10,100,188,.15);">
- <span style="font-size:inherit;"><i class="fas fa-eye"></i></span> View
+ <span style="font-size:inherit;"><i class="fa-solid fa-eye"></i></span> View
  </a>
  @if($session->status === 'scheduled')
  <form method="POST" action="{{ route('tutor.group-sessions.cancel', $session) }}" onsubmit="return confirm('Cancel this group session?');">
  @csrf
  <button type="submit" style="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:8px;background:rgba(220,38,38,.06);color:#DC2626;font-size:12px;font-weight:600;border:1px solid rgba(220,38,38,.15);cursor:pointer;font-family:inherit;">
- <span style="font-size:inherit;"><i class="fas fa-ban"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-ban"></i></span>
  </button>
  </form>
  @endif
@@ -283,17 +283,17 @@ $unreadNotifs = $user->unreadNotifications()->count();
  @if($sessions->hasPages())
  <div style="padding:16px 20px;border-top:1px solid var(--hair);display:flex;justify-content:flex-end;gap:5px;flex-wrap:wrap;">
  @if($sessions->onFirstPage())
- <span style="padding:6px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:12px;"><i class="fas fa-circle-info"></i></span>
+ <span style="padding:6px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:12px;"><i class="fa-solid fa-circle-info"></i></span>
  @else
- <a href="{{ $sessions->previousPageUrl() }}" style="padding:6px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:12px;border:1px solid var(--hair);"><i class="fas fa-circle-info"></i></a>
+ <a href="{{ $sessions->previousPageUrl() }}" style="padding:6px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:12px;border:1px solid var(--hair);"><i class="fa-solid fa-circle-info"></i></a>
  @endif
  @foreach($sessions->getUrlRange(max(1,$sessions->currentPage()-2),min($sessions->lastPage(),$sessions->currentPage()+2)) as $pg => $url)
  <a href="{{ $url }}" style="padding:6px 14px;border-radius:8px;background:{{ $pg==$sessions->currentPage()?'#0A64BC':'#fff' }};color:{{ $pg==$sessions->currentPage()?'#fff':'var(--ink)' }};font-size:12px;border:1px solid {{ $pg==$sessions->currentPage()?'#0A64BC':'var(--hair)' }};">{{ $pg }}</a>
  @endforeach
  @if($sessions->hasMorePages())
- <a href="{{ $sessions->nextPageUrl() }}" style="padding:6px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:12px;border:1px solid var(--hair);"><i class="fas fa-circle-info"></i></a>
+ <a href="{{ $sessions->nextPageUrl() }}" style="padding:6px 14px;border-radius:8px;background:#fff;color:var(--ink);font-size:12px;border:1px solid var(--hair);"><i class="fa-solid fa-circle-info"></i></a>
  @else
- <span style="padding:6px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:12px;"><i class="fas fa-circle-info"></i></span>
+ <span style="padding:6px 14px;border-radius:8px;background:#F4F6F4;color:rgba(21,40,31,.35);font-size:12px;"><i class="fa-solid fa-circle-info"></i></span>
  @endif
  </div>
  @endif

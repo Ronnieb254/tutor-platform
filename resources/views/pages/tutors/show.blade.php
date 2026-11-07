@@ -69,11 +69,11 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
  <h1 style="font-family:'Fraunces',serif;font-size:clamp(24px,4vw,38px);font-weight:800;color:#fff;line-height:1.1;">{{ $tutor->user->name }}</h1>
  <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(16,185,129,.2);color:#4ADE80;border:1px solid rgba(16,185,129,.3);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;">
- <i class="fas fa-scroll"></i> TSC Verified
+ <i class="fa-solid fa-scroll"></i> TSC Verified
  </span>
  @if($tutor->is_tsc_registered ?? false)
  <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.25);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;">
- <i class="fas fa-star"></i> National Examiner
+ <i class="fa-solid fa-star"></i> National Examiner
  </span>
  @endif
  </div>
@@ -88,26 +88,26 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- Stats row --}}
  <div style="display:flex;flex-wrap:wrap;gap:20px;font-size:14px;color:rgba(255,255,255,.65);">
  <span style="display:flex;align-items:center;gap:5px;">
- <i class="fas fa-star"></i>
+ <i class="fa-solid fa-star"></i>
  <strong style="color:#fff;">{{ number_format($tutor->rating_avg,1) }}</strong>
  <span>({{ $tutor->total_reviews }} reviews)</span>
  </span>
  <span style="display:flex;align-items:center;gap:5px;">
- <i class="fas fa-circle-info"></i>
+ <i class="fa-solid fa-circle-info"></i>
  <strong style="color:#fff;">{{ number_format($tutor->total_sessions) }}</strong> sessions
  </span>
  <span style="display:flex;align-items:center;gap:5px;">
- <i class="fas fa-clock"></i>
+ <i class="fa-solid fa-clock"></i>
  <strong style="color:#fff;">{{ $tutor->experience_years }}</strong> years exp.
  </span>
  <!-- @if($tutor->city)
  <span style="display:flex;align-items:center;gap:5px;">
- <i class="fas fa-map-marker-alt"></i>
+ <i class="fa-solid fa-map-marker-alt"></i>
  {{ $tutor->city }}, Kenya
  </span>
  @endif -->
  <span style="display:flex;align-items:center;gap:5px;">
- <i class="fas fa-clock"></i>
+ <i class="fa-solid fa-clock"></i>
  Responds within 2hr
  </span>
  </div>
@@ -127,16 +127,16 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div style="overflow-x:auto;display:flex;-webkit-overflow-scrolling:touch;">
  <div style="display:flex;gap:0;margin-top:28px;" x-data="">
  <button class="ptab on" onclick="showTab('about',this)">
- <i class="fas fa-user"></i>About
+ <i class="fa-solid fa-user"></i>About
  </button>
  <button class="ptab" onclick="showTab('availability',this)">
- <i class="fas fa-calendar"></i>Availability
+ <i class="fa-solid fa-calendar"></i>Availability
  </button>
  <button class="ptab" onclick="showTab('reviews',this)">
- <i class="fas fa-star"></i>Reviews ({{ $tutor->total_reviews }})
+ <i class="fa-solid fa-star"></i>Reviews ({{ $tutor->total_reviews }})
  </button>
  <button class="ptab" onclick="showTab('book',this)" id="book-tab-btn" style="color:#EEBE15;border-bottom-color:#EEBE15;">
- <i class="fas fa-check-circle"></i>Book Session
+ <i class="fa-solid fa-check-circle"></i>Book Session
  </button>
  </div>
  </div>
@@ -162,7 +162,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  ] as [$ic,$col,$val,$lbl])
  <div style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:18px;display:flex;align-items:center;gap:14px;">
  <div style="width:42px;height:42px;border-radius:12px;background:{{ $col }}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
- <i class="fas {{ $ic }}"></i>
+ <i class="fa-solid {{ $ic }}"></i>
  </div>
  <div>
  <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#15281F;">{!! $val !!}</div>
@@ -176,7 +176,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- Bio --}}
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:20px;">
  <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-user"></i>
+ <i class="fa-solid fa-user"></i>
  About {{ explode(' ',$tutor->user->name)[0] }}
  </h2>
  <p style="font-size:15px;color:#15281F;line-height:1.9;">{{ $tutor->bio ?? 'This tutor hasn\'t added a bio yet.' }}</p>
@@ -196,7 +196,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- Subjects --}}
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
  <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
- <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subjects Taught
+ <span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span> Subjects Taught
  </h3>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;" class="subj-g">
  @foreach($tutor->subjects as $s)
@@ -215,7 +215,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div id="tab-availability" style="display:none;">
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
  <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-calendar"></i> Weekly Schedule
+ <i class="fa-solid fa-calendar"></i> Weekly Schedule
  </h2>
  <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">Nairobi, Kenya Time (EAT · UTC+3)</p>
  @php
@@ -224,7 +224,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  @endphp
  @if($avails->isEmpty())
  <div style="text-align:center;padding:40px;color:rgba(21,40,31,.45);">
- <i class="fas fa-times-circle"></i>
+ <i class="fa-solid fa-times-circle"></i>
  <p style="font-size:14px;">Availability not set. Book anyway - the tutor will confirm a time that works.</p>
  </div>
  @else
@@ -234,11 +234,11 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <span style="font-weight:600;font-size:14px;color:#15281F;width:96px;flex-shrink:0;">{{ $day }}</span>
  @if($av)
  <span style="font-size:14px;font-weight:500;color:#0A64BC;display:flex;align-items:center;gap:6px;">
- <i class="fas fa-clock"></i>
+ <i class="fa-solid fa-clock"></i>
  {{ substr($av->start_time,0,5) }} - {{ substr($av->end_time,0,5) }}
  </span>
  <span style="margin-left:auto;background:rgba(16,185,129,.1);color:#10B981;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;">
- <i class="fas fa-check-circle"></i> Available
+ <i class="fa-solid fa-check-circle"></i> Available
  </span>
  @else
  <span style="font-size:13px;color:rgba(21,40,31,.4);">Not available</span>
@@ -269,7 +269,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  @php $cnt=$tutor->reviews()->where('rating',$star)->count(); $pct=$tutor->total_reviews>0?round($cnt/$tutor->total_reviews*100):0; @endphp
  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
  <span style="font-size:13px;color:rgba(21,40,31,.5);width:12px;text-align:right;">{{ $star }}</span>
- <i class="fas fa-star"></i>
+ <i class="fa-solid fa-star"></i>
  <div class="rbar-track"><div class="rbar-fill" style="width:{{ $pct }}%;"></div></div>
  <span style="font-size:12px;color:rgba(21,40,31,.4);width:20px;">{{ $cnt }}</span>
  </div>
@@ -301,7 +301,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
  @empty
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:48px;text-align:center;">
- <i class="fas fa-star"></i>
+ <i class="fa-solid fa-star"></i>
  <p style="color:rgba(21,40,31,.5);font-size:14px;">No reviews yet. Book a session and be the first!</p>
  </div>
  @endforelse
@@ -367,7 +367,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
  <div :style="step > {{ $i+1 }} ? 'background:#10B981;color:#fff' : step === {{ $i+1 }} ? 'background:#0A64BC;color:#fff' : 'background:rgba(21,40,31,.08);color:rgba(21,40,31,.4)'"
  style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all .3s;">
- <template x-if="step > {{ $i+1 }}"><i class="fas fa-check-circle"></i></template>
+ <template x-if="step > {{ $i+1 }}"><i class="fa-solid fa-check-circle"></i></template>
  <template x-if="step <= {{ $i+1 }}"><span>{{ $i+1 }}</span></template>
  </div>
  <span style="font-size:11px;font-weight:600;" :style="step === {{ $i+1 }} ? 'color:#0A64BC' : 'color:rgba(21,40,31,.4)'">{{ $label }}</span>
@@ -380,7 +380,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div x-show="step === 1">
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
  <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-clock"></i> 1. Choose Session Type
+ <i class="fa-solid fa-clock"></i> 1. Choose Session Type
  </h3>
  <div style="display:grid;grid-template-columns:1fr;gap:10px;" class="tier-grid">
  @foreach([20=>['âš¡','Quick Help'],40=>['ðŸŽ¯','Guided Practice'],60=>['ðŸ†','Deep Dive']] as $mins => [$icon,$tname])
@@ -417,7 +417,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
  <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-calendar"></i> 2. Pick Date & Time
+ <i class="fa-solid fa-calendar"></i> 2. Pick Date & Time
  </h3>
  <div style="margin-bottom:16px;">
  <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Date</label>
@@ -435,7 +435,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- Loading state --}}
  <template x-if="loadingSlots">
  <div style="display:flex;align-items:center;gap:8px;padding:20px;color:rgba(21,40,31,.5);font-size:14px;">
- <span style="font-size:inherit;"><i class="fas fa-hourglass-half"></i></span> Checking availability...
+ <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Checking availability...
  </div>
  </template>
 
@@ -457,7 +457,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- No slots --}}
  <template x-if="!loadingSlots && date && slots.length === 0">
  <div style="padding:20px;text-align:center;background:#F9FAF9;border-radius:12px;border:1px solid rgba(21,40,31,.08);">
- <i class="fas fa-times-circle"></i>
+ <i class="fa-solid fa-times-circle"></i>
  <p style="font-size:13px;color:rgba(21,40,31,.5);">No available slots for this date. Try another day.</p>
  </div>
  </template>
@@ -465,7 +465,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- No date selected --}}
  <template x-if="!loadingSlots && !date">
  <div style="padding:20px;text-align:center;background:#F9FAF9;border-radius:12px;border:1px solid rgba(21,40,31,.08);">
- <i class="fas fa-calendar"></i>
+ <i class="fa-solid fa-calendar"></i>
  <p style="font-size:13px;color:rgba(21,40,31,.5);">Select a date to see available time slots.</p>
  </div>
  </template>
@@ -504,7 +504,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <span style="font-size:inherit;">→</span>
  </button>
  <p style="text-align:center;font-size:12px;color:rgba(21,40,31,.4);margin-top:10px;">
- <i class="fas fa-redo"></i> 100% money-back if unsatisfied with your first lesson
+ <i class="fa-solid fa-redo"></i> 100% money-back if unsatisfied with your first lesson
  </p>
  </div>
 
@@ -512,7 +512,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div x-show="step === 2" x-cloak>
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
  <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fas fa-receipt"></i> Session Summary
+ <i class="fa-solid fa-receipt"></i> Session Summary
  </h3>
 
  {{-- Summary rows --}}
@@ -525,7 +525,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  ] as [$ic,$label,$val])
  <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(21,40,31,.07);">
  <span style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(21,40,31,.55);">
- <i class="fas {{ $ic }}"></i>{{ $label }}
+ <i class="fa-solid {{ $ic }}"></i>{{ $label }}
  </span>
  <span style="font-size:13px;font-weight:600;color:#15281F;">{!! $val !!}</span>
  </div>
@@ -547,7 +547,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- Code notice --}}
  <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:14px 16px;margin-bottom:18px;">
  <p style="font-size:13px;font-weight:700;color:#0A64BC;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
- <span style="font-size:inherit;"><i class="fas fa-key"></i></span> After payment
+ <span style="font-size:inherit;"><i class="fa-solid fa-key"></i></span> After payment
  </p>
  <p style="font-size:12px;color:rgba(21,40,31,.6);line-height:1.65;">Both you and {{ explode(' ',$tutor->user->name)[0] }} will receive a unique session access code by email. You'll use your <strong style="color:#15281F;">STU-XXXXXX</strong> code to join the live class.</p>
  </div>
@@ -556,7 +556,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  @auth
  <div style="background:#F9FAF9;border-radius:14px;padding:18px;">
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:12px;">
- <span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span> Pay via M-Pesa
+ <span style="font-size:inherit;"><i class="fa-solid fa-mobile-alt"></i></span> Pay via M-Pesa
  </p>
  {{-- M-Pesa phone input --}}
  <div style="margin-bottom:14px;" x-show="!isFree">
@@ -568,7 +568,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
  {{-- STK sent banner --}}
  <div x-show="stkSent" style="background:rgba(16,185,129,.08);border:1.5px solid #10B981;border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:center;">
- <p style="font-size:13px;font-weight:700;color:#059669;margin-bottom:3px;"><span style="font-size:inherit;"><i class="fas fa-mobile-alt"></i></span> Check your phone!</p>
+ <p style="font-size:13px;font-weight:700;color:#059669;margin-bottom:3px;"><span style="font-size:inherit;"><i class="fa-solid fa-mobile-alt"></i></span> Check your phone!</p>
  <p x-text="stkMsg" style="font-size:12px;color:rgba(21,40,31,.6);"></p>
  </div>
  <button @click="processPayment($data)"
@@ -583,7 +583,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </template>
  <template x-if="processing">
  <span style="display:flex;align-items:center;gap:8px;">
- <span style="font-size:inherit;"><i class="fas fa-hourglass-half"></i></span> Processing…
+ <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing…
  </span>
  </template>
  </button>
@@ -593,10 +593,10 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:14px;">Sign in to complete your booking</p>
  <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
  <a href="{{ route('login') }}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
- <i class="fas fa-right-to-bracket"></i> Sign In
+ <i class="fa-solid fa-right-to-bracket"></i> Sign In
  </a>
  <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:999px;border:2px solid rgba(21,40,31,.2);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
- <i class="fas fa-user"></i> Create Account
+ <i class="fa-solid fa-user"></i> Create Account
  </a>
  </div>
  </div>
@@ -614,7 +614,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div x-show="step === 3" x-cloak>
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:40px;text-align:center;">
  <div style="width:68px;height:68px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
- <i class="fas fa-check-circle"></i>
+ <i class="fa-solid fa-check-circle"></i>
  </div>
  <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:8px;">Booking Confirmed!</h2>
  <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Payment received. Your session codes have been emailed to you. Redirecting to your session in 3 seconds…</p>
@@ -622,7 +622,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- Session code --}}
  <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.25);border-radius:20px;padding:24px;margin-bottom:24px;">
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(21,40,31,.45);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px;">
- <span style="font-size:inherit;"><i class="fas fa-key"></i></span> Your Session Access Code
+ <span style="font-size:inherit;"><i class="fa-solid fa-key"></i></span> Your Session Access Code
  </p>
  <p style="font-family:monospace;font-size:36px;font-weight:800;color:#0A64BC;letter-spacing:.12em;line-height:1;" x-text="studentCode">STU-XXXXXX</p>
  <p style="font-size:12px;color:rgba(21,40,31,.5);margin-top:10px;">Enter this code on session day to join your private live class</p>
@@ -630,10 +630,10 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{-- What happens next --}}
  <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;margin-bottom:24px;">
- <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;"><span style="font-size:inherit;"><i class="fas fa-clipboard"></i></span> What happens next</p>
+ <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;"><span style="font-size:inherit;"><i class="fa-solid fa-clipboard"></i></span> What happens next</p>
  @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard â†’ click Join Session â†’ enter your code','Your private classroom opens instantly in your browser - no download required'] as $step)
  <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
- <i class="fas fa-check-circle"></i>{{ $step }}
+ <i class="fa-solid fa-check-circle"></i>{{ $step }}
  </div>
  @endforeach
  </div>
@@ -641,13 +641,13 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
  <a :href="bookingRef ? '/bookings/' + bookingRef : '{{ route('dashboard') }}'"
  style="display:inline-flex;align-items:center;gap:7px;padding:13px 28px;border-radius:999px;background:#10B981;color:#fff;font-size:15px;font-weight:700;text-decoration:none;">
- <i class="fas fa-video"></i> Go to My Session
+ <i class="fa-solid fa-video"></i> Go to My Session
  </a>
  <a href="{{ route('dashboard') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
- <i class="fas fa-chart-bar"></i> Dashboard
+ <i class="fa-solid fa-chart-bar"></i> Dashboard
  </a>
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:999px;border:1.5px solid rgba(21,40,31,.18);color:#15281F;font-size:14px;font-weight:600;text-decoration:none;">
- <i class="fas fa-search"></i> Browse More Tutors
+ <i class="fa-solid fa-search"></i> Browse More Tutors
  </a>
  </div>
  </div>
@@ -694,7 +694,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <button onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})"
  style="width:100%;height:52px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;"
  onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fas fa-check-circle"></i> Book a Session
+ <i class="fa-solid fa-check-circle"></i> Book a Session
  </button>
  @endif
 
@@ -702,7 +702,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  @foreach(['fa-certificate green TSC-Registered & Verified','fa-lock green Secure, private classroom','fa-rotate-left green 100% money-back first lesson','fa-key green Session code sent by email'] as $item)
  @php [$ic,,$text] = explode(' ',$item,3); @endphp
  <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(21,40,31,.6);">
- <i class="fas {{ $ic }}"></i>{{ $text }}
+ <i class="fa-solid {{ $ic }}"></i>{{ $text }}
  </div>
  @endforeach
  </div>
