@@ -281,8 +281,8 @@
  ] as [$feature,$mw,$trad])
  <tr style="border-bottom:1px solid rgba(21,40,31,.05);" onmouseover="this.style.background='#FAFCFA'" onmouseout="this.style.background='transparent'">
  <td style="padding:13px 20px;font-size:14px;font-weight:500;color:#15281F;">{{ $feature }}</td>
- <td style="padding:13px 20px;font-size:13px;color:#15281F;"><span style="color:#10B981;margin-right:6px;font-weight:700;">âœ-</span>{{ $mw }}</td>
- <td style="padding:13px 20px;font-size:13px;color:rgba(21,40,31,.5);"><span style="color:#DC2626;margin-right:6px;font-weight:700;">âœ—</span>{{ $trad }}</td>
+ <td style="padding:13px 20px;font-size:13px;color:#15281F;"><i class="fa-solid fa-check" style="color:#10B981;margin-right:6px;font-weight:700;"></i>{{ $mw }}</td>
+ <td style="padding:13px 20px;font-size:13px;color:rgba(21,40,31,.5);"><i class="fa-solid fa-xmark" style="color:#DC2626;margin-right:6px;font-weight:700;"></i>{{ $trad }}</td>
  </tr>
  @endforeach
  </tbody>
