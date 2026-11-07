@@ -1,4 +1,4 @@
-{{-- DataTables Assets & Initialization --}}
+﻿{{-- DataTables Assets & Initialization --}}
 {{-- jQuery (required for DataTables) --}}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
@@ -319,7 +319,7 @@
                 buttons: [
                     { 
                         extend: 'copy', 
-                        text: '<span style="font-size:inherit;">❓</span> Copy', 
+                        text: '<span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Copy', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -327,7 +327,7 @@
                     },
                     { 
                         extend: 'csv', 
-                        text: '<span style="font-size:inherit;">📄</span> CSV', 
+                        text: '<i class="fas fa-file-alt"></i> CSV', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -335,7 +335,7 @@
                     },
                     { 
                         extend: 'excel', 
-                        text: '<span style="font-size:inherit;">📄</span> Excel', 
+                        text: '<i class="fas fa-file-alt"></i> Excel', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -343,7 +343,7 @@
                     },
                     { 
                         extend: 'pdf', 
-                        text: '<span style="font-size:inherit;">📄</span> PDF', 
+                        text: '<i class="fas fa-file-alt"></i> PDF', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'
@@ -351,7 +351,7 @@
                     },
                     { 
                         extend: 'print', 
-                        text: '<span style="font-size:inherit;">🖨️</span> Print', 
+                        text: '<span style="font-size:inherit;"><i class="fas fa-print"></i></span> Print', 
                         className: 'btn-dt',
                         exportOptions: {
                             columns: ':visible:not(.no-export)'

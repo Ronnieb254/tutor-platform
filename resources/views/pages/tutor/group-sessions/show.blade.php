@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{{ Str::limit($groupSession->title, 50) }} Ã¢â‚¬â€œ Mwalimu Tutor Portal</title>
+<title>{{ Str::limit($groupSession->title, 50) }} â‚¬" Mwalimu Tutor Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -125,7 +125,7 @@ $canJoin = $groupSession->canJoin($user);
         <div style="display:flex;gap:8px;">
             @if($canJoin)
             <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="padding:7px 14px;font-size:12px;">
-                <span style="font-size:inherit;">🎥</span> Join as Moderator
+                <i class="fas fa-video"></i> Join as Moderator
             </a>
             @endif
             <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost" style="padding:7px 14px;font-size:12px;">
@@ -137,7 +137,7 @@ $canJoin = $groupSession->canJoin($user);
     <div class="content">
         @if(session('success'))
         <div style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;padding:12px 16px;border-radius:12px;font-size:13.5px;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
-            <span style="font-size:inherit;">✅</span> {{ session('success') }}
+            <i class="fas fa-check-circle"></i> {{ session('success') }}
         </div>
         @endif
 
@@ -162,7 +162,7 @@ $canJoin = $groupSession->canJoin($user);
                     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;" class="meta-g">
                         @foreach([['fa-calendar','Date',$groupSession->scheduled_at->format('M j, Y')],['fa-clock','Time',$groupSession->scheduled_at->format('g:ia')],['fa-hourglass','Duration',$groupSession->duration_minutes.' min']] as [$ic,$lbl,$val])
                         <div style="background:rgba(21,40,31,.02);border-radius:10px;padding:12px;">
-                            <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;"><span class="{{ $ic }}" style="font-size:inherit;">❓</span>{{ $lbl }}</p>
+                            <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;"><span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ $lbl }}</p>
                             <p style="font-size:15px;font-weight:700;color:var(--ink);">{{ $val }}</p>
                         </div>
                         @endforeach
@@ -176,7 +176,7 @@ $canJoin = $groupSession->canJoin($user);
                         <form method="POST" action="{{ route('tutor.group-sessions.cancel', $groupSession) }}" onsubmit="return confirm('Are you sure you want to cancel this session? Enrolled students will be notified.');">
                             @csrf
                             <button type="submit" class="btn btn-danger" style="padding:8px 16px;font-size:12px;">
-                                <span style="font-size:inherit;">🚫</span> Cancel Session
+                                <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancel Session
                             </button>
                         </form>
                     </div>
@@ -191,7 +191,7 @@ $canJoin = $groupSession->canJoin($user);
                     </div>
                     @if($groupSession->enrollments->isEmpty())
                     <div style="padding:32px;text-align:center;">
-                        <span style="font-size:inherit;">👤</span>
+                        <i class="fas fa-user"></i>
                         <p style="font-size:13px;color:var(--muted);">No students enrolled yet.</p>
                     </div>
                     @else
@@ -210,14 +210,14 @@ $canJoin = $groupSession->canJoin($user);
                                 <tr style="border-top:1px solid var(--hair);">
                                     <td style="padding:12px 16px;">
                                         <div style="display:flex;align-items:center;gap:8px;">
-                                            <div style="width:28px;height:28px;border-radius:8px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:inherit;">👤</span></div>
+                                            <div style="width:28px;height:28px;border-radius:8px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-user"></i></div>
                                             <div>
                                                 <p style="font-weight:600;color:var(--ink);margin:0;">{{ $enroll->student?->name ?? 'Unknown' }}</p>
                                                 <p style="font-size:11px;color:var(--muted);margin:0;">{{ $enroll->student?->email }}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="padding:12px;font-family:monospace;font-size:13px;font-weight:700;color:var(--ink);">{{ $enroll->session_code ?? 'Ã¢â‚¬â€' }}</td>
+                                    <td style="padding:12px;font-family:monospace;font-size:13px;font-weight:700;color:var(--ink);">{{ $enroll->session_code ?? 'â‚¬â€' }}</td>
                                     <td style="padding:12px;text-align:right;font-weight:700;color:#EEBE15;font-family:'Fraunces',serif;">
                                         KSh {{ number_format($enroll->payment?->amount ?? $groupSession->price) }}
                                     </td>
@@ -252,7 +252,7 @@ $canJoin = $groupSession->canJoin($user);
 
                     @if($canJoin)
                     <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="width:100%;justify-content:center;margin-top:16px;">
-                        <span style="font-size:inherit;">🎥</span> Join as Moderator
+                        <i class="fas fa-video"></i> Join as Moderator
                     </a>
                     @endif
 
@@ -265,7 +265,7 @@ $canJoin = $groupSession->canJoin($user);
                         <div style="padding:8px 10px;border-radius:9px;background:{{ $isThis ? 'rgba(212,160,23,.08)' : 'rgba(21,40,31,.02)' }};border:1px solid {{ $isThis ? 'rgba(212,160,23,.25)' : 'transparent' }};margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
                             <div>
                                 <p style="font-size:12px;font-weight:600;color:var(--ink);margin:0;">Session {{ $s->session_number }}</p>
-                                <p style="font-size:11px;color:var(--muted);margin:0;">{{ $s->scheduled_at->format('M j') }} Ã‚Â· {{ $s->enrolledCount() }}/{{ $s->max_students }}</p>
+                                <p style="font-size:11px;color:var(--muted);margin:0;">{{ $s->scheduled_at->format('M j') }} Ã‚· {{ $s->enrolledCount() }}/{{ $s->max_students }}</p>
                             </div>
                             @if(!$isThis)
                             <a href="{{ route('tutor.group-sessions.show', $s) }}" style="font-size:11px;color:#0A64BC;font-weight:600;">View</a>

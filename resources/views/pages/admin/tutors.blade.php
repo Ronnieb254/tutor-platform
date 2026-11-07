@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Tutor Approvals')
 
 @section('content')
@@ -55,7 +55,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 ] as [$label,$val,$col,$ic,$bg])
                 <div style="background:#fff;border-radius:14px;border:1px solid rgba(21,40,31,.07);padding:16px;display:flex;align-items:center;gap:12px;">
                     <div style="width:40px;height:40px;border-radius:11px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                        <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
+                        <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                     </div>
                     <div>
                         <div style="font-size:11px;color:rgba(21,40,31,.5);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">{{ $label }}</div>
@@ -67,7 +67,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
 {{-- Pending applications list --}}
 @if($pending->isEmpty())
 <div class="card card-p" style="text-align:center;padding:56px;">
-    <span style="font-size:inherit;">❓</span>
+    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
     <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;">All caught up!</h3>
     <p style="color:rgba(21,40,31,.5);font-size:14px;">No pending tutor applications right now.</p>
 </div>
@@ -75,7 +75,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
 <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <p style="font-size:14px;color:rgba(21,40,31,.55);font-weight:600;">{{ $pending->total() }} application{{ $pending->total()!==1?'s':'' }} awaiting review</p>
     <p style="font-size:12px;color:rgba(21,40,31,.4);display:flex;align-items:center;gap:6px;">
-        <span style="font-size:inherit;">⚡</span> Priority applications are marked with a gold badge
+        <i class="fas fa-bolt"></i> Priority applications are marked with a gold badge
     </p>
 </div>
 
@@ -114,7 +114,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
         @if($isSpeedy)
         <div style="position:absolute;top:12px;right:12px;z-index:10;">
             <span class="badge" style="background:linear-gradient(135deg,#FEF9C3,#FDE68A);color:#854D0E;border:1px solid #FBBF24;font-weight:700;font-size:11px;padding:4px 10px;box-shadow:0 2px 4px rgba(0,0,0,.1);">
-                <span style="font-size:inherit;">⚡</span> SPEEDY
+                <i class="fas fa-bolt"></i> SPEEDY
             </span>
         </div>
         @endif
@@ -130,11 +130,11 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                         {{ $profile->user->name }}
                     </h3>
                     <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">
-                        <span style="font-size:inherit;">✉️</span> {{ $profile->user->email }}
+                        <i class="fas fa-envelope"></i> {{ $profile->user->email }}
                     </div>
                     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                         <span class="badge badge-amber">
-                            <span style="font-size:inherit;">⏰</span> Pending
+                            <i class="fas fa-clock"></i> Pending
                         </span>
                         <span style="font-size:11px;color:var(--muted);">
                             Applied {{ $profile->created_at->diffForHumans() }}
@@ -177,7 +177,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             
             @if($docCount === 0)
             <div style="font-size:12px;color:var(--muted);text-align:center;padding:8px;">
-                <span style="font-size:inherit;">❓</span> No documents uploaded yet
+                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> No documents uploaded yet
             </div>
             @else
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -209,16 +209,16 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             </div>
             @else
             <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline" style="flex:1;font-size:13px;justify-content:center;text-decoration:none;">
-                <span style="font-size:inherit;">📖</span> Subjects ({{ $profile->subjects->count() }})
+                <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subjects ({{ $profile->subjects->count() }})
             </a>
             <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='block'" class="btn btn-outline" style="flex:1;font-size:13px;">
-                <span style="font-size:inherit;">👁️</span> Review
+                <span style="font-size:inherit;"><i class="fas fa-eye"></i></span> Review
             </button>
             @if($canApprove)
             <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmApproval{{ $profile->id }}(this, '{{ $profile->user->name }}')">
                 @csrf @method('PATCH')
                 <button type="submit" class="btn btn-primary" style="width:100%;font-size:13px;">
-                    <span style="font-size:inherit;">✅</span> Approve
+                    <i class="fas fa-check-circle"></i> Approve
                 </button>
             </form>
             <script>
@@ -231,7 +231,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             @else
             <button disabled class="btn" style="flex:1;background:rgba(0,0,0,.05);color:var(--muted);cursor:not-allowed;font-size:13px;"
                     title="{{ $approveBlockReason }}">
-                <span style="font-size:inherit;">🔒</span> Approve
+                <i class="fas fa-lock"></i> Approve
             </button>
             @endif
             @endif
@@ -244,7 +244,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             <div class="modal-head">
                 <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;">Review: {{ $profile->user->name }}</h3>
                 <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='none'" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
-                    <span style="font-size:inherit;">❌</span>
+                    <i class="fas fa-times-circle"></i>
                 </button>
             </div>
             <div class="modal-body">
@@ -272,7 +272,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                         <div style="font-size:12px;color:var(--muted);font-weight:600;">Subjects ({{ $profile->subjects->count() }})</div>
                         <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline btn-sm" style="text-decoration:none;">
-                            <span style="font-size:inherit;">✏️</span> Manage
+                            <i class="fas fa-pencil-alt"></i> Manage
                         </a>
                     </div>
                     <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -281,7 +281,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                         @empty
                         <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:12px;width:100%;">
                             <p style="font-size:13px;color:#991B1B;margin:0;">
-                                <span style="font-size:inherit;">⚠️</span> No subjects selected. Click "Manage" to add subjects.
+                                <i class="fas fa-exclamation-triangle"></i> No subjects selected. Click "Manage" to add subjects.
                             </p>
                         </div>
                         @endforelse
@@ -316,14 +316,14 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                         
                         @if($isPdf)
                         <div class="doc-thumb-placeholder" style="cursor:pointer;" onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', true, '{{ $docLabel }}')">
-                            <span style="font-size:inherit;">📄</span>
+                            <i class="fas fa-file-alt"></i>
                         </div>
                         @else
                         <img src="{{ route('tutor.documents.view', $doc->id) }}" class="doc-thumb" style="cursor:pointer;"
                              onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', false, '{{ $docLabel }}')"
                              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                         <div class="doc-thumb-placeholder" style="display:none;cursor:pointer;" onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', false, '{{ $docLabel }}')">
-                            <span style="font-size:inherit;">📄</span>
+                            <i class="fas fa-file-alt"></i>
                         </div>
                         @endif
                         
@@ -340,11 +340,11 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                             <form method="POST" action="{{ route('admin.documents.approve', $doc->id) }}" style="display:inline;">
                                 @csrf @method('PATCH')
                                 <button type="submit" class="btn btn-success btn-sm">
-                                    <span style="font-size:inherit;">✅</span>
+                                    <i class="fas fa-check-circle"></i>
                                 </button>
                             </form>
                             <button type="button" onclick="rejectDoc({{ $doc->id }}, '{{ addslashes($docLabel) }}')" class="btn btn-danger btn-sm">
-                                <span style="font-size:inherit;">❌</span>
+                                <i class="fas fa-times-circle"></i>
                             </button>
                         </div>
                         @endif
@@ -356,12 +356,12 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 {{-- Final Actions --}}
                 <div style="display:flex;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--hairline);flex-wrap:wrap;">
                     <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline" style="flex:1;justify-content:center;text-decoration:none;">
-                        <span style="font-size:inherit;">📖</span> Manage Subjects ({{ $profile->subjects->count() }})
+                        <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Manage Subjects ({{ $profile->subjects->count() }})
                     </a>
                     <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmSuspend{{ $profile->id }}(this)">
                         @csrf @method('PATCH')
                         <button type="submit" class="btn btn-danger" style="width:100%;">
-                            <span style="font-size:inherit;">🚫</span> Suspend
+                            <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Suspend
                         </button>
                     </form>
                     <script>
@@ -374,7 +374,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmFinalApproval{{ $profile->id }}(this)">
                         @csrf @method('PATCH')
                         <button type="submit" class="btn btn-primary" style="width:100%;" {{ !$canApprove ? 'disabled title="'.$approveBlockReason.'"' : '' }}>
-                            <span style="font-size:inherit;">✅</span> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs Â· '.$subjectCnt.' subjects)' }}
+                            <i class="fas fa-check-circle"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs · '.$subjectCnt.' subjects)' }}
                         </button>
                     </form>
                     <script>
@@ -392,7 +392,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
 </div>
             <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
                 <p style="font-size:14px;color:rgba(21,40,31,.55);">{{ $pending->total() }} application{{ $pending->total()!==1?'s':'' }} awaiting review</p>
-                <!-- <p style="font-size:12px;color:rgba(21,40,31,.4);"><span style="font-size:inherit;">⚡</span> Priority applications are marked with a gold badge</p> -->
+                <!-- <p style="font-size:12px;color:rgba(21,40,31,.4);"><i class="fas fa-bolt"></i> Priority applications are marked with a gold badge</p> -->
             </div>
 
 @endif
@@ -405,9 +405,9 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
     </div>
     <div style="display:flex;align-items:center;gap:4px;">
         @if($pending->onFirstPage())
-            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><span style="font-size:inherit;">❓</span></span>
+            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
         @else
-            <a href="{{ $pending->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><span style="font-size:inherit;">❓</span></a>
+            <a href="{{ $pending->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
         @endif
         @foreach($pending->getUrlRange(1, $pending->lastPage()) as $page => $url)
             @if($page == $pending->currentPage())
@@ -417,9 +417,9 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
             @endif
         @endforeach
         @if($pending->hasMorePages())
-            <a href="{{ $pending->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><span style="font-size:inherit;">❓</span></a>
+            <a href="{{ $pending->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
         @else
-            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><span style="font-size:inherit;">❓</span></span>
+            <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
         @endif
     </div>
 </div>
@@ -438,7 +438,7 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                 </label>
                 <select name="reason" required
                         style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;margin-bottom:10px;appearance:none;">
-                    <option value="">Select reasonâ€¦</option>
+                    <option value="">Select reason…</option>
                     <option>Document is blurry or unreadable</option>
                     <option>Wrong document uploaded</option>
                     <option>Document appears altered or invalid</option>
@@ -446,13 +446,13 @@ $speedy    = TutorProfile::where('speedy_verification_paid',true)->where('is_app
                     <option>Name on document does not match profile</option>
                     <option>Other (specify below)</option>
                 </select>
-                <textarea name="admin_note" rows="2" placeholder="Add a note for the tutor (optional)â€¦"
+                <textarea name="admin_note" rows="2" placeholder="Add a note for the tutor (optional)…"
                           style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;"></textarea>
             </div>
             <div style="display:flex;gap:10px;">
                 <button type="button" onclick="document.getElementById('reject-modal').style.display='none'" class="btn btn-o" style="flex:1;justify-content:center;">Cancel</button>
                 <button type="submit" class="btn btn-danger" style="flex:1;justify-content:center;">
-                    <span style="font-size:inherit;">❌</span> Reject Document
+                    <i class="fas fa-times-circle"></i> Reject Document
                 </button>
             </div>
         </form>

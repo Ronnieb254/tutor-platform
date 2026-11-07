@@ -1,7 +1,7 @@
-<div>
+﻿<div>
     @if(!$this->canJoin())
     <div class="card p-6 text-center">
-        <div class="text-4xl mb-3">Ã°Å¸â€¢Â</div>
+        <div class="text-4xl mb-3">Ã°Å¸•Â</div>
         <h3 class="font-serif text-xl font-semibold text-ink mb-2">Session not yet available</h3>
         <p class="text-muted text-sm">Your session is on
             <strong class="text-ink">{{ $booking->scheduled_at->format('D, M j \a\t g:ia') }}</strong>.

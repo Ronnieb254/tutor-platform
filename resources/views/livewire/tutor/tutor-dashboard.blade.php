@@ -1,4 +1,4 @@
-<div class="space-y-6">
+﻿<div class="space-y-6">
     {{-- Verification Status Banner --}}
     @if($profile && !$profile->is_approved)
     @php 
@@ -75,7 +75,7 @@
                 <img src="{{ $booking->student->avatar_url }}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
                 <div class="flex-1 min-w-0">
                     <p class="font-semibold text-sm text-ink">{{ $booking->student->name }}</p>
-                    <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} Â· {{ $booking->duration_minutes }}min</p>
+                    <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->duration_minutes }}min</p>
                 </div>
                 <div class="text-right flex-shrink-0">
                     <p class="text-sm font-semibold text-ink">{{ $booking->scheduled_at->format('M j') }}</p>
@@ -101,7 +101,7 @@
                 <img src="{{ $booking->student->avatar_url }}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
                 <div class="flex-1 min-w-0">
                     <p class="font-semibold text-sm text-ink">{{ $booking->student->name }}</p>
-                    <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} Â· {{ $booking->duration_minutes }}min</p>
+                    <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->duration_minutes }}min</p>
                 </div>
                 <div class="text-right">
                     <p class="text-sm font-semibold text-mint">+KSh {{ number_format($booking->tutor_earning, 0) }}</p>

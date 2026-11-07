@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Create Clinic')
 @section('content')
 <div style="max-width:760px;margin:0 auto;padding:24px;">
@@ -13,7 +13,7 @@
 
     @if($errors->any())
     <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:14px 18px;margin-bottom:20px;">
-        <div style="font-weight:600;color:#dc2626;margin-bottom:6px;"><span style="font-size:inherit;">❌</span> Please fix the errors below</div>
+        <div style="font-weight:600;color:#dc2626;margin-bottom:6px;"><i class="fas fa-times-circle"></i> Please fix the errors below</div>
         <ul style="margin:0;padding-left:20px;font-size:13px;color:#dc2626;">
             @foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach
         </ul>
@@ -31,7 +31,7 @@
                         Subject <span style="color:#dc2626;">*</span>
                     </label>
                     <select name="subject_id" required style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;background:#fff;color:var(--ink);">
-                        <option value="">Ã¢â‚¬â€ Select subject Ã¢â‚¬â€</option>
+                        <option value="">â‚¬â€ Select subject â‚¬â€</option>
                         @foreach($subjects as $s)
                         <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                         @endforeach
@@ -58,14 +58,14 @@
                 <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;display:block;">
                     Clinic Title <span style="color:#dc2626;">*</span>
                 </label>
-                <input type="text" name="title" value="{{ old('title') }}" required placeholder="e.g. Mathematics PP1 Ã¢â‚¬â€œ Algebra &amp; Calculus Mastery"
+                <input type="text" name="title" value="{{ old('title') }}" required placeholder="e.g. Mathematics PP1 â‚¬" Algebra &amp; Calculus Mastery"
                     style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:var(--ink);">
             </div>
 
             {{-- Description --}}
             <div style="margin-bottom:18px;">
                 <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;display:block;">Description</label>
-                <textarea name="description" rows="3" placeholder="Topics covered, exam strategies, what students will gainÃ¢â‚¬Â¦"
+                <textarea name="description" rows="3" placeholder="Topics covered, exam strategies, what students will gainâ‚¬Â¦"
                     style="width:100%;padding:10px 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:var(--ink);resize:vertical;">{{ old('description') }}</textarea>
             </div>
 
@@ -75,7 +75,7 @@
                     Assign Tutor / Examiner <span style="color:#dc2626;">*</span>
                 </label>
                 <select name="tutor_id" required style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;background:#fff;color:var(--ink);">
-                    <option value="">Ã¢â‚¬â€ Select tutor Ã¢â‚¬â€</option>
+                    <option value="">â‚¬â€ Select tutor â‚¬â€</option>
                     @foreach($tutors as $t)
                     <option value="{{ $t->id }}" {{ old('tutor_id') == $t->id ? 'selected' : '' }}>{{ $t->name }}</option>
                     @endforeach
@@ -113,15 +113,15 @@
 
             {{-- Slots info box --}}
             <div style="background:rgba(10,100,188,.06);border:1px solid rgba(10,100,188,.15);border-radius:12px;padding:14px 16px;margin-bottom:22px;display:flex;gap:10px;">
-                <span style="font-size:inherit;">ℹ️</span>
+                <i class="fas fa-info-circle"></i>
                 <div style="font-size:13px;color:#0A64BC;">
-                    <strong>Slots are fixed at 30.</strong> Once all 30 spots are booked, the system automatically creates a second session scheduled 30 minutes after this one ends Ã¢â‚¬â€ using the same title, tutor, and description.
+                    <strong>Slots are fixed at 30.</strong> Once all 30 spots are booked, the system automatically creates a second session scheduled 30 minutes after this one ends â‚¬â€ using the same title, tutor, and description.
                 </div>
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <button type="submit" style="flex:1;min-width:160px;height:46px;border-radius:12px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;">
-                    <span style="font-size:inherit;">📅</span> Create Clinic
+                    <i class="fas fa-calendar"></i> Create Clinic
                 </button>
                 <a href="{{ route('admin.clinics') }}" style="flex:1;min-width:120px;height:46px;border-radius:12px;background:#F4F6F4;color:var(--ink);font-size:15px;font-weight:600;border:none;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">
                     Cancel

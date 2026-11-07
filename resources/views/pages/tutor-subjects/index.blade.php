@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>My Subjects Ã¢â‚¬â€œ Mwalimu Tutor Portal</title>
+<title>My Subjects â‚¬" Mwalimu Tutor Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -230,7 +230,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
         <div class="sec-hdr">
             <div>
                 <div class="sec-title">Manage Your Subjects</div>
-                <div class="sec-sub">Select up to 2 subjects you teach Ã¢â‚¬â€ these appear on your public profile for students to find.</div>
+                <div class="sec-sub">Select up to 2 subjects you teach â‚¬â€ these appear on your public profile for students to find.</div>
             </div>
             <a href="{{ route('tutor.dashboard') }}" class="btn btn-o btn-sm">
                 <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -249,7 +249,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 </div>
                 <div style="width:100%;max-width:280px;">
                     <div class="search-wrap">
-                        <span style="font-size:inherit;">🔍</span>
+                        <i class="fas fa-search"></i>
                         <input type="text" id="search-subjects" placeholder="Search subjects..." class="search-input">
                     </div>
                 </div>
@@ -370,7 +370,7 @@ function updatePreview() {
     }
     preview.innerHTML = Array.from(selectedSubjects).map(function(id) {
         var name = subjectNames[id] || document.querySelector('.subject-card[data-subject-id="' + id + '"]')?.dataset.subjectName || 'Subject';
-        return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<span style="font-size:inherit;">❌</span></span>';
+        return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<i class="fas fa-times-circle"></i></span>';
     }).join('');
 }
 
@@ -378,7 +378,7 @@ function updateCount() {
     const countSpan = document.getElementById('subject-count');
     countSpan.textContent = selectedSubjects.size;
     if (selectedSubjects.size >= 2) {
-        countSpan.innerHTML = selectedSubjects.size + '/2 <span style="color:var(--mint);margin-left:6px;"><span style="font-size:inherit;">✅</span> Max reached</span>';
+        countSpan.innerHTML = selectedSubjects.size + '/2 <span style="color:var(--mint);margin-left:6px;"><i class="fas fa-check-circle"></i> Max reached</span>';
     } else {
         countSpan.textContent = selectedSubjects.size + '/2';
     }

@@ -1,4 +1,4 @@
-<footer style="background:#0D1F14;color:rgba(255,255,255,.65);">
+﻿<footer style="background:#0D1F14;color:rgba(255,255,255,.65);">
     <div style="background:linear-gradient(135deg,#15281F,#111C16);padding:64px 0 0;">
         <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
 
@@ -20,7 +20,7 @@
                             ['fa-rotate-left','100% Money-Back Guarantee','#10B981'],
                         ] as [$ic,$label,$color])
                         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);">
-                            <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
+                            <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                             {{ $label }}
                         </div>
                         @endforeach
@@ -34,7 +34,7 @@
                             ['fa-location-dot','Suite 11, Samima Suites, Nairobi West',null],
                         ] as [$ic,$text,$href])
                         <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,.5);">
-                            <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
+                            <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                             @if($href)
                             <a href="{{ $href }}" style="color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">{{ $text }}</a>
                             @else
@@ -57,13 +57,13 @@
                         ['fa-envelope',        'Contact Us',           route('contact')],
                     ] as [$ic,$label,$url])
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
-                        <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
+                        <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                         {{ $label }}
                     </a>
                     @endforeach
                     @auth
                     <a href="{{ route('dashboard') }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
-                        <span style="font-size:inherit;">📊</span>
+                        <i class="fas fa-chart-bar"></i>
                         Dashboard
                     </a>
                     @endauth
@@ -85,7 +85,7 @@
                         @continue
                     @endif
                     <a href="{{ $url }}" style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
-                        <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
+                        <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                         {{ $label }}
                     </a>
                     @endforeach
@@ -102,7 +102,7 @@
                         ['fa-cookie-bite',   'Cookie Policy',        route('cookie-policy')],
                     ] as [$ic,$label,$url])
                     <a href="{{ $url }}" {{ str_starts_with($url,'http') ? 'target="_blank"' : '' }} style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:rgba(255,255,255,.6);text-decoration:none;margin-bottom:9px;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
-                        <span class="{{ $ic }}" style="font-size:inherit;">❓</span>
+                        <span class="{{ $ic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                         {{ $label }}
                     </a>
                     @endforeach
@@ -118,7 +118,7 @@
                         <span style="font-size:14px;">{{ $ic }}</span>
                         <div>
                             <div style="font-size:12px;font-weight:600;color:#fff;">{{ $name }}</div>
-                            <div style="font-size:11px;color:rgba(255,255,255,.45);">{{ $dur }} Â· <span style="color:#EEBE15;font-weight:700;">{{ $price }}</span></div>
+                            <div style="font-size:11px;color:rgba(255,255,255,.45);">{{ $dur }} · <span style="color:#EEBE15;font-weight:700;">{{ $price }}</span></div>
                         </div>
                     </a>
                     @endforeach
@@ -135,9 +135,9 @@
                 <span style="font-size:11px;color:rgba(255,255,255,.35);">by <a href="https://ovaldesk.co.ke" target="_blank" style="color:rgba(255,255,255,.45);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">OvalDesk Ventures</a></span>
             </a>
             <div style="display:flex;align-items:center;gap:14px;">
-                <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><span style="font-size:inherit;">📜</span> TSC Verified</span>
-                <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><span style="font-size:inherit;">🔒</span> Secure</span>
-                <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><span style="font-size:inherit;">🛡️</span> Verified</span>
+                <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fas fa-scroll"></i> TSC Verified</span>
+                <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fas fa-lock"></i> Secure</span>
+                <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fas fa-shield-alt"></i> Verified</span>
             </div>
         </div>
     </div>
@@ -149,7 +149,7 @@
     <div style="background:#FFFDF5;border:2px solid #15281F;border-radius:22px;padding:18px 20px;box-shadow:0 16px 48px rgba(21,40,31,.2);">
         <div style="display:flex;gap:12px;align-items:flex-start;">
             <div style="width:38px;height:38px;border-radius:11px;background:rgba(212,160,23,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <span style="font-size:inherit;">❓</span>
+                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
             </div>
             <div style="flex:1;">
                 <p style="font-weight:700;font-size:14px;color:#15281F;margin-bottom:3px;">We value your privacy</p>
@@ -165,7 +165,7 @@
             <button @click="localStorage.setItem('mw_cookie','all');show=false"
                     style="padding:9px 20px;border-radius:999px;font-size:13px;font-weight:700;background:#0A64BC;color:#fff;border:1.5px solid #15281F;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all .18s;"
                     onmouseover="this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
-                <span style="font-size:inherit;">✅</span> Accept All
+                <i class="fas fa-check-circle"></i> Accept All
             </button>
         </div>
     </div>

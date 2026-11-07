@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Users')
 
 @section('content')
@@ -23,7 +23,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
     <form method="GET" style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
         <div style="flex:1;min-width:200px;">
             <label class="form-label">Search</label>
-            <input type="text" name="search" value="{{ $search }}" class="form-input" placeholder="Name or emailâ€¦">
+            <input type="text" name="search" value="{{ $search }}" class="form-input" placeholder="Name or email…">
         </div>
         <div style="width:160px;">
             <label class="form-label">Role</label>
@@ -137,11 +137,11 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
             {{-- Previous --}}
             @if($users->onFirstPage())
                 <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;">
-                    <span style="font-size:inherit;">❓</span>
+                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                 </span>
             @else
                 <a href="{{ $users->previousPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">
-                    <span style="font-size:inherit;">❓</span>
+                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                 </a>
             @endif
 
@@ -156,7 +156,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
             @php $prev = null; @endphp
             @foreach($window as $page)
                 @if($prev !== null && $page - $prev > 1)
-                    <span style="padding:6px 8px;font-size:13px;color:var(--muted);">â€¦</span>
+                    <span style="padding:6px 8px;font-size:13px;color:var(--muted);">…</span>
                 @endif
                 @if($page == $users->currentPage())
                     <span style="padding:6px 12px;border-radius:8px;border:1px solid #0A64BC;font-size:13px;font-weight:700;color:#fff;background:#0A64BC;">{{ $page }}</span>
@@ -169,11 +169,11 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
             {{-- Next --}}
             @if($users->hasMorePages())
                 <a href="{{ $users->nextPageUrl() }}" style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:border-color .15s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">
-                    <span style="font-size:inherit;">❓</span>
+                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                 </a>
             @else
                 <span style="padding:6px 12px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;">
-                    <span style="font-size:inherit;">❓</span>
+                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                 </span>
             @endif
         </div>

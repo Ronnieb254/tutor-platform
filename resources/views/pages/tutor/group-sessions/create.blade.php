@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Create Group Session Ã¢â‚¬â€œ Mwalimu Tutor Portal</title>
+<title>Create Group Session â‚¬" Mwalimu Tutor Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -143,7 +143,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
     <div class="content">
         @if($errors->any())
         <div style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;padding:14px 18px;border-radius:12px;margin-bottom:20px;">
-            <p style="font-weight:700;margin-bottom:6px;"><span style="font-size:inherit;">❓</span> Please fix the following errors:</p>
+            <p style="font-weight:700;margin-bottom:6px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Please fix the following errors:</p>
             <ul style="padding-left:18px;font-size:13px;">
                 @foreach($errors->all() as $err)<li>{{ $err }}</li>@endforeach
             </ul>
@@ -157,13 +157,13 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 {{-- SESSION BASICS --}}
                 <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
                     <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
-                        <span style="font-size:inherit;">ℹ️</span>Session Details
+                        <i class="fas fa-info-circle"></i>Session Details
                     </h2>
 
                     <div class="field">
                         <label>Subject <span class="req">*</span></label>
                         <select name="subject_id" required>
-                            <option value="">Ã¢â‚¬â€ Select a subject Ã¢â‚¬â€</option>
+                            <option value="">â‚¬â€ Select a subject â‚¬â€</option>
                             @foreach($subjects as $s)
                             <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                             @endforeach
@@ -173,8 +173,8 @@ $unreadNotifs = $user->unreadNotifications()->count();
 
                     <div class="field">
                         <label>Session Title <span class="req">*</span></label>
-                        <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. Algebra Made Easy Ã¢â‚¬â€œ Form 4" required maxlength="200">
-                        <p class="hint">Be specific Ã¢â‚¬â€ this is what students see when browsing sessions.</p>
+                        <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. Algebra Made Easy â‚¬" Form 4" required maxlength="200">
+                        <p class="hint">Be specific â‚¬â€ this is what students see when browsing sessions.</p>
                         @error('title')<p class="error">{{ $message }}</p>@enderror
                     </div>
 
@@ -195,7 +195,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 {{-- SCHEDULE --}}
                 <div style="background:#fff;border-radius:16px;border:1px solid var(--hair);padding:24px;margin-bottom:20px;">
                     <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--hair);">
-                        <span style="font-size:inherit;">📅</span>Schedule & Pricing
+                        <i class="fas fa-calendar"></i>Schedule & Pricing
                     </h2>
 
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form-2col">
@@ -236,7 +236,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
                         <div>
                             <h2 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:4px;">
-                                <span style="font-size:inherit;">❓</span>Multi-Session Series
+                                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>Multi-Session Series
                             </h2>
                             <p style="font-size:13px;color:var(--muted);">Create a recurring cohort (e.g. 6-week series). Students enroll per session.</p>
                         </div>
@@ -251,7 +251,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                             <div class="field" style="margin-bottom:0;">
                                 <label>Number of Sessions</label>
                                 <input type="number" name="series_count" value="{{ old('series_count', 4) }}" min="2" max="12" x-bind:required="isSeries">
-                                <p class="hint">2Ã¢â‚¬â€œ12 sessions per series.</p>
+                                <p class="hint">2â‚¬"12 sessions per series.</p>
                                 @error('series_count')<p class="error">{{ $message }}</p>@enderror
                             </div>
                             <div class="field" style="margin-bottom:0;">
@@ -265,7 +265,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                             </div>
                         </div>
                         <div style="margin-top:12px;padding:12px 14px;background:rgba(212,160,23,.07);border-radius:10px;border:1px solid rgba(212,160,23,.2);">
-                            <p style="font-size:13px;color:#B7870A;"><span style="font-size:inherit;">ℹ️</span>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
+                            <p style="font-size:13px;color:#B7870A;"><i class="fas fa-info-circle"></i>Each session in the series will be created with the same title, subject, duration, and price. Dates auto-increment from the start date.</p>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                 {{-- SUBMIT --}}
                 <div style="display:flex;gap:12px;align-items:center;">
                     <button type="submit" class="btn btn-primary" style="padding:13px 32px;font-size:15px;">
-                        <span style="font-size:inherit;">✅</span>
+                        <i class="fas fa-check-circle"></i>
                         <span x-text="isSeries ? 'Create Series' : 'Create Session'">Create Session</span>
                     </button>
                     <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost">Cancel</a>

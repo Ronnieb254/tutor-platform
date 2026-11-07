@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -64,10 +64,10 @@
             <div>
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
                     <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(16,185,129,.2);color:#4ADE80;border:1px solid rgba(16,185,129,.3);">
-                        <span style="font-size:inherit;">✅</span> Approved Examiner
+                        <i class="fas fa-check-circle"></i> Approved Examiner
                     </span>
                     <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.25);">
-                        <span style="font-size:inherit;">⭐</span> KNEC Examiner
+                        <i class="fas fa-star"></i> KNEC Examiner
                     </span>
                 </div>
                 <h1 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#fff;margin-bottom:8px;">
@@ -78,7 +78,7 @@
                 </p>
             </div>
             <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint" style="flex-shrink:0;">
-                <span style="font-size:inherit;">➕</span> Create New Clinic
+                <i class="fas fa-plus"></i> Create New Clinic
             </a>
         </div>
     </div>
@@ -89,37 +89,37 @@
 
     {{-- Flash messages --}}
     @if(session('success'))
-        <div class="flash flash-ok"><span style="font-size:inherit;">✅</span> {{ session('success') }}</div>
+        <div class="flash flash-ok"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
     @endif
     @if(session('info'))
-        <div class="flash flash-info"><span style="font-size:inherit;">ℹ️</span> {{ session('info') }}</div>
+        <div class="flash flash-info"><i class="fas fa-info-circle"></i> {{ session('info') }}</div>
     @endif
     @if(session('error'))
-        <div class="flash flash-err"><span style="font-size:inherit;">⚠️</span> {{ session('error') }}</div>
+        <div class="flash flash-err"><i class="fas fa-exclamation-triangle"></i> {{ session('error') }}</div>
     @endif
 
     {{-- â”€â”€â”€ STATS ROW â”€â”€â”€ --}}
     <div class="dash-stats" style="margin-bottom:36px;">
         <div class="stat-card">
-            <div class="stat-icon" style="background:rgba(10,100,188,.1);color:#0A64BC;"><span style="font-size:inherit;">👨‍🏫</span></div>
+            <div class="stat-icon" style="background:rgba(10,100,188,.1);color:#0A64BC;"><span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span></div>
             <div class="stat-label">Total Clinics</div>
             <div class="stat-value">{{ $totalClinics }}</div>
             <div class="stat-sub">{{ $upcomingCount }} upcoming</div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981;"><span style="font-size:inherit;">👤</span></div>
+            <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981;"><i class="fas fa-user"></i></div>
             <div class="stat-label">Total Students Enrolled</div>
             <div class="stat-value">{{ $totalStudents }}</div>
             <div class="stat-sub">across all your clinics</div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon" style="background:rgba(212,160,23,.12);color:#B8920F;"><span style="font-size:inherit;">📅</span></div>
+            <div class="stat-icon" style="background:rgba(212,160,23,.12);color:#B8920F;"><i class="fas fa-calendar"></i></div>
             <div class="stat-label">Upcoming Sessions</div>
             <div class="stat-value">{{ $upcomingCount }}</div>
             <div class="stat-sub">scheduled ahead</div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981;"><span style="font-size:inherit;">❓</span></div>
+            <div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></div>
             <div class="stat-label">Clinic Earnings</div>
             <div class="stat-value">KSh {{ number_format($clinicEarnings, 0) }}</div>
             @if($clinicEarnings > 0)
@@ -134,14 +134,14 @@
         {{-- â”€â”€â”€ NO CLINICS EMPTY STATE â”€â”€â”€ --}}
         <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:64px 24px;text-align:center;box-shadow:0 2px 16px rgba(21,40,31,.06);">
             <div style="width:88px;height:88px;border-radius:24px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;">
-                <span style="font-size:inherit;">👨‍🏫</span>
+                <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
             </div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:10px;">Create your first clinic</h2>
             <p style="font-size:15px;color:rgba(21,40,31,.55);max-width:480px;margin:0 auto 26px;line-height:1.7;">
                 You're approved as an examiner. Set up your first examiner clinic â€” choose a subject and paper (PP1, PP2, PP3), set the time, and students can start booking right away.
             </p>
             <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint" style="font-size:15px;padding:13px 32px;">
-                <span style="font-size:inherit;">➕</span> Create Your First Clinic
+                <i class="fas fa-plus"></i> Create Your First Clinic
             </a>
         </div>
     @else
@@ -152,15 +152,15 @@
                     <h2 style="font-family:'Fraunces',serif;font-size:clamp(22px,3vw,30px);color:#15281F;margin-bottom:4px;">Upcoming Clinics</h2>
                     <p style="font-size:14px;color:rgba(21,40,31,.55);">{{ $upcomingClinics->count() }} clinic{{ $upcomingClinics->count() != 1 ? 's' : '' }} scheduled</p>
                 </div>
-                <a href="{{ route('examiner.clinics.create') }}" class="btn btn-v btn-sm"><span style="font-size:inherit;">➕</span> New Clinic</a>
+                <a href="{{ route('examiner.clinics.create') }}" class="btn btn-v btn-sm"><i class="fas fa-plus"></i> New Clinic</a>
             </div>
 
             @if($upcomingClinics->isEmpty())
                 <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:48px 24px;text-align:center;">
-                    <div style="font-size:44px;margin-bottom:12px;color:rgba(21,40,31,.12);"><span style="font-size:inherit;">❌</span></div>
+                    <div style="font-size:44px;margin-bottom:12px;color:rgba(21,40,31,.12);"><i class="fas fa-times-circle"></i></div>
                     <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;">No upcoming clinics</h3>
                     <p style="color:rgba(21,40,31,.55);margin-bottom:18px;">Schedule a new clinic so students can book a spot.</p>
-                    <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint"><span style="font-size:inherit;">➕</span> Create New Clinic</a>
+                    <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint"><i class="fas fa-plus"></i> Create New Clinic</a>
                 </div>
             @else
                 <div style="display:flex;flex-direction:column;gap:14px;">
@@ -176,7 +176,7 @@
                         <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;box-shadow:0 2px 12px rgba(21,40,31,.04);">
                             <div class="clinic-row">
                                 <div style="width:54px;height:54px;border-radius:16px;background:rgba(212,160,23,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                    <span style="font-size:inherit;">👨‍🏫</span>
+                                    <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
                                 </div>
                                 <div style="flex:1;min-width:200px;">
                                     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
@@ -195,33 +195,33 @@
                                             ];
                                             [$sbg, $scol, $sic, $slbl] = $statusCfg[$clinic->status] ?? ['rgba(21,40,31,.06)', 'rgba(21,40,31,.55)', 'fa-circle', ucfirst($clinic->status)];
                                         @endphp
-                                        <span class="pill" style="background:{{ $sbg }};color:{{ $scol }};"><span class="{{ $sic }}" style="font-size:inherit;">❓</span> {{ $slbl }}</span>
+                                        <span class="pill" style="background:{{ $sbg }};color:{{ $scol }};"><span class="{{ $sic }}" style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> {{ $slbl }}</span>
                                     </div>
                                     <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;">
                                         @if($clinic->subject)
-                                            <span class="pill" style="background:rgba(21,40,31,.06);color:#15281F;"><span style="font-size:inherit;">📖</span>{{ $clinic->subject->name }}</span>
+                                            <span class="pill" style="background:rgba(21,40,31,.06);color:#15281F;"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span>{{ $clinic->subject->name }}</span>
                                         @endif
                                         @if($clinic->paper_type)
-                                            <span class="pill" style="background:rgba(212,160,23,.1);color:#EEBE15;font-weight:700;"><span style="font-size:inherit;">📄</span>{{ $clinic->paper_type }}</span>
+                                            <span class="pill" style="background:rgba(212,160,23,.1);color:#EEBE15;font-weight:700;"><i class="fas fa-file-alt"></i>{{ $clinic->paper_type }}</span>
                                         @endif
                                         @if($isFull)
-                                            <span class="pill" style="background:#FEE2E2;color:#991B1B;font-weight:700;"><span style="font-size:inherit;">🔒</span> FULL</span>
+                                            <span class="pill" style="background:#FEE2E2;color:#991B1B;font-weight:700;"><i class="fas fa-lock"></i> FULL</span>
                                         @endif
                                     </div>
                                     <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:rgba(21,40,31,.55);align-items:center;margin-bottom:10px;">
-                                        <span><span style="font-size:inherit;">📅</span>{{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</span>
-                                        <span><span style="font-size:inherit;">⏰</span>{{ $clinic->duration_minutes }} min</span>
-                                        <span style="color:{{ $isFull ? '#991B1B' : '#10B981' }};font-weight:600;"><span style="font-size:inherit;">👤</span>{{ $enrolled }}/{{ $capacity }} enrolled</span>
-                                        <span><span style="font-size:inherit;">💵</span>KSh {{ number_format($clinic->price, 0) }}</span>
+                                        <span><i class="fas fa-calendar"></i>{{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</span>
+                                        <span><i class="fas fa-clock"></i>{{ $clinic->duration_minutes }} min</span>
+                                        <span style="color:{{ $isFull ? '#991B1B' : '#10B981' }};font-weight:600;"><i class="fas fa-user"></i>{{ $enrolled }}/{{ $capacity }} enrolled</span>
+                                        <span><span style="font-size:inherit;"><i class="fas fa-money-bill"></i></span>KSh {{ number_format($clinic->price, 0) }}</span>
                                     </div>
                                     <div class="cap-bar" style="width:100%;max-width:320px;">
                                         <div class="cap-fill" style="width:{{ $fillPct }}%;background:{{ $isFull ? '#E8522A' : ($fillPct > 70 ? '#EEBE15' : '#10B981') }};"></div>
                                     </div>
                                 </div>
                                 <div class="clinic-actions">
-                                    <a href="{{ route('examiner.clinics.show', $clinic) }}" class="detail-btn"><span style="font-size:inherit;">👁️</span> View Details</a>
+                                    <a href="{{ route('examiner.clinics.show', $clinic) }}" class="detail-btn"><span style="font-size:inherit;"><i class="fas fa-eye"></i></span> View Details</a>
                                     @if($canStart)
-                                        <a href="{{ route('examiner.clinics.join', $clinic) }}" class="start-btn"><span style="font-size:inherit;">🎥</span> Start Session</a>
+                                        <a href="{{ route('examiner.clinics.join', $clinic) }}" class="start-btn"><i class="fas fa-video"></i> Start Session</a>
                                     @endif
                                 </div>
                             </div>
@@ -240,7 +240,7 @@
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;box-shadow:0 2px 16px rgba(21,40,31,.06);">
                 @if($pastClinics->isEmpty())
                     <div style="text-align:center;padding:36px 12px;">
-                        <div style="font-size:40px;margin-bottom:10px;color:rgba(21,40,31,.12);"><span style="font-size:inherit;">⏰</span></div>
+                        <div style="font-size:40px;margin-bottom:10px;color:rgba(21,40,31,.12);"><i class="fas fa-clock"></i></div>
                         <p style="font-size:15px;color:rgba(21,40,31,.55);">No past clinics yet. Once a clinic's scheduled time passes, it will show up here.</p>
                     </div>
                 @else
@@ -266,11 +266,11 @@
                                         <td>
                                             <div style="display:flex;align-items:center;gap:10px;">
                                                 <div style="width:36px;height:36px;border-radius:10px;background:rgba(21,40,31,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                                    <span style="font-size:inherit;">👨‍🏫</span>
+                                                    <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
                                                 </div>
                                                 <div>
                                                     <div style="font-weight:600;color:#15281F;">{{ $clinicTitle }}</div>
-                                                    <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $clinic->subject->name ?? 'N/A' }}{{ $clinic->paper_type ? ' Â· ' . $clinic->paper_type : '' }}</div>
+                                                    <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $clinic->subject->name ?? 'N/A' }}{{ $clinic->paper_type ? ' · ' . $clinic->paper_type : '' }}</div>
                                                 </div>
                                             </div>
                                         </td>
@@ -298,7 +298,7 @@
             <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.08);padding:28px;box-shadow:0 2px 16px rgba(21,40,31,.06);">
                 @if($recentEnrollments->isEmpty())
                     <div style="text-align:center;padding:36px 12px;">
-                        <div style="font-size:40px;margin-bottom:10px;color:rgba(21,40,31,.12);"><span style="font-size:inherit;">👤</span></div>
+                        <div style="font-size:40px;margin-bottom:10px;color:rgba(21,40,31,.12);"><i class="fas fa-user"></i></div>
                         <p style="font-size:15px;color:rgba(21,40,31,.55);">No enrollments yet. Once students book your clinics, they'll appear here.</p>
                     </div>
                 @else

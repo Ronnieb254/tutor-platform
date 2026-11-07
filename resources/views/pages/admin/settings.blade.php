@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Platform Settings')
 
 @section('content')
@@ -41,7 +41,7 @@ use App\Models\PlatformSetting;
     {{-- Payments --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            Ã°Å¸â€™Â³ Payments
+            Ã°Å¸'Â³ Payments
         </h3>
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
@@ -69,10 +69,10 @@ use App\Models\PlatformSetting;
     {{-- Daraja M-Pesa --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            Ã°Å¸â€œÂ± Daraja M-Pesa Integration
+            Ã°Å¸"Â± Daraja M-Pesa Integration
         </h3>
         <div style="background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.3);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#92400E;">
-            Ã¢Å¡Â  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
+            Å¡Â  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
         </div>
         <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
@@ -81,7 +81,7 @@ use App\Models\PlatformSetting;
             </div>
             <div>
                 <label class="form-label">Consumer Key (from .env)</label>
-                <input type="text" class="form-input" value="{{ config('daraja.consumer_key') ? substr(config('daraja.consumer_key'),0,8).'Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢' : 'Not configured' }}" disabled style="background:#F4F6F4;color:var(--muted);">
+                <input type="text" class="form-input" value="{{ config('daraja.consumer_key') ? substr(config('daraja.consumer_key'),0,8).'â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢' : 'Not configured' }}" disabled style="background:#F4F6F4;color:var(--muted);">
             </div>
             <div>
                 <label class="form-label">Business Short Code</label>
@@ -111,10 +111,10 @@ use App\Models\PlatformSetting;
             </div>
             <div>
                 <label class="form-label">App ID</label>
-                <input type="text" class="form-input" value="{{ config('jitsi.app_id') ? 'Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢' : 'Not set (using public Jitsi)' }}" disabled style="background:#F4F6F4;color:var(--muted);">
+                <input type="text" class="form-input" value="{{ config('jitsi.app_id') ? 'â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢' : 'Not set (using public Jitsi)' }}" disabled style="background:#F4F6F4;color:var(--muted);">
             </div>
             <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:12px;padding:12px 14px;font-size:13px;color:#065F46;">
-                Ã¢Å“â€œ Sessions use <strong>meet.jit.si</strong> (public) by default. Set JITSI_APP_ID and JITSI_APP_SECRET in .env for a private server with JWT auth.
+                Å“" Sessions use <strong>meet.jit.si</strong> (public) by default. Set JITSI_APP_ID and JITSI_APP_SECRET in .env for a private server with JWT auth.
             </div>
         </div>
     </div>
@@ -122,7 +122,7 @@ use App\Models\PlatformSetting;
     {{-- Session Durations info --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            <span style="font-size:inherit;">❓</span> Session Duration Pricing
+            <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Session Duration Pricing
         </h3>
         <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">
             Mwalimu uses <strong>fixed platform rates</strong> for all sessions. Tutors do not set their own prices. All rates are inclusive of the platform commission.
@@ -152,7 +152,7 @@ use App\Models\PlatformSetting;
             </tbody>
         </table>
         <p style="font-size:12px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline);">
-            <span style="font-size:inherit;">ℹ️</span>
+            <i class="fas fa-info-circle"></i>
             To change session prices, update the <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">sessionPrices()</code> method in <code style="background:#F4F6F4;padding:1px 6px;border-radius:4px;">app/Models/TutorProfile.php</code>.
         </p>
     </div>

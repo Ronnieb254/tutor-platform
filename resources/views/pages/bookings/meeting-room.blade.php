@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Session Room Ã¢â‚¬â€œ Mwalimu</title>
+<title>Session Room â‚¬" Mwalimu</title>
 <style>
 :root{--ink:#15281F;--trust-blue:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -51,8 +51,8 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
     {{-- Closing-buffer banner (hidden until 5 min left) --}}
     <div id="closing-banner">
-        <span style="font-size:inherit;">⚠️</span>
-        <span>Session ending soon Ã¢â‚¬â€œ closing buffer active. You may finish your lesson.</span>
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Session ending soon â‚¬" closing buffer active. You may finish your lesson.</span>
         @if(auth()->id() === $booking->tutor_id)
         <button onclick="document.getElementById('closing-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 14px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:600;">Dismiss</button>
         @endif
@@ -65,7 +65,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 <span style="font-size:inherit;">←</span> Back
             </a>
             <div class="session-title">
-                {{ $booking->subject ? $booking->subject->name : 'Session' }} Ã‚Â· {{ $booking->duration_minutes }} min
+                {{ $booking->subject ? $booking->subject->name : 'Session' }} Ã‚· {{ $booking->duration_minutes }} min
             </div>
             <div class="session-meta">
                 <span class="dot"></span>
@@ -77,10 +77,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                     @endif
                 </span>
                 @if(auth()->id() === $booking->tutor_id)
-                    <span class="moderator-badge"><span style="font-size:inherit;">🛡️</span> MODERATOR</span>
+                    <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
                 @endif
                 <span class="recording-indicator" id="recIndicator">
-                    <span style="font-size:inherit;">❓</span> REC
+                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> REC
                 </span>
             </div>
         </div>
@@ -98,7 +98,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                     <div class="tp-val" id="remaining-timer">--:--</div>
                 </div>
                 <div>
-                    <div class="tp-label" id="timer-status">WaitingÃ¢â‚¬Â¦</div>
+                    <div class="tp-label" id="timer-status">Waitingâ‚¬Â¦</div>
                     <div id="progress-bar-wrap"><div id="progress-bar" style="width:0%;"></div></div>
                 </div>
             </div>
@@ -120,10 +120,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 </p>
             </div>
             <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
-                <span style="font-size:inherit;">❓</span>
+                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
             </button>
             <button onclick="leaveSession()" class="exit-btn">
-                <span style="font-size:inherit;">📞</span> Leave
+                <i class="fas fa-phone"></i> Leave
             </button>
         </div>
     </div>
@@ -154,7 +154,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     @endphp
     const sessionStartTs = {{ $sessionStartTs }};
 
-    // Ã¢â€â‚¬Ã¢â€â‚¬ Timer state Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+    // â€â‚¬â€â‚¬ Timer state â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬
     let teachingTimer = null;
     let elapsedSeconds = 0;
     let bothJoined = false;
@@ -180,7 +180,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         if (progEl) {
             const pct = Math.min(100, (elapsedSeconds / scheduledSeconds) * 100);
             progEl.style.width = pct + '%';
-            // Colour: green Ã¢â€ â€™ amber (last 20%) Ã¢â€ â€™ red (closing buffer)
+            // Colour: green â€ ' amber (last 20%) â€ ' red (closing buffer)
             if (remaining <= closingBufferSeconds) {
                 progEl.style.background = '#E8522A';
             } else if (remaining <= scheduledSeconds * 0.2) {
@@ -193,7 +193,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         // Show closing-buffer warning
         if (remaining <= closingBufferSeconds && !inClosingBuffer) {
             inClosingBuffer = true;
-            showToast('Ã¢ÂÂ° Session ending in ' + formatTime(remaining) + ' Ã¢â‚¬â€œ closing buffer started.', 'warning');
+            showToast('ÂÂ° Session ending in ' + formatTime(remaining) + ' â‚¬" closing buffer started.', 'warning');
             document.getElementById('closing-banner').style.display = 'flex';
         }
 
@@ -217,7 +217,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
             updateTimerUI();
         }, 1000);
         document.getElementById('timer-panel').style.display = 'flex';
-        document.getElementById('timer-status').textContent = 'Teaching timer runningÃ¢â‚¬Â¦';
+        document.getElementById('timer-status').textContent = 'Teaching timer runningâ‚¬Â¦';
     }
 
     // Poll attendance status every 10 s
@@ -320,7 +320,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
     const api = new JitsiMeetExternalAPI(domain, options);
 
-    // Ã¢â€â‚¬Ã¢â€â‚¬ Joined event Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+    // â€â‚¬â€â‚¬ Joined event â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬
     api.addEventListener('videoConferenceJoined', () => {
         if (!hasJoined) {
             hasJoined = true;
@@ -378,10 +378,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     function copySessionCode() {
         navigator.clipboard.writeText(sessionCode).then(() => {
             const btn = document.getElementById('copyBtn');
-            btn.innerHTML = '<span style="font-size:inherit;">✅</span>';
+            btn.innerHTML = '<i class="fas fa-check-circle"></i>';
             btn.classList.add('copied');
             setTimeout(() => {
-                btn.innerHTML = '<span style="font-size:inherit;">❓</span>';
+                btn.innerHTML = '<span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>';
                 btn.classList.remove('copied');
             }, 2000);
         }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));

@@ -1,4 +1,4 @@
-<div class="space-y-6">
+﻿<div class="space-y-6">
     {{-- Stats --}}
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         @foreach([
@@ -39,7 +39,7 @@
                 <img src="{{ $booking->tutor->avatar_url }}" class="w-12 h-12 rounded-2xl object-cover flex-shrink-0">
                 <div class="flex-1 min-w-0">
                     <p class="font-semibold text-ink">{{ $booking->tutor->name }}</p>
-                    <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} Â· {{ $booking->duration_minutes }} min</p>
+                    <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->duration_minutes }} min</p>
                     <p class="text-xs text-trust-blue font-semibold mt-1">{{ $booking->scheduled_at->format('D, M j \a\t g:ia') }}</p>
                 </div>
                 <div class="flex flex-col items-end gap-2 flex-shrink-0">
@@ -69,7 +69,7 @@
                 <img src="{{ $booking->tutor->avatar_url }}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
                 <div class="flex-1 min-w-0">
                     <p class="font-semibold text-sm text-ink">{{ $booking->tutor->name }}</p>
-                    <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} Â· {{ $booking->scheduled_at->format('M j, Y') }}</p>
+                    <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->scheduled_at->format('M j, Y') }}</p>
                 </div>
                 <div class="flex items-center gap-2 flex-shrink-0">
                     @if(!$booking->review)

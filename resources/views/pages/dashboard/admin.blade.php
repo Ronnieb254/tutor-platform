@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Dashboard')
 
 @section('content')
@@ -62,7 +62,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
         <div class="stat-label">Pending Actions</div>
         <div class="stat-value">{{ $pendingTutors + $pendingPayouts }}</div>
         <div class="stat-trend" style="color:var(--muted);">
-            {{ $pendingTutors }} tutors Â· {{ $pendingPayouts }} payouts
+            {{ $pendingTutors }} tutors · {{ $pendingPayouts }} payouts
         </div>
     </div>
 </div>
@@ -180,7 +180,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                 <div class="avatar" style="background:#{{ ['0A64BC','10B981','E8522A','EEBE15'][$loop->index % 4] }};">{{ substr($profile->user->name,0,1) }}</div>
                 <div style="flex:1;min-width:0;">
                     <div style="font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $profile->user->name }}</div>
-                    <div style="font-size:11px;color:var(--muted);">{{ $profile->city }} Â· {{ $profile->documents->count() }} doc(s)</div>
+                    <div style="font-size:11px;color:var(--muted);">{{ $profile->city }} · {{ $profile->documents->count() }} doc(s)</div>
                 </div>
                 <a href="{{ route('admin.tutors') }}" class="btn btn-outline btn-sm" style="font-size:11px;padding:5px 10px;">Review</a>
             </div>
@@ -253,7 +253,7 @@ function confirmBooking(uuid, btn) {
         if (!result.isConfirmed) return;
 
         const originalHtml = btn.innerHTML;
-        btn.innerHTML = '<svg style="width:12px;height:12px;animation:spin 1s linear infinite;display:inline-block;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Confirmingâ€¦';
+        btn.innerHTML = '<svg style="width:12px;height:12px;animation:spin 1s linear infinite;display:inline-block;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Confirming…';
         btn.disabled = true;
 
         fetch(`/bookings/${uuid}/force-confirm`, {

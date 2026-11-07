@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -23,7 +23,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 <section style="background:var(--ink);padding:52px 0;position:relative;overflow:hidden;">
     <div style="position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:rgba(10,100,188,.15);border-radius:50%;"></div>
     <div class="w" style="position:relative;z-index:1;">
-        <div class="badge badge-white" style="margin-bottom:16px;"><span style="font-size:inherit;">❓</span> Learning Resources</div>
+        <div class="badge badge-white" style="margin-bottom:16px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Learning Resources</div>
         <h1 style="font-size:clamp(30px,5vw,50px);color:#fff;margin-bottom:12px;">Study tips & exam strategies</h1>
         <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:480px;">From Kenya's top tutors and national examiners â€” practical guides to help you score higher.</p>
     </div>
@@ -36,7 +36,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
         <div>
             @if($posts->isEmpty())
             <div class="card" style="padding:64px;text-align:center;">
-                <span style="font-size:inherit;">✏️</span>
+                <i class="fas fa-pencil-alt"></i>
                 <h3 style="font-size:20px;color:var(--ink);margin-bottom:8px;">Coming soon</h3>
                 <p style="color:var(--muted);">Study guides and exam tips are on their way. Check back soon!</p>
             </div>
@@ -49,7 +49,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                     @else
                     <div class="post-thumb-placeholder" style="background:{{ $colors[$loop->index%count($colors)] }}22;">
                         @php 
-                        $icons = ['📏','🧪','📚','✏️','🎯','📄'];
+                        $icons = ['<i class="fas fa-ruler"></i>','<i class="fas fa-flask"></i>','<i class="fas fa-book-open"></i>','<i class="fas fa-pencil-alt"></i>','<i class="fas fa-bullseye"></i>','<i class="fas fa-file-alt"></i>'];
                         $iconColors = ['#0A64BC','#10B981','#D4A017','#E8522A','#8B5CF6','#F59E0B'];
                         @endphp
                         <span style="font-size:48px;color:{{ $iconColors[$loop->index%6] }};">{{ $icons[$loop->index%6] }}</span>
@@ -66,8 +66,8 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
                         <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);border-top:1px solid var(--hair);padding-top:12px;">
                             <img src="{{ $post->author->avatar_url }}" style="width:24px;height:24px;border-radius:999px;object-fit:cover;">
                             <span>{{ $post->author->name }}</span>
-                            <span>Â·</span>
-                            <span><span style="font-size:inherit;">📅</span> {{ $post->published_at->format('M j, Y') }}</span>
+                            <span>·</span>
+                            <span><i class="fas fa-calendar"></i> {{ $post->published_at->format('M j, Y') }}</span>
                         </div>
                     </div>
                 </a>
@@ -82,7 +82,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
         {{-- SIDEBAR --}}
         <aside>
             <div class="card card-p" style="margin-bottom:16px;">
-                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:var(--ink);margin-bottom:14px;"><span style="font-size:inherit;">❓</span>Categories</h3>
+                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:var(--ink);margin-bottom:14px;"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>Categories</h3>
                 @forelse($cats as $cat)
                 <a href="{{ route('blog.index') }}?category={{ $cat->id }}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hair);font-size:14px;color:var(--ink);transition:color .15s;" onmouseover="this.style.color='var(--trust-blue)'" onmouseout="this.style.color='var(--ink)'">
                     <span>{{ $cat->name }}</span>
@@ -94,9 +94,9 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
             </div>
 
             <div class="card card-p" style="background:var(--trust-blue);border-color:var(--trust-blue);">
-                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:#fff;margin-bottom:8px;"><span style="font-size:inherit;">⭐</span>Examiner's Clinic</h3>
+                <h3 style="font-size:16px;font-family:'Fraunces',serif;color:#fff;margin-bottom:8px;"><i class="fas fa-star"></i>Examiner's Clinic</h3>
                 <p style="font-size:13px;color:rgba(255,255,255,.75);margin-bottom:14px;line-height:1.65;">Learn directly from the national examiners who set and mark KCSE papers. Only KSh 1,000 per session.</p>
-                <a href="{{ route('examiner-clinic') }}" class="btn btn-gold btn-sm" style="width:100%;justify-content:center;"><span style="font-size:inherit;">✅</span> View Clinics</a>
+                <a href="{{ route('examiner-clinic') }}" class="btn btn-gold btn-sm" style="width:100%;justify-content:center;"><i class="fas fa-check-circle"></i> View Clinics</a>
             </div>
         </aside>
     </div>

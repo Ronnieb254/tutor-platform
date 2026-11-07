@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Resources Ã¢â‚¬â€œ Mwalimu</title>
+<title>My Resources â‚¬" Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -107,7 +107,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
 <div class="main">
     <header class="topbar">
-        <div class="page-title"><span style="font-size:inherit;">📚</span>My Resources</div>
+        <div class="page-title"><i class="fas fa-book-open"></i>My Resources</div>
         <a href="{{ route('tutor.library.create') }}" class="btn btn-v">
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Upload Resource
@@ -116,7 +116,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
     <div class="content">
         @if(session('success'))
-        <div class="flash flash-ok"><span style="font-size:inherit;">✅</span>{{ session('success') }}</div>
+        <div class="flash flash-ok"><i class="fas fa-check-circle"></i>{{ session('success') }}</div>
         @endif
 
         {{-- Stats --}}
@@ -156,7 +156,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                     </thead>
                     <tbody>
                         @php
-                            $typeIcons = ['article'=>'Ã°Å¸â€œâ€ž','pdf'=>'Ã°Å¸â€œâ€¢','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸â€œÂ','past_paper'=>'Ã°Å¸â€œâ€¹'];
+                            $typeIcons = ['article'=>'Ã°Å¸"â€ž','pdf'=>'Ã°Å¸"•','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸"â€¹'];
                             $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
                             $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
                         @endphp
@@ -165,7 +165,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                             <td style="max-width:260px;">
                                 <div style="display:flex;align-items:center;gap:10px;">
                                     <div style="width:36px;height:36px;border-radius:9px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
-                                        {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸â€œâ€ž' }}
+                                        {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸"â€ž' }}
                                     </div>
                                     <div>
                                         <div style="font-weight:600;font-size:13.5px;">{{ Str::limit($resource->title, 45) }}</div>
@@ -176,8 +176,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                             <td>
                                 <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">{{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}</span>
                             </td>
-                            <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? 'Ã¢â‚¬â€' }}</td>
-                            <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? 'Ã¢â‚¬â€' }}</td>
+                            <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? 'â‚¬â€' }}</td>
+                            <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? 'â‚¬â€' }}</td>
                             <td style="font-weight:600;">{{ number_format($resource->download_count) }}</td>
                             <td>
                                 @if(!$resource->is_approved)
@@ -203,7 +203,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                         @empty
                         <tr>
                             <td colspan="7" style="text-align:center;padding:60px;">
-                                <div style="font-size:40px;margin-bottom:10px;"><span style="font-size:inherit;">📚</span></div>
+                                <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-book-open"></i></div>
                                 <p style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;">No resources yet</p>
                                 <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Share study materials, past papers, or notes with students.</p>
                                 <a href="{{ route('tutor.library.create') }}" class="btn btn-v">Upload Your First Resource</a>

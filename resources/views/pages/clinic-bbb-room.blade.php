@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -41,17 +41,17 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 <span style="font-size:inherit;">←</span> Back
             </a>
             <div class="session-title">
-                <span style="font-size:inherit;">👨‍🏫</span>
+                <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
                 {{ $clinic->title ?? $clinic->name }}
             </div>
             <div class="session-meta">
                 <span class="dot"></span>
-                <span class="time">{{ $clinic->scheduled_at->format('D, M j Ã‚Â· g:ia') }}</span>
+                <span class="time">{{ $clinic->scheduled_at->format('D, M j Ã‚· g:ia') }}</span>
                 @if($isModerator)
-                    <span class="moderator-badge"><span style="font-size:inherit;">🛡️</span> MODERATOR</span>
+                    <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
                 @endif
                 <span class="recording-indicator" id="recIndicator">
-                    <span style="font-size:inherit;">❓</span> REC
+                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> REC
                 </span>
             </div>
         </div>
@@ -63,11 +63,11 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 <p style="font-size:13px;font-family:monospace;font-weight:700;color:#fff;letter-spacing:.05em;">{{ $sessionCode }}</p>
             </div>
             <button onclick="copySessionCode()" class="copy-btn" id="copyBtn" title="Copy session code">
-                <span style="font-size:inherit;">❓</span>
+                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
             </button>
             @endif
             <button onclick="leaveSession()" class="exit-btn">
-                <span style="font-size:inherit;">📞</span> Leave
+                <i class="fas fa-phone"></i> Leave
             </button>
         </div>
     </div>
@@ -104,7 +104,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                     width: { ideal: 1280, max: 1920, min: 320 }
                 }
             },
-            // Screen sharing Ã¢â‚¬â€ all sources
+            // Screen sharing â‚¬â€ all sources
             desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
             desktopSharingChromeSources: ['screen', 'window', 'tab'],
             desktopSharingChromeExtId: null,
@@ -138,7 +138,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
             RECENT_LIST_ENABLED: false,
             SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
             VIDEO_LAYOUT_FIT: 'both',
-            // Full toolbar Ã¢â‚¬â€ all tools visible and available
+            // Full toolbar â‚¬â€ all tools visible and available
             TOOLBAR_BUTTONS: [
                 'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
                 'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
@@ -187,10 +187,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     function copySessionCode() {
         navigator.clipboard.writeText(sessionCode).then(() => {
             const btn = document.getElementById('copyBtn');
-            btn.innerHTML = '<span style="font-size:inherit;">✅</span>';
+            btn.innerHTML = '<i class="fas fa-check-circle"></i>';
             btn.classList.add('copied');
             setTimeout(() => {
-                btn.innerHTML = '<span style="font-size:inherit;">❓</span>';
+                btn.innerHTML = '<span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>';
                 btn.classList.remove('copied');
             }, 2000);
         }).catch(() => showToast('Failed to copy: ' + sessionCode, 'error'));

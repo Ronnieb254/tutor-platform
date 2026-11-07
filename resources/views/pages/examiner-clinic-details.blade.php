@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Clinic Details Ã¢â‚¬â€œ {{ $clinic->title ?? $clinic->name }}</title>
+<title>Clinic Details â‚¬" {{ $clinic->title ?? $clinic->name }}</title>
 </head>
 <body>
 @include('partials.nav')
@@ -25,10 +25,10 @@
                 @endif
             </h1>
             <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:rgba(21,40,31,.55);">
-                @if($clinic->subject)<span><span style="font-size:inherit;">📖</span> {{ $clinic->subject->name }}</span>@endif
-                @if($clinic->paper_type)<span><span style="font-size:inherit;">📄</span> {{ $clinic->paper_type }}</span>@endif
-                <span><span style="font-size:inherit;">📅</span> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
-                <span><span style="font-size:inherit;">⏰</span> {{ $clinic->duration_minutes ?? 60 }} min</span>
+                @if($clinic->subject)<span><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> {{ $clinic->subject->name }}</span>@endif
+                @if($clinic->paper_type)<span><i class="fas fa-file-alt"></i> {{ $clinic->paper_type }}</span>@endif
+                <span><i class="fas fa-calendar"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
+                <span><i class="fas fa-clock"></i> {{ $clinic->duration_minutes ?? 60 }} min</span>
             </div>
         </div>
 
@@ -39,18 +39,18 @@
         @endphp
         @if($isCancelled)
         <span style="display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:10px;background:#FEE2E2;color:#991B1B;font-size:14px;font-weight:700;">
-            <span style="font-size:inherit;">🚫</span> Cancelled
+            <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancelled
         </span>
         @elseif($canJoinNow)
         <a href="{{ route('examiner.clinics.join', $clinic) }}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:10px;background:#10B981;color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
-            <span style="font-size:inherit;">🎥</span> Launch Session in Jitsi
+            <i class="fas fa-video"></i> Launch Session in Jitsi
         </a>
         @else
         <div style="text-align:right;">
             <div style="font-size:12px;color:rgba(21,40,31,.45);margin-bottom:5px;">Session starts in</div>
-            <div id="countdown" style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">Ã¢â‚¬â€</div>
+            <div id="countdown" style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">â‚¬â€</div>
             <a href="{{ route('examiner.clinics.join', $clinic) }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:10px 20px;border-radius:10px;background:#0A64BC;color:#fff;font-size:13px;font-weight:600;text-decoration:none;opacity:.75;">
-                <span style="font-size:inherit;">🎥</span> Join Early
+                <i class="fas fa-video"></i> Join Early
             </a>
         </div>
         @endif
@@ -58,7 +58,7 @@
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px 16px;margin-bottom:18px;color:#059669;font-weight:600;">
-        <span style="font-size:inherit;">✅</span> {{ session('success') }}
+        <i class="fas fa-check-circle"></i> {{ session('success') }}
     </div>
     @endif
 
@@ -82,7 +82,7 @@
 
             @if($clinic->enrollments->isEmpty())
             <div style="padding:48px;text-align:center;">
-                <span style="font-size:inherit;">👤</span>
+                <i class="fas fa-user"></i>
                 <p style="color:rgba(21,40,31,.45);font-size:14px;">No students have enrolled yet.</p>
             </div>
             @else
@@ -101,7 +101,7 @@
                         <tr style="border-top:1px solid rgba(21,40,31,.04);">
                             <td style="padding:12px 16px;color:rgba(21,40,31,.4);">{{ $i + 1 }}</td>
                             <td style="padding:12px 16px;">
-                                <div style="font-weight:600;color:#15281F;">{{ $en->student?->name ?? 'Ã¢â‚¬â€' }}</div>
+                                <div style="font-weight:600;color:#15281F;">{{ $en->student?->name ?? 'â‚¬â€' }}</div>
                                 <div style="font-size:11px;color:rgba(21,40,31,.45);">{{ $en->student?->email }}</div>
                             </td>
                             <td style="padding:12px 16px;">
@@ -109,9 +109,9 @@
                             </td>
                             <td style="padding:12px 16px;text-align:center;">
                                 @if($en->attended)
-                                <span style="font-size:inherit;">✅</span>
+                                <i class="fas fa-check-circle"></i>
                                 @else
-                                <span style="font-size:inherit;">❓</span>
+                                <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>
                                 @endif
                             </td>
                         </tr>
@@ -153,7 +153,7 @@
             {{-- Overflow info --}}
             @if($clinic->hasOverflowClinic())
             <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:14px;padding:16px;">
-                <h3 style="font-size:12px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;"><span style="font-size:inherit;">✅</span> Overflow Created</h3>
+                <h3 style="font-size:12px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;"><i class="fas fa-check-circle"></i> Overflow Created</h3>
                 @php $overflow = $clinic->childSessions()->latest()->first(); @endphp
                 @if($overflow)
                 <div style="font-size:13px;font-weight:600;color:#15281F;margin-bottom:3px;">{{ $overflow->title }}</div>
@@ -163,7 +163,7 @@
             </div>
             @elseif($clinic->isFull())
             <div style="background:rgba(232,82,42,.06);border:1px solid rgba(232,82,42,.2);border-radius:14px;padding:16px;font-size:13px;color:#B45309;">
-                <span style="font-size:inherit;">👤</span> <strong>Session is full</strong> Ã¢â‚¬â€œ overflow will be auto-created when a student books, or you can trigger it manually from the admin panel.
+                <i class="fas fa-user"></i> <strong>Session is full</strong> â‚¬" overflow will be auto-created when a student books, or you can trigger it manually from the admin panel.
             </div>
             @endif
 
@@ -191,7 +191,7 @@
     if (!el) return;
     function tick(){
         var diff = target - Date.now();
-        if(diff <= 0){ el.textContent = 'StartingÃ¢â‚¬Â¦'; return; }
+        if(diff <= 0){ el.textContent = 'Startingâ‚¬Â¦'; return; }
         var h = Math.floor(diff/3600000);
         var m = Math.floor((diff%3600000)/60000);
         var s = Math.floor((diff%60000)/1000);

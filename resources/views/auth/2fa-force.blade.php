@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Setup Two-Factor Authentication Ã¢â‚¬â€œ Mwalimu</title>
+    <title>Setup Two-Factor Authentication â‚¬" Mwalimu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -264,7 +264,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 <div class="container">
     <div class="card">
         <div class="header">
-            <div class="alert-badge">Ã°Å¸â€â€™ REQUIRED FOR ADMINS</div>
+            <div class="alert-badge">Ã°Å¸â€' REQUIRED FOR ADMINS</div>
             <h1>Setup 2FA</h1>
             <p>As an administrator, two-factor authentication is mandatory to protect sensitive data and system access</p>
         </div>
@@ -305,10 +305,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
                     @endforeach
                 </div>
                 <button type="button" class="btn-copy" onclick="copyRecoveryCodes()">
-                    Ã°Å¸â€œâ€¹ Copy All Recovery Codes
+                    Ã°Å¸"â€¹ Copy All Recovery Codes
                 </button>
                 <div class="warning">
-                    Ã¢Å¡Â Ã¯Â¸Â CRITICAL: Store these codes in a secure password manager or safe location. You'll need them if you lose your phone or uninstall your authenticator app.
+                    Å¡Â Ã¯Â¸Â CRITICAL: Store these codes in a secure password manager or safe location. You'll need them if you lose your phone or uninstall your authenticator app.
                 </div>
             </div>
 
@@ -337,7 +337,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
             </div>
 
             <button type="submit" class="btn-submit">
-                Ã¢Å“â€œ Complete Setup & Access Dashboard
+                Å“" Complete Setup & Access Dashboard
             </button>
         </form>
     </div>

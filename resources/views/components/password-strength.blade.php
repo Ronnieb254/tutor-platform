@@ -1,4 +1,4 @@
-{{-- Password Strength Indicator Component --}}
+﻿{{-- Password Strength Indicator Component --}}
 <div class="password-strength-container" style="display: none;" id="password-strength-indicator">
     <div class="strength-bar-wrapper">
         <div class="strength-bar" id="strength-bar"></div>
@@ -6,19 +6,19 @@
     <div class="strength-label" id="strength-label">Password strength</div>
     <div class="strength-requirements" id="strength-requirements">
         <div class="requirement" id="req-length">
-            <span class="req-icon">Ã¢â€”â€¹</span>
+            <span class="req-icon">â€”â€¹</span>
             <span class="req-text">At least 8 characters</span>
         </div>
         <div class="requirement" id="req-mixed">
-            <span class="req-icon">Ã¢â€”â€¹</span>
+            <span class="req-icon">â€”â€¹</span>
             <span class="req-text">Mixed case letters</span>
         </div>
         <div class="requirement" id="req-number">
-            <span class="req-icon">Ã¢â€”â€¹</span>
+            <span class="req-icon">â€”â€¹</span>
             <span class="req-text">At least one number</span>
         </div>
         <div class="requirement" id="req-special">
-            <span class="req-icon">Ã¢â€”â€¹</span>
+            <span class="req-icon">â€”â€¹</span>
             <span class="req-text">At least one special character</span>
         </div>
     </div>
@@ -118,11 +118,11 @@
 }
 
 .requirement.met .req-icon::before {
-    content: 'Ã¢Å“â€œ';
+    content: 'Å“"';
 }
 
 .requirement:not(.met) .req-icon::before {
-    content: 'Ã¢â€”â€¹';
+    content: 'â€”â€¹';
 }
 </style>
 
@@ -179,15 +179,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (metCount === 4) {
             strengthBar.classList.add('strong');
             strengthLabel.classList.add('strong');
-            strengthLabel.textContent = 'Ã¢Å“â€œ Strong password';
+            strengthLabel.textContent = 'Å“" Strong password';
         } else if (metCount >= 2) {
             strengthBar.classList.add('medium');
             strengthLabel.classList.add('medium');
-            strengthLabel.textContent = 'Ã¢Å¡Â  Medium strength';
+            strengthLabel.textContent = 'Å¡Â  Medium strength';
         } else {
             strengthBar.classList.add('weak');
             strengthLabel.classList.add('weak');
-            strengthLabel.textContent = 'Ã¢Å“â€” Weak password';
+            strengthLabel.textContent = 'Å“â€” Weak password';
         }
     });
     

@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Enable Two-Factor Authentication Ã¢â‚¬â€œ Mwalimu</title>
+    <title>Enable Two-Factor Authentication â‚¬" Mwalimu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -267,10 +267,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
                     @endforeach
                 </div>
                 <button type="button" class="btn-copy" onclick="copyRecoveryCodes()">
-                    Ã°Å¸â€œâ€¹ Copy All Recovery Codes
+                    Ã°Å¸"â€¹ Copy All Recovery Codes
                 </button>
                 <div class="warning">
-                    Ã¢Å¡Â Ã¯Â¸Â Save these recovery codes in a secure location. You'll need them if you lose access to your authenticator app.
+                    Å¡Â Ã¯Â¸Â Save these recovery codes in a secure location. You'll need them if you lose access to your authenticator app.
                 </div>
             </div>
 
@@ -299,7 +299,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
             </div>
 
             <button type="submit" class="btn-submit">
-                Ã¢Å“â€œ Enable Two-Factor Authentication
+                Å“" Enable Two-Factor Authentication
             </button>
         </form>
     </div>

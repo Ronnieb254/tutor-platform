@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -26,9 +26,9 @@
         @endphp
 
         <h1 style="font-size:24px;font-weight:700;color:#15281F;margin:0 0 8px;">
-          @if($delivery === 'fully_delivered') Ã¢Å“â€¦ Session Completed Ã¢â‚¬â€œ Earnings Credited
-          @elseif($delivery === 'partially_delivered') Ã¢Å¡Â Ã¯Â¸Â Session Partially Delivered
-          @else Ã¢ÂÅ’ Session Not Delivered @endif
+          @if($delivery === 'fully_delivered') Å“… Session Completed â‚¬" Earnings Credited
+          @elseif($delivery === 'partially_delivered') Å¡Â Ã¯Â¸Â Session Partially Delivered
+          @else ÂÅ’ Session Not Delivered @endif
         </h1>
 
         <p style="color:rgba(21,40,31,0.65);font-size:15px;margin:0 0 24px;">

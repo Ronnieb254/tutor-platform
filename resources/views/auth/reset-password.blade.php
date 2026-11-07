@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Reset Password Ã¢â‚¬â€œ Mwalimu</title>
+    <title>Reset Password â‚¬" Mwalimu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -171,7 +171,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 }
 
 .password-requirements li::before{
-    content:'Ã¢â‚¬Â¢';
+    content:'â‚¬Â¢';
     position:absolute;
     left:6px;
     color:var(--trust-blue);
@@ -259,7 +259,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
                         id="password" 
                         name="password" 
                         class="form-input" 
-                        placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢"
+                        placeholder="â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢"
                         required
                         autocomplete="new-password"
                         autofocus>
@@ -283,7 +283,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
                         id="password_confirmation" 
                         name="password_confirmation" 
                         class="form-input" 
-                        placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢"
+                        placeholder="â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢"
                         required
                         autocomplete="new-password">
                 </div>
@@ -308,7 +308,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
         </form>
 
         <div class="back-link">
-            <a href="{{ route('login') }}">Ã¢â€ Â Back to Login</a>
+            <a href="{{ route('login') }}">â€ Â Back to Login</a>
         </div>
     </div>
 </div>

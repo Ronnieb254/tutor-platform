@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     @include('partials.head')
-    <title>Waiting for Payment Ã¢â‚¬â€œ Mwalimu</title>
+    <title>Waiting for Payment â‚¬" Mwalimu</title>
     <style>
         .pending-card {
             max-width: 480px;
@@ -43,7 +43,7 @@
         <div id="stateWaiting">
             <div class="spinner"></div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
-                Waiting for M-PesaÃ¢â‚¬Â¦
+                Waiting for M-Pesaâ‚¬Â¦
             </h2>
             <p style="color:var(--muted);line-height:1.7;margin-bottom:24px;">
                 An STK Push has been sent to your phone.
@@ -60,7 +60,7 @@
 
         {{-- Success state (shown by JS) --}}
         <div id="stateSuccess" style="display:none;">
-            <div class="status-icon"><span style="font-size:inherit;">✅</span></div>
+            <div class="status-icon"><i class="fas fa-check-circle"></i></div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
                 Payment Confirmed!
             </h2>
@@ -68,13 +68,13 @@
                 Your booking is confirmed. Check your email for details.
             </p>
             <a href="{{ route('clinic.my-bookings') }}" class="btn-primary">
-                <span style="font-size:inherit;">✅</span> View My Bookings
+                <i class="fas fa-check-circle"></i> View My Bookings
             </a>
         </div>
 
         {{-- Failed state (shown by JS) --}}
         <div id="stateFailed" style="display:none;">
-            <div class="status-icon"><span style="font-size:inherit;">❌</span></div>
+            <div class="status-icon"><i class="fas fa-times-circle"></i></div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
                 Payment Not Completed
             </h2>
@@ -127,12 +127,12 @@
                     data.message || 'Your M-Pesa payment was not completed. Please try again.';
                 show('stateFailed');
             } else {
-                // Still pending Ã¢â‚¬â€ keep polling
+                // Still pending â‚¬â€ keep polling
                 setTimeout(poll, 5000);
             }
         })
         .catch(function() {
-            // Network error Ã¢â‚¬â€ retry
+            // Network error â‚¬â€ retry
             setTimeout(poll, 5000);
         });
     }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -33,13 +33,13 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     <div class="session-header">
         <div style="display:flex;align-items:center;flex:1;">
             <div class="session-title">
-                <span style="font-size:inherit;">👨‍🏫</span> {{ $clinic->title ?? $clinic->name }}
+                <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span> {{ $clinic->title ?? $clinic->name }}
             </div>
-            <span style="color:var(--muted);margin:0 12px;font-size:10px;">â€¢</span>
+            <span style="color:var(--muted);margin:0 12px;font-size:10px;">•</span>
             <span style="color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}</span>
             @if($isModerator)
                 <span class="moderator-badge">
-                    <span style="font-size:inherit;">🛡️</span> MODERATOR
+                    <i class="fas fa-shield-alt"></i> MODERATOR
                 </span>
             @else
                 <span class="session-code">{{ $sessionCode }}</span>
@@ -48,7 +48,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         <form method="POST" action="{{ route('logout') }}" style="display:inline;">
             @csrf
             <button type="submit" class="exit-btn">
-                <span style="font-size:inherit;">🚪</span> Leave Session
+                <i class="fas fa-sign-out-alt"></i> Leave Session
             </button>
         </form>
     </div>
@@ -57,8 +57,8 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 </div>
 
 <div class="access-warning">
-    <span style="font-size:inherit;">🛡️</span>
-    <span>Platform-only session Â· Encrypted end-to-end</span>
+    <i class="fas fa-shield-alt"></i>
+    <span>Platform-only session · Encrypted end-to-end</span>
 </div>
 
 <script>

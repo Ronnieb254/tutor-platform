@@ -1,5 +1,5 @@
-@extends('layouts.admin')
-@section('title', 'Clinic Ã¢â‚¬â€œ ' . ($clinic->title ?? 'Detail'))
+﻿@extends('layouts.admin')
+@section('title', 'Clinic â‚¬" ' . ($clinic->title ?? 'Detail'))
 @section('content')
 <div style="max-width:1100px;margin:0 auto;padding:24px;">
 
@@ -16,22 +16,22 @@
                     @endif
                 </h1>
                 <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--muted);">
-                    @if($clinic->subject)<span><span style="font-size:inherit;">📖</span> {{ $clinic->subject->name }}</span>@endif
-                    @if($clinic->paper_type)<span><span style="font-size:inherit;">📄</span> {{ $clinic->paper_type }}</span>@endif
-                    <span><span style="font-size:inherit;">📅</span> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
-                    <span><span style="font-size:inherit;">⏰</span> {{ $clinic->duration_minutes }} min</span>
+                    @if($clinic->subject)<span><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> {{ $clinic->subject->name }}</span>@endif
+                    @if($clinic->paper_type)<span><i class="fas fa-file-alt"></i> {{ $clinic->paper_type }}</span>@endif
+                    <span><i class="fas fa-calendar"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
+                    <span><i class="fas fa-clock"></i> {{ $clinic->duration_minutes }} min</span>
                 </div>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
                 {{-- Join as moderator --}}
                 <a href="{{ route('examiner.clinics.join', $clinic) }}" style="display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;background:#10B981;color:#fff;font-size:13px;font-weight:600;text-decoration:none;">
-                    <span style="font-size:inherit;">🎥</span> Join Session
+                    <i class="fas fa-video"></i> Join Session
                 </a>
                 @if($clinic->isFull() && !$clinic->hasOverflowClinic() && !$clinic->is_auto_created)
                 <form method="POST" action="{{ route('admin.clinics.overflow', $clinic) }}">
                     @csrf
                     <button type="submit" style="display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;background:rgba(212,160,23,.2);color:#B45309;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;">
-                        <span style="font-size:inherit;">➕</span> Create Overflow
+                        <i class="fas fa-plus"></i> Create Overflow
                     </button>
                 </form>
                 @endif
@@ -39,7 +39,7 @@
                 <form method="POST" action="{{ route('admin.clinics.cancel', $clinic) }}" onsubmit="return confirm('Cancel this clinic?')">
                     @csrf
                     <button type="submit" style="display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;background:rgba(239,68,68,.1);color:#dc2626;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;">
-                        <span style="font-size:inherit;">🚫</span> Cancel
+                        <span style="font-size:inherit;"><i class="fas fa-ban"></i></span> Cancel
                     </button>
                 </form>
                 @endif
@@ -49,7 +49,7 @@
 
     @if(session('success'))
     <div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px 16px;margin-bottom:18px;color:#059669;font-weight:600;">
-        <span style="font-size:inherit;">✅</span> {{ session('success') }}
+        <i class="fas fa-check-circle"></i> {{ session('success') }}
     </div>
     @endif
 
@@ -75,7 +75,7 @@
 
                 @if($clinic->enrollments->isEmpty())
                 <div style="padding:40px;text-align:center;color:var(--muted);">
-                    <span style="font-size:inherit;">👤</span>
+                    <i class="fas fa-user"></i>
                     No students enrolled yet.
                 </div>
                 @else
@@ -94,7 +94,7 @@
                         <tr style="border-top:1px solid rgba(21,40,31,.05);">
                             <td style="padding:12px 16px;color:var(--muted);">{{ $i + 1 }}</td>
                             <td style="padding:12px 16px;">
-                                <div style="font-weight:600;color:var(--ink);">{{ $enrollment->student?->name ?? 'Ã¢â‚¬â€' }}</div>
+                                <div style="font-weight:600;color:var(--ink);">{{ $enrollment->student?->name ?? 'â‚¬â€' }}</div>
                                 <div style="font-size:11px;color:var(--muted);">{{ $enrollment->student?->email }}</div>
                             </td>
                             <td style="padding:12px 16px;">
@@ -102,9 +102,9 @@
                             </td>
                             <td style="padding:12px 16px;text-align:center;">
                                 @if($enrollment->attended)
-                                <span style="color:#10B981;"><span style="font-size:inherit;">✅</span></span>
+                                <span style="color:#10B981;"><i class="fas fa-check-circle"></i></span>
                                 @else
-                                <span style="color:rgba(21,40,31,.2);"><span style="font-size:inherit;">❓</span></span>
+                                <span style="color:rgba(21,40,31,.2);"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
                                 @endif
                             </td>
                             <td style="padding:12px 16px;font-size:12px;color:var(--muted);">{{ $enrollment->created_at->format('M j, g:ia') }}</td>
@@ -125,7 +125,7 @@
                 <div style="padding:14px 20px;border-bottom:1px solid rgba(21,40,31,.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
                     <div>
                         <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $child->title }}</div>
-                        <div style="font-size:12px;color:var(--muted);">{{ $child->scheduled_at->format('D, M j \a\t g:ia') }} Ã‚Â· {{ $child->enrollments_count ?? $child->enrollments()->count() }}/30 enrolled</div>
+                        <div style="font-size:12px;color:var(--muted);">{{ $child->scheduled_at->format('D, M j \a\t g:ia') }} Ã‚· {{ $child->enrollments_count ?? $child->enrollments()->count() }}/30 enrolled</div>
                     </div>
                     <a href="{{ route('admin.clinics.show', $child) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:600;">View <span style="font-size:inherit;">→</span></a>
                 </div>
@@ -146,7 +146,7 @@
                     ['Price',         'KSh ' . number_format($clinic->price)],
                     ['Duration',      $clinic->duration_minutes . ' minutes'],
                     ['Max Students',  '30'],
-                    ['Meeting Room',  $clinic->meeting_room ?? 'Ã¢â‚¬â€'],
+                    ['Meeting Room',  $clinic->meeting_room ?? 'â‚¬â€'],
                 ] as [$k,$v])
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(21,40,31,.05);font-size:13px;">
                     <span style="color:var(--muted);">{{ $k }}</span>
@@ -162,7 +162,7 @@
                 <div style="font-weight:600;color:var(--ink);">{{ $clinic->tutor->name }}</div>
                 <div style="font-size:12px;color:var(--muted);">{{ $clinic->tutor->email }}</div>
                 <a href="{{ route('examiner.clinics.join', $clinic) }}" style="display:block;margin-top:12px;text-align:center;padding:9px;border-radius:10px;background:#10B981;color:#fff;font-size:13px;font-weight:600;text-decoration:none;">
-                    <span style="font-size:inherit;">🎥</span> Launch Session
+                    <i class="fas fa-video"></i> Launch Session
                 </a>
             </div>
             @endif

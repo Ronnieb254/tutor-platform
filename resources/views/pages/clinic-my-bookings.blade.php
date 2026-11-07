@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -62,7 +62,7 @@ a{color:inherit;text-decoration:none;}
     <div class="header">
         <h1 class="title">My Clinic Bookings</h1>
         <a href="{{ route('examiner-clinic') }}" class="btn btn-primary">
-            <span style="font-size:inherit;">➕</span> Book New Clinic
+            <i class="fas fa-plus"></i> Book New Clinic
         </a>
     </div>
 
@@ -84,17 +84,17 @@ a{color:inherit;text-decoration:none;}
         @endphp
         <div class="booking-card" data-scheduled-at="{{ $booking->clinic->scheduled_at->toIso8601String() }}">
             <div class="booking-icon">
-                <span style="font-size:inherit;">👨‍🏫</span>
+                <span style="font-size:inherit;"><i class="fas fa-user"></i>‍<i class="fas fa-school"></i></span>
             </div>
 
             <div class="booking-info">
                 <div class="booking-title">{{ $booking->clinic->title }}</div>
                 <div class="booking-meta">
-                    <span><span style="font-size:inherit;">📅</span> {{ $booking->clinic->scheduled_at->format('D, M j, Y') }}</span>
-                    <span><span style="font-size:inherit;">⏰</span> {{ $booking->clinic->scheduled_at->format('g:ia') }}</span>
-                    <span><span style="font-size:inherit;">❓</span> {{ $booking->clinic->duration_minutes }}min</span>
+                    <span><i class="fas fa-calendar"></i> {{ $booking->clinic->scheduled_at->format('D, M j, Y') }}</span>
+                    <span><i class="fas fa-clock"></i> {{ $booking->clinic->scheduled_at->format('g:ia') }}</span>
+                    <span><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> {{ $booking->clinic->duration_minutes }}min</span>
                     @if($booking->clinic->tutor)
-                    <span><span style="font-size:inherit;">👔</span> {{ $booking->clinic->tutor->name }}</span>
+                    <span><span style="font-size:inherit;"><i class="fas fa-user-tie"></i></span> {{ $booking->clinic->tutor->name }}</span>
                     @endif
                 </div>
 
@@ -110,20 +110,20 @@ a{color:inherit;text-decoration:none;}
                 {{-- Status Badge --}}
                 @if($canJoin)
                 <span class="status-badge status-upcoming" style="background:rgba(16,185,129,.2);color:#10B981;">
-                    <span style="font-size:inherit;">❓</span> LIVE NOW
+                    <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> LIVE NOW
                 </span>
                 @elseif($isUpcoming)
                 <span class="status-badge status-upcoming" id="badge-{{ $booking->id }}">
-                    <span style="font-size:inherit;">⏰</span>
+                    <i class="fas fa-clock"></i>
                     <span id="countdown-{{ $booking->id }}">{{ $booking->clinic->scheduled_at->diffForHumans() }}</span>
                 </span>
                 @elseif($booking->attended)
                 <span class="status-badge status-completed">
-                    <span style="font-size:inherit;">✅</span> Attended
+                    <i class="fas fa-check-circle"></i> Attended
                 </span>
                 @else
                 <span class="status-badge status-past">
-                    <span style="font-size:inherit;">✅</span> Completed
+                    <i class="fas fa-check-circle"></i> Completed
                 </span>
                 @endif
 
@@ -131,11 +131,11 @@ a{color:inherit;text-decoration:none;}
                 <div class="booking-action">
                     @if($canJoin || $isUpcoming)
                     <a href="{{ route('clinic.join', $booking->clinic) }}" class="btn btn-join" style="font-size:12px;padding:8px 14px;">
-                        <span style="font-size:inherit;">🎥</span> {{ $canJoin ? 'Join Session' : 'Join Early' }}
+                        <i class="fas fa-video"></i> {{ $canJoin ? 'Join Session' : 'Join Early' }}
                     </a>
                     @endif
                     <button onclick="copyCode('{{ $booking->session_code }}')" class="btn btn-share" style="font-size:12px;padding:8px 14px;">
-                        <span style="font-size:inherit;">❓</span> Copy Code
+                        <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Copy Code
                     </button>
                 </div>
 
@@ -154,9 +154,9 @@ a{color:inherit;text-decoration:none;}
         @if($bookings->hasPages())
         <div class="pagination">
             @if($bookings->onFirstPage())
-            <span class="page-link disabled"><span style="font-size:inherit;">❓</span></span>
+            <span class="page-link disabled"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
             @else
-            <a href="{{ $bookings->previousPageUrl() }}" class="page-link"><span style="font-size:inherit;">❓</span></a>
+            <a href="{{ $bookings->previousPageUrl() }}" class="page-link"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
             @endif
 
             @foreach($bookings->getUrlRange(max(1, $bookings->currentPage()-2), min($bookings->lastPage(), $bookings->currentPage()+2)) as $page => $url)
@@ -164,19 +164,19 @@ a{color:inherit;text-decoration:none;}
             @endforeach
 
             @if($bookings->hasMorePages())
-            <a href="{{ $bookings->nextPageUrl() }}" class="page-link"><span style="font-size:inherit;">❓</span></a>
+            <a href="{{ $bookings->nextPageUrl() }}" class="page-link"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></a>
             @else
-            <span class="page-link disabled"><span style="font-size:inherit;">❓</span></span>
+            <span class="page-link disabled"><span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span></span>
             @endif
         </div>
         @endif
     @else
         <div class="empty">
-            <div class="empty-icon"><span style="font-size:inherit;">❌</span></div>
+            <div class="empty-icon"><i class="fas fa-times-circle"></i></div>
             <h2 class="empty-title">No Bookings Yet</h2>
             <p class="empty-text">You haven't booked any clinic sessions. Start learning from national examiners today!</p>
             <a href="{{ route('examiner-clinic') }}" class="btn btn-primary" style="width:auto;margin:0 auto;">
-                <span style="font-size:inherit;">✅</span> Browse Clinics
+                <i class="fas fa-check-circle"></i> Browse Clinics
             </a>
         </div>
     @endif
@@ -188,7 +188,7 @@ function copyCode(code) {
         // Show confirmation
         const btn = event.target.closest('button');
         const original = btn.innerHTML;
-        btn.innerHTML = '<span style="font-size:inherit;">✅</span> Copied!';
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> Copied!';
         setTimeout(() => {
             btn.innerHTML = original;
         }, 2000);
