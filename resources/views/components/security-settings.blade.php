@@ -23,7 +23,7 @@ $has2FA = $user->has2FAEnabled();
                 <div style="font-family:monospace;font-size:13px;background:var(--cream);padding:10px;border-radius:6px;text-align:center;">{{ $code }}</div>
             @endforeach
         </div>
-        <button type="button" class="btn btn-sm btn-outline" onclick="copyRecoveryCodes()">Ã°Å¸"â€¹ Copy All</button>
+        <button type="button" class="btn btn-sm btn-outline" onclick="copyRecoveryCodes()">Ã°Å¸""¹ Copy All</button>
     </div>
     @endif
 
@@ -32,9 +32,9 @@ $has2FA = $user->has2FAEnabled();
             <div style="font-weight:600;font-size:15px;color:var(--ink);margin-bottom:6px;">
                 Status: 
                 @if($has2FA)
-                    <span style="color:var(--mint);">â€”Â Enabled</span>
+                    <span style="color:var(--mint);">"”Â Enabled</span>
                 @else
-                    <span style="color:var(--muted);">â€”â€¹ Disabled</span>
+                    <span style="color:var(--muted);">"”"¹ Disabled</span>
                 @endif
             </div>
             <p style="font-size:13px;color:var(--muted);line-height:1.5;">
@@ -51,7 +51,7 @@ $has2FA = $user->has2FAEnabled();
         {{-- Enabled state - show disable option and recovery codes --}}
         <div style="display:flex;flex-direction:column;gap:12px;">
             <button type="button" onclick="toggleRecoveryCodes()" class="btn btn-outline btn-sm" style="width:fit-content;">
-                Ã°Å¸â€' View Recovery Codes
+                Ã°Å¸"' View Recovery Codes
             </button>
 
             <div id="recovery-codes-section" style="display:none;background:var(--cream);padding:16px;border-radius:10px;margin-top:8px;">
@@ -63,11 +63,11 @@ $has2FA = $user->has2FAEnabled();
                         @endforeach
                     </div>
                     <div style="display:flex;gap:8px;">
-                        <button type="button" class="btn btn-sm btn-outline" onclick="copyExistingRecoveryCodes()">Ã°Å¸"â€¹ Copy</button>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="copyExistingRecoveryCodes()">Ã°Å¸""¹ Copy</button>
                         <form action="{{ route('2fa.recovery') }}" method="POST" style="display:inline;" onsubmit="event.preventDefault(); regenerateRecoveryCodes(this);">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-outline">
-                                Ã°Å¸â€â€ž Regenerate
+                                Ã°Å¸""ž Regenerate
                             </button>
                         </form>
                     </div>

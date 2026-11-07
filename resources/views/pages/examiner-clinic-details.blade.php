@@ -48,7 +48,7 @@
         @else
         <div style="text-align:right;">
             <div style="font-size:12px;color:rgba(21,40,31,.45);margin-bottom:5px;">Session starts in</div>
-            <div id="countdown" style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">â‚¬â€</div>
+            <div id="countdown" style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">â‚¬"</div>
             <a href="{{ route('examiner.clinics.join', $clinic) }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:10px 20px;border-radius:10px;background:#0A64BC;color:#fff;font-size:13px;font-weight:600;text-decoration:none;opacity:.75;">
                 <i class="fas fa-video"></i> Join Early
             </a>
@@ -101,7 +101,7 @@
                         <tr style="border-top:1px solid rgba(21,40,31,.04);">
                             <td style="padding:12px 16px;color:rgba(21,40,31,.4);">{{ $i + 1 }}</td>
                             <td style="padding:12px 16px;">
-                                <div style="font-weight:600;color:#15281F;">{{ $en->student?->name ?? 'â‚¬â€' }}</div>
+                                <div style="font-weight:600;color:#15281F;">{{ $en->student?->name ?? 'â‚¬"' }}</div>
                                 <div style="font-size:11px;color:rgba(21,40,31,.45);">{{ $en->student?->email }}</div>
                             </td>
                             <td style="padding:12px 16px;">

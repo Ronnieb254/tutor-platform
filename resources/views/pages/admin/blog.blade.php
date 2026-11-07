@@ -61,7 +61,7 @@ $categories = BlogCategory::all();
                         @if($post->category)
                         <span class="badge badge-trust-blue">{{ $post->category->name }}</span>
                         @else
-                        <span style="color:var(--muted);font-size:13px;">â‚¬â€</span>
+                        <span style="color:var(--muted);font-size:13px;">â‚¬"</span>
                         @endif
                     </td>
                     <td style="color:var(--muted);font-size:13px;">{{ $post->author->name }}</td>
@@ -154,7 +154,7 @@ $(document).ready(function() {
 @endpush
 @push('styles')
 <style>
-/* blog stat cards: 3-col â€ ' 1-col on small mobile (covered by global rule too) */
+/* blog stat cards: 3-col " ' 1-col on small mobile (covered by global rule too) */
 @media(max-width:479px){
     div[style*="repeat(3,1fr)"]{ grid-template-columns:1fr !important; }
 }

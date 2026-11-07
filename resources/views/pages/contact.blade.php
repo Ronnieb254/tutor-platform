@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Contact Us â€“ Mwalimu</title>
+<title>Contact Us "“ Mwalimu</title>
 <meta name="description" content="Get in touch with Mwalimu by OvalDesk Ventures. Suite 11, Samima Suites, Nairobi West.">
 </head>
 <body>
@@ -17,7 +17,7 @@
             <i class="fas fa-envelope"></i> Get in Touch
         </div>
         <h1 style="font-family:'Fraunces',serif;font-size:clamp(32px,5vw,52px);color:#fff;margin-bottom:14px;">We'd love to hear from you</h1>
-        <p style="font-size:17px;color:rgba(255,255,255,.6);max-width:480px;margin:0 auto;">Whether you're a learner, parent, or tutor â€” our team is here to help.</p>
+        <p style="font-size:17px;color:rgba(255,255,255,.6);max-width:480px;margin:0 auto;">Whether you're a learner, parent, or tutor "” our team is here to help.</p>
     </div>
 </section>
 
@@ -161,7 +161,7 @@
                             <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
                                 <span style="font-size:inherit;"><i class="fas fa-book-open"></i></span> Subject / Topic
                             </label>
-                            <input type="text" name="subject" value="{{ old('subject') }}" placeholder="e.g. Mathematics â€“ Form 3"
+                            <input type="text" name="subject" value="{{ old('subject') }}" placeholder="e.g. Mathematics "“ Form 3"
                                    style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;transition:all .15s;"
                                    onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
                         </div>

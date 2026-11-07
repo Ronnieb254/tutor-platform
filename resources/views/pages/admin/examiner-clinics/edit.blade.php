@@ -3,7 +3,7 @@
 @section('content')
 
 <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-    <a href="{{ route('admin.examiner-clinics.show', $examinerClinic) }}" class="btn btn-outline btn-sm">â€ Â Back</a>
+    <a href="{{ route('admin.examiner-clinics.show', $examinerClinic) }}" class="btn btn-outline btn-sm">" Â Back</a>
     <div>
         <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);">Edit Examiner Clinic</h2>
         <p style="font-size:13px;color:var(--muted);margin-top:2px;">{{ $examinerClinic->title }}</p>
@@ -29,7 +29,7 @@
                 <div>
                     <label class="form-label">Subject <span style="color:#E8522A;">*</span></label>
                     <select name="subject_id" required class="form-input form-select">
-                        <option value="">â‚¬â€ Select subject â‚¬â€</option>
+                        <option value="">â‚¬" Select subject â‚¬"</option>
                         @foreach($subjects as $s)
                         <option value="{{ $s->id }}" {{ old('subject_id', $examinerClinic->subject_id) == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                         @endforeach
@@ -38,7 +38,7 @@
                 <div>
                     <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
                     <select name="curriculum_id" class="form-input form-select">
-                        <option value="">â‚¬â€ All tracks â‚¬â€</option>
+                        <option value="">â‚¬" All tracks â‚¬"</option>
                         @foreach($curricula->groupBy('track') as $track => $group)
                         <optgroup label="{{ ucfirst($track) }}">
                             @foreach($group as $c)

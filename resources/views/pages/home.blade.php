@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Mwalimu â€“ Instant 1-on-1 Tutoring in Kenya</title>
+<title>Mwalimu "“ Instant 1-on-1 Tutoring in Kenya</title>
 <meta name="description" content="Instant 1-on-1 tutoring matched in seconds. TSC-registered teachers, secure classrooms, 100% money-back guarantee. Book, pay, and learn in one safe place.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,10 +83,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                     <span style="color:var(--trust-blue);">Learn with confidence,</span><br>every lesson.
                 </h1>
                 <p style="font-size:17px;color:var(--muted);margin-bottom:32px;max-width:540px;line-height:1.8;">
-                    <strong style="color:var(--ink);">Instant 1-on-1 tutoring</strong> â€” tell us your subject and schedule. Mwalimu matches you with a vetted, TSC-registered expert teacher available right now or at your earliest convenience.
+                    <strong style="color:var(--ink);">Instant 1-on-1 tutoring</strong> "” tell us your subject and schedule. Mwalimu matches you with a vetted, TSC-registered expert teacher available right now or at your earliest convenience.
                 </p>
 
-                {{-- Quick booking CTA â€” always show for students/parents, hide for tutors/admins --}}
+                {{-- Quick booking CTA "” always show for students/parents, hide for tutors/admins --}}
                 @if(!auth()->check() || (auth()->check() && in_array(auth()->user()->role, ['student','parent'])))
                 <div style="background:#fff;border-radius:20px;border:1px solid var(--hair);padding:20px;max-width:520px;margin-bottom:28px;box-shadow:0 4px 24px rgba(21,40,31,.08);">
                     <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;"><span style="font-size:inherit;"><i class="fas fa-sparkles fa-xs"></i></span> Book a session now</p>
@@ -208,8 +208,8 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">8-4-4 · CBC Junior Secondary · CBC Senior School</span>
                 <div style="display:flex;flex-wrap:wrap;gap:6px;flex:1;align-content:flex-start;margin-bottom:20px;">
                     <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? 8-4-4</span>
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? CBE JSS (G7â€“9)</span>
-                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">? CBE Senior (G10â€“12)</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? CBE JSS (G7"“9)</span>
+                    <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">? CBE Senior (G10"“12)</span>
                 </div>
                 <span style="display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#10B981;color:#fff;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;width:100%;">
                     <span style="font-size:inherit;">→</span> Find a Kenyan-curriculum tutor
@@ -251,7 +251,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 ['fa-lock','Secure Classrooms','Lessons run in a secure space, assuring parents and learners of unmatched comfort and safety.','#E8522A'],
                 ['fa-certificate','Verified Credentials','Subject expertise and teaching credentials are thoroughly reviewed by our academic team.','#EEBE15'],
                 ['fa-user-secret','Privacy & Safety','All communication is managed and maintained within the platform.','#3B82F6'],
-                ['fa-rotate-left','100% Money-Back','Not satisfied with your first lesson? We\'ll refund it in full â€” no questions asked.','#EC4899'],
+                ['fa-rotate-left','100% Money-Back','Not satisfied with your first lesson? We\'ll refund it in full "” no questions asked.','#EC4899'],
             ] as [$icon,$title,$desc,$color])
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
                 <div style="width:48px;height:48px;background:{{ $color }}33;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
@@ -352,7 +352,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 </div>
                 <h2 style="font-size:clamp(28px,4vw,44px);color:#fff;margin-bottom:14px;">Learn directly from national examiners.</h2>
                 <p style="font-size:16px;color:rgba(255,255,255,.65);line-height:1.8;margin-bottom:20px;">
-                    Most revision resources focus on <em>what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> â€” taught by the very people who set, mark, and grade national exams.
+                    Most revision resources focus on <em>what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> "” taught by the very people who set, mark, and grade national exams.
                 </p>
                 <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
                     @foreach(['Exam strategy & high-frequency exam questions','Examiner traps and marking scheme analysis','Common mistakes and how KNEC examiners award marks','Conducted by highest-rated National Examiners & Markers'] as $pt)
@@ -373,7 +373,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
     <style>.ec-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.ec-g{grid-template-columns:1fr 1fr!important;}}</style>
 </section>
 
-{{-- FOR TUTORS CTA â€” hidden for tutors and admins --}}
+{{-- FOR TUTORS CTA "” hidden for tutors and admins --}}
 @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
 <section style="background:var(--trust-blue);padding:72px 0;">
     <div class="w">
@@ -387,7 +387,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
                 <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">
                     @foreach([
                         ['1','fa-pen-to-square','Register','Tell us who you are, subjects you teach, and your experience.'],
-                        ['2','fa-id-card-clip','Get Verified','We check your credentials, ID, Good Conduct certificate, and TSC certificate â€” usually 72 hours, or 24 hours with Speedy Verification (KSh 1,000).'],
+                        ['2','fa-id-card-clip','Get Verified','We check your credentials, ID, Good Conduct certificate, and TSC certificate "” usually 72 hours, or 24 hours with Speedy Verification (KSh 1,000).'],
                         ['3','fa-money-bill-trend-up','Start Earning','Your profile goes live. Accept lesson requests and get paid per completed lesson.'],
                     ] as [$num,$icon,$title,$desc])
                     <div style="display:flex;align-items:flex-start;gap:12px;">
@@ -437,7 +437,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
             @foreach([
                 ['G','Grace W.','Parent, Nairobi','My daughter improved from D to A in Maths in just 6 weeks. The 40-minute sessions fit perfectly after school. The tutor is TSC-registered and very professional.','after sessions with Dr. Amara'],
                 ['B','Brian K.','Form 4 Student','I was panicking about KCSE Chemistry. My Mwalimu tutor broke down the marking scheme so clearly I could predict what the examiner wanted. Passed with an A.','after sessions with Mr. James'],
-                ['M','Mercy N.','Parent, Mombasa','The one-time session code is genius â€” my son enters the code and the class opens. No sharing of numbers. No chatting outside. Very safe for a teenage learner.','after sessions with Ms. Fatuma'],
+                ['M','Mercy N.','Parent, Mombasa','The one-time session code is genius "” my son enters the code and the class opens. No sharing of numbers. No chatting outside. Very safe for a teenage learner.','after sessions with Ms. Fatuma'],
             ] as [$init,$name,$role,$quote,$note])
             <div class="card" style="padding:26px;">
                 <div style="color:var(--gold);font-size:16px;letter-spacing:3px;margin-bottom:14px;"><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i></div>

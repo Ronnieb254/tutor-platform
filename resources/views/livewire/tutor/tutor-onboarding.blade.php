@@ -62,7 +62,7 @@
             @endif
         </div>
         <div class="flex justify-end mt-6">
-            <button wire:click="nextStep" class="pill-btn-primary px-8">Continue â€ '</button>
+            <button wire:click="nextStep" class="pill-btn-primary px-8">Continue " '</button>
         </div>
         @endif
 
@@ -91,8 +91,8 @@
         </div>
         <p class="text-xs text-muted mt-3">{{ count($selectedSubjects) }}/2 subject(s) selected @if(count($selectedSubjects) >= 2)<span class="text-mint"><i class="fas fa-check-circle"></i> Maximum reached</span>@endif</p>
         <div class="flex justify-between mt-6">
-            <button wire:click="prevStep" class="pill-btn-outline px-6">â€ Â Back</button>
-            <button wire:click="nextStep" class="pill-btn-primary px-8">Continue â€ '</button>
+            <button wire:click="prevStep" class="pill-btn-outline px-6">" Â Back</button>
+            <button wire:click="nextStep" class="pill-btn-primary px-8">Continue " '</button>
         </div>
         @endif
 
@@ -121,8 +121,8 @@
             @endforeach
         </div>
         <div class="flex justify-between mt-6">
-            <button wire:click="prevStep" class="pill-btn-outline px-6">â€ Â Back</button>
-            <button wire:click="nextStep" class="pill-btn-primary px-8">Continue â€ '</button>
+            <button wire:click="prevStep" class="pill-btn-outline px-6">" Â Back</button>
+            <button wire:click="nextStep" class="pill-btn-primary px-8">Continue " '</button>
         </div>
         @endif
 
@@ -144,7 +144,7 @@
                 <p class="text-xs text-muted mt-1">Teachers Service Commission certificate</p>
             </div>
             <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
-                <label class="form-label">Ã°Å¸â€ºÂ¡Ã¯Â¸Â Certificate of Good Conduct <span class="text-coral">* Required</span></label>
+                <label class="form-label">Ã°Å¸"ºÂ¡Ã¯Â¸Â Certificate of Good Conduct <span class="text-coral">* Required</span></label>
                 <input type="file" wire:model="goodConductCertificate" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
                 @error('goodConductCertificate')<p class="form-error">{{ $message }}</p>@enderror
                 <p class="text-xs text-muted mt-1">DCI Certificate of Good Conduct (must be current)</p>
@@ -163,7 +163,7 @@
             </div>
         </div>
         <div class="rounded-2xl bg-trust-blue/5 border border-trust-blue/15 p-4 mt-4">
-            <p class="text-xs text-trust-blue font-semibold mb-1">Ã°Å¸"â€¹ Document requirements</p>
+            <p class="text-xs text-trust-blue font-semibold mb-1">Ã°Å¸""¹ Document requirements</p>
             <ul class="text-xs text-muted space-y-0.5 list-disc list-inside">
                 <li>All 5 documents must be uploaded to proceed</li>
                 <li>Documents must be clear and legible</li>
@@ -173,7 +173,7 @@
             </ul>
         </div>
         <div class="flex justify-between mt-6">
-            <button wire:click="prevStep" class="pill-btn-outline px-6">â€ Â Back</button>
+            <button wire:click="prevStep" class="pill-btn-outline px-6">" Â Back</button>
             <button wire:click="submit"
                     wire:loading.attr="disabled"
                     class="pill-btn-primary px-8">

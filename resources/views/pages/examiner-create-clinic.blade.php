@@ -44,7 +44,7 @@
                         Subject <span style="color:#dc2626;">*</span>
                     </label>
                     <select name="subject_id" required style="width:100%;height:44px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:#15281F;background:#fff;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2315281F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;">
-                        <option value="">â‚¬â€ Select subject â‚¬â€</option>
+                        <option value="">â‚¬" Select subject â‚¬"</option>
                         @foreach($subjects as $s)
                         <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                         @endforeach
@@ -121,7 +121,7 @@
             <div style="background:rgba(10,100,188,.06);border:1px solid rgba(10,100,188,.15);border-radius:12px;padding:14px 16px;margin-bottom:24px;display:flex;gap:10px;align-items:flex-start;">
                 <i class="fas fa-info-circle"></i>
                 <div style="font-size:13px;color:#0A64BC;line-height:1.65;">
-                    <strong>30 slots Ã‚· Auto-overflow.</strong> When all 30 spots are taken the system creates an identical session starting 30 minutes after this one ends. The session goes live in Jitsi at the scheduled time â‚¬â€ no action needed from you.
+                    <strong>30 slots · Auto-overflow.</strong> When all 30 spots are taken the system creates an identical session starting 30 minutes after this one ends. The session goes live in Jitsi at the scheduled time â‚¬" no action needed from you.
                 </div>
             </div>
 

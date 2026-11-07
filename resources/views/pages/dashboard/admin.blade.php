@@ -132,7 +132,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
                             </div>
                         </td>
                         <td style="color:var(--muted);">{{ $booking->tutor->name }}</td>
-                        <td>{{ $booking->subject?->name ?? 'â€”' }}</td>
+                        <td>{{ $booking->subject?->name ?? '"”' }}</td>
                         <td style="color:var(--muted);white-space:nowrap;">{{ $booking->scheduled_at->format('M j, g:ia') }}</td>
                         <td style="font-weight:600;">KSh {{ number_format($booking->total_amount) }}</td>
                         <td>
@@ -217,7 +217,7 @@ $(document).ready(function() {
 
 @push('styles')
 <style>
-/* Phase 6 â€” admin dashboard responsive */
+/* Phase 6 "” admin dashboard responsive */
 @media(max-width:639px){
     /* 3-col second row â†’ 1-col */
     .admin-stats,

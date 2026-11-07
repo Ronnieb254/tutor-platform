@@ -104,7 +104,7 @@ $users  = User::when($search, fn($q) => $q->where('name','like',"%$search%")->or
                                     {{ $user->is_active ? 'Suspend' : 'Activate' }}
                                 </button>
                             </form>
-                            {{-- Change Role â€” only super-admin can do this --}}
+                            {{-- Change Role "” only super-admin can do this --}}
                             @if(auth()->user()->isSuperAdmin())
                             <form method="POST" action="/admin/users/{{ $user->id }}/change-role" style="display:inline;display:flex;align-items:center;gap:4px;">
                                 @csrf @method('PATCH')

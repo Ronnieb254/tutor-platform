@@ -127,12 +127,12 @@
                     data.message || 'Your M-Pesa payment was not completed. Please try again.';
                 show('stateFailed');
             } else {
-                // Still pending â‚¬â€ keep polling
+                // Still pending â‚¬" keep polling
                 setTimeout(poll, 5000);
             }
         })
         .catch(function() {
-            // Network error â‚¬â€ retry
+            // Network error â‚¬" retry
             setTimeout(poll, 5000);
         });
     }

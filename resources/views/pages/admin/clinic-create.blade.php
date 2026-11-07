@@ -31,7 +31,7 @@
                         Subject <span style="color:#dc2626;">*</span>
                     </label>
                     <select name="subject_id" required style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;background:#fff;color:var(--ink);">
-                        <option value="">â‚¬â€ Select subject â‚¬â€</option>
+                        <option value="">â‚¬" Select subject â‚¬"</option>
                         @foreach($subjects as $s)
                         <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                         @endforeach
@@ -75,7 +75,7 @@
                     Assign Tutor / Examiner <span style="color:#dc2626;">*</span>
                 </label>
                 <select name="tutor_id" required style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;background:#fff;color:var(--ink);">
-                    <option value="">â‚¬â€ Select tutor â‚¬â€</option>
+                    <option value="">â‚¬" Select tutor â‚¬"</option>
                     @foreach($tutors as $t)
                     <option value="{{ $t->id }}" {{ old('tutor_id') == $t->id ? 'selected' : '' }}>{{ $t->name }}</option>
                     @endforeach
@@ -115,7 +115,7 @@
             <div style="background:rgba(10,100,188,.06);border:1px solid rgba(10,100,188,.15);border-radius:12px;padding:14px 16px;margin-bottom:22px;display:flex;gap:10px;">
                 <i class="fas fa-info-circle"></i>
                 <div style="font-size:13px;color:#0A64BC;">
-                    <strong>Slots are fixed at 30.</strong> Once all 30 spots are booked, the system automatically creates a second session scheduled 30 minutes after this one ends â‚¬â€ using the same title, tutor, and description.
+                    <strong>Slots are fixed at 30.</strong> Once all 30 spots are booked, the system automatically creates a second session scheduled 30 minutes after this one ends â‚¬" using the same title, tutor, and description.
                 </div>
             </div>
 

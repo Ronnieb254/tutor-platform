@@ -6,19 +6,19 @@
     <div class="strength-label" id="strength-label">Password strength</div>
     <div class="strength-requirements" id="strength-requirements">
         <div class="requirement" id="req-length">
-            <span class="req-icon">â€”â€¹</span>
+            <span class="req-icon">"”"¹</span>
             <span class="req-text">At least 8 characters</span>
         </div>
         <div class="requirement" id="req-mixed">
-            <span class="req-icon">â€”â€¹</span>
+            <span class="req-icon">"”"¹</span>
             <span class="req-text">Mixed case letters</span>
         </div>
         <div class="requirement" id="req-number">
-            <span class="req-icon">â€”â€¹</span>
+            <span class="req-icon">"”"¹</span>
             <span class="req-text">At least one number</span>
         </div>
         <div class="requirement" id="req-special">
-            <span class="req-icon">â€”â€¹</span>
+            <span class="req-icon">"”"¹</span>
             <span class="req-text">At least one special character</span>
         </div>
     </div>
@@ -122,7 +122,7 @@
 }
 
 .requirement:not(.met) .req-icon::before {
-    content: 'â€”â€¹';
+    content: '"”"¹';
 }
 </style>
 
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             strengthBar.classList.add('weak');
             strengthLabel.classList.add('weak');
-            strengthLabel.textContent = 'Å“â€” Weak password';
+            strengthLabel.textContent = 'Å“"” Weak password';
         }
     });
     

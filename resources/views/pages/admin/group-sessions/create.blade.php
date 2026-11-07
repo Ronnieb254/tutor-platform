@@ -4,7 +4,7 @@
 @section('content')
 
 <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-    <a href="{{ route('admin.group-sessions.index') }}" class="btn btn-outline btn-sm">â€ Â Back</a>
+    <a href="{{ route('admin.group-sessions.index') }}" class="btn btn-outline btn-sm">" Â Back</a>
     <div>
         <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);">Create Group Session</h2>
         <p style="font-size:13px;color:var(--muted);margin-top:2px;">Set up a new admin-hosted group learning session</p>
@@ -37,7 +37,7 @@
                 <div>
                     <label class="form-label">Subject <span style="color:#E8522A;">*</span></label>
                     <select name="subject_id" class="form-input form-select" required>
-                        <option value="">â‚¬â€ Select subject â‚¬â€</option>
+                        <option value="">â‚¬" Select subject â‚¬"</option>
                         @foreach($subjects as $s)
                         <option value="{{ $s->id }}" {{ old('subject_id')==$s->id?'selected':'' }}>{{ $s->name }}</option>
                         @endforeach
@@ -46,7 +46,7 @@
                 <div>
                     <label class="form-label">Assign Tutor <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
                     <select name="tutor_id" class="form-input form-select">
-                        <option value="">â‚¬â€ TBD â‚¬â€</option>
+                        <option value="">â‚¬" TBD â‚¬"</option>
                         @foreach($tutors as $t)
                         <option value="{{ $t->id }}" {{ old('tutor_id')==$t->id?'selected':'' }}>{{ $t->name }}</option>
                         @endforeach
@@ -55,9 +55,9 @@
             </div>
 
             <div style="margin-bottom:16px;">
-                <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional â‚¬â€ leave blank to show to all tracks)</span></label>
+                <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional â‚¬" leave blank to show to all tracks)</span></label>
                 <select name="curriculum_id" class="form-input form-select">
-                    <option value="">â‚¬â€ All tracks â‚¬â€</option>
+                    <option value="">â‚¬" All tracks â‚¬"</option>
                     @foreach($curricula->groupBy('track') as $track => $group)
                     <optgroup label="{{ ucfirst($track) }}">
                         @foreach($group as $c)
@@ -118,18 +118,18 @@
                 Auto-generated on save
             </h4>
             <div style="font-size:12px;color:var(--muted);line-height:1.7;">
-                <p>â‚¬Â¢ <strong>Session code</strong> â‚¬â€ GRP-XXXXXXXX</p>
-                <p>â‚¬Â¢ <strong>Meeting room</strong> â‚¬â€ Mwalimu-group-{uuid}</p>
+                <p>â‚¬Â¢ <strong>Session code</strong> â‚¬" GRP-XXXXXXXX</p>
+                <p>â‚¬Â¢ <strong>Meeting room</strong> â‚¬" Mwalimu-group-{uuid}</p>
                 <p>â‚¬Â¢ <strong>Status</strong> set to "Scheduled"</p>
             </div>
         </div>
         <div class="card" style="padding:20px;margin-top:12px;">
             <h4 style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;">Session Lifecycle</h4>
             <div style="font-size:12px;color:var(--muted);line-height:1.8;">
-                <p>Ã°Å¸"… <strong>Scheduled</strong> â€ ' students can enroll</p>
-                <p>â€“Â¶Ã¯Â¸Â <strong>In Progress</strong> â€ ' session live (Start it from Show page)</p>
-                <p>Å“… <strong>Completed</strong> â€ ' session ended</p>
-                <p>ÂÅ’ <strong>Cancelled</strong> â€ ' session called off</p>
+                <p>Ã°Å¸"… <strong>Scheduled</strong> " ' students can enroll</p>
+                <p>"“Â¶Ã¯Â¸Â <strong>In Progress</strong> " ' session live (Start it from Show page)</p>
+                <p>Å“… <strong>Completed</strong> " ' session ended</p>
+                <p>ÂÅ’ <strong>Cancelled</strong> " ' session called off</p>
             </div>
         </div>
     </div>

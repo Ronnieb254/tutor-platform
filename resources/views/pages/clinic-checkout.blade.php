@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Clinic Booking â€“ Checkout</title>
+<title>Clinic Booking "“ Checkout</title>
 <style>
 :root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -97,7 +97,7 @@ a{color:inherit;text-decoration:none;}
             <div class="payment-method selected" data-method="mpesa">
                 <div class="payment-icon">ðŸ“±</div>
                 <div class="payment-name">M-Pesa (Lipa Na M-Pesa)</div>
-                <div class="payment-desc">Secure STK Push â€” enter your M-Pesa PIN on your phone to pay</div>
+                <div class="payment-desc">Secure STK Push "” enter your M-Pesa PIN on your phone to pay</div>
             </div>
         </div>
 

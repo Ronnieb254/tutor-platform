@@ -88,7 +88,7 @@
                         <div style="font-weight:600;font-size:13px;">{{ $session->title }}</div>
                         @if($session->subject)<div style="font-size:11px;color:var(--muted);">{{ $session->subject->name }}</div>@endif
                     </td>
-                    <td style="font-size:13px;color:var(--muted);">{{ $session->tutor?->name ?? 'â‚¬â€' }}</td>
+                    <td style="font-size:13px;color:var(--muted);">{{ $session->tutor?->name ?? 'â‚¬"' }}</td>
                     <td style="white-space:nowrap;font-size:13px;">
                         <div>{{ $session->scheduled_at->format('M j, Y') }}</div>
                         <div style="font-size:11px;color:var(--muted);">{{ $session->scheduled_at->format('g:i a') }}</div>

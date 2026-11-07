@@ -94,7 +94,7 @@
                 <tbody>
                     @forelse($subjects as $subject)
                     <tr>
-                        <td><span style="font-size:22px;">{{ $subject->icon ?? 'Ã°Å¸"â€“' }}</span></td>
+                        <td><span style="font-size:22px;">{{ $subject->icon ?? 'Ã°Å¸""“' }}</span></td>
                         <td><span style="font-weight:600;font-size:14px;">{{ $subject->name }}</span></td>
                         <td>
                             <div style="display:flex;align-items:center;gap:8px;">
@@ -227,8 +227,8 @@
             </div>
             <div style="margin-bottom:14px;">
                 <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Icon Emoji</label>
-                <input type="text" name="icon" placeholder="Ã°Å¸"â€“" maxlength="10" style="width:100%;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:15px;font-family:inherit;outline:none;">
-                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use a single emoji (e.g. Ã°Å¸"â€“ Ã°Å¸â€Â¢ Ã°Å¸Â§Â¬ Ã°Å¸â€”ÂºÃ¯Â¸Â)</div>
+                <input type="text" name="icon" placeholder="Ã°Å¸""“" maxlength="10" style="width:100%;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:15px;font-family:inherit;outline:none;">
+                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use a single emoji (e.g. Ã°Å¸""“ Ã°Å¸"Â¢ Ã°Å¸Â§Â¬ Ã°Å¸"”ÂºÃ¯Â¸Â)</div>
             </div>
             <div style="margin-bottom:20px;">
                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
@@ -290,12 +290,12 @@
 .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:white;border-radius:50%;transition:.3s;}
 input:checked + .slider{background-color:#10B981;}
 input:checked + .slider:before{transform:translateX(20px);}
-/* accordion / category triggers â‚¬â€ touch friendly */
+/* accordion / category triggers â‚¬" touch friendly */
 [data-accordion-trigger],[data-toggle],[data-category-toggle],
 .accordion-trigger,.category-trigger{
     min-height:44px;display:flex;align-items:center;
 }
-/* subjects filter grid â€ ' stack on mobile */
+/* subjects filter grid " ' stack on mobile */
 @media(max-width:639px){
     .card form > div[style*="grid-template-columns"]{
         grid-template-columns:1fr !important;

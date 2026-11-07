@@ -156,7 +156,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                     </thead>
                     <tbody>
                         @php
-                            $typeIcons = ['article'=>'Ã°Å¸"â€ž','pdf'=>'Ã°Å¸"•','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸"â€¹'];
+                            $typeIcons = ['article'=>'Ã°Å¸""ž','pdf'=>'Ã°Å¸"•','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸""¹'];
                             $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
                             $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
                         @endphp
@@ -165,7 +165,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                             <td style="max-width:260px;">
                                 <div style="display:flex;align-items:center;gap:10px;">
                                     <div style="width:36px;height:36px;border-radius:9px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
-                                        {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸"â€ž' }}
+                                        {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸""ž' }}
                                     </div>
                                     <div>
                                         <div style="font-weight:600;font-size:13.5px;">{{ Str::limit($resource->title, 45) }}</div>
@@ -176,8 +176,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
                             <td>
                                 <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">{{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}</span>
                             </td>
-                            <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? 'â‚¬â€' }}</td>
-                            <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? 'â‚¬â€' }}</td>
+                            <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? 'â‚¬"' }}</td>
+                            <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? 'â‚¬"' }}</td>
                             <td style="font-weight:600;">{{ number_format($resource->download_count) }}</td>
                             <td>
                                 @if(!$resource->is_approved)

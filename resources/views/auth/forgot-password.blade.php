@@ -254,7 +254,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
         </form>
 
         <div class="back-link">
-            <a href="{{ route('login') }}">â€ Â Back to Login</a>
+            <a href="{{ route('login') }}">" Â Back to Login</a>
         </div>
     </div>
 </div>

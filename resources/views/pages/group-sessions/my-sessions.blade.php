@@ -89,7 +89,7 @@
                 @else
                 <span style="font-size:12px;color:rgba(21,40,31,.45);font-weight:500;">Starts {{ $session->scheduled_at->diffForHumans() }}</span>
                 @endif
-                <a href="{{ route('group-sessions.show', $session) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:500;">View details â€ â€”</a>
+                <a href="{{ route('group-sessions.show', $session) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:500;">View details " "”</a>
             </div>
         </div>
         @endforeach

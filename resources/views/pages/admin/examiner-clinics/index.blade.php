@@ -65,11 +65,11 @@
                     <span style="font-size:10px;background:#EDE9FE;color:#5B21B6;padding:2px 7px;border-radius:4px;margin-left:5px;">Auto</span>
                     @endif
                 </td>
-                <td style="padding:12px 16px;color:var(--muted);">{{ $clinic->subject?->name ?? 'â‚¬â€' }}</td>
+                <td style="padding:12px 16px;color:var(--muted);">{{ $clinic->subject?->name ?? 'â‚¬"' }}</td>
                 <td style="padding:12px 16px;color:var(--muted);">
                     @if($clinic->curriculum_id)
                         <span style="font-size:11px;background:rgba(10,100,188,.08);color:#0A64BC;padding:2px 8px;border-radius:999px;">
-                            {{ $clinic->curriculum->name ?? 'â‚¬â€' }}
+                            {{ $clinic->curriculum->name ?? 'â‚¬"' }}
                         </span>
                     @else
                         <span style="font-size:11px;color:var(--muted);">All tracks</span>

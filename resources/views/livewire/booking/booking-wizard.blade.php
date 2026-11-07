@@ -47,7 +47,7 @@ $sessionTiers = [
                             </div>
                             <span style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:{{ $duration == $mins ? 'var(--trust-blue)' : 'var(--ink)' }};">KSh {{ $tier['price'] }}</span>
                         </div>
-                        <div style="font-size:11px;color:var(--muted);">{{ $mins }} min â€” {{ $tier['desc'] }}</div>
+                        <div style="font-size:11px;color:var(--muted);">{{ $mins }} min "” {{ $tier['desc'] }}</div>
                     </div>
                 </label>
                 @endforeach
@@ -164,7 +164,7 @@ $sessionTiers = [
                     ['Session type', $tier['icon'].' '.$tier['name'].' ('.$duration.' min)'],
                     ['Date', \Carbon\Carbon::parse($scheduledDate)->format('D, M j, Y')],
                     ['Time', \Carbon\Carbon::parse($scheduledTime)->format('g:i a').' (EAT)'],
-                    ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? 'â€”') : 'General'],
+                    ['Subject', $subjectId ? ($subjects->find($subjectId)?->name ?? '"”') : 'General'],
                 ] as [$label, $value])
                 <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.06);">
                     <span style="font-size:13px;color:var(--muted);">{{ $label }}</span>
@@ -276,7 +276,7 @@ $sessionTiers = [
 <script>
 document.addEventListener('livewire:initialized', () => {
 
-    // â”€â”€ STK Push sent â€” start polling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // â”€â”€ STK Push sent "” start polling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Livewire.on('stk-sent', (data) => {
         const reference  = data.reference;
         const statusUrl  = '/api/daraja/status?reference=' + encodeURIComponent(reference);
@@ -292,7 +292,7 @@ document.addEventListener('livewire:initialized', () => {
         }
 
         function poll() {
-            if (polls >= maxPolls) return; // timed out â€” user can retry
+            if (polls >= maxPolls) return; // timed out "” user can retry
             polls++;
 
             fetch(statusUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })

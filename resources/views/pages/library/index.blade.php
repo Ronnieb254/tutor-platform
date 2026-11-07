@@ -104,7 +104,7 @@ a{color:inherit;text-decoration:none;}
             <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
         </div>
         <h1>The Mwalimu Library</h1>
-        <p>Curated past papers, and study notes in PDF, and top rated video lessons â‚¬â€ all in one place.</p>
+        <p>Curated past papers, and study notes in PDF, and top rated video lessons â‚¬" all in one place.</p>
         @if(!empty($track))
         <p style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">
             Showing resources for <strong style="color:#fff;">{{ ucfirst($track) }}</strong> curriculum track.
@@ -129,13 +129,13 @@ a{color:inherit;text-decoration:none;}
                 <span class="count">{{ $resources->total() }}</span>
             </a>
             @php
-                $typeIcons = ['article'=>'Ã°Å¸"â€ž','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸"â€¹','video'=>'Ã°Å¸Å½Â¥'];
+                $typeIcons = ['article'=>'Ã°Å¸""ž','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸""¹','video'=>'Ã°Å¸Å½Â¥'];
                 $typeLabels = ['article'=>'Articles','notes'=>'Notes','past_paper'=>'Past Papers','video'=>'Videos'];
             @endphp
             @foreach($resourceTypes as $type)
             <a href="{{ route('library.index', array_merge(request()->all(), ['type'=>$type])) }}" class="filter-item {{ request('type') === $type ? 'active' : '' }}">
                 <span style="display:flex;align-items:center;gap:8px;">
-                    <span style="font-size:15px;">{{ $typeIcons[$type] ?? 'Ã°Å¸"â€ž' }}</span>
+                    <span style="font-size:15px;">{{ $typeIcons[$type] ?? 'Ã°Å¸""ž' }}</span>
                     {{ $typeLabels[$type] ?? ucfirst(str_replace('_',' ',$type)) }}
                 </span>
             </a>
@@ -162,7 +162,7 @@ a{color:inherit;text-decoration:none;}
                 <div style="font-size:14px;color:var(--muted);">
                     <strong style="color:var(--ink);">{{ $resources->total() }}</strong> resource{{ $resources->total() != 1 ? 's' : '' }} found
                     @if(request()->hasAny(['search','type','category','grade']))
-                        â‚¬â€ <a href="{{ route('library.index') }}" style="color:var(--trust-blue);font-weight:600;">Clear filters</a>
+                        â‚¬" <a href="{{ route('library.index') }}" style="color:var(--trust-blue);font-weight:600;">Clear filters</a>
                     @endif
                 </div>
                 @auth
@@ -181,8 +181,8 @@ a{color:inherit;text-decoration:none;}
                         @if($resource->thumbnail)
                             <img src="{{ asset('storage/'.$resource->thumbnail) }}" alt="{{ $resource->title }}">
                         @else
-                            @php $icons = ['article'=>'Ã°Å¸"â€ž','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸"â€¹','video'=>'Ã°Å¸Å½Â¥']; @endphp
-                            {{ $icons[$resource->resource_type] ?? 'Ã°Å¸"â€ž' }}
+                            @php $icons = ['article'=>'Ã°Å¸""ž','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸""¹','video'=>'Ã°Å¸Å½Â¥']; @endphp
+                            {{ $icons[$resource->resource_type] ?? 'Ã°Å¸""ž' }}
                         @endif
                         @php
                             $typeClasses = ['article'=>'bdg-blue','notes'=>'bdg-amber','past_paper'=>'bdg-green','video'=>'bdg-purple'];

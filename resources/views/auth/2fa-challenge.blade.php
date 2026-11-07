@@ -253,10 +253,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
 
         <div class="link-group">
             <button type="button" class="link" onclick="toggleRecoveryMode()">
-                Ã°Å¸â€' Use a recovery code instead
+                Ã°Å¸"' Use a recovery code instead
             </button>
             <a href="{{ route('login') }}" class="link">
-                â€ Â Back to login
+                " Â Back to login
             </a>
         </div>
     </div>

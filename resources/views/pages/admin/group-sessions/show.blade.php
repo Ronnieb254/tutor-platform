@@ -12,7 +12,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
 <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
     <div>
         <a href="{{ route('admin.group-sessions.index') }}" style="display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:8px;">
-            â€ Â All Group Sessions
+            " Â All Group Sessions
         </a>
         <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);">{{ $groupSession->title }}</h2>
         <div style="display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap;">
@@ -26,7 +26,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
         <a href="{{ route('admin.group-sessions.edit', $groupSession) }}" class="btn btn-outline">Edit</a>
         <form method="POST" action="{{ route('admin.group-sessions.start', $groupSession) }}" style="display:inline;">
             @csrf
-            <button class="btn btn-success" onclick="return confirm('Start this session now?')">â€“Â¶ Start Session</button>
+            <button class="btn btn-success" onclick="return confirm('Start this session now?')">"“Â¶ Start Session</button>
         </form>
         @endif
         @if($groupSession->status === 'in_progress')
@@ -81,10 +81,10 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
                     <tr>
                         <td style="color:var(--muted);font-size:13px;">{{ $i + 1 }}</td>
                         <td>
-                            <div style="font-weight:600;font-size:13px;">{{ $enrollment->student?->name ?? 'â‚¬â€' }}</div>
+                            <div style="font-weight:600;font-size:13px;">{{ $enrollment->student?->name ?? 'â‚¬"' }}</div>
                             <div style="font-size:11px;color:var(--muted);">{{ $enrollment->student?->email }}</div>
                         </td>
-                        <td><span style="font-family:monospace;font-size:12px;background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 8px;border-radius:6px;">{{ $enrollment->session_code ?? 'â‚¬â€' }}</span></td>
+                        <td><span style="font-family:monospace;font-size:12px;background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 8px;border-radius:6px;">{{ $enrollment->session_code ?? 'â‚¬"' }}</span></td>
                         <td style="font-size:12px;color:var(--muted);">{{ $enrollment->created_at->format('M j, g:ia') }}</td>
                     </tr>
                     @empty

@@ -101,14 +101,14 @@
             <tbody>
                 @forelse($resources as $resource)
                 @php
-                    $typeIcons = ['article'=>'Ã°Å¸"â€ž','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸"â€¹'];
+                    $typeIcons = ['article'=>'Ã°Å¸""ž','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸""¹'];
                     $typeClasses = ['article'=>'badge-primary','video'=>'badge-purple','notes'=>'badge-warning','past_paper'=>'badge-success'];
                 @endphp
                 <tr>
                     <td style="max-width:280px;">
                         <div style="display:flex;align-items:center;gap:10px;">
                             <div style="width:36px;height:36px;border-radius:9px;background:rgba(10,100,188,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
-                                {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸"â€ž' }}
+                                {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸""ž' }}
                             </div>
                             <div>
                                 <div style="font-weight:600;font-size:13.5px;color:var(--text);">{{ Str::limit($resource->title, 50) }}</div>
@@ -124,15 +124,15 @@
                         </span>
                     </td>
                     <td style="font-size:13px;">{{ $resource->author->name }}</td>
-                    <td style="font-size:13px;color:var(--text-muted);">{{ $resource->category?->name ?? 'â‚¬â€' }}</td>
+                    <td style="font-size:13px;color:var(--text-muted);">{{ $resource->category?->name ?? 'â‚¬"' }}</td>
                     <td style="font-size:13px;">
                         @if($resource->curriculum_id)
-                        <span style="font-size:11px;background:rgba(10,100,188,.08);color:#0A64BC;padding:2px 7px;border-radius:999px;white-space:nowrap;">{{ $resource->curriculum->name ?? 'â‚¬â€' }}</span>
+                        <span style="font-size:11px;background:rgba(10,100,188,.08);color:#0A64BC;padding:2px 7px;border-radius:999px;white-space:nowrap;">{{ $resource->curriculum->name ?? 'â‚¬"' }}</span>
                         @else
                         <span style="font-size:11px;color:var(--text-muted);">All</span>
                         @endif
                     </td>
-                    <td style="font-size:13px;color:var(--text-muted);">{{ $resource->grade_level ?? 'â‚¬â€' }}</td>
+                    <td style="font-size:13px;color:var(--text-muted);">{{ $resource->grade_level ?? 'â‚¬"' }}</td>
                     <td data-order="{{ $resource->download_count }}" style="font-size:13px;font-weight:600;">{{ number_format($resource->download_count) }}</td>
                     <td>
                         @if(!$resource->is_approved)
@@ -171,7 +171,7 @@
                 @empty
                 <tr>
                     <td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted);">
-                        No resources found. <button onclick="document.getElementById('add-modal').style.display='flex'" style="background:none;border:none;color:var(--primary);font-weight:600;cursor:pointer;">Add the first one â€ '</button>
+                        No resources found. <button onclick="document.getElementById('add-modal').style.display='flex'" style="background:none;border:none;color:var(--primary);font-weight:600;cursor:pointer;">Add the first one " '</button>
                     </td>
                 </tr>
                 @endforelse

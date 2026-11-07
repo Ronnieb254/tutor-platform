@@ -230,7 +230,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
         <div class="sec-hdr">
             <div>
                 <div class="sec-title">Manage Your Subjects</div>
-                <div class="sec-sub">Select up to 2 subjects you teach â‚¬â€ these appear on your public profile for students to find.</div>
+                <div class="sec-sub">Select up to 2 subjects you teach â‚¬" these appear on your public profile for students to find.</div>
             </div>
             <a href="{{ route('tutor.dashboard') }}" class="btn btn-o btn-sm">
                 <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>

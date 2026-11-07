@@ -46,7 +46,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
             </div>
             <div class="session-meta">
                 <span class="dot"></span>
-                <span class="time">{{ $clinic->scheduled_at->format('D, M j Ã‚· g:ia') }}</span>
+                <span class="time">{{ $clinic->scheduled_at->format('D, M j · g:ia') }}</span>
                 @if($isModerator)
                     <span class="moderator-badge"><i class="fas fa-shield-alt"></i> MODERATOR</span>
                 @endif
@@ -104,7 +104,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                     width: { ideal: 1280, max: 1920, min: 320 }
                 }
             },
-            // Screen sharing â‚¬â€ all sources
+            // Screen sharing â‚¬" all sources
             desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
             desktopSharingChromeSources: ['screen', 'window', 'tab'],
             desktopSharingChromeExtId: null,
@@ -138,7 +138,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
             RECENT_LIST_ENABLED: false,
             SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
             VIDEO_LAYOUT_FIT: 'both',
-            // Full toolbar â‚¬â€ all tools visible and available
+            // Full toolbar â‚¬" all tools visible and available
             TOOLBAR_BUTTONS: [
                 'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
                 'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',

@@ -56,7 +56,7 @@
             </div>
             <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;">
                 <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">How group sessions work</p>
-                @foreach(['Browse upcoming live classes by subject/topic','Book your seat â‚¬â€ pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
+                @foreach(['Browse upcoming live classes by subject/topic','Book your seat â‚¬" pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
                 <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
                     <i class="fas fa-check-circle"></i>
                     <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
@@ -78,7 +78,7 @@
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px;">
             <div>
                 <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,38px);color:#15281F;margin-bottom:6px;">Upcoming Group Sessions</h2>
-                <p style="color:rgba(21,40,31,.55);">Live cohort classes. Max 30 learners per session â‚¬â€ book your seat before it fills up.</p>
+                <p style="color:rgba(21,40,31,.55);">Live cohort classes. Max 30 learners per session â‚¬" book your seat before it fills up.</p>
             </div>
         </div>
 
@@ -130,7 +130,7 @@
 
                 {{-- Meta --}}
                 <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:rgba(21,40,31,.55);">
-                    <span><i class="fas fa-calendar"></i>{{ $session->scheduled_at->format('D, M j Ã‚· g:ia') }}</span>
+                    <span><i class="fas fa-calendar"></i>{{ $session->scheduled_at->format('D, M j · g:ia') }}</span>
                     <span><i class="fas fa-clock"></i>{{ $session->duration_minutes }}m</span>
                 </div>
 
@@ -156,7 +156,7 @@
                     @auth
                     @if($session->isEnrolledBy(auth()->user()))
                     <a href="{{ route('group-sessions.show', $session) }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:rgba(16,185,129,.1);color:#10B981;border:1px solid rgba(16,185,129,.3);font-size:13px;font-weight:600;text-decoration:none;">
-                        <i class="fas fa-check-circle"></i> Enrolled â‚¬â€ View
+                        <i class="fas fa-check-circle"></i> Enrolled â‚¬" View
                     </a>
                     @elseif($isFull)
                     <span style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:999px;background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;font-size:13px;font-weight:600;">
@@ -166,7 +166,7 @@
                     <form method="POST" action="{{ route('group-sessions.enroll', $session) }}" style="flex:1;">
                         @csrf
                         <button type="submit" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
-                            <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Book Seat â‚¬â€ KSh {{ number_format($session->price) }}
+                            <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span> Book Seat â‚¬" KSh {{ number_format($session->price) }}
                         </button>
                     </form>
                     @endif

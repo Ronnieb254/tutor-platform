@@ -122,11 +122,11 @@ select.form-input{cursor:pointer;}
                 <div class="type-selector">
                     @php
                         $types = [
-                            'article' => ['Ã°Å¸"â€ž','Article','Written guide or tutorial'],
+                            'article' => ['Ã°Å¸""ž','Article','Written guide or tutorial'],
                             'pdf'     => ['Ã°Å¸"•','PDF','PDF document or eBook'],
                             'video'   => ['Ã°Å¸Å½Â¥','Video','Lesson video file'],
                             'notes'   => ['Ã°Å¸"Â','Notes','Study notes or summaries'],
-                            'past_paper' => ['Ã°Å¸"â€¹','Past Paper','Exam past paper'],
+                            'past_paper' => ['Ã°Å¸""¹','Past Paper','Exam past paper'],
                         ];
                     @endphp
                     @foreach($types as $value => [$icon, $label, $desc])
@@ -202,7 +202,7 @@ select.form-input{cursor:pointer;}
                     <div x-show="!hasFile">
                         <div style="font-size:40px;margin-bottom:10px;">Ã°Å¸"Å½</div>
                         <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Drop file here or click to browse</p>
-                        <p style="font-size:12px;color:var(--muted);">PDF, DOC, PPT, MP4, AVI â‚¬â€ max 50 MB</p>
+                        <p style="font-size:12px;color:var(--muted);">PDF, DOC, PPT, MP4, AVI â‚¬" max 50 MB</p>
                     </div>
                     <div x-show="hasFile" style="display:none;">
                         <div style="font-size:40px;margin-bottom:10px;"><i class="fas fa-check-circle"></i></div>
@@ -216,9 +216,9 @@ select.form-input{cursor:pointer;}
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:16px;">Cover Image (optional)</h3>
                 <div class="upload-zone">
                     <input type="file" name="thumbnail" accept="image/*">
-                    <div style="font-size:32px;margin-bottom:8px;">Ã°Å¸â€“Â¼Ã¯Â¸Â</div>
+                    <div style="font-size:32px;margin-bottom:8px;">Ã°Å¸"“Â¼Ã¯Â¸Â</div>
                     <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Upload a cover image</p>
-                    <p style="font-size:12px;color:var(--muted);">JPG, PNG, WebP â‚¬â€ max 5 MB. Recommended: 800Ãƒâ€”500px</p>
+                    <p style="font-size:12px;color:var(--muted);">JPG, PNG, WebP â‚¬" max 5 MB. Recommended: 800Ãƒ"”500px</p>
                 </div>
             </div>
 
@@ -231,7 +231,7 @@ select.form-input{cursor:pointer;}
             </div>
 
             <div style="margin-top:16px;padding:14px 16px;background:rgba(10,100,188,.06);border-radius:12px;font-size:13px;color:var(--muted);">
-                Ã°Å¸'Â¡ Resources go live immediately. Ensure content is appropriate and accurate â‚¬â€ the admin team may remove resources that violate guidelines.
+                Ã°Å¸'Â¡ Resources go live immediately. Ensure content is appropriate and accurate â‚¬" the admin team may remove resources that violate guidelines.
             </div>
         </form>
     </div>

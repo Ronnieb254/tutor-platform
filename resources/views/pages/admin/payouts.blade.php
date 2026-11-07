@@ -115,7 +115,7 @@ $paid     = PayoutRequest::where('status','paid')->sum('amount');
                             <button class="btn btn-primary btn-sm">Mark Paid</button>
                         </form>
                         @else
-                        <span style="font-size:12px;color:var(--muted);">{{ $payout->processed_at?->format('M j') ?? 'â€”' }}</span>
+                        <span style="font-size:12px;color:var(--muted);">{{ $payout->processed_at?->format('M j') ?? '"”' }}</span>
                         @endif
                     </td>
                 </tr>

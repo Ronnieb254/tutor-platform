@@ -29,7 +29,7 @@
     $canSubmitForReview  = $allRequiredUploaded && $subjectCount >= 1 && $subjectCount <= 2;
     @endphp
 
-    {{-- â€â‚¬â€â‚¬ Header â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬ --}}
+    {{-- "â‚¬"â‚¬ Header "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
     <div style="margin-bottom:20px;">
         <h2 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:6px;">
             Verification Documents
@@ -39,7 +39,7 @@
         </p>
     </div>
 
-    {{-- â€â‚¬â€â‚¬ Overall status banner â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬ --}}
+    {{-- "â‚¬"â‚¬ Overall status banner "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
     @if($isApproved)
         <div class="status-banner status-approved" style="margin-bottom:24px;">
         <span style="font-size:24px;"><i class="fas fa-check-circle"></i></span>
@@ -89,7 +89,7 @@
         </div>
     @endif
 
-    {{-- â€â‚¬â€â‚¬ Subject requirement banner (shown when all docs approved but no subjects) â€â‚¬â€â‚¬ --}}
+    {{-- "â‚¬"â‚¬ Subject requirement banner (shown when all docs approved but no subjects) "â‚¬"â‚¬ --}}
     @if($needsSubjects && !$isApproved)
     <div class="status-banner" style="background:#FEF3C7;border:1px solid #FDE68A;margin-bottom:24px;">
         <span style="font-size:22px;flex-shrink:0;"><span style="font-size:inherit;"><i class="fas fa-book-open"></i></span></span>
@@ -99,7 +99,7 @@
                 @if($subjectCount === 0)
                     Your documents look good! Before your profile can go live, you must select <strong>1 to 2 subjects</strong> you intend to teach.
                 @else
-                    You have {{ $subjectCount }} subjects selected â‚¬â€ the maximum allowed is 2. Please remove one.
+                    You have {{ $subjectCount }} subjects selected â‚¬" the maximum allowed is 2. Please remove one.
                 @endif
             </div>
             <a href="{{ route('tutor.subjects') }}"
@@ -111,7 +111,7 @@
     </div>
     @endif
 
-    {{-- â€â‚¬â€â‚¬ Requirements checklist â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬ --}}
+    {{-- "â‚¬"â‚¬ Requirements checklist "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
     @if(!$isApproved)
     <div class="card card-p" style="margin-bottom:20px;">
         <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;">
@@ -131,7 +131,7 @@
                     {{ $label }}
                     @if(!$done)
                         <a href="{{ $link }}" style="color:var(--trust-blue);font-size:12px;font-weight:600;margin-left:6px;">
-                            Fix this â€ '
+                            Fix this " '
                         </a>
                     @endif
                 </span>
@@ -141,7 +141,7 @@
     </div>
     @endif
 
-    {{-- â€â‚¬â€â‚¬ Progress stepper â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬ --}}
+    {{-- "â‚¬"â‚¬ Progress stepper "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
     <div class="card card-p" style="margin-bottom:20px;">
         <div style="display:flex;gap:0;overflow:hidden;border-radius:10px;border:1px solid var(--hair);">
             @foreach([['1','Upload Docs'],['2','Under Review'],['3','Approved'],['4','Go Live']] as $i => [$num,$step])
@@ -164,7 +164,7 @@
         </div>
     </div>
 
-    {{-- â€â‚¬â€â‚¬ Document cards â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬ --}}
+    {{-- "â‚¬"â‚¬ Document cards "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
     <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px;">
         @foreach($docTypes as $type => [$label, $icon, $req])
         @php
@@ -211,7 +211,7 @@
                     @if($doc)
                         <div style="font-size:12px;color:var(--muted);">
                             <span style="font-size:inherit;"><i class="fas fa-question-circle"></i></span>{{ $doc->original_name ?? 'Uploaded file' }}
-                            &nbsp;Ã‚·&nbsp;
+                            &nbsp;·&nbsp;
                             {{ $doc->created_at->format('M j, Y') }}
                         </div>
                         @if($doc->admin_note)
@@ -224,7 +224,7 @@
                                     color:{{ $isMissing ? 'var(--coral)' : 'var(--muted)' }};
                                     font-weight:{{ $isMissing ? '600' : '400' }};">
                             @if($isMissing)
-                                <i class="fas fa-exclamation-triangle"></i>Required â‚¬â€ please upload this document
+                                <i class="fas fa-exclamation-triangle"></i>Required â‚¬" please upload this document
                             @else
                                 No document uploaded yet
                             @endif
@@ -276,11 +276,11 @@
         @endforeach
     </div>
 
-    {{-- â€â‚¬â€â‚¬ Accepted formats notice â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬ --}}
+    {{-- "â‚¬"â‚¬ Accepted formats notice "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
     <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);
                 border-radius:14px;padding:16px 20px;">
         <p style="font-size:13px;font-weight:700;color:var(--trust-blue);margin-bottom:6px;">
-            Ã°Å¸"â€¹ Accepted formats
+            Ã°Å¸""¹ Accepted formats
         </p>
         <p style="font-size:13px;color:var(--muted);line-height:1.7;">
             JPG, PNG or PDF &middot; Max 5 MB per file &middot; Must be clear and legible &middot;

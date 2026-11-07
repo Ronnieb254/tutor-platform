@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $post->title }} â€“ Mwalimu Blog</title>
+<title>{{ $post->title }} "“ Mwalimu Blog</title>
 <meta name="description" content="{{ $post->excerpt ?? Str::limit(strip_tags($post->content), 160) }}">
 <style>
 .prose{font-size:16px;line-height:1.85;color:var(--ink);}

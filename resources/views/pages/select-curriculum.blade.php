@@ -111,7 +111,7 @@
                         <span style="font-size:inherit;"><i class="fas fa-flag"></i></span> Kenyan Curriculum
                     </div>
                     <div class="curr-card__title">Learn the<br>Kenyan Way</div>
-                    <p class="curr-card__sub">Kenya's national education system â‚¬â€ from secondary school through senior school.</p>
+                    <p class="curr-card__sub">Kenya's national education system â‚¬" from secondary school through senior school.</p>
                     <div class="curr-tag-list">
                         <span class="curr-tag"><i class="fas fa-book-open"></i> 8-4-4</span>
                         <span class="curr-tag"><i class="fas fa-star"></i> CBC Junior Secondary</span>

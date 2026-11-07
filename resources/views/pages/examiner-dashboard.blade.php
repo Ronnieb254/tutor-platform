@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Examiner Dashboard â€“ Mwalimu</title>
+<title>Examiner Dashboard "“ Mwalimu</title>
 <style>
 /* Page-specific dashboard styles (self-contained; design tokens come from partials.head) */
 .session-hero{background:linear-gradient(135deg,#111C16,#15281F);padding:48px 0;position:relative;overflow:hidden;}
@@ -29,7 +29,7 @@
 @media(max-width:600px){.clinic-row{flex-direction:column;}}
 .clinic-actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;}
 .pill{padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:5px;}
-/* Phase 6 â€” additional responsive rules */
+/* Phase 6 "” additional responsive rules */
 @media(max-width:639px){
     .clinic-cards,.clinic-grid,[class*="clinic-list"]{
         grid-template-columns:1fr !important;
@@ -74,7 +74,7 @@
                     Welcome back, {{ $user->name }}
                 </h1>
                 <p style="font-size:15px;color:rgba(255,255,255,.6);max-width:520px;">
-                    Run your examiner clinics, track enrollments and earnings, and start live sessions â€” all in one place.
+                    Run your examiner clinics, track enrollments and earnings, and start live sessions "” all in one place.
                 </p>
             </div>
             <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint" style="flex-shrink:0;">
@@ -138,7 +138,7 @@
             </div>
             <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:10px;">Create your first clinic</h2>
             <p style="font-size:15px;color:rgba(21,40,31,.55);max-width:480px;margin:0 auto 26px;line-height:1.7;">
-                You're approved as an examiner. Set up your first examiner clinic â€” choose a subject and paper (PP1, PP2, PP3), set the time, and students can start booking right away.
+                You're approved as an examiner. Set up your first examiner clinic "” choose a subject and paper (PP1, PP2, PP3), set the time, and students can start booking right away.
             </p>
             <a href="{{ route('examiner.clinics.create') }}" class="btn btn-mint" style="font-size:15px;padding:13px 32px;">
                 <i class="fas fa-plus"></i> Create Your First Clinic

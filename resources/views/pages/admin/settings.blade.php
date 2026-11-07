@@ -160,7 +160,7 @@ use App\Models\PlatformSetting;
     {{-- Maintenance --}}
     <div class="card card-p">
         <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
-            Ã°Å¸â€Â§ Maintenance
+            Ã°Å¸"Â§ Maintenance
         </h3>
         <div style="display:flex;flex-direction:column;gap:12px;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:#F4F6F4;border-radius:12px;">

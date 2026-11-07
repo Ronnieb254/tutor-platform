@@ -93,7 +93,7 @@
                         <div style="font-weight:500;font-size:13px;">{{ $booking->tutor->name }}</div>
                         <div style="font-size:11px;color:var(--muted);">{{ $booking->tutor->email }}</div>
                     </td>
-                    <td style="color:var(--muted);">{{ $booking->subject?->name ?? 'â‚¬â€' }}</td>
+                    <td style="color:var(--muted);">{{ $booking->subject?->name ?? 'â‚¬"' }}</td>
                     <td data-order="{{ $booking->scheduled_at->timestamp }}" style="white-space:nowrap;font-size:13px;">
                         <div>{{ $booking->scheduled_at->format('M j, Y') }}</div>
                         <div style="color:var(--muted);font-size:11px;">{{ $booking->scheduled_at->format('g:i a') }} EAT</div>

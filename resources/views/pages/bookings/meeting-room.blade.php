@@ -65,7 +65,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
                 <span style="font-size:inherit;">←</span> Back
             </a>
             <div class="session-title">
-                {{ $booking->subject ? $booking->subject->name : 'Session' }} Ã‚· {{ $booking->duration_minutes }} min
+                {{ $booking->subject ? $booking->subject->name : 'Session' }} · {{ $booking->duration_minutes }} min
             </div>
             <div class="session-meta">
                 <span class="dot"></span>
@@ -154,7 +154,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
     @endphp
     const sessionStartTs = {{ $sessionStartTs }};
 
-    // â€â‚¬â€â‚¬ Timer state â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬
+    // "â‚¬"â‚¬ Timer state "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬
     let teachingTimer = null;
     let elapsedSeconds = 0;
     let bothJoined = false;
@@ -180,7 +180,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
         if (progEl) {
             const pct = Math.min(100, (elapsedSeconds / scheduledSeconds) * 100);
             progEl.style.width = pct + '%';
-            // Colour: green â€ ' amber (last 20%) â€ ' red (closing buffer)
+            // Colour: green " ' amber (last 20%) " ' red (closing buffer)
             if (remaining <= closingBufferSeconds) {
                 progEl.style.background = '#E8522A';
             } else if (remaining <= scheduledSeconds * 0.2) {
@@ -320,7 +320,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
     const api = new JitsiMeetExternalAPI(domain, options);
 
-    // â€â‚¬â€â‚¬ Joined event â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬â€â‚¬
+    // "â‚¬"â‚¬ Joined event "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬
     api.addEventListener('videoConferenceJoined', () => {
         if (!hasJoined) {
             hasJoined = true;

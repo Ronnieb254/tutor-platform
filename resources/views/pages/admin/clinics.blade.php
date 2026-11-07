@@ -127,10 +127,10 @@
                         <div style="font-weight:600;color:{{ $isToday ? '#0A64BC' : 'var(--ink)' }};">
                             {{ $clinic->scheduled_at->format('D, M j') }}
                         </div>
-                        <div style="font-size:11px;color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }} Ã‚· {{ $clinic->duration_minutes }}min</div>
+                        <div style="font-size:11px;color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }} · {{ $clinic->duration_minutes }}min</div>
                     </td>
                     <td style="padding:14px 16px;">
-                        <div style="font-size:13px;color:var(--ink);">{{ $clinic->tutor?->name ?? 'â‚¬â€' }}</div>
+                        <div style="font-size:13px;color:var(--ink);">{{ $clinic->tutor?->name ?? 'â‚¬"' }}</div>
                     </td>
                     <td style="padding:14px 16px;text-align:center;">
                         <div style="font-weight:700;color:{{ $isFull ? '#E8522A' : 'var(--ink)' }};">
@@ -218,7 +218,7 @@
 
 @push('scripts')
 <script>
-// No DataTables â‚¬â€ table uses server-side filtering and pagination
+// No DataTables â‚¬" table uses server-side filtering and pagination
 </script>
 @endpush
 @endsection

@@ -3,7 +3,7 @@
 @section('content')
 
 <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-    <a href="{{ route('admin.examiner-clinics.index') }}" class="btn btn-outline btn-sm">â€ Â Back</a>
+    <a href="{{ route('admin.examiner-clinics.index') }}" class="btn btn-outline btn-sm">" Â Back</a>
     <div>
         <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);">{{ $examinerClinic->title }}</h2>
         <p style="font-size:13px;color:var(--muted);margin-top:2px;">
@@ -28,7 +28,7 @@
             <h3 style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:14px;">Clinic Details</h3>
             <dl style="display:grid;grid-template-columns:1fr 2fr;gap:8px;font-size:13px;">
                 <dt style="font-weight:600;color:var(--muted);">Subject</dt>
-                <dd>{{ $examinerClinic->subject?->name ?? 'â‚¬â€' }}</dd>
+                <dd>{{ $examinerClinic->subject?->name ?? 'â‚¬"' }}</dd>
                 <dt style="font-weight:600;color:var(--muted);">Curriculum</dt>
                 <dd>{{ $examinerClinic->curriculum?->name ?? 'All tracks' }}</dd>
                 <dt style="font-weight:600;color:var(--muted);">Scheduled</dt>
@@ -69,7 +69,7 @@
             @if($examinerClinic->status === 'scheduled')
             <form method="POST" action="{{ route('admin.examiner-clinics.start', $examinerClinic) }}" style="margin-bottom:8px;">
                 @csrf
-                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">â€“Â¶ Start Session</button>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">"“Â¶ Start Session</button>
             </form>
             <form method="POST" action="{{ route('admin.examiner-clinics.cancel', $examinerClinic) }}">
                 @csrf

@@ -93,14 +93,14 @@ a{color:inherit;text-decoration:none;}
 
     {{-- Hero banner --}}
     @php
-        $typeIcons = ['article'=>'Ã°Å¸"â€ž','pdf'=>'Ã°Å¸"•','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸"â€¹'];
+        $typeIcons = ['article'=>'Ã°Å¸""ž','pdf'=>'Ã°Å¸"•','video'=>'Ã°Å¸Å½Â¥','notes'=>'Ã°Å¸"Â','past_paper'=>'Ã°Å¸""¹'];
         $typeClasses = ['article'=>'bdg-blue','pdf'=>'bdg-red','video'=>'bdg-purple','notes'=>'bdg-amber','past_paper'=>'bdg-green'];
         $typeLabels = ['article'=>'Article','pdf'=>'PDF','video'=>'Video','notes'=>'Notes','past_paper'=>'Past Paper'];
         $bgColors = ['article'=>'rgba(37,99,235,.15)','pdf'=>'rgba(220,38,38,.15)','video'=>'rgba(124,58,237,.15)','notes'=>'rgba(217,119,6,.15)','past_paper'=>'rgba(22,163,74,.15)'];
     @endphp
     <div class="resource-hero">
         <div class="resource-hero-icon" style="background:{{ $bgColors[$resource->resource_type] ?? 'rgba(10,100,188,.15)' }};">
-            {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸"â€ž' }}
+            {{ $typeIcons[$resource->resource_type] ?? 'Ã°Å¸""ž' }}
         </div>
         <div>
             <h1>{{ $resource->title }}</h1>
@@ -118,7 +118,7 @@ a{color:inherit;text-decoration:none;}
                 <span class="bdg" style="background:rgba(16,185,129,.15);color:#065f46;">{{ $resource->subject->name }}</span>
                 @endif
                 <span style="font-size:13px;color:rgba(255,255,255,.5);">
-                    By {{ $resource->author->name }} Ã‚· {{ $resource->published_at?->format('M j, Y') }}
+                    By {{ $resource->author->name }} · {{ $resource->published_at?->format('M j, Y') }}
                 </span>
             </div>
         </div>
@@ -155,12 +155,12 @@ a{color:inherit;text-decoration:none;}
                 <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:16px;">Related Resources</h3>
                 @foreach($related as $r)
                 <a href="{{ route('library.show', $r->slug) }}" class="related-card" style="display:flex;">
-                    <div class="related-icon">{{ $typeIcons[$r->resource_type] ?? 'Ã°Å¸"â€ž' }}</div>
+                    <div class="related-icon">{{ $typeIcons[$r->resource_type] ?? 'Ã°Å¸""ž' }}</div>
                     <div>
                         <div class="related-title">{{ $r->title }}</div>
                         <div class="related-meta">
                             <span class="bdg {{ $typeClasses[$r->resource_type] ?? 'bdg-gray' }}" style="font-size:10px;padding:2px 8px;">{{ $typeLabels[$r->resource_type] ?? ucfirst($r->resource_type) }}</span>
-                            @if($r->grade_level) &nbsp;Ã‚·&nbsp; {{ $r->grade_level }}@endif
+                            @if($r->grade_level) &nbsp;·&nbsp; {{ $r->grade_level }}@endif
                         </div>
                     </div>
                 </a>
@@ -181,7 +181,7 @@ a{color:inherit;text-decoration:none;}
                     @if($resource->file_size)
                         File size: {{ number_format($resource->file_size / 1048576, 1) }} MB
                     @endif
-                    Ã‚· {{ $resource->download_count }} download{{ $resource->download_count != 1 ? 's' : '' }}
+                    · {{ $resource->download_count }} download{{ $resource->download_count != 1 ? 's' : '' }}
                 </p>
                 @auth
                 <a href="{{ route('library.download', $resource->slug) }}" class="download-btn">

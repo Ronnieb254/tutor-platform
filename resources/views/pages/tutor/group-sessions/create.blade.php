@@ -163,7 +163,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                     <div class="field">
                         <label>Subject <span class="req">*</span></label>
                         <select name="subject_id" required>
-                            <option value="">â‚¬â€ Select a subject â‚¬â€</option>
+                            <option value="">â‚¬" Select a subject â‚¬"</option>
                             @foreach($subjects as $s)
                             <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                             @endforeach
@@ -174,7 +174,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
                     <div class="field">
                         <label>Session Title <span class="req">*</span></label>
                         <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. Algebra Made Easy â‚¬" Form 4" required maxlength="200">
-                        <p class="hint">Be specific â‚¬â€ this is what students see when browsing sessions.</p>
+                        <p class="hint">Be specific â‚¬" this is what students see when browsing sessions.</p>
                         @error('title')<p class="error">{{ $message }}</p>@enderror
                     </div>
 
