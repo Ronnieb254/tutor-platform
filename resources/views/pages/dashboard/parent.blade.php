@@ -39,7 +39,7 @@ button{font-family:inherit;cursor:pointer;}
 .sb-logout:hover{background:rgba(255,255,255,.16);color:#fff;}
 .mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:49;}
 @media(max-width:1023px){.sidebar{position:fixed;left:-256px;top:0;bottom:0;transition:left .25s;z-index:50;}.sidebar.open{left:0;}.mob-overlay.show{display:block;}}
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.main{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
 .topbar{height:60px;background:#fff;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
 .mob-toggle{display:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--hair);background:#fff;align-items:center;justify-content:center;color:var(--muted);}
 @media(max-width:1023px){.mob-toggle{display:flex;}}
@@ -48,7 +48,7 @@ button{font-family:inherit;cursor:pointer;}
 .tb-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--hair);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;position:relative;}
 .tb-btn:hover{border-color:rgba(10,100,188,.4);color:var(--trust-blue);}
 .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--coral);border-radius:50%;border:2px solid #fff;}
-.content{flex:1;overflow-y:auto;padding:24px;}
+.content{flex:1;min-height:0;overflow-y:auto;padding:24px;padding-bottom:48px;}
 .card{background:#fff;border-radius:16px;border:1px solid var(--hair);}
 .card-p{padding:20px;}
 .stat{background:#fff;border-radius:14px;border:1px solid var(--hair);padding:18px;}
