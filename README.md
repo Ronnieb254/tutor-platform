@@ -109,7 +109,7 @@ Visit: http://localhost:8000
 
 ### For Students & Parents
 - Browse 500+ verified tutors by subject, price, rating
-- Book sessions in 15 / 30 / 45 / 60 minute blocks
+- Book sessions in  20 / 40 / 60 minute blocks
 - Pay securely with Paystack (M-Pesa or card)
 - Receive unique session access code by email (STU-XXXXXX)
 - Join live session via Jitsi (no download required)

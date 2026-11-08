@@ -274,16 +274,18 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  </div>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
  @foreach([
- ['20','Quick Help','','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
- ['40','Guided Practice','','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false],
- ['60','Deep Dive','','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false],
- ['60','Group Session','','KSh 600','Learn together with other students. Share the cost, maximize value.', true],
- ] as [$mins,$title,$icon,$price,$desc,$isGroup])
+ ['20','Quick Help','fa-solid fa-zap','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false, '#0A64BC'],
+ ['40','Guided Practice','fa-solid fa-chalkboard','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false, '#10B981'],
+ ['60','Deep Dive','fa-solid fa-book-open','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false, '#E8522A'],
+ ['60','Group Session','fa-solid fa-users','KSh 600','Learn together with other students. Share the cost, maximize value.', true, '#EEBE15'],
+ ] as [$mins,$title,$icon,$price,$desc,$isGroup,$color])
  <div style="border:2px solid {{ $isGroup ? 'var(--hair)' : '#EEBE15' }};border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;background:{{ $isGroup ? 'transparent' : 'rgba(238,190,21,.05)' }};" class="card-lift"
  onmouseover="this.style.borderColor='{{ $isGroup ? 'var(--trust-blue)' : '#d4a800' }}'"
  onmouseout="this.style.borderColor='{{ $isGroup ? 'var(--hair)' : '#EEBE15' }}'">
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
- <div style="font-size:32px;">{{ $icon }}</div>
+ <div style="width:48px;height:48px;border-radius:14px;background:{{ $color }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+ <i class="{{ $icon }}" style="font-size:22px;color:#fff;"></i>
+ </div>
  <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:{{ $isGroup ? 'var(--trust-blue)' : '#EEBE15' }};">{{ $price }}</span>
  </div>
  <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px;">{{ $mins }} min</div>

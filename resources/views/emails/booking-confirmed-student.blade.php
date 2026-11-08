@@ -36,8 +36,8 @@
  @foreach([
  ['Tutor', $booking->tutor->name],
  ['Subject', $booking->subject?->name ?? 'General Session'],
- ['Date', $booking->scheduled_at->format('l, F j, Y')],
- ['Time', $booking->scheduled_at->format('g:i a')],
+ ['Date', $booking->scheduled_at->setTimezone(config('app.timezone'))->format('l, F j, Y')],
+ ['Time', $booking->scheduled_at->setTimezone(config('app.timezone'))->format('g:i a').' EAT'],
  ['Duration', $booking->duration_minutes . ' minutes'],
  ['Amount Paid', 'KSh ' . number_format($booking->total_amount, 0)],
  ] as [$label, $value])

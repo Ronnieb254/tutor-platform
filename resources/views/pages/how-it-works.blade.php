@@ -162,15 +162,17 @@
  </div>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-grid">
  @foreach([
- ['20','Quick Help','','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week','individual'],
- ['40','Guided Practice','','KSh 600','A full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics','individual'],
- ['60','Deep Dive','','KSh 900','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics','individual'],
- ['60','Group Session','','KSh 600','Learn together with other students. Share the cost, maximize value.','Group revision, study buddies, exam prep','group'],
- ] as [$mins,$name,$icon,$price,$desc,$ideal,$type])
+ ['20','Quick Help','fa-solid fa-zap','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week','individual','#0A64BC'],
+ ['40','Guided Practice','fa-solid fa-chalkboard','KSh 600','A full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics','individual','#10B981'],
+ ['60','Deep Dive','fa-solid fa-book-open','KSh 900','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics','individual','#E8522A'],
+ ['60','Group Session','fa-solid fa-users','KSh 600','Learn together with other students. Share the cost, maximize value.','Group revision, study buddies, exam prep','group','#EEBE15'],
+ ] as [$mins,$name,$icon,$price,$desc,$ideal,$type,$color])
  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px;transition:background .2s;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
  <div style="display:flex;align-items:center;gap:10px;">
- <span style="font-size:26px;">{{ $icon }}</span>
+ <div style="width:52px;height:52px;border-radius:14px;background:{{ $color }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;">
+ <i class="{{ $icon }}" style="color:#fff;"></i>
+ </div>
  <div>
  <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#fff;">{{ $name }}</div>
  <div style="font-size:12px;color:rgba(255,255,255,.4);">{{ $mins }} minutes</div>

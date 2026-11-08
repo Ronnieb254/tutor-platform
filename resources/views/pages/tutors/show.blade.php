@@ -32,7 +32,7 @@
 .pay-field:focus{border-color:#0A64BC;box-shadow:0 0 0 3px rgba(10,100,188,.1);}
 </style>
 </head>
-<body>
+<body style="display:flex;flex-direction:column;min-height:100vh;margin:0;padding:0;">
 @php
 $prices = [20=>300,40=>600,60=>900];
 $sessNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
@@ -127,24 +127,25 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <div style="overflow-x:auto;display:flex;-webkit-overflow-scrolling:touch;">
  <div style="display:flex;gap:0;margin-top:28px;" x-data="">
  <button class="ptab on" onclick="showTab('about',this)">
- <i class="fa-solid fa-user"></i>About
+ <i class="fa-solid fa-user"></i>  About
+ </button>
+  <button class="ptab" onclick="showTab('book',this)" id="book-tab-btn" style="color:#EEBE15;border-bottom-color:#EEBE15;">
+ <i class="fa-solid fa-circle-check"></i>  Book Session
  </button>
  <button class="ptab" onclick="showTab('availability',this)">
- <i class="fa-solid fa-calendar"></i>Availability
+ <i class="fa-solid fa-calendar"></i>  Availability
  </button>
  <button class="ptab" onclick="showTab('reviews',this)">
- <i class="fa-solid fa-star"></i>Reviews ({{ $tutor->total_reviews }})
+ <i class="fa-solid fa-star"></i>  Reviews ({{ $tutor->total_reviews }})
  </button>
- <button class="ptab" onclick="showTab('book',this)" id="book-tab-btn" style="color:#EEBE15;border-bottom-color:#EEBE15;">
- <i class="fa-solid fa-circle-check"></i>Book Session
- </button>
+
  </div>
  </div>
  </div>
 </div>
 
 {{--  MAIN CONTENT  --}}
-<div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;" class="w">
+<div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;flex:1;width:100%;" class="w">
  <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="show-grid session-layout">
 
  {{-- LEFT: Tab content --}}
@@ -386,7 +387,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <i class="fa-solid fa-clock"></i> 1. Choose Session Type
  </h3>
  <div style="display:grid;grid-template-columns:1fr;gap:10px;" class="tier-grid">
- @foreach([20=>['', 'Quick Help'],40=>['', 'Guided Practice'],60=>['','Deep Dive']] as $mins => [$icon,$tname])
+ @foreach([20=>['fa-solid fa-zap', 'Quick Help','#0A64BC'],40=>['fa-solid fa-chalkboard', 'Guided Practice','#10B981'],60=>['fa-solid fa-book-open','Deep Dive','#E8522A']] as $mins => [$icon,$tname,$color])
  @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $prices[$mins]; @endphp
  <button @click="dur={{ $mins }}"
  :class="dur==={{ $mins }} ? 'tier-card selected' : 'tier-card'"
@@ -396,7 +397,9 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  @endif
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
  <div style="display:flex;align-items:center;gap:8px;">
- <span style="font-size:20px;">{{ $icon }}</span>
+ <div style="width:40px;height:40px;border-radius:12px;background:{{ $color }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+ <i class="{{ $icon }}" style="font-size:18px;color:#fff;"></i>
+ </div>
  <div>
  <div style="font-size:14px;font-weight:700;color:#15281F;">{{ $tname }}</div>
  <div style="font-size:11px;color:rgba(21,40,31,.5);">{{ $mins }} min</div>
@@ -716,7 +719,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{-- Tier quick reference --}}
  <!-- <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
- @foreach([20=>['', 'Quick Help',300],40=>['', 'Guided Practice',500],60=>['','Deep Dive',700]] as $mins=>[$ic,$n,$p])
+ @foreach([20=>['fa-solid fa-zap', 'Quick Help',300],40=>['fa-solid fa-chalkboard', 'Guided Practice',500],60=>['fa-solid fa-book-open','Deep Dive',700]] as $mins=>[$ic,$n,$p])
  @php $sidePrice = ($mins===20 && $isFreeFirstSession) ? 0 : $p; @endphp
  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:{{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.06)':'#F9FAF9' }};border:1px solid {{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.2)':'rgba(21,40,31,.07)' }};position:relative;">
  @if($mins===15 && $isFreeFirstSession)
