@@ -294,6 +294,8 @@ class DarajaService
     public function isSandboxPlaceholder(): bool
     {
         return empty($this->consumerKey)
+            || empty($this->shortcode)
+            || empty($this->passkey)
             || str_contains(strtolower($this->consumerKey), 'replace')
             || str_contains($this->consumerKey, 'xxxx');
     }

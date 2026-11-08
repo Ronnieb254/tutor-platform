@@ -193,34 +193,37 @@ class DarajaCallbackController extends Controller
     public function status(Request $request): \Illuminate\Http\JsonResponse
     {
         $reference = $request->get('reference');
-
         if (!$reference) {
             return response()->json(['status' => 'error', 'message' => 'Missing reference'], 400);
         }
-
         $payment = Payment::where('mpesa_reference', $reference)->first();
-
         if (!$payment) {
             return response()->json(['status' => 'pending', 'message' => 'Waiting for payment']);
         }
-
         if ($payment->status === 'success') {
-            $booking = $payment->booking;
-            return response()->json([
-                'status'       => 'success',
-                'booking_uuid' => $booking?->uuid,
-                'student_code' => $booking?->fresh()?->session_code_student,
-                'booking_url'  => $booking ? route('bookings.show', $booking->uuid) : null,
-            ]);
+            $result = ['status' => 'success'];
+            if ($payment->booking_id && $payment->booking) {
+                $booking = $payment->booking->fresh();
+                $result['booking_uuid'] = $booking->uuid;
+                $result['student_code'] = $booking->session_code_student;
+                $result['booking_url']  = route('bookings.show', $booking->uuid);
+            }
+            if ($payment->clinic_id) {
+                $enrollment = \App\Models\ClinicEnrollment::where('payment_id', $payment->id)->first();
+                $result['redirect_url'] = route('clinic.my-bookings');
+                $result['session_code'] = $enrollment?->session_code;
+            }
+            if ($payment->payment_type === 'group_session') {
+                $result['redirect_url'] = route('group-sessions.my-sessions');
+            }
+            if ($payment->payment_type === 'course') {
+                $result['redirect_url'] = route('student.dashboard');
+            }
+            return response()->json($result);
         }
-
         if ($payment->status === 'failed') {
-            return response()->json([
-                'status'  => 'failed',
-                'message' => $payment->failure_reason ?? 'Payment was not completed.',
-            ]);
+            return response()->json(['status' => 'failed', 'message' => $payment->failure_reason ?? 'Payment was not completed.']);
         }
-
         return response()->json(['status' => 'pending', 'message' => 'Awaiting M-Pesa confirmation']);
     }
 }

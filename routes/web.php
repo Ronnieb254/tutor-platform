@@ -437,6 +437,6 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('group-sessions.my-sessions')
                 ->with('success', $enrollment ? "Enrolled! Your session code: {$enrollment->session_code}." : 'Payment confirmed.');
         }
-        return view('pages.clinic-payment-pending', compact('payment', 'reference'));
+        return view('pages.group-sessions.payment-pending', compact('payment', 'reference'));
     })->name('group-sessions.payment-pending');
 });

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
  @include('partials.head')
- <title>Waiting for Payment â‚¬" Mwalimu</title>
+ <title>Waiting for Payment &ndash; Mwalimu</title>
  <style>
  .pending-card {
  max-width: 480px;
@@ -43,7 +43,7 @@
  <div id="stateWaiting">
  <div class="spinner"></div>
  <h2 style="font-family:'Fraunces',serif;font-size:26px;color:var(--ink);margin-bottom:12px;">
- Waiting for M-Pesaâ‚¬Â¦
+ Waiting for M-Pesa&hellip;
  </h2>
  <p style="color:var(--muted);line-height:1.7;margin-bottom:24px;">
  An STK Push has been sent to your phone.
@@ -118,21 +118,20 @@
  .then(function(data) {
  if (data.status === 'success') {
  show('stateSuccess');
- // Redirect after a short delay if booking_url is provided
- if (data.booking_url) {
- setTimeout(function() { window.location.href = data.booking_url; }, 2500);
- }
+ // Redirect after a short delay if booking_url or redirect_url is provided
+ var target = data.booking_url || data.redirect_url || null;
+ if (target) { setTimeout(function() { window.location.href = target; }, 2500); }
  } else if (data.status === 'failed') {
  document.getElementById('failedMessage').textContent =
  data.message || 'Your M-Pesa payment was not completed. Please try again.';
  show('stateFailed');
  } else {
- // Still pending â‚¬" keep polling
+ // Still pending - keep polling
  setTimeout(poll, 5000);
  }
  })
  .catch(function() {
- // Network error â‚¬" retry
+ // Network error - retry
  setTimeout(poll, 5000);
  });
  }
