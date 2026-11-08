@@ -131,7 +131,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
  @if($search)<span class="filter-tag"><i class="fa-solid fa-magnifying-glass"></i>"{{ $search }}"</span>@endif
  @if($catId)<span class="filter-tag"><i class="fa-solid fa-tag"></i>{{ $categories->find($catId)?->name }}</span>@endif
- @if($minR)<span class="filter-tag"><i class="fa-solid fa-star"></i>â˜… {{ $minR }}+</span>@endif
+ @if($minR)<span class="filter-tag"><i class="fa-solid fa-star"></i>★ {{ $minR }}+</span>@endif
  @if($minP)<span class="filter-tag">From KSh {{ number_format($minP) }}</span>@endif
  @if($maxP)<span class="filter-tag">To KSh {{ number_format($maxP) }}</span>@endif
  </div>
@@ -177,8 +177,8 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  {{-- Curriculum badges --}}
  @foreach($tutor->approvedCurricula->take(2) as $curr)
  <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;
- {{ $curr->track==='kenyan' ? 'background:rgba(16,185,129,.12);color:#065F46;' : 'background:rgba(99,102,241,.12);color:#3730A3;' }}">
- {{ $curr->track==='kenyan' ? 'ðŸ‡°ðŸ‡ª' : 'ðŸŒ' }} {{ $curr->name }}
+ {{ $curr->track==='kenyan' ? '🇰🇪' : '🌍' }}">
+ {{ $curr->track==='kenyan' ? '🇰🇪' : '🌍' }} {{ $curr->name }}
  </span>
  @endforeach
  </div>

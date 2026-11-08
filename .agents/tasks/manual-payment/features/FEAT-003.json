@@ -1,0 +1,27 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Frontend: update tutors/show.blade.php booking wizard to show Paybill instructions + transaction code input, replace processPayment() JS to POST mpesa_code and handle pending_verification response (step 3 shows pending state). Update clinic-checkout.blade.php to replace the payment method selector with Paybill instructions + mpesa_code input. Both are independent changes to Blade files; they depend on FEAT-001 (BookingController and ClinicBookingController already accept mpesa_code).",
+  "status": "pending",
+  "steps": [
+    "In resources/views/pages/tutors/show.blade.php, find the x-data block on the tab-book div (offset ~330 in the file). Add new Alpine properties: mpesaCode: '', pendingVerification: false, pendingPaymentId: null, verificationMsg: 'Your booking is pending. Admin will verify your payment within 5 minutes.'. Remove: phone: '', paymentMethod: 'mpesa', stkSent: false, stkMsg: ''.",
+    "In the payment section of Step 2 (@auth block, inside the #F9FAF9 rounded box), replace the payment method selector (3 buttons for mpesa/airtel/card), phone input field, STK sent banner, and the pay button with: Paybill instructions box (542542 / 313126), mpesaCode input field, and new submit button as specified in plan section 10b.",
+    "In Step 3 div (x-show='step === 3'), wrap the existing 'Booking Confirmed!' content in <template x-if='!pendingVerification'> and add <template x-if='pendingVerification'> before it with the yellow-hourglass pending UI as specified in plan section 10c.",
+    "Replace the entire processPayment() JavaScript function in the <script> block with the new version specified in plan section 10d. The new function POSTs mpesa_code instead of phone, handles status='pending_verification' response by setting pendingVerification=true and step=3, and removes all polling/STK logic.",
+    "In resources/views/pages/clinic-checkout.blade.php, replace the entire <div style='margin-bottom:24px;' x-data='{ method: 'mpesa' }'>...</div> block (including the <form id='paymentForm'...> inside it) with the new Paybill instructions + mpesa_code form specified in plan section 11. The new form still POSTs to route('clinic.pay', $clinic) but now has a single mpesa_code input instead of payment method + phone."
+  ],
+  "acceptance_criteria": [
+    "php artisan optimize:clear succeeds — no Blade compilation errors",
+    "GET /tutors/{slug} loads without PHP/Alpine errors",
+    "Step 2 of the booking wizard shows Paybill instructions (542542 / 313126) and an M-Pesa code input, not an STK push phone field",
+    "Step 3 shows the yellow pending UI when booking returns pending_verification",
+    "GET /clinic/{clinic}/checkout shows Paybill instructions and mpesa_code input, no phone/method selector",
+    "No references to 'paymentMethod' or 'stkSent' remain in the booking wizard Alpine x-data"
+  ],
+  "verification": [
+    "php artisan optimize:clear",
+    "php artisan view:clear"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

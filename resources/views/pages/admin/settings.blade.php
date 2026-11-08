@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 @section('title', 'Platform Settings')
 
 @section('content')
@@ -41,7 +41,7 @@ use App\Models\PlatformSetting;
  {{-- Payments --}}
  <div class="card card-p">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
- ¸'Â³ Payments
+ 💳 Payments
  </h3>
  <div style="display:flex;flex-direction:column;gap:14px;">
  <div>
@@ -72,7 +72,7 @@ use App\Models\PlatformSetting;
  <i class="fa-solid fa-note-sticky"></i>± Daraja M-Pesa Integration
  </h3>
  <div style="background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.3);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#92400E;">
- Å¡Â  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
+ ⚠  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
  </div>
  <div style="display:flex;flex-direction:column;gap:14px;">
  <div>
@@ -160,7 +160,7 @@ use App\Models\PlatformSetting;
  {{-- Maintenance --}}
  <div class="card card-p">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
- Â§ Maintenance
+ ? Maintenance
  </h3>
  <div style="display:flex;flex-direction:column;gap:12px;">
  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:#F4F6F4;border-radius:12px;">

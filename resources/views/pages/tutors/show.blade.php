@@ -320,7 +320,9 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  notes: '',
  notesTouched: false,
  phone: '',
- paymentMethod: 'mpesa',
+ mpesaCode: '',
+ pendingVerification: false,
+ pendingBookingUuid: '',
  processing: false,
  stkSent: false,
  stkMsg: '',
@@ -559,57 +561,56 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:12px;">
  <span style="font-size:inherit;"><i class="fa-solid fa-mobile-screen"></i></span> Pay Now
  </p>
- {{-- Payment Method Selector --}}
- <div style="margin-bottom:16px;" x-show="!isFree">
- <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Payment Method</label>
- <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;">
- <button type="button" @click="paymentMethod='mpesa'"
- :style="paymentMethod==='mpesa' ? 'border:2px solid #0A64BC;background:#EFF6FF;' : 'border:2px solid #D1D5DB;background:#fff;'"
- style="padding:10px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
- <span>📱</span><span>M-Pesa</span>
- </button>
- <button type="button" @click="paymentMethod='airtel'"
- :style="paymentMethod==='airtel' ? 'border:2px solid #DC2626;background:#FEF2F2;' : 'border:2px solid #D1D5DB;background:#fff;'"
- style="padding:10px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
- <span>📶</span><span>Airtel</span>
- </button>
- <button type="button" @click="paymentMethod='card'"
- :style="paymentMethod==='card' ? 'border:2px solid #059669;background:#ECFDF5;' : 'border:2px solid #D1D5DB;background:#fff;'"
- style="padding:10px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
- <span>💳</span><span>Card</span>
- </button>
+
+ {{-- I&M Bank Paybill Instructions --}}
+ <div x-show="!isFree" style="background:#F0FDF4;border:1.5px solid #10B981;border-radius:14px;padding:18px;margin-bottom:16px;">
+ <div style="font-weight:700;font-size:13px;color:#065F46;margin-bottom:12px;">
+ <i class="fa-solid fa-mobile-screen-button"></i> Pay via M-Pesa Paybill
+ </div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+ <div style="background:#fff;border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(16,185,129,.3);">
+ <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:rgba(21,40,31,.45);margin-bottom:4px;">Paybill Number</div>
+ <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#15281F;">542542</div>
+ </div>
+ <div style="background:#fff;border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(16,185,129,.3);">
+ <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:rgba(21,40,31,.45);margin-bottom:4px;">Account Number</div>
+ <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#0A64BC;">313126</div>
  </div>
  </div>
- {{-- M-Pesa / Airtel phone input --}}
- <div style="margin-bottom:14px;" x-show="!isFree && (paymentMethod === 'mpesa' || paymentMethod === 'airtel')">
- <label style="font-size:12px;font-weight:600;color:rgba(21,40,31,.6);display:block;margin-bottom:5px;">M-Pesa Phone Number</label>
- <input type="tel" x-model="phone" placeholder="e.g. 0712 345 678"
- style="width:100%;height:42px;border-radius:10px;border:1.5px solid rgba(21,40,31,.18);padding:0 12px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;"
- onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
- <p style="font-size:11px;color:rgba(21,40,31,.5);margin-top:4px;">You'll receive an STK Push prompt. Enter your PIN to pay.</p>
+ <div style="font-size:12px;color:rgba(21,40,31,.55);text-align:center;margin-bottom:10px;">
+ Account Name: <strong style="color:#15281F;">OBARE OKOTH JACOB</strong>
  </div>
- {{-- Card notice --}}
- <div x-show="!isFree && paymentMethod === 'card'" style="padding:12px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0;font-size:13px;color:#065F46;margin-bottom:14px;">
- <p style="margin:0;">💳 You will be redirected to a secure card payment page after confirming.</p>
+ <div style="background:rgba(16,185,129,.08);border-radius:8px;padding:10px 14px;font-size:12px;color:#065F46;line-height:1.6;">
+ <strong>Steps:</strong> M-Pesa → Lipa na M-Pesa → Pay Bill → Paybill: <strong>542542</strong> → Account: <strong>313126</strong> → Amount: KSh <span x-text="price"></span>
  </div>
- {{-- STK sent banner --}}
- <div x-show="stkSent" style="background:rgba(16,185,129,.08);border:1.5px solid #10B981;border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:center;">
- <p style="font-size:13px;font-weight:700;color:#059669;margin-bottom:3px;"><span style="font-size:inherit;"><i class="fa-solid fa-mobile-screen"></i></span> Check your phone!</p>
- <p x-text="stkMsg" style="font-size:12px;color:rgba(21,40,31,.6);"></p>
  </div>
+
+ {{-- Transaction Code Input --}}
+ <div style="margin-bottom:14px;" x-show="!isFree">
+ <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.6);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">
+ M-Pesa Transaction Code <span style="color:#E8522A;">*</span>
+ </label>
+ <input type="text" x-model="mpesaCode"
+ placeholder="e.g. RKA7X1Y2Z3"
+ style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:15px;font-family:monospace;letter-spacing:.08em;text-transform:uppercase;outline:none;box-sizing:border-box;"
+ onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"
+ oninput="this.value=this.value.toUpperCase()" maxlength="20">
+ <p style="font-size:11px;color:rgba(21,40,31,.5);margin-top:4px;">Enter the code from your M-Pesa confirmation SMS (e.g. RKA7X1Y2Z3)</p>
+ </div>
+
  <button @click="processPayment($data)"
  :disabled="processing"
  :style="isFree ? 'background:#10B981;' : 'background:#0A64BC;'"
  style="width:100%;height:52px;border-radius:999px;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;">
  <template x-if="!processing">
  <span style="display:flex;align-items:center;gap:8px;">
- <i :class="isFree ? 'fa-solid fa-gift fa-xs' : 'fa-solid fa-mobile-screen-button fa-xs'"></i>
- <span x-text="isFree ? 'Book Free Session' : 'Pay KSh ' + price "></span>
+ <i :class="isFree ? 'fa-solid fa-gift fa-xs' : 'fa-solid fa-paper-plane fa-xs'"></i>
+ <span x-text="isFree ? 'Book Free Session' : 'Submit Payment'"></span>
  </span>
  </template>
  <template x-if="processing">
  <span style="display:flex;align-items:center;gap:8px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing
+ <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing…
  </span>
  </template>
  </button>
@@ -636,9 +637,31 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
  </div>
 
- {{-- STEP 3: Confirmed --}}
+ {{-- STEP 3: Confirmed or Pending --}}
  <div x-show="step === 3" x-cloak>
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:40px;text-align:center;">
+
+ {{-- PENDING VERIFICATION STATE --}}
+ <div x-show="pendingVerification">
+ <div style="font-size:52px;margin-bottom:16px;">⏳</div>
+ <h2 style="font-family:'Fraunces',serif;font-size:24px;color:#15281F;margin-bottom:8px;">Booking Pending Confirmation</h2>
+ <p style="font-size:14px;color:rgba(21,40,31,.6);line-height:1.7;margin-bottom:20px;">
+ Your payment is being verified by our team.<br>
+ This usually takes <strong>under 5 minutes</strong>.<br>
+ You'll receive your session codes by email once confirmed.
+ </p>
+ <div style="background:#FEF3C7;border-radius:12px;padding:14px 16px;font-size:13px;color:#92400E;margin-bottom:20px;text-align:left;">
+ <i class="fa-solid fa-triangle-exclamation"></i>
+ <strong>Keep your M-Pesa SMS</strong> — your transaction code may be requested during verification.
+ </div>
+ <a :href="'{{ url('/bookings/') }}/' + pendingBookingUuid" x-show="pendingBookingUuid"
+ style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:#0A64BC;color:#fff;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;">
+ <i class="fa-solid fa-eye"></i> View Booking Status
+ </a>
+ </div>
+
+ {{-- CONFIRMED STATE --}}
+ <div x-show="!pendingVerification">
  <div style="width:68px;height:68px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
  <i class="fa-solid fa-circle-check"></i>
  </div>
@@ -677,9 +700,9 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </a>
  </div>
  </div>
- </div>
- </div>
- </div>
+ </div>{{-- /confirmed state --}}
+ </div>{{-- /card --}}
+ </div>{{-- /step 3 --}}
 
  {{-- RIGHT: Sticky booking card (desktop) --}}
  <div style="height:fit-content;position:sticky;top:88px;" class="book-sidebar">
@@ -785,8 +808,8 @@ function processPayment(data) {
  showError('Missing Information', 'Please select a date and time.');
  return;
  }
- if (!data.isFree && data.paymentMethod !== 'card' && (!data.phone || data.phone.length < 9)) {
- showError('Invalid Phone Number', 'Please enter your M-Pesa phone number.');
+ if (!data.isFree && (!data.mpesaCode || data.mpesaCode.trim().length < 6)) {
+ showError('Transaction Code Required', 'Please enter the M-Pesa transaction code from your confirmation SMS.');
  return;
  }
 
@@ -805,77 +828,30 @@ function processPayment(data) {
  scheduled_at: data.date + ' ' + data.time,
  subject_id: data.subject || null,
  notes: data.notes,
- phone: data.phone,
- payment_method: data.paymentMethod,
+ mpesa_code: data.mpesaCode ? data.mpesaCode.trim().toUpperCase() : '',
  })
  })
  .then(r => r.json())
  .then(res => {
- if (res.status === 'ok' && res.free) {
  data.processing = false;
+ if (res.status === 'ok' && res.free) {
  data.studentCode = res.student_code || '';
- data.bookingRef = res.booking_uuid || '';
+ data.bookingRef  = res.booking_uuid || '';
  data.step = 3;
  if (res.booking_url) {
  setTimeout(() => { window.location.href = res.booking_url; }, 3000);
  }
  return;
  }
- // IntaSend redirect (airtel / card)
- if (res.status === 'ok' && res.redirect_url) {
- window.location.href = res.redirect_url;
+ if (res.status === 'ok' && res.mode === 'manual') {
+ window.location.href = res.pending_url || '/dashboard';
  return;
  }
- if (res.status === 'ok' && res.reference) {
- // STK Push sent - start polling
- data.stkSent = true;
- data.stkMsg = res.message || 'Check your phone for the M-Pesa prompt.';
- const ref = res.reference;
- const maxPolls = 60;
- let polls = 0;
-
- function poll() {
- if (polls >= maxPolls) {
- data.processing = false;
- data.stkSent = false;
- showError('Payment Timeout', 'Payment confirmation timed out. If you were charged, contact support with reference: ' + ref);
- return;
- }
- polls++;
- fetch('/api/daraja/status?reference=' + encodeURIComponent(ref), {
- headers: { 'X-Requested-With': 'XMLHttpRequest' }
- })
- .then(r => r.json())
- .then(result => {
- if (result.status === 'success') {
- data.processing = false;
- data.stkSent = false;
- data.studentCode = result.student_code || '';
- data.bookingRef = result.booking_uuid || '';
- data.step = 3;
- if (result.booking_url) {
- setTimeout(() => { window.location.href = result.booking_url; }, 3000);
- }
- } else if (result.status === 'failed') {
- data.processing = false;
- data.stkSent = false;
- showError('Payment Failed', result.message || 'M-Pesa payment was not completed. Please try again.');
- } else {
- setTimeout(poll, 5000);
- }
- })
- .catch(() => setTimeout(poll, 5000));
- }
- setTimeout(poll, 5000);
- } else {
- data.processing = false;
  showError('Booking Failed', res.message || 'Could not process booking. Please try again.');
- }
  })
- .catch(err => {
+ .catch(() => {
  data.processing = false;
- console.error(err);
- showError('Network Error', 'Please try again.');
+ showError('Network Error', 'Please check your connection and try again.');
  });
 }
 </script>

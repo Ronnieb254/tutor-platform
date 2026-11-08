@@ -92,54 +92,50 @@ a{color:inherit;text-decoration:none;}
  </div>
 
  {{-- Payment Method --}}
- <div style="margin-bottom:24px;" x-data="{ method: 'mpesa' }">
- <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;">Payment Method</h3>
- <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
- <button type="button" @click="method='mpesa'"
- :style="method==='mpesa' ? 'border:2px solid #0A64BC;background:#EFF6FF;' : 'border:2px solid #D1D5DB;background:#fff;'"
- style="padding:12px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
- <span>📱</span><span>M-Pesa</span>
- </button>
- <button type="button" @click="method='airtel'"
- :style="method==='airtel' ? 'border:2px solid #DC2626;background:#FEF2F2;' : 'border:2px solid #D1D5DB;background:#fff;'"
- style="padding:12px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
- <span>📶</span><span>Airtel</span>
- </button>
- <button type="button" @click="method='card'"
- :style="method==='card' ? 'border:2px solid #059669;background:#ECFDF5;' : 'border:2px solid #D1D5DB;background:#fff;'"
- style="padding:12px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
- <span>💳</span><span>Card</span>
- </button>
+ <div style="margin-bottom:24px;">
+ <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;">Pay via M-Pesa Paybill</h3>
+
+ {{-- I&M Bank Paybill Instructions --}}
+ <div style="background:#F0FDF4;border:1.5px solid #10B981;border-radius:14px;padding:18px;margin-bottom:16px;">
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+ <div style="background:#fff;border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(16,185,129,.3);">
+ <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Paybill Number</div>
+ <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);">542542</div>
+ </div>
+ <div style="background:#fff;border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(16,185,129,.3);">
+ <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Account Number</div>
+ <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--trust-blue);">313126</div>
+ </div>
+ </div>
+ <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:10px;">Account Name: <strong style="color:var(--ink);">OBARE OKOTH JACOB</strong></div>
+ <div style="background:rgba(16,185,129,.08);border-radius:8px;padding:10px 14px;font-size:12px;color:#065F46;line-height:1.6;">
+ <strong>Steps:</strong> M-Pesa → Lipa na M-Pesa → Pay Bill → Paybill: <strong>542542</strong> → Account: <strong>313126</strong> → Amount: <strong>KSh {{ number_format($clinic->price) }}</strong>
+ </div>
  </div>
 
  {{-- Payment Form --}}
  <form id="paymentForm" method="POST" action="{{ route('clinic.pay', $clinic) }}">
  @csrf
- <input type="hidden" name="payment_method" :value="method" x-bind:value="method">
 
- {{-- M-Pesa / Airtel Phone --}}
- <div style="margin-bottom:18px;" x-show="method === 'mpesa' || method === 'airtel'">
+ {{-- Transaction Code Input --}}
+ <div style="margin-bottom:18px;">
  <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-mobile-screen"></i></span>
- Phone Number
+ <i class="fa-solid fa-receipt"></i> M-Pesa Transaction Code <span style="color:var(--coral);">*</span>
  </label>
- <input type="tel" name="phone"
- placeholder="e.g. 0712 345 678"
- :required="method === 'mpesa' || method === 'airtel'"
- style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;"
+ <input type="text" name="mpesa_code"
+ placeholder="e.g. RKA7X1Y2Z3"
+ required
+ oninput="this.value=this.value.toUpperCase()"
+ style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:15px;font-family:monospace;letter-spacing:.08em;text-transform:uppercase;outline:none;box-sizing:border-box;"
  onfocus="this.style.borderColor='var(--trust-blue)'"
- onblur="this.style.borderColor='rgba(21,40,31,.18)'">
- @error('phone')
+ onblur="this.style.borderColor='rgba(21,40,31,.18)'"
+ maxlength="20">
+ @error('mpesa_code')
  <p style="font-size:12px;color:var(--coral);margin-top:5px;">{{ $message }}</p>
  @enderror
  <p style="font-size:11px;color:var(--muted);margin-top:5px;">
- You'll receive an STK Push on this number. Enter your PIN to complete payment.
+ Enter the transaction code from your M-Pesa confirmation SMS after paying.
  </p>
- </div>
-
- {{-- Card notice --}}
- <div x-show="method === 'card'" style="padding:12px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0;font-size:13px;color:#065F46;margin-bottom:18px;">
- <p style="margin:0;">💳 You will be redirected to a secure card payment page after confirming.</p>
  </div>
 
  {{-- User Verification --}}
@@ -159,17 +155,17 @@ a{color:inherit;text-decoration:none;}
 
  {{-- Submit Button --}}
  <button type="submit" class="btn btn-primary" id="submitBtn">
- <i class="fa-solid fa-lock"></i> Pay KSh {{ number_format($clinic->price) }}
+ <i class="fa-solid fa-paper-plane"></i> Submit Payment — KSh {{ number_format($clinic->price) }}
  </button>
  <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
- <span style="font-size:inherit;">←</span> Back
+ ← Back
  </a>
  </form>
 
  {{-- Loading State --}}
  <div class="loading" id="loadingState">
  <div class="spinner"></div>
- <p style="margin-top:16px;font-size:14px;color:var(--muted);">Processing your payment...</p>
+ <p style="margin-top:16px;font-size:14px;color:var(--muted);">Submitting your payment...</p>
  </div>
  </div>
 

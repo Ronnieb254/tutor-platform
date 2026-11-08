@@ -51,7 +51,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
 </div>
 
 @if(session('success'))<div style="background:#D1FAE5;border:1px solid #6EE7B7;border-radius:10px;padding:12px 16px;margin-bottom:16px;color:#065F46;font-size:13px;">— {{ session('success') }}</div>@endif
-@if(session('error'))<div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;padding:12px 16px;margin-bottom:16px;color:#991B1B;font-size:13px;">Å¡Â  {{ session('error') }}</div>@endif
+@if(session('error'))<div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;padding:12px 16px;margin-bottom:16px;color:#991B1B;font-size:13px;">⚠  {{ session('error') }}</div>@endif
 
 <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;" class="show-grid">
 

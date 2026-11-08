@@ -1,8 +1,8 @@
-﻿@php
+@php
 $sessionTiers = [
- 20 => ['name' => 'Quick Help', 'price' => 300, 'icon' => 'âš¡', 'desc' => 'Rapid revision or a quick question'],
- 40 => ['name' => 'Guided Practice', 'price' => 600, 'icon' => 'ðŸŽ¯', 'desc' => 'Full structured lesson with Q&A'],
- 60 => ['name' => 'Deep Dive', 'price' => 900, 'icon' => 'ðŸ†', 'desc' => 'Maximum learning, best value'],
+ 20 => ['name' => 'Quick Help', 'price' => 300, 'icon' => '⚡', 'desc' => 'Rapid revision or a quick question'],
+ 40 => ['name' => 'Guided Practice', 'price' => 600, 'icon' => '🎯', 'desc' => 'Full structured lesson with Q&A'],
+ 60 => ['name' => 'Deep Dive', 'price' => 900, 'icon' => '🏆', 'desc' => 'Maximum learning, best value'],
 ];
 @endphp
 

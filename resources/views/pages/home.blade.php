@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -109,11 +109,11 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  </a>
  @if(!auth()->check())
  <a href="{{ route('register') }}?role=tutor" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Become a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @elseif(auth()->check() && auth()->user()->role === 'parent')
  <a href="{{ route('register') }}?role=tutor" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Become a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @endif
  </div>
@@ -129,7 +129,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  <i class="fa-solid fa-chart-bar"></i> Go to Dashboard
  </a>
  {{-- <a href="{{ route('examiner.dashboard') }}" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Examiner Dashboard
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Examiner Dashboard
  </a> --}}
  </div>
  @endif
@@ -274,10 +274,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  </div>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
  @foreach([
- ['20','Quick Help','?','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
- ['40','Guided Practice','??','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false],
- ['60','Deep Dive','??','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false],
- ['60','Group Session','??','KSh 600','Learn together with other students. Share the cost, maximize value.', true],
+ ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
+ ['40','Guided Practice','🎯','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false],
+ ['60','Deep Dive','🏆','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false],
+ ['60','Group Session','💥','KSh 600','Learn together with other students. Share the cost, maximize value.', true],
  ] as [$mins,$title,$icon,$price,$desc,$isGroup])
  <div style="border:2px solid {{ $isGroup ? 'var(--hair)' : '#EEBE15' }};border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;background:{{ $isGroup ? 'transparent' : 'rgba(238,190,21,.05)' }};" class="card-lift"
  onmouseover="this.style.borderColor='{{ $isGroup ? 'var(--trust-blue)' : '#d4a800' }}'"
@@ -403,7 +403,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  </div>
  <div style="display:flex;flex-wrap:wrap;gap:10px;">
  @if(!auth()->check() || auth()->user()->role === 'parent')
- <a href="{{ route('register') }}?role=tutor" class="btn btn-w"><span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Register as a Tutor</a>
+ <a href="{{ route('register') }}?role=tutor" class="btn btn-w"><span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Register as a Tutor</a>
  @endif
  <a href="{{ route('how-it-works') }}" class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);">Learn More</a>
  </div>
@@ -483,7 +483,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  <p style="font-size:17px;color:rgba(255,255,255,.6);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of Kenyan students and parents who trust Mwalimu for expert, safe, verified tutoring.</p>
  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
  <a href="{{ route('tutors.index') }}" class="btn btn-v" style="font-size:16px;padding:15px 40px;"><i class="fa-solid fa-magnifying-glass"></i> Find a Tutor</a>
- <a href="{{ route('register') }}?role=tutor" class="btn" style="background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.3);font-size:16px;padding:15px 40px;"><span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Become a Tutor</a>
+ <a href="{{ route('register') }}?role=tutor" class="btn" style="background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.3);font-size:16px;padding:15px 40px;"><span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Become a Tutor</a>
  </div>
  @endif
  </div>

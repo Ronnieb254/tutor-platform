@@ -1,13 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Library â‚¬" Mwalimu</title>
+<title>Library — Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <style>
 :root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--mint:#10B981;--gold:#EEBE15;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
@@ -66,6 +67,11 @@ a{color:inherit;text-decoration:none;}
 .card-author{display:flex;align-items:center;gap:6px;}
 .card-avatar{width:22px;height:22px;border-radius:6px;background:var(--trust-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:700;}
 
+/* Card thumb icon fallback */
+.thumb-icon{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.thumb-icon i{font-size:40px;color:rgba(255,255,255,.9);}
+.thumb-icon span{font-size:11px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em;}
+
 /* Toolbar */
 .toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
 .sort-select{height:38px;padding:0 12px;border:1px solid var(--hair);border-radius:9px;font-size:13px;font-family:inherit;color:var(--ink);background:#fff;cursor:pointer;outline:none;}
@@ -76,12 +82,18 @@ a{color:inherit;text-decoration:none;}
 .empty h3{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:8px;}
 .empty p{font-size:14px;color:var(--muted);}
 
-/* Type helpers */
-/* .type-pdf{background:#FEF2F2;color:#DC2626;} */
+/* Type colours */
 .type-video{background:#EDE9FE;color:#7C3AED;}
 .type-notes{background:#FEF9C3;color:#D97706;}
 .type-past_paper{background:#DCFCE7;color:#16A34A;}
 .type-article{background:#DBEAFE;color:#2563EB;}
+
+/* Sidebar type icons */
+.type-fa-icon{width:26px;height:26px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.type-fa-icon.article{background:#DBEAFE;color:#2563EB;}
+.type-fa-icon.notes{background:#FEF9C3;color:#D97706;}
+.type-fa-icon.past_paper{background:#DCFCE7;color:#16A34A;}
+.type-fa-icon.video{background:#EDE9FE;color:#7C3AED;}
 
 /* Pagination */
 .pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:32px;}
@@ -98,169 +110,191 @@ a{color:inherit;text-decoration:none;}
 
 {{-- Hero --}}
 <section class="hero">
- <div class="hero-inner">
- <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:999px;padding:6px 14px;margin-bottom:20px;">
- <span style="font-size:16px;"><i class="fa-solid fa-book-open"></i></span>
- <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
- </div>
- <h1>The Mwalimu Library</h1>
- <p>Curated past papers, and study notes in PDF, and top rated video lessons â‚¬" all in one place.</p>
- @if(!empty($track))
- <p style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">
- Showing resources for <strong style="color:#fff;">{{ ucfirst($track) }}</strong> curriculum track.
- <a href="{{ route('curriculum.select') }}" style="color:#EEBE15;text-decoration:underline;">Change track</a>
- </p>
- @endif
- <form method="GET" action="{{ route('library.index') }}" class="hero-search">
- <input type="text" name="search" placeholder="Search resources, subjects, topicsâ‚¬Â¦" value="{{ request('search') }}">
- <button type="submit">Search</button>
- </form>
- </div>
+    <div class="hero-inner">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:999px;padding:6px 14px;margin-bottom:20px;">
+            <i class="fa-solid fa-book-open" style="font-size:16px;color:rgba(255,255,255,.8);"></i>
+            <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
+        </div>
+        <h1>The Mwalimu Library</h1>
+        <p>Curated past papers, study notes in PDF, and top rated video lessons — all in one place.</p>
+        @if(!empty($track))
+        <p style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">
+            Showing resources for <strong style="color:#fff;">{{ ucfirst($track) }}</strong> curriculum track.
+            <a href="{{ route('curriculum.select') }}" style="color:#EEBE15;text-decoration:underline;">Change track</a>
+        </p>
+        @endif
+        <form method="GET" action="{{ route('library.index') }}" class="hero-search">
+            <input type="text" name="search" placeholder="Search resources, subjects, topics…" value="{{ request('search') }}">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+        </form>
+    </div>
 </section>
 
 <div class="container">
- <div class="layout">
+    <div class="layout">
 
- {{-- Sidebar filters --}}
- <aside class="sidebar">
- <div class="filter-title">Resource Type</div>
- <a href="{{ route('library.index', request()->except('type')) }}" class="filter-item {{ !request('type') ? 'active' : '' }}">
- <span>All Resources</span>
- <span class="count">{{ $resources->total() }}</span>
- </a>
- @php
- $typeIcons = ['article'=>'<i class="fa-solid fa-book"></i>','notes'=>'<i class="fa-solid fa-note-sticky"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>','video'=>'<i class="fa-solid fa-video"></i>'];
- $typeLabels = ['article'=>'Articles','notes'=>'Notes','past_paper'=>'Past Papers','video'=>'Videos'];
- @endphp
- @foreach($resourceTypes as $type)
- <a href="{{ route('library.index', array_merge(request()->all(), ['type'=>$type])) }}" class="filter-item {{ request('type') === $type ? 'active' : '' }}">
- <span style="display:flex;align-items:center;gap:8px;">
- <span style="font-size:15px;">{{ $typeIcons[$type] ?? '<i class="fa-solid fa-book"></i>' }}</span>
- {{ $typeLabels[$type] ?? ucfirst(str_replace('_',' ',$type)) }}
- </span>
- </a>
- @endforeach
+        {{-- Sidebar filters --}}
+        <aside class="sidebar">
+            <div class="filter-title">Resource Type</div>
+            <a href="{{ route('library.index', request()->except('type')) }}" class="filter-item {{ !request('type') ? 'active' : '' }}">
+                <span style="display:flex;align-items:center;gap:8px;">
+                    <span class="type-fa-icon" style="background:#F3F4F6;color:#6B7280;"><i class="fa-solid fa-layer-group"></i></span>
+                    All Resources
+                </span>
+                <span class="count">{{ $resources->total() }}</span>
+            </a>
 
- <div class="divider"></div>
+            @php
+            $typeIcons  = ['article'=>'fa-book','notes'=>'fa-note-sticky','past_paper'=>'fa-file-lines','video'=>'fa-video'];
+            $typeLabels = ['article'=>'Articles','notes'=>'Notes','past_paper'=>'Past Papers','video'=>'Videos'];
+            @endphp
 
- <div class="filter-title">Category</div>
- <a href="{{ route('library.index', request()->except('category')) }}" class="filter-item {{ !request('category') ? 'active' : '' }}">
- All Categories
- </a>
- @foreach($categories as $cat)
- <a href="{{ route('library.index', array_merge(request()->all(), ['category'=>$cat->id])) }}" class="filter-item {{ request('category') == $cat->id ? 'active' : '' }}">
- <span>{{ $cat->icon ? $cat->icon.' ' : '' }}{{ $cat->name }}</span>
- <span class="count">{{ $cat->posts_count }}</span>
- </a>
- @endforeach
- 
- </aside>
+            @foreach($resourceTypes as $type)
+            <a href="{{ route('library.index', array_merge(request()->all(), ['type'=>$type])) }}"
+               class="filter-item {{ request('type') === $type ? 'active' : '' }}">
+                <span style="display:flex;align-items:center;gap:8px;">
+                    <span class="type-fa-icon {{ $type }}">
+                        <i class="fa-solid {{ $typeIcons[$type] ?? 'fa-book' }}"></i>
+                    </span>
+                    {{ $typeLabels[$type] ?? ucfirst(str_replace('_',' ',$type)) }}
+                </span>
+            </a>
+            @endforeach
 
- {{-- Main content --}}
- <div>
- <div class="toolbar">
- <div style="font-size:14px;color:var(--muted);">
- <strong style="color:var(--ink);">{{ $resources->total() }}</strong> resource{{ $resources->total() != 1 ? 's' : '' }} found
- @if(request()->hasAny(['search','type','category','grade']))
- â‚¬" <a href="{{ route('library.index') }}" style="color:var(--trust-blue);font-weight:600;">Clear filters</a>
- @endif
- </div>
- @auth
- <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm">
- <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
- Book a Tutor
- </a>
- @endauth
- </div>
+            <div class="divider"></div>
 
- @forelse($resources as $resource)
- @if($loop->first)<div class="grid">@endif
+            <div class="filter-title">Category</div>
+            <a href="{{ route('library.index', request()->except('category')) }}"
+               class="filter-item {{ !request('category') ? 'active' : '' }}">
+                All Categories
+            </a>
+            @foreach($categories as $cat)
+            <a href="{{ route('library.index', array_merge(request()->all(), ['category'=>$cat->id])) }}"
+               class="filter-item {{ request('category') == $cat->id ? 'active' : '' }}">
+                <span>{{ $cat->icon ? $cat->icon.' ' : '' }}{{ $cat->name }}</span>
+                <span class="count">{{ $cat->posts_count }}</span>
+            </a>
+            @endforeach
+        </aside>
 
- <a href="{{ route('library.show', $resource->slug) }}" class="resource-card">
- <div class="card-thumb">
- @if($resource->thumbnail)
- <img src="{{ asset('storage/'.$resource->thumbnail) }}" alt="{{ $resource->title }}">
- @else
- @php $icons = ['article'=>'<i class="fa-solid fa-book"></i>','notes'=>'<i class="fa-solid fa-note-sticky"></i>','past_paper'=>'<i class="fa-solid fa-file-lines"></i>','video'=>'<i class="fa-solid fa-video"></i>']; @endphp
- {{ $icons[$resource->resource_type] ?? '<i class="fa-solid fa-book"></i>' }}
- @endif
- @php
- $typeClasses = ['article'=>'bdg-blue','notes'=>'bdg-amber','past_paper'=>'bdg-green','video'=>'bdg-purple'];
- $typeLabelMap = ['article'=>'Article','notes'=>'Notes','past_paper'=>'Past Paper','video'=>'Video'];
- @endphp
- <span class="card-type-badge bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">
- {{ $typeLabelMap[$resource->resource_type] ?? ucfirst($resource->resource_type) }}
- </span>
- </div>
- <div class="card-body">
- @if($resource->category)
- <div class="card-category">{{ $resource->category->name }}</div>
- @endif
- @if(\Schema::hasColumn('blog_posts','curriculum_id') && $resource->curriculum_id)
- <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#0A64BC;margin-bottom:4px;">{{ optional($resource->curriculum)->name }}</div>
- @endif
- <div class="card-title">{{ $resource->title }}</div>
- @if($resource->excerpt)
- <div class="card-excerpt">{{ Str::limit($resource->excerpt, 90) }}</div>
- @endif
- <div class="card-meta">
- <div class="card-author">
- <div class="card-avatar">{{ substr($resource->author->name, 0, 1) }}</div>
- <span>{{ $resource->author->name }}</span>
- </div>
- <div style="display:flex;align-items:center;gap:8px;">
- @if($resource->grade_level)
- <span class="bdg bdg-gray" style="font-size:10px;">{{ $resource->grade_level }}</span>
- @endif
- @if($resource->download_count > 0)
- <span style="display:flex;align-items:center;gap:3px;">
- <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
- {{ $resource->download_count }}
- </span>
- @endif
- </div>
- </div>
- </div>
- </a>
+        {{-- Main content --}}
+        <div>
+            <div class="toolbar">
+                <div style="font-size:14px;color:var(--muted);">
+                    <strong style="color:var(--ink);">{{ $resources->total() }}</strong>
+                    resource{{ $resources->total() != 1 ? 's' : '' }} found
+                    @if(request()->hasAny(['search','type','category','grade']))
+                        — <a href="{{ route('library.index') }}" style="color:var(--trust-blue);font-weight:600;">Clear filters</a>
+                    @endif
+                </div>
+                @auth
+                <a href="{{ route('tutors.index') }}" class="btn btn-v btn-sm">
+                    <i class="fa-solid fa-calendar-plus"></i>
+                    Book a Tutor
+                </a>
+                @endauth
+            </div>
 
- @if($loop->last)</div>@endif
- @empty
- <div class="empty">
- <div class="empty-icon"><i class="fa-solid fa-book-open"></i></div>
- <h3>No resources found</h3>
- <p>Try adjusting your filters or search terms.</p>
- @if(request()->hasAny(['search','type','category','grade']))
- <a href="{{ route('library.index') }}" class="btn btn-o" style="margin-top:20px;">Clear Filters</a>
- @endif
- </div>
- @endforelse
+            @php
+            $thumbIcons = [
+                'article'    => ['fa-book',       'rgba(37,99,235,.15)',  '#2563EB'],
+                'notes'      => ['fa-note-sticky', 'rgba(217,119,6,.15)', '#D97706'],
+                'past_paper' => ['fa-file-lines',  'rgba(22,163,74,.15)', '#16A34A'],
+                'video'      => ['fa-video',        'rgba(124,58,237,.15)','#7C3AED'],
+                'pdf'        => ['fa-file-pdf',    'rgba(220,38,38,.15)', '#DC2626'],
+            ];
+            $typeClasses  = ['article'=>'bdg-blue','notes'=>'bdg-amber','past_paper'=>'bdg-green','video'=>'bdg-purple','pdf'=>'bdg-pink'];
+            $typeLabelMap = ['article'=>'Article','notes'=>'Notes','past_paper'=>'Past Paper','video'=>'Video','pdf'=>'PDF'];
+            @endphp
 
- {{-- Pagination --}}
- @if($resources->hasPages())
- <div class="pagination">
- @if($resources->onFirstPage())
- <span style="opacity:.3;">&larr;</span>
- @else
- <a href="{{ $resources->previousPageUrl() }}">&larr;</a>
- @endif
+            @forelse($resources as $resource)
+            @if($loop->first)<div class="grid">@endif
 
- @foreach($resources->getUrlRange(max(1, $resources->currentPage()-2), min($resources->lastPage(), $resources->currentPage()+2)) as $page => $url)
- @if($page == $resources->currentPage())
- <span class="active">{{ $page }}</span>
- @else
- <a href="{{ $url }}">{{ $page }}</a>
- @endif
- @endforeach
+            <a href="{{ route('library.show', $resource->slug) }}" class="resource-card">
+                <div class="card-thumb" style="{{ isset($thumbIcons[$resource->resource_type]) ? 'background:linear-gradient(135deg,'.($thumbIcons[$resource->resource_type][1] ?? 'rgba(10,100,188,.2)').' 0%,rgba(21,40,31,.6) 100%);' : '' }}">
+                    @if($resource->thumbnail)
+                        <img src="{{ asset('storage/'.$resource->thumbnail) }}" alt="{{ $resource->title }}">
+                    @else
+                        @php [$faIcon, $bgCol, $iconCol] = $thumbIcons[$resource->resource_type] ?? ['fa-book','rgba(10,100,188,.2)','#fff']; @endphp
+                        <div class="thumb-icon">
+                            <i class="fa-solid {{ $faIcon }}" style="color:{{ $iconCol }};font-size:44px;"></i>
+                        </div>
+                    @endif
+                    <span class="card-type-badge bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">
+                        {{ $typeLabelMap[$resource->resource_type] ?? ucfirst($resource->resource_type) }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    @if($resource->category)
+                    <div class="card-category">{{ $resource->category->name }}</div>
+                    @endif
+                    @if(\Schema::hasColumn('blog_posts','curriculum_id') && $resource->curriculum_id)
+                    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#0A64BC;margin-bottom:4px;">
+                        {{ optional($resource->curriculum)->name }}
+                    </div>
+                    @endif
+                    <div class="card-title">{{ $resource->title }}</div>
+                    @if($resource->excerpt)
+                    <div class="card-excerpt">{{ Str::limit($resource->excerpt, 90) }}</div>
+                    @endif
+                    <div class="card-meta">
+                        <div class="card-author">
+                            <div class="card-avatar">{{ substr($resource->author->name, 0, 1) }}</div>
+                            <span>{{ $resource->author->name }}</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            @if($resource->grade_level)
+                            <span class="bdg bdg-gray" style="font-size:10px;">{{ $resource->grade_level }}</span>
+                            @endif
+                            @if($resource->download_count > 0)
+                            <span style="display:flex;align-items:center;gap:3px;color:var(--muted);">
+                                <i class="fa-solid fa-download" style="font-size:10px;"></i>
+                                {{ $resource->download_count }}
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </a>
 
- @if($resources->hasMorePages())
- <a href="{{ $resources->nextPageUrl() }}">&rarr;</a>
- @else
- <span style="opacity:.3;">&rarr;</span>
- @endif
- </div>
- @endif
- </div>
- </div>
+            @if($loop->last)</div>@endif
+            @empty
+            <div class="empty">
+                <div class="empty-icon"><i class="fa-solid fa-book-open" style="font-size:64px;color:var(--hair);"></i></div>
+                <h3>No resources found</h3>
+                <p>Try adjusting your filters or search terms.</p>
+                @if(request()->hasAny(['search','type','category','grade']))
+                <a href="{{ route('library.index') }}" class="btn btn-o" style="margin-top:20px;">Clear Filters</a>
+                @endif
+            </div>
+            @endforelse
+
+            {{-- Pagination --}}
+            @if($resources->hasPages())
+            <div class="pagination">
+                @if($resources->onFirstPage())
+                    <span style="opacity:.3;">&larr;</span>
+                @else
+                    <a href="{{ $resources->previousPageUrl() }}">&larr;</a>
+                @endif
+
+                @foreach($resources->getUrlRange(max(1, $resources->currentPage()-2), min($resources->lastPage(), $resources->currentPage()+2)) as $page => $url)
+                    @if($page == $resources->currentPage())
+                        <span class="active">{{ $page }}</span>
+                    @else
+                        <a href="{{ $url }}">{{ $page }}</a>
+                    @endif
+                @endforeach
+
+                @if($resources->hasMorePages())
+                    <a href="{{ $resources->nextPageUrl() }}">&rarr;</a>
+                @else
+                    <span style="opacity:.3;">&rarr;</span>
+                @endif
+            </div>
+            @endif
+        </div>
+    </div>
 </div>
 
 @include('partials.footer')

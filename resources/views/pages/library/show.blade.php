@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ $resource->meta_title ?? $resource->title }} â‚¬" Mwalimu Library</title>
+<title>{{ $resource->meta_title ?? $resource->title }} — Mwalimu Library</title>
 @if($resource->meta_description)
 <meta name="description" content="{{ $resource->meta_description }}">
 @endif

@@ -4,7 +4,7 @@
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <meta name="csrf-token" content="{{ csrf_token() }}">
- <title>@yield('title', 'Dashboard') Ã¯Â¿Â½ Mwalimu Admin</title>
+ <title>@yield('title', 'Dashboard') · Mwalimu Admin</title>
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
  <link rel="shortcut icon" href="/favicon.svg">
@@ -204,6 +204,16 @@
  </div>
 
  <div class="nav-section">
+ <div class="nav-section-label">Payments</div>
+ @php $pendingPayments = \App\Models\Payment::where('status','pending_verification')->count(); @endphp
+ <a href="{{ route('admin.manual-payments') }}" class="nav-item {{ request()->routeIs('admin.manual-payments*') ? 'active' : '' }}">
+ <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+ Manual Payments
+ @if($pendingPayments > 0)<span class="nav-badge">{{ $pendingPayments }}</span>@endif
+ </a>
+ </div>
+
+ <div class="nav-section">
  <div class="nav-section-label">Finance</div>
  <a href="{{ route('admin.bookings') }}" class="nav-item {{ request()->routeIs('admin.bookings') ? 'active' : '' }}">
  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -367,7 +377,7 @@ window.showConfirm = (title, text, confirmText = 'Yes', cancelText = 'Cancel') =
  cancelButtonText: cancelText,
  });
 
-// Document lightbox Ã¯Â¿Â½ view docs in-page without redirect
+// Document lightbox · view docs in-page without redirect
 window.viewDocModal = function(url, isPdf, docName) {
  const content = isPdf
  ? `<iframe src="${url}" style="width:100%;height:70vh;border:none;border-radius:8px;"></iframe>`

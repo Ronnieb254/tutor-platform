@@ -75,7 +75,7 @@
  @if(!$booking->review)
  <a href="{{ route('bookings.show', $booking->uuid) }}" class="text-xs text-gold font-semibold hover:underline">Leave review</a>
  @else
- <div class="text-gold text-xs">â˜… {{ $booking->review->rating }}</div>
+ <div class="text-gold text-xs">★ {{ $booking->review->rating }}</div>
  @endif
  </div>
  </div>

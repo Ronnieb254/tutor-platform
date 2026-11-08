@@ -27,7 +27,7 @@
 
  <h1 style="font-size:24px;font-weight:700;color:#15281F;margin:0 0 8px;">
  @if($delivery === 'fully_delivered') Å-… Session Completed â‚¬" Earnings Credited
- @elseif($delivery === 'partially_delivered') Å¡Â Ã¯Â¸Â Session Partially Delivered
+ @elseif($delivery === 'partially_delivered') ⚠ Ã¯Â¸Â Session Partially Delivered
  @else ÂÅ’ Session Not Delivered @endif
  </h1>
 

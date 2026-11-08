@@ -5,7 +5,7 @@
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>My Dashboard Ã¯Â¿Â½ Mwalimu</title>
+<title>My Dashboard · Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -267,7 +267,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 {{-- -------------- OVERVIEW -------------- --}}
 <div x-show="tab==='overview'">
  <div style="margin-bottom:20px;">
- <h2 style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">Hello, {{ explode(' ',$user->name)[0] }} ??</h2>
+ <h2 style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">Hello, {{ explode(' ',$user->name)[0] }} 👋</h2>
  <p style="font-size:14px;color:var(--muted);margin-top:4px;">{{ now()->format('l, F j, Y') }}</p>
  </div>
 
@@ -320,7 +320,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;flex-shrink:0;">{{ substr($b->tutor->name,0,1) }}</div>
  <div style="flex:1;min-width:0;">
  <div style="font-weight:600;font-size:14px;">{{ $b->tutor->name }}</div>
- <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} Ã¯Â¿Â½ {{ $b->duration_minutes }}min</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} · {{ $b->duration_minutes }}min</div>
  </div>
  <div style="text-align:right;flex-shrink:0;">
  <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $b->scheduled_at->format('M j') }}</div>
@@ -342,7 +342,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @else
  <div class="card card-p" style="text-align:center;padding:48px;margin-bottom:20px;">
- <div style="font-size:48px;margin-bottom:12px;">??</div>
+ <div style="font-size:48px;margin-bottom:12px;">📅</div>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink);margin-bottom:8px;">No upcoming sessions</h3>
  <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Book a session with one of our verified tutors to get started.</p>
  <a href="{{ route('tutors.index') }}" class="btn btn-v">Find a Tutor</a>
@@ -352,10 +352,10 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  {{-- Quick actions --}}
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="quick-g">
  @foreach([
- ['upcoming','??','My Sessions','View all booked sessions'],
- ['chats','??','Messages','Chat with your tutors'],
- ['payments','??','Payments','View payment history'],
- ['wishlist','??','Saved Tutors','Your favourite tutors'],
+ ['upcoming','📚','My Sessions','View all booked sessions'],
+ ['chats','💬','Messages','Chat with your tutors'],
+ ['payments','💳','Payments','View payment history'],
+ ['wishlist','🔖','Saved Tutors','Your favourite tutors'],
  ] as [$t,$ic,$label,$desc])
  <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='none'">
  <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ $ic }}</div>
@@ -387,9 +387,9 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <span style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);">{{ $b->tutor->name }}</span>
  @php $sc=['pending'=>'bdg-amber','confirmed'=>'bdg-blue','completed'=>'bdg-green','cancelled'=>'bdg-gray'][$b->status]??'bdg-gray'; @endphp
  <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
- @if($b->canJoin())<span class="bdg bdg-mint">?? Live Now</span>@endif
+ @if($b->canJoin())<span class="bdg bdg-mint">🟢 Live Now</span>@endif
  </div>
- <div style="font-size:13px;color:var(--muted);">{{ $b->subject?->name ?? 'General Session' }} Ã¯Â¿Â½ {{ $b->duration_minutes }} minutes</div>
+ <div style="font-size:13px;color:var(--muted);">{{ $b->subject?->name ?? 'General Session' }} · {{ $b->duration_minutes }} minutes</div>
  <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;">
  <div style="display:flex;align-items:center;gap:6px;font-size:13px;">
  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -417,7 +417,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
  <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
  @if($b->status === 'confirmed')
- <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint">{{ $b->canJoin() ? '?? Join Session' : 'Open Session' }}</a>
+ <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-mint">{{ $b->canJoin() ? '🎥 Join Session' : 'Open Session' }}</a>
  @else
  <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-v">View Booking</a>
  @endif
@@ -447,7 +447,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @empty
  <div class="card card-p" style="text-align:center;padding:64px;">
- <div style="font-size:48px;margin-bottom:12px;">??</div>
+ <div style="font-size:48px;margin-bottom:12px;">💳</div>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink);margin-bottom:8px;">No upcoming sessions</h3>
  <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">Find a tutor and book your first session today.</p>
  <a href="{{ route('tutors.index') }}" class="btn btn-v">Browse Tutors</a>
@@ -494,7 +494,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @elseif($b->status === 'completed')
  <a href="{{ route('bookings.show',$b->uuid) }}" style="font-size:12px;color:var(--trust-blue);font-weight:600;">Leave review</a>
  @else
- <span style="color:var(--muted);">Ã¯Â¿Â½</span>
+ <span style="color:var(--muted);">·</span>
  @endif
  </td>
  <td><a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm">View</a></td>
@@ -536,7 +536,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @empty
  <div style="padding:40px 16px;text-align:center;color:var(--muted);">
- <div style="font-size:32px;margin-bottom:8px;">??</div>
+ <div style="font-size:32px;margin-bottom:8px;">💬</div>
  <div style="font-size:14px;">No conversations yet</div>
  </div>
  @endforelse
@@ -570,14 +570,14 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  <form method="POST" action="/bookings/{{ $fb->id }}/messages" style="padding:16px 20px;border-top:1px solid var(--hair);display:flex;gap:10px;">
  @csrf
- <input type="text" name="body" placeholder="Type a messageÃ¯Â¿Â½" required style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
+ <input type="text" name="body" placeholder="Type a message·" required style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
  <button type="submit" class="btn btn-v" style="height:44px;padding:0 20px;">
  <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Send
  </button>
  </form>
  @else
  <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--muted);">
- <div style="font-size:48px;">??</div>
+ <div style="font-size:48px;">💬</div>
  <div style="font-size:16px;font-weight:600;color:var(--ink);">No messages yet</div>
  <div style="font-size:14px;text-align:center;">Messages appear here once a booking is confirmed</div>
  </div>
@@ -634,13 +634,13 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <td>
  <div style="display:flex;align-items:center;gap:10px;">
  <div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($payment->booking?->tutor->name ?? 'T',0,1) }}</div>
- {{ $payment->booking?->tutor->name ?? 'Ã¯Â¿Â½' }}
+ {{ $payment->booking?->tutor->name ?? '·' }}
  </div>
  </td>
  <td><code style="background:#F4F6F4;padding:2px 8px;border-radius:6px;font-size:11px;">{{ Str::limit($payment->mpesa_reference,18) }}</code></td>
- <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? 'Ã¯Â¿Â½' }}</td>
+ <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? '·' }}</td>
  <td style="font-size:13px;color:var(--muted);">
- {{ $payment->booking?->duration_minutes }}min Ã¯Â¿Â½ {{ $payment->booking?->subject?->name ?? 'General' }}
+ {{ $payment->booking?->duration_minutes }}min · {{ $payment->booking?->subject?->name ?? 'General' }}
  </td>
  <td style="font-weight:700;color:var(--ink);">KSh {{ number_format($payment->amount) }}</td>
  <td><span class="bdg bdg-green">? Paid</span></td>
@@ -679,7 +679,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @forelse($notifications as $notif)
  @php $isUnread = is_null($notif->read_at); $data = $notif->data; @endphp
  <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(21,40,31,.05);background:{{ $isUnread ? 'rgba(10,100,188,.04)' : 'transparent' }};">
- @php $icons=['new_booking'=>['??','rgba(10,100,188,.1)'],'booking_confirmed'=>['?','rgba(16,185,129,.1)'],'booking_cancelled'=>['?','rgba(232,82,42,.1)']]; [$ic,$bg]=$icons[$data['type']??'']??['??','rgba(21,40,31,.05)']; @endphp
+ @php $icons=['new_booking'=>['📅','rgba(10,100,188,.1)'],'booking_confirmed'=>['✅','rgba(16,185,129,.1)'],'booking_cancelled'=>['❌','rgba(232,82,42,.1)']]; [$ic,$bg]=$icons[$data['type'] ?? '']??['🔔','rgba(21,40,31,.05)']; @endphp
  <div style="width:44px;height:44px;border-radius:12px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">{{ $ic }}</div>
  <div style="flex:1;">
  <div style="font-weight:{{ $isUnread?'700':'500' }};font-size:14px;color:var(--ink);">{{ $data['message'] ?? 'New notification' }}</div>
@@ -690,7 +690,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @endif
  @if(!empty($data['scheduled_at']))
- <div style="font-size:12px;color:var(--muted);margin-top:4px;">?? {{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
+ <div style="font-size:12px;color:var(--muted);margin-top:4px;">📅 {{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
  @endif
  <div style="font-size:11px;color:var(--muted);margin-top:6px;">{{ $notif->created_at->diffForHumans() }}</div>
  @if(!empty($data['url']))
@@ -701,7 +701,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @empty
  <div style="padding:64px;text-align:center;">
- <div style="font-size:44px;margin-bottom:12px;">??</div>
+ <div style="font-size:44px;margin-bottom:12px;">🔔</div>
  <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;">No notifications yet</div>
  <div style="font-size:14px;color:var(--muted);">You'll be notified here when your booking is confirmed</div>
  </div>
@@ -714,7 +714,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 {{-- Wishlist data provided by DashboardController --}}
  @if($wishlist->isEmpty())
  <div class="card card-p" style="text-align:center;padding:64px;">
- <div style="font-size:48px;margin-bottom:12px;">??</div>
+ <div style="font-size:48px;margin-bottom:12px;">💳</div>
  <h3 style="font-family:'Fraunces',serif;font-size:20px;color:var(--ink);margin-bottom:8px;">No saved tutors yet</h3>
  <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">Click the heart icon on any tutor's profile to save them here.</p>
  <a href="{{ route('tutors.index') }}" class="btn btn-v">Browse Tutors</a>
@@ -735,10 +735,10 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @endforeach
  </div>
  <div style="display:flex;gap:12px;font-size:13px;color:var(--muted);">
- <span>? {{ number_format($profile->rating_avg,1) }} ({{ $profile->total_reviews }})</span>
- <span>Ã¯Â¿Â½</span>
+ <span>★ {{ number_format($profile->rating_avg,1) }} ({{ $profile->total_reviews }})</span>
+ <span>·</span>
  <span style="font-weight:600;color:var(--ink);">KSh {{ number_format($profile->hourly_rate) }}/hr</span>
- <span>Ã¯Â¿Â½</span>
+ <span>·</span>
  <span>{{ $profile->experience_years }}y exp</span>
  </div>
  </div>
@@ -766,7 +766,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @if($children->isEmpty())
  <div class="card card-p" style="text-align:center;padding:48px;">
- <div style="font-size:44px;margin-bottom:12px;">????????</div>
+ <div style="font-size:44px;margin-bottom:12px;">👶</div>
  <h3 style="font-family:'Fraunces',serif;font-size:18px;color:var(--ink);margin-bottom:8px;">No child profiles yet</h3>
  <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">Add a child profile to book sessions on their behalf.</p>
  <button onclick="document.getElementById('add-child-modal').style.display='flex'" class="btn btn-v">Add Child Profile</button>
@@ -776,12 +776,12 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @foreach($children as $child)
  <div class="card card-p">
  <div style="display:flex;align-items:center;gap:14px;">
- <div style="width:52px;height:52px;border-radius:14px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">??</div>
+ <div style="width:52px;height:52px;border-radius:14px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👤</div>
  <div style="flex:1;">
  <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);">{{ $child->name }}</div>
  <div style="font-size:13px;color:var(--muted);margin-top:3px;">
  @if($child->age) Age {{ $child->age }} @endif
- @if($child->grade_level) Ã¯Â¿Â½ {{ $child->grade_level }} @endif
+ @if($child->grade_level) · {{ $child->grade_level }} @endif
  </div>
  </div>
  </div>
@@ -822,7 +822,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  <div style="margin-bottom:20px;">
  <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Notes (optional)</label>
- <textarea name="notes" rows="2" placeholder="Learning goals, subjects they need help withÃ¯Â¿Â½" style="width:100%;padding:10px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;"></textarea>
+ <textarea name="notes" rows="2" placeholder="Learning goals, subjects they need help with·" style="width:100%;padding:10px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;"></textarea>
  </div>
  <div style="display:flex;gap:10px;">
  <button type="button" onclick="document.getElementById('add-child-modal').style.display='none'" class="btn btn-o" style="flex:1;">Cancel</button>

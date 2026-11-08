@@ -168,7 +168,7 @@ function confirmBooking(uuid, btn) {
  if (!result.isConfirmed) return;
 
  const originalHtml = btn.innerHTML;
- btn.innerHTML = 'ÂÂ³ Confirmingâ‚¬Â¦';
+ btn.innerHTML = 'Â? Confirmingâ‚¬Â¦';
  btn.disabled = true;
  btn.style.opacity = '0.7';
 
@@ -225,7 +225,7 @@ function resendCodes(uuid, btn) {
  if (!result.isConfirmed) return;
 
  const originalHtml = btn.innerHTML;
- btn.innerHTML = 'ÂÂ³ Sendingâ‚¬Â¦';
+ btn.innerHTML = 'Â? Sendingâ‚¬Â¦';
  btn.disabled = true;
 
  fetch(`/bookings/${uuid}/force-confirm`, {

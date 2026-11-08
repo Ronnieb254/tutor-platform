@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -396,7 +396,7 @@ $activeTab = request('tab','overview');
  </div>
  <div class="stat-lbl">Completed Sessions</div>
  <div class="stat-val">{{ $completedCount }}</div>
- <div class="stat-sub">Rating: ? {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>
+ <div class="stat-sub">Rating: ⭐ {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>
  </div>
  
  </div>
@@ -619,7 +619,7 @@ $activeTab = request('tab','overview');
  </div>
  @empty
  <div style="padding:40px 20px;text-align:center;color:var(--muted);">
- <div style="font-size:32px;margin-bottom:8px;">??</div>
+ <div style="font-size:32px;margin-bottom:8px;">💬</div>
  <div style="font-size:14px;">No conversations yet</div>
  <div style="font-size:12px;margin-top:4px;">Messages appear here after a booking is confirmed</div>
  </div>
@@ -668,7 +668,7 @@ $activeTab = request('tab','overview');
  </form>
  @else
  <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--muted);">
- <div style="font-size:48px;">??</div>
+ <div style="font-size:48px;">💬</div>
  <div style="font-size:16px;font-weight:600;color:var(--ink);">No messages yet</div>
  <div style="font-size:14px;">Messages will appear here once a booking is confirmed</div>
  </div>

@@ -1,238 +1,447 @@
-# Implementation Plan — Full Booking Session Lifecycle
+# Implementation Plan — Jitsi Fixes (A1–A11) + IntaSend Payments (B1–B8)
 
-> Authoritative reference for all coder steps. When in conflict, the original user messages win.
-> Worktree root: `c:\Users\Administrator\Downloads\mediacity.co.in-2026-10-13\mediacity.co.in-2026-10-13\tutor-platform`
-> All paths below are relative to that root unless stated otherwise.
+## Codebase Findings
 
----
-
-## Codebase Findings (audit summary)
-
-### What already exists and MUST NOT be broken
-- `BookingController` — `store`, `confirm`, `forceConfirm`, `cancel`, `markJoined`, `meetingRoom`, `getAvailableSlots`
-- `BookingService::confirmBooking` — generates TUT/STU codes, Jitsi URL, sends `BookingConfirmedStudent` / `BookingConfirmedTutor` notifications
-- Both notification classes send `database` + `mail` channels; email views at `resources/views/emails/booking-confirmed-{student,tutor}.blade.php`
-- `JitsiService` — builds Jitsi URL; JWT support exists but **`JITSI_USE_JWT` is not set in `.env`** so JWT is off; the `JITSI_APP_ID` / `JITSI_APP_SECRET` in `.env` are real JaaS (8x8) credentials (not plain meet.jit.si)
-- `meeting-room.blade.php` embeds Jitsi via `JitsiMeetExternalAPI` without JWT; no attendance events wired
-- `ConfirmPaidBookings` artisan command — handles M-Pesa confirm loop; scheduled in `routes/console.php` (not yet)
-- `RefundService` — credits student wallet; processes approved refunds to `wallets` table
-- `Wallet` model has `.credit()` and `.debit()` methods; `wallet_transactions` table exists
-- `Booking` model `status` enum: `pending | confirmed | cancelled | completed | no_show` — **`partial` is missing**
-- `Booking` model booleans `student_joined` / `tutor_joined` — exist but are bare booleans, **no timestamps**
-- `BookingService::confirmBooking` **credits tutor wallet at confirmation time** — this is wrong for the lifecycle; tutor earnings should be credited at session completion after delivery check
-
-### Critical gaps identified
-
-| Gap | Stage | Impact |
-|-----|-------|--------|
-| No `tutor_joined_at` / `student_joined_at` timestamp columns | 4, 5, 7 | Can't measure actual session duration |
-| No `actual_start_at` / `actual_end_at` columns | 5, 6, 7 | Can't compute delivery % |
-| `status` enum missing `partial` value | 7 | Can't record partial delivery |
-| `Booking::canJoin()` uses 60 min window; task requires 5 min window | 2, 3 | Wrong access gate |
-| Jitsi IFrame `participantJoined`/`participantLeft` postMessage events not wired | 4 | Attendance not tracked |
-| No `POST /bookings/{booking}/attendance` endpoint | 4 | Attendance events have nowhere to land |
-| JWT not generated for Jitsi embed; `JITSI_USE_JWT=true` not set | 3 | No moderator enforcement |
-| `JitsiService::generateJWT` has wrong `aud` field (`appId` instead of `"jitsi"`) and `moderator` is string `'true'`/`'false'` not boolean | 3 | Jitsi JWT auth broken |
-| No `CompleteExpiredSessions` artisan command | 7 | Sessions never auto-complete |
-| No `SessionReviewNotification` / `SessionCompletedNotification` | 8 | Parties not prompted post-session |
-| `BookingService::confirmBooking` credits tutor wallet at confirm time | 8 | Tutor paid before session delivered |
-| No delivery-check logic (80% threshold) | 7 | No partial/no_show determination |
-| `bookings.show` countdown uses 60-min window text | 2 | Shows wrong window |
-| `meeting-room.blade.php` has no server-side attendance ping | 4 | Join events go nowhere |
-| No review-prompt section in `bookings.show` for tutor after completion | 8 | Tutor can't leave review |
-| `routes/console.php` schedules nothing | — | Artisan commands never run |
+- **PHP/Laravel 11**, bootstrap via `bootstrap/app.php`.
+- `.env` already has `JITSI_USE_JWT=true` and `JITSI_DOMAIN=meet.jit.si` — A1 is a no-op.
+- `JitsiService` already has RS256 logic and `makeJWT()`. Missing: public `generateRoomName()` and `generateToken()` called by `JoinSession.php`.
+- `Booking::canJoin()` uses `subMinutes(60)` — needs fixing to 15.
+- `meeting-room.blade.php` has both the bad `participantLeft` fetch POST and `hangup` listener — both need removing.
+- `meeting-room.blade.php` uses `env('JITSI_USE_JWT')` directly — needs `config('services.jitsi.use_jwt')`.
+- `clinic-jitsi-room.blade.php` uses wrong `meet.jitsi.org` domain in both script src and JS const.
+- `clinic-jitsi-room.blade.php` Leave button POSTs a logout form — needs replacing with JS `leaveSession()`.
+- `config/services.php` has no `jitsi` key yet.
+- `BookingService::confirmBooking()` hardcodes `meet.jit.si` in the meeting_url fallback inside `BookingController` (not in the service itself — the service uses `JitsiService::getJoinUrl()` which already reads from env).
+- `BookingController` has hardcoded `https://meet.jit.si/...` strings in fallback blocks.
+- Payment gateway in use: Daraja M-Pesa (STK Push). Task adds IntaSend for Airtel Money and Cards.
+- `DarajaCallbackController::confirmRelatedRecord()` is the canonical booking-confirmation hook — IntaSend webhook must replicate this pattern.
+- `bootstrap/app.php` CSRF exclusion array currently has only `api/daraja/callback`.
+- `clinic-checkout.blade.php` is a standard form POST (not Alpine/fetch) — will be converted to Alpine for method switching.
+- `tutors/show.blade.php` Alpine `x-data` already has `phone`, `processPayment()`, and `showError()` defined globally. Need to add `paymentMethod: 'mpesa'` and update `processPayment()`.
+- `Payment` model uses `mpesa_reference` field as the canonical polling key — IntaSend will store its reference in the same column.
 
 ---
 
-## Implementation Plan
+## TASK A — Fix Jitsi Bugs
 
-- [ ] 1. **Migration — add session lifecycle columns to `bookings` table**
-      Add: `tutor_joined_at` (nullable timestamp), `student_joined_at` (nullable timestamp), `actual_start_at` (nullable timestamp), `actual_end_at` (nullable timestamp), `delivery_status` (nullable string: `full|partial|not_delivered`), and alter the `status` enum to include `partial`.
-      Files:
-      - `database/migrations/2026_11_10_000001_add_lifecycle_columns_to_bookings.php` ← CREATE
-      Verify: `php artisan migrate --pretend` exits 0; then `php artisan migrate`.
+- [ ] 1. **A1: Verify `.env` already has JITSI_USE_JWT=true** (confirmed present — no edit needed).
+      Record this as a no-op so the coder does not waste time re-adding it.
+      Files: none
+      Verify: `grep JITSI_USE_JWT .env` — output shows `JITSI_USE_JWT=true`.
 
-- [ ] 2. **Update `Booking` model — fillable, casts, helpers**
-      Add new columns to `$fillable` and `$casts`. Add helper methods:
-      - `scheduledEndAt()` → `Carbon`: `scheduled_at + duration_minutes`
-      - `isWithin5Minutes()` → bool: `now()` is within 5 min before start
-      - `isRoomOpen()` → bool: `now()` is between `scheduled_at - 5min` and `scheduledEndAt() + 30min`
-      - Replace `canJoin()` to use `isRoomOpen()` (5-min window, not 60-min)
-      - `deliveredMinutes()` → float: difference in minutes between `actual_start_at` and `actual_end_at` (null-safe, returns 0)
-      - `deliveryPercent()` → float: `deliveredMinutes() / duration_minutes * 100`
-      Files:
-      - `app/Models/Booking.php` ← MODIFY
-      Verify: `php artisan tinker` — `App\Models\Booking::first()->isRoomOpen()` executes without error.
+- [ ] 2. **A2: Verify JitsiService RS256/JaaS correctness** (confirmed present and correct).
+      `__construct` already overrides domain to `8x8.vc` for vpaas-magic-cookie appId.
+      `generateJWT()` already uses RS256 with the appId as `kid`.
+      No changes needed; mark as confirmed correct.
+      Files: none
+      Verify: `php artisan tinker --execute="app(\App\Services\JitsiService::class)->isConfigured();"` returns `true`.
 
-- [ ] 3. **Fix `JitsiService::generateJWT` — correct JWT payload**
-      The existing `generateJWT` has two bugs: `aud` is set to `$this->appId` (must be `"jitsi"`); `moderator` context field is a string `'true'`/`'false'` (must be PHP `true`/`false` boolean). Fix both. Also add `JITSI_USE_JWT=true` to `.env` so the service produces signed tokens.
-      The corrected payload shape:
-      ```json
-      {
-        "context": { "user": { "name": "...", "email": "...", "moderator": true } },
-        "aud": "jitsi",
-        "iss": "<JITSI_APP_ID>",
-        "sub": "<JITSI_DOMAIN>",
-        "room": "<room_name>",
-        "exp": now+3600
-      }
+- [ ] 3. **A3: Add missing public methods to JitsiService**
+      Add `generateRoomName(Booking $booking): string` and `generateToken(User $user, string $roomName, bool $isModerator): ?string` as public methods.
+      `generateRoomName` returns `$this->sanitizeRoomName($booking->meeting_room ?? 'Mwalimu-session-' . $booking->uuid)`.
+      `generateToken` calls `$this->makeJWT($roomName, $user->name, $isModerator, ['email' => $user->email])`.
+      Add `use App\Models\Booking;` and `use App\Models\User;` imports at the top of the file.
+      Files: `app/Services/JitsiService.php`
+      Verify: `php artisan tinker --execute="echo method_exists(app(\App\Services\JitsiService::class), 'generateRoomName') ? 'OK' : 'FAIL';"` → `OK`.
+
+- [ ] 4. **A4: Fix clinic-jitsi-room.blade.php — wrong domain and missing CSRF meta**
+      Change `<script src="https://meet.jitsi.org/external_api.js">` to `<script src="https://meet.jit.si/external_api.js">`.
+      Change `const domain = "meet.jitsi.org";` to `const domain = "meet.jit.si";`.
+      Add `<meta name="csrf-token" content="{{ csrf_token() }}">` inside `<head>` after the existing viewport meta.
+      Files: `resources/views/pages/clinic-jitsi-room.blade.php`
+      Verify: `grep -c "meet.jit.si" resources/views/pages/clinic-jitsi-room.blade.php` → at least 2 (script src + JS const). Then: `php artisan view:clear && php artisan config:clear`.
+
+- [ ] 5. **A5: Remove spurious fetch POST from participantLeft handler**
+      In `meeting-room.blade.php`, in the `participantLeft` event listener block, remove the `fetch(leftUrl, ...)` call entirely, keeping only `pollAttendance();`.
+      The block after the change should be: `api.addEventListener('participantLeft', () => { pollAttendance(); });`
+      Files: `resources/views/pages/bookings/meeting-room.blade.php`
+      Verify: `grep -c "participantLeft" resources/views/pages/bookings/meeting-room.blade.php` → 1 line (the addEventListener line only, no fetch inside it).
+
+- [ ] 6. **A6: Fix Booking::canJoin() early-open window from 60 to 15 minutes**
+      In `app/Models/Booking.php`, change:
+      `$opensAt = $this->scheduled_at->copy()->subMinutes(60);`
+      to:
+      `$opensAt = $this->scheduled_at->copy()->subMinutes(15);`
+      Files: `app/Models/Booking.php`
+      Verify: `php artisan tinker --execute="echo (new \App\Models\Booking)->canJoin() === false ? 'OK' : 'SKIP';"` runs without error.
+
+- [ ] 7. **A7: Remove hangup event listener from meeting-room.blade.php**
+      Remove the entire block:
+      ```js
+      api.addEventListener('hangup', () => {
+          window.location.href = bookingUrl;
+      });
       ```
-      Note: the `sub` field must be the Jitsi domain (`meet.jit.si`). The existing service has no `sub` field — add it.
-      Files:
-      - `app/Services/JitsiService.php` ← MODIFY (`generateJWT` method only)
-      - `.env` ← MODIFY: add `JITSI_USE_JWT=true`
-      Verify: `php artisan tinker` — `app(\App\Services\JitsiService::class)->getJoinUrl('test-room','Test User',true,['email'=>'a@b.com'])` returns a URL containing `?jwt=`.
+      Files: `resources/views/pages/bookings/meeting-room.blade.php`
+      Verify: `grep "hangup" resources/views/pages/bookings/meeting-room.blade.php` → no output (the line is gone).
 
-- [ ] 4. **Update `meeting-room.blade.php` — JWT token injection + attendance events**
-      - Generate a signed JWT server-side in the `BookingController::meetingRoom` method and pass it as `$jwtToken` to the view
-      - In the Jitsi `options`, add `jwt: "{{ $jwtToken }}"` to the options object
-      - Wire `participantJoined` and `participantLeft` IFrame API events to `POST /bookings/{uuid}/attendance` with JSON `{ event: 'joined'|'left', participant: { id, displayName } }`
-      - Add a visible teaching timer `<div id="teaching-timer">` that starts counting up from `00:00` once both parties are detected joined (track via `participantJoined` count ≥ 2)
-      - Show a "Session Ending Soon" countdown banner when `now() > scheduledEndAt - 5min`
-      Files:
-      - `resources/views/pages/bookings/meeting-room.blade.php` ← MODIFY
-      - `app/Http/Controllers/BookingController.php` ← MODIFY (`meetingRoom` method: generate JWT, pass to view)
-      Verify: Open meeting room URL in browser — no JS console errors; Jitsi loads with JWT in URL.
+- [ ] 8. **A8: Add jitsi key to config/services.php + use config() in meeting-room.blade.php**
+      In `config/services.php`, append to the returned array:
+      ```php
+      'jitsi' => [
+          'use_jwt' => env('JITSI_USE_JWT', false),
+          'domain'  => env('JITSI_DOMAIN', 'meet.jit.si'),
+      ],
+      ```
+      In `meeting-room.blade.php`, find:
+      `@if(app(\App\Services\JitsiService::class)->isConfigured() && env('JITSI_USE_JWT'))`
+      Replace with:
+      `@if(app(\App\Services\JitsiService::class)->isConfigured() && config('services.jitsi.use_jwt'))`
+      Files: `config/services.php`, `resources/views/pages/bookings/meeting-room.blade.php`
+      Verify: `php artisan tinker --execute="dump(config('services.jitsi'));"` → shows `use_jwt` and `domain` keys with values from `.env`.
 
-- [ ] 5. **Add `POST /bookings/{booking}/attendance` route + controller method**
-      New controller method `BookingController::recordAttendance(Request $request, Booking $booking)`:
-      - Validate `event` (in: `joined`, `left`) and `participant.id`
-      - Determine if the participant is the tutor or student based on their `session_code_tutor` / `session_code_student` (passed as `participant.code` in the JS call)
-      - On `joined`:
-        - Set `tutor_joined_at = now()` if tutor, else `student_joined_at = now()`
-        - Set boolean `tutor_joined = true` / `student_joined = true`
-        - When **both** `tutor_joined_at` and `student_joined_at` are set and `actual_start_at` is null → set `actual_start_at = now()`
-      - On `left`:
-        - Set `actual_end_at = now()` (overwrite on each leave; final value captured by the complete command)
-      - Return `{ status: 'ok' }`
-      Add route: `Route::post('/bookings/{booking:uuid}/attendance', [BookingController::class, 'recordAttendance'])->name('bookings.attendance');`
-      Files:
-      - `app/Http/Controllers/BookingController.php` ← MODIFY (add `recordAttendance` method)
-      - `routes/web.php` ← MODIFY (add route inside auth group)
-      Verify: `php artisan route:list | grep attendance` shows the route.
+- [ ] 9. **A9: Add attendance POST to clinic-jitsi-room.blade.php videoConferenceJoined handler**
+      Replace the stub `videoConferenceJoined` handler (which only has a `console.log`) with:
+      ```js
+      jitsiAPI.addEventListener('videoConferenceJoined', function() {
+          fetch('/clinic/' + {{ $clinic->id }} + '/attendance', {
+              method: 'POST',
+              headers: {
+                  'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ user_id: {{ auth()->id() }} }),
+          }).catch(function() {});
+      });
+      ```
+      Note: the CSRF meta tag added in A4 must be present first (A4 is a prerequisite).
+      Files: `resources/views/pages/clinic-jitsi-room.blade.php`
+      Verify: File renders without Blade errors: `php artisan view:cache` completes with no exception.
 
-- [ ] 6. **Update `bookings.show` — 5-minute access window, countdown, and session stage UI**
-      The existing view uses a 60-minute window in messaging and the `canJoin()` check. Change:
-      - Replace all "60 minutes" copy with "5 minutes before your session"
-      - The countdown `#countdown` should show "Opens in X min" based on `scheduled_at - 5min`, not `scheduled_at - 60min`
-      - Add a "Session In Progress" panel (visible when `actual_start_at` is set and `actual_end_at` is null): shows a live teaching timer (JS, counts up from `actual_start_at`), and remaining time vs. booked duration
-      - Add a "Session Ending Soon" panel: visible in the last 5 minutes of booked duration + 5-minute buffer
-      - For `status = 'partial'` show a yellow "Partially Delivered" panel with refund status
-      - For `status = 'no_show'` show a red "Tutor No-Show" panel with refund status
-      Files:
-      - `resources/views/pages/bookings/show.blade.php` ← MODIFY
-      Verify: Visit `/bookings/{uuid}` — page renders without Blade errors for all status values.
+- [ ] 10. **A10: Replace logout Leave button with JS leaveSession() in clinic-jitsi-room.blade.php**
+       Remove the `<form method="POST" action="{{ route('logout') }}">` block that contains the "Leave Session" button.
+       Replace with:
+       ```html
+       <button onclick="leaveSession()" class="exit-btn">
+           <i class="fa-solid fa-right-from-bracket"></i> Leave Session
+       </button>
+       ```
+       Add the `leaveSession()` function in the `<script>` block (before the closing `</script>` tag):
+       ```js
+       function leaveSession() {
+           try { jitsiAPI.executeCommand('hangup'); } catch(e) {}
+           setTimeout(function() {
+               window.location.href = '{{ route("clinic.my-bookings") }}';
+           }, 1000);
+       }
+       ```
+       If `route('clinic.my-bookings')` does not exist, use `'{{ url("/") }}'` as fallback (verify the route name first with `php artisan route:list --name=clinic`).
+       Files: `resources/views/pages/clinic-jitsi-room.blade.php`
+       Verify: `php artisan view:cache` completes without errors. Confirm no `route('logout')` call remains in this file.
 
-- [ ] 7. **Fix `BookingService::confirmBooking` — remove premature tutor wallet credit**
-      The current code credits `tutor_earning` to the tutor's wallet inside `confirmBooking`. This must be removed — earnings are credited only after the session completes with `full` or `partial` delivery (handled by the new `CompleteExpiredSessions` command). The `Wallet::firstOrCreate` and `wallet->credit()` block inside the DB transaction must be deleted. Leave everything else intact.
-      Files:
-      - `app/Services/BookingService.php` ← MODIFY (remove wallet credit from `confirmBooking`)
-      Verify: `php artisan tinker` — calling `confirmBooking` on a test booking no longer creates a `wallet_transactions` row.
-
-- [ ] 8. **New Artisan command: `sessions:complete-expired`**
-      Create `app/Console/Commands/CompleteExpiredSessions.php`:
-      - Signature: `sessions:complete-expired`
-      - Description: Auto-complete sessions past their end time + 30 min buffer; determine delivery status; credit tutor wallet; process student refunds where applicable
-      - Query: `confirmed` bookings where `scheduled_at + duration_minutes + 30 minutes <= now()`
-      - For each booking:
-        - Compute `deliveryPercent()` from `actual_start_at` / `actual_end_at` (or 0 if null)
-        - **Full delivery** (`both joined AND deliveryPercent >= 80`): set `status = completed`, `delivery_status = full`, `completed_at = now()`, credit `tutor_earning` to tutor wallet
-        - **Partial delivery** (`tutor joined but student no-show OR 0 < deliveryPercent < 80`): set `status = partial`, `delivery_status = partial`, `completed_at = now()`, credit 50% of `tutor_earning` to tutor wallet, create `Refund` record (50% of `total_amount`, reason `'other'`, status `'approved'`) → call `RefundService::processRefund`
-        - **Not delivered** (`tutor did NOT join`): set `status = no_show`, `delivery_status = not_delivered`, `completed_at = now()`, do NOT credit tutor, create `Refund` (100% of `total_amount`, reason `'tutor_cancelled'`, status `'approved'`) → call `RefundService::processRefund`
-        - Fire `SessionCompletedNotification` to both parties (see item 9)
-      Files:
-      - `app/Console/Commands/CompleteExpiredSessions.php` ← CREATE
-      Verify: `php artisan sessions:complete-expired` runs without fatal errors.
-
-- [ ] 9. **New notification: `SessionCompletedNotification`**
-      Create `app/Notifications/SessionCompletedNotification.php`:
-      - Constructor: `(Booking $booking, User $notifiable_user)`
-      - Channels: `['database', 'mail']`
-      - `toMail`: subject "Your session has ended – Please leave a review"; body includes session details, delivery status, and a CTA link to `route('bookings.show', $booking->uuid)` with `#review` anchor
-      - `toArray`: type `'session_completed'`, booking uuid, delivery_status, url
-      Create email view `resources/views/emails/session-completed.blade.php` — match the style of existing booking email views (inline CSS, Mwalimu branding, dark header).
-      Files:
-      - `app/Notifications/SessionCompletedNotification.php` ← CREATE
-      - `resources/views/emails/session-completed.blade.php` ← CREATE
-      Verify: `php artisan tinker` — `new App\Notifications\SessionCompletedNotification($booking, $user)` instantiates without error.
-
-- [ ] 10. **Update `refunds` table — add missing `reason` enum value `'no_show'`**
-       The existing `refunds.reason` enum has `first_20min_guarantee | tutor_cancelled | technical_issue | quality_issue | other`. The auto-complete command uses `'tutor_cancelled'` for no-shows which already exists, so the enum is fine. However, verify the `Refund` model's `$fillable` includes all needed fields. Add `'no_show'` to the enum as a cleaner value for the auto-complete command.
-       Files:
-       - `database/migrations/2026_11_10_000002_add_no_show_to_refunds_reason.php` ← CREATE
-       - `app/Console/Commands/CompleteExpiredSessions.php` ← use `'no_show'` reason (coordinate with item 8)
-       Verify: `php artisan migrate --pretend` exits 0.
-
-- [ ] 11. **Schedule the two Artisan commands in `routes/console.php`**
-       Register both commands in the Laravel 11 schedule (uses `routes/console.php`):
-       - `bookings:confirm-paid` → every minute
-       - `sessions:complete-expired` → every 5 minutes
-       Files:
-       - `routes/console.php` ← MODIFY
-       Verify: `php artisan schedule:list` shows both commands with their frequencies.
-
-- [ ] 12. **Tutor review section in `bookings.show`**
-       The existing view only shows the review form for students. Add an equivalent tutor review section for when `$isTutor && $booking->status === 'completed'`. The tutor review is stored in the same `Review` model but as a `tutor_review` (check if `Review` has a `reviewer_id` or similar — if not, use a separate `tutor_feedback` column approach: simpler, add `tutor_feedback` and `tutor_rating` to `bookings`).
-       Decision: Add `tutor_feedback` (nullable text) and `tutor_rating` (nullable tinyint) directly on `bookings` to avoid a second reviews table row. Create a migration for these columns. Add a POST endpoint `bookings/{booking}/tutor-feedback` that stores them.
-       Files:
-       - `database/migrations/2026_11_10_000003_add_tutor_feedback_to_bookings.php` ← CREATE
-       - `app/Models/Booking.php` ← MODIFY (add to `$fillable`)
-       - `resources/views/pages/bookings/show.blade.php` ← MODIFY (add tutor feedback form)
-       - `routes/web.php` ← MODIFY (add `POST /bookings/{booking}/tutor-feedback` route)
-       Verify: Tutor feedback form renders for completed bookings; POST saves successfully.
-
-- [ ] 13. **Fix `BookingController::meetingRoom` — tighten access to 5-minute window**
-       The current implementation allows entry 15 minutes before. Change the `$minutesUntilStart <= 15` check to `<= 5` and update the error message to match.
-       Files:
-       - `app/Http/Controllers/BookingController.php` ← MODIFY (`meetingRoom` method)
-       Verify: Attempt to access room >5 min before start returns redirect with correct error.
-
-- [ ] 14. **Wire `bookings.show` countdown to 5-minute room open, not 60 minutes**
-       The JS countdown in `bookings.show` currently shows `Opens in X min` based on `$minutesUntil` which is `now()->diffInMinutes($sessionStart)`. Change so the countdown target is `scheduled_at - 5 minutes` (room open time), and the "opens in" text reflects this.
-       Files:
-       - `resources/views/pages/bookings/show.blade.php` ← MODIFY (JS countdown logic — this is the same file as items 6 and 12, batch together)
-       Verify: Refresh page — countdown shows minutes until `scheduled_at - 5min`.
+- [ ] 11. **A11: Use config('services.jitsi.domain') in BookingService and BookingController fallbacks**
+       In `app/Services/BookingService.php`, `confirmBooking()` builds `$studentJoinUrl` via `$this->jitsi->getJoinUrl()`, which already reads from env. No change needed in the service itself.
+       In `app/Http/Controllers/BookingController.php`, there are several hardcoded `'https://meet.jit.si/...'` strings in fallback blocks inside `confirm()`, `forceConfirm()`, and the fallback inside `forceConfirm()`. Replace all hardcoded `https://meet.jit.si/` with `'https://' . config('services.jitsi.domain', 'meet.jit.si') . '/'` — i.e., replace the domain prefix dynamically.
+       Specifically:
+       - In `confirm()` method: two occurrences of `'https://meet.jit.si/Mwalimu-session-'`
+       - In `forceConfirm()` method: two more occurrences of `'https://meet.jit.si/Mwalimu-session-'`
+       Replace each with: `'https://' . config('services.jitsi.domain', 'meet.jit.si') . '/Mwalimu-session-'`
+       Files: `app/Http/Controllers/BookingController.php`
+       Verify: `php artisan config:cache` succeeds. `grep -r "meet.jit.si" app/Http/Controllers/BookingController.php` → no hardcoded strings remain.
 
 ---
 
-## Files Created Summary
+## TASK B — Add Airtel Money and Card via IntaSend
 
-| File | Action |
-|------|--------|
-| `database/migrations/2026_11_10_000001_add_lifecycle_columns_to_bookings.php` | CREATE |
-| `database/migrations/2026_11_10_000002_add_no_show_to_refunds_reason.php` | CREATE |
-| `database/migrations/2026_11_10_000003_add_tutor_feedback_to_bookings.php` | CREATE |
-| `app/Console/Commands/CompleteExpiredSessions.php` | CREATE |
-| `app/Notifications/SessionCompletedNotification.php` | CREATE |
-| `resources/views/emails/session-completed.blade.php` | CREATE |
-| `app/Models/Booking.php` | MODIFY |
-| `app/Services/BookingService.php` | MODIFY |
-| `app/Services/JitsiService.php` | MODIFY |
-| `app/Http/Controllers/BookingController.php` | MODIFY |
-| `resources/views/pages/bookings/show.blade.php` | MODIFY |
-| `resources/views/pages/bookings/meeting-room.blade.php` | MODIFY |
-| `routes/web.php` | MODIFY |
-| `routes/console.php` | MODIFY |
-| `.env` | MODIFY |
+- [ ] 12. **B1: Add IntaSend credentials to .env**
+       Append the following to `.env` (after the existing IMBANK block):
+       ```
+       INTASEND_PUBLISHABLE_KEY=
+       INTASEND_SECRET_KEY=
+       INTASEND_ENVIRONMENT=sandbox
+       ```
+       Files: `.env`
+       Verify: `grep INTASEND .env` → shows all three keys.
 
-## Missing items confirmed absent (must be created)
+- [ ] 13. **B2: Create IntaSendService**
+       Create `app/Services/IntaSendService.php` with the following:
+       - Constructor reads `INTASEND_PUBLISHABLE_KEY`, `INTASEND_SECRET_KEY`, `INTASEND_ENVIRONMENT` from env.
+       - Determines base URL: sandbox → `https://sandbox.intasend.com/api/v1/checkout/`; production → `https://api.intasend.com/api/v1/checkout/`.
+       - Method `createCheckout(float $amount, User $user, string $reference, string $redirectUrl): array`:
+         - POST to checkout URL with body: `{public_key, currency:'KES', amount, email, first_name, last_name, redirect_url, webhook_url}`.
+         - `webhook_url` = `url('/api/intasend/webhook')`.
+         - `first_name`/`last_name` split from `$user->name` (split on first space; fallback both to full name if no space).
+         - Returns `['url' => $response['url'], 'id' => $response['id'] ?? $reference]`.
+         - Throws `\RuntimeException` with message from response if `url` key is missing.
+       - Method `verifyWebhook(Request $request): bool`:
+         - IntaSend signs webhooks with HMAC-SHA256 of the raw body using the secret key.
+         - Compute `hash_hmac('sha256', $request->getContent(), env('INTASEND_SECRET_KEY'))`.
+         - Compare against `$request->header('X-IntaSend-Signature')`.
+         - Return `true` if they match; `false` otherwise.
+         - In sandbox mode (`INTASEND_ENVIRONMENT=sandbox`), return `true` unconditionally (Safaricom sandbox does not send real signatures).
+       - Method `parseWebhook(array $payload): array`:
+         - Returns `['status' => $status, 'reference' => $payload['invoice']['account'] ?? $payload['invoice']['id'] ?? '', 'amount' => $payload['invoice']['net_amount'] ?? 0, 'method' => $payload['invoice']['payment_method'] ?? 'card', 'receipt' => $payload['invoice']['id'] ?? '']`.
+         - Map IntaSend `COMPLETE` status to `'success'`, anything else to `'failed'`.
+         - The `account` field in the IntaSend webhook is what we pass as `account` in the checkout request — use this to store our internal `$reference`.
+       - Use Laravel's `Http` facade for the POST request.
+       - Add `use App\Models\User;` and `use Illuminate\Http\Request;` imports.
+       Files: `app/Services/IntaSendService.php`
+       Verify: `php artisan tinker --execute="app(\App\Services\IntaSendService::class);"` — no exceptions (class resolves from container).
 
-- `CompleteExpiredSessions` command — absent; `ConfirmPaidBookings` exists
-- `SessionCompletedNotification` — absent; `SessionReminderNotification` exists but unused for this
-- `sessions-completed.blade.php` email view — absent
-- Migration columns: `tutor_joined_at`, `student_joined_at`, `actual_start_at`, `actual_end_at`, `delivery_status` — all absent
-- `POST /bookings/{booking}/attendance` route — absent
-- `BookingController::recordAttendance` — absent
-- Tutor feedback columns on bookings — absent
-- Schedule registration in `routes/console.php` — absent
-- JWT enabled in `.env` (`JITSI_USE_JWT`) — absent
+- [ ] 14. **B3: Create IntaSendWebhookController**
+       Create `app/Http/Controllers/IntaSendWebhookController.php`:
+       ```php
+       namespace App\Http\Controllers;
 
-## Do NOT touch
+       use App\Models\Payment;
+       use App\Services\BookingService;
+       use App\Services\IntaSendService;
+       use Illuminate\Http\Request;
+       use Illuminate\Support\Facades\Log;
 
-- `DarajaService` and `DarajaCallbackController` (M-Pesa flow)
-- `BookingController::store` (wizard payment flow)
-- `BookingWizard` Livewire component (not in this plan)
-- `BookingConfirmedStudent` / `BookingConfirmedTutor` notification classes
-- `ConfirmPaidBookings` artisan command
-- Any existing migration files
-- `RefundService` (use as-is, call it from the new command)
+       class IntaSendWebhookController extends Controller
+       {
+           public function __construct(
+               protected IntaSendService $intaSend,
+               protected BookingService  $bookingService
+           ) {}
+
+           public function handle(Request $request): \Illuminate\Http\JsonResponse
+           {
+               if (!$this->intaSend->verifyWebhook($request)) {
+                   Log::warning('IntaSend webhook: invalid signature');
+                   return response()->json(['status' => 'rejected'], 401);
+               }
+
+               $payload = $request->all();
+               Log::info('IntaSend webhook received', ['preview' => array_slice($payload, 0, 3)]);
+
+               $parsed = $this->intaSend->parseWebhook($payload);
+
+               $payment = Payment::where('mpesa_reference', $parsed['reference'])->first();
+
+               if (!$payment) {
+                   Log::warning('IntaSend webhook: payment not found', ['reference' => $parsed['reference']]);
+                   return response()->json(['status' => 'ok']);
+               }
+
+               if ($payment->status === 'success') {
+                   return response()->json(['status' => 'ok']);
+               }
+
+               if ($parsed['status'] === 'success') {
+                   $payment->update([
+                       'status'   => 'success',
+                       'paid_at'  => now(),
+                       'mpesa_receipt' => $parsed['receipt'],
+                   ]);
+                   $this->confirmRelatedRecord($payment);
+               } else {
+                   $payment->update([
+                       'status'         => 'failed',
+                       'failure_reason' => 'IntaSend: ' . $parsed['status'],
+                   ]);
+               }
+
+               return response()->json(['status' => 'ok']);
+           }
+
+           private function confirmRelatedRecord(Payment $payment): void
+           {
+               // Reuse same logic as DarajaCallbackController
+               $booking = $payment->booking;
+               if ($booking && $booking->status === 'pending') {
+                   try {
+                       $this->bookingService->confirmBooking($booking);
+                   } catch (\Throwable $e) {
+                       Log::error('IntaSend webhook: confirmBooking failed', [
+                           'booking_id' => $booking->id,
+                           'error'      => $e->getMessage(),
+                       ]);
+                   }
+               }
+           }
+       }
+       ```
+       Files: `app/Http/Controllers/IntaSendWebhookController.php`
+       Verify: `php artisan route:list --name=intasend` — after B6 routes are added, this shows the webhook route.
+
+- [ ] 15. **B4: Update BookingController::store() to support airtel and card via IntaSend**
+       Add `payment_method` to validation (at the top of `store()`):
+       ```php
+       'payment_method' => 'nullable|in:mpesa,airtel,card',
+       ```
+       After the free-session early return, extract the payment method:
+       ```php
+       $paymentMethod = $request->input('payment_method', 'mpesa');
+       ```
+       For `mpesa` (or default): keep the existing Daraja STK Push path unchanged.
+       For `airtel` or `card`: skip the phone validation, generate a reference, create a `Payment` record with `status='pending'` and `mpesa_reference=$reference` (no `checkout_request_id`), then call IntaSendService:
+       ```php
+       if (in_array($paymentMethod, ['airtel', 'card'])) {
+           $reference = 'IS-' . strtoupper(\Illuminate\Support\Str::random(16));
+           try {
+               $intaSend = app(\App\Services\IntaSendService::class);
+               $checkout = $intaSend->createCheckout(
+                   (float) $booking->total_amount,
+                   auth()->user(),
+                   $reference,
+                   route('bookings.show', $booking->uuid)
+               );
+               Payment::create([
+                   'booking_id'      => $booking->id,
+                   'user_id'         => auth()->id(),
+                   'amount'          => $booking->total_amount,
+                   'currency'        => 'KES',
+                   'mpesa_reference' => $reference,
+                   'status'          => 'pending',
+               ]);
+               return response()->json([
+                   'status'       => 'ok',
+                   'reference'    => $reference,
+                   'redirect_url' => $checkout['url'],
+               ]);
+           } catch (\Exception $e) {
+               $booking->delete();
+               return response()->json(['status' => 'error', 'message' => $e->getMessage()], 422);
+           }
+       }
+       ```
+       The phone validation `$request->validate(['phone' => 'required|...'])` must be wrapped in an `if ($paymentMethod === 'mpesa')` guard so card/airtel users are not rejected for missing phone.
+       Files: `app/Http/Controllers/BookingController.php`
+       Verify: `php artisan route:list --name=bookings` shows existing booking routes. `php artisan tinker --execute="app(\App\Http\Controllers\BookingController::class);"` resolves without error.
+
+- [ ] 16. **B5: Update tutors/show.blade.php — add payment method selector**
+       In the Alpine `x-data` object (the `tab-book` div), add `paymentMethod: 'mpesa'` to the data properties.
+       Before the M-Pesa phone `<div>` (inside the `@auth` block in step 2), add a payment method selector:
+       ```html
+       {{-- Payment Method Selector --}}
+       <div style="margin-bottom:14px;">
+           <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:8px;">Payment Method</p>
+           <div style="display:flex;gap:8px;flex-wrap:wrap;">
+               <button type="button" @click="paymentMethod='mpesa'"
+                   :style="paymentMethod==='mpesa' ? 'border-color:#0A64BC;background:rgba(10,100,188,.08);' : ''"
+                   style="flex:1;min-width:100px;padding:10px;border-radius:10px;border:1.5px solid rgba(21,40,31,.18);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;background:#fff;transition:all .15s;">
+                   📱 M-Pesa
+               </button>
+               <button type="button" @click="paymentMethod='airtel'"
+                   :style="paymentMethod==='airtel' ? 'border-color:#0A64BC;background:rgba(10,100,188,.08);' : ''"
+                   style="flex:1;min-width:100px;padding:10px;border-radius:10px;border:1.5px solid rgba(21,40,31,.18);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;background:#fff;transition:all .15s;">
+                   📶 Airtel Money
+               </button>
+               <button type="button" @click="paymentMethod='card'"
+                   :style="paymentMethod==='card' ? 'border-color:#0A64BC;background:rgba(10,100,188,.08);' : ''"
+                   style="flex:1;min-width:100px;padding:10px;border-radius:10px;border:1.5px solid rgba(21,40,31,.18);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;background:#fff;transition:all .15s;">
+                   💳 Card
+               </button>
+           </div>
+       </div>
+       ```
+       Wrap the existing phone input `<div>` with `x-show="paymentMethod === 'mpesa' || paymentMethod === 'airtel'"`.
+       Add a card notice below the phone div:
+       ```html
+       <div x-show="paymentMethod === 'card'" style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#0A64BC;">
+           <i class="fa-solid fa-credit-card"></i> You'll be redirected to a secure card payment page.
+       </div>
+       ```
+       Update the Pay button label dynamically:
+       Change `<span x-text="isFree ? 'Book Free Session' : 'Pay KSh ' + price "></span>`
+       to `<span x-text="isFree ? 'Book Free Session' : (paymentMethod === 'card' ? 'Pay by Card KSh ' + price : paymentMethod === 'airtel' ? 'Pay via Airtel KSh ' + price : 'Pay KSh ' + price)"></span>`.
+       Update `processPayment()` in the `<script>` block:
+       1. Change the phone validation guard to only run when `paymentMethod !== 'card'`:
+          ```js
+          if (data.paymentMethod !== 'card' && (!data.phone || data.phone.length < 9)) {
+              showError('Invalid Phone Number', 'Please enter your phone number.');
+              return;
+          }
+          ```
+       2. Add `payment_method: data.paymentMethod` to the fetch body JSON.
+       3. After `.then(res => {`, add a redirect branch for airtel/card before the existing mpesa polling branch:
+          ```js
+          if (res.status === 'ok' && res.redirect_url) {
+              window.location.href = res.redirect_url;
+              return;
+          }
+          ```
+       Files: `resources/views/pages/tutors/show.blade.php`
+       Verify: `php artisan view:cache` completes without Blade compilation errors.
+
+- [ ] 17. **B6: Add IntaSend webhook route and CSRF exclusion**
+       In `routes/api.php`, add after the existing I&M Bank routes:
+       ```php
+       use App\Http\Controllers\IntaSendWebhookController;
+
+       Route::post('/intasend/webhook', [IntaSendWebhookController::class, 'handle'])
+           ->name('intasend.webhook');
+       ```
+       In `bootstrap/app.php`, update the CSRF exclusion array:
+       ```php
+       $middleware->validateCsrfTokens(except: [
+           'api/daraja/callback',
+           'api/intasend/webhook',
+       ]);
+       ```
+       Files: `routes/api.php`, `bootstrap/app.php`
+       Verify: `php artisan route:list --name=intasend.webhook` shows one POST route at `api/intasend/webhook`.
+
+- [ ] 18. **B7: Document IntaSend reference field usage**
+       This is an informational note baked into code comments, not a code change.
+       Add a PHPDoc comment to `IntaSendWebhookController::handle()` and to the `Payment` creation block in `BookingController::store()` (for the airtel/card path):
+       ```
+       // IntaSend payments store our internal reference in mpesa_reference.
+       // This allows the existing /api/daraja/status polling endpoint to work
+       // without modification — the frontend polls by reference regardless of method.
+       ```
+       Files: `app/Http/Controllers/IntaSendWebhookController.php`, `app/Http/Controllers/BookingController.php`
+       Verify: No code change — just comments. `php artisan config:clear` passes.
+
+- [ ] 19. **B8: Update clinic-checkout.blade.php to support Airtel/Card payment methods**
+       The clinic checkout is a standard form POST to `route('clinic.pay', $clinic)`. The current form has no `payment_method` input and only an M-Pesa section.
+       Convert the payment section to Alpine.js:
+       1. Add `x-data="{ paymentMethod: 'mpesa' }"` to the outer `<div class="container">`.
+       2. Replace the static M-Pesa-only payment method card block with three clickable cards (M-Pesa, Airtel Money, Card) that set `paymentMethod`.
+       3. Show the phone input only when `x-show="paymentMethod === 'mpesa' || paymentMethod === 'airtel'"`.
+       4. Add a card notice: `x-show="paymentMethod === 'card'"` — "You'll be redirected to a secure card payment page."
+       5. Add a hidden input `<input type="hidden" name="payment_method" :value="paymentMethod">` inside the `<form>`.
+       6. Update the submit button label dynamically:
+          `x-text="paymentMethod === 'card' ? 'Pay by Card KSh ...' : paymentMethod === 'airtel' ? 'Pay via Airtel KSh ...' : 'Pay KSh ...'"`.
+       7. The form action remains `route('clinic.pay', $clinic)` — this controller action must also be updated to handle the `payment_method` field using the same IntaSend pattern as BookingController (create Payment, call IntaSendService, redirect to IntaSend URL for card/airtel, or fall through to existing STK Push for mpesa). Locate the controller handling `route('clinic.pay')` and apply equivalent changes.
+          - Find the route: `php artisan route:list --name=clinic.pay` to identify the controller/method.
+          - Apply the same branching logic as B4: if `payment_method` is `airtel` or `card`, call `IntaSendService::createCheckout()` and redirect; otherwise, proceed with Daraja.
+       Files: `resources/views/pages/clinic-checkout.blade.php`, and the controller handling `clinic.pay` route (to be identified via `php artisan route:list --name=clinic.pay`)
+       Verify: `php artisan view:cache` compiles without errors. `php artisan route:list --name=clinic.pay` shows the route exists.
+
+---
+
+## Verification (run all after all items are complete)
+
+```bash
+# 1. Clear all caches
+php artisan config:clear && php artisan view:clear && php artisan route:clear && php artisan cache:clear
+
+# 2. Re-cache for production
+php artisan config:cache && php artisan route:cache && php artisan view:cache
+
+# 3. Confirm Jitsi service resolves and has the new methods
+php artisan tinker --execute="
+\$j = app(\App\Services\JitsiService::class);
+echo method_exists(\$j, 'generateRoomName') ? 'generateRoomName: OK' : 'generateRoomName: FAIL';
+echo PHP_EOL;
+echo method_exists(\$j, 'generateToken') ? 'generateToken: OK' : 'generateToken: FAIL';
+echo PHP_EOL;
+echo config('services.jitsi.use_jwt') ? 'JWT config: OK' : 'JWT config: FAIL';
+"
+
+# 4. Confirm IntaSend service resolves
+php artisan tinker --execute="app(\App\Services\IntaSendService::class); echo 'IntaSend: OK';"
+
+# 5. Confirm routes exist
+php artisan route:list --name=intasend.webhook
+php artisan route:list --name=clinic.pay
+
+# 6. Run any existing tests (if test suite exists)
+php artisan test --stop-on-failure
+```
+
+---
+
+## Notes & Assumptions
+
+- **A1**: `.env` already has `JITSI_USE_JWT=true` and `JITSI_DOMAIN=meet.jit.si`. No edit needed.
+- **A2**: RS256 logic is already correct in `JitsiService::generateJWT()`. No edit needed.
+- **A3**: `JoinSession.php` calls `$jitsi->generateRoomName($this->booking)` and `$jitsi->generateToken($user, $this->roomName, $isTutor)` — these must be public. `makeJWT()` already exists and is public; `generateToken()` is a thin public wrapper calling `makeJWT()`.
+- **A9**: Route `/clinic/{clinic}/attendance` is assumed to exist. If not, the fetch will silently fail (fire-and-forget with `.catch(() => {})`), which is acceptable per the spec.
+- **A10**: Uses `route('clinic.my-bookings')` — verify with `php artisan route:list --name=clinic.my-bookings`; fall back to `url('/')` if missing.
+- **B7**: `mpesa_reference` is the canonical polling key. The existing `/api/daraja/status` endpoint already looks up by `mpesa_reference`, so card/airtel payments stored with that field are automatically polled by the frontend without changes.
+- **B8**: The clinic checkout controller action needs to be identified before implementing. The coder must run `php artisan route:list --name=clinic.pay` first.
+- **IntaSend sandbox**: In sandbox mode, webhook signature verification is skipped (sandbox doesn't send valid HMAC). The `verifyWebhook()` method returns `true` when `INTASEND_ENVIRONMENT=sandbox`.

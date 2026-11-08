@@ -120,12 +120,35 @@ class BookingController extends Controller
         ]);
 
         return response()->json([
-            'status'       => 'pending_verification',
+            'status'       => 'ok',
+            'mode'         => 'manual',
             'booking_id'   => $booking->id,
             'booking_uuid' => $booking->uuid,
             'payment_id'   => $payment->id,
-            'message'      => 'Your booking is pending. Admin will verify your payment within 5 minutes and send your session codes by email.',
+            'message'      => 'Booking received. Admin will verify your payment within 5 minutes.',
+            'pending_url'  => route('bookings.payment-pending', $booking->uuid),
         ]);
+    }
+
+    public function paymentPending(Booking $booking)
+    {
+        $user = auth()->user();
+        if ($user->id !== $booking->student_id && !$user->isAdmin()) {
+            abort(403);
+        }
+
+        $payment = $booking->payment()->where('status', 'pending_verification')->latest()->first()
+                ?? $booking->payment()->latest()->first();
+
+        // If already confirmed, redirect straight to booking
+        if ($booking->status === 'confirmed') {
+            return redirect()->route('bookings.show', $booking->uuid)
+                ->with('success', 'Your booking is confirmed!');
+        }
+
+        $booking->load(['tutor', 'subject']);
+
+        return view('pages.bookings.payment-pending', compact('booking', 'payment'));
     }
 
     public function paymentStatus(Request $request)

@@ -192,7 +192,7 @@
  <h2 class="font-serif text-2xl font-bold text-ink mb-2">Application submitted!</h2>
  <p class="text-muted mb-6">Our team will review your profile and documents within 24â‚¬"48 hours. You'll receive an email once approved.</p>
  <div class="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 text-left mb-6">
- <p class="font-semibold">ÂÂ³ What happens next?</p>
+ <p class="font-semibold">Â? What happens next?</p>
  <ol class="mt-2 space-y-1 list-decimal list-inside text-amber-700">
  <li>Our team reviews your documents</li>
  <li>You receive an approval email</li>

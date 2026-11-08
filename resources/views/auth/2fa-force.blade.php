@@ -308,7 +308,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
   Copy All Recovery Codes
  </button>
  <div class="warning">
- Å¡Â Ã¯Â¸Â CRITICAL: Store these codes in a secure password manager or safe location. You'll need them if you lose your phone or uninstall your authenticator app.
+ ⚠ Ã¯Â¸Â CRITICAL: Store these codes in a secure password manager or safe location. You'll need them if you lose your phone or uninstall your authenticator app.
  </div>
  </div>
 

@@ -270,7 +270,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);}
   Copy All Recovery Codes
  </button>
  <div class="warning">
- Å¡Â Ã¯Â¸Â Save these recovery codes in a secure location. You'll need them if you lose access to your authenticator app.
+ ⚠ Ã¯Â¸Â Save these recovery codes in a secure location. You'll need them if you lose access to your authenticator app.
  </div>
  </div>
 

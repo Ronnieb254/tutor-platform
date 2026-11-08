@@ -1,80 +1,106 @@
-# Examiner dashboard: stats, clinics, and enrollments
+# Jitsi Bug Fixes (A1–A11) + IntaSend Payment Integration (B1–B8)
 
-This change rewrites `ExaminerController::dashboard()` to compute four statistics — total clinics, total students enrolled, upcoming sessions count, and clinic earnings net of the platform fee — and to pass upcoming clinics, past clinics, and recent enrollments to the view. It then rewrites `pages/examiner-dashboard.blade.php` to render all of that in the Mwalimu design system: a stats row of four cards, an Upcoming Clinics list with Start Session / View Details actions, a Past Clinics table, and a Recent Enrollments timeline, plus empty states. Earnings come from `EarningsService` (clinic `tutor_amount`, i.e. the examiner's 40% share), and every clinic/enrollment query is scoped to the examiner's own clinics via `created_by`. The view deliberately follows the booking-show pattern (`@include` of `partials.head/nav/footer`) rather than `@extends('layouts.app')` — a documented choice, since `layouts/app.blade.php` is the generic Tailwind layout that does not carry the themed tokens.
+This change addresses 11 Jitsi-related bugs and adds IntaSend as a second payment gateway alongside Daraja, enabling Airtel Money and card payments. The Jitsi fixes are largely complete and correct; the IntaSend integration is structurally sound but has two blocking issues — a production-mode webhook signature bypass and hardcoded `meet.jit.si` strings that A11 was supposed to eliminate.
 
-**Watch for:** a latent 500 if any clinic's `subject` is null — the Past Clinics table accesses `$clinic->subject->name` without the nullsafe operator, and Laravel's error handler turns the resulting property-on-null warning into an `ErrorException`. Also, the Past Clinics query has no status filter, so cancelled and never-started clinics show up under "Past Clinics" with an estimated earnings figure.
+**Watch for:**
+- **confirmed** — `verifyWebhook()` allows all traffic whenever `INTASEND_SECRET_KEY` is blank, regardless of `INTASEND_ENVIRONMENT`. Set `INTASEND_ENVIRONMENT=production` without the key and every webhook is accepted.
+- **confirmed** — Four `https://meet.jit.si/Mwalimu-session-` strings remain hardcoded in `BookingController`'s `confirm()` and `forceConfirm()` fallback paths. A11 is incomplete.
+- **confirmed** — `verifyWebhook()` short-circuits to `true` whenever `$this->environment === 'sandbox'`, bypassing HMAC even when a signature header is present. This is a known sandbox concession per the plan, but its coupling means it stays live until `INTASEND_ENVIRONMENT` is manually changed.
 
-**Verdict**: CHANGES_REQUESTED
+**Verdict**: NEEDS_CHANGES
+
+---
 
 ## High-level view
 
-The controller computes every required stat from real model fields and relationships and scopes all of it to the examiner's own clinics (`created_by = $user->id`), with earnings pulled from `EarningsService::clinic_earnings` (the 40% tutor share, i.e. amount minus platform fee). `totalStudents` counts enrollment rows rather than distinct students, so a student booked into several clinics is counted once per booking.
+Jitsi service correctness is solid. `JitsiService` has RS256/JaaS-correct `generateJWT()`, public `generateRoomName()` and `generateToken()` wrappers, and the `config/services.php` `jitsi` block is present. `Booking::canJoin()` uses `subMinutes(15)`. The `meeting-room.blade.php` uses `config('services.jitsi.use_jwt')` and the `participantLeft` fetch-POST and `hangup` listener are both gone. `clinic-jitsi-room.blade.php` uses `meet.jit.si`, has the CSRF meta tag, posts attendance, and the Leave button calls `leaveSession()`. All eleven Jitsi tasks pass inspection except A11.
 
-The view matches the Mwalimu design system exactly — Fraunces headings, DM Sans body, the `#111C16` hero, `#0A64BC` blue, `#10B981` mint, and the `#fff / 22px / rgba(21,40,31,.08) / 28px` card chrome — delivered through `@include('partials.head')` + `partials.nav` + `partials.footer`, the same self-contained pattern used by the booking-show page and every other examiner page. `@extends('layouts.app')` is intentionally not used: that layout is the generic Tailwind shell and lacks the themed tokens, so using it would break the design.
+A11 required replacing every hardcoded `https://meet.jit.si/` in `BookingController`'s fallback paths with `config('services.jitsi.domain')`. Four occurrences remain at lines 243, 258, 465, and 514. These are only hit during `confirmBooking()` failure recovery, but they violate the intent of the change and will silently break domain-switch deployments.
 
-Past Clinics is the weak spot. Its query filters only on `scheduled_at < now()` with no status guard, so cancelled and scheduled-but-never-started clinics appear alongside completed ones under a heading that says "Clinics that have already taken place," each carrying a per-clinic earnings figure computed as `enrollments_count × price × 0.40`. That figure is a display estimate the plan marks as non-authoritative, but it counts every enrollment at full price, so unpaid/pending/refunded seats inflate it against the realized `clinic_earnings` shown in the stat card. The same table also reads `$clinic->subject->name ?? 'N/A'` without the nullsafe operator; an admin can hard-delete a `Subject` (the destroy guard checks bookings, not clinics), which orphans the relation and turns that access into a 500.
+The IntaSend service correctly uses `api_ref` as the correlation key in both `createCheckout()` and `parseWebhook()`, ensuring the reference round-trips through the webhook. `IntaSendWebhookController` finds payments by `mpesa_reference`, updates status, and calls `bookingService->confirmBooking()` — the same pattern as `DarajaCallbackController`. `BookingController::store()` and `ClinicBookingController::pay()` both branch correctly on `payment_method`, and both are properly excluded from CSRF.
 
-The "not verified" case is handled by redirecting unapproved examiners to `examiner.apply` rather than rendering an inline pending message — a documented, deliberate choice, since verified tutors are auto-approved on apply and there is no pending state to show.
+The signature verification logic in `verifyWebhook()` has two independent bypass paths. The first — `empty($this->secretKey)` — will allow all webhooks on any deployment where the key has not been populated in `.env`, including production. The second — `$this->environment === 'sandbox'` — allows all webhooks unconditionally in sandbox, which is per-spec but is a latent risk if the env variable is forgotten at launch.
 
-I independently ran `php -l` on the controller (passes: "No syntax errors detected"), but the dashboard commit message and the task `plan.md` record only the *expected* verification commands, not their actual outputs — `view:cache` and `route:list` results are not captured anywhere, so the review can't confirm the template compiles without re-running it.
+The Pay button in `tutors/show.blade.php` still reads `'Pay KSh ' + price` regardless of payment method. The button label update specified in B5 (showing "Pay by Card" or "Pay via Airtel" based on `paymentMethod`) was not applied to the `x-text` expression. This is cosmetic but represents an incomplete B5 implementation.
+
+---
 
 <details>
 <summary>Issues (4)</summary>
 
-1. **Unguarded subject access in Past Clinics (latent 500)** — `{{ $clinic->subject->name ?? 'N/A' }}` reads `->name` on a possibly-null `subject`; the upcoming list guards this with `@if($clinic->subject)` and recent enrollments use `?->`, but Past Clinics does not. An admin can hard-delete a `Subject` (`Admin\SubjectController::destroy` only blocks on bookings, not clinics), orphaning the relation; the property-on-null warning becomes an `ErrorException` and the dashboard 500s. Use the nullsafe operator: `$clinic->subject?->name ?? 'N/A'`.
-2. **Past Clinics includes cancelled/never-started clinics with estimated earnings** — the query filters only `scheduled_at < now()` with no status guard, so cancelled and scheduled-but-never-started clinics appear under "Past Clinics" (subtitled "Clinics that have already taken place"), each showing an estimated earnings figure. Exclude `cancelled` (and consider restricting to completed/in-progress), or add a status column so cancelled rows are clearly not "taken place."
-3. **Per-clinic earnings estimate can overstate realized earnings** — the Past Clinics "Earnings" column uses `enrollments_count × price × 0.40`, counting every enrollment at full price; unpaid/pending/refunded seats inflate it versus the realized `clinic_earnings` in the stat card. The plan marks this "display only," but the two figures on the same page can disagree. Label the column "Est. earnings" or pull the actual `tutor_amount` per clinic.
-4. **Verification results not recorded** — the dashboard commit message and `plan.md` contain only the expected `php -l` / `view:cache` / `route:list` commands, not their outputs (the plan steps are still unchecked). Record the actual command output in the commit message or task findings so the review can trust it without re-running.
+1. **Hardcoded `meet.jit.si` in BookingController fallbacks (A11 incomplete)** — Lines 243, 258, 465, 514 still contain `'https://meet.jit.si/Mwalimu-session-'`. Replace with `'https://' . config('services.jitsi.domain', 'meet.jit.si') . '/Mwalimu-session-'` in all four locations.
+
+2. **Webhook signature bypass when secret key is missing** — `verifyWebhook()` returns `true` when `$this->secretKey` is empty, regardless of environment. An attacker who discovers the endpoint can forge any payment confirmation. Add a guard: if `$this->environment !== 'sandbox'` and the key is empty, return `false` (or throw) rather than allowing the request.
+
+3. **Pay button label unchanged (B5 incomplete)** — The `x-text` on the pay button in `tutors/show.blade.php` still renders `'Pay KSh ' + price` for all methods. It should switch to `'Pay by Card KSh ' + price` or `'Pay via Airtel KSh ' + price` based on `paymentMethod`, as specified in the B5 plan.
+
+4. **Sandbox bypass persists on `$this->environment === 'sandbox'` regardless of signature presence** — When `INTASEND_ENVIRONMENT=sandbox` and a valid signature header is present, `verifyWebhook()` still returns `true` without checking the HMAC. This is per-spec (sandbox doesn't send real signatures), but the check `return empty($this->secretKey) || $this->environment === 'sandbox'` fires even when a signature header is set, meaning it provides no protection against replay in staging. Consider only skipping when `!$signature` and `$this->environment === 'sandbox'`.
 
 </details>
 
-<details><summary>Details</summary>
+---
 
-### Dashboard data wiring and owner scoping
+<details>
+<summary>Details</summary>
 
-The controller keeps the existing `isApproved()` gate, then builds:
+### A11 incomplete — four hardcoded `meet.jit.si` fallback URLs
 
+`BookingController::confirm()` and `forceConfirm()` each have two fallback blocks that run when `confirmBooking()` throws. All four blocks write `'https://meet.jit.si/Mwalimu-session-'` directly into `meeting_url`. The rest of the codebase now reads from `config('services.jitsi.domain')`, so these paths will silently write the wrong domain when deployed against a different Jitsi instance. Confirmed at lines 243, 258, 465, 514 via `Select-String`.
+
+### IntaSend webhook signature bypass
+
+`verifyWebhook()` in `IntaSendService`:
+
+```php
+if (!$signature || !$this->secretKey) {
+    return empty($this->secretKey) || $this->environment === 'sandbox';
+}
+$expected = hash_hmac('sha256', $request->getContent(), $this->secretKey);
+return hash_equals($expected, $signature);
 ```
-ExaminerController::dashboard()
-  │  gate: ExaminerRegistration::isApproved()  → else redirect examiner.apply
-  ├─ totalClinics    = ExaminerClinic::where(created_by, me)->count()
-  ├─ totalStudents   = ClinicEnrollment::whereHas(clinic, created_by=me)->count()    // enrollments, not distinct students
-  ├─ upcomingCount   = ExaminerClinic::where(created_by, me)->upcoming()->count()    // scheduled_at>now AND status=scheduled
-  ├─ clinicEarnings  = EarningsService::calculateTutorEarnings(me)['clinic_earnings'] // sum(tutor_amount) for successful clinic payments
-  ├─ upcomingClinics   ->with('subject')->withCount('enrollments')->upcoming()->take(6)
-  ├─ pastClinics       ->with('subject')->withCount('enrollments')->where(scheduled_at<now)->take(10)   // ← no status filter
-  └─ recentEnrollments ->with(['student','clinic'])->latest()->take(8)
+
+The outer condition fires when `$this->secretKey` is empty. The inner `return` then evaluates `empty($this->secretKey)` → `true`, so every webhook is accepted. Any deployment that omits `INTASEND_SECRET_KEY` from `.env` (including a misconfigured production server) will accept forged webhook calls, allowing an attacker to mark any pending payment as successful without paying.
+
+The second bypass — `$this->environment === 'sandbox'` — is intentional per the plan but also fires when a signature header is present. The safer pattern is:
+
+```php
+if ($this->environment === 'sandbox' && !$signature) {
+    return true; // sandbox rarely sends signatures
+}
+if (!$this->secretKey) {
+    return false; // missing key is a config error, not a pass
+}
+$expected = hash_hmac('sha256', $request->getContent(), $this->secretKey);
+return hash_equals($expected, $signature);
 ```
 
-`clinic_earnings` is the sum of `tutor_amount` over successful `payment_type='clinic'` payments on clinics `created_by` the tutor — the price minus the 60% platform fee, matching the stat card's "Your 40% share after platform fee."
+### Clinic IntaSend path — `clinic_id` on Payment without `booking_id`
 
-### Design system via the partials pattern, not layouts.app
-
-The view is a self-contained `<!DOCTYPE html>` document that `@include`s `partials.head`, `partials.nav`, and `partials.footer`, with a page-local `<style>` block for dashboard-only classes (`.session-hero`, `.start-btn`/pulse, `.cap-bar`, `.pill`, `.dash-stats`, `.clinic-row`). This is the same pattern the booking-show page and every other examiner page use, and it is the only way to get the themed tokens: `partials/head.blade.php` loads Fraunces + DM Sans, Font Awesome 6.5.1, and defines `--ink #15281F`, `--trust-blue #0A64BC`, `--mint #10B981`, `--sidebar #111C16`, plus the `.btn`/`.btn-mint`/`.btn-v`/`.stat-card`/`.flash`/`.tbl-wrap` classes the dashboard relies on. `@extends('layouts.app')` is deliberately not used — that layout is the generic Tailwind shell (`bg-gray-50`, gray/black nav, no Fraunces or themed colors), so extending it would lose the design system the task requires.
-
-One icon deviates from the "fa-solid" guidance: the upcoming-row date uses `fa-regular fa-calendar`.
-
-### Past Clinics: cancelled clinics, an estimated earnings column, and an unguarded relation
-
-Three concerns sit in the Past Clinics section, which is the part most likely to mislead an examiner.
-
-The query is `ExaminerClinic::where('created_by', $user->id)->with('subject')->withCount('enrollments')->where('scheduled_at', '<', now())->orderBy('scheduled_at', 'desc')->take(10)` — no status filter. A cancelled clinic (status set to `cancelled` by `Admin\ExaminerClinicController` or `Admin\ClinicController`) and a clinic still marked `scheduled` whose time simply passed both land in this list under the heading "Clinics that have already taken place." Each row shows an "Earnings" value, so a cancelled clinic appears with a positive earnings figure that almost certainly was never realized. Restricting to non-cancelled statuses (or adding a status column) fixes both the mislabeling and the spurious earnings.
-
-The earnings column itself is `$enrolled * ($clinic->price * 0.40)`. The plan marks this "display only" with `clinic_earnings` authoritative, so it is a deliberate estimate — but it counts every enrollment at full price. Unpaid, pending, or refunded enrollments inflate it, and the same page's stat card shows the realized `clinic_earnings` summed from actual `tutor_amount`, so the two numbers can disagree. Labelling the column "Est. earnings" (or summing real `tutor_amount` per clinic) would make the estimate honest.
-
-Finally, the subject cell is `{{ $clinic->subject->name ?? 'N/A' }}`. The `?? 'N/A'` does not prevent the throw: on a null `subject`, PHP 8 emits "Attempt to read property 'name' on null", and Laravel's error handler converts that warning into an `ErrorException`, so the page 500s rather than rendering "N/A." The upcoming list guards exactly this with `@if($clinic->subject)`, and recent enrollments use `?->` — so the unguarded Past Clinics access is an oversight, not a deliberate choice. A null subject is reachable: `Admin\SubjectController::destroy` deletes a `Subject` when it has no bookings, with no check for examiner clinics, so a clinic's `subject_id` can be orphaned. The fix is one character: `$clinic->subject?->name ?? 'N/A'`.
-
-### Verification evidence
-
-The dashboard commit (`a8e909d`) message is a one-liner with no verification output, and `plan.md` lists the `php -l` / `view:cache` / `route:list` commands only as expectations with the checkboxes still unchecked — no actual command output is recorded in any task artifact. I used the one allowed narrow spot-check to run `php -l app/Http/Controllers/ExaminerController.php`, which returned "No syntax errors detected"; the Blade template was not re-compiled here. Recording the `view:cache` and `route:list` outputs in the commit message or task findings would let the review confirm the template compiles and the routes resolve without re-running them.
+`ClinicBookingController::pay()` creates `Payment::create([..., 'clinic_id' => $clinic->id, ...])` without a `booking_id`. `IntaSendWebhookController::confirmRelatedRecord()` calls `$payment->booking` to look up the booking. For clinic payments, `$payment->booking` will be `null`, so the webhook's `if ($booking && $booking->status === 'pending')` guard silently skips confirmation. This means clinic Airtel/Card payments through IntaSend will mark the `Payment` as `success` but never create the `ClinicEnrollment`. Severity is lower because M-Pesa clinic payments go through `DarajaCallbackController` which presumably does handle enrollment, but IntaSend clinic payments have no confirmation path.
 
 </details>
 
-<details><summary>File map</summary>
+---
 
-- `app/Http/Controllers/ExaminerController.php` — `dashboard()` rewritten to compute four stats (total clinics, total students enrolled, upcoming sessions, clinic earnings) and pass upcoming clinics, past clinics, and recent enrollments; all queries scoped to `created_by`. Other methods unchanged.
-- `resources/views/pages/examiner-dashboard.blade.php` — full rewrite as a self-contained page using `@include('partials.head/nav/footer')`: hero, four stat cards, upcoming clinics (Start Session → `examiner.clinics.join`, View Details → `examiner.clinics.show`), past clinics table, recent enrollments timeline, and no-clinics / no-earnings / empty-sublist states.
+<details>
+<summary>File map</summary>
 
-Full diff: `git diff a617be3 a8e909d -- app/Http/Controllers/ExaminerController.php resources/views/pages/examiner-dashboard.blade.php`
+| File | What changed |
+|---|---|
+| `app/Services/JitsiService.php` | Added public `generateRoomName()` and `generateToken()` wrappers |
+| `app/Models/Booking.php` | `canJoin()` window changed from 60 → 15 minutes |
+| `config/services.php` | Added `jitsi` config block (`use_jwt`, `domain`) |
+| `bootstrap/app.php` | Added `api/intasend/webhook` to CSRF exclusions |
+| `resources/views/pages/bookings/meeting-room.blade.php` | `env()` → `config()` for JWT check; `participantLeft` fetch removed; `hangup` listener removed |
+| `resources/views/pages/clinic-jitsi-room.blade.php` | Domain corrected to `meet.jit.si`; CSRF meta added; attendance POST added; Leave button replaced with `leaveSession()` |
+| `app/Services/IntaSendService.php` | New service: checkout, webhook verify, webhook parse |
+| `app/Http/Controllers/IntaSendWebhookController.php` | New controller: verifies, parses, updates Payment, confirms booking |
+| `app/Http/Controllers/BookingController.php` | Added IntaSend branch for airtel/card; phone validation guarded to mpesa-only |
+| `app/Http/Controllers/ClinicBookingController.php` | Added IntaSend branch for airtel/card clinic payments |
+| `resources/views/pages/tutors/show.blade.php` | Payment method selector added; `processPayment()` updated; redirect branch added |
+| `resources/views/pages/clinic-checkout.blade.php` | Alpine payment method selector added; hidden `payment_method` input added |
+| `routes/api.php` | `POST /api/intasend/webhook` route registered |
+
+Full diff: `git diff main` in the repository root.
 
 </details>

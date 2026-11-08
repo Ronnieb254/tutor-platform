@@ -86,7 +86,7 @@
 </head>
 <body>
  <div class="error-container">
- <div class="error-icon">Å¡Â Ã¯Â¸Â</div>
+ <div class="error-icon">⚠ Ã¯Â¸Â</div>
  <h1>Dashboard Temporarily Unavailable</h1>
  <p>
  {{ $message ?? 'We\'re having trouble loading your dashboard right now. Our team has been notified and is working on it.' }}

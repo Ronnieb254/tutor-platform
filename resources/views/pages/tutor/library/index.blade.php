@@ -4,7 +4,7 @@
 <meta charset="utf-8">
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Resources â‚¬" Mwalimu</title>
+<title>My Resources — Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -176,8 +176,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <td>
  <span class="bdg {{ $typeClasses[$resource->resource_type] ?? 'bdg-gray' }}">{{ $typeLabels[$resource->resource_type] ?? ucfirst($resource->resource_type) }}</span>
  </td>
- <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? 'â‚¬"' }}</td>
- <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? 'â‚¬"' }}</td>
+ <td style="font-size:13px;color:var(--muted);">{{ $resource->category?->name ?? '—' }}</td>
+ <td style="font-size:13px;color:var(--muted);">{{ $resource->grade_level ?? '—' }}</td>
  <td style="font-weight:600;">{{ number_format($resource->download_count) }}</td>
  <td>
  @if(!$resource->is_approved)

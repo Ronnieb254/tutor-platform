@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -33,7 +33,7 @@
  </a>
  @if(!auth()->check() || auth()->user()->role === 'parent')
  <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Become a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @endif
  @elseif(auth()->check() && auth()->user()->role === 'admin')
@@ -50,7 +50,7 @@
  <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;padding-top:36px;border-top:1px solid rgba(255,255,255,.1);">
  @foreach([['500+','Verified Tutors'],['4.9<i class="fa-solid fa-star" style="font-size:inherit; color:#EEBE15;"></i>','Average Rating'],['10,000+','Sessions Done'],['48hr','Max Approval Time'],['80+','Subjects']] as [$n,$l])
  <div style="text-align:center;">
- <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#fff;">{{ $n }}</div>
+ <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#fff;">{!! $n !!}</div>
  <div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:3px;">{{ $l }}</div>
  </div>
  @endforeach
@@ -76,7 +76,7 @@
  <button type="button" @click="role='tutor'"
  :style="role==='tutor' ? 'background:linear-gradient(135deg,#0A64BC,#120A8F);color:#fff;box-shadow:0 4px 16px rgba(10,100,188,.35);' : 'background:transparent;color:rgba(21,40,31,.5);'"
  style="padding:16px 44px;border-radius:999px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:9px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> I'm a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> I'm a Tutor
  </button>
  </div>
 
@@ -85,8 +85,8 @@
  <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="steps-grid">
  @php $studentSteps = [
  ['1','fa-magnifying-glass','#0A64BC','Find Your Tutor','Browse TSC-registered tutors by subject. Read real reviews from students and parents who have already booked.','Filter by Kenyan curriculum subject','View reviews and availability','Choose from 500+ verified tutors','Background-checked for your safety'],
- ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block - Quick Help (20min), Guided Practice (40min), Deep Dive (60min), or Group Session (60min). Fixed pricing, no surprises.','Quick Help - 20 min - KSh 300','Guided Practice - 40 min - KSh 600','Deep Dive - 60 min - KSh 900','Group Session ðŸ‘¥ - 60 min - KSh 600'],
- ['3','fa-mobile-screen-button','#E8522A','Pay via M-Pesa','Complete your booking by paying through M-Pesa STK Push - Kenya\'s mobile money standard. An instant prompt is sent to your phone; enter your PIN to confirm.','M-Pesa STK Push - enter your PIN on your phone','Payments processed via Safaricom Daraja API','Full refund if tutor cancels','Booking confirmed immediately after payment'],
+ ['2','fa-clock','#10B981','Pick Session Type & Time','Choose your session block - Quick Help (20min), Guided Practice (40min), Deep Dive (60min), or Group Session (60min). Fixed pricing, no surprises.','Quick Help - 20 min - KSh 300','Guided Practice - 40 min - KSh 600','Deep Dive - 60 min - KSh 900','Group Session 💥 - 60 min - KSh 600'],
+ ['3','fa-mobile-screen-button','#E8522A','Pay via M-Pesa','Complete your booking by paying through M-Pesa STK Push - Kenya\'s mobile money standard. An instant prompt is sent to your phone; enter your PIN to confirm.','M-Pesa STK Push - enter your PIN on your phone','Payments processed via I&M Bank API Gateway','Full refund if tutor cancels','Booking confirmed immediately after payment'],
  ['4','fa-envelope','#EEBE15','Receive Your Session Code','Immediately after payment, you and the tutor both receive unique session access codes by email. Yours is STU-XXXXXX. The tutor\'s is TUT-XXXXXX.','Unique STU-XXXXXX code emailed to you','Tutor receives TUT-XXXXXX separately','Session date, time and duration confirmed','Receive a session code via email and system notification.'],
  ['5','fa-video','#3B82F6','Join Your Live Session','On session day, open your booking and enter your STU-XXXXXX code. Your private classroom opens instantly in your browser - no download needed.','Enter STU-XXXXXX code to verify identity','Private video room opens instantly','Screen sharing and whiteboard available','No app download required'],
  ['6','fa-star','#EC4899','Review & Rebook','After your session, leave a star rating and written review to help other students. Rebook your favourite tutor directly from your dashboard with one click.','Star rating + written review','Tutor appears in Saved for easy rebook','Session history tracked in dashboard','Message tutor directly for follow-up'],
@@ -162,10 +162,10 @@
  </div>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-grid">
  @foreach([
- ['20','Quick Help','âš¡','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week','individual'],
- ['40','Guided Practice','ðŸŽ¯','KSh 600','A full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics','individual'],
- ['60','Deep Dive','ðŸ†','KSh 900','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics','individual'],
- ['60','Group Session','ðŸ‘¥','KSh 600','Learn together with other students. Share the cost, maximize value.','Group revision, study buddies, exam prep','group'],
+ ['20','Quick Help','⚡','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week','individual'],
+ ['40','Guided Practice','🎯','KSh 600','A full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics','individual'],
+ ['60','Deep Dive','🏆','KSh 900','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics','individual'],
+ ['60','Group Session','💥','KSh 600','Learn together with other students. Share the cost, maximize value.','Group revision, study buddies, exam prep','group'],
  ] as [$mins,$name,$icon,$price,$desc,$ideal,$type])
  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px;transition:background .2s;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
@@ -332,7 +332,7 @@
  <i class="fa-solid fa-magnifying-glass"></i> Find a Tutor
  </a>
  <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.3);font-size:16px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Become a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @else
  <a href="{{ route('tutor.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:15px 40px;border-radius:999px;background:#0A64BC;color:#fff;font-size:16px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">

@@ -129,7 +129,7 @@ $canJoin = $groupSession->canJoin($user);
  </a>
  @endif
  <a href="{{ route('tutor.group-sessions.index') }}" class="btn btn-ghost" style="padding:7px 14px;font-size:12px;">
- <span style="font-size:inherit;">←</span> Back
+ <span style="font-size:inherit;">?</span> Back
  </a>
  </div>
  </div>

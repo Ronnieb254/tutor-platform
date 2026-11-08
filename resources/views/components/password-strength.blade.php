@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
  } else if (metCount >= 2) {
  strengthBar.classList.add('medium');
  strengthLabel.classList.add('medium');
- strengthLabel.textContent = 'Å¡Â  Medium strength';
+ strengthLabel.textContent = '⚠  Medium strength';
  } else {
  strengthBar.classList.add('weak');
  strengthLabel.classList.add('weak');
