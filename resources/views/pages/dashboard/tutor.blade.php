@@ -229,10 +229,6 @@ $activeTab = request('tab','overview');
                 <i class="fa-solid fa-wallet fa-fw" style="font-size:14px;"></i>
                 Earnings & Wallet
             </button>
-            <button class="sb-item" :class="tab==='payouts'?'active':''" @click="tab='payouts';sidebarOpen=false">
-                <i class="fa-solid fa-money-bill-transfer fa-fw" style="font-size:14px;"></i>
-                Payout Requests
-            </button>
         </div>
         @endif
 
@@ -288,7 +284,7 @@ $activeTab = request('tab','overview');
             <div class="page-title" x-text="{
                 overview:'Dashboard Overview',documents:'My Documents',bookings:'Bookings',history:'Session History',
                 chats:'Messages',availability:'Availability',earnings:'Earnings & Wallet',
-                payouts:'Payout Requests',notifications:'Notifications',profile:'My Profile'
+                notifications:'Notifications',profile:'My Profile'
             }[tab] || 'Dashboard'"></div>
         </div>
         <div class="topbar-right">
