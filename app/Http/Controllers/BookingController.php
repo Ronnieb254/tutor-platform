@@ -5,17 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Services\BookingService;
-use App\Services\DarajaService;
-use App\Services\IntaSendService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
     public function __construct(
-        protected BookingService  $bookingService,
-        protected DarajaService   $daraja,
-        protected IntaSendService $intaSend
+        protected BookingService $bookingService
     ) {}
 
     public function show(Booking $booking)
@@ -106,116 +102,50 @@ class BookingController extends Controller
             ]);
         }
 
-        $paymentMethod = $request->input('payment_method', 'mpesa');
+        // All paid bookings now use manual Paybill payment
+        $request->validate(['mpesa_code' => 'required|string|min:6|max:30']);
 
-        // --- Airtel / Card → IntaSend hosted checkout ---
-        if (in_array($paymentMethod, ['airtel', 'card'])) {
-            $reference   = 'TL-' . strtoupper(Str::random(8)) . '-' . time();
-            $redirectUrl = route('bookings.show', $booking->uuid);
+        $payment = Payment::create([
+            'booking_id'   => $booking->id,
+            'user_id'      => auth()->id(),
+            'amount'       => $booking->total_amount,
+            'currency'     => 'KES',
+            'payment_type' => 'booking',
+            'status'       => 'pending_verification',
+            'mpesa_code'   => strtoupper(trim($request->input('mpesa_code'))),
+            'metadata'     => [
+                'payment_instructions' => 'Paybill 542542, Account 313126',
+                'student_submitted_at' => now()->toDateTimeString(),
+            ],
+        ]);
 
-            Payment::create([
-                'booking_id'      => $booking->id,
-                'user_id'         => auth()->id(),
-                'amount'          => $booking->total_amount,
-                'currency'        => 'KES',
-                'mpesa_reference' => $reference,
-                'status'          => 'pending',
-            ]);
+        return response()->json([
+            'status'       => 'pending_verification',
+            'booking_id'   => $booking->id,
+            'booking_uuid' => $booking->uuid,
+            'payment_id'   => $payment->id,
+            'message'      => 'Your booking is pending. Admin will verify your payment within 5 minutes and send your session codes by email.',
+        ]);
+    }
 
-            try {
-                $result = $this->intaSend->createCheckout(
-                    (float) $booking->total_amount,
-                    auth()->user(),
-                    $reference,
-                    $redirectUrl
-                );
+    public function paymentStatus(Request $request)
+    {
+        $request->validate(['payment_id' => 'required|integer']);
 
-                return response()->json([
-                    'status'       => 'ok',
-                    'redirect_url' => $result['url'],
-                    'reference'    => $reference,
-                    'booking_id'   => $booking->id,
-                ]);
-            } catch (\Throwable $e) {
-                \Log::error('IntaSend checkout error', [
-                    'error'      => $e->getMessage(),
-                    'booking_id' => $booking->id,
-                ]);
-                $booking->delete();
-                return response()->json([
-                    'status'  => 'error',
-                    'message' => 'Payment gateway error: ' . $e->getMessage(),
-                ], 422);
-            }
-        }
+        $payment = Payment::where('id', $request->payment_id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
-        // --- M-Pesa STK Push (default) ---
-        // Validate phone number is present
-        $request->validate(['phone' => 'required|string|min:9|max:15']);
+        $booking = $payment->booking;
 
-        // Initiate M-Pesa STK Push
-        $reference = $this->daraja->generateReference();
-
-        try {
-            $result = $this->daraja->initializeStkPush(
-                $request->input('phone'),
-                $booking->total_amount,
-                $reference,
-                'Mwalimu Session'
-            );
-
-            \Log::info('Daraja STK Push response', ['result' => $result]);
-
-            $responseCode = $result['ResponseCode'] ?? ($result['errorCode'] ?? null);
-
-            if ($responseCode === '0' || isset($result['_mock'])) {
-                // Store checkout_request_id so callback can match this payment
-                Payment::create([
-                    'booking_id'          => $booking->id,
-                    'user_id'             => auth()->id(),
-                    'amount'              => $booking->total_amount,
-                    'currency'            => 'KES',
-                    'mpesa_reference'     => $reference,
-                    'checkout_request_id' => $result['CheckoutRequestID'] ?? null,
-                    'merchant_request_id' => $result['MerchantRequestID'] ?? null,
-                    'status'              => 'pending',
-                    'payer_phone'         => $this->daraja->normalizePhone($request->input('phone')),
-                ]);
-
-                return response()->json([
-                    'status'               => 'ok',
-                    'reference'            => $reference,
-                    'checkout_request_id'  => $result['CheckoutRequestID'] ?? null,
-                    'booking_id'           => $booking->id,
-                    'message'              => $result['CustomerMessage'] ?? 'Check your phone for the M-Pesa prompt.',
-                ]);
-            }
-
-            $errorMessage = $result['errorMessage'] ?? ($result['ResponseDescription'] ?? 'Could not initialize payment.');
-            \Log::error('Daraja STK Push failed', [
-                'result'     => $result,
-                'booking_id' => $booking->id,
-            ]);
-
-            $booking->delete();
-            return response()->json([
-                'status'  => 'error',
-                'message' => $errorMessage,
-                'debug'   => config('app.debug') ? $result : null,
-            ], 422);
-
-        } catch (\Exception $e) {
-            \Log::error('Daraja exception', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            $booking->delete();
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Payment gateway error: ' . $e->getMessage(),
-            ], 422);
-        }
+        return response()->json([
+            'status'       => $payment->status,
+            'booking_uuid' => $booking?->uuid,
+            'student_code' => $booking?->session_code_student,
+            'booking_url'  => $booking ? route('bookings.show', $booking->uuid) : null,
+            'admin_note'   => $payment->status === 'failed' ? $payment->admin_note : null,
+            'verified_at'  => $payment->verified_at?->toDateTimeString(),
+        ]);
     }
 
     public function confirm(Request $request)

@@ -11,21 +11,24 @@ class Payment extends Model
         'payment_type', 'tutor_amount', 'platform_amount', 'commission_rate',
         'mpesa_reference', 'checkout_request_id', 'merchant_request_id',
         'mpesa_receipt', 'payer_phone',
+        'mpesa_code', 'admin_note', 'verified_by', 'verified_at',
         'status', 'failure_reason', 'metadata', 'paid_at',
     ];
 
     protected function casts(): array
     {
         return [
-            'amount'   => 'decimal:2',
-            'metadata' => 'array',
-            'paid_at'  => 'datetime',
+            'amount'      => 'decimal:2',
+            'metadata'    => 'array',
+            'paid_at'     => 'datetime',
+            'verified_at' => 'datetime',
         ];
     }
 
     public function booking() { return $this->belongsTo(Booking::class); }
     public function clinic() { return $this->belongsTo(ExaminerClinic::class); }
     public function user()    { return $this->belongsTo(User::class); }
+    public function verifiedBy() { return $this->belongsTo(User::class, 'verified_by'); }
 
     public function scopeSuccessful($q) { return $q->where('status', 'success'); }
 

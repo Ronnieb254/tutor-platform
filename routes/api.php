@@ -42,10 +42,4 @@ Route::post('/imbank/timeout', [IMBankPaymentController::class, 'timeout'])
 Route::get('/imbank/status', [IMBankPaymentController::class, 'queryStatus'])
     ->name('imbank.status');
 
-/*
-|--------------------------------------------------------------------------
-| IntaSend Payment Webhook
-|--------------------------------------------------------------------------
-*/
-Route::post('/intasend/webhook', [\App\Http\Controllers\IntaSendWebhookController::class, 'handle'])
-    ->name('intasend.webhook');
+

@@ -5,21 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\ExaminerClinic;
 use App\Models\ClinicEnrollment;
 use App\Models\Payment;
-use App\Services\DarajaService;
-use App\Services\IntaSendService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ClinicBookingController extends Controller
 {
-    protected $daraja;
-    protected $intaSend;
-
-    public function __construct(DarajaService $daraja, IntaSendService $intaSend)
-    {
-        $this->daraja   = $daraja;
-        $this->intaSend = $intaSend;
-    }
+    public function __construct() {}
 
     /**
      * Show the clinic checkout page before payment.
@@ -48,7 +39,7 @@ class ClinicBookingController extends Controller
     }
 
     /**
-     * Process the payment via Daraja M-Pesa STK Push or IntaSend (Airtel/Card).
+     * Process the payment — manual Paybill M-Pesa code submission.
      */
     public function pay(Request $request, ExaminerClinic $clinic)
     {
@@ -62,89 +53,25 @@ class ClinicBookingController extends Controller
             return back()->with('error', 'You are already enrolled in this session.');
         }
 
-        $paymentMethod = $request->input('payment_method', 'mpesa');
+        $request->validate(['mpesa_code' => 'required|string|min:6|max:30']);
 
-        // --- Airtel / Card → IntaSend ---
-        if (in_array($paymentMethod, ['airtel', 'card'])) {
-            $reference   = 'CL-' . strtoupper(Str::random(8)) . '-' . time();
-            $redirectUrl = route('clinic.my-bookings');
+        Payment::create([
+            'user_id'      => $user->id,
+            'clinic_id'    => $clinic->id,
+            'amount'       => $clinic->price,
+            'currency'     => 'KES',
+            'payment_type' => 'clinic',
+            'status'       => 'pending_verification',
+            'mpesa_code'   => strtoupper(trim($request->input('mpesa_code'))),
+            'metadata'     => [
+                'clinic_id'    => $clinic->id,
+                'clinic_title' => $clinic->title ?? $clinic->name,
+                'payment_instructions' => 'Paybill 542542, Account 313126',
+            ],
+        ]);
 
-            try {
-                $result = $this->intaSend->createCheckout(
-                    (float) $clinic->price,
-                    $user,
-                    $reference,
-                    $redirectUrl
-                );
-
-                Payment::create([
-                    'user_id'         => $user->id,
-                    'clinic_id'       => $clinic->id,
-                    'amount'          => $clinic->price,
-                    'currency'        => 'KES',
-                    'payment_type'    => 'clinic',
-                    'status'          => 'pending',
-                    'mpesa_reference' => $reference,
-                    'metadata'        => [
-                        'clinic_id'    => $clinic->id,
-                        'clinic_title' => $clinic->title ?? $clinic->name,
-                        'method'       => $paymentMethod,
-                    ],
-                ]);
-
-                return redirect()->away($result['url']);
-
-            } catch (\Exception $e) {
-                return back()->with('error', 'Payment gateway error: ' . $e->getMessage());
-            }
-        }
-
-        // --- M-Pesa STK Push (default) ---
-        $request->validate(['phone' => 'required|string|min:9|max:15']);
-
-        $reference = $this->daraja->generateReference('CLINIC');
-
-        try {
-            $result = $this->daraja->initializeStkPush(
-                $request->input('phone'),
-                (float) $clinic->price,
-                $reference,
-                'Mwalimu Clinic'
-            );
-
-            $responseCode = $result['ResponseCode'] ?? ($result['errorCode'] ?? null);
-
-            if ($responseCode !== '0' && !isset($result['_mock'])) {
-                return back()->with('error', 'Payment initialization failed: ' . ($result['errorMessage'] ?? $result['ResponseDescription'] ?? 'Please try again.'));
-            }
-
-            // Create pending payment record
-            Payment::create([
-                'user_id'             => $user->id,
-                'clinic_id'           => $clinic->id,
-                'amount'              => $clinic->price,
-                'currency'            => 'KES',
-                'payment_type'        => 'clinic',
-                'status'              => 'pending',
-                'mpesa_reference'     => $reference,
-                'checkout_request_id' => $result['CheckoutRequestID'] ?? null,
-                'merchant_request_id' => $result['MerchantRequestID'] ?? null,
-                'payer_phone'         => $this->daraja->normalizePhone($request->input('phone')),
-                'metadata'            => [
-                    'clinic_id'    => $clinic->id,
-                    'clinic_title' => $clinic->title ?? $clinic->name,
-                ],
-            ]);
-
-            // Store reference in session for the polling page
-            session(['clinic_payment_ref' => $reference, 'clinic_id' => $clinic->id]);
-
-            // Redirect to a polling/waiting page
-            return redirect()->route('clinic.payment-pending', ['reference' => $reference]);
-
-        } catch (\Exception $e) {
-            return back()->with('error', 'Payment error: ' . $e->getMessage());
-        }
+        return redirect()->route('clinic.my-bookings')
+            ->with('info', 'Your payment code has been submitted. Admin will verify within 5 minutes and send your session code by email.');
     }
 
     /**

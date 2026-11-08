@@ -121,6 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/examiner/clinics/{clinic}/join', [App\Http\Controllers\ExaminerController::class, 'joinAsExaminer'])->name('examiner.clinics.join');
 
     // Bookings
+    Route::get('/bookings/payment-status',    [BookingController::class, 'paymentStatus'])->name('bookings.payment-status');
     Route::get('/bookings/{booking}',         [BookingController::class, 'show'])->name('bookings.show');
     Route::get('/bookings/{booking}/room',    [BookingController::class, 'meetingRoom'])->name('bookings.room');
     Route::post('/bookings',                  [BookingController::class, 'store'])->name('bookings.store');
@@ -382,6 +383,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/group-sessions/{groupSession}/cancel',   [App\Http\Controllers\Admin\GroupSessionController::class, 'cancel'])->name('group-sessions.cancel');
         Route::post('/group-sessions/{groupSession}/start',    [App\Http\Controllers\Admin\GroupSessionController::class, 'start'])->name('group-sessions.start');
         Route::post('/group-sessions/{groupSession}/complete', [App\Http\Controllers\Admin\GroupSessionController::class, 'complete'])->name('group-sessions.complete');
+
+        // Manual payment verification queue
+        Route::get('/manual-payments', [App\Http\Controllers\Admin\ManualPaymentController::class, 'index'])->name('manual-payments');
+        Route::post('/manual-payments/{payment}/verify', [App\Http\Controllers\Admin\ManualPaymentController::class, 'verify'])->name('manual-payments.verify');
+        Route::post('/manual-payments/{payment}/reject', [App\Http\Controllers\Admin\ManualPaymentController::class, 'reject'])->name('manual-payments.reject');
     });
     
     // Tutor can manage their own subjects
