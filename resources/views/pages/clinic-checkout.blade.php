@@ -92,27 +92,40 @@ a{color:inherit;text-decoration:none;}
  </div>
 
  {{-- Payment Method --}}
- <div style="margin-bottom:24px;">
+ <div style="margin-bottom:24px;" x-data="{ method: 'mpesa' }">
  <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;">Payment Method</h3>
- <div class="payment-method selected" data-method="mpesa">
- <div class="payment-icon">ðŸ-±</div>
- <div class="payment-name">M-Pesa (Lipa Na M-Pesa)</div>
- <div class="payment-desc">Secure STK Push - enter your M-Pesa PIN on your phone to pay</div>
- </div>
+ <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+ <button type="button" @click="method='mpesa'"
+ :style="method==='mpesa' ? 'border:2px solid #0A64BC;background:#EFF6FF;' : 'border:2px solid #D1D5DB;background:#fff;'"
+ style="padding:12px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
+ <span>📱</span><span>M-Pesa</span>
+ </button>
+ <button type="button" @click="method='airtel'"
+ :style="method==='airtel' ? 'border:2px solid #DC2626;background:#FEF2F2;' : 'border:2px solid #D1D5DB;background:#fff;'"
+ style="padding:12px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
+ <span>📶</span><span>Airtel</span>
+ </button>
+ <button type="button" @click="method='card'"
+ :style="method==='card' ? 'border:2px solid #059669;background:#ECFDF5;' : 'border:2px solid #D1D5DB;background:#fff;'"
+ style="padding:12px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
+ <span>💳</span><span>Card</span>
+ </button>
  </div>
 
  {{-- Payment Form --}}
  <form id="paymentForm" method="POST" action="{{ route('clinic.pay', $clinic) }}">
  @csrf
+ <input type="hidden" name="payment_method" :value="method" x-bind:value="method">
 
- {{-- M-Pesa Phone --}}
- <div style="margin-bottom:18px;">
+ {{-- M-Pesa / Airtel Phone --}}
+ <div style="margin-bottom:18px;" x-show="method === 'mpesa' || method === 'airtel'">
  <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
  <span style="font-size:inherit;"><i class="fa-solid fa-mobile-screen"></i></span>
- M-Pesa Phone Number
+ Phone Number
  </label>
- <input type="tel" name="phone" required
+ <input type="tel" name="phone"
  placeholder="e.g. 0712 345 678"
+ :required="method === 'mpesa' || method === 'airtel'"
  style="width:100%;height:46px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;"
  onfocus="this.style.borderColor='var(--trust-blue)'"
  onblur="this.style.borderColor='rgba(21,40,31,.18)'">
@@ -122,6 +135,11 @@ a{color:inherit;text-decoration:none;}
  <p style="font-size:11px;color:var(--muted);margin-top:5px;">
  You'll receive an STK Push on this number. Enter your PIN to complete payment.
  </p>
+ </div>
+
+ {{-- Card notice --}}
+ <div x-show="method === 'card'" style="padding:12px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0;font-size:13px;color:#065F46;margin-bottom:18px;">
+ <p style="margin:0;">💳 You will be redirected to a secure card payment page after confirming.</p>
  </div>
 
  {{-- User Verification --}}
@@ -141,7 +159,7 @@ a{color:inherit;text-decoration:none;}
 
  {{-- Submit Button --}}
  <button type="submit" class="btn btn-primary" id="submitBtn">
- <i class="fa-solid fa-lock"></i> Pay KSh {{ number_format($clinic->price) }} via M-Pesa
+ <i class="fa-solid fa-lock"></i> Pay KSh {{ number_format($clinic->price) }}
  </button>
  <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
  <span style="font-size:inherit;">←</span> Back
@@ -152,6 +170,7 @@ a{color:inherit;text-decoration:none;}
  <div class="loading" id="loadingState">
  <div class="spinner"></div>
  <p style="margin-top:16px;font-size:14px;color:var(--muted);">Processing your payment...</p>
+ </div>
  </div>
 
  {{-- Security Badge --}}
@@ -167,15 +186,6 @@ a{color:inherit;text-decoration:none;}
 document.getElementById('paymentForm').addEventListener('submit', function() {
  document.getElementById('submitBtn').disabled = true;
  document.getElementById('loadingState').style.display = 'block';
-});
-
-// Payment method selection (for future multi-method support)
-document.querySelectorAll('.payment-method').forEach(el => {
- el.addEventListener('click', function() {
- document.querySelectorAll('.payment-method').forEach(e => e.classList.remove('selected'));
- this.classList.add('selected');
- document.querySelector('input[name="method"]').value = this.dataset.method;
- });
 });
 </script>
 

@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="csrf-token" content="{{ csrf_token() }}">
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ $clinic->title ?? $clinic->name }} - Clinic Session</title>
-<script src="https://meet.jitsi.org/external_api.js"></script>
+<script src="https://meet.jit.si/external_api.js"></script>
 <style>
 :root{--ink:#15281F;--trust-blue:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -45,12 +46,9 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <span class="session-code">{{ $sessionCode }}</span>
  @endif
  </div>
- <form method="POST" action="{{ route('logout') }}" style="display:inline;">
- @csrf
- <button type="submit" class="exit-btn">
+ <button type="button" onclick="leaveSession()" class="exit-btn">
  <i class="fa-solid fa-right-from-bracket"></i> Leave Session
  </button>
- </form>
  </div>
 
  <div class="jitsi-room" id="jitsi-room"></div>
@@ -62,7 +60,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 </div>
 
 <script>
-const domain = "meet.jitsi.org";
+const domain = "meet.jit.si";
 const roomName = "{{ $roomId }}";
 const displayName = "{{ $displayName }}";
 const isModerator = {{ $isModerator ? 'true' : 'false' }};
@@ -119,8 +117,14 @@ const jitsiAPI = new JitsiMeetExternalAPI(domain, options);
 
 // Log session start
 jitsiAPI.addEventListener('videoConferenceJoined', function() {
- console.log('User joined clinic session: ' + roomName);
- // Mark attendance in backend if not already done
+ // Mark attendance in backend
+ fetch('/clinic/{{ $clinic->id }}/attendance', {
+ method: 'POST',
+ headers: {
+ 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+ 'Content-Type': 'application/json',
+ },
+ }).catch(function() {});
 });
 
 // Track leaving
@@ -145,6 +149,14 @@ if (fullscreenBtn) {
  jitsiContainer.requestFullscreen();
  }
  });
+}
+
+// Leave session function
+function leaveSession() {
+ try { jitsiAPI.executeCommand('hangup'); } catch(e) {}
+ setTimeout(function() {
+ window.location.href = '{{ route("clinic.my-bookings") }}';
+ }, 1000);
 }
 
 // Prevent back navigation (clinic sessions should be exited properly)

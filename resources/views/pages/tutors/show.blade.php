@@ -5,7 +5,7 @@
 <title>{{ $tutor->user->name }} - Verified Tutor | Mwalimu</title>
 <meta name="description" content="{{ Str::limit($tutor->bio ?? 'Book a session with '.$tutor->user->name.' on Mwalimu.', 160) }}">
 <style>
-/* â-€â-€ Page-level styles â-€â-€ */
+/*  Page-level styles  */
 .profile-hero{background:linear-gradient(135deg,#111C16 0%,#15281F 60%,#1a2e22 100%);padding:48px 0 0;position:relative;overflow:hidden;}
 .profile-hero::before{content:'';position:absolute;top:-120px;right:-80px;width:400px;height:400px;background:rgba(10,100,188,.12);border-radius:50%;pointer-events:none;}
 .profile-hero::after{content:'';position:absolute;bottom:-60px;left:20%;width:200px;height:200px;background:rgba(212,160,23,.06);border-radius:50%;pointer-events:none;}
@@ -46,14 +46,14 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
 @include('partials.nav')
 
-{{-- â-€â-€ PROFILE HERO â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€ --}}
+{{--  PROFILE HERO  --}}
 <div class="profile-hero">
  <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
 
  {{-- Breadcrumb --}}
  <div style="margin-bottom:20px;">
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='rgba(255,255,255,.85)'" onmouseout="this.style.color='rgba(255,255,255,.5)'">
- <span style="font-size:inherit;">←</span> All Tutors
+ <span style="font-size:inherit;"></span> All Tutors
  </a>
  </div>
 
@@ -143,14 +143,14 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
 </div>
 
-{{-- â-€â-€ MAIN CONTENT â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€â-€ --}}
+{{--  MAIN CONTENT  --}}
 <div style="max-width:1360px;margin:0 auto;padding:32px 24px 64px;" class="w">
  <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="show-grid session-layout">
 
  {{-- LEFT: Tab content --}}
  <div>
 
- {{-- â-€â-€ ABOUT TAB â-€â-€ --}}
+ {{--  ABOUT TAB  --}}
  <div id="tab-about">
  {{-- Stats cards --}}
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;" class="stat-mini-g">
@@ -211,7 +211,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
  </div>
 
- {{-- â-€â-€ AVAILABILITY TAB â-€â-€ --}}
+ {{--  AVAILABILITY TAB  --}}
  <div id="tab-availability" style="display:none;">
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
  <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
@@ -250,7 +250,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
  </div>
 
- {{-- â-€â-€ REVIEWS TAB â-€â-€ --}}
+ {{--  REVIEWS TAB  --}}
  <div id="tab-reviews" style="display:none;">
  {{-- Rating overview --}}
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
@@ -310,7 +310,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  @endif
  </div>
 
- {{-- â-€â-€ BOOK SESSION TAB â-€â-€ --}}
+ {{--  BOOK SESSION TAB  --}}
  <div id="tab-book" style="display:none;" x-data="{
  step: 1,
  dur: 20,
@@ -320,6 +320,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  notes: '',
  notesTouched: false,
  phone: '',
+ paymentMethod: 'mpesa',
  processing: false,
  stkSent: false,
  stkMsg: '',
@@ -383,7 +384,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <i class="fa-solid fa-clock"></i> 1. Choose Session Type
  </h3>
  <div style="display:grid;grid-template-columns:1fr;gap:10px;" class="tier-grid">
- @foreach([20=>['âš¡','Quick Help'],40=>['ðŸŽ¯','Guided Practice'],60=>['ðŸ†','Deep Dive']] as $mins => [$icon,$tname])
+ @foreach([20=>['⚡', 'Quick Help'],40=>['🎯', 'Guided Practice'],60=>['🏆','Deep Dive']] as $mins => [$icon,$tname])
  @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $prices[$mins]; @endphp
  <button @click="dur={{ $mins }}"
  :class="dur==={{ $mins }} ? 'tier-card selected' : 'tier-card'"
@@ -478,7 +479,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <select x-model="subject"
  style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;"
  onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
- <option value="">Select a subject…</option>
+ <option value="">Select a subject</option>
  @foreach($tutor->subjects as $s)
  <option value="{{ $s->id }}">{{ $s->name }}</option>
  @endforeach
@@ -488,7 +489,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  <div>
  <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Notes for tutor <span style="color:#E8522A;">*</span></label>
- <textarea x-model="notes" rows="2" placeholder="Topics to cover, past exam areas, specific questions…"
+ <textarea x-model="notes" rows="2" placeholder="Topics to cover, past exam areas, specific questions"
  required
  style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;background:#fff;"
  onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'"></textarea>
@@ -501,7 +502,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  :style="(!date||!time||!notes.trim())?'opacity:.5;cursor:not-allowed;':''"
  onmouseover="if(this.date&&this.time)this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
  Continue to Review
- <span style="font-size:inherit;">→</span>
+ <span style="font-size:inherit;"></span>
  </button>
  <p style="text-align:center;font-size:12px;color:rgba(21,40,31,.4);margin-top:10px;">
  <i class="fa-solid fa-rotate-right"></i> 100% money-back if unsatisfied with your first lesson
@@ -556,15 +557,40 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  @auth
  <div style="background:#F9FAF9;border-radius:14px;padding:18px;">
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:12px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-mobile-screen"></i></span> Pay via M-Pesa
+ <span style="font-size:inherit;"><i class="fa-solid fa-mobile-screen"></i></span> Pay Now
  </p>
- {{-- M-Pesa phone input --}}
- <div style="margin-bottom:14px;" x-show="!isFree">
+ {{-- Payment Method Selector --}}
+ <div style="margin-bottom:16px;" x-show="!isFree">
+ <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Payment Method</label>
+ <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;">
+ <button type="button" @click="paymentMethod='mpesa'"
+ :style="paymentMethod==='mpesa' ? 'border:2px solid #0A64BC;background:#EFF6FF;' : 'border:2px solid #D1D5DB;background:#fff;'"
+ style="padding:10px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
+ <span>📱</span><span>M-Pesa</span>
+ </button>
+ <button type="button" @click="paymentMethod='airtel'"
+ :style="paymentMethod==='airtel' ? 'border:2px solid #DC2626;background:#FEF2F2;' : 'border:2px solid #D1D5DB;background:#fff;'"
+ style="padding:10px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
+ <span>📶</span><span>Airtel</span>
+ </button>
+ <button type="button" @click="paymentMethod='card'"
+ :style="paymentMethod==='card' ? 'border:2px solid #059669;background:#ECFDF5;' : 'border:2px solid #D1D5DB;background:#fff;'"
+ style="padding:10px 6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;">
+ <span>💳</span><span>Card</span>
+ </button>
+ </div>
+ </div>
+ {{-- M-Pesa / Airtel phone input --}}
+ <div style="margin-bottom:14px;" x-show="!isFree && (paymentMethod === 'mpesa' || paymentMethod === 'airtel')">
  <label style="font-size:12px;font-weight:600;color:rgba(21,40,31,.6);display:block;margin-bottom:5px;">M-Pesa Phone Number</label>
  <input type="tel" x-model="phone" placeholder="e.g. 0712 345 678"
  style="width:100%;height:42px;border-radius:10px;border:1.5px solid rgba(21,40,31,.18);padding:0 12px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;"
  onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
  <p style="font-size:11px;color:rgba(21,40,31,.5);margin-top:4px;">You'll receive an STK Push prompt. Enter your PIN to pay.</p>
+ </div>
+ {{-- Card notice --}}
+ <div x-show="!isFree && paymentMethod === 'card'" style="padding:12px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0;font-size:13px;color:#065F46;margin-bottom:14px;">
+ <p style="margin:0;">💳 You will be redirected to a secure card payment page after confirming.</p>
  </div>
  {{-- STK sent banner --}}
  <div x-show="stkSent" style="background:rgba(16,185,129,.08);border:1.5px solid #10B981;border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:center;">
@@ -578,12 +604,12 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <template x-if="!processing">
  <span style="display:flex;align-items:center;gap:8px;">
  <i :class="isFree ? 'fa-solid fa-gift fa-xs' : 'fa-solid fa-mobile-screen-button fa-xs'"></i>
- <span x-text="isFree ? 'Book Free Session' : 'Pay KSh ' + price + ' via M-Pesa'"></span>
+ <span x-text="isFree ? 'Book Free Session' : 'Pay KSh ' + price "></span>
  </span>
  </template>
  <template x-if="processing">
  <span style="display:flex;align-items:center;gap:8px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing…
+ <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing
  </span>
  </template>
  </button>
@@ -604,7 +630,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  <div style="display:flex;justify-content:flex-start;margin-top:12px;">
  <button @click="step=1" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:rgba(21,40,31,.5);font-size:13px;cursor:pointer;font-family:inherit;padding:0;transition:color .15s;" onmouseover="this.style.color='#15281F'" onmouseout="this.style.color='rgba(21,40,31,.5)'">
- <span style="font-size:inherit;">←</span> Back
+ <span style="font-size:inherit;"></span> Back
  </button>
  </div>
  </div>
@@ -617,7 +643,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <i class="fa-solid fa-circle-check"></i>
  </div>
  <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#15281F;margin-bottom:8px;">Booking Confirmed!</h2>
- <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Payment received. Your session codes have been emailed to you. Redirecting to your session in 3 seconds…</p>
+ <p style="font-size:14px;color:rgba(21,40,31,.6);margin-bottom:28px;">Payment received. Your session codes have been emailed to you. Redirecting to your session in 3 seconds</p>
 
  {{-- Session code --}}
  <div style="background:rgba(10,100,188,.06);border:2px solid rgba(10,100,188,.25);border-radius:20px;padding:24px;margin-bottom:24px;">
@@ -631,7 +657,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- What happens next --}}
  <div style="background:#F9FAF9;border-radius:14px;padding:16px;text-align:left;margin-bottom:24px;">
  <p style="font-size:12px;font-weight:700;color:#15281F;margin-bottom:10px;"><span style="font-size:inherit;"><i class="fa-solid fa-clipboard"></i></span> What happens next</p>
- @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard â†’ click Join Session â†’ enter your code','Your private classroom opens instantly in your browser - no download required'] as $step)
+ @foreach(['Your tutor has been notified and received their own TUT-XXXXXX code','A confirmation email with all details has been sent to you','On session day, go to your dashboard  click Join Session  enter your code','Your private classroom opens instantly in your browser - no download required'] as $step)
  <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(21,40,31,.7);margin-bottom:7px;">
  <i class="fa-solid fa-circle-check"></i>{{ $step }}
  </div>
@@ -667,7 +693,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{-- Tier quick reference --}}
  <!-- <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
- @foreach([20=>['âš¡','Quick Help',300],40=>['ðŸŽ¯','Guided Practice',500],60=>['ðŸ†','Deep Dive',700]] as $mins=>[$ic,$n,$p])
+ @foreach([20=>['⚡', 'Quick Help',300],40=>['🎯', 'Guided Practice',500],60=>['🏆','Deep Dive',700]] as $mins=>[$ic,$n,$p])
  @php $sidePrice = ($mins===20 && $isFreeFirstSession) ? 0 : $p; @endphp
  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:{{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.06)':'#F9FAF9' }};border:1px solid {{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.2)':'rgba(21,40,31,.07)' }};position:relative;">
  @if($mins===15 && $isFreeFirstSession)
@@ -741,12 +767,25 @@ function showTab(name, btn) {
  }
 }
 
+function showError(title, message) {
+ // Remove any existing error toast
+ const existing = document.getElementById('pay-error-toast');
+ if (existing) existing.remove();
+
+ const toast = document.createElement('div');
+ toast.id = 'pay-error-toast';
+ toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;background:#FEF2F2;border:1.5px solid #DC2626;border-radius:12px;padding:16px 24px;max-width:400px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.15);display:flex;align-items:flex-start;gap:12px;';
+ toast.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="color:#DC2626;font-size:20px;flex-shrink:0;margin-top:2px;"></i><div><div style="font-weight:700;color:#991B1B;font-size:14px;margin-bottom:4px;">' + title + '</div><div style="font-size:13px;color:#7F1D1D;">' + message + '</div></div>';
+ document.body.appendChild(toast);
+ setTimeout(function() { toast.remove(); }, 5000);
+}
+
 function processPayment(data) {
  if (!data || !data.date || !data.time) {
  showError('Missing Information', 'Please select a date and time.');
  return;
  }
- if (!data.phone || data.phone.length < 9) {
+ if (!data.isFree && data.paymentMethod !== 'card' && (!data.phone || data.phone.length < 9)) {
  showError('Invalid Phone Number', 'Please enter your M-Pesa phone number.');
  return;
  }
@@ -767,6 +806,7 @@ function processPayment(data) {
  subject_id: data.subject || null,
  notes: data.notes,
  phone: data.phone,
+ payment_method: data.paymentMethod,
  })
  })
  .then(r => r.json())
@@ -779,6 +819,11 @@ function processPayment(data) {
  if (res.booking_url) {
  setTimeout(() => { window.location.href = res.booking_url; }, 3000);
  }
+ return;
+ }
+ // IntaSend redirect (airtel / card)
+ if (res.status === 'ok' && res.redirect_url) {
+ window.location.href = res.redirect_url;
  return;
  }
  if (res.status === 'ok' && res.reference) {

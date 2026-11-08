@@ -193,7 +193,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  // Show closing-buffer warning
  if (remaining <= closingBufferSeconds && !inClosingBuffer) {
  inClosingBuffer = true;
- showToast('ÂÂ° Session ending in ' + formatTime(remaining) + ' â‚¬" closing buffer started.', 'warning');
+ showToast('Â? Session ending in ' + formatTime(remaining) + ' â‚¬" closing buffer started.', 'warning');
  document.getElementById('closing-banner').style.display = 'flex';
  }
 
@@ -260,7 +260,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  width: '100%',
  height: '100%',
  parentNode: document.querySelector('#jitsi-container'),
- @if(app(\App\Services\JitsiService::class)->isConfigured() && env('JITSI_USE_JWT'))
+ @if(app(\App\Services\JitsiService::class)->isConfigured() && config('services.jitsi.use_jwt'))
  jwt: '{{ $jitsiJwt ?? "" }}',
  @endif
  configOverwrite: {
@@ -352,10 +352,6 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  // Participant joined/left events
  api.addEventListener('participantJoined', () => { pollAttendance(); });
  api.addEventListener('participantLeft', () => {
- fetch(leftUrl, {
- method: 'POST',
- headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
- });
  pollAttendance();
  });
 
@@ -366,10 +362,6 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json' }
  }).finally(() => { window.location.href = bookingUrl; });
  });
- api.addEventListener('hangup', () => {
- window.location.href = bookingUrl;
- });
-
  api.addEventListener('errorOccurred', (error) => {
  console.error('Jitsi error:', error);
  });

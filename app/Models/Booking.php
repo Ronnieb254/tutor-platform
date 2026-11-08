@@ -99,7 +99,7 @@ class Booking extends Model
             return false;
         }
 
-        $opensAt  = $this->scheduled_at->copy()->subMinutes(60);
+        $opensAt  = $this->scheduled_at->copy()->subMinutes(15);
         $closesAt = $this->scheduled_at->copy()->addMinutes($this->duration_minutes + 30);
 
         return now()->between($opensAt, $closesAt);

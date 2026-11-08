@@ -17,6 +17,10 @@ class JitsiService
         $this->appId = env('JITSI_APP_ID', '');
         $this->appSecret = env('JITSI_APP_SECRET', '');
         $this->useJWT = env('JITSI_USE_JWT', false);
+
+        if (str_starts_with($this->appId, 'vpaas-magic-cookie')) {
+            $this->domain = '8x8.vc';
+        }
     }
 
     /**
@@ -87,8 +91,7 @@ class JitsiService
 
     /**
      * Generate JWT token for authenticated Jitsi meetings.
-     * Payload matches the spec:
-     * {context:{user:{name,email,moderator:bool}},aud:'jitsi',iss:APP_ID,sub:DOMAIN,room:room_name,exp:now+3600}
+     * Uses RS256 + JaaS claims for vpaas-magic-cookie accounts.
      */
     protected function generateJWT(
         string $roomName,
@@ -96,32 +99,24 @@ class JitsiService
         bool $isModerator,
         array $options = []
     ): string {
-        $now = time();
-        $exp = $now + (int) (env('JITSI_JWT_TTL', 3600));
-
+        $now    = time();
+        $keyId  = $this->appId;  // for JaaS the kid IS the app_id (vpaas-magic-cookie-...)
         $payload = [
-            'aud'  => 'jitsi',
-            'iss'  => $this->appId,
-            'sub'  => $this->domain,
-            'room' => $roomName,
-            'exp'  => $exp,
-            'nbf'  => $now,
+            'aud'     => 'jitsi',
+            'iss'     => $this->appId,
+            'sub'     => '8x8.vc',
+            'room'    => '*',          // wildcard allows any room under this app
+            'exp'     => $now + 7200,
+            'nbf'     => $now - 10,
             'context' => [
                 'user' => [
                     'name'      => $displayName,
                     'email'     => $options['email'] ?? '',
-                    'avatar'    => $options['avatarUrl'] ?? '',
                     'moderator' => $isModerator,
-                ],
-                'features' => [
-                    'livestreaming' => $isModerator,
-                    'recording'     => $isModerator,
-                    'transcription' => false,
                 ],
             ],
         ];
-
-        return JWT::encode($payload, $this->appSecret, 'HS256');
+        return \Firebase\JWT\JWT::encode($payload, $this->appSecret, 'RS256', $keyId);
     }
 
     /**
@@ -205,14 +200,26 @@ class JitsiService
     }
 
     /**
+     * Generate a sanitized room name from a Booking model.
+     */
+    public function generateRoomName(\App\Models\Booking $booking): string
+    {
+        return $this->sanitizeRoomName($booking->meeting_room ?? 'Mwalimu-session-' . $booking->uuid);
+    }
+
+    /**
+     * Generate a Jitsi JWT token for a given user and room.
+     */
+    public function generateToken(\App\Models\User $user, string $roomName, bool $isModerator): ?string
+    {
+        return $this->makeJWT($roomName, $user->name, $isModerator, ['email' => $user->email]);
+    }
+
+    /**
      * Check if Jitsi is properly configured
      */
     public function isConfigured(): bool
     {
-        if ($this->useJWT) {
-            return !empty($this->appId) && !empty($this->appSecret);
-        }
-        
         return !empty($this->domain);
     }
 }

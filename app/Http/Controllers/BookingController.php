@@ -6,14 +6,16 @@ use App\Models\Booking;
 use App\Models\Payment;
 use App\Services\BookingService;
 use App\Services\DarajaService;
+use App\Services\IntaSendService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
     public function __construct(
-        protected BookingService $bookingService,
-        protected DarajaService  $daraja
+        protected BookingService  $bookingService,
+        protected DarajaService   $daraja,
+        protected IntaSendService $intaSend
     ) {}
 
     public function show(Booking $booking)
@@ -65,6 +67,7 @@ class BookingController extends Controller
             'booking_for'      => 'nullable|in:self,child',
             'child_profile_id' => 'nullable|exists:child_profiles,id',
             'notes'            => 'nullable|string|max:500',
+            'payment_method'   => 'nullable|in:mpesa,airtel,card',
         ]);
 
         // Parse scheduled_at as EAT and convert to UTC before storing
@@ -103,6 +106,50 @@ class BookingController extends Controller
             ]);
         }
 
+        $paymentMethod = $request->input('payment_method', 'mpesa');
+
+        // --- Airtel / Card → IntaSend hosted checkout ---
+        if (in_array($paymentMethod, ['airtel', 'card'])) {
+            $reference   = 'TL-' . strtoupper(Str::random(8)) . '-' . time();
+            $redirectUrl = route('bookings.show', $booking->uuid);
+
+            Payment::create([
+                'booking_id'      => $booking->id,
+                'user_id'         => auth()->id(),
+                'amount'          => $booking->total_amount,
+                'currency'        => 'KES',
+                'mpesa_reference' => $reference,
+                'status'          => 'pending',
+            ]);
+
+            try {
+                $result = $this->intaSend->createCheckout(
+                    (float) $booking->total_amount,
+                    auth()->user(),
+                    $reference,
+                    $redirectUrl
+                );
+
+                return response()->json([
+                    'status'       => 'ok',
+                    'redirect_url' => $result['url'],
+                    'reference'    => $reference,
+                    'booking_id'   => $booking->id,
+                ]);
+            } catch (\Throwable $e) {
+                \Log::error('IntaSend checkout error', [
+                    'error'      => $e->getMessage(),
+                    'booking_id' => $booking->id,
+                ]);
+                $booking->delete();
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Payment gateway error: ' . $e->getMessage(),
+                ], 422);
+            }
+        }
+
+        // --- M-Pesa STK Push (default) ---
         // Validate phone number is present
         $request->validate(['phone' => 'required|string|min:9|max:15']);
 

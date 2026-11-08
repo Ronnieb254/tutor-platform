@@ -6,16 +6,19 @@ use App\Models\ExaminerClinic;
 use App\Models\ClinicEnrollment;
 use App\Models\Payment;
 use App\Services\DarajaService;
+use App\Services\IntaSendService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ClinicBookingController extends Controller
 {
     protected $daraja;
+    protected $intaSend;
 
-    public function __construct(DarajaService $daraja)
+    public function __construct(DarajaService $daraja, IntaSendService $intaSend)
     {
-        $this->daraja = $daraja;
+        $this->daraja   = $daraja;
+        $this->intaSend = $intaSend;
     }
 
     /**
@@ -45,12 +48,10 @@ class ClinicBookingController extends Controller
     }
 
     /**
-     * Process the payment via Daraja M-Pesa STK Push.
+     * Process the payment via Daraja M-Pesa STK Push or IntaSend (Airtel/Card).
      */
     public function pay(Request $request, ExaminerClinic $clinic)
     {
-        $request->validate(['phone' => 'required|string|min:9|max:15']);
-
         $user = $request->user();
 
         if ($clinic->isFull()) {
@@ -60,6 +61,46 @@ class ClinicBookingController extends Controller
         if ($clinic->isEnrolledBy($user)) {
             return back()->with('error', 'You are already enrolled in this session.');
         }
+
+        $paymentMethod = $request->input('payment_method', 'mpesa');
+
+        // --- Airtel / Card → IntaSend ---
+        if (in_array($paymentMethod, ['airtel', 'card'])) {
+            $reference   = 'CL-' . strtoupper(Str::random(8)) . '-' . time();
+            $redirectUrl = route('clinic.my-bookings');
+
+            try {
+                $result = $this->intaSend->createCheckout(
+                    (float) $clinic->price,
+                    $user,
+                    $reference,
+                    $redirectUrl
+                );
+
+                Payment::create([
+                    'user_id'         => $user->id,
+                    'clinic_id'       => $clinic->id,
+                    'amount'          => $clinic->price,
+                    'currency'        => 'KES',
+                    'payment_type'    => 'clinic',
+                    'status'          => 'pending',
+                    'mpesa_reference' => $reference,
+                    'metadata'        => [
+                        'clinic_id'    => $clinic->id,
+                        'clinic_title' => $clinic->title ?? $clinic->name,
+                        'method'       => $paymentMethod,
+                    ],
+                ]);
+
+                return redirect()->away($result['url']);
+
+            } catch (\Exception $e) {
+                return back()->with('error', 'Payment gateway error: ' . $e->getMessage());
+            }
+        }
+
+        // --- M-Pesa STK Push (default) ---
+        $request->validate(['phone' => 'required|string|min:9|max:15']);
 
         $reference = $this->daraja->generateReference('CLINIC');
 

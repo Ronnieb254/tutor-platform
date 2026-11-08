@@ -19,3 +19,33 @@ Route::post('/daraja/callback', [DarajaCallbackController::class, 'handle'])
  */
 Route::get('/daraja/status', [DarajaCallbackController::class, 'status'])
     ->name('daraja.status');
+
+/*
+|--------------------------------------------------------------------------
+| I&M Bank Payment Gateway Routes
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\IMBankPaymentController;
+
+// I&M Bank callback endpoints (excluded from CSRF in bootstrap/app.php)
+Route::post('/imbank/callback', [IMBankPaymentController::class, 'callback'])
+    ->name('imbank.callback');
+
+Route::post('/imbank/result', [IMBankPaymentController::class, 'result'])
+    ->name('imbank.result');
+
+Route::post('/imbank/timeout', [IMBankPaymentController::class, 'timeout'])
+    ->name('imbank.timeout');
+
+// Payment status polling endpoint
+Route::get('/imbank/status', [IMBankPaymentController::class, 'queryStatus'])
+    ->name('imbank.status');
+
+/*
+|--------------------------------------------------------------------------
+| IntaSend Payment Webhook
+|--------------------------------------------------------------------------
+*/
+Route::post('/intasend/webhook', [\App\Http\Controllers\IntaSendWebhookController::class, 'handle'])
+    ->name('intasend.webhook');

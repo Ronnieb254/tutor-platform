@@ -30,4 +30,9 @@ return [
         'api_key'   => env('AT_API_KEY'),
         'sender_id' => env('AT_SENDER_ID', 'MWALIMU'),
     ],
+
+    'jitsi' => [
+        'use_jwt' => env('JITSI_USE_JWT', false),
+        'domain'  => env('JITSI_DOMAIN', 'meet.jit.si'),
+    ],
 ];
