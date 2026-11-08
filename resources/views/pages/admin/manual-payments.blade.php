@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Manual Payment Verification')
 
 @section('content')
@@ -19,7 +19,7 @@
 <div class="page-header">
     <div>
         <h1>Manual Payment Verification</h1>
-        <p>Verify M-Pesa Paybill payments — Paybill <strong>542542</strong> · Account <strong>313126</strong></p>
+        <p>Verify M-Pesa Paybill payments  Paybill <strong>542542</strong>  Account <strong>313126</strong></p>
     </div>
 </div>
 
@@ -73,7 +73,7 @@
         </div>
         <div style="text-align:right;flex-shrink:0;">
             <div style="font-family:monospace;font-size:16px;font-weight:800;color:#0A64BC;letter-spacing:.05em;">
-                {{ $payment->mpesa_code ?? '—' }}
+                {{ $payment->mpesa_code ?? '' }}
             </div>
             <div style="font-size:12px;color:var(--muted);">KSh {{ number_format($payment->amount, 2) }}</div>
         </div>
@@ -104,8 +104,8 @@
     {{-- Booking details --}}
     @if($payment->booking)
     <div style="padding:0 22px 14px;font-size:12px;color:var(--muted);">
-        <strong>Session:</strong> {{ $payment->booking->subject->name ?? 'N/A' }} ·
-        {{ $payment->booking->scheduled_at?->format('d M Y, g:ia') ?? 'N/A' }} ·
+        <strong>Session:</strong> {{ $payment->booking->subject->name ?? 'N/A' }} 
+        {{ $payment->booking->scheduled_at?->format('d M Y, g:ia') ?? 'N/A' }} 
         Tutor: {{ $payment->booking->tutor->name ?? 'N/A' }}
     </div>
     @endif
@@ -115,7 +115,7 @@
         <form method="POST" action="{{ route('admin.manual-payments.verify', $payment) }}">
             @csrf
             <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
-                Optional note (visible to student if rejected — leave blank to approve silently)
+                Optional note (visible to student if rejected  leave blank to approve silently)
             </label>
             <textarea name="note" rows="2" placeholder="e.g. Verified via M-Pesa logs"
                 style="width:100%;border-radius:10px;border:1.5px solid rgba(21,40,31,.15);padding:10px;font-family:inherit;font-size:13px;resize:vertical;box-sizing:border-box;"></textarea>
@@ -153,7 +153,7 @@
 @empty
 <div style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:40px;text-align:center;">
     <i class="fa-solid fa-circle-check" style="font-size:36px;color:#10B981;margin-bottom:12px;"></i>
-    <p style="font-size:15px;color:var(--muted);">No pending payments — all clear!</p>
+    <p style="font-size:15px;color:var(--muted);">No pending payments  all clear!</p>
 </div>
 @endforelse
 
@@ -183,9 +183,9 @@
                 @foreach($recentlyVerified as $pmt)
                 <tr style="border-bottom:1px solid rgba(21,40,31,.04);">
                     <td style="padding:12px 16px;color:var(--muted);">{{ $pmt->verified_at?->format('d M, g:ia') }}</td>
-                    <td style="padding:12px 16px;font-weight:600;color:var(--ink);">{{ $pmt->user->name ?? '—' }}</td>
+                    <td style="padding:12px 16px;font-weight:600;color:var(--ink);">{{ $pmt->user->name ?? '' }}</td>
                     <td style="padding:12px 16px;">KSh {{ number_format($pmt->amount, 2) }}</td>
-                    <td style="padding:12px 16px;font-family:monospace;font-weight:700;color:#0A64BC;">{{ $pmt->mpesa_code ?? '—' }}</td>
+                    <td style="padding:12px 16px;font-family:monospace;font-weight:700;color:#0A64BC;">{{ $pmt->mpesa_code ?? '' }}</td>
                     <td style="padding:12px 16px;">
                         @if($pmt->status === 'success')
                             <span class="badge badge-success"><i class="fa-solid fa-check"></i> Verified</span>
@@ -193,8 +193,8 @@
                             <span class="badge badge-danger"><i class="fa-solid fa-xmark"></i> Rejected</span>
                         @endif
                     </td>
-                    <td style="padding:12px 16px;color:var(--muted);">{{ $pmt->verifiedBy->name ?? '—' }}</td>
-                    <td style="padding:12px 16px;color:var(--muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $pmt->admin_note ?? '—' }}</td>
+                    <td style="padding:12px 16px;color:var(--muted);">{{ $pmt->verifiedBy->name ?? '' }}</td>
+                    <td style="padding:12px 16px;color:var(--muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $pmt->admin_note ?? '' }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -204,3 +204,4 @@
 @endif
 
 @endsection
+

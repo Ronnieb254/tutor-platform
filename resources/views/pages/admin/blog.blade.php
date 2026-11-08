@@ -61,7 +61,7 @@ $categories = BlogCategory::all();
  @if($post->category)
  <span class="badge badge-trust-blue">{{ $post->category->name }}</span>
  @else
- <span style="color:var(--muted);font-size:13px;">â‚¬"</span>
+ <span style="color:var(--muted);font-size:13px;">"</span>
  @endif
  </td>
  <td style="color:var(--muted);font-size:13px;">{{ $post->author->name }}</td>
@@ -104,7 +104,7 @@ $categories = BlogCategory::all();
  @csrf
  <div style="margin-bottom:14px;">
  <label class="form-label">Title</label>
- <input type="text" name="title" class="form-input" placeholder="Post titleâ‚¬Â¦" required>
+ <input type="text" name="title" class="form-input" placeholder="Post title" required>
  </div>
  <div style="margin-bottom:14px;">
  <label class="form-label">Category</label>
@@ -117,11 +117,11 @@ $categories = BlogCategory::all();
  </div>
  <div style="margin-bottom:14px;">
  <label class="form-label">Excerpt</label>
- <input type="text" name="excerpt" class="form-input" placeholder="Short descriptionâ‚¬Â¦">
+ <input type="text" name="excerpt" class="form-input" placeholder="Short description">
  </div>
  <div style="margin-bottom:14px;">
  <label class="form-label">Content</label>
- <textarea name="content" rows="6" class="form-input" style="height:auto;padding:10px 14px;resize:vertical;" placeholder="Write your post content hereâ‚¬Â¦" required></textarea>
+ <textarea name="content" rows="6" class="form-input" style="height:auto;padding:10px 14px;resize:vertical;" placeholder="Write your post content here" required></textarea>
  </div>
  <div style="margin-bottom:14px;">
  <label class="form-label">Thumbnail</label>
@@ -154,7 +154,7 @@ $(document).ready(function() {
 @endpush
 @push('styles')
 <style>
-/* blog stat cards: 3-col " ' 1-col on small mobile (covered by global rule too) */
+/* blog stat cards: 3-col "' 1-col on small mobile (covered by global rule too) */
 @media(max-width:479px){
  div[style*="repeat(3,1fr)"]{ grid-template-columns:1fr !important; }
 }
@@ -165,3 +165,4 @@ $(document).ready(function() {
 </style>
 @endpush
 @endsection
+

@@ -36,7 +36,7 @@
  {{-- What's next box --}}
  <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:20px 24px;margin:0 0 24px;">
  <div style="font-weight:700;color:#166534;font-size:14px;margin-bottom:12px;">
- Å-… What's next
+ - What's next
  </div>
  <ul style="margin:0;padding-left:18px;color:#374151;font-size:14px;line-height:1.9;">
  <li>Set your weekly availability in your dashboard</li>
@@ -64,7 +64,7 @@
  <tr>
  <td style="background:#F9FAF9;border-radius:0 0 16px 16px;padding:20px 40px;text-align:center;border-top:1px solid #E5E7EB;">
  <p style="font-size:12px;color:#9CA3AF;margin:0;">
- © {{ date('Y') }} Mwalimu · Oval Desk Ventures · Nairobi, Kenya
+  {{ date('Y') }} Mwalimu  Oval Desk Ventures  Nairobi, Kenya
  </p>
  </td>
  </tr>
@@ -74,3 +74,4 @@
  </table>
 </body>
 </html>
+

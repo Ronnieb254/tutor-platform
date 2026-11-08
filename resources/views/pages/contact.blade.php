@@ -82,7 +82,7 @@
  <div style="font-size:14px;font-weight:600;color:#15281F;">{{ $label }}</div>
  <div style="font-size:12px;color:rgba(21,40,31,.5);">{{ $desc }}</div>
  </div>
- <span style="font-size:inherit;">→</span>
+ <span style="font-size:inherit;"></span>
  </a>
  @endforeach
  </div>
@@ -147,7 +147,7 @@
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;" class="form-row">
  <div>
  <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-tag"></i></span> I am a…
+ <span style="font-size:inherit;"><i class="fa-solid fa-tag"></i></span> I am a
  </label>
  <select name="role" style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;appearance:none;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22><path d=%22M1 1l4 4 4-4%22 stroke=%22%2315281F%22 stroke-width=%221.5%22 fill=%22none%22/></svg>');background-repeat:no-repeat;background-position:right 14px center;transition:all .15s;" onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.18)'">
  <option value="">Select role</option>
@@ -171,7 +171,7 @@
  <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:6px;">
  <i class="fa-solid fa-circle-info"></i> Message
  </label>
- <textarea name="message" rows="4" placeholder="Tell us how we can help…" required
+ <textarea name="message" rows="4" placeholder="Tell us how we can help" required
  style="width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:vertical;line-height:1.65;background:#fff;transition:all .15s;"
  onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 3px rgba(10,100,188,.1)'" onblur="this.style.borderColor='rgba(21,40,31,.18)';this.style.boxShadow='none'">{{ old('message') }}</textarea>
  @error('message')<p style="font-size:12px;color:#E8522A;margin-top:3px;">{{ $message }}</p>@enderror
@@ -205,3 +205,4 @@
 @livewireScripts
 </body>
 </html>
+

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Group Sessions â‚¬" Mwalimu</title>
+<title>Group Sessions " Mwalimu</title>
 <meta name="description" content="Live group classes hosted by top tutors. Learn together, pay less per seat. Browse upcoming sessions and book your spot.">
 </head>
 <body>
@@ -35,7 +35,7 @@
  @else
  @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
  <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> Host a Class
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> Host a Class
  </a>
  @endif
  @endauth
@@ -56,7 +56,7 @@
  </div>
  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;">
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">How group sessions work</p>
- @foreach(['Browse upcoming live classes by subject/topic','Book your seat â‚¬" pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
+ @foreach(['Browse upcoming live classes by subject/topic','Book your seat " pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
  <i class="fa-solid fa-circle-check"></i>
  <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
@@ -78,7 +78,7 @@
  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px;">
  <div>
  <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,38px);color:#15281F;margin-bottom:6px;">Upcoming Group Sessions</h2>
- <p style="color:rgba(21,40,31,.55);">Live cohort classes. Max 30 learners per session â‚¬" book your seat before it fills up.</p>
+ <p style="color:rgba(21,40,31,.55);">Live cohort classes. Max 30 learners per session " book your seat before it fills up.</p>
  </div>
  </div>
 
@@ -87,7 +87,7 @@
  <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-circle-xmark"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">No group sessions scheduled</h3>
  <p style="color:rgba(21,40,31,.55);margin-bottom:20px;">No sessions match your filters. Try adjusting your search or check back soon.</p>
- <a href="{{ route('group-sessions.index') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><span style="font-size:inherit;">←</span> Clear Filters</a>
+ <a href="{{ route('group-sessions.index') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><span style="font-size:inherit;"></span> Clear Filters</a>
  </div>
  @else
  <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="gs-grid">
@@ -130,7 +130,7 @@
 
  {{-- Meta --}}
  <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:rgba(21,40,31,.55);">
- <span><i class="fa-solid fa-calendar"></i>{{ $session->scheduled_at->format('D, M j · g:ia') }}</span>
+ <span><i class="fa-solid fa-calendar"></i>{{ $session->scheduled_at->format('D, M j  g:ia') }}</span>
  <span><i class="fa-solid fa-clock"></i>{{ $session->duration_minutes }}m</span>
  </div>
 
@@ -156,7 +156,7 @@
  @auth
  @if($session->isEnrolledBy(auth()->user()))
  <a href="{{ route('group-sessions.show', $session) }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:rgba(16,185,129,.1);color:#10B981;border:1px solid rgba(16,185,129,.3);font-size:13px;font-weight:600;text-decoration:none;">
- <i class="fa-solid fa-circle-check"></i> Enrolled â‚¬" View
+ <i class="fa-solid fa-circle-check"></i> Enrolled " View
  </a>
  @elseif($isFull)
  <span style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:999px;background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;font-size:13px;font-weight:600;">
@@ -166,7 +166,7 @@
  <form method="POST" action="{{ route('group-sessions.enroll', $session) }}" style="flex:1;">
  @csrf
  <button type="submit" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
- <i class="fa-solid fa-ticket"></i> Book Seat â‚¬" KSh {{ number_format($session->price) }}
+ <i class="fa-solid fa-ticket"></i> Book Seat " KSh {{ number_format($session->price) }}
  </button>
  </form>
  @endif
@@ -176,7 +176,7 @@
  </a>
  @endauth
  <a href="{{ route('group-sessions.show', $session) }}" style="display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:999px;background:rgba(10,100,188,.08);color:#0A64BC;border:1px solid rgba(10,100,188,.2);font-size:13px;font-weight:600;text-decoration:none;">
- <span style="font-size:inherit;">→</span>
+ <span style="font-size:inherit;"></span>
  </a>
  </div>
  </div>
@@ -210,3 +210,4 @@
 @livewireScripts
 </body>
 </html>
+

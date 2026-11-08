@@ -87,7 +87,7 @@ $paid = PayoutRequest::where('status','paid')->sum('amount');
  <td>
  @if($payout->bank_name)
  <div style="font-size:13px;"><strong>{{ $payout->bank_name }}</strong></div>
- <div style="font-size:12px;color:var(--muted);">{{ $payout->account_number }} · {{ $payout->account_name }}</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $payout->account_number }}  {{ $payout->account_name }}</div>
  @else
  <span style="color:var(--muted);font-size:13px;">Not provided</span>
  @endif
@@ -150,3 +150,4 @@ $(document).ready(function() {
 </script>
 @endpush
 @endsection
+

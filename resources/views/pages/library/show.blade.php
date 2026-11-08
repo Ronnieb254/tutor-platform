@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ $resource->meta_title ?? $resource->title }} — Mwalimu Library</title>
+<title>{{ $resource->meta_title ?? $resource->title }}  Mwalimu Library</title>
 @if($resource->meta_description)
 <meta name="description" content="{{ $resource->meta_description }}">
 @endif
@@ -118,7 +118,7 @@ a{color:inherit;text-decoration:none;}
  <span class="bdg" style="background:rgba(16,185,129,.15);color:#065f46;">{{ $resource->subject->name }}</span>
  @endif
  <span style="font-size:13px;color:rgba(255,255,255,.5);">
- By {{ $resource->author->name }} · {{ $resource->published_at?->format('M j, Y') }}
+ By {{ $resource->author->name }}  {{ $resource->published_at?->format('M j, Y') }}
  </span>
  </div>
  </div>
@@ -160,7 +160,7 @@ a{color:inherit;text-decoration:none;}
  <div class="related-title">{{ $r->title }}</div>
  <div class="related-meta">
  <span class="bdg {{ $typeClasses[$r->resource_type] ?? 'bdg-gray' }}" style="font-size:10px;padding:2px 8px;">{{ $typeLabels[$r->resource_type] ?? ucfirst($r->resource_type) }}</span>
- @if($r->grade_level) &nbsp;·&nbsp; {{ $r->grade_level }}@endif
+ @if($r->grade_level) &nbsp;&nbsp; {{ $r->grade_level }}@endif
  </div>
  </div>
  </a>
@@ -181,7 +181,7 @@ a{color:inherit;text-decoration:none;}
  @if($resource->file_size)
  File size: {{ number_format($resource->file_size / 1048576, 1) }} MB
  @endif
- · {{ $resource->download_count }} download{{ $resource->download_count != 1 ? 's' : '' }}
+  {{ $resource->download_count }} download{{ $resource->download_count != 1 ? 's' : '' }}
  </p>
  @auth
  <a href="{{ route('library.download', $resource->slug) }}" class="download-btn">
@@ -254,3 +254,4 @@ a{color:inherit;text-decoration:none;}
 @include('partials.footer')
 </body>
 </html>
+

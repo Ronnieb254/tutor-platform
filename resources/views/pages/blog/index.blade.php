@@ -66,7 +66,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
  <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);border-top:1px solid var(--hair);padding-top:12px;">
  <img src="{{ $post->author->avatar_url }}" style="width:24px;height:24px;border-radius:999px;object-fit:cover;">
  <span>{{ $post->author->name }}</span>
- <span>·</span>
+ <span></span>
  <span><i class="fa-solid fa-calendar"></i> {{ $post->published_at->format('M j, Y') }}</span>
  </div>
  </div>
@@ -106,3 +106,4 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 @livewireScripts
 </body>
 </html>
+

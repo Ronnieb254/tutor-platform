@@ -38,15 +38,15 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <div class="session-header">
  <div class="left">
  <a href="{{ route('examiner-clinic', $clinic->slug) }}" class="back-btn">
- <span style="font-size:inherit;">←</span> Back
+ <span style="font-size:inherit;"></span> Back
  </a>
  <div class="session-title">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span>
  {{ $clinic->title ?? $clinic->name }}
  </div>
  <div class="session-meta">
  <span class="dot"></span>
- <span class="time">{{ $clinic->scheduled_at->format('D, M j · g:ia') }}</span>
+ <span class="time">{{ $clinic->scheduled_at->format('D, M j  g:ia') }}</span>
  @if($isModerator)
  <span class="moderator-badge"><i class="fa-solid fa-shield-halved"></i> MODERATOR</span>
  @endif
@@ -104,7 +104,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  width: { ideal: 1280, max: 1920, min: 320 }
  }
  },
- // Screen sharing â‚¬" all sources
+ // Screen sharing " all sources
  desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
  desktopSharingChromeSources: ['screen', 'window', 'tab'],
  desktopSharingChromeExtId: null,
@@ -138,7 +138,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  RECENT_LIST_ENABLED: false,
  SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
  VIDEO_LAYOUT_FIT: 'both',
- // Full toolbar â‚¬" all tools visible and available
+ // Full toolbar " all tools visible and available
  TOOLBAR_BUTTONS: [
  'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
  'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
@@ -208,3 +208,4 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
 </body>
 </html>
+

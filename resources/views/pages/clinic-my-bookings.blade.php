@@ -84,7 +84,7 @@ a{color:inherit;text-decoration:none;}
  @endphp
  <div class="booking-card" data-scheduled-at="{{ $booking->clinic->scheduled_at->toIso8601String() }}">
  <div class="booking-icon">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span>
  </div>
 
  <div class="booking-info">
@@ -233,3 +233,4 @@ document.querySelectorAll('[id^="countdown-"]').forEach(function(el) {
 @livewireScripts
 </body>
 </html>
+

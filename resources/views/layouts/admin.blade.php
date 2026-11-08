@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <meta name="csrf-token" content="{{ csrf_token() }}">
- <title>@yield('title', 'Dashboard') · Mwalimu Admin</title>
+ <title>@yield('title', 'Dashboard')  Mwalimu Admin</title>
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
  <link rel="shortcut icon" href="/favicon.svg">
@@ -376,7 +376,7 @@ window.showConfirm = (title, text, confirmText = 'Yes', cancelText = 'Cancel') =
  cancelButtonText: cancelText,
  });
 
-// Document lightbox · view docs in-page without redirect
+// Document lightbox  view docs in-page without redirect
 window.viewDocModal = function(url, isPdf, docName) {
  const content = isPdf
  ? `<iframe src="${url}" style="width:100%;height:70vh;border:none;border-radius:8px;"></iframe>`
@@ -416,3 +416,4 @@ window.viewDocModal = function(url, isPdf, docName) {
 @stack('scripts')
 </body>
 </html>
+

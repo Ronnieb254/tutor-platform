@@ -27,7 +27,7 @@
  </div>
  @if($upcoming->isEmpty())
  <div class="text-center py-8">
- <div class="text-4xl mb-3">ðŸ-…</div>
+ <div class="text-4xl mb-3">-</div>
  <p class="font-serif text-lg font-semibold text-ink mb-2">No upcoming sessions</p>
  <p class="text-muted text-sm mb-5">Find a tutor and book your first session.</p>
  <a href="{{ route('tutors.index') }}" class="pill-btn-primary">Find a Tutor</a>
@@ -39,7 +39,7 @@
  <img src="{{ $booking->tutor->avatar_url }}" class="w-12 h-12 rounded-2xl object-cover flex-shrink-0">
  <div class="flex-1 min-w-0">
  <p class="font-semibold text-ink">{{ $booking->tutor->name }}</p>
- <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->duration_minutes }} min</p>
+ <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }}  {{ $booking->duration_minutes }} min</p>
  <p class="text-xs text-trust-blue font-semibold mt-1">{{ $booking->scheduled_at->format('D, M j \a\t g:ia') }}</p>
  </div>
  <div class="flex flex-col items-end gap-2 flex-shrink-0">
@@ -69,13 +69,13 @@
  <img src="{{ $booking->tutor->avatar_url }}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
  <div class="flex-1 min-w-0">
  <p class="font-semibold text-sm text-ink">{{ $booking->tutor->name }}</p>
- <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->scheduled_at->format('M j, Y') }}</p>
+ <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }}  {{ $booking->scheduled_at->format('M j, Y') }}</p>
  </div>
  <div class="flex items-center gap-2 flex-shrink-0">
  @if(!$booking->review)
  <a href="{{ route('bookings.show', $booking->uuid) }}" class="text-xs text-gold font-semibold hover:underline">Leave review</a>
  @else
- <div class="text-gold text-xs">★ {{ $booking->review->rating }}</div>
+ <div class="text-gold text-xs"> {{ $booking->review->rating }}</div>
  @endif
  </div>
  </div>
@@ -84,3 +84,4 @@
  </div>
  @endif
 </div>
+

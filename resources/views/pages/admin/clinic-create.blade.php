@@ -5,7 +5,7 @@
 
  <div style="margin-bottom:22px;">
  <a href="{{ route('admin.clinics') }}" style="font-size:13px;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-bottom:10px;">
- <span style="font-size:inherit;">←</span> Back to Clinics
+ <span style="font-size:inherit;"></span> Back to Clinics
  </a>
  <h1 style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:4px;">Create Examiner Clinic</h1>
  <p style="color:var(--muted);font-size:14px;">Clinics are fixed at <strong>30 student slots</strong>. When full, an overflow session is auto-created with a 30-minute break after the previous session ends.</p>
@@ -31,7 +31,7 @@
  Subject <span style="color:#dc2626;">*</span>
  </label>
  <select name="subject_id" required style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;background:#fff;color:var(--ink);">
- <option value="">â‚¬" Select subject â‚¬"</option>
+ <option value="">" Select subject "</option>
  @foreach($subjects as $s)
  <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
  @endforeach
@@ -58,14 +58,14 @@
  <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;display:block;">
  Clinic Title <span style="color:#dc2626;">*</span>
  </label>
- <input type="text" name="title" value="{{ old('title') }}" required placeholder="e.g. Mathematics PP1 â‚¬" Algebra &amp; Calculus Mastery"
+ <input type="text" name="title" value="{{ old('title') }}" required placeholder="e.g. Mathematics PP1 " Algebra &amp; Calculus Mastery"
  style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:var(--ink);">
  </div>
 
  {{-- Description --}}
  <div style="margin-bottom:18px;">
  <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;display:block;">Description</label>
- <textarea name="description" rows="3" placeholder="Topics covered, exam strategies, what students will gainâ‚¬Â¦"
+ <textarea name="description" rows="3" placeholder="Topics covered, exam strategies, what students will gain"
  style="width:100%;padding:10px 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;color:var(--ink);resize:vertical;">{{ old('description') }}</textarea>
  </div>
 
@@ -75,7 +75,7 @@
  Assign Tutor / Examiner <span style="color:#dc2626;">*</span>
  </label>
  <select name="tutor_id" required style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:14px;font-family:inherit;background:#fff;color:var(--ink);">
- <option value="">â‚¬" Select tutor â‚¬"</option>
+ <option value="">" Select tutor "</option>
  @foreach($tutors as $t)
  <option value="{{ $t->id }}" {{ old('tutor_id') == $t->id ? 'selected' : '' }}>{{ $t->name }}</option>
  @endforeach
@@ -115,7 +115,7 @@
  <div style="background:rgba(10,100,188,.06);border:1px solid rgba(10,100,188,.15);border-radius:12px;padding:14px 16px;margin-bottom:22px;display:flex;gap:10px;">
  <i class="fa-solid fa-circle-info"></i>
  <div style="font-size:13px;color:#0A64BC;">
- <strong>Slots are fixed at 30.</strong> Once all 30 spots are booked, the system automatically creates a second session scheduled 30 minutes after this one ends â‚¬" using the same title, tutor, and description.
+ <strong>Slots are fixed at 30.</strong> Once all 30 spots are booked, the system automatically creates a second session scheduled 30 minutes after this one ends " using the same title, tutor, and description.
  </div>
  </div>
 
@@ -147,3 +147,4 @@ document.querySelectorAll('.paper-label').forEach(function(label){
 });
 </script>
 @endsection
+

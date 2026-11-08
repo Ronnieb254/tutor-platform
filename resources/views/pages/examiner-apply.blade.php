@@ -50,7 +50,7 @@
  <i class="fa-solid fa-paper-plane"></i> Apply Now
  </button>
  <a href="{{ route('tutor.dashboard') }}" class="btn btn-outline-secondary">
- <span style="font-size:inherit;">←</span> Back to Dashboard
+ <span style="font-size:inherit;"></span> Back to Dashboard
  </a>
  </div>
  </form>
@@ -60,3 +60,4 @@
  </div>
 </div>
 @endsection
+

@@ -12,9 +12,9 @@
  <div class="rounded-2xl border-2 p-4 flex items-start gap-4
  {{ $status === 'action_required' ? 'border-coral bg-coral/5' : ($status === 'no_documents' ? 'border-gold bg-gold/5' : 'border-trust-blue bg-trust-blue/5') }}">
  <div class="text-2xl">
- @if($status === 'action_required')âš ï¸
- @elseif($status === 'under_review')â³
- @elseðŸ-„
+ @if($status === 'action_required')
+ @elseif($status === 'under_review')
+ @else-
  @endif
  </div>
  <div>
@@ -75,7 +75,7 @@
  <img src="{{ $booking->student->avatar_url }}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
  <div class="flex-1 min-w-0">
  <p class="font-semibold text-sm text-ink">{{ $booking->student->name }}</p>
- <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->duration_minutes }}min</p>
+ <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }}  {{ $booking->duration_minutes }}min</p>
  </div>
  <div class="text-right flex-shrink-0">
  <p class="text-sm font-semibold text-ink">{{ $booking->scheduled_at->format('M j') }}</p>
@@ -101,7 +101,7 @@
  <img src="{{ $booking->student->avatar_url }}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
  <div class="flex-1 min-w-0">
  <p class="font-semibold text-sm text-ink">{{ $booking->student->name }}</p>
- <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }} · {{ $booking->duration_minutes }}min</p>
+ <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }}  {{ $booking->duration_minutes }}min</p>
  </div>
  <div class="text-right">
  <p class="text-sm font-semibold text-mint">+KSh {{ number_format($booking->tutor_earning, 0) }}</p>
@@ -113,3 +113,4 @@
  </div>
  @endif
 </div>
+

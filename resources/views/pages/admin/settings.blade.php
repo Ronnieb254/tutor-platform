@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', 'Platform Settings')
 
 @section('content')
@@ -41,7 +41,7 @@ use App\Models\PlatformSetting;
  {{-- Payments --}}
  <div class="card card-p">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
- 💳 Payments
+  Payments
  </h3>
  <div style="display:flex;flex-direction:column;gap:14px;">
  <div>
@@ -69,10 +69,10 @@ use App\Models\PlatformSetting;
  {{-- Daraja M-Pesa --}}
  <div class="card card-p">
  <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--hairline);">
- <i class="fa-solid fa-note-sticky"></i>± Daraja M-Pesa Integration
+ <i class="fa-solid fa-note-sticky"></i> Daraja M-Pesa Integration
  </h3>
  <div style="background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.3);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#92400E;">
- ⚠  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
+  These keys are stored in your <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.env</code> file. Update them there directly for security.
  </div>
  <div style="display:flex;flex-direction:column;gap:14px;">
  <div>
@@ -81,7 +81,7 @@ use App\Models\PlatformSetting;
  </div>
  <div>
  <label class="form-label">Consumer Key (from .env)</label>
- <input type="text" class="form-input" value="{{ config('daraja.consumer_key') ? substr(config('daraja.consumer_key'),0,8).'â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢' : 'Not configured' }}" disabled style="background:#F4F6F4;color:var(--muted);">
+ <input type="text" class="form-input" value="{{ config('daraja.consumer_key') ? substr(config('daraja.consumer_key'),0,8).'' : 'Not configured' }}" disabled style="background:#F4F6F4;color:var(--muted);">
  </div>
  <div>
  <label class="form-label">Business Short Code</label>
@@ -111,10 +111,10 @@ use App\Models\PlatformSetting;
  </div>
  <div>
  <label class="form-label">App ID</label>
- <input type="text" class="form-input" value="{{ config('jitsi.app_id') ? 'â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢â‚¬Â¢' : 'Not set (using public Jitsi)' }}" disabled style="background:#F4F6F4;color:var(--muted);">
+ <input type="text" class="form-input" value="{{ config('jitsi.app_id') ? '' : 'Not set (using public Jitsi)' }}" disabled style="background:#F4F6F4;color:var(--muted);">
  </div>
  <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:12px;padding:12px 14px;font-size:13px;color:#065F46;">
- — Sessions use <strong>meet.jit.si</strong> (public) by default. Set JITSI_APP_ID and JITSI_APP_SECRET in .env for a private server with JWT auth.
+  Sessions use <strong>meet.jit.si</strong> (public) by default. Set JITSI_APP_ID and JITSI_APP_SECRET in .env for a private server with JWT auth.
  </div>
  </div>
  </div>
@@ -209,3 +209,4 @@ use App\Models\PlatformSetting;
 </style>
 @endpush
 @endsection
+

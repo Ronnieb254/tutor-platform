@@ -23,7 +23,7 @@
  <article>
  <div style="margin-bottom:20px;">
  <a href="{{ route('blog.index') }}" style="font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;margin-bottom:16px;transition:color .15s;" onmouseover="this.style.color='var(--trust-blue)'" onmouseout="this.style.color='var(--muted)'">
- <span style="font-size:inherit;">←</span> Back to Blog
+ <span style="font-size:inherit;"></span> Back to Blog
  </a>
  @if($post->category)
  <span class="badge badge-v" style="display:block;width:fit-content;margin-bottom:14px;">{{ $post->category->name }}</span>
@@ -60,7 +60,7 @@
  <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:16px;"><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span>Related Articles</h3>
  @foreach($related as $r)
  <a href="{{ route('blog.show', $r->slug) }}" style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);transition:opacity .15s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
- <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">ðŸ-</div>
+ <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">-</div>
  <div>
  <div style="font-size:13px;font-weight:600;color:var(--ink);line-height:1.4;">{{ Str::limit($r->title,55) }}</div>
  <div style="font-size:11px;color:var(--muted);margin-top:3px;">{{ $r->published_at->format('M j') }}</div>
@@ -85,3 +85,4 @@
 @livewireScripts
 </body>
 </html>
+

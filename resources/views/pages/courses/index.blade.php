@@ -56,14 +56,14 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
  <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:12px;">
  <img src="{{ $course->tutor->avatar_url }}" style="width:20px;height:20px;border-radius:999px;object-fit:cover;">
  <span>{{ $course->tutor->name }}</span>
- <span>·</span>
+ <span></span>
  <span><i class="fa-solid fa-hourglass-half"></i> {{ $course->total_lessons }} lessons</span>
  </div>
  <div style="display:flex;align-items:center;justify-content:space-between;">
  <span style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:{{ $course->is_free?'var(--mint)':'var(--trust-blue)' }};">
  {{ $course->is_free ? 'Free' : 'KSh '.number_format($course->price) }}
  </span>
- <span class="btn btn-v btn-sm"><span style="font-size:inherit;">→</span> View Course</span>
+ <span class="btn btn-v btn-sm"><span style="font-size:inherit;"></span> View Course</span>
  </div>
  </div>
  </a>
@@ -79,3 +79,4 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
 @livewireScripts
 </body>
 </html>
+

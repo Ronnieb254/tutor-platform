@@ -7,7 +7,7 @@
  <div class="flex flex-col items-center gap-1">
  <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition
  {{ $step > $i+1 ? 'bg-mint text-white' : ($step === $i+1 ? 'bg-trust-blue text-white' : 'bg-hairline text-muted') }}">
- {{ $step > $i+1 ? '—' : $i+1 }}
+ {{ $step > $i+1 ? '' : $i+1 }}
  </div>
  <span class="text-[10px] font-medium {{ $step === $i+1 ? 'text-ink' : 'text-muted' }} hidden sm:block">{{ $label }}</span>
  </div>
@@ -23,7 +23,7 @@
  <div>
  <label class="form-label">Your bio <span class="text-muted font-normal">(min 50 characters)</span></label>
  <textarea wire:model="bio" rows="4" class="form-input resize-none"
- placeholder="Describe your teaching experience, qualifications, and approachâ‚¬Â¦"></textarea>
+ placeholder="Describe your teaching experience, qualifications, and approach"></textarea>
  @error('bio')<p class="form-error">{{ $message }}</p>@enderror
  <p class="text-xs text-muted mt-1">{{ strlen($bio) }}/50 minimum characters</p>
  </div>
@@ -62,7 +62,7 @@
  @endif
  </div>
  <div class="flex justify-end mt-6">
- <button wire:click="nextStep" class="pill-btn-primary px-8">Continue " '</button>
+ <button wire:click="nextStep" class="pill-btn-primary px-8">Continue "'</button>
  </div>
  @endif
 
@@ -91,8 +91,8 @@
  </div>
  <p class="text-xs text-muted mt-3">{{ count($selectedSubjects) }}/2 subject(s) selected @if(count($selectedSubjects) >= 2)<span class="text-mint"><i class="fa-solid fa-circle-check"></i> Maximum reached</span>@endif</p>
  <div class="flex justify-between mt-6">
- <button wire:click="prevStep" class="pill-btn-outline px-6">" Â Back</button>
- <button wire:click="nextStep" class="pill-btn-primary px-8">Continue " '</button>
+ <button wire:click="prevStep" class="pill-btn-outline px-6">" Back</button>
+ <button wire:click="nextStep" class="pill-btn-primary px-8">Continue "'</button>
  </div>
  @endif
 
@@ -121,18 +121,18 @@
  @endforeach
  </div>
  <div class="flex justify-between mt-6">
- <button wire:click="prevStep" class="pill-btn-outline px-6">" Â Back</button>
- <button wire:click="nextStep" class="pill-btn-primary px-8">Continue " '</button>
+ <button wire:click="prevStep" class="pill-btn-outline px-6">" Back</button>
+ <button wire:click="nextStep" class="pill-btn-primary px-8">Continue "'</button>
  </div>
  @endif
 
  {{-- STEP 4: Documents --}}
  @if($step === 4)
  <h2 class="font-serif text-2xl font-bold text-ink mb-2">Upload your documents</h2>
- <p class="text-muted text-sm mb-6">All 5 documents are required. Our team will review them within 24â‚¬"48 hours. JPG, PNG or PDF, max 5MB each.</p>
+ <p class="text-muted text-sm mb-6">All 5 documents are required. Our team will review them within 24"48 hours. JPG, PNG or PDF, max 5MB each.</p>
  <div class="space-y-4">
  <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
- <label class="form-label">¸ÂªÂª National ID / Passport <span class="text-coral">* Required</span></label>
+ <label class="form-label"> National ID / Passport <span class="text-coral">* Required</span></label>
  <input type="file" wire:model="nationalId" accept=".jpg,.jpeg,.png,.pdf" class="text-sm text-muted">
  @error('nationalId')<p class="form-error">{{ $message }}</p>@enderror
  <p class="text-xs text-muted mt-1">Upload a clear photo of your National ID or Passport</p>
@@ -156,7 +156,7 @@
  <p class="text-xs text-muted mt-1">Degree, diploma, or academic qualification certificate</p>
  </div>
  <div class="p-4 rounded-2xl border-2 border-dashed border-hairline hover:border-trust-blue/40 transition">
- <label class="form-label"><i class="fa-solid fa-note-sticky"></i>¸ Passport Size Photo <span class="text-coral">* Required</span></label>
+ <label class="form-label"><i class="fa-solid fa-note-sticky"></i> Passport Size Photo <span class="text-coral">* Required</span></label>
  <input type="file" wire:model="passportPhoto" accept=".jpg,.jpeg,.png" class="text-sm text-muted">
  @error('passportPhoto')<p class="form-error">{{ $message }}</p>@enderror
  <p class="text-xs text-muted mt-1">Recent passport-size photograph</p>
@@ -173,12 +173,12 @@
  </ul>
  </div>
  <div class="flex justify-between mt-6">
- <button wire:click="prevStep" class="pill-btn-outline px-6">" Â Back</button>
+ <button wire:click="prevStep" class="pill-btn-outline px-6">" Back</button>
  <button wire:click="submit"
  wire:loading.attr="disabled"
  class="pill-btn-primary px-8">
  <span wire:loading.remove wire:target="submit">Submit for Review</span>
- <span wire:loading wire:target="submit">Uploadingâ‚¬Â¦</span>
+ <span wire:loading wire:target="submit">Uploading</span>
  </button>
  </div>
  @endif
@@ -190,9 +190,9 @@
  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
  </div>
  <h2 class="font-serif text-2xl font-bold text-ink mb-2">Application submitted!</h2>
- <p class="text-muted mb-6">Our team will review your profile and documents within 24â‚¬"48 hours. You'll receive an email once approved.</p>
+ <p class="text-muted mb-6">Our team will review your profile and documents within 24"48 hours. You'll receive an email once approved.</p>
  <div class="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800 text-left mb-6">
- <p class="font-semibold">Â? What happens next?</p>
+ <p class="font-semibold">? What happens next?</p>
  <ol class="mt-2 space-y-1 list-decimal list-inside text-amber-700">
  <li>Our team reviews your documents</li>
  <li>You receive an approval email</li>
@@ -205,3 +205,4 @@
  @endif
  </div>
 </div>
+

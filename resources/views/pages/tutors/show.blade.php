@@ -217,7 +217,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
  <i class="fa-solid fa-calendar"></i> Weekly Schedule
  </h2>
- <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">Nairobi, Kenya Time (EAT · UTC+3)</p>
+ <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">Nairobi, Kenya Time (EAT  UTC+3)</p>
  @php
  $avails = $tutor->availabilities()->where('is_active',true)->orderBy('day_of_week')->get();
  $days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -386,7 +386,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <i class="fa-solid fa-clock"></i> 1. Choose Session Type
  </h3>
  <div style="display:grid;grid-template-columns:1fr;gap:10px;" class="tier-grid">
- @foreach([20=>['⚡', 'Quick Help'],40=>['🎯', 'Guided Practice'],60=>['🏆','Deep Dive']] as $mins => [$icon,$tname])
+ @foreach([20=>['', 'Quick Help'],40=>['', 'Guided Practice'],60=>['','Deep Dive']] as $mins => [$icon,$tname])
  @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $prices[$mins]; @endphp
  <button @click="dur={{ $mins }}"
  :class="dur==={{ $mins }} ? 'tier-card selected' : 'tier-card'"
@@ -432,7 +432,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{-- Time slot picker --}}
  <div style="margin-bottom:14px;">
  <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">
- Available Time Slots (Nairobi, Kenya · EAT UTC+3)
+ Available Time Slots (Nairobi, Kenya  EAT UTC+3)
  </label>
 
  {{-- Loading state --}}
@@ -581,7 +581,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  Account Name: <strong style="color:#15281F;">OBARE OKOTH JACOB</strong>
  </div>
  <div style="background:rgba(16,185,129,.08);border-radius:8px;padding:10px 14px;font-size:12px;color:#065F46;line-height:1.6;">
- <strong>Steps:</strong> M-Pesa → Lipa na M-Pesa → Pay Bill → Paybill: <strong>542542</strong> → Account: <strong>313126</strong> → Amount: KSh <span x-text="price"></span>
+ <strong>Steps:</strong> M-Pesa  Lipa na M-Pesa  Pay Bill  Paybill: <strong>542542</strong>  Account: <strong>313126</strong>  Amount: KSh <span x-text="price"></span>
  </div>
  </div>
 
@@ -610,7 +610,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </template>
  <template x-if="processing">
  <span style="display:flex;align-items:center;gap:8px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing…
+ <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing
  </span>
  </template>
  </button>
@@ -643,7 +643,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{-- PENDING VERIFICATION STATE --}}
  <div x-show="pendingVerification">
- <div style="font-size:52px;margin-bottom:16px;">⏳</div>
+ <div style="font-size:52px;margin-bottom:16px;"></div>
  <h2 style="font-family:'Fraunces',serif;font-size:24px;color:#15281F;margin-bottom:8px;">Booking Pending Confirmation</h2>
  <p style="font-size:14px;color:rgba(21,40,31,.6);line-height:1.7;margin-bottom:20px;">
  Your payment is being verified by our team.<br>
@@ -652,7 +652,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </p>
  <div style="background:#FEF3C7;border-radius:12px;padding:14px 16px;font-size:13px;color:#92400E;margin-bottom:20px;text-align:left;">
  <i class="fa-solid fa-triangle-exclamation"></i>
- <strong>Keep your M-Pesa SMS</strong> — your transaction code may be requested during verification.
+ <strong>Keep your M-Pesa SMS</strong>  your transaction code may be requested during verification.
  </div>
  <a :href="'{{ url('/bookings/') }}/' + pendingBookingUuid" x-show="pendingBookingUuid"
  style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:#0A64BC;color:#fff;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;">
@@ -716,7 +716,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{-- Tier quick reference --}}
  <!-- <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
- @foreach([20=>['⚡', 'Quick Help',300],40=>['🎯', 'Guided Practice',500],60=>['🏆','Deep Dive',700]] as $mins=>[$ic,$n,$p])
+ @foreach([20=>['', 'Quick Help',300],40=>['', 'Guided Practice',500],60=>['','Deep Dive',700]] as $mins=>[$ic,$n,$p])
  @php $sidePrice = ($mins===20 && $isFreeFirstSession) ? 0 : $p; @endphp
  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:{{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.06)':'#F9FAF9' }};border:1px solid {{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.2)':'rgba(21,40,31,.07)' }};position:relative;">
  @if($mins===15 && $isFreeFirstSession)
@@ -859,3 +859,4 @@ function processPayment(data) {
 @livewireScripts
 </body>
 </html>
+

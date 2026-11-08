@@ -113,12 +113,12 @@
  <!-- <div style="border-top:1px solid rgba(255,255,255,.07);padding:24px 0;margin-bottom:0;">
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:12px;">Session Pricing</p>
  <div style="display:flex;flex-wrap:wrap;gap:8px;">
- @foreach([['?','Quick Help','20 min','KSh 300'],['??','Guided Practice','40 min','KSh 600'],['🏆','Deep Dive','60 min','KSh 900']] as [$ic,$name,$dur,$price])
+ @foreach([['?','Quick Help','20 min','KSh 300'],['??','Guided Practice','40 min','KSh 600'],['','Deep Dive','60 min','KSh 900']] as [$ic,$name,$dur,$price])
  <a href="{{ route('tutors.index') }}" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 14px;text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
  <span style="font-size:14px;">{{ $ic }}</span>
  <div>
  <div style="font-size:12px;font-weight:600;color:#fff;">{{ $name }}</div>
- <div style="font-size:11px;color:rgba(255,255,255,.45);">{{ $dur }} · <span style="color:#EEBE15;font-weight:700;">{{ $price }}</span></div>
+ <div style="font-size:11px;color:rgba(255,255,255,.45);">{{ $dur }}  <span style="color:#EEBE15;font-weight:700;">{{ $price }}</span></div>
  </div>
  </a>
  @endforeach
@@ -176,3 +176,4 @@
 @media(min-width:640px){.mw-foot-grid{grid-template-columns:repeat(2,1fr)!important;}}
 @media(min-width:1024px){.mw-foot-grid{grid-template-columns:2fr 1fr 1fr 1fr!important;}}
 </style>
+

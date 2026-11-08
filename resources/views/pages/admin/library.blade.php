@@ -42,7 +42,7 @@
  <form method="GET" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
  <div style="flex:1;min-width:200px;">
  <label class="form-label">Search</label>
- <input type="text" name="search" class="form-input" placeholder="Title or excerptâ‚¬Â¦" value="{{ request('search') }}">
+ <input type="text" name="search" class="form-input" placeholder="Title or excerpt" value="{{ request('search') }}">
  </div>
  <div>
  <label class="form-label">Type</label>
@@ -124,15 +124,15 @@
  </span>
  </td>
  <td style="font-size:13px;">{{ $resource->author->name }}</td>
- <td style="font-size:13px;color:var(--text-muted);">{{ $resource->category?->name ?? 'â‚¬"' }}</td>
+ <td style="font-size:13px;color:var(--text-muted);">{{ $resource->category?->name ?? '"' }}</td>
  <td style="font-size:13px;">
  @if($resource->curriculum_id)
- <span style="font-size:11px;background:rgba(10,100,188,.08);color:#0A64BC;padding:2px 7px;border-radius:999px;white-space:nowrap;">{{ $resource->curriculum->name ?? 'â‚¬"' }}</span>
+ <span style="font-size:11px;background:rgba(10,100,188,.08);color:#0A64BC;padding:2px 7px;border-radius:999px;white-space:nowrap;">{{ $resource->curriculum->name ?? '"' }}</span>
  @else
  <span style="font-size:11px;color:var(--text-muted);">All</span>
  @endif
  </td>
- <td style="font-size:13px;color:var(--text-muted);">{{ $resource->grade_level ?? 'â‚¬"' }}</td>
+ <td style="font-size:13px;color:var(--text-muted);">{{ $resource->grade_level ?? '"' }}</td>
  <td data-order="{{ $resource->download_count }}" style="font-size:13px;font-weight:600;">{{ number_format($resource->download_count) }}</td>
  <td>
  @if(!$resource->is_approved)
@@ -171,7 +171,7 @@
  @empty
  <tr>
  <td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted);">
- No resources found. <button onclick="document.getElementById('add-modal').style.display='flex'" style="background:none;border:none;color:var(--primary);font-weight:600;cursor:pointer;">Add the first one " '</button>
+ No resources found. <button onclick="document.getElementById('add-modal').style.display='flex'" style="background:none;border:none;color:var(--primary);font-weight:600;cursor:pointer;">Add the first one "'</button>
  </td>
  </tr>
  @endforelse
@@ -201,7 +201,7 @@
  </div>
  <form method="POST" action="{{ route('admin.library.categories.destroy', $cat) }}" onsubmit="return confirm('Delete category?')">
  @csrf @method('DELETE')
- <button type="submit" style="background:none;border:none;color:#DC2626;cursor:pointer;font-size:16px;" title="Delete">Å-•</button>
+ <button type="submit" style="background:none;border:none;color:#DC2626;cursor:pointer;font-size:16px;" title="Delete">-</button>
  </form>
  </div>
  @endforeach
@@ -216,7 +216,7 @@
  <div style="background:#fff;border-radius:20px;padding:32px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;">
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
  <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;">Add Resource</h2>
- <button onclick="document.getElementById('add-modal').style.display='none'" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);">Å-•</button>
+ <button onclick="document.getElementById('add-modal').style.display='none'" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);">-</button>
  </div>
  <form method="POST" action="{{ route('admin.library.store') }}" enctype="multipart/form-data">
  @csrf
@@ -281,21 +281,21 @@
  <div>
  <label class="form-label">Publish?</label>
  <select name="is_published" class="form-input">
- <option value="1">Yes â‚¬" publish now</option>
- <option value="0">No â‚¬" save as draft</option>
+ <option value="1">Yes " publish now</option>
+ <option value="0">No " save as draft</option>
  </select>
  </div>
  </div>
  <div>
  <label class="form-label">Excerpt / Summary</label>
- <textarea name="excerpt" class="form-input" rows="3" placeholder="Brief descriptionâ‚¬Â¦"></textarea>
+ <textarea name="excerpt" class="form-input" rows="3" placeholder="Brief description"></textarea>
  </div>
  <div>
  <label class="form-label">Content (optional for PDFs/videos)</label>
- <textarea name="content" class="form-input" rows="5" placeholder="Full content or notesâ‚¬Â¦"></textarea>
+ <textarea name="content" class="form-input" rows="5" placeholder="Full content or notes"></textarea>
  </div>
  <div>
- <label class="form-label">File (PDF, video, doc â‚¬" max 50MB)</label>
+ <label class="form-label">File (PDF, video, doc " max 50MB)</label>
  <input type="file" name="file" class="form-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.avi,.mov">
  </div>
  <div>
@@ -316,7 +316,7 @@
  <div style="background:#fff;border-radius:20px;padding:32px;max-width:420px;width:100%;">
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
  <h2 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;">Add Category</h2>
- <button onclick="document.getElementById('cat-modal').style.display='none'" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);">Å-•</button>
+ <button onclick="document.getElementById('cat-modal').style.display='none'" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);">-</button>
  </div>
  <form method="POST" action="{{ route('admin.library.categories.store') }}">
  @csrf
@@ -331,7 +331,7 @@
  </div>
  <div>
  <label class="form-label">Emoji Icon (optional)</label>
- <input type="text" name="icon" class="form-input" placeholder="e.g. <i class="fa-solid fa-note-sticky"></i>" maxlength="10">
+ <input type="text" name="icon" class="form-input" placeholder="e.g. <i class="fa-solid fa-note-sticky"></i>" maxlength="10">
  </div>
  <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;">
  <button type="button" onclick="document.getElementById('cat-modal').style.display='none'" class="btn btn-secondary">Cancel</button>
@@ -356,3 +356,4 @@ $(document).ready(function() {
 });
 </script>
 @endpush
+

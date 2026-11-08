@@ -4,7 +4,7 @@
 @section('content')
 
 <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
- <a href="{{ route('admin.group-sessions.index') }}" class="btn btn-outline btn-sm">" Â Back</a>
+ <a href="{{ route('admin.group-sessions.index') }}" class="btn btn-outline btn-sm">" Back</a>
  <div>
  <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);">Create Group Session</h2>
  <p style="font-size:13px;color:var(--muted);margin-top:2px;">Set up a new admin-hosted group learning session</p>
@@ -37,7 +37,7 @@
  <div>
  <label class="form-label">Subject <span style="color:#E8522A;">*</span></label>
  <select name="subject_id" class="form-input form-select" required>
- <option value="">â‚¬" Select subject â‚¬"</option>
+ <option value="">" Select subject "</option>
  @foreach($subjects as $s)
  <option value="{{ $s->id }}" {{ old('subject_id')==$s->id?'selected':'' }}>{{ $s->name }}</option>
  @endforeach
@@ -46,7 +46,7 @@
  <div>
  <label class="form-label">Assign Tutor <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
  <select name="tutor_id" class="form-input form-select">
- <option value="">â‚¬" TBD â‚¬"</option>
+ <option value="">" TBD "</option>
  @foreach($tutors as $t)
  <option value="{{ $t->id }}" {{ old('tutor_id')==$t->id?'selected':'' }}>{{ $t->name }}</option>
  @endforeach
@@ -55,9 +55,9 @@
  </div>
 
  <div style="margin-bottom:16px;">
- <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional â‚¬" leave blank to show to all tracks)</span></label>
+ <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional " leave blank to show to all tracks)</span></label>
  <select name="curriculum_id" class="form-input form-select">
- <option value="">â‚¬" All tracks â‚¬"</option>
+ <option value="">" All tracks "</option>
  @foreach($curricula->groupBy('track') as $track => $group)
  <optgroup label="{{ ucfirst($track) }}">
  @foreach($group as $c)
@@ -72,7 +72,7 @@
  <label class="form-label">Description <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
  <textarea name="description" class="form-input" rows="3"
  style="height:auto;padding:12px 14px;resize:vertical;"
- placeholder="What will students learn? Topics covered, exam papers, tipsâ‚¬Â¦">{{ old('description') }}</textarea>
+ placeholder="What will students learn? Topics covered, exam papers, tips">{{ old('description') }}</textarea>
  </div>
 
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;" class="two-col">
@@ -118,18 +118,18 @@
  Auto-generated on save
  </h4>
  <div style="font-size:12px;color:var(--muted);line-height:1.7;">
- <p>â‚¬Â¢ <strong>Session code</strong> â‚¬" GRP-XXXXXXXX</p>
- <p>â‚¬Â¢ <strong>Meeting room</strong> â‚¬" Mwalimu-group-{uuid}</p>
- <p>â‚¬Â¢ <strong>Status</strong> set to "Scheduled"</p>
+ <p> <strong>Session code</strong> " GRP-XXXXXXXX</p>
+ <p> <strong>Meeting room</strong> " Mwalimu-group-{uuid}</p>
+ <p> <strong>Status</strong> set to "Scheduled"</p>
  </div>
  </div>
  <div class="card" style="padding:20px;margin-top:12px;">
  <h4 style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;">Session Lifecycle</h4>
  <div style="font-size:12px;color:var(--muted);line-height:1.8;">
- <p><i class="fa-solid fa-calendar"></i> <strong>Scheduled</strong> " ' students can enroll</p>
- <p>¶️ <strong>In Progress</strong> " ' session live (Start it from Show page)</p>
- <p>Å-… <strong>Completed</strong> " ' session ended</p>
- <p>ÂÅ’ <strong>Cancelled</strong> " ' session called off</p>
+ <p><i class="fa-solid fa-calendar"></i> <strong>Scheduled</strong> "' students can enroll</p>
+ <p> <strong>In Progress</strong> "' session live (Start it from Show page)</p>
+ <p>- <strong>Completed</strong> "' session ended</p>
+ <p> <strong>Cancelled</strong> "' session called off</p>
  </div>
  </div>
  </div>
@@ -140,3 +140,4 @@
 </style>
 
 @endsection
+

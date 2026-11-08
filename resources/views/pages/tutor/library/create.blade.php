@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Upload Resource ÃÂ¢â Mwalimu</title>
+<title>Upload Resource  Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -122,11 +122,11 @@ select.form-input{cursor:pointer;}
                 <div class="type-selector">
                     @php
                         $types = [
-                            'article' => ['ÃÂ°ÃÂ¸âÃ¢ÂÂ','Article','Written guide or tutorial'],
-                            'pdf'     => ['ÃÂ°ÃÂ¸ââ¢','PDF','PDF document or eBook'],
-                            'video'   => ['ÃÂ°ÃÂ¸ÃÂ½Â¥','Video','Lesson video file'],
-                            'notes'   => ['ÃÂ°ÃÂ¸âÃÂ','Notes','Study notes or summaries'],
-                            'past_paper' => ['ÃÂ°ÃÂ¸âÃ¢ÂÂ¹','Past Paper','Exam past paper'],
+                            'article' => ['','Article','Written guide or tutorial'],
+                            'pdf'     => ['','PDF','PDF document or eBook'],
+                            'video'   => ['','Video','Lesson video file'],
+                            'notes'   => ['','Notes','Study notes or summaries'],
+                            'past_paper' => ['','Past Paper','Exam past paper'],
                         ];
                     @endphp
                     @foreach($types as $value => [$icon, $label, $desc])
@@ -152,7 +152,7 @@ select.form-input{cursor:pointer;}
                     <div class="form-group">
                         <label class="form-label">Category</label>
                         <select name="blog_category_id" class="form-input">
-                            <option value="">Select categoryÃÂ¢â¦</option>
+                            <option value="">Select category</option>
                             @foreach($categories as $cat)
                             <option value="{{ $cat->id }}" {{ old('blog_category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                             @endforeach
@@ -161,7 +161,7 @@ select.form-input{cursor:pointer;}
                     <div class="form-group">
                         <label class="form-label">Subject</label>
                         <select name="subject_id" class="form-input">
-                            <option value="">Any subjectÃÂ¢â¦</option>
+                            <option value="">Any subject</option>
                             @foreach($subjects as $subj)
                             <option value="{{ $subj->id }}" {{ old('subject_id') == $subj->id ? 'selected' : '' }}>{{ $subj->name }}</option>
                             @endforeach
@@ -182,14 +182,14 @@ select.form-input{cursor:pointer;}
 
                 <div class="form-group">
                     <label class="form-label">Summary / Excerpt</label>
-                    <textarea name="excerpt" class="form-input" rows="3" placeholder="Brief description of what this resource coversÃÂ¢â¦">{{ old('excerpt') }}</textarea>
+                    <textarea name="excerpt" class="form-input" rows="3" placeholder="Brief description of what this resource covers">{{ old('excerpt') }}</textarea>
                     <div class="form-hint">Shown on the library listing page. Keep it concise.</div>
                 </div>
 
                 {{-- Content only shown for articles/notes --}}
                 <div class="form-group" x-show="resourceType === 'article' || resourceType === 'notes'" style="display:none;" x-cloak>
                     <label class="form-label">Full Content</label>
-                    <textarea name="content" class="form-input" rows="10" placeholder="Write the full article, study notes, or explanation hereÃÂ¢â¦">{{ old('content') }}</textarea>
+                    <textarea name="content" class="form-input" rows="10" placeholder="Write the full article, study notes, or explanation here">{{ old('content') }}</textarea>
                     <div class="form-hint">HTML is supported for rich formatting.</div>
                 </div>
             </div>
@@ -200,9 +200,9 @@ select.form-input{cursor:pointer;}
                 <div class="upload-zone" @dragover.prevent="$el.classList.add('drag-over')" @dragleave="$el.classList.remove('drag-over')" @drop.prevent="$el.classList.remove('drag-over');hasFile=true">
                     <input type="file" name="file" @change="hasFile=true" accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.avi,.mov,.mkv">
                     <div x-show="!hasFile">
- <div style="font-size:40px;margin-bottom:10px;">ð</div>ottom:10px;">ÃÂ°ÃÂ¸âÃÂ½</div>
+ <div style="font-size:40px;margin-bottom:10px;"></div>ottom:10px;"></div>
                         <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Drop file here or click to browse</p>
-                        <p style="font-size:12px;color:var(--muted);">PDF, DOC, PPT, MP4, AVI ÃÂ¢â¬â max 50 MB</p>
+                        <p style="font-size:12px;color:var(--muted);">PDF, DOC, PPT, MP4, AVI  max 50 MB</p>
                     </div>
                     <div x-show="hasFile" style="display:none;">
                         <div style="font-size:40px;margin-bottom:10px;"><i class="fa-solid fa-check-circle" style="color:#10B981;"></i></div>
@@ -216,9 +216,9 @@ select.form-input{cursor:pointer;}
                 <h3 style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:16px;">Cover Image (optional)</h3>
                 <div class="upload-zone">
                     <input type="file" name="thumbnail" accept="image/*">
-                    <div style="font-size:32px;margin-bottom:8px;">ÃÂ°ÃÂ¸âÂ¼ÃÂ¯ÃÂ¸ÃÂ</div>
+                    <div style="font-size:32px;margin-bottom:8px;"></div>
                     <p style="font-weight:600;font-size:14px;color:var(--ink);margin-bottom:4px;">Upload a cover image</p>
-                    <p style="font-size:12px;color:var(--muted);">JPG, PNG, WebP ÃÂ¢â¬â max 5 MB. Recommended: 800ÃÂâ500px</p>
+                    <p style="font-size:12px;color:var(--muted);">JPG, PNG, WebP  max 5 MB. Recommended: 800500px</p>
                 </div>
             </div>
 
@@ -231,7 +231,7 @@ select.form-input{cursor:pointer;}
             </div>
 
             <div style="margin-top:16px;padding:14px 16px;background:rgba(10,100,188,.06);border-radius:12px;font-size:13px;color:var(--muted);">
-                ÃÂ°ÃÂ¸âÃÂ¡ Resources go live immediately. Ensure content is appropriate and accurate ÃÂ¢â¬â the admin team may remove resources that violate guidelines.
+                 Resources go live immediately. Ensure content is appropriate and accurate  the admin team may remove resources that violate guidelines.
             </div>
         </form>
     </div>
@@ -239,3 +239,4 @@ select.form-input{cursor:pointer;}
 </div>
 </body>
 </html>
+

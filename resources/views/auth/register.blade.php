@@ -438,7 +438,7 @@ svg{
  </div>
 
  <div class="brand-footer">
- ÃÂ¯ÃÂ¿Ã½ 2026 Mwalimu. Empowering learners nationwide.
+  2026 Mwalimu. Empowering learners nationwide.
  </div>
  </div>
 
@@ -565,7 +565,7 @@ svg{
  id="password" 
  name="password" 
  class="form-input" 
- placeholder="ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½"
+ placeholder=""
  required
  autocomplete="new-password">
  </div>
@@ -592,7 +592,7 @@ svg{
  id="password_confirmation" 
  name="password_confirmation" 
  class="form-input" 
- placeholder="ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½ÃÂ¯ÃÂ¿Ã½"
+ placeholder=""
  required
  autocomplete="new-password">
  </div>
@@ -642,3 +642,4 @@ svg{
 
 </body>
 </html>
+

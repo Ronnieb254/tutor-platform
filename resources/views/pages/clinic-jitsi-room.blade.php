@@ -34,9 +34,9 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <div class="session-header">
  <div style="display:flex;align-items:center;flex:1;">
  <div class="session-title">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span> {{ $clinic->title ?? $clinic->name }}
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> {{ $clinic->title ?? $clinic->name }}
  </div>
- <span style="color:var(--muted);margin:0 12px;font-size:10px;">•</span>
+ <span style="color:var(--muted);margin:0 12px;font-size:10px;"></span>
  <span style="color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}</span>
  @if($isModerator)
  <span class="moderator-badge">
@@ -56,7 +56,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 
 <div class="access-warning">
  <i class="fa-solid fa-shield-halved"></i>
- <span>Platform-only session · Encrypted end-to-end</span>
+ <span>Platform-only session  Encrypted end-to-end</span>
 </div>
 
 <script>
@@ -169,3 +169,4 @@ window.addEventListener('beforeunload', function(e) {
 
 </body>
 </html>
+

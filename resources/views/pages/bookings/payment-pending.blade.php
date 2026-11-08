@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Booking Received — Mwalimu</title>
+<title>Booking Received  Mwalimu</title>
 <style>
 body { background: #F2F5F2; }
 .pending-wrap {
@@ -99,7 +99,7 @@ body { background: #F2F5F2; }
             <div style="display:flex;flex-direction:column;gap:8px;">
                 <div style="display:flex;justify-content:space-between;font-size:13px;">
                     <span style="color:rgba(21,40,31,.55);">Tutor</span>
-                    <span style="font-weight:600;color:#15281F;">{{ $booking->tutor->name ?? '—' }}</span>
+                    <span style="font-weight:600;color:#15281F;">{{ $booking->tutor->name ?? '' }}</span>
                 </div>
                 @if($booking->subject)
                 <div style="display:flex;justify-content:space-between;font-size:13px;">
@@ -109,7 +109,7 @@ body { background: #F2F5F2; }
                 @endif
                 <div style="display:flex;justify-content:space-between;font-size:13px;">
                     <span style="color:rgba(21,40,31,.55);">Session</span>
-                    <span style="font-weight:600;color:#15281F;">{{ $booking->duration_minutes }}min · {{ $booking->scheduled_at->format('D, M j, Y') }}</span>
+                    <span style="font-weight:600;color:#15281F;">{{ $booking->duration_minutes }}min  {{ $booking->scheduled_at->format('D, M j, Y') }}</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:13px;">
                     <span style="color:rgba(21,40,31,.55);">Time</span>
@@ -155,7 +155,7 @@ body { background: #F2F5F2; }
         {{-- Keep SMS notice --}}
         <div style="background:#FEF3C7;border-radius:12px;padding:14px 16px;font-size:13px;color:#92400E;margin-bottom:28px;text-align:left;">
             <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i>
-            <strong>Keep your M-Pesa SMS</strong> — your transaction code may be requested during verification.
+            <strong>Keep your M-Pesa SMS</strong>  your transaction code may be requested during verification.
         </div>
 
         {{-- Buttons --}}
@@ -221,3 +221,4 @@ body { background: #F2F5F2; }
 </script>
 </body>
 </html>
+

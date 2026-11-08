@@ -35,16 +35,16 @@
  @endif
 
  <div class="contract-content">
- {{-- "â‚¬"â‚¬ Parties "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" Parties """"""""""""""""""""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>ELECTRONIC TUTOR SERVICES AGREEMENT</h3>
- <p style="color:var(--muted);font-size:13px;">Mwalimu Virtual Tuition Platform · Effective date: 1 November 2026 · Version 1.1</p>
+ <p style="color:var(--muted);font-size:13px;">Mwalimu Virtual Tuition Platform  Effective date: 1 November 2026  Version 1.1</p>
  <p><strong>Mwalimu:</strong> Oval Desk Ventures, a business registered in Kenya under registration number BNRRSKQQOZ, of P.O. Box 47210-00100, G.P.O., Nairobi, operating the virtual tuition platform known as Mwalimu ("Mwalimu" or "the Platform").</p>
  <p><strong>The Tutor:</strong> {{ auth()->user()->name }} ("the Tutor").</p>
  <p>This Agreement consists of clauses 1 to 17, Schedule A (Commercial Terms) and Schedule B (Tutor Cancellation, Attendance and No-Show Policy).</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 1. Purpose and scope "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 1. Purpose and scope """""""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>1. PURPOSE AND SCOPE</h3>
  <p>1.1 Mwalimu operates an online platform that connects learners and their parents or guardians with tutors offering virtual tuition and academic support.</p>
@@ -53,7 +53,7 @@
  <p>1.4 This Agreement governs the Tutor's engagement, professional obligations, compensation, conduct, learner safeguarding, confidentiality and use of the Platform.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 2. Appointment "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 2. Appointment """""""""""""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>2. APPOINTMENT, ELIGIBILITY AND VERIFICATION</h3>
  <p>2.1 Mwalimu appoints the Tutor as an approved service provider on the Platform, subject to successful verification and continued compliance with this Agreement.</p>
@@ -65,7 +65,7 @@
  <p>2.7 The Tutor shall not misrepresent qualifications, claim examiner or marking experience without supporting evidence, or guarantee examination results, grades or admission to any institution.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 3. Nature of relationship "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 3. Nature of relationship """"""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>3. NATURE OF THE RELATIONSHIP</h3>
  <p>3.1 The Parties intend that the Tutor provides tuition as an independent service provider and not as an employee of Mwalimu, subject to the actual working arrangement.</p>
@@ -76,7 +76,7 @@
  <p>3.6 Nothing in this Agreement excludes employment rights or statutory protections that apply because of the actual nature of the working relationship.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 4. Tutor profile "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 4. Tutor profile """""""""""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>4. TUTOR PROFILE AND PLATFORM USE</h3>
  <p>4.1 Mwalimu may publish an approved Tutor profile containing the Tutor's name, qualifications, experience, subjects, grades, teaching languages, availability, photograph, biography and other approved information.</p>
@@ -86,7 +86,7 @@
  <p>4.5 Mwalimu may remove, correct or suspend profile content that is inaccurate, misleading, unlawful or inconsistent with its policies.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 5. Bookings and lesson delivery "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 5. Bookings and lesson delivery """"""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>5. BOOKINGS AND LESSON DELIVERY</h3>
  <p>5.1 Lessons are booked through the Platform and delivered in the virtual classroom the Platform provides.</p>
@@ -99,7 +99,7 @@
  <p>5.8 The Tutor shall not delegate a lesson to another person without Mwalimu's prior written approval and any required verification of the substitute.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 6. Fees, commission and payments "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 6. Fees, commission and payments """""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>6. FEES, COMMISSION AND PAYMENTS</h3>
  <p>6.1 The fee for each lesson is shown with each confirmed booking.</p>
@@ -113,7 +113,7 @@
  <p>6.9 Each Party is responsible for its own tax obligations under Kenyan law.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 7. Cancellations, rescheduling and absence "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 7. Cancellations, rescheduling and absence """""""""""" --}}
  <div class="contract-section">
  <h3>7. CANCELLATIONS, RESCHEDULING AND ABSENCE</h3>
  <p>7.1 The Tutor shall tell Mwalimu and the learner as soon as reasonably possible if unable to attend a confirmed lesson.</p>
@@ -123,7 +123,7 @@
  <p>7.5 Mwalimu may investigate attendance disputes using booking records, timestamps and other lawfully obtained evidence.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 8. Professional conduct "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 8. Professional conduct """""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>8. PROFESSIONAL CONDUCT AND ACADEMIC INTEGRITY</h3>
  <p>8.1 The Tutor shall act honestly, respectfully, professionally and in the learner's educational interests.</p>
@@ -132,10 +132,10 @@
  <p>8.4 The Tutor shall respect intellectual property rights and use textbooks, past papers, images, software and other resources only where law or licence permits.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 9. Child safeguarding "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 9. Child safeguarding """""""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>9. CHILD SAFEGUARDING</h3>
- <p style="color: #991B1B; font-weight: 700; background: rgba(239,68,68,.08); padding: 12px; border-radius: 8px; border-left: 3px solid #EF4444;">⚠ Ã¯Â¸Â This section is critical. Breach of any safeguarding obligation will result in immediate account termination and referral to the relevant authorities.</p>
+ <p style="color: #991B1B; font-weight: 700; background: rgba(239,68,68,.08); padding: 12px; border-radius: 8px; border-left: 3px solid #EF4444;"> This section is critical. Breach of any safeguarding obligation will result in immediate account termination and referral to the relevant authorities.</p>
  <p>9.1 Where a learner is under 18, the Tutor shall respect the learner's right to safety, dignity, privacy and protection from abuse.</p>
  <p>9.2 The Tutor shall comply with the Children Act, 2022, applicable safeguarding requirements and Mwalimu's child protection policy.</p>
  <p>9.3 The Tutor shall: (a) communicate with minors only through the Platform or other channels authorised by Mwalimu and the parent or guardian; (b) keep appropriate professional boundaries at all times; (c) never solicit, exchange or distribute sexually explicit, exploitative or otherwise inappropriate material involving a child; (d) never engage in grooming, sexual harassment, exploitation, threats, intimidation or inappropriate personal relationships with a learner; (e) never ask a minor for unnecessary personal information, private photographs, money, gifts or favours; (f) not arrange an in-person meeting with a minor outside arrangements approved by the parent or guardian and Mwalimu; (g) use any recording or monitoring feature only in line with Mwalimu's disclosed policy, the law and required permissions; and (h) promptly report suspected abuse, exploitation, serious misconduct or an immediate safeguarding concern through Mwalimu's reporting process, and to the authorities where required.</p>
@@ -144,7 +144,7 @@
  <p>9.6 Where Mwalimu requires background checks, safeguarding training or further documentation, the Tutor shall complete them before teaching the relevant category of learner.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 10. Privacy and data protection "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 10. Privacy and data protection """"""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>10. PRIVACY AND DATA PROTECTION</h3>
  <p>10.1 The Tutor shall comply with the Data Protection Act, 2019, applicable regulations and Mwalimu's privacy and data-handling policies.</p>
@@ -156,7 +156,7 @@
  <p>10.7 Nothing in this Agreement authorises the Tutor to record, publish or reuse a learner's image, voice or lesson recording outside approved educational purposes.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 11. Intellectual property "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 11. Intellectual property """""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>11. INTELLECTUAL PROPERTY AND TEACHING MATERIALS</h3>
  <p>11.1 Each Party keeps the intellectual property it owned or developed independently before this Agreement.</p>
@@ -167,7 +167,7 @@
  <p>11.6 Neither Party shall use the other's trademarks, logo or branding outside the scope of this Agreement without permission.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 12. Lesson recording and quality assurance "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 12. Lesson recording and quality assurance """""""""""" --}}
  <div class="contract-section">
  <h3>12. LESSON RECORDING AND QUALITY ASSURANCE</h3>
  <p>12.1 Mwalimu may use learner feedback, attendance information, completion records and quality assessments to monitor service quality and resolve disputes.</p>
@@ -178,7 +178,7 @@
  <p>12.6 Mwalimu shall handle complaints fairly and may give the Tutor an opportunity to respond before disciplinary action, except where immediate protective measures are reasonably necessary.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 13. Conflict of interest "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 13. Conflict of interest """"""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>13. CONFLICT OF INTEREST AND DIRECT BOOKINGS</h3>
  <p>13.1 The Tutor shall disclose any material conflict of interest that could compromise their impartiality or the learner's interests.</p>
@@ -186,7 +186,7 @@
  <p>13.3 Nothing in this Agreement prevents the Tutor from lawful independent teaching or working with other platforms. A booking made through the Platform is always a Platform booking.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 14. Representations, liability and indemnity "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 14. Representations, liability and indemnity """"""""""" --}}
  <div class="contract-section">
  <h3>14. REPRESENTATIONS, LIABILITY AND INDEMNITY</h3>
  <p>14.1 The Tutor warrants that they have the qualifications, competence and legal authority needed to provide the services they advertise.</p>
@@ -198,7 +198,7 @@
  <p>14.7 Mwalimu does not guarantee the number of bookings, the Tutor's earnings or any academic result.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 15. Suspension and termination "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 15. Suspension and termination """""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>15. SUSPENSION AND TERMINATION</h3>
  <p>15.1 Either Party may terminate this Agreement by giving 14 days' written notice.</p>
@@ -208,7 +208,7 @@
  <p>15.5 On termination: (a) the Tutor stops receiving new bookings; (b) the Tutor shall complete or appropriately hand over existing bookings unless Mwalimu directs otherwise; (c) Mwalimu shall pay all amounts due for delivered lessons in the next payout, less lawful deductions; and (d) the clauses on confidentiality, data protection, intellectual property, accrued payment obligations, liability and dispute resolution survive as fa-regular as necessary.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 16. Dispute resolution "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 16. Dispute resolution """"""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>16. DISPUTE RESOLUTION AND GOVERNING LAW</h3>
  <p>16.1 The Parties shall first try to resolve any dispute through good-faith discussion.</p>
@@ -218,7 +218,7 @@
  <p>16.5 Disputes about a specific cancellation, refund or attendance decision are first handled through the review request process in the Learner Policy (48 hours), and then, if unresolved, under this clause.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ 17. General provisions "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" 17. General provisions """"""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>17. GENERAL PROVISIONS</h3>
  <p>17.1 <strong>Entire agreement.</strong> This Agreement, including its Schedules and the policies incorporated under clause 17.7, is the entire agreement between the Parties on its subject matter and replaces earlier discussions on it.</p>
@@ -229,7 +229,7 @@
  <p>17.6 <strong>Incorporated policies.</strong> The following are part of this Agreement and are made available to the Tutor during onboarding: Schedule A, Schedule B, the Learner Cancellation, Rescheduling and No-Show Policy, Mwalimu's child protection policy, and its privacy and data-handling policies. In a conflict about payment, Schedule A prevails. In a conflict about attendance or cancellation, Schedule B prevails over the Learner Policy as fa-regular as it concerns the Tutor's obligations and pay.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ Schedule A "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" Schedule A """"""""""""""""""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>SCHEDULE A: COMMERCIAL TERMS</h3>
 
@@ -270,7 +270,7 @@
  <p><strong>5. Commissioned materials:</strong> None unless a separate written agreement is made under clause 11.4.</p>
  </div>
 
- {{-- "â‚¬"â‚¬ Schedule B "â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬"â‚¬ --}}
+ {{-- "" Schedule B """"""""""""""""""""""""""""""""""""""""""""" --}}
  <div class="contract-section">
  <h3>SCHEDULE B: TUTOR CANCELLATION, ATTENDANCE AND NO-SHOW POLICY</h3>
  <p style="color:var(--muted);font-size:13px;">Effective 1 November 2026. Applies to individual tuition, group sessions and examination clinics. Read with the Learner Cancellation, Rescheduling and No-Show Policy.</p>
@@ -361,7 +361,7 @@
  </label>
 
  <button type="submit" class="btn-accept" id="acceptButton" disabled>
- <i class="fa-solid fa-circle-check"></i> Agree &amp; Sign â‚¬" I Accept the Agreement
+ <i class="fa-solid fa-circle-check"></i> Agree &amp; Sign " I Accept the Agreement
  </button>
 
  <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px;">
@@ -388,3 +388,4 @@ document.getElementById('acceptCheckbox').addEventListener('change', function() 
 
 </body>
 </html>
+

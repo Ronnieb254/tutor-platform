@@ -7,7 +7,7 @@
  <div>
  <label class="form-label">Search</label>
  <input type="text" wire:model.live.debounce.400ms="search"
- class="form-input" placeholder="Name or subjectâ‚¬Â¦">
+ class="form-input" placeholder="Name or subject">
  </div>
 
  <div>
@@ -37,7 +37,7 @@
  <div class="flex items-center gap-2">
  <input type="number" wire:model.live.debounce.500ms="minPrice"
  class="form-input" placeholder="Min" min="0">
- <span class="text-muted text-sm">â‚¬"</span>
+ <span class="text-muted text-sm">"</span>
  <input type="number" wire:model.live.debounce.500ms="maxPrice"
  class="form-input" placeholder="Max" min="0">
  </div>
@@ -47,9 +47,9 @@
  <label class="form-label">Minimum rating</label>
  <select wire:model.live="minRating" class="form-input">
  <option value="">Any rating</option>
- <option value="4.5">4.5+ Ëœ…</option>
- <option value="4.0">4.0+ Ëœ…</option>
- <option value="3.5">3.5+ Ëœ…</option>
+ <option value="4.5">4.5+ </option>
+ <option value="4.0">4.0+ </option>
+ <option value="3.5">3.5+ </option>
  </select>
  </div>
 
@@ -70,13 +70,13 @@
  <p class="text-sm text-muted">{{ $tutors->total() }} tutor{{ $tutors->total() !== 1 ? 's' : '' }} found</p>
  <div wire:loading class="text-xs text-trust-blue flex items-center gap-1.5">
  <svg class="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"/><path d="M4 12a8 8 0 018-8" stroke="currentColor" stroke-width="3" stroke-linecap="round" class="opacity-75"/></svg>
- Searchingâ‚¬Â¦
+ Searching
  </div>
  </div>
 
  @if($tutors->isEmpty())
  <div class="card p-10 text-center">
- <div class="text-4xl mb-3">Â</div>
+ <div class="text-4xl mb-3"></div>
  <p class="font-serif text-xl font-semibold text-ink mb-2">No tutors found</p>
  <p class="text-muted text-sm">Try adjusting your filters or search term.</p>
  </div>
@@ -92,9 +92,9 @@
  <div>
  <p class="font-serif font-semibold text-ink">{{ $tutor->user->name }}</p>
  <div class="flex items-center gap-1 mt-0.5">
- <span class="text-mint text-xs font-semibold">— Verified</span>
+ <span class="text-mint text-xs font-semibold"> Verified</span>
  @if($tutor->experience_years > 0)
- <span class="text-muted text-xs">· {{ $tutor->experience_years }}y exp</span>
+ <span class="text-muted text-xs"> {{ $tutor->experience_years }}y exp</span>
  @endif
  </div>
  </div>
@@ -114,9 +114,9 @@
  </div>
 
  <div class="flex items-center gap-2 mt-2 text-xs text-muted">
- <span class="text-gold font-bold">Ëœ… {{ number_format($tutor->rating_avg, 1) }}</span>
+ <span class="text-gold font-bold"> {{ number_format($tutor->rating_avg, 1) }}</span>
  <span>({{ $tutor->total_reviews }} reviews)</span>
- <span>·</span>
+ <span></span>
  <span>{{ $tutor->total_sessions }} sessions</span>
  </div>
  </div>
@@ -154,3 +154,4 @@
  @endif
  </div>
 </div>
+

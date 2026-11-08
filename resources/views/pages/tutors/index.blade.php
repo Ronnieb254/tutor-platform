@@ -92,7 +92,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  <span class="f-label"><i class="fa-solid fa-magnifying-glass"></i> Search</span>
  <div style="position:relative;">
  <i class="fa-solid fa-magnifying-glass"></i>
- <input type="text" name="search" value="{{ $search }}" class="f-input" placeholder="Tutor name or subject…" style="padding-left:34px;">
+ <input type="text" name="search" value="{{ $search }}" class="f-input" placeholder="Tutor name or subject" style="padding-left:34px;">
  </div>
  </div>
  <div style="min-width:160px;">
@@ -131,7 +131,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
  @if($search)<span class="filter-tag"><i class="fa-solid fa-magnifying-glass"></i>"{{ $search }}"</span>@endif
  @if($catId)<span class="filter-tag"><i class="fa-solid fa-tag"></i>{{ $categories->find($catId)?->name }}</span>@endif
- @if($minR)<span class="filter-tag"><i class="fa-solid fa-star"></i>★ {{ $minR }}+</span>@endif
+ @if($minR)<span class="filter-tag"><i class="fa-solid fa-star"></i> {{ $minR }}+</span>@endif
  @if($minP)<span class="filter-tag">From KSh {{ number_format($minP) }}</span>@endif
  @if($maxP)<span class="filter-tag">To KSh {{ number_format($maxP) }}</span>@endif
  </div>
@@ -143,7 +143,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-magnifying-glass"></i></div>
  <h3 style="font-size:22px;color:var(--ink);margin-bottom:8px;">No tutors found</h3>
  <p style="color:var(--muted);margin-bottom:20px;">Try adjusting your filters or search term.</p>
- <a href="{{ route('tutors.index') }}" class="btn btn-v"><span style="font-size:inherit;">←</span> Clear Filters</a>
+ <a href="{{ route('tutors.index') }}" class="btn btn-v"><span style="font-size:inherit;"></span> Clear Filters</a>
  </div>
  @else
  <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="tgrid">
@@ -161,7 +161,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 </div>
  <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
  <span style="font-size:11px;font-weight:600;color:var(--mint);"><i class="fa-solid fa-scroll"></i> TSC Verified</span>
- <span style="color:var(--muted);font-size:11px;">· {{ $tutor->experience_years }}yr exp</span>
+ <span style="color:var(--muted);font-size:11px;"> {{ $tutor->experience_years }}yr exp</span>
  </div>
  </div>
  <!-- <div style="text-align:right;flex-shrink:0;">
@@ -177,16 +177,16 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  {{-- Curriculum badges --}}
  @foreach($tutor->approvedCurricula->take(2) as $curr)
  <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;
- {{ $curr->track==='kenyan' ? '🇰🇪' : '🌍' }}">
- {{ $curr->track==='kenyan' ? '🇰🇪' : '🌍' }} {{ $curr->name }}
+ {{ $curr->track==='kenyan' ? '' : '' }}">
+ {{ $curr->track==='kenyan' ? '' : '' }} {{ $curr->name }}
  </span>
  @endforeach
  </div>
  <div style="display:flex;align-items:center;gap:10px;margin-top:7px;font-size:12px;color:var(--muted);">
  <span style="color:var(--gold);font-weight:700;"><i class="fa-solid fa-star"></i> {{ number_format($tutor->rating_avg,1) }}</span>
  <span>({{ $tutor->total_reviews }})</span>
- <span>·</span><span>{{ $tutor->total_sessions }} sessions</span>
- <!-- @if($tutor->city)<span>·</span><span><i class="fa-solid fa-location-dot"></i> {{ $tutor->city }}</span>@endif -->
+ <span></span><span>{{ $tutor->total_sessions }} sessions</span>
+ <!-- @if($tutor->city)<span></span><span><i class="fa-solid fa-location-dot"></i> {{ $tutor->city }}</span>@endif -->
  </div>
  </div>
  </div>

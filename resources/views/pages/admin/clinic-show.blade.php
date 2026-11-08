@@ -1,11 +1,11 @@
 ﻿@extends('layouts.admin')
-@section('title', 'Clinic â‚¬" ' . ($clinic->title ?? 'Detail'))
+@section('title', 'Clinic " ' . ($clinic->title ?? 'Detail'))
 @section('content')
 <div style="max-width:1100px;margin:0 auto;padding:24px;">
 
  <div style="margin-bottom:20px;">
  <a href="{{ route('admin.clinics') }}" style="font-size:13px;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-bottom:10px;">
- <span style="font-size:inherit;">←</span> All Clinics
+ <span style="font-size:inherit;"></span> All Clinics
  </a>
  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;">
  <div>
@@ -94,7 +94,7 @@
  <tr style="border-top:1px solid rgba(21,40,31,.05);">
  <td style="padding:12px 16px;color:var(--muted);">{{ $i + 1 }}</td>
  <td style="padding:12px 16px;">
- <div style="font-weight:600;color:var(--ink);">{{ $enrollment->student?->name ?? 'â‚¬"' }}</div>
+ <div style="font-weight:600;color:var(--ink);">{{ $enrollment->student?->name ?? '"' }}</div>
  <div style="font-size:11px;color:var(--muted);">{{ $enrollment->student?->email }}</div>
  </td>
  <td style="padding:12px 16px;">
@@ -125,9 +125,9 @@
  <div style="padding:14px 20px;border-bottom:1px solid rgba(21,40,31,.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
  <div>
  <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $child->title }}</div>
- <div style="font-size:12px;color:var(--muted);">{{ $child->scheduled_at->format('D, M j \a\t g:ia') }} · {{ $child->enrollments_count ?? $child->enrollments()->count() }}/30 enrolled</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $child->scheduled_at->format('D, M j \a\t g:ia') }}  {{ $child->enrollments_count ?? $child->enrollments()->count() }}/30 enrolled</div>
  </div>
- <a href="{{ route('admin.clinics.show', $child) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:600;">View <span style="font-size:inherit;">→</span></a>
+ <a href="{{ route('admin.clinics.show', $child) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:600;">View <span style="font-size:inherit;"></span></a>
  </div>
  @endforeach
  </div>
@@ -146,7 +146,7 @@
  ['Price', 'KSh ' . number_format($clinic->price)],
  ['Duration', $clinic->duration_minutes . ' minutes'],
  ['Max Students', '30'],
- ['Meeting Room', $clinic->meeting_room ?? 'â‚¬"'],
+ ['Meeting Room', $clinic->meeting_room ?? '"'],
  ] as [$k,$v])
  <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(21,40,31,.05);font-size:13px;">
  <span style="color:var(--muted);">{{ $k }}</span>
@@ -172,7 +172,7 @@
  <div style="background:rgba(212,160,23,.06);border:1px solid rgba(212,160,23,.2);border-radius:16px;padding:16px;">
  <h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#B45309;margin-bottom:8px;">Overflow from</h3>
  <a href="{{ route('admin.clinics.show', $clinic->parentClinic) }}" style="font-size:13px;font-weight:600;color:#B45309;text-decoration:none;">
- {{ $clinic->parentClinic->title }} <span style="font-size:inherit;">↑</span>
+ {{ $clinic->parentClinic->title }} <span style="font-size:inherit;"></span>
  </a>
  </div>
  @endif
@@ -195,3 +195,4 @@ $(document).ready(function() {
 </script>
 @endpush
 @endsection
+

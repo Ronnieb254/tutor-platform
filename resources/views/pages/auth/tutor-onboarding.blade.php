@@ -167,7 +167,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  </div>
  <div style="display:flex;gap:12px;">
  <button class="btn-next" @click="validateStep1()">
- Continue <span style="font-size:inherit;">→</span>
+ Continue <span style="font-size:inherit;"></span>
  </button>
  </div>
  </div>
@@ -189,7 +189,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
  <input type="checkbox" x-model="form.curricula_tracks" value="kenyan" style="width:18px;height:18px;accent-color:#10B981;flex-shrink:0;">
  <span style="font-size:15px;font-weight:700;color:var(--ink);">???? Kenyan Curriculum</span>
- <span style="margin-left:auto;font-size:12px;color:var(--muted);">8-4-4 · CBE JSS · CBE Senior</span>
+ <span style="margin-left:auto;font-size:12px;color:var(--muted);">8-4-4  CBE JSS  CBE Senior</span>
  </label>
  <div x-show="form.curricula_tracks.includes('kenyan')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
@@ -206,7 +206,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  @endforeach
  </div>
  <div style="padding:10px 14px;background:rgba(16,185,129,.06);border-radius:10px;font-size:12px;color:#065F46;">
- <strong>Required docs:</strong> National ID · TSC Certificate · Certificate of Good Conduct · Passport Photo · Degree (recommended)
+ <strong>Required docs:</strong> National ID  TSC Certificate  Certificate of Good Conduct  Passport Photo  Degree (recommended)
  </div>
  </div>
  </div>
@@ -216,7 +216,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
  <input type="checkbox" x-model="form.curricula_tracks" value="international" style="width:18px;height:18px;accent-color:#6366F1;flex-shrink:0;">
  <span style="font-size:15px;font-weight:700;color:var(--ink);">?? International Curriculum</span>
- <span style="margin-left:auto;font-size:12px;color:var(--muted);">IGCSE · IB MYP · IB Diploma</span>
+ <span style="margin-left:auto;font-size:12px;color:var(--muted);">IGCSE  IB MYP  IB Diploma</span>
  </label>
  <div x-show="form.curricula_tracks.includes('international')" x-cloak style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(21,40,31,.1);">
  <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">Select programmes you teach</p>
@@ -233,7 +233,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  @endforeach
  </div>
  <div style="padding:10px 14px;background:rgba(99,102,241,.06);border-radius:10px;font-size:12px;color:#3730A3;">
- <strong>Required docs:</strong> National ID · Degree Certificate · Teaching Qualification (PGCE or IB cert) · Proof of IGCSE/IB experience · Certificate of Good Conduct · Passport Photo · Examiner credentials (optional)
+ <strong>Required docs:</strong> National ID  Degree Certificate  Teaching Qualification (PGCE or IB cert)  Proof of IGCSE/IB experience  Certificate of Good Conduct  Passport Photo  Examiner credentials (optional)
  </div>
  </div>
  </div>
@@ -280,8 +280,8 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  <p class="ferr" x-show="errors.subjects" x-text="errors.subjects" style="margin-top:8px;"></p>
  </div>
  <div style="display:flex;gap:12px;">
- <button class="btn-back" @click="step=1"><span style="font-size:inherit;">←</span> Back</button>
- <button class="btn-next" @click="validateStep2()">Continue <span style="font-size:inherit;">→</span></button>
+ <button class="btn-back" @click="step=1"><span style="font-size:inherit;"></span> Back</button>
+ <button class="btn-next" @click="validateStep2()">Continue <span style="font-size:inherit;"></span></button>
  </div>
  </div>
 
@@ -427,8 +427,8 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  <p class="ferr" x-show="errors.documents" x-text="errors.documents" style="margin-top:10px;"></p>
  </div>
  <div style="display:flex;gap:12px;">
- <button class="btn-back" @click="step=2"><span style="font-size:inherit;">←</span> Back</button>
- <button class="btn-next" @click="validateStep3()">Continue <span style="font-size:inherit;">→</span></button>
+ <button class="btn-back" @click="step=2"><span style="font-size:inherit;"></span> Back</button>
+ <button class="btn-next" @click="validateStep3()">Continue <span style="font-size:inherit;"></span></button>
  </div>
  </div>
 
@@ -507,7 +507,7 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  </div>
 
  <div style="display:flex;gap:12px;" x-show="!submitting">
- <button class="btn-back" @click="step=3"><span style="font-size:inherit;">←</span> Back</button>
+ <button class="btn-back" @click="step=3"><span style="font-size:inherit;"></span> Back</button>
  <button class="btn-next" @click="submitApplication()" :disabled="submitting">
  <i class="fa-solid fa-paper-plane"></i>
  <span x-text="form.speedy ? 'Submit & Pay KSh 1,000' : 'Submit Application'"></span>
@@ -569,7 +569,7 @@ function tutorOnboarding() {
  return {
  step: 1,
  submitting: false,
- uploadStatus: 'Uploading documents…',
+ uploadStatus: 'Uploading documents',
  form: {
  name: '{{ auth()->user()?->name ?? '' }}',
  phone: '{{ auth()->user()?->phone ?? '' }}',
@@ -668,7 +668,7 @@ function tutorOnboarding() {
 
  async submitApplication() {
  this.submitting = true;
- this.uploadStatus = 'Uploading documents…';
+ this.uploadStatus = 'Uploading documents';
 
  try {
  const fd = new FormData();
@@ -683,7 +683,7 @@ function tutorOnboarding() {
  });
  fd.append('_token', document.querySelector('meta[name=csrf-token]').content);
 
- this.uploadStatus = 'Saving profile…';
+ this.uploadStatus = 'Saving profile';
  const res = await fetch('/tutor/onboarding/submit', {
  method: 'POST',
  body: fd,
@@ -715,3 +715,4 @@ function tutorOnboarding() {
 @livewireScripts
 </body>
 </html>
+

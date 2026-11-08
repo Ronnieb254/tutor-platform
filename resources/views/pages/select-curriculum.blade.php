@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Choose Your Curriculum â‚¬" Mwalimu</title>
+<title>Choose Your Curriculum " Mwalimu</title>
 <meta name="description" content="Select your curriculum track: Kenyan (8-4-4, CBE) or International (IGCSE, IB). Find the right tutor for your learning path.">
 <style>
 .curr-page { min-height: 100vh; background: var(--cream); display: flex; flex-direction: column; }
@@ -111,7 +111,7 @@
  <span style="font-size:inherit;"><i class="fa-solid fa-flag"></i></span> Kenyan Curriculum
  </div>
  <div class="curr-card__title">Learn the<br>Kenyan Way</div>
- <p class="curr-card__sub">Kenya's national education system â‚¬" from secondary school through senior school.</p>
+ <p class="curr-card__sub">Kenya's national education system " from secondary school through senior school.</p>
  <div class="curr-tag-list">
  <span class="curr-tag"><i class="fa-solid fa-book-open"></i> 8-4-4</span>
  <span class="curr-tag"><i class="fa-solid fa-star"></i> CBC Junior Secondary</span>
@@ -119,7 +119,7 @@
  <span class="curr-tag"><i class="fa-solid fa-graduation-cap"></i> KCSE / KNEC</span>
  </div>
  <span class="curr-card__cta">
- <span style="font-size:inherit;">→</span> Find a Kenyan-curriculum tutor
+ <span style="font-size:inherit;"></span> Find a Kenyan-curriculum tutor
  </span>
  </button>
  </form>
@@ -144,7 +144,7 @@
  <span class="curr-tag"><i class="fa-solid fa-graduation-cap"></i> IB Diploma (HL/SL)</span>
  </div>
  <span class="curr-card__cta">
- <span style="font-size:inherit;">→</span> Find an international tutor
+ <span style="font-size:inherit;"></span> Find an international tutor
  </span>
  </button>
  </form>
@@ -163,3 +163,4 @@
 </div>
 </body>
 </html>
+

@@ -15,7 +15,7 @@
  <form method="GET" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
  <div style="flex:1;min-width:180px;">
  <label class="form-label">Search</label>
- <input type="text" name="search" class="form-input" placeholder="Title or descriptionâ‚¬Â¦" value="{{ request('search') }}">
+ <input type="text" name="search" class="form-input" placeholder="Title or description" value="{{ request('search') }}">
  </div>
  <div>
  <label class="form-label">Status</label>
@@ -65,11 +65,11 @@
  <span style="font-size:10px;background:#EDE9FE;color:#5B21B6;padding:2px 7px;border-radius:4px;margin-left:5px;">Auto</span>
  @endif
  </td>
- <td style="padding:12px 16px;color:var(--muted);">{{ $clinic->subject?->name ?? 'â‚¬"' }}</td>
+ <td style="padding:12px 16px;color:var(--muted);">{{ $clinic->subject?->name ?? '"' }}</td>
  <td style="padding:12px 16px;color:var(--muted);">
  @if($clinic->curriculum_id)
  <span style="font-size:11px;background:rgba(10,100,188,.08);color:#0A64BC;padding:2px 8px;border-radius:999px;">
- {{ $clinic->curriculum->name ?? 'â‚¬"' }}
+ {{ $clinic->curriculum->name ?? '"' }}
  </span>
  @else
  <span style="font-size:11px;color:var(--muted);">All tracks</span>
@@ -104,3 +104,4 @@
 @endif
 
 @endsection
+

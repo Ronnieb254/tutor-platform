@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $course->title }} â‚¬" Mwalimu</title>
+<title>{{ $course->title }} " Mwalimu</title>
 <meta name="description" content="{{ Str::limit($course->description ?? $course->title, 160) }}">
 </head>
 <body>
 @include('partials.nav')
 <div class="w" style="padding-top:32px;padding-bottom:64px;">
  <a href="{{ route('courses.index') }}" style="font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;margin-bottom:20px;transition:color .15s;" onmouseover="this.style.color='var(--trust-blue)'" onmouseout="this.style.color='var(--muted)'">
- <span style="font-size:inherit;">←</span> All Courses
+ <span style="font-size:inherit;"></span> All Courses
  </a>
  <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="cshow-g">
  <div>
@@ -70,7 +70,7 @@
  @csrf
  <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;padding:14px;font-size:15px;">
  <i class="fa-solid {{ $course->is_free ? 'fa-circle-play' : 'fa-credit-card' }}"></i>
- {{ $course->is_free ? 'Enrol Free' : 'Enrol â‚¬" KSh '.number_format($course->price) }}
+ {{ $course->is_free ? 'Enrol Free' : 'Enrol " KSh '.number_format($course->price) }}
  </button>
  </form>
  @else
@@ -95,3 +95,4 @@
 @livewireScripts
 </body>
 </html>
+

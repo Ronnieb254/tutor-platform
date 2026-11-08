@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Clinic Details â‚¬" {{ $clinic->title ?? $clinic->name }}</title>
+<title>Clinic Details " {{ $clinic->title ?? $clinic->name }}</title>
 </head>
 <body>
 @include('partials.nav')
@@ -12,7 +12,7 @@
 
  {{-- Breadcrumb --}}
  <a href="{{ route('examiner.dashboard') }}" style="font-size:13px;color:rgba(21,40,31,.5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-bottom:18px;">
- <span style="font-size:inherit;">←</span> Examiner Dashboard
+ <span style="font-size:inherit;"></span> Examiner Dashboard
  </a>
 
  {{-- Header --}}
@@ -48,7 +48,7 @@
  @else
  <div style="text-align:right;">
  <div style="font-size:12px;color:rgba(21,40,31,.45);margin-bottom:5px;">Session starts in</div>
- <div id="countdown" style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">â‚¬"</div>
+ <div id="countdown" style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#0A64BC;">"</div>
  <a href="{{ route('examiner.clinics.join', $clinic) }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:10px 20px;border-radius:10px;background:#0A64BC;color:#fff;font-size:13px;font-weight:600;text-decoration:none;opacity:.75;">
  <i class="fa-solid fa-video"></i> Join Early
  </a>
@@ -101,7 +101,7 @@
  <tr style="border-top:1px solid rgba(21,40,31,.04);">
  <td style="padding:12px 16px;color:rgba(21,40,31,.4);">{{ $i + 1 }}</td>
  <td style="padding:12px 16px;">
- <div style="font-weight:600;color:#15281F;">{{ $en->student?->name ?? 'â‚¬"' }}</div>
+ <div style="font-weight:600;color:#15281F;">{{ $en->student?->name ?? '"' }}</div>
  <div style="font-size:11px;color:rgba(21,40,31,.45);">{{ $en->student?->email }}</div>
  </td>
  <td style="padding:12px 16px;">
@@ -158,12 +158,12 @@
  @if($overflow)
  <div style="font-size:13px;font-weight:600;color:#15281F;margin-bottom:3px;">{{ $overflow->title }}</div>
  <div style="font-size:12px;color:rgba(21,40,31,.55);">{{ $overflow->scheduled_at->format('D, M j \a\t g:ia') }}</div>
- <a href="{{ route('examiner.clinics.show', $overflow) }}" style="font-size:12px;color:#059669;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:8px;">View overflow <span style="font-size:inherit;">→</span></a>
+ <a href="{{ route('examiner.clinics.show', $overflow) }}" style="font-size:12px;color:#059669;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:8px;">View overflow <span style="font-size:inherit;"></span></a>
  @endif
  </div>
  @elseif($clinic->isFull())
  <div style="background:rgba(232,82,42,.06);border:1px solid rgba(232,82,42,.2);border-radius:14px;padding:16px;font-size:13px;color:#B45309;">
- <i class="fa-solid fa-user"></i> <strong>Session is full</strong> â‚¬" overflow will be auto-created when a student books, or you can trigger it manually from the admin panel.
+ <i class="fa-solid fa-user"></i> <strong>Session is full</strong> " overflow will be auto-created when a student books, or you can trigger it manually from the admin panel.
  </div>
  @endif
 
@@ -172,7 +172,7 @@
  <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:14px;">
  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#0A64BC;margin-bottom:6px;">Overflow from</div>
  <a href="{{ route('examiner.clinics.show', $clinic->parentClinic) }}" style="font-size:13px;font-weight:600;color:#0A64BC;text-decoration:none;">
- {{ $clinic->parentClinic->title }} <span style="font-size:inherit;">↑</span>
+ {{ $clinic->parentClinic->title }} <span style="font-size:inherit;"></span>
  </a>
  </div>
  @endif
@@ -191,7 +191,7 @@
  if (!el) return;
  function tick(){
  var diff = target - Date.now();
- if(diff <= 0){ el.textContent = 'Startingâ‚¬Â¦'; return; }
+ if(diff <= 0){ el.textContent = 'Starting'; return; }
  var h = Math.floor(diff/3600000);
  var m = Math.floor((diff%3600000)/60000);
  var s = Math.floor((diff%60000)/1000);
@@ -221,3 +221,4 @@ $(document).ready(function() {
 </script>
 </body>
 </html>
+

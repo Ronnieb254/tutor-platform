@@ -1,4 +1,4 @@
-{{-- pages/dashboard/partials/documents.blade.php
+﻿{{-- pages/dashboard/partials/documents.blade.php
  Included by: pages/dashboard/tutor.blade.php
  Variables expected: $profile, $isApproved, $verificationStatus
 --}}
@@ -34,7 +34,7 @@
             Verification Documents
         </h2>
         <p style="font-size:14px;color:var(--muted);">
-            Upload your documents and select 1–2 teaching subjects. Our team reviews your profile within 24–48 hours.
+            Upload your documents and select 12 teaching subjects. Our team reviews your profile within 2448 hours.
         </p>
     </div>
 
@@ -71,7 +71,7 @@
                 <div style="font-weight:700;color:#854D0E;font-size:15px;">Under Review</div>
                 <div style="font-size:13px;color:#92400E;">
                     Your documents have been submitted and are being reviewed by our team.
-                    We'll email you within 24–48 hours.
+                    We'll email you within 2448 hours.
                 </div>
             </div>
         </div>
@@ -98,7 +98,7 @@
                     @if($subjectCount === 0)
                         Your documents look good! Before your profile can go live, you must select <strong>1 to 2 subjects</strong> you intend to teach.
                     @else
-                        You have {{ $subjectCount }} subjects selected — the maximum allowed is 2. Please remove one.
+                        You have {{ $subjectCount }} subjects selected  the maximum allowed is 2. Please remove one.
                     @endif
                 </div>
                 <a href="{{ route('tutor.subjects') }}"
@@ -119,7 +119,7 @@
             <div style="display:flex;flex-direction:column;gap:10px;">
                 @foreach([
                     ['4 required documents uploaded', $allRequiredUploaded, route('tutor.dashboard').'?tab=documents'],
-                    ['1–2 teaching subjects selected', $subjectCount >= 1 && $subjectCount <= 2, route('tutor.subjects')],
+                    ['12 teaching subjects selected', $subjectCount >= 1 && $subjectCount <= 2, route('tutor.subjects')],
                 ] as [$label, $done, $link])
                     <div style="display:flex;align-items:center;gap:10px;">
                         <div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
@@ -213,7 +213,7 @@
                     @if($doc)
                         <div style="font-size:12px;color:var(--muted);">
                             <i class="fa-solid fa-file"></i> {{ $doc->original_name ?? 'Uploaded file' }}
-                            &nbsp;·&nbsp;
+                            &nbsp;&nbsp;
                             {{ $doc->created_at->format('M j, Y') }}
                         </div>
                         @if($doc->admin_note)
@@ -226,7 +226,7 @@
                              color:{{ $isMissing ? 'var(--coral)' : 'var(--muted)' }};
                              font-weight:{{ $isMissing ? '600' : '400' }};">
                             @if($isMissing)
-                                <i class="fa-solid fa-triangle-exclamation"></i> Required — please upload this document
+                                <i class="fa-solid fa-triangle-exclamation"></i> Required  please upload this document
                             @else
                                 No document uploaded yet
                             @endif
@@ -290,3 +290,4 @@
         </p>
     </div>
 </div>
+

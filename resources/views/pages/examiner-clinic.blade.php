@@ -109,7 +109,7 @@
  <!-- <form method="GET" action="{{ route('examiner-clinic') }}" style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;box-shadow:0 2px 12px rgba(21,40,31,.04);">
  <div style="flex:2;min-width:180px;">
  <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><i class="fa-solid fa-magnifying-glass"></i> Search</label>
- <input type="text" name="search" value="{{ $search }}" placeholder="Subject or title…" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">
+ <input type="text" name="search" value="{{ $search }}" placeholder="Subject or title" style="width:100%;height:42px;padding:0 13px;border-radius:10px;border:1.5px solid rgba(21,40,31,.1);font-size:13.5px;font-family:inherit;color:#15281F;outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='rgba(21,40,31,.1)'">
  </div>
  <div style="min-width:160px;">
  <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.55);margin-bottom:5px;display:block;"><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span> Subject</label>
@@ -145,7 +145,7 @@
  <div style="font-size:48px;margin-bottom:14px;"><i class="fa-solid fa-circle-xmark"></i></div>
  <h3 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin-bottom:8px;">No clinics scheduled</h3>
  <p style="color:rgba(21,40,31,.55);margin-bottom:20px;">No clinics match your filters. Try adjusting your search or check back soon - new clinics are added weekly.</p>
- <a href="{{ route('examiner-clinic') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><span style="font-size:inherit;">←</span> Clear Filters</a>
+ <a href="{{ route('examiner-clinic') }}" style="display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:999px;background:#0A64BC;color:#fff;font-size:14px;font-weight:600;text-decoration:none;"><span style="font-size:inherit;"></span> Clear Filters</a>
  </div>
  @else
  <div style="display:grid;grid-template-columns:1fr;gap:14px;" class="ec-cards-grid">
@@ -158,7 +158,7 @@
  @endphp
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;{{ $isFull ? 'opacity:.75;' : '' }}box-shadow:0 2px 12px rgba(21,40,31,.04);">
  <div style="width:54px;height:54px;border-radius:16px;background:rgba(212,160,23,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>‍<i class="fa-solid fa-school"></i></span>
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span>
  </div>
  <div style="flex:1;min-width:200px;">
  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
@@ -286,3 +286,4 @@
 @livewireScripts
 </body>
 </html>
+

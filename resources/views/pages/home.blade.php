@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 @include('partials.head')
@@ -98,7 +98,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  @endforeach
  </select>
  <a href="{{ route('tutors.index') }}" class="btn btn-v" style="height:46px;padding:0 22px;border-radius:12px;font-size:14px;">
- <span style="font-size:inherit;">→</span> Find Tutor
+ <span style="font-size:inherit;"></span> Find Tutor
  </a>
  </form>
  </div>
@@ -109,11 +109,11 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  </a>
  @if(!auth()->check())
  <a href="{{ route('register') }}?role=tutor" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Become a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @elseif(auth()->check() && auth()->user()->role === 'parent')
  <a href="{{ route('register') }}?role=tutor" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Become a Tutor
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @endif
  </div>
@@ -129,7 +129,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  <i class="fa-solid fa-chart-bar"></i> Go to Dashboard
  </a>
  {{-- <a href="{{ route('examiner.dashboard') }}" class="btn btn-o" style="font-size:15px;padding:14px 32px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Examiner Dashboard
+ <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> Examiner Dashboard
  </a> --}}
  </div>
  @endif
@@ -205,14 +205,14 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  <span style="font-size:inherit;"><i class="fa-solid fa-flag"></i></span> KENYAN CURRICULUM
  </span>
  <span style="font-family:'Fraunces',serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2;">Learn the Kenyan Way</span>
- <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">8-4-4 · CBC Junior Secondary · CBC Senior School</span>
+ <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">8-4-4  CBC Junior Secondary  CBC Senior School</span>
  <div style="display:flex;flex-wrap:wrap;gap:6px;flex:1;align-content:flex-start;margin-bottom:20px;">
  <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? 8-4-4</span>
  <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? CBE JSS (G7-9)</span>
  <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">? CBE Senior (G10-12)</span>
  </div>
  <span style="display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#10B981;color:#fff;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;width:100%;">
- <span style="font-size:inherit;">→</span> Find a Kenyan-curriculum tutor
+ <span style="font-size:inherit;"></span> Find a Kenyan-curriculum tutor
  </span>
  </a>
 
@@ -226,7 +226,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  <i class="fa-solid fa-globe"></i> INTERNATIONAL CURRICULUM
  </span>
  <span style="font-family:'Fraunces',serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2;">Learn for the World</span>
- <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">IGCSE Cambridge · IGCSE Edexcel · IB MYP · IB Diploma</span>
+ <span style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;">IGCSE Cambridge  IGCSE Edexcel  IB MYP  IB Diploma</span>
  <div style="display:flex;flex-wrap:wrap;gap:6px;flex:1;align-content:flex-start;margin-bottom:20px;">
  <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? IGCSE Cambridge</span>
  <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? IGCSE Edexcel</span>
@@ -234,7 +234,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;">?? IB Diploma HL/SL</span>
  </div>
  <span style="display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#6366F1;color:#fff;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;width:100%;">
- <span style="font-size:inherit;">→</span> Find an international tutor
+ <span style="font-size:inherit;"></span> Find an international tutor
  </span>
  </a>
  </div>
@@ -274,10 +274,10 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  </div>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-g">
  @foreach([
- ['20','Quick Help','⚡','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
- ['40','Guided Practice','🎯','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false],
- ['60','Deep Dive','🏆','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false],
- ['60','Group Session','💥','KSh 600','Learn together with other students. Share the cost, maximize value.', true],
+ ['20','Quick Help','','KSh 300','Perfect for a quick question, specific topic or rapid revision drill.', false],
+ ['40','Guided Practice','','KSh 600','A full structured lesson with warm-up, teaching and Q&A.', false],
+ ['60','Deep Dive','','KSh 900','Maximum learning. Best value. Ideal for exam prep.', false],
+ ['60','Group Session','','KSh 600','Learn together with other students. Share the cost, maximize value.', true],
  ] as [$mins,$title,$icon,$price,$desc,$isGroup])
  <div style="border:2px solid {{ $isGroup ? 'var(--hair)' : '#EEBE15' }};border-radius:20px;padding:28px;transition:all .2s;cursor:pointer;background:{{ $isGroup ? 'transparent' : 'rgba(238,190,21,.05)' }};" class="card-lift"
  onmouseover="this.style.borderColor='{{ $isGroup ? 'var(--trust-blue)' : '#d4a800' }}'"
@@ -292,11 +292,11 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  @if(!auth()->check() || (auth()->check() && auth()->user()->role !== 'tutor' && auth()->user()->role !== 'admin'))
  @if($isGroup)
  <a href="{{ route('group-sessions.index') }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:var(--trust-blue);">
- View sessions <span style="font-size:inherit;">→</span>
+ View sessions <span style="font-size:inherit;"></span>
  </a>
  @else
  <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13px;font-weight:600;color:#EEBE15;">
- Book now <span style="font-size:inherit;">→</span>
+ Book now <span style="font-size:inherit;"></span>
  </a>
  @endif
  @endif
@@ -364,7 +364,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  </div>
  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
  <a href="/examiner-clinic" class="btn btn-w"><i class="fa-solid fa-circle-check"></i> View Upcoming Clinics</a>
- <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 1,000</span> /session · 60 min</div>
+ <div style="color:rgba(255,255,255,.65);font-size:14px;"><span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--gold);">KSh 1,000</span> /session  60 min</div>
  </div>
  </div>
  
@@ -403,7 +403,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  </div>
  <div style="display:flex;flex-wrap:wrap;gap:10px;">
  @if(!auth()->check() || auth()->user()->role === 'parent')
- <a href="{{ route('register') }}?role=tutor" class="btn btn-w"><span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Register as a Tutor</a>
+ <a href="{{ route('register') }}?role=tutor" class="btn btn-w"><span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> Register as a Tutor</a>
  @endif
  <a href="{{ route('how-it-works') }}" class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);">Learn More</a>
  </div>
@@ -446,7 +446,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  <div style="width:38px;height:38px;border-radius:999px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--trust-blue);font-size:15px;flex-shrink:0;">{{ $init }}</div>
  <div>
  <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $name }}</div>
- <div style="font-size:12px;color:var(--muted);">{{ $role }} · {{ $note }}</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $role }}  {{ $note }}</div>
  </div>
  </div>
  </div>
@@ -483,7 +483,7 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  <p style="font-size:17px;color:rgba(255,255,255,.6);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of Kenyan students and parents who trust Mwalimu for expert, safe, verified tutoring.</p>
  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
  <a href="{{ route('tutors.index') }}" class="btn btn-v" style="font-size:16px;padding:15px 40px;"><i class="fa-solid fa-magnifying-glass"></i> Find a Tutor</a>
- <a href="{{ route('register') }}?role=tutor" class="btn" style="background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.3);font-size:16px;padding:15px 40px;"><span style="font-size:inherit;"><i class="fa-solid fa-user"></i>â<i class="fa-solid fa-school"></i></span> Become a Tutor</a>
+ <a href="{{ route('register') }}?role=tutor" class="btn" style="background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.3);font-size:16px;padding:15px 40px;"><span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> Become a Tutor</a>
  </div>
  @endif
  </div>
@@ -494,3 +494,4 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
 @livewireScripts
 </body>
 </html>
+

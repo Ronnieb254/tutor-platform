@@ -109,7 +109,7 @@ a{color:inherit;text-decoration:none;}
  </div>
  <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:10px;">Account Name: <strong style="color:var(--ink);">OBARE OKOTH JACOB</strong></div>
  <div style="background:rgba(16,185,129,.08);border-radius:8px;padding:10px 14px;font-size:12px;color:#065F46;line-height:1.6;">
- <strong>Steps:</strong> M-Pesa → Lipa na M-Pesa → Pay Bill → Paybill: <strong>542542</strong> → Account: <strong>313126</strong> → Amount: <strong>KSh {{ number_format($clinic->price) }}</strong>
+ <strong>Steps:</strong> M-Pesa  Lipa na M-Pesa  Pay Bill  Paybill: <strong>542542</strong>  Account: <strong>313126</strong>  Amount: <strong>KSh {{ number_format($clinic->price) }}</strong>
  </div>
  </div>
 
@@ -155,10 +155,10 @@ a{color:inherit;text-decoration:none;}
 
  {{-- Submit Button --}}
  <button type="submit" class="btn btn-primary" id="submitBtn">
- <i class="fa-solid fa-paper-plane"></i> Submit Payment — KSh {{ number_format($clinic->price) }}
+ <i class="fa-solid fa-paper-plane"></i> Submit Payment  KSh {{ number_format($clinic->price) }}
  </button>
  <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
- ← Back
+  Back
  </a>
  </form>
 
@@ -189,3 +189,4 @@ document.getElementById('paymentForm').addEventListener('submit', function() {
 @livewireScripts
 </body>
 </html>
+

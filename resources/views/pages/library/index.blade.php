@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Library — Mwalimu</title>
+<title>Library  Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -116,7 +116,7 @@ a{color:inherit;text-decoration:none;}
             <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);">Learning Resource Hub</span>
         </div>
         <h1>The Mwalimu Library</h1>
-        <p>Curated past papers, study notes in PDF, and top rated video lessons — all in one place.</p>
+        <p>Curated past papers, study notes in PDF, and top rated video lessons  all in one place.</p>
         @if(!empty($track))
         <p style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:8px;">
             Showing resources for <strong style="color:#fff;">{{ ucfirst($track) }}</strong> curriculum track.
@@ -124,7 +124,7 @@ a{color:inherit;text-decoration:none;}
         </p>
         @endif
         <form method="GET" action="{{ route('library.index') }}" class="hero-search">
-            <input type="text" name="search" placeholder="Search resources, subjects, topics…" value="{{ request('search') }}">
+            <input type="text" name="search" placeholder="Search resources, subjects, topics" value="{{ request('search') }}">
             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
         </form>
     </div>
@@ -184,7 +184,7 @@ a{color:inherit;text-decoration:none;}
                     <strong style="color:var(--ink);">{{ $resources->total() }}</strong>
                     resource{{ $resources->total() != 1 ? 's' : '' }} found
                     @if(request()->hasAny(['search','type','category','grade']))
-                        — <a href="{{ route('library.index') }}" style="color:var(--trust-blue);font-weight:600;">Clear filters</a>
+                         <a href="{{ route('library.index') }}" style="color:var(--trust-blue);font-weight:600;">Clear filters</a>
                     @endif
                 </div>
                 @auth
@@ -300,3 +300,4 @@ a{color:inherit;text-decoration:none;}
 @include('partials.footer')
 </body>
 </html>
+

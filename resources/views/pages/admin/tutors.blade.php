@@ -374,7 +374,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmFinalApproval{{ $profile->id }}(this)">
  @csrf @method('PATCH')
  <button type="submit" class="btn btn-primary" style="width:100%;" {{ !$canApprove ? 'disabled title="'.$approveBlockReason.'"' : '' }}>
- <i class="fa-solid fa-circle-check"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs · '.$subjectCnt.' subjects)' }}
+ <i class="fa-solid fa-circle-check"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs  '.$subjectCnt.' subjects)' }}
  </button>
  </form>
  <script>
@@ -438,7 +438,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  </label>
  <select name="reason" required
  style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;margin-bottom:10px;appearance:none;">
- <option value="">Select reason…</option>
+ <option value="">Select reason</option>
  <option>Document is blurry or unreadable</option>
  <option>Wrong document uploaded</option>
  <option>Document appears altered or invalid</option>
@@ -446,7 +446,7 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <option>Name on document does not match profile</option>
  <option>Other (specify below)</option>
  </select>
- <textarea name="admin_note" rows="2" placeholder="Add a note for the tutor (optional)…"
+ <textarea name="admin_note" rows="2" placeholder="Add a note for the tutor (optional)"
  style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;"></textarea>
  </div>
  <div style="display:flex;gap:10px;">
@@ -471,3 +471,4 @@ function rejectDocModal(docId, docName) {
 </script>
 @livewireScripts
 @endsection
+

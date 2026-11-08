@@ -23,7 +23,7 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
  <form method="GET" style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
  <div style="flex:1;min-width:200px;">
  <label class="form-label">Search</label>
- <input type="text" name="search" value="{{ $search }}" class="form-input" placeholder="Name or email…">
+ <input type="text" name="search" value="{{ $search }}" class="form-input" placeholder="Name or email">
  </div>
  <div style="width:160px;">
  <label class="form-label">Role</label>
@@ -82,7 +82,7 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
  </td>
  <td>
  @php $rc=['student'=>'badge-blue','parent'=>'badge-trust-blue','tutor'=>'badge-green','admin'=>'badge-amber','super-admin'=>'badge-purple'][$user->role]??'badge-gray'; @endphp
- <span class="badge {{ $rc }}" style="{{ $user->role==='super-admin'?'background:#7C3AED;color:#fff;':'' }}">{{ $user->role==='super-admin'?'â­ Super Admin':ucfirst($user->role) }}</span>
+ <span class="badge {{ $rc }}" style="{{ $user->role==='super-admin'?'background:#7C3AED;color:#fff;':'' }}">{{ $user->role==='super-admin'?' Super Admin':ucfirst($user->role) }}</span>
  </td>
  <td data-order="{{ $user->created_at->timestamp }}" style="color:var(--muted);font-size:13px;">{{ $user->created_at->format('M j, Y') }}</td>
  <td>
@@ -112,7 +112,7 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
  style="height:30px;padding:0 8px;border-radius:8px;border:1.5px solid rgba(21,40,31,.2);font-size:12px;font-family:inherit;background:#fff;cursor:pointer;"
  title="Change role">
  @foreach(['student','parent','tutor','admin','super-admin'] as $r)
- <option value="{{ $r }}" {{ $user->role===$r?'selected':'' }}>{{ $r==='super-admin'?'â­ Super Admin':ucfirst($r) }}</option>
+ <option value="{{ $r }}" {{ $user->role===$r?'selected':'' }}>{{ $r==='super-admin'?' Super Admin':ucfirst($r) }}</option>
  @endforeach
  </select>
  </form>
@@ -156,7 +156,7 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
  @php $prev = null; @endphp
  @foreach($window as $page)
  @if($prev !== null && $page - $prev > 1)
- <span style="padding:6px 8px;font-size:13px;color:var(--muted);">…</span>
+ <span style="padding:6px 8px;font-size:13px;color:var(--muted);"></span>
  @endif
  @if($page == $users->currentPage())
  <span style="padding:6px 12px;border-radius:8px;border:1px solid #0A64BC;font-size:13px;font-weight:700;color:#fff;background:#0A64BC;">{{ $page }}</span>
@@ -183,7 +183,7 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
 
 @push('styles')
 <style>
-/* role summary grid: 5-col â†’ 3-col â†’ 2-col â†’ 1-col */
+/* role summary grid: 5-col  3-col  2-col  1-col */
 @media(max-width:767px){
  .role-summary-grid{ grid-template-columns:repeat(3,1fr) !important; }
 }
@@ -207,3 +207,4 @@ $(document).ready(function() {
 </script>
 @endpush
 @endsection
+

@@ -50,13 +50,13 @@
  <div>
  <p class="text-sm text-gray-500">Student Joined</p>
  <p class="text-lg font-semibold {{ $booking->student_joined ? 'text-green-600' : 'text-gray-400' }}">
- {{ $booking->student_joined ? '— Yes' : 'Å-- No' }}
+ {{ $booking->student_joined ? ' Yes' : '-- No' }}
  </p>
  </div>
  <div>
  <p class="text-sm text-gray-500">Tutor Joined</p>
  <p class="text-lg font-semibold {{ $booking->tutor_joined ? 'text-green-600' : 'text-gray-400' }}">
- {{ $booking->tutor_joined ? '— Yes' : 'Å-- No' }}
+ {{ $booking->tutor_joined ? ' Yes' : '-- No' }}
  </p>
  </div>
  </div>
@@ -200,3 +200,4 @@ document.getElementById('messageForm').addEventListener('submit', function(e) {
 });
 </script>
 @endsection
+
