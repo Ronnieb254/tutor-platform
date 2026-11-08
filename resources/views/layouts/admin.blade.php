@@ -175,7 +175,6 @@
  <div class="sidebar-logo">
  <img src="/images/logo.svg" alt="Mwalimu" style="height:32px;width:auto;">
  <div>
- <span>Mwalimu</span>
  <small>Admin Panel</small>
  </div>
  </div>
