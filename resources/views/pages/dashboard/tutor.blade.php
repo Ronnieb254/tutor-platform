@@ -313,7 +313,7 @@ $activeTab = request('tab','overview');
         @endif
 
 {{-- ----------------------- OVERVIEW TAB ----------------------- --}}
-<div x-show="tab==='overview'">
+<div x-show="tab==='overview'" x-cloak>
     @php
     $wallet = $user->wallet;
     $thisMonth = $wallet?->transactions()->where('type','credit')->whereMonth('created_at',now()->month)->sum('amount') ?? 0;
@@ -487,7 +487,7 @@ $activeTab = request('tab','overview');
 
     {{-- Upcoming --}}
     @if($upcomingB->isNotEmpty())
-    <div class="card" style="margin-bottom:20px;" x-show="tab==='bookings'">
+    <div class="card" style="margin-bottom:20px;" x-show="tab==='bookings'" x-cloak>
         <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
             <div class="sec-title">Upcoming Sessions</div>
         </div>
