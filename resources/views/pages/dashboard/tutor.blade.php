@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Tutor Dashboard � Mwalimu</title>
+<title>Tutor Dashboard - Mwalimu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -340,14 +340,14 @@ $activeTab = request('tab','overview');
         </div>
         <div>
             <div style="font-weight:700;font-size:15px;color:var(--ink);">
-                {{ $verificationStatus==='action_required' ? 'Action Required � Document Rejected' : ($verificationStatus==='under_review' ? 'Profile Under Review' : 'Upload All Required Documents') }}
+                {{ $verificationStatus==='action_required' ? 'Action Required - Document Rejected' : ($verificationStatus==='under_review' ? 'Profile Under Review' : 'Upload All Required Documents') }}
             </div>
             <div style="font-size:13px;color:var(--muted);margin-top:3px;line-height:1.6;">
                 @if($verificationStatus==='action_required')
                     One or more documents were rejected. Please re-upload the required documents to continue.
                     <button @click="tab='documents'" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">View Documents ?</button>
                 @elseif($verificationStatus==='under_review')
-                    Our team is reviewing your profile and documents. You'll receive an email once approved � usually within 24�48 hours.
+                    Our team is reviewing your profile and documents. You'll receive an email once approved - usually within 24-48 hours.
                 @else
                     You need to upload <strong>all 5 required documents</strong> before we can review your profile.
                     @if($missingCount > 0)
@@ -418,7 +418,7 @@ $activeTab = request('tab','overview');
                 <div class="av" style="width:40px;height:40px;background:#{{ ['0A64BC','10B981','E8522A','EEBE15'][$loop->index%4] }};border-radius:11px;font-size:15px;">{{ substr($b->student->name,0,1) }}</div>
                 <div style="flex:1;min-width:0;">
                     <div style="font-weight:600;font-size:13.5px;">{{ $b->student->name }}</div>
-                    <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} � {{ $b->duration_minutes }}min</div>
+                    <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} - {{ $b->duration_minutes }}min</div>
                 </div>
                 <div style="text-align:right;flex-shrink:0;">
                     <div style="font-size:13px;font-weight:600;color:var(--ink);">{{ $b->scheduled_at->format('M j') }}</div>
@@ -491,7 +491,7 @@ $activeTab = request('tab','overview');
             <div class="av" style="width:44px;height:44px;background:#0A64BC;border-radius:12px;font-size:16px;">{{ substr($b->student->name,0,1) }}</div>
             <div style="flex:1;min-width:160px;">
                 <div style="font-weight:600;font-size:14px;">{{ $b->student->name }}</div>
-                <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} � {{ $b->duration_minutes }}min � KSh {{ number_format($b->tutor_earning) }}</div>
+                <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} - {{ $b->duration_minutes }}min - KSh {{ number_format($b->tutor_earning) }}</div>
             </div>
             <div style="text-align:right;">
                 <div style="font-weight:600;font-size:13px;">{{ $b->scheduled_at->format('D, M j') }}</div>
@@ -543,7 +543,7 @@ $activeTab = request('tab','overview');
                             @if($b->session_code_tutor)
                             <code style="background:rgba(10,100,188,.08);color:var(--trust-blue);padding:2px 7px;border-radius:6px;font-size:12px;font-weight:700;">{{ $b->session_code_tutor }}</code>
                             @else
-                            <span style="color:var(--muted);font-size:12px;">�</span>
+                            <span style="color:var(--muted);font-size:12px;">-</span>
                             @endif
                         </td>
                         <td>
@@ -706,7 +706,7 @@ $activeTab = request('tab','overview');
                 <div class="av" style="width:38px;height:38px;background:#0A64BC;border-radius:10px;font-size:14px;">{{ substr($firstBooking->student->name,0,1) }}</div>
                 <div>
                     <div style="font-weight:700;font-size:14px;">{{ $firstBooking->student->name }}</div>
-                    <div style="font-size:12px;color:var(--muted);">{{ $firstBooking->subject?->name ?? 'General' }} � {{ $firstBooking->scheduled_at->format('M j, g:ia') }}</div>
+                    <div style="font-size:12px;color:var(--muted);">{{ $firstBooking->subject?->name ?? 'General' }} - {{ $firstBooking->scheduled_at->format('M j, g:ia') }}</div>
                 </div>
                 <a href="{{ route('bookings.show', $firstBooking->uuid) }}" class="btn btn-o btn-sm" style="margin-left:auto;">View Booking</a>
             </div>
@@ -729,7 +729,7 @@ $activeTab = request('tab','overview');
             </div>
             <form method="POST" action="/bookings/{{ $firstBooking->id }}/messages" style="padding:16px 20px;border-top:1px solid var(--hair);display:flex;gap:10px;">
                 @csrf
-                <input type="text" name="body" placeholder="Type a message�" required
+                <input type="text" name="body" placeholder="Type a message-" required
                        style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);background:#fff;font-size:14px;font-family:inherit;outline:none;"
                        onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 <button type="submit" class="btn btn-v" style="height:44px;padding:0 20px;">
@@ -767,7 +767,7 @@ $activeTab = request('tab','overview');
         <div style="position:relative;z-index:1;">
             <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.45);margin-bottom:8px;">Available Balance</div>
             <div style="font-family:'Fraunces',serif;font-size:48px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px;">KSh {{ number_format($wallet?->balance ?? 0) }}</div>
-            <div style="font-size:13px;color:rgba(255,255,255,.5);">{{ $wallet?->currency ?? 'KES' }} � Updated {{ now()->format('M j, Y') }}</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.5);">{{ $wallet?->currency ?? 'KES' }} - Updated {{ now()->format('M j, Y') }}</div>
             <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);">
                 @foreach([['Total Earned','KSh '.number_format($totalEarned)],['Withdrawn','KSh '.number_format($totalWithdrawn)],['This Month','KSh '.number_format($thisMonth)],['Last Month','KSh '.number_format($lastMonth)]] as [$l,$v])
                 <div>
@@ -800,7 +800,7 @@ $activeTab = request('tab','overview');
                             <td style="font-size:12px;color:var(--muted);white-space:nowrap;">
                                 @if($tx->reference)
                                 <code style="background:#F4F6F4;padding:2px 6px;border-radius:5px;font-size:11px;">{{ Str::limit($tx->reference,16) }}</code>
-                                @else �
+                                @else -
                                 @endif
                             </td>
                             <td style="font-size:12px;color:var(--muted);white-space:nowrap;">{{ $tx->created_at->format('M j, Y') }}</td>
@@ -1051,7 +1051,7 @@ $activeTab = request('tab','overview');
                          style="width:72px;height:72px;border-radius:14px;object-fit:cover;border:2px solid var(--hair);">
                     <div>
                         <div style="font-size:14px;font-weight:600;color:var(--ink);">{{ $user->name }}</div>
-                        <div style="font-size:12px;color:var(--muted);margin-top:2px;">JPG, PNG or PDF � Max 5 MB � Must be a clear headshot</div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:2px;">JPG, PNG or PDF - Max 5 MB - Must be a clear headshot</div>
                     </div>
                 </div>
                 <label style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:var(--trust-blue);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s;"
@@ -1070,7 +1070,7 @@ $activeTab = request('tab','overview');
                 <input type="hidden" name="_redirect" value="{{ route('tutor.dashboard') }}?tab=profile">
                 <div style="margin-bottom:12px;">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Bio</label>
-                    <textarea name="bio" rows="4" maxlength="255" placeholder="Tell students about your experience and teaching style�"
+                    <textarea name="bio" rows="4" maxlength="255" placeholder="Tell students about your experience and teaching style-"
                               x-data="{ count: {{ strlen($profile?->bio ?? '') }} }"
                               x-on:input="count = $el.value.length"
                               style="width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;"
