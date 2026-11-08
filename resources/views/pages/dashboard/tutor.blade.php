@@ -392,7 +392,7 @@ $activeTab = request('tab','overview');
             </div>
             <div class="stat-lbl">Completed Sessions</div>
             <div class="stat-val">{{ $completedCount }}</div>
- <div class="stat-sub">Rating: ⭐ {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>iews)</div>
+            <div class="stat-sub">Rating: ⭐ {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>
         </div>
         
     </div>
@@ -458,11 +458,10 @@ $activeTab = request('tab','overview');
 </div>
 
 {{-- ----------------------- DOCUMENTS TAB ----------------------- --}}
-{{-- ?? pages/dashboard/partials/documents.blade.php --}}
 @include('pages.dashboard.partials.documents')
 
 {{-- ----------------------- BOOKINGS TAB ----------------------- --}}
-<div x-show="tab==='bookings' || tab==='history'" x-cloak>
+<div x-show="tab==='bookings'" x-cloak>
     @php
     $bFilter = request('bstatus','all');
     $allBookings = $user->bookingsAsTutor()->with(['student','subject'])->latest('scheduled_at')->get();
@@ -483,7 +482,7 @@ $activeTab = request('tab','overview');
 
     {{-- Upcoming --}}
     @if($upcomingB->isNotEmpty())
-    <div class="card" style="margin-bottom:20px;" x-show="tab==='bookings'" x-cloak>
+    <div class="card" style="margin-bottom:20px;">
         <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
             <div class="sec-title">Upcoming Sessions</div>
         </div>
@@ -576,6 +575,82 @@ $activeTab = request('tab','overview');
     </div>
 </div>
 
+{{-- ----------------------- SESSION HISTORY TAB ----------------------- --}}
+<div x-show="tab==='history'" x-cloak>
+    @php
+    $allBookings = $user->bookingsAsTutor()->with(['student','subject'])->latest('scheduled_at')->get();
+    $completedB = $allBookings->where('status','completed');
+    $cancelledB = $allBookings->where('status','cancelled');
+    $historyBookings = $completedB->concat($cancelledB);
+    @endphp
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;" class="history-stats-g">
+        <div class="stat" style="padding:14px 16px;text-align:center;">
+            <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">{{ $completedB->count() }}</div>
+            <div style="font-size:12px;color:var(--muted);">Completed</div>
+        </div>
+        <div class="stat" style="padding:14px 16px;text-align:center;">
+            <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">{{ $cancelledB->count() }}</div>
+            <div style="font-size:12px;color:var(--muted);">Cancelled</div>
+        </div>
+    </div>
+
+    {{-- Session history table --}}
+    <div class="card">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--hair);">
+            <div class="sec-title">Session History</div>
+            <div class="sec-sub">Your completed and cancelled sessions</div>
+        </div>
+        <div style="overflow-x:auto;" class="tbl-wrap">
+            <table>
+                <thead><tr>
+                    <th>Student</th><th>Subject</th><th>Date & Time</th><th>Duration</th><th>Earnings</th><th>Code</th><th>Status</th><th></th>
+                </tr></thead>
+                <tbody>
+                    @forelse($historyBookings as $b)
+                    <tr>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($b->student->name,0,1) }}</div>
+                                {{ $b->student->name }}
+                            </div>
+                        </td>
+                        <td style="color:var(--muted);">{{ $b->subject?->name ?? 'General' }}</td>
+                        <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y g:ia') }}</td>
+                        <td>{{ $b->duration_minutes }}min</td>
+                        <td style="font-weight:600;color:var(--mint);">KSh {{ number_format($b->tutor_earning) }}</td>
+                        <td>
+                            @if($b->session_code_tutor)
+                            <code style="background:rgba(10,100,188,.08);color:var(--trust-blue);padding:2px 7px;border-radius:6px;font-size:12px;font-weight:700;">{{ $b->session_code_tutor }}</code>
+                            @else
+                            <span style="color:var(--muted);font-size:12px;">–</span>
+                            @endif
+                        </td>
+                        <td>
+                            @php $sc=['completed'=>'bdg-green','cancelled'=>'bdg-gray','no_show'=>'bdg-red'][$b->status]??'bdg-gray'; @endphp
+                            <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
+                        </td>
+                        <td>
+                            <a href="{{ route('bookings.show',$b->uuid) }}" class="btn btn-o btn-sm"><i class="fa-solid fa-eye fa-fw"></i> View</a>
+                        </td>
+                    </tr>
+                    @empty
+<tr>
+    <td colspan="8">
+        <div style="padding:48px 20px;text-align:center;">
+            <i class="fa-solid fa-calendar-xmark" style="font-size:40px;color:rgba(21,40,31,.15);margin-bottom:12px;display:block;"></i>
+            <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;">No session history yet</div>
+            <div style="font-size:13px;color:var(--muted);">Your completed and cancelled sessions will appear here</div>
+        </div>
+    </td>
+</tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 {{-- ----------------------- CHATS TAB ----------------------- --}}
 <div x-show="tab==='chats'" x-cloak>
     @php
@@ -615,7 +690,7 @@ $activeTab = request('tab','overview');
                 </div>
                 @empty
                 <div style="padding:40px 20px;text-align:center;color:var(--muted);">
- <div style="font-size:32px;margin-bottom:8px;">💬</div>ttom:8px;">??</div>
+                    <div style="font-size:32px;margin-bottom:8px;">💬</div>
                     <div style="font-size:14px;">No conversations yet</div>
                     <div style="font-size:12px;margin-top:4px;">Messages appear here after a booking is confirmed</div>
                 </div>
@@ -664,7 +739,7 @@ $activeTab = request('tab','overview');
             </form>
             @else
             <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--muted);">
- <div style="font-size:48px;">💬</div>48px;">??</div>
+                <div style="font-size:48px;">💬</div>
                 <div style="font-size:16px;font-weight:600;color:var(--ink);">No messages yet</div>
                 <div style="font-size:14px;">Messages will appear here once a booking is confirmed</div>
             </div>
