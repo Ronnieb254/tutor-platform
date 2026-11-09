@@ -1464,7 +1464,7 @@ $activeTab = request('tab','overview');
                 @forelse($profile->subjects as $subject)
                 <span class="subject-chip" data-subject-id="{{ $subject->id }}">
                     {{ $subject->name }}
-                    <i class="fa-solid fa-xmark" onclick="subj_deselectSubject({{ $subject->id }})"></i>
+                    <i class="fa-solid fa-xmark" data-remove-subject="{{ $subject->id }}"></i>
                 </span>
                 @empty
                 <span style="font-size:13px;color:var(--muted);">No subjects selected yet. Choose from the categories below.</span>
@@ -1477,7 +1477,7 @@ $activeTab = request('tab','overview');
     <form id="subj-form" method="POST" action="{{ route('tutor.subjects.store') }}">
         @csrf
         <div id="subj-container">
-            @foreach($categories as $category)
+            @forelse($categories as $category)
             <div class="subj-category-section" data-category="{{ strtolower($category->name) }}" style="margin-bottom:24px;">
                 <h4 style="font-family:'Fraunces',serif;font-size:16px;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;gap:8px;">
                     <div style="width:28px;height:28px;border-radius:8px;background:rgba(212,160,23,.12);display:flex;align-items:center;justify-content:center;">
@@ -1507,7 +1507,13 @@ $activeTab = request('tab','overview');
                     @endforeach
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div style="padding:40px;text-align:center;border:2px dashed var(--hair);border-radius:14px;background:#F9FAF9;">
+                <div style="font-size:36px;margin-bottom:12px;"><i class="fa-solid fa-book"></i></div>
+                <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px;">No subjects available</div>
+                <div style="font-size:13px;color:var(--muted);">The subject database has no categories or subjects configured yet. Please contact support.</div>
+            </div>
+            @endforelse
         </div>
         <div style="display:flex;justify-content:flex-end;margin-top:24px;">
             <button type="submit" class="btn btn-mint" style="padding:12px 32px;font-size:15px;">
@@ -1523,6 +1529,19 @@ $activeTab = request('tab','overview');
 
 @livewireScripts
 <script>
+// SweetAlert2 Toast Configuration (define first for use by all scripts)
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 4000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
+
 // Auto-scroll chat to bottom
 const chatEl = document.getElementById('chat-messages');
 if (chatEl) chatEl.scrollTop = chatEl.scrollHeight;
@@ -1600,7 +1619,7 @@ function subj_updatePreview() {
     }
     preview.innerHTML = Array.from(subjSelectedSubjects).map(function(id) {
         var name = subjSubjectNames[id] || document.querySelector('.subject-card[data-subject-id="' + id + '"]')?.dataset.subjectName || 'Subject';
-        return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<i class="fa-solid fa-xmark" onclick="subj_deselectSubject(' + id + ')"></i></span>';
+        return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<i class="fa-solid fa-xmark" data-remove-subject="' + id + '"></i></span>';
     }).join('');
 }
 
@@ -1631,67 +1650,64 @@ function subj_updateMaxReachedState() {
 }
 
 // Search functionality
-document.getElementById('subj-search').addEventListener('input', function(e) {
-    var query = e.target.value.toLowerCase();
-    document.querySelectorAll('.subj-category-section').forEach(function(cat) {
-        var hasVisible = false;
-        cat.querySelectorAll('.subject-card').forEach(function(card) {
-            var name = card.dataset.subjectName;
-            if (name.includes(query)) { 
-                card.style.display = 'flex'; 
-                hasVisible = true; 
-            }
-            else { 
-                card.style.display = 'none'; 
-            }
+var searchInput = document.getElementById('subj-search');
+if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+        var query = e.target.value.toLowerCase();
+        document.querySelectorAll('.subj-category-section').forEach(function(cat) {
+            var hasVisible = false;
+            cat.querySelectorAll('.subject-card').forEach(function(card) {
+                var name = card.dataset.subjectName;
+                if (name.includes(query)) { 
+                    card.style.display = 'flex'; 
+                    hasVisible = true; 
+                }
+                else { 
+                    card.style.display = 'none'; 
+                }
+            });
+            cat.style.display = hasVisible ? 'block' : 'none';
         });
-        cat.style.display = hasVisible ? 'block' : 'none';
     });
+}
+
+// Event delegation for chip removal (XSS-safe)
+document.addEventListener('click', function(e) {
+    if (e.target.matches('.subject-chip i[data-remove-subject]')) {
+        const subjectId = parseInt(e.target.dataset.removeSubject);
+        e.stopPropagation();
+        subj_deselectSubject(subjectId);
+    }
 });
 
 // Form submission validation
-document.getElementById('subj-form').addEventListener('submit', function(e) {
-    if (subjSelectedSubjects.size === 0) {
-        e.preventDefault();
-        Toast.fire({
-            icon: 'error',
-            title: 'Selection Required',
-            text: 'Please select at least one subject'
-        });
-        return false;
-    }
-    if (subjSelectedSubjects.size > 2) {
-        e.preventDefault();
-        Toast.fire({
-            icon: 'error',
-            title: 'Too Many Subjects',
-            text: 'You can only select up to 2 subjects'
-        });
-        return false;
-    }
-});
+var subjForm = document.getElementById('subj-form');
+if (subjForm) {
+    subjForm.addEventListener('submit', function(e) {
+        if (subjSelectedSubjects.size === 0) {
+            e.preventDefault();
+            Toast.fire({
+                icon: 'error',
+                title: 'Selection Required',
+                text: 'Please select at least one subject'
+            });
+            return false;
+        }
+        if (subjSelectedSubjects.size > 2) {
+            e.preventDefault();
+            Toast.fire({
+                icon: 'error',
+                title: 'Too Many Subjects',
+                text: 'You can only select up to 2 subjects'
+            });
+            return false;
+        }
+    });
+}
 
 // Initialize on page load
 subj_updateCount();
 subj_updateMaxReachedState();
-</script>
-</body>
-</html>
-
-
-<script>
-// SweetAlert2 Toast Configuration
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 4000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-});
 
 // Auto-show flash messages
 @if(session('success'))
@@ -1714,5 +1730,7 @@ const Toast = Swal.mixin({
         title: '{{ $errors->first() }}'
     });
 @endif
-</script>>
+</script>
+</body>
+</html>>
 
