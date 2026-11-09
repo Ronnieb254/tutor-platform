@@ -150,6 +150,134 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
   .quick-g{grid-template-columns:1fr!important;}
   .stats-g{grid-template-columns:1fr!important;}
 }
+
+/* Responsive Layout */
+@media(max-width:1023px) {
+  .layout {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+  .sidebar {
+    width: 100%;
+    max-height: 0;
+  }
+  .main {
+    width: 100%;
+    min-height: 100vh;
+  }
+  .topbar {
+    padding: 0 16px;
+  }
+  .content {
+    padding: 16px;
+  }
+}
+
+/* Mobile: Stack grids to 1 column */
+@media(max-width:639px) {
+  .onboard-g {
+    grid-template-columns: 1fr !important;
+  }
+  .stats-g {
+    grid-template-columns: 1fr !important;
+  }
+  .quick-g {
+    grid-template-columns: 1fr !important;
+  }
+  .booking-stats-g {
+    grid-template-columns: 1fr !important;
+  }
+  .history-stats-g {
+    grid-template-columns: 1fr !important;
+  }
+  .earn-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .profile-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .chat-layout {
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+  }
+  .tbl-wrap {
+    font-size: 12px;
+  }
+  thead th {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+  td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  .stat {
+    padding: 14px 12px;
+  }
+  .btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  .page-title {
+    font-size: 16px;
+  }
+  .sec-title {
+    font-size: 15px;
+  }
+  .stat-val {
+    font-size: 22px;
+  }
+  .status-banner {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+}
+
+/* Small mobile */
+@media(max-width:479px) {
+  .layout {
+    height: auto;
+  }
+  .topbar {
+    height: 56px;
+    padding: 0 12px;
+  }
+  .content {
+    padding: 12px;
+    padding-bottom: 24px;
+  }
+  .sb-item {
+    padding: 8px 8px;
+    font-size: 12px;
+    gap: 8px;
+  }
+  .sb-logo {
+    padding: 16px 12px;
+  }
+  .sb-avatar {
+    width: 30px;
+    height: 30px;
+  }
+  .sb-uname {
+    font-size: 12px;
+  }
+  .sb-urole {
+    font-size: 10px;
+  }
+  .msg-bubble {
+    max-width: 85%;
+  }
+  .av {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  .btn-sm {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+}
 </style>
 </head>
 <body>
@@ -194,11 +322,11 @@ $activeTab = request('tab','overview');
                 <span class="sb-badge">!</span>
                 @endif
             </button>
-            <a href="{{ route('tutor.subjects') }}" class="sb-item">
+            <button class="sb-item" @click="tab='subjects';sidebarOpen=false">
                 <i class="fa-solid fa-book-open fa-fw" style="font-size:14px;"></i>
                 My Subjects
                 @if($needsSubjectsBadge)<span class="sb-badge">!</span>@endif
-            </a>
+            </button>
         </div>
 
         @if($isApproved)
@@ -408,6 +536,7 @@ $activeTab = request('tab','overview');
             </div>
         </div>
     </div>
+    @endif
 
     {{-- ONBOARDING CARDS - Show when unverified --}}
     @if(!$isApproved)
@@ -483,7 +612,8 @@ $activeTab = request('tab','overview');
 
     {{-- Stats - Show only for approved tutors --}}
     @if($isApproved)
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
+    {{-- Row 1: 3 Main Stats --}}
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;" class="stats-row-1">
         <div class="stat">
             <div class="stat-icon" style="background:rgba(10,100,188,.1);">
                 <i class="fa-solid fa-wallet" style="color:#0A64BC;font-size:18px;"></i>
@@ -501,6 +631,7 @@ $activeTab = request('tab','overview');
             <div class="stat-val">{{ $upcoming->count() }}</div>
             <div class="stat-sub">{{ $pendingBookings }} pending confirmation</div>
         </div>
+        
         <div class="stat">
             <div class="stat-icon" style="background:rgba(232,82,42,.1);">
                 <i class="fa-solid fa-circle-check" style="color:#E8522A;font-size:18px;"></i>
@@ -509,7 +640,10 @@ $activeTab = request('tab','overview');
             <div class="stat-val">{{ $completedCount }}</div>
             <div class="stat-sub">Rating:  {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="quick-g">
+    </div>
+    
+    {{-- Row 2: Quick Links (4 items) --}}
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;" class="quick-g">
         @foreach([
             ['documents','fa-solid fa-file-lines','Documents','Check your verification status'],
             ['bookings','fa-solid fa-calendar-check','Bookings','View all session bookings'],
@@ -525,9 +659,14 @@ $activeTab = request('tab','overview');
         </button>
         @endforeach
     </div>
-        
-    </div>
-    <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:640px){.stats-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.stats-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
+    <style>
+        .stats-row-1 { grid-template-columns: 1fr !important; }
+        @media(min-width:640px) { .stats-row-1 { grid-template-columns: repeat(2,1fr) !important; } }
+        @media(min-width:1024px) { .stats-row-1 { grid-template-columns: repeat(3,1fr) !important; } }
+        .quick-g { grid-template-columns: 1fr !important; }
+        @media(min-width:640px) { .quick-g { grid-template-columns: repeat(2,1fr) !important; } }
+        @media(min-width:1024px) { .quick-g { grid-template-columns: repeat(4,1fr) !important; } }
+    </style>
 
     {{-- Earnings Widget --}}
     @if(isset($earnings))
@@ -1285,5 +1424,5 @@ const Toast = Swal.mixin({
         title: '{{ $errors->first() }}'
     });
 @endif
-</script>
+</script>>
 
