@@ -120,7 +120,7 @@ Visit: http://localhost:8000
 
 ### For Tutors
 - Sign up → upload documents → get verified → go live
-- Set hourly rate (system auto-calculates 15/30/45/60 min prices)
+- Set hourly rate (system auto-calculates 20/40/60 min prices)
 - Set weekly availability schedule
 - Receive booking notifications with session code (TUT-XXXXXX)
 - Earnings wallet (platform takes 15% commission)

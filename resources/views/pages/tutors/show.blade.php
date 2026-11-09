@@ -6,30 +6,51 @@
 <meta name="description" content="{{ Str::limit($tutor->bio ?? 'Book a session with '.$tutor->user->name.' on Mwalimu.', 160) }}">
 <style>
 /*  Page-level styles  */
-.profile-hero{background:linear-gradient(135deg,#111C16 0%,#15281F 60%,#1a2e22 100%);padding:48px 0 0;position:relative;overflow:hidden;}
-.profile-hero::before{content:'';position:absolute;top:-120px;right:-80px;width:400px;height:400px;background:rgba(10,100,188,.12);border-radius:50%;pointer-events:none;}
-.profile-hero::after{content:'';position:absolute;bottom:-60px;left:20%;width:200px;height:200px;background:rgba(212,160,23,.06);border-radius:50%;pointer-events:none;}
+.profile-hero{background:linear-gradient(135deg,#111C16 0%,#15281F 60%,#1a2e22 100%);padding:56px 0 0;position:relative;overflow:hidden;}
+.profile-hero::before{content:'';position:absolute;top:-120px;right:-80px;width:400px;height:400px;background:rgba(10,100,188,.15);border-radius:50%;pointer-events:none;}
+.profile-hero::after{content:'';position:absolute;bottom:-60px;left:20%;width:200px;height:200px;background:rgba(212,160,23,.08);border-radius:50%;pointer-events:none;}
 
 /* Tabs */
-.ptab{padding:14px 20px;font-size:14px;font-weight:600;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.45);border-bottom:3px solid transparent;transition:all .18s;font-family:inherit;white-space:nowrap;}
+.ptab{padding:16px 24px;font-size:15px;font-weight:600;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.5);border-bottom:3px solid transparent;transition:all .25s;font-family:inherit;white-space:nowrap;}
 .ptab.on,.ptab:hover{color:#fff;border-bottom-color:#0A64BC;}
+.ptab:hover{color:#fff;}
 
 /* Session tier cards */
-.tier-card{border:2px solid rgba(21,40,31,.12);border-radius:16px;padding:16px;text-align:left;cursor:pointer;transition:all .2s;background:#fff;display:block;width:100%;}
-.tier-card:hover,.tier-card.selected{border-color:#0A64BC;background:rgba(10,100,188,.04);}
-.tier-card.selected{background:rgba(10,100,188,.06);}
+.tier-card{border:2px solid rgba(21,40,31,.15);border-radius:18px;padding:20px;text-align:left;cursor:pointer;transition:all .3s ease;background:#fff;display:block;width:100%;box-shadow:0 2px 8px rgba(21,40,31,.04);}
+.tier-card:hover{border-color:#0A64BC;background:rgba(10,100,188,.04);box-shadow:0 8px 24px rgba(10,100,188,.12);transform:translateY(-2px);}
+.tier-card.selected{border-color:#0A64BC;background:rgba(10,100,188,.08);box-shadow:0 8px 24px rgba(10,100,188,.15);}
 
 /* Review rating bars */
-.rbar-track{height:7px;background:#F4F6F4;border-radius:999px;overflow:hidden;flex:1;}
+.rbar-track{height:8px;background:#F4F6F4;border-radius:999px;overflow:hidden;flex:1;}
 .rbar-fill{height:100%;background:#EEBE15;border-radius:999px;transition:width .5s ease;}
 
 /* Booking steps */
 .bstep{display:flex;flex-direction:column;gap:4px;align-items:center;}
-.bstep-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all .2s;}
+.bstep-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;transition:all .3s;}
 
 /* Payment form */
-.pay-field{width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);background:#fff;font-size:14px;font-family:inherit;color:#15281F;outline:none;transition:all .15s;}
-.pay-field:focus{border-color:#0A64BC;box-shadow:0 0 0 3px rgba(10,100,188,.1);}
+.pay-field{width:100%;height:48px;padding:0 16px;border-radius:14px;border:1.5px solid rgba(21,40,31,.15);background:#fff;font-size:15px;font-family:inherit;color:#15281F;outline:none;transition:all .2s;}
+.pay-field:focus{border-color:#0A64BC;box-shadow:0 0 0 3px rgba(10,100,188,.12);background:#fff;}
+
+/* Professional card styling */
+.prof-card{background:#fff;border-radius:18px;border:1px solid rgba(21,40,31,.08);padding:28px;box-shadow:0 2px 12px rgba(21,40,31,.05);transition:all .3s;}
+.prof-card:hover{box-shadow:0 8px 28px rgba(21,40,31,.12);}
+
+/* Professional button */
+.prof-btn{border-radius:14px;color:#fff;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:12px;}
+.prof-btn:hover{transform:translateY(-2px);}
+
+/* Stat cards enhanced */
+.stat-card{background:linear-gradient(135deg,rgba(255,255,255,.95),#fff);border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:28px;display:flex;align-items:center;gap:18px;box-shadow:0 4px 16px rgba(21,40,31,.06);transition:all .3s;}
+.stat-card:hover{box-shadow:0 8px 32px rgba(21,40,31,.12);transform:translateY(-2px);}
+
+/* Content spacing */
+.content-spacing{gap:28px;}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 </style>
 </head>
 <body style="display:flex;flex-direction:column;min-height:100vh;margin:0;padding:0;">
@@ -153,34 +174,43 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{--  ABOUT TAB  --}}
  <div id="tab-about">
+ {{-- Book Session Button --}}
+ @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
+ <button onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})"
+ style="width:100%;height:88px;background:linear-gradient(135deg,#0A64BC 0%,#0052A3 100%);color:#fff;font-size:22px;font-weight:800;border:none;cursor:pointer;font-family:inherit;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:14px;border-radius:16px;box-shadow:0 10px 36px rgba(10,100,188,.4);margin-bottom:40px;border:3px solid #0A64BC;"
+ onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 48px rgba(10,100,188,.5)'" 
+ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 10px 36px rgba(10,100,188,.4)'">
+ <i class="fa-solid fa-calendar-check" style="font-size:28px;"></i> Book a Session Now
+ </button>
+ @endif
+
  {{-- Stats cards --}}
- <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;" class="stat-mini-g">
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px;" class="stat-mini-g content-spacing">
  @foreach([
  ['fa-chalkboard','#0A64BC',number_format($tutor->total_sessions),'Sessions Completed'],
  ['fa-star','#EEBE15',$tutor->total_reviews,'Total Reviews'],
- ['fa-clock','#10B981',$tutor->experience_years.'yr','Experience'],
  ['fa-reply','#E8522A','<2hr','Response Time'],
  ] as [$ic,$col,$val,$lbl])
- <div style="background:#fff;border-radius:16px;border:1px solid rgba(21,40,31,.08);padding:18px;display:flex;align-items:center;gap:14px;">
- <div style="width:42px;height:42px;border-radius:12px;background:{{ $col }}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+ <div class="stat-card" style="background:linear-gradient(135deg,rgba(255,255,255,.95),#fff);">
+ <div style="width:56px;height:56px;border-radius:14px;background:{{ $col }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:26px;color:#fff;box-shadow:0 4px 12px {{ $col }}40;">
  <i class="fa-solid {{ $ic }}"></i>
  </div>
- <div>
- <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#15281F;">{!! $val !!}</div>
- <div style="font-size:12px;color:rgba(21,40,31,.55);">{{ $lbl }}</div>
+ <div style="flex:1;">
+ <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:#15281F;line-height:1;">{!! $val !!}</div>
+ <div style="font-size:13px;color:rgba(21,40,31,.6);margin-top:4px;font-weight:500;">{{ $lbl }}</div>
  </div>
  </div>
  @endforeach
  </div>
- <style>.stat-mini-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:640px){.stat-mini-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
+ <style>.stat-mini-g{grid-template-columns:repeat(1,1fr)!important;}@media(min-width:640px){.stat-mini-g{grid-template-columns:repeat(3,1fr)!important;}}@media(min-width:1024px){.stat-mini-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
 
  {{-- Bio --}}
- <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:20px;">
- <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
- <i class="fa-solid fa-user"></i>
+ <div class="prof-card" style="margin-bottom:32px;">
+ <h2 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin:0 0 16px;display:flex;align-items:center;gap:10px;">
+ <i class="fa-solid fa-user" style="color:#0A64BC;"></i>
  About {{ explode(' ',$tutor->user->name)[0] }}
  </h2>
- <p style="font-size:15px;color:#15281F;line-height:1.9;">{{ $tutor->bio ?? 'This tutor hasn\'t added a bio yet.' }}</p>
+ <p style="font-size:16px;color:#15281F;line-height:1.9;margin:0;">{{ $tutor->bio ?? 'This tutor hasn\'t added a bio yet.' }}</p>
 
  @if($tutor->languages)
  <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(21,40,31,.08);">
@@ -195,11 +225,11 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
 
  {{-- Subjects --}}
- <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
- <h3 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span> Subjects Taught
+ <div class="prof-card">
+ <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin:0 0 20px;display:flex;align-items:center;gap:10px;">
+ <i class="fa-solid fa-book-open" style="color:#10B981;"></i> Subjects Taught
  </h3>
- <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;" class="subj-g">
+ <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="subj-g">
  @foreach($tutor->subjects as $s)
  <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#F9FAF9;border-radius:12px;border:1px solid rgba(21,40,31,.07);">
  <span style="width:8px;height:8px;border-radius:50%;background:#0A64BC;flex-shrink:0;"></span>
@@ -214,11 +244,11 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{--  AVAILABILITY TAB  --}}
  <div id="tab-availability" style="display:none;">
- <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;">
- <h2 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
- <i class="fa-solid fa-calendar"></i> Weekly Schedule
+ <div class="prof-card">
+ <h2 style="font-family:'Fraunces',serif;font-size:22px;color:#15281F;margin:0 0 8px;display:flex;align-items:center;gap:10px;">
+ <i class="fa-solid fa-calendar" style="color:#E8522A;"></i> Weekly Schedule
  </h2>
- <p style="font-size:13px;color:rgba(21,40,31,.5);margin-bottom:22px;">Nairobi, Kenya Time (EAT  UTC+3)</p>
+ <p style="font-size:14px;color:rgba(21,40,31,.55);margin:0 0 24px;">Nairobi, Kenya Time (EAT – UTC+3)</p>
  @php
  $avails = $tutor->availabilities()->where('is_active',true)->orderBy('day_of_week')->get();
  $days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -254,7 +284,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  {{--  REVIEWS TAB  --}}
  <div id="tab-reviews" style="display:none;">
  {{-- Rating overview --}}
- <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
+ <div class="prof-card" style="margin-bottom:24px;">
  <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
  <div style="text-align:center;flex-shrink:0;">
  <div style="font-family:'Fraunces',serif;font-size:64px;font-weight:800;color:#15281F;line-height:1;">{{ number_format($tutor->rating_avg,1) }}</div>
@@ -281,7 +311,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{-- Review list --}}
  @forelse($reviews as $review)
- <div style="background:#fff;border-radius:18px;border:1px solid rgba(21,40,31,.08);padding:22px;margin-bottom:12px;">
+ <div class="prof-card" style="margin-bottom:16px;">
  <div style="display:flex;align-items:flex-start;gap:14px;">
  <div style="width:40px;height:40px;border-radius:12px;background:#{{ substr(md5($review->student->email),0,6) }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;">{{ strtoupper(substr($review->student->name,0,1)) }}</div>
  <div style="flex:1;">
@@ -301,9 +331,9 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
  </div>
  @empty
- <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:48px;text-align:center;">
- <i class="fa-solid fa-star"></i>
- <p style="color:rgba(21,40,31,.5);font-size:14px;">No reviews yet. Book a session and be the first!</p>
+ <div class="prof-card" style="text-align:center;padding:48px 28px;">
+ <i class="fa-solid fa-star" style="font-size:40px;color:rgba(21,40,31,.2);margin-bottom:12px;display:block;"></i>
+ <p style="color:rgba(21,40,31,.55);font-size:15px;margin:0;">No reviews yet. Book a session and be the first!</p>
  </div>
  @endforelse
  @if($reviews->hasPages())
@@ -382,11 +412,11 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  {{-- STEP 1: Choose session --}}
  <div x-show="step === 1">
- <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
- <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fa-solid fa-clock"></i> 1. Choose Session Type
+ <div class="prof-card" style="margin-bottom:20px;">
+ <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin:0 0 24px;display:flex;align-items:center;gap:10px;">
+ <i class="fa-solid fa-clock" style="color:#0A64BC;"></i> 1. Choose Session Type
  </h3>
- <div style="display:grid;grid-template-columns:1fr;gap:10px;" class="tier-grid">
+ <div style="display:grid;grid-template-columns:1fr;gap:12px;" class="tier-grid">
  @foreach([20=>['fa-solid fa-zap', 'Quick Help','#0A64BC'],40=>['fa-solid fa-chalkboard', 'Guided Practice','#10B981'],60=>['fa-solid fa-book-open','Deep Dive','#E8522A']] as $mins => [$icon,$tname,$color])
  @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $prices[$mins]; @endphp
  <button @click="dur={{ $mins }}"
@@ -421,11 +451,11 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <style>.tier-grid{grid-template-columns:1fr!important;}@media(min-width:640px){.tier-grid{grid-template-columns:repeat(3,1fr)!important;}}</style>
  </div>
 
- <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
- <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
- <i class="fa-solid fa-calendar"></i> 2. Pick Date & Time
+ <div class="prof-card" style="margin-bottom:20px;">
+ <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin:0 0 20px;display:flex;align-items:center;gap:10px;">
+ <i class="fa-solid fa-calendar" style="color:#10B981;"></i> 2. Pick Date & Time
  </h3>
- <div style="margin-bottom:16px;">
+ <div style="margin-bottom:18px;">
  <label style="font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Date</label>
  <input type="date" x-model="date" @change="fetchSlots()" :min="new Date().toISOString().split('T')[0]"
  style="width:100%;height:46px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(21,40,31,.18);font-size:14px;font-family:inherit;outline:none;background:#fff;"
@@ -503,22 +533,22 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
 
  <button @click="notes.trim() ? (step=2) : (notesTouched=true)" :disabled="!date || !time || !notes.trim()"
- style="width:100%;height:52px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
- :style="(!date||!time||!notes.trim())?'opacity:.5;cursor:not-allowed;':''"
- onmouseover="if(this.date&&this.time)this.style.background='#120A8F'" onmouseout="this.style.background='#0A64BC'">
- Continue to Review
- <span style="font-size:inherit;"></span>
+ style="width:100%;height:88px;background:linear-gradient(135deg,#10B981 0%,#059669 100%);color:#fff;font-size:20px;font-weight:800;border:none;cursor:pointer;font-family:inherit;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:14px;border-radius:16px;box-shadow:0 10px 36px rgba(16,185,129,.4);margin-bottom:16px;border:3px solid #10B981;"
+ :style="(!date||!time||!notes.trim())?'opacity:.3;cursor:not-allowed;box-shadow:none;background:linear-gradient(135deg,#999 0%,#666 100%);border-color:#999':''"
+ @mouseover="!(!date||!time||!notes.trim()) && (this.style.transform='translateY(-4px)',this.style.boxShadow='0 16px 48px rgba(16,185,129,.5)')"
+ @mouseout="(!date||!time||!notes.trim()) ? (this.style.boxShadow='none') : (this.style.transform='translateY(0)',this.style.boxShadow='0 10px 36px rgba(16,185,129,.4)')">
+ <i class="fa-solid fa-arrow-right" style="font-size:24px;"></i> Continue to Review
  </button>
- <p style="text-align:center;font-size:12px;color:rgba(21,40,31,.4);margin-top:10px;">
- <i class="fa-solid fa-rotate-right"></i> 100% money-back if unsatisfied with your first lesson
+ <p style="text-align:center;font-size:13px;color:rgba(21,40,31,.6);margin:16px 0 0;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;">
+ <i class="fa-solid fa-shield-halved" style="color:#10B981;"></i> 100% money-back if unsatisfied with your first lesson
  </p>
  </div>
 
  {{-- STEP 2: Review & Pay --}}
  <div x-show="step === 2" x-cloak>
- <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:28px;margin-bottom:16px;">
- <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
- <i class="fa-solid fa-receipt"></i> Session Summary
+ <div class="prof-card" style="margin-bottom:20px;">
+ <h3 style="font-family:'Fraunces',serif;font-size:20px;color:#15281F;margin:0 0 22px;display:flex;align-items:center;gap:10px;">
+ <i class="fa-solid fa-receipt" style="color:#E8522A;"></i> Session Summary
  </h3>
 
  {{-- Summary rows --}}
@@ -603,17 +633,20 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
  <button @click="processPayment($data)"
  :disabled="processing"
- :style="isFree ? 'background:#10B981;' : 'background:#0A64BC;'"
- style="width:100%;height:52px;border-radius:999px;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;">
+ :style="isFree ? 'background:linear-gradient(135deg,#10B981 0%,#059669 100%);' : 'background:linear-gradient(135deg,#0A64BC 0%,#0052A3 100%);'"
+ style="width:100%;height:88px;border-radius:16px;color:#fff;font-size:22px;font-weight:800;border:3px solid;border-color:inherit;cursor:pointer;font-family:inherit;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 10px 36px rgba(10,100,188,.4);margin-bottom:16px;"
+ :style="(isFree ? 'border-color:#10B981;box-shadow:0 10px 36px rgba(16,185,129,.4);' : 'border-color:#0A64BC;box-shadow:0 10px 36px rgba(10,100,188,.4);')"
+ @mouseover="this.style.transform='translateY(-4px)';this.style.boxShadow=(isFree ? '0 16px 48px rgba(16,185,129,.5)' : '0 16px 48px rgba(10,100,188,.5)')"
+ @mouseout="this.style.transform='translateY(0)';this.style.boxShadow=(isFree ? '0 10px 36px rgba(16,185,129,.4)' : '0 10px 36px rgba(10,100,188,.4)')">
  <template x-if="!processing">
- <span style="display:flex;align-items:center;gap:8px;">
- <i :class="isFree ? 'fa-solid fa-gift fa-xs' : 'fa-solid fa-paper-plane fa-xs'"></i>
- <span x-text="isFree ? 'Book Free Session' : 'Submit Payment'"></span>
+ <span style="display:flex;align-items:center;gap:12px;">
+ <i :class="isFree ? 'fa-solid fa-gift' : 'fa-solid fa-paper-plane'" style="font-size:26px;"></i>
+ <span x-text="isFree ? 'Book Free Session' : 'Submit Payment'" style="font-size:inherit;"></span>
  </span>
  </template>
  <template x-if="processing">
- <span style="display:flex;align-items:center;gap:8px;">
- <span style="font-size:inherit;"><i class="fa-solid fa-hourglass-half"></i></span> Processing
+ <span style="display:flex;align-items:center;gap:12px;">
+ <i class="fa-solid fa-hourglass-half" style="font-size:26px;animation:spin 1s linear infinite;"></i> <span style="font-size:inherit;">Processing Payment</span>
  </span>
  </template>
  </button>
@@ -632,9 +665,9 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>
  @endauth
 
- <div style="display:flex;justify-content:flex-start;margin-top:12px;">
- <button @click="step=1" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:rgba(21,40,31,.5);font-size:13px;cursor:pointer;font-family:inherit;padding:0;transition:color .15s;" onmouseover="this.style.color='#15281F'" onmouseout="this.style.color='rgba(21,40,31,.5)'">
- <span style="font-size:inherit;"></span> Back
+ <div style="display:flex;justify-content:flex-start;margin-top:16px;">
+ <button @click="step=1" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:rgba(21,40,31,.55);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 12px;transition:all .2s;border-radius:8px;" onmouseover="this.style.color='#15281F';this.style.background='rgba(21,40,31,.05)'" onmouseout="this.style.color='rgba(21,40,31,.55)';this.style.background='none'">
+ <i class="fa-solid fa-arrow-left"></i> Back
  </button>
  </div>
  </div>
@@ -707,73 +740,13 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  </div>{{-- /card --}}
  </div>{{-- /step 3 --}}
 
- {{-- RIGHT: Sticky booking card (desktop) --}}
- <div style="height:fit-content;position:sticky;top:88px;" class="book-sidebar">
- <div style="background:#fff;border-radius:22px;border:1px solid rgba(21,40,31,.1);padding:26px;box-shadow:0 4px 28px rgba(21,40,31,.08);">
- <div style="text-align:center;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid rgba(21,40,31,.08);">
- <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(21,40,31,.45);margin-bottom:8px;">Session Rates</div>
- <div style="font-size:13px;color:rgba(21,40,31,.5);">starting from </div>
- <div style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#0A64BC;">KSh 300</div>
- <div style="font-size:13px;color:rgba(21,40,31,.5);">per session</div>
- </div>
-
- {{-- Tier quick reference --}}
- <!-- <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;">
- @foreach([20=>['fa-solid fa-zap', 'Quick Help',300],40=>['fa-solid fa-chalkboard', 'Guided Practice',500],60=>['fa-solid fa-book-open','Deep Dive',700]] as $mins=>[$ic,$n,$p])
- @php $sidePrice = ($mins===20 && $isFreeFirstSession) ? 0 : $p; @endphp
- <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:{{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.06)':'#F9FAF9' }};border:1px solid {{ $mins===15&&$isFreeFirstSession?'rgba(16,185,129,.2)':'rgba(21,40,31,.07)' }};position:relative;">
- @if($mins===15 && $isFreeFirstSession)
- <span style="position:absolute;top:-8px;right:8px;background:#10B981;color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:999px;letter-spacing:.04em;">FREE</span>
- @endif
- <span style="font-size:16px;">{{ $ic }}</span>
- <div style="flex:1;">
- <div style="font-size:13px;font-weight:600;color:#15281F;">{{ $n }}</div>
- <div style="font-size:11px;color:rgba(21,40,31,.45);">{{ $mins }} min</div>
- </div>
- @if($sidePrice === 0)
- <div style="text-align:right;">
- <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:#10B981;">FREE</div>
- <div style="font-size:10px;text-decoration:line-through;color:rgba(21,40,31,.3);">KSh {{ $p }}</div>
- </div>
- @else
- <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:#0A64BC;">KSh {{ $p }}</div>
- @endif
- </div>
- @endforeach
- </div> -->
-
- @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
- <button onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})"
- style="width:100%;height:52px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;"
- onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
- <i class="fa-solid fa-circle-check"></i> Book a Session
- </button>
- @endif
-
- <div style="display:flex;flex-direction:column;gap:7px;">
- @foreach(['fa-certificate green TSC-Registered & Verified','fa-lock green Secure, private classroom','fa-rotate-left green 100% money-back first lesson','fa-key green Session code sent by email'] as $item)
- @php [$ic,,$text] = explode(' ',$item,3); @endphp
- <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(21,40,31,.6);">
- <i class="fa-solid {{ $ic }}"></i>{{ $text }}
- </div>
- @endforeach
- </div>
- </div>
- </div>
+ {{-- RIGHT: Sticky booking card (desktop) - REMOVED --}}
  </div>
 </div>
 
-<style>
-.show-grid{grid-template-columns:1fr!important;}
-@media(min-width:1024px){.show-grid{grid-template-columns:1fr 360px!important;}}
-.book-sidebar{display:none!important;}
-@media(min-width:1024px){.book-sidebar{display:block!important;}}
-.desk-price{display:none!important;}
-@media(min-width:768px){.desk-price{display:flex!important;}}
-</style>
 
+<style>.blog-show-g{grid-template-columns:1fr!important;}@media(min-width:1024px){.blog-show-g{grid-template-columns:1fr 300px!important;}}</style>
 @include('partials.footer')
-
 <script src="https://meet.jit.si/external_api.js" defer></script>
 <script>
 function showTab(name, btn) {

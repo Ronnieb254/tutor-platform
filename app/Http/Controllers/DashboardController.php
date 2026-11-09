@@ -82,9 +82,10 @@ class DashboardController extends Controller
         ));
     }
 
-    private function tutorDashboard()
+    public function tutorDashboard()
     {
         $user = Auth::user();
+        $profile = $user->tutorProfile;
 
         $upcomingSessions = Booking::where('tutor_id', $user->id)
             ->upcoming()
@@ -123,14 +124,56 @@ class DashboardController extends Controller
             ->limit(10)
             ->get();
 
+        // Earnings (for earnings widget if it exists in view)
+        $earningsService = new \App\Services\EarningsService();
+        $allEarnings = $earningsService->calculateTutorEarnings($user);
+        $recentEarnings = $earningsService->getRecentEarnings($user);
+        $earnings = array_merge($allEarnings, $recentEarnings);
+
+        // Verification and profile variables
+        $isApproved = $profile?->is_approved ?? false;
+        $verificationStatus = $profile?->getVerificationStatusAttribute() ?? 'no_documents';
+        
+        // Documents analysis
+        $docs = $profile?->documents ?? collect();
+        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
+        $uploadedTypes = $docs->pluck('type')->toArray();
+        $missingDocs = array_diff($requiredTypes, $uploadedTypes);
+        $missingCount = count($missingDocs);
+        $missingNames = array_map(fn($t) => ucwords(str_replace('_', ' ', $t)), $missingDocs);
+
+        // Check if subjects badge should show
+        $tutorSubjects = $profile?->subjects ?? collect();
+        $needsSubjectsBadge = $tutorSubjects->isEmpty();
+
+        // Upcoming bookings for tutor
+        $upcoming = Booking::where('tutor_id', $user->id)
+            ->upcoming()
+            ->with(['student', 'subject'])
+            ->orderBy('scheduled_at')
+            ->get();
+
+        // Unread notifications
+        $unreadNotifs = $user->unreadNotifications()->count();
+
         return view('pages.dashboard.tutor', compact(
+            'user',
+            'profile',
+            'isApproved',
+            'verificationStatus',
+            'missingCount',
+            'missingNames',
+            'needsSubjectsBadge',
             'upcomingSessions',
             'pendingBookings',
             'unreadMessages',
             'totalSessions',
             'earningsThisMonth',
             'avgRating',
-            'paymentHistory'
+            'paymentHistory',
+            'upcoming',
+            'unreadNotifs',
+            'earnings'
         ));
     }
 

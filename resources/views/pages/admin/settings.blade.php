@@ -60,8 +60,8 @@ use App\Models\PlatformSetting;
  <input type="text" name="currency_symbol" class="form-input" value="{{ PlatformSetting::get('currency_symbol','KSh') }}">
  </div>
  <div>
- <label class="form-label">Minimum Hourly Rate (KSh)</label>
- <input type="number" name="min_hourly_rate" class="form-input" value="{{ PlatformSetting::get('min_hourly_rate','500') }}">
+ <!-- <label class="form-label">Minimum Hourly Rate (KSh)</label>
+ <input type="number" name="min_hourly_rate" class="form-input" value="{{ PlatformSetting::get('min_hourly_rate','500') }}"> -->
  </div>
  </div>
  </div>

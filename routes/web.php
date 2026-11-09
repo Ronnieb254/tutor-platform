@@ -347,7 +347,7 @@ Route::middleware('auth')->group(function () {
 
         // Tutor email management
         Route::post('/tutors/send-email-all', [App\Http\Controllers\Admin\TutorEmailController::class, 'sendToAll'])->name('tutors.send-email-all');
-        Route::post('/tutors/{tutorProfile}/send-email', [App\Http\Controllers\Admin\TutorEmailController::class, 'sendToTutor'])->name('tutors.send-email');
+        Route::post('/tutors/{profileId}/send-email', [App\Http\Controllers\Admin\TutorEmailController::class, 'sendToTutor'])->name('tutors.send-email');
 
         // Clinic management (admin creates / manages daily clinics)
         Route::get('/clinics',                             [App\Http\Controllers\Admin\ClinicController::class, 'index'])->name('clinics');

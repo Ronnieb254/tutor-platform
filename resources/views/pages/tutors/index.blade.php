@@ -161,7 +161,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 </div>
  <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
  <span style="font-size:11px;font-weight:600;color:var(--mint);"><i class="fa-solid fa-scroll"></i> TSC Verified</span>
- <span style="color:var(--muted);font-size:11px;"> {{ $tutor->experience_years }}yr exp</span>
+ <!-- <span style="color:var(--muted);font-size:11px;"> {{ $tutor->experience_years }}yr exp</span> -->
  </div>
  </div>
  <!-- <div style="text-align:right;flex-shrink:0;">

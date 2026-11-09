@@ -157,10 +157,10 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 $user    = auth()->user();
 $profile = $user->tutorProfile;
 $isApproved = $profile?->is_approved ?? false;
-$verificationStatus = $profile?->verification_status ?? 'no_documents';
+$verificationStatus = $profile ? $profile->getVerificationStatusAttribute() : 'no_documents';
 $pendingBookings = $user->bookingsAsTutor()->where('status','pending')->count();
 $unreadNotifs = $user->unreadNotifications()->count();
-$subjectCount = $profile?->subjects()->count() ?? 0;
+$subjectCount = $profile ? $profile->subjects()->count() : 0;
 $needsSubjectsBadge = !$isApproved && $subjectCount === 0;
 $activeTab = request('tab','overview');
 @endphp
@@ -322,10 +322,10 @@ $activeTab = request('tab','overview');
     @php
         $docs = $profile?->documents ?? collect();
         $uploadedTypes = $docs->pluck('type')->toArray();
-        $requiredTypes = ['national_id', 'tsc_certificate', 'certificate_of_good_conduct', 'degree_certificate', 'passport_photo'];
+        $requiredTypes = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
         $missingTypes = array_diff($requiredTypes, $uploadedTypes);
         $missingCount = count($missingTypes);
-        $docNames = ['national_id' => 'National ID', 'tsc_certificate' => 'TSC Certificate', 'certificate_of_good_conduct' => 'Certificate of Good Conduct', 'degree_certificate' => 'Academic Certificate', 'passport_photo' => 'Passport Photo'];
+        $docNames = ['national_id' => 'National ID', 'tsc_certificate' => 'TSC Certificate', 'degree_certificate' => 'Academic Certificate', 'passport_photo' => 'Passport Photo'];
         $missingNames = array_map(fn($t) => $docNames[$t], $missingTypes);
     @endphp
     <div class="status-banner {{ $verificationStatus==='action_required' ? 'status-rejected' : ($verificationStatus==='under_review' ? 'status-pending' : 'status-pending') }}">
@@ -349,7 +349,7 @@ $activeTab = request('tab','overview');
                 @elseif($verificationStatus==='under_review')
                     Our team is reviewing your profile and documents. You'll receive an email once approved - usually within 24-48 hours.
                 @else
-                    You need to upload <strong>all 5 required documents</strong> before we can review your profile.
+                    You need to upload <strong>all 4 required documents</strong> before we can review your profile.
                     @if($missingCount > 0)
                         <span style="color:var(--coral);font-weight:700;">{{ $missingCount }} remaining: {{ implode(', ', $missingNames) }}</span>
                     @endif
@@ -358,6 +358,119 @@ $activeTab = request('tab','overview');
             </div>
         </div>
     </div>
+
+    {{-- REQUIREMENTS CHECKLIST - Show when unverified --}}
+    @php
+        $docsUploadedCount = $docs->count();
+        $docsComplete = $docsUploadedCount >= 4;
+        $subjectsCount = $profile ? $profile->subjects()->count() : 0;
+        $subjectsComplete = $subjectsCount >= 1;
+        $availabilityCount = $profile ? $profile->availabilities()->count() : 0;
+        $availabilityComplete = $availabilityCount > 0;
+    @endphp
+    <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <i class="fa-solid fa-checklist" style="font-size:18px;color:#0A64BC;"></i>
+            <div style="font-weight:700;font-size:15px;color:var(--ink);">Requirements before review</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+            {{-- Documents Requirement --}}
+            <div style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;background:{{ $docsComplete ? '#f0fdf4' : '#fef2f2' }};">
+                <div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{ $docsComplete ? '#10B981' : '#ef4444' }};color:#fff;font-size:14px;flex-shrink:0;">
+                    <i class="fa-solid {{ $docsComplete ? 'fa-check' : 'fa-xmark' }}"></i>
+                </div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;font-size:13px;color:var(--ink);">4 required documents uploaded</div>
+                    <div style="font-size:12px;color:var(--muted);">{{ $docsUploadedCount }}/4 documents</div>
+                </div>
+            </div>
+
+            {{-- Subjects Requirement --}}
+            <div style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;background:{{ $subjectsComplete ? '#f0fdf4' : '#fef2f2' }};">
+                <div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{ $subjectsComplete ? '#10B981' : '#ef4444' }};color:#fff;font-size:14px;flex-shrink:0;">
+                    <i class="fa-solid {{ $subjectsComplete ? 'fa-check' : 'fa-xmark' }}"></i>
+                </div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;font-size:13px;color:var(--ink);">Teaching subjects selected</div>
+                    <div style="font-size:12px;color:var(--muted);">{{ $subjectsCount }} subject(s) added</div>
+                </div>
+            </div>
+
+            {{-- Availability Requirement --}}
+            <div style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;background:{{ $availabilityComplete ? '#f0fdf4' : '#fef2f2' }};">
+                <div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:{{ $availabilityComplete ? '#10B981' : '#ef4444' }};color:#fff;font-size:14px;flex-shrink:0;">
+                    <i class="fa-solid {{ $availabilityComplete ? 'fa-check' : 'fa-xmark' }}"></i>
+                </div>
+                <div style="flex:1;">
+                    <div style="font-weight:600;font-size:13px;color:var(--ink);">Teaching availability set</div>
+                    <div style="font-size:12px;color:var(--muted);">{{ $availabilityCount }} day(s) available</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ONBOARDING CARDS - Show when unverified --}}
+    @if(!$isApproved)
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:32px;margin-top:28px;" class="onboard-g">
+        {{-- Card 1: Upload Documents --}}
+        <button @click="tab='documents'" style="background:linear-gradient(135deg,#FEF9C3 0%,#FFFBEB 100%);border:2px solid #FCD34D;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;box-shadow:0 2px 8px rgba(252,211,77,.1);"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(252,211,77,.25)';this.style.borderColor='#FBD34E'"
+        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(252,211,77,.1)';this.style.borderColor='#FCD34D'">
+            <div style="width:56px;height:56px;border-radius:14px;background:#FDE68A;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(252,211,77,.2);">
+                <i class="fa-solid fa-file-upload"></i>
+            </div>
+            <div>
+                <div style="font-weight:700;font-size:16px;color:var(--ink);margin-bottom:6px;line-height:1.3;">Upload Documents</div>
+                <div style="font-size:13px;color:var(--muted);line-height:1.5;">Submit your National ID, TSC Certificate, and other required documents for verification.</div>
+            </div>
+            <div style="margin-top:auto;width:100%;">
+                <span style="display:inline-flex;align-items:center;gap:6px;background:#FCD34D;color:#78350F;padding:9px 16px;border-radius:9px;font-size:12px;font-weight:700;transition:all .2s;">
+                    Get Started <i class="fa-solid fa-arrow-right"></i>
+                </span>
+            </div>
+        </button>
+
+        {{-- Card 2: Add Subjects --}}
+        <a href="{{ route('tutor.subjects') }}" style="background:linear-gradient(135deg,#F0FDF4 0%,#F7FEF5 100%);border:2px solid #86EFAC;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;text-decoration:none;color:inherit;box-shadow:0 2px 8px rgba(134,239,172,.1);"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(134,239,172,.25)';this.style.borderColor='#87F45E'"
+        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(134,239,172,.1)';this.style.borderColor='#86EFAC'">
+            <div style="width:56px;height:56px;border-radius:14px;background:#BBEF7F;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(134,239,172,.2);">
+                <i class="fa-solid fa-book"></i>
+            </div>
+            <div>
+                <div style="font-weight:700;font-size:16px;color:var(--ink);margin-bottom:6px;line-height:1.3;">Add Subjects to Teach</div>
+                <div style="font-size:13px;color:var(--muted);line-height:1.5;">Select the subjects and topics you're qualified to teach. This helps students find you.</div>
+            </div>
+            <div style="margin-top:auto;width:100%;">
+                <span style="display:inline-flex;align-items:center;gap:6px;background:#BBEF7F;color:#166534;padding:9px 16px;border-radius:9px;font-size:12px;font-weight:700;transition:all .2s;">
+                    Get Started <i class="fa-solid fa-arrow-right"></i>
+                </span>
+            </div>
+        </a>
+
+        {{-- Card 3: Set Availability --}}
+        <button @click="tab='availability'" style="background:linear-gradient(135deg,#DBEAFE 0%,#F0F9FF 100%);border:2px solid #93C5FD;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;box-shadow:0 2px 8px rgba(147,197,253,.1);"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(147,197,253,.25)';this.style.borderColor='#94D5FE'"
+        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(147,197,253,.1)';this.style.borderColor='#93C5FD'">
+            <div style="width:56px;height:56px;border-radius:14px;background:#BFDBFE;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(147,197,253,.2);">
+                <i class="fa-solid fa-calendar"></i>
+            </div>
+            <div>
+                <div style="font-weight:700;font-size:16px;color:var(--ink);margin-bottom:6px;line-height:1.3;">Set Your Availability</div>
+                <div style="font-size:13px;color:var(--muted);line-height:1.5;">Add your teaching schedule so students can book sessions at times that work for you.</div>
+            </div>
+            <div style="margin-top:auto;width:100%;">
+                <span style="display:inline-flex;align-items:center;gap:6px;background:#93C5FD;color:#1E40AF;padding:9px 16px;border-radius:9px;font-size:12px;font-weight:700;transition:all .2s;">
+                    Get Started <i class="fa-solid fa-arrow-right"></i>
+                </span>
+            </div>
+        </button>
+    </div>
+    <style>
+        @media(max-width:768px){
+            .onboard-g{grid-template-columns:1fr!important;}
+        }
+    </style>
     @else
     <div class="status-banner status-approved" style="margin-bottom:20px;">
         <div style="font-size:24px;flex-shrink:0;"><i class="fa-solid fa-circle-check" style="color:#10B981;"></i></div>
@@ -368,7 +481,8 @@ $activeTab = request('tab','overview');
     </div>
     @endif
 
-    {{-- Stats --}}
+    {{-- Stats - Show only for approved tutors --}}
+    @if($isApproved)
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
         <div class="stat">
             <div class="stat-icon" style="background:rgba(10,100,188,.1);">
@@ -378,6 +492,7 @@ $activeTab = request('tab','overview');
             <div class="stat-val">KSh {{ number_format($wallet?->balance ?? 0) }}</div>
             <div class="stat-sub">This month: KSh {{ number_format($thisMonth) }}</div>
         </div>
+        
         <div class="stat">
             <div class="stat-icon" style="background:rgba(16,185,129,.1);">
                 <i class="fa-solid fa-calendar-check" style="color:#10B981;font-size:18px;"></i>
@@ -394,6 +509,22 @@ $activeTab = request('tab','overview');
             <div class="stat-val">{{ $completedCount }}</div>
             <div class="stat-sub">Rating:  {{ number_format($profile?->rating_avg ?? 0,1) }} ({{ $profile?->total_reviews ?? 0 }} reviews)</div>
         </div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="quick-g">
+        @foreach([
+            ['documents','fa-solid fa-file-lines','Documents','Check your verification status'],
+            ['bookings','fa-solid fa-calendar-check','Bookings','View all session bookings'],
+            ['earnings','fa-solid fa-wallet','Earnings','Check wallet & history'],
+            ['availability','fa-solid fa-clock','Availability','Set your schedule'],
+        ] as [$t,$ic,$label,$desc])
+        <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='translateY(0)'">
+            <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;"><i class="{{ $ic }}"></i></div>
+            <div>
+                <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $desc }}</div>
+            </div>
+        </button>
+        @endforeach
+    </div>
         
     </div>
     <style>.stats-g{grid-template-columns:1fr!important;}@media(min-width:640px){.stats-g{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.stats-g{grid-template-columns:repeat(3,1fr)!important;}}</style>
@@ -401,6 +532,7 @@ $activeTab = request('tab','overview');
     {{-- Earnings Widget --}}
     @if(isset($earnings))
         @include('components.earnings-widget', ['earnings' => $earnings])
+    @endif
     @endif
 
     @if($isApproved && $upcoming->isNotEmpty())
@@ -435,10 +567,11 @@ $activeTab = request('tab','overview');
             @endforeach
         </div>
     </div>
+    
     @endif
 
     {{-- Quick links --}}
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="quick-g">
+    <!-- <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="quick-g">
         @foreach([
             ['documents','fa-solid fa-file-lines','Documents','Check your verification status'],
             ['bookings','fa-solid fa-calendar-check','Bookings','View all session bookings'],
@@ -453,7 +586,7 @@ $activeTab = request('tab','overview');
             </div>
         </button>
         @endforeach
-    </div>
+    </div> -->
     <style>.quick-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.quick-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 </div>
 
@@ -1078,12 +1211,6 @@ $activeTab = request('tab','overview');
                     <p style="font-size:11px;color:var(--muted);margin-top:4px;text-align:right;">
                         <span x-text="count">{{ strlen($profile?->bio ?? '') }}</span> / 255
                     </p>
-                </div>
-                <div style="margin-bottom:16px;">
-                    <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Years of Experience</label>
-                    <input type="number" name="experience_years" value="{{ $profile?->experience_years }}" min="0" max="50"
-                           style="width:100%;height:44px;padding:0 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;"
-                           onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 </div>
                 <button type="submit" class="btn btn-v" style="width:100%;justify-content:center;">
                     <i class="fa-solid fa-floppy-disk fa-sm"></i> Save Teaching Profile

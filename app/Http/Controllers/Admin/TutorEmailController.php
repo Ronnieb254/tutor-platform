@@ -13,13 +13,24 @@ class TutorEmailController extends Controller
     /**
      * Send email to a single tutor
      */
-    public function sendToTutor(Request $request, TutorProfile $profile)
+    public function sendToTutor(Request $request, $profileId)
     {
         try {
             $validated = $request->validate([
                 'subject' => 'required|string|min:5|max:200',
                 'message' => 'required|string|min:20|max:5000',
             ]);
+
+            // Load the profile with user relationship
+            $profile = TutorProfile::with('user')->findOrFail($profileId);
+
+            // Check if user exists
+            if (!$profile->user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tutor user not found'
+                ], 404);
+            }
 
             Mail::to($profile->user->email, $profile->user->name)->send(
                 new AdminTutorMail($validated['subject'], $validated['message'])
@@ -32,7 +43,7 @@ class TutorEmailController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Error: ' . $e->getMessage()
             ], 500);
         }
     }

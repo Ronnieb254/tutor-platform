@@ -156,13 +156,13 @@ select.finput{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xm
  </div>
  </div>
 
- <div class="field">
+ <!-- <div class="field">
  <div class="flabel"><i class="fa-solid fa-money-bill"></i> Hourly Rate (KSh) <span style="color:var(--coral);">*</span></div>
  <div style="position:relative;">
  <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--muted);">KSh</span>
  <input type="number" x-model="form.hourly_rate" class="finput" style="padding-left:46px;" placeholder="e.g. 2000" min="500">
- </div>
- <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-circle-info"></i> Session prices are fixed by Mwalimu. Your hourly rate is used for reference only.</p>
+ </div> -->
+ <p style="font-size:11px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-circle-info"></i> Session prices are fixed by Mwalimu. </p>
  </div>
  </div>
  <div style="display:flex;gap:12px;">
@@ -577,7 +577,6 @@ function tutorOnboarding() {
  experience_years:'',
  levels: [],
  bio: '',
- hourly_rate: '',
  subjects: [],
  curricula_tracks: [],
  curriculum_ids: [],
@@ -643,7 +642,7 @@ function tutorOnboarding() {
  this.errors = {};
  if (!this.form.name.trim()) { this.errors.name = 'Full name is required'; return; }
  if (!this.form.bio.trim() || this.form.bio.length < 50) { this.errors.bio = 'Bio must be at least 50 characters'; return; }
- if (!this.form.hourly_rate || parseInt(this.form.hourly_rate) < 500) { this.errors.hourly_rate = 'Minimum hourly rate is KSh 500'; return; }
+//  if (!this.form.hourly_rate || parseInt(this.form.hourly_rate) < 500) { this.errors.hourly_rate = 'Minimum hourly rate is KSh 500'; return; }
  this.step = 2;
  },
 

@@ -36,7 +36,6 @@ class AdminTutorMail extends Mailable
     {
         return new Envelope(
             from: 'support@ovaldesk.co.ke',
-            name: 'Mwalimu Support',
             subject: $this->subjectText,
         );
     }

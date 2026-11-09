@@ -584,8 +584,6 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <div style="display:flex;gap:12px;font-size:13px;color:var(--muted);">
  <span> {{ number_format($profile->rating_avg,1) }} ({{ $profile->total_reviews }})</span>
  <span></span>
- <span style="font-weight:600;color:var(--ink);">KSh {{ number_format($profile->hourly_rate) }}/hr</span>
- <span></span>
  <span>{{ $profile->experience_years }}y exp</span>
  </div>
  </div>

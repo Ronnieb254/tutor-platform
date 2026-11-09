@@ -27,14 +27,14 @@
  @error('bio')<p class="form-error">{{ $message }}</p>@enderror
  <p class="text-xs text-muted mt-1">{{ strlen($bio) }}/50 minimum characters</p>
  </div>
- <div class="grid grid-cols-2 gap-4">
- <div>
- <label class="form-label">Hourly rate (KSh)</label>
+ <!-- <div class="grid grid-cols-2 gap-4"> -->
+ <!-- <div> -->
+ <!-- <label class="form-label">Hourly rate (KSh)</label>
  <input type="number" wire:model="hourlyRate" class="form-input" placeholder="e.g. 2000" min="500">
  @error('hourlyRate')<p class="form-error">{{ $message }}</p>@enderror
- <p class="text-xs text-muted mt-1">Minimum KSh 500/hr</p>
- </div>
- <div>
+ <p class="text-xs text-muted mt-1">Minimum KSh 500/hr</p> -->
+ <!-- </div> -->
+ <!-- <div> -->
  <label class="form-label">Years of experience</label>
  <input type="number" wire:model="experienceYears" class="form-input" placeholder="0" min="0">
  </div>
