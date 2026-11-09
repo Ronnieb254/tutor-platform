@@ -252,14 +252,7 @@ Route::middleware('auth')->group(function () {
 
     // Tutor dashboard & onboarding
     Route::middleware('role:tutor')->group(function () {
-        Route::get('/dashboard/tutor', function () {
-            $earningsService = new \App\Services\EarningsService();
-            $allEarnings = $earningsService->calculateTutorEarnings(auth()->user());
-            $recentEarnings = $earningsService->getRecentEarnings(auth()->user());
-            $earnings = array_merge($allEarnings, $recentEarnings);
-            
-            return view('pages.dashboard.tutor', compact('earnings'));
-        })->name('tutor.dashboard');
+        Route::get('/dashboard/tutor', [App\Http\Controllers\DashboardController::class, 'tutorDashboard'])->name('tutor.dashboard');
         Route::get('/tutor/onboarding', fn() => view('pages.auth.tutor-onboarding'))->name('tutor.onboarding');
 
         // New onboarding submit (file uploads + speedy verification)
@@ -351,6 +344,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/tutors/{tutorProfile}/subjects', [App\Http\Controllers\TutorSubjectController::class, 'store'])->name('tutors.subjects.store');
         Route::post('/tutors/{tutorProfile}/subjects/attach', [App\Http\Controllers\TutorSubjectController::class, 'attach'])->name('tutors.subjects.attach');
         Route::post('/tutors/{tutorProfile}/subjects/detach', [App\Http\Controllers\TutorSubjectController::class, 'detach'])->name('tutors.subjects.detach');
+
+        // Tutor email management
+        Route::post('/tutors/send-email-all', [App\Http\Controllers\Admin\TutorEmailController::class, 'sendToAll'])->name('tutors.send-email-all');
+        Route::post('/tutors/{tutorProfile}/send-email', [App\Http\Controllers\Admin\TutorEmailController::class, 'sendToTutor'])->name('tutors.send-email');
 
         // Clinic management (admin creates / manages daily clinics)
         Route::get('/clinics',                             [App\Http\Controllers\Admin\ClinicController::class, 'index'])->name('clinics');
