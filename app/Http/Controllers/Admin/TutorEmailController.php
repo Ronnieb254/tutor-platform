@@ -64,7 +64,8 @@ class TutorEmailController extends Controller
 
             foreach ($tutors as $tutor) {
                 if ($tutor->user && $tutor->user->email) {
-                    Mail::to($tutor->user->email, $tutor->user->name)->send(
+                    // Queue the email instead of sending synchronously
+                    Mail::to($tutor->user->email, $tutor->user->name)->queue(
                         new AdminTutorMail($validated['subject'], $validated['message'])
                     );
                     $count++;
@@ -73,7 +74,7 @@ class TutorEmailController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Email sent to ' . $count . ' tutor' . ($count !== 1 ? 's' : '')
+                'message' => 'Email queued for ' . $count . ' tutor' . ($count !== 1 ? 's' : '') . '. They will be sent shortly.'
             ]);
         } catch (\Exception $e) {
             return response()->json([

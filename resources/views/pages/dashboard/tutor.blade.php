@@ -278,6 +278,79 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
     font-size: 11px;
   }
 }
+
+/* Subject card styles */
+.subject-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1.5px solid var(--hair);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all .15s;
+  cursor: pointer;
+}
+.subject-card:hover {
+  border-color: rgba(10, 100, 188, .3);
+  background: rgba(10, 100, 188, .02);
+}
+.subject-card.selected {
+  background: rgba(10, 100, 188, .06);
+  border-color: var(--trust-blue);
+}
+.subject-card input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--trust-blue);
+}
+.subject-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(10, 100, 188, .1);
+  color: var(--trust-blue);
+  font-size: 12px;
+  font-weight: 600;
+}
+.subject-chip i {
+  cursor: pointer;
+  opacity: .6;
+  transition: opacity .15s;
+}
+.subject-chip i:hover {
+  opacity: 1;
+  color: var(--coral);
+}
+.search-wrap {
+  position: relative;
+}
+.search-wrap i {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 14px;
+}
+.search-input {
+  height: 42px;
+  padding: 0 14px 0 38px;
+  border-radius: 10px;
+  border: 1.5px solid var(--hair);
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+  font-family: inherit;
+  width: 100%;
+}
+.search-input:focus {
+  border-color: var(--trust-blue);
+}
 </style>
 </head>
 <body>
@@ -322,7 +395,7 @@ $activeTab = request('tab','overview');
                 <span class="sb-badge">!</span>
                 @endif
             </button>
-            <button class="sb-item" @click="tab='subjects';sidebarOpen=false">
+            <button class="sb-item" :class="tab==='subjects'?'active':''" @click="tab='subjects';sidebarOpen=false">
                 <i class="fa-solid fa-book-open fa-fw" style="font-size:14px;"></i>
                 My Subjects
                 @if($needsSubjectsBadge)<span class="sb-badge">!</span>@endif
@@ -411,7 +484,7 @@ $activeTab = request('tab','overview');
             </button>
             <div class="page-title" x-text="{
                 overview:'Dashboard Overview',documents:'My Documents',bookings:'Bookings',history:'Session History',
-                chats:'Messages',availability:'Availability',earnings:'Earnings & Wallet',
+                chats:'Messages',availability:'Availability',earnings:'Earnings & Wallet',subjects:'My Subjects',
                 notifications:'Notifications',profile:'My Profile'
             }[tab] || 'Dashboard'"></div>
         </div>
@@ -560,7 +633,7 @@ $activeTab = request('tab','overview');
         </button>
 
         {{-- Card 2: Add Subjects --}}
-        <a href="{{ route('tutor.subjects') }}" style="background:linear-gradient(135deg,#F0FDF4 0%,#F7FEF5 100%);border:2px solid #86EFAC;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;text-decoration:none;color:inherit;box-shadow:0 2px 8px rgba(134,239,172,.1);"
+        <button @click="tab='subjects'" style="background:linear-gradient(135deg,#F0FDF4 0%,#F7FEF5 100%);border:2px solid #86EFAC;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;text-decoration:none;color:inherit;box-shadow:0 2px 8px rgba(134,239,172,.1);border:none;font-size:inherit;"
         onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(134,239,172,.25)';this.style.borderColor='#87F45E'"
         onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(134,239,172,.1)';this.style.borderColor='#86EFAC'">
             <div style="width:56px;height:56px;border-radius:14px;background:#BBEF7F;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(134,239,172,.2);">
@@ -575,7 +648,7 @@ $activeTab = request('tab','overview');
                     Get Started <i class="fa-solid fa-arrow-right"></i>
                 </span>
             </div>
-        </a>
+        </button>
 
         {{-- Card 3: Set Availability --}}
         <button @click="tab='availability'" style="background:linear-gradient(135deg,#DBEAFE 0%,#F0F9FF 100%);border:2px solid #93C5FD;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;box-shadow:0 2px 8px rgba(147,197,253,.1);"
@@ -1360,6 +1433,90 @@ $activeTab = request('tab','overview');
     <style>.profile-grid{grid-template-columns:1fr!important;}@media(min-width:768px){.profile-grid{grid-template-columns:1fr 1fr!important;}}</style>
 </div>
 
+{{-- ----------------------- SUBJECTS TAB ----------------------- --}}
+<div x-show="tab==='subjects'" x-cloak>
+    <div class="sec-hdr" style="margin-bottom:20px;">
+        <div>
+            <div class="sec-title">Manage Your Subjects</div>
+            <div class="sec-sub">Select up to 2 subjects you teach — these appear on your public profile.</div>
+        </div>
+    </div>
+
+    {{-- Selected subjects preview card --}}
+    <div class="card" style="margin-bottom:20px;">
+        <div style="padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--hair);">
+            <div>
+                <h3 style="font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:2px;">
+                    Currently Teaching <span id="subj-count" style="color:var(--trust-blue);">{{ $profile->subjects->count() }}</span> Subject{{ $profile->subjects->count() !== 1 ? 's' : '' }}
+                </h3>
+                <p style="font-size:13px;color:var(--muted);">Click a subject below to add or remove it</p>
+            </div>
+            <div style="width:100%;max-width:280px;">
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="subj-search" placeholder="Search subjects..." class="search-input">
+                </div>
+            </div>
+        </div>
+        <div style="padding:18px 22px;background:#F9FAF9;">
+            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;">Your Selected Subjects (Max 2)</p>
+            <div id="subj-selected-preview" style="display:flex;flex-wrap:wrap;gap:6px;min-height:30px;">
+                @forelse($profile->subjects as $subject)
+                <span class="subject-chip" data-subject-id="{{ $subject->id }}">
+                    {{ $subject->name }}
+                    <i class="fa-solid fa-xmark" onclick="subj_deselectSubject({{ $subject->id }})"></i>
+                </span>
+                @empty
+                <span style="font-size:13px;color:var(--muted);">No subjects selected yet. Choose from the categories below.</span>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
+    {{-- Subject categories form --}}
+    <form id="subj-form" method="POST" action="{{ route('tutor.subjects.store') }}">
+        @csrf
+        <div id="subj-container">
+            @foreach($categories as $category)
+            <div class="subj-category-section" data-category="{{ strtolower($category->name) }}" style="margin-bottom:24px;">
+                <h4 style="font-family:'Fraunces',serif;font-size:16px;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                    <div style="width:28px;height:28px;border-radius:8px;background:rgba(212,160,23,.12);display:flex;align-items:center;justify-content:center;">
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#EEBE15" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    {{ $category->name }}
+                    <span style="font-size:12px;color:var(--muted);font-weight:400;">({{ $category->subjects->count() }})</span>
+                </h4>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;">
+                    @foreach($category->subjects as $subject)
+                    <div class="subject-card {{ $profile->subjects->contains($subject->id) ? 'selected' : '' }}"
+                         data-subject-id="{{ $subject->id }}"
+                         data-subject-name="{{ strtolower($subject->name) }}"
+                         onclick="subj_toggleSubject({{ $subject->id }}, '{{ addslashes($subject->name) }}')">
+                        <div style="display:flex;align-items:center;gap:10px;flex:1;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                            </div>
+                            <div>
+                                <div style="font-size:14px;font-weight:600;color:var(--ink);">{{ $subject->name }}</div>
+                                <div style="font-size:11px;color:var(--muted);">{{ $category->name }}</div>
+                            </div>
+                        </div>
+                        <input type="checkbox" name="subject_ids[]" value="{{ $subject->id }}"
+                               {{ $profile->subjects->contains($subject->id) ? 'checked' : '' }}>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endforeach
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:24px;">
+            <button type="submit" class="btn btn-mint" style="padding:12px 32px;font-size:15px;">
+                <i class="fa-solid fa-floppy-disk"></i> Save Subjects
+            </button>
+        </div>
+    </form>
+</div>
+
     </div>{{-- end content --}}
 </div>{{-- end main --}}
 </div>{{-- end layout --}}
@@ -1384,6 +1541,139 @@ window.viewDocPopup = function(url, isPdf, docName) {
         padding: '20px',
     });
 };
+
+// Subject Tab Functions with 'subj_' prefix to avoid conflicts
+const subjSelectedSubjects = new Set({{ json_encode($profile->subjects->pluck('id')->toArray()) }});
+const subjSubjectNames = {};
+
+// Initialize subject names from the DOM
+document.querySelectorAll('.subject-card').forEach(card => {
+    const id = parseInt(card.dataset.subjectId);
+    const nameEl = card.querySelector('div > div > div > div:first-child');
+    if (nameEl) subjSubjectNames[id] = nameEl.textContent.trim();
+});
+
+function subj_toggleSubject(id, name) {
+    const card = document.querySelector('.subject-card[data-subject-id="' + id + '"]');
+    const checkbox = card.querySelector('input[type="checkbox"]');
+    if (subjSelectedSubjects.has(id)) {
+        subjSelectedSubjects.delete(id);
+        card.classList.remove('selected');
+        checkbox.checked = false;
+        delete subjSubjectNames[id];
+    } else {
+        if (subjSelectedSubjects.size >= 2) {
+            Toast.fire({
+                icon: 'warning',
+                title: 'You can only select up to 2 subjects. Please deselect a subject first.'
+            });
+            return;
+        }
+        subjSelectedSubjects.add(id);
+        card.classList.add('selected');
+        checkbox.checked = true;
+        subjSubjectNames[id] = name;
+    }
+    subj_updatePreview();
+    subj_updateCount();
+    subj_updateMaxReachedState();
+}
+
+function subj_deselectSubject(id) {
+    subjSelectedSubjects.delete(id);
+    const card = document.querySelector('.subject-card[data-subject-id="' + id + '"]');
+    if (card) {
+        card.classList.remove('selected');
+        card.querySelector('input[type="checkbox"]').checked = false;
+    }
+    delete subjSubjectNames[id];
+    subj_updatePreview();
+    subj_updateCount();
+    subj_updateMaxReachedState();
+}
+
+function subj_updatePreview() {
+    const preview = document.getElementById('subj-selected-preview');
+    if (subjSelectedSubjects.size === 0) {
+        preview.innerHTML = '<span style="font-size:13px;color:var(--muted);">No subjects selected yet. Choose from the categories below.</span>';
+        return;
+    }
+    preview.innerHTML = Array.from(subjSelectedSubjects).map(function(id) {
+        var name = subjSubjectNames[id] || document.querySelector('.subject-card[data-subject-id="' + id + '"]')?.dataset.subjectName || 'Subject';
+        return '<span class="subject-chip" data-subject-id="' + id + '">' + name + '<i class="fa-solid fa-xmark" onclick="subj_deselectSubject(' + id + ')"></i></span>';
+    }).join('');
+}
+
+function subj_updateCount() {
+    const countSpan = document.getElementById('subj-count');
+    countSpan.textContent = subjSelectedSubjects.size;
+    if (subjSelectedSubjects.size >= 2) {
+        countSpan.innerHTML = subjSelectedSubjects.size + '/2 <span style="color:var(--mint);margin-left:6px;"><i class="fa-solid fa-circle-check"></i> Max reached</span>';
+    } else {
+        countSpan.textContent = subjSelectedSubjects.size + '/2';
+    }
+}
+
+function subj_updateMaxReachedState() {
+    const isMaxReached = subjSelectedSubjects.size >= 2;
+    document.querySelectorAll('.subject-card').forEach(function(card) {
+        const id = parseInt(card.dataset.subjectId);
+        if (!subjSelectedSubjects.has(id)) {
+            if (isMaxReached) {
+                card.style.opacity = '0.4';
+                card.style.cursor = 'not-allowed';
+            } else {
+                card.style.opacity = '1';
+                card.style.cursor = 'pointer';
+            }
+        }
+    });
+}
+
+// Search functionality
+document.getElementById('subj-search').addEventListener('input', function(e) {
+    var query = e.target.value.toLowerCase();
+    document.querySelectorAll('.subj-category-section').forEach(function(cat) {
+        var hasVisible = false;
+        cat.querySelectorAll('.subject-card').forEach(function(card) {
+            var name = card.dataset.subjectName;
+            if (name.includes(query)) { 
+                card.style.display = 'flex'; 
+                hasVisible = true; 
+            }
+            else { 
+                card.style.display = 'none'; 
+            }
+        });
+        cat.style.display = hasVisible ? 'block' : 'none';
+    });
+});
+
+// Form submission validation
+document.getElementById('subj-form').addEventListener('submit', function(e) {
+    if (subjSelectedSubjects.size === 0) {
+        e.preventDefault();
+        Toast.fire({
+            icon: 'error',
+            title: 'Selection Required',
+            text: 'Please select at least one subject'
+        });
+        return false;
+    }
+    if (subjSelectedSubjects.size > 2) {
+        e.preventDefault();
+        Toast.fire({
+            icon: 'error',
+            title: 'Too Many Subjects',
+            text: 'You can only select up to 2 subjects'
+        });
+        return false;
+    }
+});
+
+// Initialize on page load
+subj_updateCount();
+subj_updateMaxReachedState();
 </script>
 </body>
 </html>

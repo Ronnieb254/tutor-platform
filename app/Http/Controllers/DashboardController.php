@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, Booking, Message, Payment, Refund};
+use App\Models\{User, Booking, Message, Payment, Refund, Category};
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -156,6 +156,9 @@ class DashboardController extends Controller
         // Unread notifications
         $unreadNotifs = $user->unreadNotifications()->count();
 
+        // Load categories with subjects for the subjects tab
+        $categories = Category::with('subjects')->get();
+
         return view('pages.dashboard.tutor', compact(
             'user',
             'profile',
@@ -173,7 +176,8 @@ class DashboardController extends Controller
             'paymentHistory',
             'upcoming',
             'unreadNotifs',
-            'earnings'
+            'earnings',
+            'categories'
         ));
     }
 

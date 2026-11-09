@@ -2718,3 +2718,11 @@
 #45 C:/Program Files/Herd/resources/app.asar.unpacked/resources/valet/server.php(140): require('C://Users//Admini...')
 #46 {main}
 "} 
+[2026-11-09 16:05:04] production.ERROR: Maximum execution time of 30 seconds exceeded {"userId":1,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Maximum execution time of 30 seconds exceeded at C:/Users/Administrator/Downloads/mediacity.co.in-2026-10-13/mediacity.co.in-2026-10-13/tutor-platform/vendor/symfony/mailer/Transport/Smtp/Stream/AbstractStream.php:82)
+[stacktrace]
+#0 {main}
+"} 
+[2026-11-09 16:05:49] production.ERROR: Maximum execution time of 30 seconds exceeded {"userId":1,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Maximum execution time of 30 seconds exceeded at C:/Users/Administrator/Downloads/mediacity.co.in-2026-10-13/mediacity.co.in-2026-10-13/tutor-platform/vendor/symfony/mailer/Transport/Smtp/Stream/AbstractStream.php:82)
+[stacktrace]
+#0 {main}
+"} 
