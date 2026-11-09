@@ -57,6 +57,7 @@ button{font-family:inherit;cursor:pointer;}
 .flash-err{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:inherit;text-decoration:none;}
 .btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--hair);}.btn-o:hover{border-color:var(--trust-blue);color:var(--trust-blue);}
+.btn-mint{background:var(--mint);color:#fff;transition:all .15s;}.btn-mint:hover{background:#059669;box-shadow:0 4px 12px rgba(16,185,129,.2);}
 .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
 .sec-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--ink);}
@@ -68,9 +69,6 @@ button{font-family:inherit;cursor:pointer;}
 .subject-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:rgba(10,100,188,.1);color:var(--trust-blue);font-size:12px;font-weight:600;}
 .subject-chip i{cursor:pointer;opacity:.6;transition:opacity .15s;}
 .subject-chip i:hover{opacity:1;color:var(--coral);}
-.save-fab{position:fixed;bottom:24px;right:24px;padding:14px 32px;border-radius:999px;background:var(--mint);color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(16,185,129,.3);transition:all .2s;z-index:100;display:inline-flex;align-items:center;gap:8px;}
-.save-fab:hover{background:#059669;transform:translateY(-2px);box-shadow:0 8px 16px rgba(16,185,129,.4);}
-.save-fab:disabled{background:rgba(0,0,0,.2);cursor:not-allowed;transform:none;box-shadow:none;}
 .search-input{height:42px;padding:0 14px 0 38px;border-radius:10px;border:1.5px solid var(--hair);font-size:14px;outline:none;transition:border-color .15s;font-family:inherit;width:100%;}
 .search-input:focus{border-color:var(--trust-blue);}
 .search-wrap{position:relative;}
@@ -306,9 +304,8 @@ $unreadNotifs = $user->unreadNotifications()->count();
  @endforeach
  </div>
 
- <button type="submit" class="save-fab" id="save-btn">
- <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
- Save Changes
+ <button type="submit" class="btn btn-mint" style="padding:12px 32px;font-size:15px;">
+ <i class="fa-solid fa-floppy-disk"></i> Save Subjects
  </button>
  </form>
  </div>

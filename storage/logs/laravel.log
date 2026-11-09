@@ -2726,3 +2726,11 @@
 [stacktrace]
 #0 {main}
 "} 
+[2026-11-09 16:17:32] production.INFO: viewDocument called {"document_id":12,"user_id":1,"is_admin":true,"file_path":"documents/25/KclknCLrzqEQECfYL6qAZaNAjOAB40Mpa0ulU9uQ.pdf"} 
+[2026-11-09 16:17:32] production.INFO: Document served successfully {"document_id":12,"mime_type":"application/pdf"} 
+[2026-11-09 16:17:44] production.INFO: viewDocument called {"document_id":7,"user_id":1,"is_admin":true,"file_path":"documents/24/wEuEdOLIIkyWnljot952JIWgTIPYoBcKXGmRRsw8.jpg"} 
+[2026-11-09 16:17:44] production.INFO: Document served successfully {"document_id":7,"mime_type":"image/jpeg"} 
+[2026-11-09 16:17:44] production.INFO: viewDocument called {"document_id":8,"user_id":1,"is_admin":true,"file_path":"documents/24/niA1UsbTmFkM3GCsuZTeuoTMmOVtpizUqedX8CPo.jpg"} 
+[2026-11-09 16:17:44] production.INFO: Document served successfully {"document_id":8,"mime_type":"image/jpeg"} 
+[2026-11-09 16:17:44] production.INFO: viewDocument called {"document_id":15,"user_id":1,"is_admin":true,"file_path":"documents/2/qkiKJzjqzEgQ7jZ5zhutcdsCS7ojRPbi8oZWttIX.jpg"} 
+[2026-11-09 16:17:44] production.INFO: Document served successfully {"document_id":15,"mime_type":"image/jpeg"} 
