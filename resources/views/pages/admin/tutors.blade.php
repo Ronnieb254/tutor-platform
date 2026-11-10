@@ -322,7 +322,7 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  <button class="tutor-card-btn tutor-card-btn-email" onclick="openEmailModal('{{ $profile->id }}', '{{ addslashes($profile->user->name) }}', '{{ $profile->user->email }}')">
  <i class="fa-solid fa-envelope"></i> Email
  </button>
- <button class="tutor-card-btn tutor-card-btn-view" onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='flex'">
+ <button class="tutor-card-btn tutor-card-btn-view" onclick="openTutorModal('tutor-{{ $profile->id }}')">
  <i class="fa-solid fa-eye"></i> View
  </button>
  </div>
@@ -416,7 +416,7 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  </div>
  
  {{-- Action Buttons --}}
- <div style="padding:16px 24px;border-top:1px solid rgba(21,40,31,.08);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;" id="doc-viewer-actions" style="display:none;">
+ <div style="padding:16px 24px;border-top:1px solid rgba(21,40,31,.08);display:none;gap:10px;justify-content:flex-end;flex-shrink:0;" id="doc-viewer-actions">
  <button onclick="closeDocViewer()" class="btn btn-outline" style="padding:8px 16px;">Close</button>
  <button onclick="rejectDocFromViewer()" class="btn btn-danger" style="padding:8px 16px;">
  <i class="fa-solid fa-circle-xmark"></i> Reject
@@ -425,11 +425,13 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  <i class="fa-solid fa-check-circle"></i> Approve
  </button>
  </div>
- <div style="padding:16px 24px;border-top:1px solid rgba(21,40,31,.08);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;" id="doc-viewer-actions-hidden" style="display:flex;">
- <button onclick="closeDocViewer()" class="btn btn-outline" style="padding:8px 16px;">Close</button>
- </div>
  </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
 
 <style>
  @keyframes spin {
@@ -530,7 +532,7 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  // Avatar color based on email
  $avatarColor = '#' . substr(md5($profile->user->email), 0, 6);
  @endphp
- <div id="tutor-{{ $profile->id }}" class="modal-overlay" style="display:none;" onclick="if(event.target===this) this.style.display='none'">
+ <div id="tutor-{{ $profile->id }}" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeTutorModal('tutor-{{ $profile->id }}')">
  <div class="modal-box" onclick="event.stopPropagation()">
  <div class="modal-head">
  <div style="display:flex;align-items:center;gap:12px;">
@@ -540,7 +542,7 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  <p style="font-size:12px;color:rgba(21,40,31,.5);margin:2px 0 0 0;">Tutor #{{ $profile->id }}</p>
  </div>
  </div>
- <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='none'" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+ <button onclick="closeTutorModal('tutor-{{ $profile->id }}')" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
  <i class="fa-solid fa-circle-xmark"></i>
  </button>
  </div>
@@ -653,6 +655,48 @@ function getCsrfToken() {
  let input = document.querySelector('input[name="_token"]');
  if (input) return input.value;
  return '';
+}
+
+// Modal management
+let currentOpenModal = null;
+
+// Open tutor detail modal
+function openTutorModal(modalId) {
+ // Debug: check if modal exists
+ const allModals = document.querySelectorAll('.modal-overlay');
+ console.log('Total modals on page:', allModals.length);
+ console.log('All modal IDs:', Array.from(allModals).map(m => m.id));
+ 
+ // Close currently open modal first
+ if (currentOpenModal && currentOpenModal !== modalId) {
+ const prevModal = document.getElementById(currentOpenModal);
+ if (prevModal) {
+ prevModal.style.display = 'none';
+ prevModal.style.zIndex = '1000';
+ }
+ }
+ 
+ const modal = document.getElementById(modalId);
+ if (modal) {
+ modal.style.display = 'flex';
+ modal.style.zIndex = '1000'; // Keep consistent z-index
+ currentOpenModal = modalId;
+ console.log('✓ Opened modal:', modalId);
+ } else {
+ console.error('✗ Modal not found:', modalId);
+ }
+}
+
+// Close tutor detail modal
+function closeTutorModal(modalId) {
+ const modal = document.getElementById(modalId);
+ if (modal) {
+ modal.style.display = 'none';
+ modal.style.zIndex = '1000';
+ if (currentOpenModal === modalId) {
+ currentOpenModal = null;
+ }
+ }
 }
 
 // Client-side search filter
@@ -783,7 +827,7 @@ function submitEmail(event, form, type) {
  data = {
  subject: subject,
  message: message,
- profile_ids: selectedTutorIds,
+ profile_ids: String(selectedTutorIds.join(',')),
  _token: getCsrfToken()
  };
  } else {
@@ -813,7 +857,14 @@ function submitEmail(event, form, type) {
  },
  body: JSON.stringify(data)
  })
- .then(res => res.json())
+ .then(res => {
+ if (!res.ok && res.status === 422) {
+ return res.json().then(err => {
+ throw new Error(err.message || Object.values(err.errors || {})[0]?.[0] || 'Validation error');
+ });
+ }
+ return res.json();
+ })
  .then(data => {
  submitBtn.disabled = false;
  if (isAll) {
@@ -933,8 +984,12 @@ function openDocViewer(docPath, docName, docId = null) {
  modal.classList.remove('loading');
  };
  content.appendChild(img);
+ } else if (docPath.match(/\.pdf$/i)) {
+ // Handle PDF files with PDF.js
+ const pdfUrl = docPath;
+ renderPdfPreview(pdfUrl, content, loading, actions, docId, modal);
  } else {
- // For PDFs and other files, show file icon with download option
+ // For other files, show file icon with download option
  content.innerHTML = `
  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
  <i class="fa-solid fa-file" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
@@ -954,6 +1009,81 @@ function openDocViewer(docPath, docName, docId = null) {
  modal.classList.remove('loading');
  }
  }, 300);
+}
+
+// Render PDF preview using PDF.js
+function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
+ if (typeof pdfjsLib === 'undefined') {
+ content.innerHTML = `
+ <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
+ <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
+ <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
+ PDF.js library failed to load
+ </p>
+ <a href="${pdfUrl}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
+ <i class="fa-solid fa-download"></i> Download PDF
+ </a>
+ </div>
+ `;
+ loading.style.display = 'none';
+ content.style.display = 'flex';
+ if (docId) actions.style.display = 'flex';
+ modal.classList.remove('loading');
+ return;
+ }
+
+ pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+ // Render first page as preview
+ pdf.getPage(1).then(page => {
+ const canvas = document.createElement('canvas');
+ const context = canvas.getContext('2d');
+ const scale = 1.5;
+ const viewport = page.getViewport({ scale: scale });
+ 
+ canvas.width = viewport.width;
+ canvas.height = viewport.height;
+ 
+ page.render({ canvasContext: context, viewport: viewport }).promise.then(() => {
+ content.innerHTML = `
+ <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;height:100%;overflow:auto;padding:16px;">
+ <canvas style="max-width:100%;max-height:70%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);"></canvas>
+ <p style="color:rgba(21,40,31,.6);font-size:12px;text-align:center;margin:0;width:100%;">
+ Page 1 of ${pdf.numPages} (${pdf.numPages > 1 ? 'showing preview only' : ''})
+ </p>
+ ${pdf.numPages > 1 ? '<a href="' + pdfUrl + '" download style="padding:8px 16px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:12px;"><i class="fa-solid fa-download"></i> Download Full PDF</a>' : ''}
+ </div>
+ `;
+ 
+ // Append the canvas with rendered PDF
+ const canvases = content.querySelectorAll('canvas');
+ if (canvases.length > 0) {
+ canvases[0].replaceWith(canvas);
+ }
+ 
+ loading.style.display = 'none';
+ content.style.display = 'flex';
+ if (docId) actions.style.display = 'flex';
+ modal.classList.remove('loading');
+ });
+ });
+ }).catch(error => {
+ console.error('PDF loading error:', error);
+ content.innerHTML = `
+ <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
+ <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
+ <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
+ Error loading PDF preview
+ </p>
+ <a href="${pdfUrl}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
+ <i class="fa-solid fa-download"></i> Download PDF
+ </a>
+ </div>
+ `;
+ loading.style.display = 'none';
+ content.style.display = 'flex';
+ if (docId) actions.style.display = 'flex';
+ modal.classList.remove('loading');
+ });
 }
 
 function closeDocViewer() {
