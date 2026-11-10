@@ -10,6 +10,22 @@ use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\TutorContractController;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
+
+// ─── Livewire Asset Serving ───────────────────────────────────────────────────
+Route::get('/livewire/livewire.min.js', function () {
+    return response()->file(base_path('vendor/livewire/livewire/dist/livewire.min.js'), [
+        'Content-Type' => 'application/javascript',
+        'Cache-Control' => 'public, max-age=3600',
+    ]);
+});
+
+Route::get('/livewire/livewire.min.js.map', function () {
+    return response()->file(base_path('vendor/livewire/livewire/dist/livewire.min.js.map'), [
+        'Content-Type' => 'application/json',
+        'Cache-Control' => 'public, max-age=3600',
+    ]);
+});
 
 // ─── Legal Pages ──────────────────────────────────────────────────────────────
 Route::get('/privacy-policy', fn() => view('pages.legal.privacy-policy'))->name('privacy-policy');
