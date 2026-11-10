@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -10,9 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @livewireStyles
+{{-- Livewire 2 only: uncomment the line below if Alpine is not bundled with your Livewire version.
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+--}}
 <style>
 :root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -21,7 +23,7 @@ a{color:inherit;text-decoration:none;}[x-cloak]{display:none!important;}
 button{font-family:inherit;cursor:pointer;}
 
 /* Layout */
-.layout{display:flex;height:100vh;overflow:hidden;}
+.layout{display:flex;height:100vh;height:100dvh;overflow:hidden;}
 
 /* Sidebar */
 .sidebar{width:256px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:relative;z-index:50;pointer-events:auto;}
@@ -48,13 +50,13 @@ button{font-family:inherit;cursor:pointer;}
 /* Mobile sidebar */
 .mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:49;pointer-events:none;}
 @media(max-width:1023px){
-    .sidebar{position:fixed;left:-256px;top:0;bottom:0;transition:left .25s;z-index:50;}
+    .sidebar{position:fixed;left:-300px;top:0;bottom:0;transition:left .25s;z-index:50;}
     .sidebar.open{left:0;}
     .mob-overlay.show{display:block;pointer-events:auto;}
 }
 
 /* Main */
-.main{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
+.main{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
 .topbar{height:60px;background:#fff;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
 .topbar-left{display:flex;align-items:center;gap:12px;}
 .mob-toggle{display:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--hair);background:#fff;align-items:center;justify-content:center;color:var(--muted);}
@@ -146,25 +148,23 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
   .content{padding:14px;}
 }
 @media(max-width:479px){
-  /* any 2-col quick/stat grids ? 1 col on very small screens */
+  /* any 2-col quick/stat grids -> 1 col on very small screens */
   .quick-g{grid-template-columns:1fr!important;}
   .stats-g{grid-template-columns:1fr!important;}
 }
 
-/* Responsive Layout */
+/* Responsive Layout (FIXED: sidebar stays a fixed off-canvas drawer, layout stays a row) */
 @media(max-width:1023px) {
-  .layout {
-    flex-direction: column;
-    height: auto;
-    overflow-y: auto;
-  }
   .sidebar {
-    width: 100%;
-    max-height: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100%;
+    max-height: none;
+    overflow: hidden;
+    box-shadow: 4px 0 24px rgba(0,0,0,.25);
   }
   .main {
     width: 100%;
-    min-height: 100vh;
   }
   .topbar {
     padding: 0 16px;
@@ -236,9 +236,6 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 
 /* Small mobile */
 @media(max-width:479px) {
-  .layout {
-    height: auto;
-  }
   .topbar {
     height: 56px;
     padding: 0 12px;
@@ -384,18 +381,18 @@ $activeTab = request('tab','overview');
     <nav class="sb-nav">
         <div class="sb-section">
             <div class="sb-label">Main</div>
-            <button class="sb-item" :class="tab==='overview'?'active':''" @click="tab='overview';sidebarOpen=false">
-                <i class="fa-solid fa-gauge-high fa-fw" style="font-size:14px;"></i>
+            <button type="button" class="sb-item" :class="tab==='overview'?'active':''" @click="tab='overview';sidebarOpen=false">
+                <i class="fa-solid fa-chart-line fa-fw" style="font-size:14px;"></i>
                 Overview
             </button>
-            <button class="sb-item" :class="tab==='documents'?'active':''" @click="tab='documents';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='documents'?'active':''" @click="tab='documents';sidebarOpen=false">
                 <i class="fa-solid fa-file-lines fa-fw" style="font-size:14px;"></i>
                 My Documents
                 @if($verificationStatus === 'action_required')
                 <span class="sb-badge">!</span>
                 @endif
             </button>
-            <button class="sb-item" :class="tab==='subjects'?'active':''" @click="tab='subjects';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='subjects'?'active':''" @click="tab='subjects';sidebarOpen=false">
                 <i class="fa-solid fa-book-open fa-fw" style="font-size:14px;"></i>
                 My Subjects
                 @if($needsSubjectsBadge)<span class="sb-badge">!</span>@endif
@@ -405,20 +402,20 @@ $activeTab = request('tab','overview');
         @if($isApproved)
         <div class="sb-section">
             <div class="sb-label">Sessions</div>
-            <button class="sb-item" :class="tab==='bookings'?'active':''" @click="tab='bookings';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='bookings'?'active':''" @click="tab='bookings';sidebarOpen=false">
                 <i class="fa-solid fa-calendar-check fa-fw" style="font-size:14px;"></i>
                 Bookings
                 @if($pendingBookings > 0)<span class="sb-badge">{{ $pendingBookings }}</span>@endif
             </button>
-            <button class="sb-item" :class="tab==='history'?'active':''" @click="tab='history';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='history'?'active':''" @click="tab='history';sidebarOpen=false">
                 <i class="fa-solid fa-clock-rotate-left fa-fw" style="font-size:14px;"></i>
                 Session History
             </button>
-            <button class="sb-item" :class="tab==='chats'?'active':''" @click="tab='chats';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='chats'?'active':''" @click="tab='chats';sidebarOpen=false">
                 <i class="fa-solid fa-comments fa-fw" style="font-size:14px;"></i>
                 Messages
             </button>
-            <button class="sb-item" :class="tab==='availability'?'active':''" @click="tab='availability';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='availability'?'active':''" @click="tab='availability';sidebarOpen=false">
                 <i class="fa-solid fa-calendar-days fa-fw" style="font-size:14px;"></i>
                 Availability
             </button>
@@ -426,7 +423,7 @@ $activeTab = request('tab','overview');
 
         <div class="sb-section">
             <div class="sb-label">Finance</div>
-            <button class="sb-item" :class="tab==='earnings'?'active':''" @click="tab='earnings';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='earnings'?'active':''" @click="tab='earnings';sidebarOpen=false">
                 <i class="fa-solid fa-wallet fa-fw" style="font-size:14px;"></i>
                 Earnings & Wallet
             </button>
@@ -435,12 +432,12 @@ $activeTab = request('tab','overview');
 
         <div class="sb-section">
             <div class="sb-label">Account</div>
-            <button class="sb-item" :class="tab==='notifications'?'active':''" @click="tab='notifications';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='notifications'?'active':''" @click="tab='notifications';sidebarOpen=false">
                 <i class="fa-solid fa-bell fa-fw" style="font-size:14px;"></i>
                 Notifications
                 @if($unreadNotifs > 0)<span class="sb-badge">{{ $unreadNotifs }}</span>@endif
             </button>
-            <button class="sb-item" :class="tab==='profile'?'active':''" @click="tab='profile';sidebarOpen=false">
+            <button type="button" class="sb-item" :class="tab==='profile'?'active':''" @click="tab='profile';sidebarOpen=false">
                 <i class="fa-solid fa-circle-user fa-fw" style="font-size:14px;"></i>
                 My Profile
             </button>
@@ -479,23 +476,40 @@ $activeTab = request('tab','overview');
     {{-- Topbar --}}
     <header class="topbar">
         <div class="topbar-left">
-            <button class="mob-toggle" @click="sidebarOpen=!sidebarOpen">
+            <button type="button" class="mob-toggle" @click="sidebarOpen=!sidebarOpen">
                 <i class="fa-solid fa-bars" style="font-size:14px;"></i>
             </button>
             <div class="page-title" x-text="{
-                overview:'Dashboard Overview',documents:'My Documents',bookings:'Bookings',history:'Session History',
+                overview:'Dashboard Overview',
+                documents:'My Documents',bookings:'Bookings',history:'Session History',
                 chats:'Messages',availability:'Availability',earnings:'Earnings & Wallet',subjects:'My Subjects',
                 notifications:'Notifications',profile:'My Profile'
             }[tab] || 'Dashboard'"></div>
         </div>
         <div class="topbar-right">
-            <button class="tb-btn" @click="tab='notifications'" title="Notifications">
+            <button type="button" class="tb-btn" @click="tab='notifications'" title="Notifications">
                 <i class="fa-solid fa-bell" style="font-size:14px;"></i>
                 @if($unreadNotifs > 0)<span class="notif-dot"></span>@endif
             </button>
-            <div style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;border:1.5px solid var(--hair);">
-                <img src="{{ $user->avatar_url }}" style="width:26px;height:26px;border-radius:999px;object-fit:cover;">
-                <span style="font-size:13px;font-weight:600;">{{ Str::limit($user->name,18) }}</span>
+            <div x-data="{ dropdownOpen: false }" style="position:relative;">
+                <button type="button" @click="dropdownOpen = !dropdownOpen" style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;border:1.5px solid var(--hair);background:#fff;cursor:pointer;transition:all .15s;font-family:inherit;" @mouseover="this.style.borderColor='rgba(10,100,188,.4)'" @mouseout="this.style.borderColor='var(--hair)'">
+                    <img src="{{ $user->avatar_url }}" style="width:26px;height:26px;border-radius:999px;object-fit:cover;">
+                    <span style="font-size:13px;font-weight:600;">{{ Str::limit($user->name,6) }}</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size:11px;color:var(--muted);transition:transform .2s;" :style="dropdownOpen ? 'transform:rotate(180deg)' : ''"></i>
+                </button>
+                <div x-show="dropdownOpen" @click.outside="dropdownOpen = false" style="position:absolute;top:100%;right:0;margin-top:8px;background:#fff;border:1px solid var(--hair);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.1);overflow:hidden;min-width:180px;z-index:1000;" x-cloak>
+                    <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:var(--ink);font-size:13px;font-weight:500;transition:all .15s;border-bottom:1px solid var(--hair);" onmouseover="this.style.background='#F4F6F4'" onmouseout="this.style.background='transparent'">
+                        <i class="fa-solid fa-globe" style="font-size:14px;color:var(--trust-blue);width:16px;"></i>
+                        View Public Site
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+                        @csrf
+                        <button type="submit" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:#991B1B;font-size:13px;font-weight:500;transition:all .15s;width:100%;border:none;background:none;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='#FEE2E2'" onmouseout="this.style.background='transparent'">
+                            <i class="fa-solid fa-right-from-bracket" style="font-size:14px;color:#991B1B;width:16px;"></i>
+                            Logout
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </header>
@@ -546,7 +560,7 @@ $activeTab = request('tab','overview');
             <div style="font-size:13px;color:var(--muted);margin-top:3px;line-height:1.6;">
                 @if($verificationStatus==='action_required')
                     One or more documents were rejected. Please re-upload the required documents to continue.
-                    <button @click="tab='documents'" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">View Documents ?</button>
+                    <button type="button" @click="tab='documents'" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">View Documents &rarr;</button>
                 @elseif($verificationStatus==='under_review')
                     Our team is reviewing your profile and documents. You'll receive an email once approved - usually within 24-48 hours.
                 @else
@@ -554,7 +568,7 @@ $activeTab = request('tab','overview');
                     @if($missingCount > 0)
                         <span style="color:var(--coral);font-weight:700;">{{ $missingCount }} remaining: {{ implode(', ', $missingNames) }}</span>
                     @endif
-                    <button @click="tab='documents'" style="background:none;border:none;color:#92400E;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">Upload Now ?</button>
+                    <button type="button" @click="tab='documents'" style="background:none;border:none;color:#92400E;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-left:6px;">Upload Now &rarr;</button>
                 @endif
             </div>
         </div>
@@ -571,7 +585,7 @@ $activeTab = request('tab','overview');
     @endphp
     <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:24px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-            <i class="fa-solid fa-checklist" style="font-size:18px;color:#0A64BC;"></i>
+            <i class="fa-solid fa-list-check" style="font-size:18px;color:#0A64BC;"></i>
             <div style="font-weight:700;font-size:15px;color:var(--ink);">Requirements before review</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
@@ -615,7 +629,7 @@ $activeTab = request('tab','overview');
     @if(!$isApproved)
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:32px;margin-top:28px;" class="onboard-g">
         {{-- Card 1: Upload Documents --}}
-        <button @click="tab='documents'" style="background:linear-gradient(135deg,#FEF9C3 0%,#FFFBEB 100%);border:2px solid #FCD34D;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;box-shadow:0 2px 8px rgba(252,211,77,.1);"
+        <button type="button" @click="tab='documents'" style="background:linear-gradient(135deg,#FEF9C3 0%,#FFFBEB 100%);border:2px solid #FCD34D;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;box-shadow:0 2px 8px rgba(252,211,77,.1);"
         onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(252,211,77,.25)';this.style.borderColor='#FBD34E'"
         onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(252,211,77,.1)';this.style.borderColor='#FCD34D'">
             <div style="width:56px;height:56px;border-radius:14px;background:#FDE68A;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(252,211,77,.2);">
@@ -633,7 +647,7 @@ $activeTab = request('tab','overview');
         </button>
 
         {{-- Card 2: Add Subjects --}}
-        <button @click="tab='subjects'" style="background:linear-gradient(135deg,#F0FDF4 0%,#F7FEF5 100%);border:2px solid #86EFAC;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;text-decoration:none;color:inherit;box-shadow:0 2px 8px rgba(134,239,172,.1);border:none;font-size:inherit;"
+        <button type="button" @click="tab='subjects'" style="background:linear-gradient(135deg,#F0FDF4 0%,#F7FEF5 100%);border:2px solid #86EFAC;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;text-decoration:none;color:inherit;box-shadow:0 2px 8px rgba(134,239,172,.1);font-size:inherit;"
         onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(134,239,172,.25)';this.style.borderColor='#87F45E'"
         onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(134,239,172,.1)';this.style.borderColor='#86EFAC'">
             <div style="width:56px;height:56px;border-radius:14px;background:#BBEF7F;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(134,239,172,.2);">
@@ -651,7 +665,7 @@ $activeTab = request('tab','overview');
         </button>
 
         {{-- Card 3: Set Availability --}}
-        <button @click="tab='availability'" style="background:linear-gradient(135deg,#DBEAFE 0%,#F0F9FF 100%);border:2px solid #93C5FD;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;box-shadow:0 2px 8px rgba(147,197,253,.1);"
+        <button type="button" @click="tab='availability'" style="background:linear-gradient(135deg,#DBEAFE 0%,#F0F9FF 100%);border:2px solid #93C5FD;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:16px;height:100%;font-family:inherit;align-items:flex-start;box-shadow:0 2px 8px rgba(147,197,253,.1);"
         onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(147,197,253,.25)';this.style.borderColor='#94D5FE'"
         onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(147,197,253,.1)';this.style.borderColor='#93C5FD'">
             <div style="width:56px;height:56px;border-radius:14px;background:#BFDBFE;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 8px rgba(147,197,253,.2);">
@@ -723,7 +737,7 @@ $activeTab = request('tab','overview');
             ['earnings','fa-solid fa-wallet','Earnings','Check wallet & history'],
             ['availability','fa-solid fa-clock','Availability','Set your schedule'],
         ] as [$t,$ic,$label,$desc])
-        <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='translateY(0)'">
+        <button type="button" @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='translateY(0)'">
             <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;"><i class="{{ $ic }}"></i></div>
             <div>
                 <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</div>
@@ -754,7 +768,7 @@ $activeTab = request('tab','overview');
                 <div class="sec-title">Upcoming Sessions</div>
                 <div class="sec-sub">Your next scheduled sessions</div>
             </div>
-            <button @click="tab='bookings'" class="btn btn-o btn-sm">View All</button>
+            <button type="button" @click="tab='bookings'" class="btn btn-o btn-sm">View All</button>
         </div>
         <div style="padding:8px;">
             @foreach($upcoming as $b)
@@ -782,23 +796,6 @@ $activeTab = request('tab','overview');
     
     @endif
 
-    {{-- Quick links --}}
-    <!-- <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;" class="quick-g">
-        @foreach([
-            ['documents','fa-solid fa-file-lines','Documents','Check your verification status'],
-            ['bookings','fa-solid fa-calendar-check','Bookings','View all session bookings'],
-            ['earnings','fa-solid fa-wallet','Earnings','Check wallet & history'],
-            ['availability','fa-solid fa-clock','Availability','Set your schedule'],
-        ] as [$t,$ic,$label,$desc])
-        <button @click="tab='{{ $t }}'" style="background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;" onmouseover="this.style.borderColor='rgba(10,100,188,.4)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--hair)';this.style.transform='translateY(0)'">
-            <div style="font-size:26px;width:48px;height:48px;background:rgba(10,100,188,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;"><i class="{{ $ic }}"></i></div>
-            <div>
-                <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $label }}</div>
-                <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $desc }}</div>
-            </div>
-        </button>
-        @endforeach
-    </div> -->
     <style>.quick-g{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.quick-g{grid-template-columns:repeat(4,1fr)!important;}}</style>
 </div>
 
@@ -1074,7 +1071,7 @@ $activeTab = request('tab','overview');
             </div>
             <form method="POST" action="/bookings/{{ $firstBooking->id }}/messages" style="padding:16px 20px;border-top:1px solid var(--hair);display:flex;gap:10px;">
                 @csrf
-                <input type="text" name="body" placeholder="Type a message-" required
+                <input type="text" name="body" placeholder="Type a message..." required
                        style="flex:1;height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--hair);background:#fff;font-size:14px;font-family:inherit;outline:none;"
                        onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">
                 <button type="submit" class="btn btn-v" style="height:44px;padding:0 20px;">
@@ -1151,7 +1148,7 @@ $activeTab = request('tab','overview');
                             <td style="font-size:12px;color:var(--muted);white-space:nowrap;">{{ $tx->created_at->format('M j, Y') }}</td>
                             <td>
                                 <span class="bdg {{ $tx->type==='credit' ? 'bdg-green' : 'bdg-red' }}">
-                                    {{ $tx->type==='credit' ? '? Credit' : '? Debit' }}
+                                    {{ $tx->type==='credit' ? 'Credit' : 'Debit' }}
                                 </span>
                             </td>
                             <td style="font-weight:700;color:{{ $tx->type==='credit' ? 'var(--mint)' : 'var(--coral)' }};">
@@ -1415,7 +1412,7 @@ $activeTab = request('tab','overview');
                 <input type="hidden" name="_redirect" value="{{ route('tutor.dashboard') }}?tab=profile">
                 <div style="margin-bottom:12px;" x-data="{ count: {{ strlen($profile?->bio ?? '') }} }">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Bio</label>
-                    <textarea name="bio" rows="4" maxlength="255" placeholder="Tell students about your experience and teaching style-"
+                    <textarea name="bio" rows="4" maxlength="255" placeholder="Tell students about your experience and teaching style..."
                               @input="count = $el.value.length"
                               style="width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;"
                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">{{ $profile?->bio }}</textarea>
@@ -1437,7 +1434,7 @@ $activeTab = request('tab','overview');
     <div class="sec-hdr" style="margin-bottom:20px;">
         <div>
             <div class="sec-title">Manage Your Subjects</div>
-            <div class="sec-sub">Select up to 2 subjects you teach — these appear on your public profile.</div>
+            <div class="sec-sub">Select up to 2 subjects you teach - these appear on your public profile.</div>
         </div>
     </div>
 
@@ -1485,7 +1482,7 @@ $activeTab = request('tab','overview');
                     {{ $category->name }}
                     <span style="font-size:12px;color:var(--muted);font-weight:400;">({{ $category->subjects->count() }})</span>
                 </h4>
-                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;">
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:10px;">
                     @foreach($category->subjects as $subject)
                     <div class="subject-card {{ $profile->subjects->contains($subject->id) ? 'selected' : '' }}"
                          data-subject-id="{{ $subject->id }}"
@@ -1712,24 +1709,23 @@ subj_updateMaxReachedState();
 @if(session('success'))
     Toast.fire({
         icon: 'success',
-        title: '{{ session('success') }}'
+        title: @json(session('success'))
     });
 @endif
 
 @if(session('error'))
     Toast.fire({
         icon: 'error',
-        title: '{{ session('error') }}'
+        title: @json(session('error'))
     });
 @endif
 
 @if($errors->any())
     Toast.fire({
         icon: 'error',
-        title: '{{ $errors->first() }}'
+        title: @json($errors->first())
     });
 @endif
 </script>
 </body>
-</html>>
-
+</html>
