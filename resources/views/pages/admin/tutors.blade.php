@@ -259,8 +259,10 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  </p>
 </div>
 @else
+<!-- CARDS TOTAL FROM $tutors: {{ $tutors->count() }} -->
 <div id="tutors-grid" class="tutors-grid">
  @foreach($tutors as $profile)
+ <!-- CARD {{ $loop->index + 1 }} FOR TUTOR {{ $profile->id }} -->
  @php
  $docs = $profile->documents;
  $approvedDocs = $docs->where('status', 'approved')->count();
@@ -322,7 +324,7 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  <button class="tutor-card-btn tutor-card-btn-email" onclick="openEmailModal('{{ $profile->id }}', '{{ addslashes($profile->user->name) }}', '{{ $profile->user->email }}')">
  <i class="fa-solid fa-envelope"></i> Email
  </button>
- <button class="tutor-card-btn tutor-card-btn-view" onclick="openTutorModal('tutor-{{ $profile->id }}')">
+ <button class="tutor-card-btn tutor-card-btn-view" onclick="openTutorDetailModal('{{ $profile->id }}', '{{ addslashes($profile->user->name) }}')">
  <i class="fa-solid fa-eye"></i> View
  </button>
  </div>
@@ -507,8 +509,10 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
 </div>
 
 {{-- Per-Tutor Detail Modals --}}
-@foreach($tutors as $profile)
+@php $allTutors = $tutors; $modalCount = 0; @endphp
+@foreach($allTutors as $profile)
  @php
+ $modalCount++;
  $docs = $profile->documents;
  $approvedDocs = $docs->where('status', 'approved')->count();
  $totalDocs = $docs->count();
@@ -532,7 +536,8 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  // Avatar color based on email
  $avatarColor = '#' . substr(md5($profile->user->email), 0, 6);
  @endphp
- <div id="tutor-{{ $profile->id }}" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeTutorModal('tutor-{{ $profile->id }}')">
+ <!-- MODAL RENDER {{ $modalCount }} FOR TUTOR ID {{ $profile->id }} -->
+ <div id="tutor-{{ $profile->id }}" class="modal-overlay" style="display:none;z-index:{{ 1500 + $loop->index }};" onclick="if(event.target===this) closeTutorModal('tutor-{{ $profile->id }}')">
  <div class="modal-box" onclick="event.stopPropagation()">
  <div class="modal-head">
  <div style="display:flex;align-items:center;gap:12px;">
@@ -661,25 +666,24 @@ function getCsrfToken() {
 let currentOpenModal = null;
 
 // Open tutor detail modal
-function openTutorModal(modalId) {
+function openTutorDetailModal(profileId, profileName) {
+ const modalId = 'tutor-' + profileId;
+ 
  // Debug: check if modal exists
  const allModals = document.querySelectorAll('.modal-overlay');
  console.log('Total modals on page:', allModals.length);
- console.log('All modal IDs:', Array.from(allModals).map(m => m.id));
  
  // Close currently open modal first
  if (currentOpenModal && currentOpenModal !== modalId) {
  const prevModal = document.getElementById(currentOpenModal);
  if (prevModal) {
  prevModal.style.display = 'none';
- prevModal.style.zIndex = '1000';
  }
  }
  
  const modal = document.getElementById(modalId);
  if (modal) {
  modal.style.display = 'flex';
- modal.style.zIndex = '1000'; // Keep consistent z-index
  currentOpenModal = modalId;
  console.log('✓ Opened modal:', modalId);
  } else {
@@ -692,7 +696,6 @@ function closeTutorModal(modalId) {
  const modal = document.getElementById(modalId);
  if (modal) {
  modal.style.display = 'none';
- modal.style.zIndex = '1000';
  if (currentOpenModal === modalId) {
  currentOpenModal = null;
  }
@@ -944,6 +947,11 @@ function openDocViewer(docPath, docName, docId = null) {
  const content = document.getElementById('doc-viewer-content');
  const actions = document.getElementById('doc-viewer-actions');
  
+ if (!modal) {
+ console.error('Document viewer modal not found');
+ return;
+ }
+ 
  // Show loading state
  modal.classList.add('loading');
  modal.style.display = 'flex';
@@ -957,6 +965,8 @@ function openDocViewer(docPath, docName, docId = null) {
  // Update title
  document.getElementById('doc-viewer-title').textContent = docName;
  
+ console.log('Opening document:', docPath);
+ 
  // Simulate loading delay for better UX
  setTimeout(() => {
  // Clear previous content
@@ -966,7 +976,7 @@ function openDocViewer(docPath, docName, docId = null) {
  if (docPath.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
  const img = document.createElement('img');
  img.src = docPath;
- img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;';
+ img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;';
  img.onload = () => {
  // Show content and hide loading
  loading.style.display = 'none';
@@ -976,9 +986,11 @@ function openDocViewer(docPath, docName, docId = null) {
  content.style.justifyContent = 'center';
  if (docId) actions.style.display = 'flex';
  modal.classList.remove('loading');
+ console.log('Image loaded successfully');
  };
  img.onerror = () => {
- content.innerHTML = '<p style="color:rgba(21,40,31,.6);">Error loading image</p>';
+ console.error('Error loading image:', docPath);
+ content.innerHTML = '<p style="color:rgba(21,40,31,.6);">Error loading image. The file may not exist or the path may be incorrect.</p>';
  loading.style.display = 'none';
  content.style.display = 'flex';
  modal.classList.remove('loading');
@@ -986,8 +998,26 @@ function openDocViewer(docPath, docName, docId = null) {
  content.appendChild(img);
  } else if (docPath.match(/\.pdf$/i)) {
  // Handle PDF files with PDF.js
- const pdfUrl = docPath;
- renderPdfPreview(pdfUrl, content, loading, actions, docId, modal);
+ if (typeof pdfjsLib === 'undefined') {
+ console.warn('PDF.js not loaded');
+ content.innerHTML = `
+ <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
+ <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
+ <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
+ PDF preview not available
+ </p>
+ <a href="${docPath}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
+ <i class="fa-solid fa-download"></i> Download PDF
+ </a>
+ </div>
+ `;
+ loading.style.display = 'none';
+ content.style.display = 'flex';
+ if (docId) actions.style.display = 'flex';
+ modal.classList.remove('loading');
+ } else {
+ renderPdfPreview(docPath, content, loading, actions, docId, modal);
+ }
  } else {
  // For other files, show file icon with download option
  content.innerHTML = `
@@ -1014,11 +1044,12 @@ function openDocViewer(docPath, docName, docId = null) {
 // Render PDF preview using PDF.js
 function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  if (typeof pdfjsLib === 'undefined') {
+ console.warn('PDF.js library not loaded');
  content.innerHTML = `
  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
  <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
  <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
- PDF.js library failed to load
+ PDF.js library failed to load. Download to view.
  </p>
  <a href="${pdfUrl}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
  <i class="fa-solid fa-download"></i> Download PDF
@@ -1032,6 +1063,7 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  return;
  }
 
+ try {
  pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
  // Render first page as preview
  pdf.getPage(1).then(page => {
@@ -1064,6 +1096,7 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  content.style.display = 'flex';
  if (docId) actions.style.display = 'flex';
  modal.classList.remove('loading');
+ console.log('PDF rendered successfully');
  });
  });
  }).catch(error => {
@@ -1072,7 +1105,7 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
  <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
  <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
- Error loading PDF preview
+ Error loading PDF. Download to view.
  </p>
  <a href="${pdfUrl}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
  <i class="fa-solid fa-download"></i> Download PDF
@@ -1084,6 +1117,24 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  if (docId) actions.style.display = 'flex';
  modal.classList.remove('loading');
  });
+ } catch (err) {
+ console.error('PDF.js error:', err);
+ content.innerHTML = `
+ <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
+ <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
+ <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
+ Cannot preview PDF. Download to view.
+ </p>
+ <a href="${pdfUrl}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
+ <i class="fa-solid fa-download"></i> Download PDF
+ </a>
+ </div>
+ `;
+ loading.style.display = 'none';
+ content.style.display = 'flex';
+ if (docId) actions.style.display = 'flex';
+ modal.classList.remove('loading');
+ }
 }
 
 function closeDocViewer() {
