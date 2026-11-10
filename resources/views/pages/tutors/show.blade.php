@@ -949,11 +949,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
       <div id="tab-about">
         {{-- Stats Cards Grid --}}
         <div style="display:grid;grid-template-columns:repeat(1,1fr);gap:18px;margin-bottom:32px;">
-          @media (min-width: 640px) {
-            <style>
-              .stats-grid-desktop { grid-template-columns: repeat(3, 1fr) !important; }
-            </style>
-          }
+         
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px;" class="stats-grid-desktop">
             @foreach([
             ['fa-chalkboard','#0A64BC',number_format($tutor->total_sessions),'Sessions Completed'],
@@ -1539,7 +1535,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
       </div>
 
       {{-- Book Session CTA Button --}}
-      <button class="sidebar-cta-btn" onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})">
+      <button id="sidebar-cta-btn" class="sidebar-cta-btn" onclick="document.getElementById('book-tab-btn').click();document.getElementById('tab-book').scrollIntoView({behavior:'smooth'})">
         <i class="fa-solid fa-calendar-check" style="font-size:24px;"></i> Book a Session
       </button>
 
@@ -1581,6 +1577,13 @@ function showTab(name, btn) {
     const el = document.getElementById('tab-'+t);
     if (el) el.style.display = t === name ? 'block' : 'none';
   });
+  
+  // Hide the sidebar CTA button when on the Book tab
+  const ctaBtn = document.getElementById('sidebar-cta-btn');
+  if (ctaBtn) {
+    ctaBtn.style.display = name === 'book' ? 'none' : 'block';
+  }
+  
   document.querySelectorAll('.ptab').forEach(b => {
     b.classList.remove('on');
     b.style.color = 'rgba(255,255,255,.45)';

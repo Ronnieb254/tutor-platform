@@ -394,6 +394,50 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  </div>
 </div>
 
+{{-- Document Viewer Modal --}}
+<div id="doc-viewer-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2500;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this && !document.getElementById('doc-viewer-modal').classList.contains('loading')) closeDocViewer()">
+ <div style="background:#fff;border-radius:20px;width:100%;max-width:900px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);">
+ <div style="padding:20px 24px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+ <h3 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#15281F;margin:0;text-transform:capitalize;" id="doc-viewer-title">Document</h3>
+ <button id="doc-viewer-close-btn" onclick="closeDocViewer()" style="width:36px;height:36px;border-radius:10px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .2s;">
+ <i class="fa-solid fa-circle-xmark" style="color:rgba(21,40,31,.5);"></i>
+ </button>
+ </div>
+ 
+ {{-- Loading State --}}
+ <div id="doc-viewer-loading" style="flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:20px;background:#F9FAF9;flex-direction:column;gap:16px;">
+ <div style="width:48px;height:48px;border:3px solid rgba(10,100,188,.2);border-top-color:#0A64BC;border-radius:50%;animation:spin 1s linear infinite;"></div>
+ <p style="color:rgba(21,40,31,.6);font-size:14px;margin:0;">Loading document & tutor details...</p>
+ </div>
+ 
+ {{-- Content State --}}
+ <div id="doc-viewer-content" style="flex:1;overflow:auto;display:none;padding:20px;background:#F9FAF9;">
+ <!-- Document content will be inserted here -->
+ </div>
+ 
+ {{-- Action Buttons --}}
+ <div style="padding:16px 24px;border-top:1px solid rgba(21,40,31,.08);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;" id="doc-viewer-actions" style="display:none;">
+ <button onclick="closeDocViewer()" class="btn btn-outline" style="padding:8px 16px;">Close</button>
+ <button onclick="rejectDocFromViewer()" class="btn btn-danger" style="padding:8px 16px;">
+ <i class="fa-solid fa-circle-xmark"></i> Reject
+ </button>
+ <button onclick="approveDoc()" class="btn btn-primary" style="padding:8px 16px;">
+ <i class="fa-solid fa-check-circle"></i> Approve
+ </button>
+ </div>
+ <div style="padding:16px 24px;border-top:1px solid rgba(21,40,31,.08);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;" id="doc-viewer-actions-hidden" style="display:flex;">
+ <button onclick="closeDocViewer()" class="btn btn-outline" style="padding:8px 16px;">Close</button>
+ </div>
+ </div>
+</div>
+
+<style>
+ @keyframes spin {
+ from { transform: rotate(0deg); }
+ to { transform: rotate(360deg); }
+ }
+</style>
+
 {{-- Email Modals --}}
 <div id="email-modal" class="email-modal-overlay" onclick="if(event.target===this) this.classList.remove('open')">
  <div class="email-modal-box" onclick="event.stopPropagation()">
@@ -521,10 +565,10 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  <div class="review-detail open" style="max-height:400px;overflow-y:auto;">
  @forelse($docs as $doc)
  <div class="doc-row">
- @if($doc->file_path && str_ends_with($doc->file_path, ['.jpg', '.jpeg', '.png', '.gif']))
- <img src="{{ asset('storage/' . $doc->file_path) }}" alt="Document" class="doc-thumb" onclick="window.open('{{ asset('storage/' . $doc->file_path) }}', '_blank')">
+ @if($doc->file_path && (str_ends_with($doc->file_path, '.jpg') || str_ends_with($doc->file_path, '.jpeg') || str_ends_with($doc->file_path, '.png') || str_ends_with($doc->file_path, '.gif')))
+ <img src="{{ asset('storage/' . $doc->file_path) }}" alt="Document" class="doc-thumb" onclick="openDocViewer('{{ asset('storage/' . $doc->file_path) }}', '{{ $doc->document_type }}', '{{ $doc->id }}')">
  @else
- <div class="doc-thumb-placeholder" onclick="window.open('{{ asset('storage/' . $doc->file_path ?? '') }}', '_blank')"><i class="fa-solid fa-file"></i></div>
+ <div class="doc-thumb-placeholder" onclick="openDocViewer('{{ asset('storage/' . $doc->file_path ?? '') }}', '{{ $doc->document_type }}', '{{ $doc->id }}')"><i class="fa-solid fa-file"></i></div>
  @endif
  <div style="flex:1;">
  <p style="font-size:12px;font-weight:600;color:#15281F;margin:0;text-transform:capitalize;">{{ str_replace('_', ' ', $doc->document_type) }}</p>
@@ -840,6 +884,124 @@ function rejectDoc(docId, docName) {
  document.getElementById('reject-doc-name').textContent = 'Document: ' + docName;
  document.getElementById('reject-form').action = '/admin/documents/' + docId + '/reject';
  document.getElementById('reject-modal').style.display = 'flex';
+}
+
+// Document viewer modal
+function openDocViewer(docPath, docName, docId = null) {
+ const modal = document.getElementById('doc-viewer-modal');
+ const loading = document.getElementById('doc-viewer-loading');
+ const content = document.getElementById('doc-viewer-content');
+ const actions = document.getElementById('doc-viewer-actions');
+ 
+ // Show loading state
+ modal.classList.add('loading');
+ modal.style.display = 'flex';
+ loading.style.display = 'flex';
+ content.style.display = 'none';
+ actions.style.display = 'none';
+ 
+ // Store document ID for actions
+ modal.dataset.docId = docId || '';
+ 
+ // Update title
+ document.getElementById('doc-viewer-title').textContent = docName;
+ 
+ // Simulate loading delay for better UX
+ setTimeout(() => {
+ // Clear previous content
+ content.innerHTML = '';
+ 
+ // Check if it's an image
+ if (docPath.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+ const img = document.createElement('img');
+ img.src = docPath;
+ img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;';
+ img.onload = () => {
+ // Show content and hide loading
+ loading.style.display = 'none';
+ content.style.display = 'flex';
+ content.style.flexDirection = 'column';
+ content.style.alignItems = 'center';
+ content.style.justifyContent = 'center';
+ if (docId) actions.style.display = 'flex';
+ modal.classList.remove('loading');
+ };
+ img.onerror = () => {
+ content.innerHTML = '<p style="color:rgba(21,40,31,.6);">Error loading image</p>';
+ loading.style.display = 'none';
+ content.style.display = 'flex';
+ modal.classList.remove('loading');
+ };
+ content.appendChild(img);
+ } else {
+ // For PDFs and other files, show file icon with download option
+ content.innerHTML = `
+ <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
+ <i class="fa-solid fa-file" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
+ <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
+ File type preview not available
+ </p>
+ <a href="${docPath}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
+ <i class="fa-solid fa-download"></i> Download File
+ </a>
+ </div>
+ `;
+ 
+ // Show content and hide loading
+ loading.style.display = 'none';
+ content.style.display = 'flex';
+ if (docId) actions.style.display = 'flex';
+ modal.classList.remove('loading');
+ }
+ }, 300);
+}
+
+function closeDocViewer() {
+ const modal = document.getElementById('doc-viewer-modal');
+ if (modal.classList.contains('loading')) return; // Prevent closing while loading
+ document.getElementById('doc-viewer-modal').style.display = 'none';
+}
+
+function approveDoc() {
+ const docId = document.getElementById('doc-viewer-modal').dataset.docId;
+ if (!docId) return;
+ 
+ const approveBtn = event.target.closest('button');
+ approveBtn.disabled = true;
+ approveBtn.innerHTML = '<i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i> Approving...';
+ 
+ // Create a hidden form and submit it
+ const form = document.createElement('form');
+ form.method = 'POST';
+ form.action = `/admin/documents/${docId}/approve`;
+ form.style.display = 'none';
+ 
+ // Add CSRF token
+ const token = document.createElement('input');
+ token.type = 'hidden';
+ token.name = '_token';
+ token.value = document.querySelector('meta[name="csrf-token"]').content;
+ form.appendChild(token);
+ 
+ // Add method override for PATCH
+ const method = document.createElement('input');
+ method.type = 'hidden';
+ method.name = '_method';
+ method.value = 'PATCH';
+ form.appendChild(method);
+ 
+ document.body.appendChild(form);
+ form.submit();
+}
+
+function rejectDocFromViewer() {
+ const docId = document.getElementById('doc-viewer-modal').dataset.docId;
+ if (!docId) return;
+ 
+ closeDocViewer();
+ // Get the document name from the title
+ const docName = document.getElementById('doc-viewer-title').textContent;
+ rejectDoc(docId, docName);
 }
 
 // Add CSS animations

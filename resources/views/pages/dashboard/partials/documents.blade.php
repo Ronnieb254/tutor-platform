@@ -34,7 +34,7 @@
             Verification Documents
         </h2>
         <p style="font-size:14px;color:var(--muted);">
-            Upload your documents and select 12 teaching subjects. Our team reviews your profile within 2448 hours.
+            Upload your documents and select 1-2 teaching subjects. Our team reviews your profile within 2448 hours.
         </p>
     </div>
 
