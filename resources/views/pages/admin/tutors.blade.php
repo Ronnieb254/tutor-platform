@@ -259,10 +259,8 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  </p>
 </div>
 @else
-<!-- CARDS TOTAL FROM $tutors: {{ $tutors->count() }} -->
 <div id="tutors-grid" class="tutors-grid">
  @foreach($tutors as $profile)
- <!-- CARD {{ $loop->index + 1 }} FOR TUTOR {{ $profile->id }} -->
  @php
  $docs = $profile->documents;
  $approvedDocs = $docs->where('status', 'approved')->count();
@@ -509,10 +507,9 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
 </div>
 
 {{-- Per-Tutor Detail Modals --}}
-@php $allTutors = $tutors; $modalCount = 0; @endphp
+@php $allTutors = $tutors; @endphp
 @foreach($allTutors as $profile)
  @php
- $modalCount++;
  $docs = $profile->documents;
  $approvedDocs = $docs->where('status', 'approved')->count();
  $totalDocs = $docs->count();
@@ -536,7 +533,6 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  // Avatar color based on email
  $avatarColor = '#' . substr(md5($profile->user->email), 0, 6);
  @endphp
- <!-- MODAL RENDER {{ $modalCount }} FOR TUTOR ID {{ $profile->id }} -->
  <div id="tutor-{{ $profile->id }}" class="modal-overlay" style="display:none;z-index:{{ 1500 + $loop->index }};" onclick="if(event.target===this) closeTutorModal('tutor-{{ $profile->id }}')">
  <div class="modal-box" onclick="event.stopPropagation()">
  <div class="modal-head">
