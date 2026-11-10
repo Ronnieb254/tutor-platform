@@ -588,11 +588,11 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
  <i class="fa-solid fa-envelope"></i> Email
  </button>
  
-<!-- <button type="button"
+<button type="button"
     class="tutor-card-btn tutor-card-btn-view"
     data-view-tutor="{{ $profile->id }}">
     <i class="fa-solid fa-eye"></i> View
-</button> -->
+</button>
  </div>
  </div>
  </div>

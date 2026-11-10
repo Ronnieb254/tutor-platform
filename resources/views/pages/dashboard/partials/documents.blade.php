@@ -34,10 +34,9 @@
             Verification Documents
         </h2>
         <p style="font-size:14px;color:var(--muted);">
-            Upload your documents and select 1-2 teaching subjects. Our team reviews your profile within 2448 hours.
+            Upload your documents and select 1-2 teaching subjects. Our team reviews your profile within 24-48 hours.
         </p>
     </div>
-
     {{-- Overall status banner --}}
     @if($isApproved)
         <div class="status-banner status-approved" style="margin-bottom:24px;">
@@ -71,7 +70,7 @@
                 <div style="font-weight:700;color:#854D0E;font-size:15px;">Under Review</div>
                 <div style="font-size:13px;color:#92400E;">
                     Your documents have been submitted and are being reviewed by our team.
-                    We'll email you within 2448 hours.
+                    We'll email you within 24-48 hours.
                 </div>
             </div>
         </div>
@@ -119,7 +118,7 @@
             <div style="display:flex;flex-direction:column;gap:10px;">
                 @foreach([
                     ['4 required documents uploaded', $allRequiredUploaded, route('tutor.dashboard').'?tab=documents'],
-                    ['12 teaching subjects selected', $subjectCount >= 1 && $subjectCount <= 2, route('tutor.subjects')],
+                    ['1-2 teaching subjects selected', $subjectCount >= 1 && $subjectCount <= 2, route('tutor.subjects')],
                 ] as [$label, $done, $link])
                     <div style="display:flex;align-items:center;gap:10px;">
                         <div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
