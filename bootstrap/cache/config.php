@@ -843,6 +843,61 @@
       'channel' => 'daily',
     ),
   ),
+  'livewire' => 
+  array (
+    'class_namespace' => 'App\\Livewire',
+    'view_path' => 'C:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\resources\\views/livewire',
+    'layout' => 'components.layouts.app',
+    'lazy_placeholder' => NULL,
+    'temporary_file_upload' => 
+    array (
+      'disk' => NULL,
+      'rules' => NULL,
+      'directory' => NULL,
+      'middleware' => NULL,
+      'preview_mimes' => 
+      array (
+        0 => 'png',
+        1 => 'gif',
+        2 => 'bmp',
+        3 => 'svg',
+        4 => 'wav',
+        5 => 'mp4',
+        6 => 'mov',
+        7 => 'avi',
+        8 => 'wmv',
+        9 => 'mp3',
+        10 => 'm4a',
+        11 => 'jpg',
+        12 => 'jpeg',
+        13 => 'mpga',
+        14 => 'webp',
+        15 => 'wma',
+      ),
+      'max_upload_time' => 5,
+      'cleanup' => true,
+    ),
+    'render_on_redirect' => false,
+    'legacy_model_binding' => false,
+    'inject_assets' => true,
+    'navigate' => 
+    array (
+      'show_progress_bar' => true,
+      'progress_bar_color' => '#2299dd',
+    ),
+    'inject_morph_markers' => true,
+    'smart_wire_keys' => false,
+    'pagination_theme' => 'tailwind',
+    'release_token' => 'a',
+    'namespace' => 'App\\Livewire',
+    'asset_url' => '/livewire/livewire.min.js',
+    'script_attributes' => 
+    array (
+    ),
+    'script_src' => NULL,
+    'style_src' => NULL,
+    'asset_path' => '/livewire/livewire.min.js',
+  ),
   'paystack' => 
   array (
     'public_key' => NULL,
@@ -937,53 +992,6 @@
       'encrypt_cookies' => 'Illuminate\\Cookie\\Middleware\\EncryptCookies',
       'validate_csrf_token' => 'Illuminate\\Foundation\\Http\\Middleware\\ValidateCsrfToken',
     ),
-  ),
-  'livewire' => 
-  array (
-    'class_namespace' => 'App\\Livewire',
-    'view_path' => 'C:\\Users\\Administrator\\Downloads\\mediacity.co.in-2026-10-13\\mediacity.co.in-2026-10-13\\tutor-platform\\resources\\views/livewire',
-    'layout' => 'components.layouts.app',
-    'lazy_placeholder' => NULL,
-    'temporary_file_upload' => 
-    array (
-      'disk' => NULL,
-      'rules' => NULL,
-      'directory' => NULL,
-      'middleware' => NULL,
-      'preview_mimes' => 
-      array (
-        0 => 'png',
-        1 => 'gif',
-        2 => 'bmp',
-        3 => 'svg',
-        4 => 'wav',
-        5 => 'mp4',
-        6 => 'mov',
-        7 => 'avi',
-        8 => 'wmv',
-        9 => 'mp3',
-        10 => 'm4a',
-        11 => 'jpg',
-        12 => 'jpeg',
-        13 => 'mpga',
-        14 => 'webp',
-        15 => 'wma',
-      ),
-      'max_upload_time' => 5,
-      'cleanup' => true,
-    ),
-    'render_on_redirect' => false,
-    'legacy_model_binding' => false,
-    'inject_assets' => true,
-    'navigate' => 
-    array (
-      'show_progress_bar' => true,
-      'progress_bar_color' => '#2299dd',
-    ),
-    'inject_morph_markers' => true,
-    'smart_wire_keys' => false,
-    'pagination_theme' => 'tailwind',
-    'release_token' => 'a',
   ),
   'permission' => 
   array (

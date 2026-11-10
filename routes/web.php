@@ -14,18 +14,31 @@ use Livewire\Livewire;
 
 // ─── Livewire Asset Serving ───────────────────────────────────────────────────
 Route::get('/livewire/livewire.min.js', function () {
-    return response()->file(base_path('vendor/livewire/livewire/dist/livewire.min.js'), [
+    $filePath = base_path('vendor/livewire/livewire/dist/livewire.min.js');
+    
+    if (!file_exists($filePath)) {
+        return response('Livewire JS file not found', 404);
+    }
+    
+    return response()->file($filePath, [
         'Content-Type' => 'application/javascript',
-        'Cache-Control' => 'public, max-age=3600',
+        'Cache-Control' => 'public, max-age=31536000',
+        'Expires' => gmdate('D, d M Y H:i:s T', time() + 31536000),
     ]);
-});
+})->name('livewire.js');
 
 Route::get('/livewire/livewire.min.js.map', function () {
-    return response()->file(base_path('vendor/livewire/livewire/dist/livewire.min.js.map'), [
+    $filePath = base_path('vendor/livewire/livewire/dist/livewire.min.js.map');
+    
+    if (!file_exists($filePath)) {
+        return response('Livewire map file not found', 404);
+    }
+    
+    return response()->file($filePath, [
         'Content-Type' => 'application/json',
-        'Cache-Control' => 'public, max-age=3600',
+        'Cache-Control' => 'public, max-age=31536000',
     ]);
-});
+})->name('livewire.js.map');
 
 // ─── Legal Pages ──────────────────────────────────────────────────────────────
 Route::get('/privacy-policy', fn() => view('pages.legal.privacy-policy'))->name('privacy-policy');
