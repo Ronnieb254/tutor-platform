@@ -117,10 +117,6 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
  <i class="fa-solid fa-circle-info"></i>
  <strong style="color:#fff;">{{ number_format($tutor->total_sessions) }}</strong> sessions
  </span>
- <span style="display:flex;align-items:center;gap:5px;">
- <i class="fa-solid fa-clock"></i>
- <strong style="color:#fff;">{{ $tutor->experience_years }}</strong> years exp.
- </span>
  <!-- @if($tutor->city)
  <span style="display:flex;align-items:center;gap:5px;">
  <i class="fa-solid fa-location-dot"></i>

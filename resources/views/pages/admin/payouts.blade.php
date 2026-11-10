@@ -98,25 +98,25 @@ $paid = PayoutRequest::where('status','paid')->sum('amount');
  <span class="badge {{ $pc }}">{{ ucfirst($payout->status) }}</span>
  </td>
  <td>
+ <div style="display:flex;gap:6px;align-items:center;">
  @if($payout->status === 'pending')
- <div style="display:flex;gap:6px;">
- <form method="POST" action="/admin/payouts/{{ $payout->id }}/approve">
+ <form method="POST" action="/admin/payouts/{{ $payout->id }}/approve" style="margin:0;">
  @csrf @method('PATCH')
  <button class="btn btn-success btn-sm">Approve</button>
  </form>
- <form method="POST" action="/admin/payouts/{{ $payout->id }}/reject">
+ <form method="POST" action="/admin/payouts/{{ $payout->id }}/reject" style="margin:0;">
  @csrf @method('PATCH')
  <button class="btn btn-danger btn-sm">Reject</button>
  </form>
- </div>
  @elseif($payout->status === 'approved')
- <form method="POST" action="/admin/payouts/{{ $payout->id }}/mark-paid">
+ <form method="POST" action="/admin/payouts/{{ $payout->id }}/mark-paid" style="margin:0;">
  @csrf @method('PATCH')
  <button class="btn btn-primary btn-sm">Mark Paid</button>
  </form>
  @else
  <span style="font-size:12px;color:var(--muted);">{{ $payout->processed_at?->format('M j') ?? '-' }}</span>
  @endif
+ </div>
  </td>
  </tr>
  @empty

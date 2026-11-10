@@ -6,26 +6,59 @@
 use App\Models\TutorProfile;
 use App\Models\User;
 
-$showApproved = request('view') === 'approved';
+// Fetch all tutors with filtering and pagination
+$status = request('status', 'all'); // all|pending|approved|suspended
+$search = request('search', ''); // Client-side filter
+$sortBy = request('sort', 'created'); // Server-side sort: created|name|email|status
+$perPage = 25;
 
-if ($showApproved) {
- $pending = TutorProfile::where('is_approved', true)->with(['user','subjects','documents'])->orderByDesc('approved_at')->paginate(20);
-} else {
- $pending = TutorProfile::where('is_approved',false)->with(['user','subjects','documents'])->latest()->paginate(20);
+$query = TutorProfile::with(['user', 'subjects', 'documents']);
+
+// Status filter (server-side)
+if ($status === 'new') {
+    // New = tutors with NO documents uploaded yet
+    $query->whereDoesntHave('documents');
+} elseif ($status === 'pending') {
+    // Pending = tutors with documents but not yet approved (no approved_at)
+    $query->where('is_approved', false)->whereNull('approved_at')->whereHas('documents');
+} elseif ($status === 'approved') {
+    $query->where('is_approved', true);
+} elseif ($status === 'suspended') {
+    $query->where('is_approved', false)->whereNotNull('approved_at');
 }
 
-$approved = TutorProfile::where('is_approved',true)->count();
+// Sorting (server-side)
+if ($sortBy === 'name') {
+    $query->join('users', 'users.id', '=', 'tutor_profiles.user_id')
+          ->orderBy('users.name', 'asc')
+          ->select('tutor_profiles.*');
+} elseif ($sortBy === 'email') {
+    $query->join('users', 'users.id', '=', 'tutor_profiles.user_id')
+          ->orderBy('users.email', 'asc')
+          ->select('tutor_profiles.*');
+} elseif ($sortBy === 'status') {
+    $query->orderBy('is_approved', 'desc')->orderBy('created_at', 'desc');
+} else {
+    // Default: sort by created_at descending
+    $query->orderBy('created_at', 'desc');
+}
+
+$tutors = $query->paginate($perPage);
+
+// Stats for header
 $totalTutors = TutorProfile::count();
-$speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approved',false)->count();
+$newCount = TutorProfile::whereDoesntHave('documents')->count();
+$approvedCount = TutorProfile::where('is_approved', true)->count();
+$pendingCount = TutorProfile::where('is_approved', false)->whereNull('approved_at')->whereHas('documents')->count();
+$suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('approved_at')->count();
 @endphp
 
 <style>
-/* Doc viewer modal */
+/* Modal styles */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
 .modal-box{background:#fff;border-radius:20px;width:100%;max-width:900px;max-height:85vh;min-height:500px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2);will-change:transform;}
 .modal-head{padding:16px 22px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .modal-body{flex:1;overflow-y:auto;padding:20px;overflow-x:hidden;}
-/* Tutor review panel */
 .review-panel{background:#fff;border-radius:18px;border:1px solid rgba(21,40,31,.08);margin-bottom:14px;overflow:hidden;}
 .review-head{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .review-detail{padding:22px;border-top:1px solid rgba(21,40,31,.06);display:none;}
@@ -33,7 +66,6 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
 .doc-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:#F9FAF9;border:1px solid rgba(21,40,31,.06);margin-bottom:8px;}
 .doc-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;border:1px solid rgba(21,40,31,.08);flex-shrink:0;cursor:pointer;}
 .doc-thumb-placeholder{width:48px;height:48px;border-radius:10px;background:rgba(21,40,31,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;cursor:pointer;}
-/* Email modal styles */
 .email-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1500;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
 .email-modal-overlay.open{display:flex;}
 .email-modal-box{background:#fff;border-radius:20px;width:100%;max-width:520px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2);}
@@ -43,6 +75,83 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
 .email-form-group input:focus,.email-form-group textarea:focus{border-color:#0A64BC;background:rgba(10,100,188,.02);}
 .email-form-group textarea{resize:none;min-height:120px;}
 .email-char-counter{font-size:12px;color:rgba(21,40,31,.5);margin-top:4px;}
+
+/* Table styles */
+.tutors-table-wrapper{overflow-x:auto;border-radius:14px;border:1px solid var(--hairline);}
+.tutors-table{width:100%;border-collapse:collapse;background:#fff;}
+.tutors-table th{background:#F9FAF9;padding:14px 16px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--hairline);}
+.tutors-table th a{color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.tutors-table th a:hover{color:var(--ink);}
+.tutors-table td{padding:12px 16px;border-bottom:1px solid var(--hairline);}
+.tutors-table tbody tr:hover{background:#F9FAF9;}
+.tutor-name-cell{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--ink);}
+.tutor-avatar{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.tutor-email-link{color:#0A64BC;text-decoration:none;}
+.tutor-email-link:hover{text-decoration:underline;}
+.status-badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;}
+.status-new{background:#E0E7FF;color:#3730A3;}
+.status-pending{background:#FEF9C3;color:#854D0E;}
+.status-approved{background:#DCFCE7;color:#166534;}
+.status-suspended{background:#FEE2E2;color:#991B1B;}
+.tutor-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.tutor-actions button,.tutor-actions a{padding:6px 12px;font-size:12px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:all .2s;}
+.btn-view{background:rgba(10,100,188,.1);color:#0A64BC;}
+.btn-view:hover{background:rgba(10,100,188,.2);}
+.btn-email{background:rgba(16,185,129,.1);color:#10B981;}
+.btn-email:hover{background:rgba(16,185,129,.2);}
+
+/* Card Grid Styles */
+.tutors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:24px;}
+.tutor-card{background:#fff;border-radius:18px;border:1.5px solid rgba(21,40,31,.08);box-shadow:0 2px 10px rgba(0,0,0,.06);padding:20px;transition:all .2s;display:flex;flex-direction:column;}
+.tutor-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.12);transform:translateY(-2px);}
+.tutor-card-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;justify-content:space-between;}
+.tutor-card-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;}
+.tutor-card-info{flex:1;}
+.tutor-card-name{font-weight:700;color:#15281F;font-size:15px;margin-bottom:2px;}
+.tutor-card-id{font-size:12px;color:rgba(21,40,31,.5);}
+.tutor-card-badge{display:inline-block;}
+.tutor-card-divider{height:1px;background:rgba(21,40,31,.08);margin:12px 0;}
+.tutor-card-row{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(21,40,31,.65);margin-bottom:10px;}
+.tutor-card-row:last-of-type{margin-bottom:0;}
+.tutor-card-row i{width:18px;text-align:center;color:#0A64BC;flex-shrink:0;}
+.tutor-card-email{color:#0A64BC;text-decoration:none;}
+.tutor-card-email:hover{text-decoration:underline;}
+.tutor-card-footer{display:flex;align-items:center;gap:10px;margin-top:16px;padding-top:12px;border-top:1px solid rgba(21,40,31,.08);}
+.tutor-card-checkbox{width:18px;height:18px;cursor:pointer;flex-shrink:0;}
+.tutor-card-actions{display:flex;gap:8px;flex:1;}
+.tutor-card-btn{flex:1;padding:8px 12px;font-size:12px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:4px;transition:all .2s;white-space:nowrap;}
+.tutor-card-btn-email{background:rgba(16,185,129,.1);color:#10B981;}
+.tutor-card-btn-email:hover{background:rgba(16,185,129,.2);}
+.tutor-card-btn-view{background:rgba(10,100,188,.1);color:#0A64BC;}
+.tutor-card-btn-view:hover{background:rgba(10,100,188,.2);}
+
+/* Search and filter bar */
+.tutors-controls{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:20px;}
+.search-box{flex:1;min-width:200px;}
+.search-box input{width:100%;padding:10px 14px;border:1.5px solid var(--hairline);border-radius:10px;font-size:14px;outline:none;}
+.search-box input:focus{border-color:#0A64BC;background:rgba(10,100,188,.02);}
+.filter-select{min-width:160px;}
+.filter-select select{padding:10px 14px;border:1.5px solid var(--hairline);border-radius:10px;font-size:14px;outline:none;background:#fff;cursor:pointer;appearance:none;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:12px;}
+.filter-select select:focus{border-color:#0A64BC;background-color:rgba(10,100,188,.02);}
+.bulk-actions{display:flex;gap:12px;align-items:center;}
+.bulk-checkbox{width:20px;height:20px;cursor:pointer;}
+.email-selected-btn{padding:10px 14px;border-radius:10px;border:none;background:#0A64BC;color:#fff;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;display:flex;align-items:center;gap:6px;}
+.email-selected-btn:hover{background:#084BA6;}
+.email-all-btn{padding:10px 14px;border-radius:10px;border:1.5px solid rgba(10,100,188,.3);background:rgba(10,100,188,.02);color:#0A64BC;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;display:flex;align-items:center;gap:6px;}
+.email-all-btn:hover{border-color:rgba(10,100,188,.5);background:rgba(10,100,188,.08);}
+
+/* Responsive */
+@media(max-width:768px){
+  .tutors-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr)) !important;}
+}
+
+@media(max-width:480px){
+  .tutors-grid{grid-template-columns:1fr !important;}
+  .tutors-controls{flex-direction:column;}
+  .search-box,.filter-select{width:100%;}
+  .filter-select select{width:100%;}
+}
+
 @media(max-width:639px){
  .modal-content, [id*="tutor-"] .modal-box{ width:95vw !important; max-width:95vw !important; max-height:90vh !important; }
  .modal-box{ width:95vw !important; max-width:95vw !important; max-height:90vh !important; }
@@ -54,8 +163,8 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  <div style="max-width:1400px;margin:0 auto;">
  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;">
  <div>
- <h1 style="font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:#15281F;margin-bottom:8px;">Tutor Approvals</h1>
- <p style="font-size:15px;color:rgba(21,40,31,.6);line-height:1.5;">Review and approve tutor applications. Manage verification documents and bring qualified tutors live on the platform.</p>
+ <h1 style="font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:#15281F;margin-bottom:8px;">Tutor Management</h1>
+ <p style="font-size:15px;color:rgba(21,40,31,.6);line-height:1.5;">Manage all tutors on the platform. Review documents, approve profiles, and handle communications.</p>
  </div>
  </div>
  </div>
@@ -79,419 +188,176 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  </div>
 </div>
 @endif
+@if(session('info'))
+<div style="background:#DBEAFE;border:1.5px solid #93C5FD;border-radius:14px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:flex-start;gap:12px;">
+ <i class="fa-solid fa-circle-info" style="color:#0A64BC;font-size:20px;margin-top:2px;flex-shrink:0;"></i>
+ <div>
+ <div style="font-weight:700;color:#1D4ED8;font-size:14px;">Info</div>
+ <div style="font-size:13px;color:#3B82F6;margin-top:4px;">{{ session('info') }}</div>
+ </div>
+</div>
+@endif
 
 {{-- Stats --}}
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:32px;" class="sum-g">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px;">
  @foreach([
- ['Pending Review',$pending->total(),'#EEBE15','fa-hourglass-end','rgba(212,160,23,.08)',null],
- ['Approved',$approved,'#10B981','fa-check-circle','rgba(16,185,129,.08)','approved'],
- ['Priority (Speedy)',$speedy,'#0A64BC','fa-bolt','rgba(10,100,188,.08)',null],
- ['Total Tutors',$totalTutors,'#3B82F6','fa-users','rgba(59,130,246,.08)',null],
- ] as [$label,$val,$col,$ic,$bg,$view])
- @if($view)
- <a href="{{ route('admin.tutors') }}?view={{ $view }}" style="background:#fff;border-radius:18px;border:1.5px solid rgba(21,40,31,.08);padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 2px 8px rgba(0,0,0,.05);position:relative;overflow:hidden;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 28px rgba(0,0,0,.12)';this.style.borderColor='{{ $col }}'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(0,0,0,.05)';this.style.borderColor='rgba(21,40,31,.08)'">
- <div style="width:56px;height:56px;border-radius:14px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;color:{{ $col }};transition:all .3s ease;">
+ ['New', $newCount, '#6366F1', 'fa-star', 'rgba(99,102,241,.08)', 'new'],
+ ['Pending', $pendingCount, '#EEBE15', 'fa-hourglass-end', 'rgba(212,160,23,.08)', 'pending'],
+ ['Approved', $approvedCount, '#10B981', 'fa-check-circle', 'rgba(16,185,129,.08)', 'approved'],
+ ['Suspended', $suspendedCount, '#EF4444', 'fa-ban', 'rgba(239,68,68,.08)', 'suspended'],
+ ['Total', $totalTutors, '#3B82F6', 'fa-users', 'rgba(59,130,246,.08)', null],
+ ] as [$label, $val, $col, $ic, $bg, $status_param])
+ <div style="background:#fff;border-radius:18px;border:1.5px solid rgba(21,40,31,.08);padding:20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,.05);">
+ <div style="width:48px;height:48px;border-radius:14px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;color:{{ $col }};">
  <i class="fa-solid {{ $ic }}"></i>
  </div>
  <div style="flex:1;">
- <div style="font-size:12px;color:rgba(21,40,31,.5);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">{{ $label }}</div>
- <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:#15281F;line-height:1;">{{ $val }}</div>
- </div>
- <div style="flex-shrink:0;color:{{ $col }};font-size:18px;transition:all .3s ease;opacity:.6;">
- <i class="fa-solid fa-arrow-right"></i>
- </div>
- </a>
- @else
- <div style="background:#fff;border-radius:18px;border:1.5px solid rgba(21,40,31,.08);padding:24px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.05);">
- <div style="width:56px;height:56px;border-radius:14px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;color:{{ $col }};">
- <i class="fa-solid {{ $ic }}"></i>
- </div>
- <div style="flex:1;">
- <div style="font-size:12px;color:rgba(21,40,31,.5);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">{{ $label }}</div>
- <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:#15281F;line-height:1;">{{ $val }}</div>
+ <div style="font-size:12px;color:rgba(21,40,31,.5);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">{{ $label }}</div>
+ <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:#15281F;line-height:1;">{{ $val }}</div>
  </div>
  </div>
- @endif
  @endforeach
- </div>
+</div>
 
-{{-- Pending applications list --}}
-@if($pending->isEmpty())
+{{-- Search, Filter, and Bulk Actions --}}
+<div style="margin-bottom:24px;">
+ <div class="tutors-controls">
+ <div class="search-box">
+ <input type="text" id="search-input" placeholder="Search by name, email, or tutor ID…" style="">
+ </div>
+ <div class="filter-select">
+ <select id="status-filter" onchange="updateStatusFilter(this.value)">
+ <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Statuses</option>
+ <option value="new" {{ $status === 'new' ? 'selected' : '' }}>New (No Docs)</option>
+ <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending (Under Review)</option>
+ <option value="approved" {{ $status === 'approved' ? 'selected' : '' }}>Approved</option>
+ <option value="suspended" {{ $status === 'suspended' ? 'selected' : '' }}>Suspended</option>
+ </select>
+ </div>
+ <div class="bulk-actions">
+ <input type="checkbox" id="select-all-checkbox" class="bulk-checkbox" onchange="toggleAllCheckboxes(this.checked)">
+ <form id="bulk-email-form" method="POST" action="{{ route('admin.tutors.send-email-all') }}" style="display:none;">
+ @csrf
+ <input type="hidden" name="profile_ids" id="profile-ids-input">
+ </form>
+ <button type="button" id="email-button" class="email-all-btn" onclick="triggerBulkEmail()">
+ <i class="fa-solid fa-envelope"></i> Email All Tutors
+ </button>
+ </div>
+ </div>
+</div>
+
+{{-- Tutors Card Grid --}}
+@if($tutors->isEmpty())
 <div style="text-align:center;padding:64px 40px;background:#fff;border-radius:18px;border:1.5px solid rgba(21,40,31,.08);">
  <div style="display:flex;align-items:center;justify-content:center;width:80px;height:80px;background:rgba(10,100,188,.08);border-radius:16px;margin:0 auto 24px;">
  <i class="fa-solid fa-inbox" style="font-size:36px;color:#0A64BC;"></i>
  </div>
- <h3 style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#15281F;margin-bottom:8px;">
- @if($showApproved)
- No approved tutors yet.
- @else
- All caught up!
- @endif
- </h3>
+ <h3 style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;color:#15281F;margin-bottom:8px;">No tutors found</h3>
  <p style="color:rgba(21,40,31,.55);font-size:15px;line-height:1.6;margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto;">
- @if($showApproved)
- No tutors have been approved yet. Review pending applications to approve qualified tutors.
- @else
- No pending tutor applications right now. You're all set!
- @endif
+ Adjust your search or filter criteria and try again.
  </p>
- @if($showApproved)
- <a href="{{ route('admin.tutors') }}" style="display:inline-flex;align-items:center;gap:8px;color:#0A64BC;text-decoration:none;font-weight:700;font-size:14px;padding:10px 20px;border:2px solid rgba(10,100,188,.2);border-radius:10px;transition:all .2s;">
- <i class="fa-solid fa-arrow-left"></i> Back to Pending
- </a>
- @endif
 </div>
 @else
-<div style="margin-bottom:28px;">
- <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
- <div>
- <h2 style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#15281F;margin-bottom:6px;">
- @if($showApproved)
- Approved Tutors
- @else
- Pending Applications
- @endif
- </h2>
- <p style="font-size:13px;color:rgba(21,40,31,.55);font-weight:500;">
- @if($showApproved)
- {{ $pending->total() }} approved tutor{{ $pending->total() !== 1 ? 's' : '' }} on the platform
- @else
- {{ $pending->total() }} application{{ $pending->total()!==1?'s':'' }} awaiting review
- @endif
- </p>
- </div>
- <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
- @if(!$showApproved)
- <button onclick="openEmailAllModal()" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:10px 16px;border-radius:9px;color:#0A64BC;border-color:rgba(10,100,188,.3);">
- <i class="fa-solid fa-envelope"></i> Email All Tutors
- </button>
- @endif
- @if($showApproved)
- <a href="{{ route('admin.tutors') }}" style="display:inline-flex;align-items:center;gap:6px;color:#0A64BC;text-decoration:none;font-weight:700;font-size:13px;padding:10px 16px;border:1.5px solid rgba(10,100,188,.3);border-radius:9px;transition:all .2s;background:rgba(10,100,188,.02);" onmouseover="this.style.background='rgba(10,100,188,.08)';this.style.borderColor='rgba(10,100,188,.5)'" onmouseout="this.style.background='rgba(10,100,188,.02)';this.style.borderColor='rgba(10,100,188,.3)'">
- <i class="fa-solid fa-arrow-left"></i> Back to Pending
- </a>
- @else
- <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(232,82,42,.1);color:#E8522A;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;">
- <i class="fa-solid fa-bolt"></i> Priority apps marked with badge
- </span>
- @endif
- </div>
- </div>
-
-{{-- Card Grid --}}
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:20px;">
- @foreach($pending as $profile)
+<div id="tutors-grid" class="tutors-grid">
+ @foreach($tutors as $profile)
  @php
  $docs = $profile->documents;
- $docCount = $docs->count();
  $approvedDocs = $docs->where('status', 'approved')->count();
- $pendingDocs = $docs->where('status', 'pending')->count();
- $rejectedDocs = $docs->where('status', 'rejected')->count();
- $isSpeedy = $profile->speedy_verification_paid;
-
- // Approval gate: 4 required docs approved + 1-2 subjects
- $requiredDocTypes = ['national_id', 'tsc_certificate', 'degree_certificate', 'passport_photo'];
- $approvedDocTypes = $docs->where('status', 'approved')->pluck('type')->toArray();
- $allRequiredApproved = count(array_diff($requiredDocTypes, $approvedDocTypes)) === 0;
- $subjectCnt = $profile->subjects->count();
- $canApprove = $allRequiredApproved && $subjectCnt >= 1 && $subjectCnt <= 2 && !$profile->is_approved;
-
- // Tooltip explaining why the button is locked
- $approveBlockReason = '';
- if (!$allRequiredApproved) {
- $missing = array_diff($requiredDocTypes, $approvedDocTypes);
- $approveBlockReason = 'Missing approved docs: ' . implode(', ', array_map(fn($t) => ucwords(str_replace('_', ' ', $t)), $missing));
- } elseif ($subjectCnt === 0) {
- $approveBlockReason = 'Tutor has not selected any subjects yet';
- } elseif ($subjectCnt > 2) {
- $approveBlockReason = 'Tutor has ' . $subjectCnt . ' subjects (max 2)';
+ $totalDocs = $docs->count();
+ $subjectCount = $profile->subjects->count();
+ 
+ // Determine status display
+ if ($profile->documents->isEmpty()) {
+ $statusLabel = 'New';
+ $statusClass = 'status-new';
+ } elseif ($profile->is_approved) {
+ $statusLabel = 'Approved';
+ $statusClass = 'status-approved';
+ } elseif ($profile->approved_at) {
+ $statusLabel = 'Suspended';
+ $statusClass = 'status-suspended';
+ } else {
+ $statusLabel = 'Pending';
+ $statusClass = 'status-pending';
  }
+ 
+ // Avatar color based on email
+ $avatarColor = '#' . substr(md5($profile->user->email), 0, 6);
  @endphp
- 
- <div class="card" style="overflow:hidden;transition:all .2s;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.04);border-radius:18px;" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,.12)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(0,0,0,.04)'">
- {{-- Speedy Badge --}}
- @if($isSpeedy)
- <div style="position:absolute;top:12px;right:12px;z-index:10;">
- <span class="badge" style="background:linear-gradient(135deg,#FEF9C3,#FDE68A);color:#854D0E;border:1px solid #FBBF24;font-weight:700;font-size:12px;padding:5px 12px;box-shadow:0 2px 4px rgba(0,0,0,.1);">
- <i class="fa-solid fa-bolt"></i> SPEEDY
- </span>
- </div>
- @endif
- 
- {{-- Card Header --}}
- <div style="padding:22px 24px;border-bottom:1px solid var(--hairline);">
- <div style="display:flex;align-items:flex-start;gap:14px;">
- <div class="avatar" style="width:52px;height:52px;font-size:20px;flex-shrink:0;background:#{{ substr(md5($profile->user->email),0,6) }};">
- {{ substr($profile->user->name,0,1) }}
- </div>
- <div style="flex:1;min-width:0;">
- <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:4px;">
- {{ $profile->user->name }}
- </h3>
- <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">
- <i class="fa-solid fa-envelope"></i> {{ $profile->user->email }}
- </div>
- <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
- <span class="badge badge-amber">
- <i class="fa-solid fa-clock"></i> Pending
- </span>
- <span style="font-size:12px;color:var(--muted);">
- Applied {{ $profile->created_at->diffForHumans() }}
- </span>
+ <div class="tutor-card" data-tutor-name="{{ strtolower($profile->user->name) }}" data-tutor-email="{{ strtolower($profile->user->email) }}" data-tutor-id="{{ $profile->id }}">
+ <div class="tutor-card-header">
+ <div style="display:flex;align-items:flex-start;gap:12px;flex:1;">
+ <div class="tutor-card-avatar" style="background-color:{{ $avatarColor }};">{{ substr($profile->user->name, 0, 1) }}</div>
+ <div class="tutor-card-info">
+ <div class="tutor-card-name">{{ $profile->user->name }}</div>
+ <div class="tutor-card-id">Tutor #{{ $profile->id }}</div>
  </div>
  </div>
- </div>
- </div>
- 
- {{-- Quick Stats --}}
- <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hairline);border-bottom:1px solid var(--hairline);">
- <div style="padding:14px;text-align:center;background:#fff;">
- <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#EEBE15;">{{$profile->subjects->count()}}</div>
- <div style="font-size:11px;color:var(--muted);margin-top:2px;">Subjects</div>
- </div>
- <div style="padding:14px;text-align:center;background:#fff;">
- <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#{{$allRequiredApproved ? '10B981' : 'EEBE15'}};">{{$approvedDocs}}/4</div>
- <div style="font-size:11px;color:var(--muted);margin-top:2px;">Docs OK</div>
- </div>
- <div style="padding:14px;text-align:center;background:{{$rejectedDocs > 0 ? 'rgba(239,68,68,.06)' : '#fff'}};">
- <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:{{$rejectedDocs > 0 ? '#EF4444' : 'var(--muted)'}};">{{$rejectedDocs}}</div>
- <div style="font-size:11px;color:var(--muted);margin-top:2px;">Rejected</div>
- </div>
+ <span class="status-badge {{ $statusClass }} tutor-card-badge">{{ $statusLabel }}</span>
  </div>
 
- {{-- Documents Status --}}
- <div style="padding:16px 20px;border-bottom:1px solid var(--hairline);background:{{$allRequiredApproved ? 'rgba(16,185,129,.05)' : ($rejectedDocs > 0 ? 'rgba(239,68,68,.05)' : 'rgba(251,191,36,.05)')}};">
- <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
- <span style="font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;">Documents</span>
- <span class="badge {{$allRequiredApproved ? 'badge-green' : ($pendingDocs > 0 ? 'badge-amber' : 'badge-gray')}}" style="font-size:10px;">{{$approvedDocs}}/{{max(4, $docCount)}} Approved</span>
+ <div class="tutor-card-divider"></div>
+
+ <div class="tutor-card-row">
+ <i class="fa-solid fa-envelope"></i>
+ <a href="mailto:{{ $profile->user->email }}" class="tutor-card-email">{{ $profile->user->email }}</a>
  </div>
- @if($docCount === 0)
- <div style="font-size:12px;color:var(--muted);text-align:center;padding:8px 0;"><i class="fa-solid fa-folder-open"></i> No documents uploaded yet</div>
- @else
- <div style="display:flex;gap:6px;flex-wrap:wrap;">
- @foreach($docs as $doc)
- @php
- $docLabels = ['national_id'=>'National ID','tsc_certificate'=>'TSC Cert','certificate_of_good_conduct'=>'Good Conduct','degree_certificate'=>'Academic Cert','passport_photo'=>'Passport Photo','other'=>'Other'];
- $statusColors = ['pending'=>'badge-amber','approved'=>'badge-green','rejected'=>'badge-red'];
- @endphp
- <span class="badge {{$statusColors[$doc->status] ?? 'badge-gray'}}" style="font-size:10px;">{{$docLabels[$doc->type] ?? ucfirst($doc->type)}}</span>
- @endforeach
+ <div class="tutor-card-row">
+ <i class="fa-solid fa-check"></i>
+ <span>{{ $approvedDocs }}/{{ max(4, $totalDocs) }} docs verified</span>
  </div>
- @endif
+ <div class="tutor-card-row">
+ <i class="fa-solid fa-book"></i>
+ <span>{{ $subjectCount }} {{ $subjectCount === 1 ? 'subject' : 'subjects' }}</span>
+ </div>
+ <div class="tutor-card-row">
+ <i class="fa-solid fa-calendar"></i>
+ <span>Joined {{ $profile->created_at->diffForHumans() }}</span>
  </div>
 
- {{-- Actions --}}
- <div style="padding:16px 20px;display:flex;gap:8px;flex-wrap:wrap;">
- @if($docCount === 0)
- <div style="flex:1;text-align:center;padding:10px;font-size:12px;color:var(--muted);">Waiting for document upload...</div>
- @else
- <a href="{{route('admin.tutors.subjects', $profile)}}" class="btn btn-outline" style="flex:1;font-size:12px;justify-content:center;padding:10px 14px;border-radius:9px;text-decoration:none;">
- <i class="fa-solid fa-book-open"></i> Subjects ({{$profile->subjects->count()}})
- </a>
- <button onclick="document.getElementById('tutor-{{$profile->id}}').style.display='flex'" class="btn btn-outline" style="flex:1;font-size:12px;padding:10px 14px;border-radius:9px;">
- <i class="fa-solid fa-eye"></i> Review
- </button>
- <button onclick="openEmailModal('{{$profile->id}}', '{{addslashes($profile->user->name)}}', '{{$profile->user->email}}')" class="btn btn-outline" style="flex:1;font-size:12px;padding:10px 14px;border-radius:9px;color:#0A64BC;">
+ <div class="tutor-card-footer">
+ <input type="checkbox" class="tutor-card-checkbox tutor-checkbox" value="{{ $profile->id }}" onchange="updateEmailButton()">
+ <div class="tutor-card-actions">
+ <button class="tutor-card-btn tutor-card-btn-email" onclick="openEmailModal('{{ $profile->id }}', '{{ addslashes($profile->user->name) }}', '{{ $profile->user->email }}')">
  <i class="fa-solid fa-envelope"></i> Email
  </button>
- @if($canApprove)
- <form method="POST" action="{{route('admin.tutors.approve', $profile->id)}}" style="flex:1;" onsubmit="event.preventDefault(); confirmApproval{{$profile->id}}(this, '{{$profile->user->name}}')">
- @csrf @method('PATCH')
- <button type="submit" class="btn btn-primary" style="width:100%;font-size:12px;padding:10px 14px;border-radius:9px;">
- <i class="fa-solid fa-circle-check"></i> Approve
+ <button class="tutor-card-btn tutor-card-btn-view" onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='flex'">
+ <i class="fa-solid fa-eye"></i> View
  </button>
- </form>
- <script>
- function confirmApproval{{$profile->id}}(form, name) {
- showConfirm('Approve Tutor?', 'Approve ' + name + ' and make them live?', 'Yes, Approve', 'Cancel').then((result) => {
- if (result.isConfirmed) form.submit();
- });
- }
- </script>
- @else
- <button disabled class="btn" style="flex:1;background:rgba(0,0,0,.05);color:var(--muted);cursor:not-allowed;font-size:12px;padding:10px 14px;border-radius:9px;" title="{{$approveBlockReason}}">
- <i class="fa-solid fa-lock"></i> Approve
- </button>
- @endif
- @endif
- </div>
- </div>
- 
- {{-- Full Review Modal (Keep existing modal) --}}
- <div id="tutor-{{ $profile->id }}" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;" onclick="if(event.target===this) this.style.display='none'">
- <div class="modal-box" onclick="event.stopPropagation()" style="max-width:900px;">
- <div class="modal-head">
- <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;">Review: {{ $profile->user->name }}</h3>
- <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='none'" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
- <i class="fa-solid fa-circle-xmark"></i>
- </button>
- </div>
- <div class="modal-body">
- {{-- Keep existing detailed review content here --}}
- <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px;">
- <div>
- <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Email</div>
- <div style="font-size:14px;">{{ $profile->user->email }}</div>
- </div>
- <div>
- <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600;">Phone</div>
- <div style="font-size:14px;">{{ $profile->phone ?? '-' }}</div>
- </div>
- <div>
- </div>
- 
- <div style="margin-bottom:20px;">
- <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
- <div style="font-size:12px;color:var(--muted);font-weight:600;">Subjects ({{ $profile->subjects->count() }})</div>
- <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline btn-sm" style="text-decoration:none;">
- <i class="fa-solid fa-pencil"></i> Manage
- </a>
- </div>
- <div style="display:flex;gap:6px;flex-wrap:wrap;">
- @forelse($profile->subjects->take(10) as $subj)
- <span class="badge badge-blue">{{ $subj->name }}</span>
- @empty
- <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:12px;width:100%;">
- <p style="font-size:13px;color:#991B1B;margin:0;">
- <i class="fa-solid fa-triangle-exclamation"></i> No subjects selected. Click "Manage" to add subjects.
- </p>
- </div>
- @endforelse
- @if($profile->subjects->count() > 10)
- <span class="badge badge-gray">+{{ $profile->subjects->count() - 10 }} more</span>
- @endif
- </div>
- </div>
- 
- <div style="margin-bottom:20px;">
- <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600;">Bio</div>
- <div style="font-size:14px;line-height:1.6;">{{ $profile->bio ?? 'No bio provided' }}</div>
- </div>
- 
- {{-- Documents for approval --}}
- @if($docs->isNotEmpty())
- <div style="border-top:1px solid var(--hairline);padding-top:20px;">
- <h4 style="font-size:14px;font-weight:700;margin-bottom:12px;">Uploaded Documents</h4>
- @foreach($docs as $doc)
- <div class="doc-row">
- @php
- $isPdf = str_ends_with(strtolower($doc->file_path), '.pdf');
- $docLabel = [
- 'national_id' => 'National ID / Passport',
- 'tsc_certificate' => 'TSC Certificate',
- 'certificate_of_good_conduct' => 'Certificate of Good Conduct',
- 'degree_certificate' => 'Academic Certificate',
- 'passport_photo' => 'Passport Photo',
- 'other' => 'Other',
- ][$doc->type] ?? ucfirst($doc->type);
- @endphp
- 
- @if($isPdf)
- <div class="doc-thumb-placeholder" style="cursor:pointer;" onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', true, '{{ $docLabel }}')">
- <i class="fa-solid fa-file-lines"></i>
- </div>
- @else
- <img src="{{ route('tutor.documents.view', $doc->id) }}" class="doc-thumb" style="cursor:pointer;"
- onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', false, '{{ $docLabel }}')"
- onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
- <div class="doc-thumb-placeholder" style="display:none;cursor:pointer;" onclick="viewDocModal('{{ route('tutor.documents.view', $doc->id) }}', false, '{{ $docLabel }}')">
- <i class="fa-solid fa-file-lines"></i>
- </div>
- @endif
- 
- <div style="flex:1;min-width:0;">
- <div style="font-weight:600;font-size:13px;margin-bottom:2px;">{{ $docLabel }}</div>
- <div style="font-size:11px;color:var(--muted);">{{ $doc->original_name }}</div>
- </div>
- 
- @php $sc = ['pending'=>'badge-amber','approved'=>'badge-green','rejected'=>'badge-red'][$doc->status]??'badge-gray'; @endphp
- <span class="badge {{ $sc }}">{{ ucfirst($doc->status) }}</span>
- 
- @if($doc->status === 'pending')
- <div style="display:flex;gap:6px;">
- <form method="POST" action="{{ route('admin.documents.approve', $doc->id) }}" style="display:inline;">
- @csrf @method('PATCH')
- <button type="submit" class="btn btn-success btn-sm">
- <i class="fa-solid fa-circle-check"></i>
- </button>
- </form>
- <button type="button" onclick="rejectDoc({{ $doc->id }}, '{{ addslashes($docLabel) }}')" class="btn btn-danger btn-sm">
- <i class="fa-solid fa-circle-xmark"></i>
- </button>
- </div>
- @endif
- </div>
- @endforeach
- </div>
- @endif
- 
- {{-- Final Actions --}}
- <div style="display:flex;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--hairline);flex-wrap:wrap;">
- <a href="{{ route('admin.tutors.subjects', $profile) }}" class="btn btn-outline" style="flex:1;justify-content:center;text-decoration:none;">
- <i class="fa-solid fa-book-open"></i> Manage Subjects ({{ $profile->subjects->count() }})
- </a>
- <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmSuspend{{ $profile->id }}(this)">
- @csrf @method('PATCH')
- <button type="submit" class="btn btn-danger" style="width:100%;">
- <i class="fa-solid fa-ban"></i> Suspend
- </button>
- </form>
- <script>
- function confirmSuspend{{ $profile->id }}(form) {
- showConfirm('Suspend Tutor?', 'Are you sure you want to suspend this tutor?', 'Yes, Suspend', 'Cancel').then((result) => {
- if (result.isConfirmed) form.submit();
- });
- }
- </script>
- <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;" onsubmit="event.preventDefault(); confirmFinalApproval{{ $profile->id }}(this)">
- @csrf @method('PATCH')
- <button type="submit" class="btn btn-primary" style="width:100%;" {{ !$canApprove ? 'disabled title="'.$approveBlockReason.'"' : '' }}>
- <i class="fa-solid fa-circle-check"></i> {{ $canApprove ? 'Approve & Go Live' : 'Approve ('.$approvedDocs.'/4 required docs  '.$subjectCnt.' subjects)' }}
- </button>
- </form>
- <script>
- function confirmFinalApproval{{ $profile->id }}(form) {
- showConfirm('Approve Tutor?', 'Approve and make this tutor live?', 'Yes, Approve', 'Cancel').then((result) => {
- if (result.isConfirmed) form.submit();
- });
- }
- </script>
- </div>
  </div>
  </div>
  </div>
  @endforeach
 </div>
-</div>
-
-@endif
 
 {{-- Pagination --}}
-@if($pending->hasPages())
+@if($tutors->hasPages())
 <div style="margin-top:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
  <div style="font-size:13px;color:var(--muted);">
- Showing {{ $pending->firstItem() }} to {{ $pending->lastItem() }} of {{ $pending->total() }} results
+ Showing {{ $tutors->firstItem() }} to {{ $tutors->lastItem() }} of {{ $tutors->total() }} results
  </div>
  <div style="display:flex;align-items:center;gap:4px;">
- @if($pending->onFirstPage())
+ @if($tutors->onFirstPage())
  <span style="padding:8px 14px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fa-solid fa-chevron-left"></i></span>
  @else
- <a href="{{ $pending->previousPageUrl() }}" style="padding:8px 14px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:all .2s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><i class="fa-solid fa-chevron-left"></i></a>
+ <a href="{{ $tutors->previousPageUrl() }}" style="padding:8px 14px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:all .2s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><i class="fa-solid fa-chevron-left"></i></a>
  @endif
- @foreach($pending->getUrlRange(1, $pending->lastPage()) as $page => $url)
- @if($page == $pending->currentPage())
+ @foreach($tutors->getUrlRange(1, $tutors->lastPage()) as $page => $url)
+ @if($page == $tutors->currentPage())
  <span style="padding:8px 14px;border-radius:8px;border:1px solid #0A64BC;font-size:13px;font-weight:700;color:#fff;background:#0A64BC;box-shadow:0 2px 8px rgba(10,100,188,.3);">{{ $page }}</span>
  @else
  <a href="{{ $url }}" style="padding:8px 14px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:all .2s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'">{{ $page }}</a>
  @endif
  @endforeach
- @if($pending->hasMorePages())
- <a href="{{ $pending->nextPageUrl() }}" style="padding:8px 14px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:all .2s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><i class="fa-solid fa-chevron-right"></i></a>
+ @if($tutors->hasMorePages())
+ <a href="{{ $tutors->nextPageUrl() }}" style="padding:8px 14px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--ink);text-decoration:none;background:#fff;transition:all .2s;" onmouseover="this.style.borderColor='#0A64BC'" onmouseout="this.style.borderColor='var(--hairline)'"><i class="fa-solid fa-chevron-right"></i></a>
  @else
  <span style="padding:8px 14px;border-radius:8px;border:1px solid var(--hairline);font-size:13px;color:var(--muted);cursor:not-allowed;background:#fafafa;"><i class="fa-solid fa-chevron-right"></i></span>
  @endif
  </div>
 </div>
+@endif
 @endif
 
 {{-- Reject doc modal --}}
@@ -527,17 +393,6 @@ $speedy = TutorProfile::where('speedy_verification_paid',true)->where('is_approv
  </form>
  </div>
 </div>
-
-<script>
-function rejectDoc(docId, docName) {
- document.getElementById('reject-doc-name').textContent = 'Document: ' + docName;
- document.getElementById('reject-form').action = '/admin/documents/' + docId + '/reject';
- document.getElementById('reject-modal').style.display = 'flex';
-}
-function rejectDocModal(docId, docName) {
- rejectDoc(docId, docName);
-}
-</script>
 
 {{-- Email Modals --}}
 <div id="email-modal" class="email-modal-overlay" onclick="if(event.target===this) this.classList.remove('open')">
@@ -577,14 +432,14 @@ function rejectDocModal(docId, docName) {
 <div id="email-all-modal" class="email-modal-overlay" onclick="if(event.target===this) this.classList.remove('open')">
  <div class="email-modal-box" onclick="event.stopPropagation()">
  <div class="modal-head">
- <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;">Email All Tutors</h3>
+ <h3 style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;">Email Tutors</h3>
  <button onclick="document.getElementById('email-all-modal').classList.remove('open')" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
  <i class="fa-solid fa-circle-xmark"></i>
  </button>
  </div>
  <div style="padding:24px;overflow-y:auto;">
  <form id="email-all-form" onsubmit="submitEmail(event, this, 'email-all')">
- <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:20px;">This message will be sent to <strong id="email-all-count">0</strong> tutors.</p>
+ <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:20px;">This message will be sent to <strong id="email-all-count">0</strong> tutor<span id="email-all-plural">s</span>.</p>
  <div class="email-form-group">
  <label>Subject <span style="color:#E8522A;">*</span></label>
  <input type="text" name="subject" id="email-all-subject" placeholder="Enter email subject..." required>
@@ -605,9 +460,147 @@ function rejectDocModal(docId, docName) {
  </div>
 </div>
 
+{{-- Per-Tutor Detail Modals --}}
+@foreach($tutors as $profile)
+ @php
+ $docs = $profile->documents;
+ $approvedDocs = $docs->where('status', 'approved')->count();
+ $totalDocs = $docs->count();
+ $subjectCount = $profile->subjects->count();
+ 
+ // Determine status display
+ if ($profile->documents->isEmpty()) {
+ $statusLabel = 'New';
+ $statusClass = 'status-new';
+ } elseif ($profile->is_approved) {
+ $statusLabel = 'Approved';
+ $statusClass = 'status-approved';
+ } elseif ($profile->approved_at) {
+ $statusLabel = 'Suspended';
+ $statusClass = 'status-suspended';
+ } else {
+ $statusLabel = 'Pending';
+ $statusClass = 'status-pending';
+ }
+ 
+ // Avatar color based on email
+ $avatarColor = '#' . substr(md5($profile->user->email), 0, 6);
+ @endphp
+ <div id="tutor-{{ $profile->id }}" class="modal-overlay" style="display:none;" onclick="if(event.target===this) this.style.display='none'">
+ <div class="modal-box" onclick="event.stopPropagation()">
+ <div class="modal-head">
+ <div style="display:flex;align-items:center;gap:12px;">
+ <div class="tutor-avatar" style="background-color:{{ $avatarColor }};width:40px;height:40px;font-size:16px;">{{ substr($profile->user->name, 0, 1) }}</div>
+ <div>
+ <h2 style="font-size:18px;font-weight:700;color:#15281F;margin:0;">{{ $profile->user->name }}</h2>
+ <p style="font-size:12px;color:rgba(21,40,31,.5);margin:2px 0 0 0;">Tutor #{{ $profile->id }}</p>
+ </div>
+ </div>
+ <button onclick="document.getElementById('tutor-{{ $profile->id }}').style.display='none'" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+ <i class="fa-solid fa-circle-xmark"></i>
+ </button>
+ </div>
+ <div class="modal-body">
+ {{-- Basic Info --}}
+ <div class="review-panel">
+ <div class="review-head">
+ <h3 style="font-size:14px;font-weight:700;color:#15281F;">Contact Information</h3>
+ </div>
+ <div class="review-detail open">
+ <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:6px;"><strong>Email:</strong> <a href="mailto:{{ $profile->user->email }}" style="color:#0A64BC;text-decoration:none;">{{ $profile->user->email }}</a></p>
+ <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:6px;"><strong>Joined:</strong> {{ $profile->created_at->format('M d, Y') }}</p>
+ <p style="font-size:13px;color:rgba(21,40,31,.65);"><strong>Status:</strong> <span class="status-badge {{ $statusClass }}">{{ $statusLabel }}</span></p>
+ </div>
+ </div>
+
+ {{-- Documents --}}
+ <div class="review-panel">
+ <div class="review-head">
+ <h3 style="font-size:14px;font-weight:700;color:#15281F;">Documents ({{ $approvedDocs }}/{{ max(4, $totalDocs) }} Verified)</h3>
+ </div>
+ <div class="review-detail open" style="max-height:400px;overflow-y:auto;">
+ @forelse($docs as $doc)
+ <div class="doc-row">
+ @if($doc->file_path && str_ends_with($doc->file_path, ['.jpg', '.jpeg', '.png', '.gif']))
+ <img src="{{ asset('storage/' . $doc->file_path) }}" alt="Document" class="doc-thumb" onclick="window.open('{{ asset('storage/' . $doc->file_path) }}', '_blank')">
+ @else
+ <div class="doc-thumb-placeholder" onclick="window.open('{{ asset('storage/' . $doc->file_path ?? '') }}', '_blank')"><i class="fa-solid fa-file"></i></div>
+ @endif
+ <div style="flex:1;">
+ <p style="font-size:12px;font-weight:600;color:#15281F;margin:0;text-transform:capitalize;">{{ str_replace('_', ' ', $doc->document_type) }}</p>
+ <p style="font-size:12px;color:rgba(21,40,31,.5);margin:2px 0 0 0;">Uploaded {{ $doc->created_at->diffForHumans() }}</p>
+ </div>
+ <span class="status-badge @if($doc->status === 'approved') status-approved @elseif($doc->status === 'rejected') status-suspended @else status-pending @endif" style="font-size:10px;padding:3px 8px;">{{ ucfirst($doc->status) }}</span>
+ @if($doc->status !== 'approved')
+ <button type="button" class="btn btn-o" style="font-size:12px;padding:4px 8px;" onclick="rejectDoc('{{ $doc->id }}', '{{ $doc->document_type }}')">
+ <i class="fa-solid fa-circle-xmark"></i>
+ </button>
+ @endif
+ </div>
+ @empty
+ <p style="font-size:13px;color:rgba(21,40,31,.5);text-align:center;padding:20px;">No documents uploaded yet.</p>
+ @endforelse
+ </div>
+ </div>
+
+ {{-- Subjects --}}
+ <div class="review-panel">
+ <div class="review-head">
+ <h3 style="font-size:14px;font-weight:700;color:#15281F;">Subjects ({{ $subjectCount }})</h3>
+ </div>
+ <div class="review-detail open">
+ @forelse($profile->subjects as $subject)
+ <div style="padding:10px;background:rgba(10,100,188,.05);border-radius:8px;margin-bottom:8px;font-size:13px;color:#0A64BC;font-weight:600;">
+ {{ $subject->name }}
+ </div>
+ @empty
+ <p style="font-size:13px;color:rgba(21,40,31,.5);text-align:center;padding:20px;">No subjects yet.</p>
+ @endforelse
+ </div>
+ </div>
+
+ {{-- Actions --}}
+ <div style="display:flex;gap:12px;padding-top:20px;border-top:1px solid rgba(21,40,31,.08);">
+ @if($statusLabel === 'New')
+ <div style="flex:1;padding:16px;background:rgba(99,102,241,.08);border-radius:12px;border:1.5px solid rgba(99,102,241,.2);text-align:center;">
+ <div style="font-size:13px;color:#3730A3;font-weight:600;">
+ <i class="fa-solid fa-star" style="margin-right:6px;"></i>Awaiting Documents
+ </div>
+ <div style="font-size:11px;color:rgba(55,48,163,.6);margin-top:4px;">This tutor has not uploaded any documents yet. Documents are required before approval.</div>
+ </div>
+ @elseif($statusLabel === 'Pending')
+ <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
+ @csrf @method('PATCH')
+ <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+ <i class="fa-solid fa-check"></i> Approve Profile
+ </button>
+ </form>
+ @endif
+ @if($statusLabel === 'Approved')
+ <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;">
+ @csrf @method('PATCH')
+ <button type="submit" class="btn btn-danger" style="width:100%;justify-content:center;">
+ <i class="fa-solid fa-ban"></i> Suspend Profile
+ </button>
+ </form>
+ @endif
+ @if($statusLabel === 'Suspended')
+ <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
+ @csrf @method('PATCH')
+ <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+ <i class="fa-solid fa-check"></i> Re-approve Profile
+ </button>
+ </form>
+ @endif
+ </div>
+ </div>
+ </div>
+@endforeach
+
 <script>
 // Store profile data for single email
 let currentProfileId = null;
+let selectedTutorIds = [];
 
 // Get CSRF token
 function getCsrfToken() {
@@ -616,6 +609,66 @@ function getCsrfToken() {
  let input = document.querySelector('input[name="_token"]');
  if (input) return input.value;
  return '';
+}
+
+// Client-side search filter
+document.getElementById('search-input')?.addEventListener('input', function() {
+ const searchTerm = this.value.toLowerCase();
+ const cards = document.querySelectorAll('.tutor-card');
+ cards.forEach(card => {
+ const name = card.dataset.tutorName;
+ const email = card.dataset.tutorEmail;
+ const tutorId = card.dataset.tutorId;
+ const matches = name.includes(searchTerm) || email.includes(searchTerm) || tutorId.includes(searchTerm);
+ card.style.display = matches ? '' : 'none';
+ });
+});
+
+// Status filter (server-side via URL params)
+function updateStatusFilter(status) {
+ const url = new URL(window.location);
+ url.searchParams.set('status', status);
+ window.location.href = url.toString();
+}
+
+// Toggle all checkboxes
+function toggleAllCheckboxes(checked) {
+ const checkboxes = document.querySelectorAll('.tutor-checkbox');
+ checkboxes.forEach(cb => {
+ cb.checked = checked;
+ });
+ updateEmailButton();
+}
+
+// Update email button based on selected checkboxes
+function updateEmailButton() {
+ selectedTutorIds = Array.from(document.querySelectorAll('.tutor-checkbox:checked')).map(cb => cb.value);
+ const btn = document.getElementById('email-button');
+ 
+ if (selectedTutorIds.length > 0) {
+ btn.innerHTML = `<i class="fa-solid fa-envelope"></i> Email Selected (${selectedTutorIds.length})`;
+ btn.classList.remove('email-all-btn');
+ btn.classList.add('email-selected-btn');
+ } else {
+ btn.innerHTML = `<i class="fa-solid fa-envelope"></i> Email All Tutors`;
+ btn.classList.remove('email-selected-btn');
+ btn.classList.add('email-all-btn');
+ }
+}
+
+// Trigger bulk email (selected or all)
+function triggerBulkEmail() {
+ selectedTutorIds = Array.from(document.querySelectorAll('.tutor-checkbox:checked')).map(cb => cb.value);
+ 
+ if (selectedTutorIds.length > 0) {
+ // Email selected
+ document.getElementById('profile-ids-input').value = selectedTutorIds.join(',');
+ openEmailAllModal(selectedTutorIds.length);
+ } else {
+ // Email all
+ const totalTutors = {{ $totalTutors }};
+ openEmailAllModal(totalTutors);
+ }
 }
 
 // Open single tutor email modal
@@ -629,12 +682,10 @@ function openEmailModal(profileId, name, email) {
  setTimeout(() => document.getElementById('email-subject').focus(), 100);
 }
 
-// Open all tutors email modal
-function openEmailAllModal() {
- @php
- $totalTutors = \App\Models\TutorProfile::count();
- @endphp
- document.getElementById('email-all-count').textContent = '{{ $totalTutors }}';
+// Open bulk email modal
+function openEmailAllModal(count) {
+ document.getElementById('email-all-count').textContent = count;
+ document.getElementById('email-all-plural').textContent = count === 1 ? '' : 's';
  document.getElementById('email-all-subject').value = '';
  document.getElementById('email-all-message').value = '';
  document.getElementById('email-all-char-count').textContent = '0';
@@ -677,15 +728,37 @@ function submitEmail(event, form, type) {
  submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
  
  // Prepare data
- const url = isAll 
- ? '{{ route("admin.tutors.send-email-all") }}'
- : '{{ route("admin.tutors.send-email", ":id") }}'.replace(':id', currentProfileId);
+ let url;
+ let data;
  
- const data = {
+ if (isAll) {
+ selectedTutorIds = Array.from(document.querySelectorAll('.tutor-checkbox:checked')).map(cb => cb.value);
+ if (selectedTutorIds.length > 0) {
+ // Email selected tutors
+ url = '{{ route("admin.tutors.send-email-all") }}';
+ data = {
+ subject: subject,
+ message: message,
+ profile_ids: selectedTutorIds,
+ _token: getCsrfToken()
+ };
+ } else {
+ // Email all tutors
+ url = '{{ route("admin.tutors.send-email-all") }}';
+ data = {
  subject: subject,
  message: message,
  _token: getCsrfToken()
  };
+ }
+ } else {
+ url = '{{ route("admin.tutors.send-email", ":id") }}'.replace(':id', currentProfileId);
+ data = {
+ subject: subject,
+ message: message,
+ _token: getCsrfToken()
+ };
+ }
  
  // Send request
  fetch(url, {
@@ -760,6 +833,13 @@ function showToast(message, type) {
  toast.style.animation = 'slideOut 0.3s ease-in';
  setTimeout(() => toast.remove(), 300);
  }, 4000);
+}
+
+// Reject document modal
+function rejectDoc(docId, docName) {
+ document.getElementById('reject-doc-name').textContent = 'Document: ' + docName;
+ document.getElementById('reject-form').action = '/admin/documents/' + docId + '/reject';
+ document.getElementById('reject-modal').style.display = 'flex';
 }
 
 // Add CSS animations

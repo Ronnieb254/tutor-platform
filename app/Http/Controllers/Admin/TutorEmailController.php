@@ -49,7 +49,7 @@ class TutorEmailController extends Controller
     }
 
     /**
-     * Send email to all tutors (approved and pending)
+     * Send email to selected tutors or all tutors
      */
     public function sendToAll(Request $request)
     {
@@ -57,11 +57,19 @@ class TutorEmailController extends Controller
             $validated = $request->validate([
                 'subject' => 'required|string|min:5|max:200',
                 'message' => 'required|string|min:20|max:5000',
+                'profile_ids' => 'nullable|string', // CSV string of profile IDs
             ]);
 
-            $tutors = TutorProfile::with('user')->get();
-            $count = 0;
+            // Check if specific profile IDs were provided
+            if (!empty($validated['profile_ids'])) {
+                $profileIds = array_filter(array_map('trim', explode(',', $validated['profile_ids'])));
+                $tutors = TutorProfile::with('user')->whereIn('id', $profileIds)->get();
+            } else {
+                // Send to all tutors
+                $tutors = TutorProfile::with('user')->get();
+            }
 
+            $count = 0;
             foreach ($tutors as $tutor) {
                 if ($tutor->user && $tutor->user->email) {
                     // Queue the email instead of sending synchronously
