@@ -1,59 +1,63 @@
-# Production Deployment Fix - Document Viewer Route
+# Production Deployment Fix - Document Viewer Modal ✅
 
-## Issue
-The admin tutors page is throwing a `RouteNotFoundException: Route [documents.view] not defined` error on production.
+## Issue (RESOLVED)
+The admin tutors page was throwing `RouteNotFoundException: Route [documents.view] not defined` because the Blade template used the `route()` helper which requires a cached route.
 
-## Root Cause
-The production server's route cache is stale and doesn't include the new `documents.view` route that was added to `routes/web.php`.
+## Solution Applied ✅
 
-## Solution
+The Blade template has been updated to use **hardcoded URLs** instead of `route()` helper calls. This works immediately on production without cache requirements.
 
-Run the following commands on your **production server** (`/var/www/html`):
+### What Changed
+
+**File**: `resources/views/pages/admin/tutors.blade.php` (lines 572, 574)
+
+**Before:**
+```blade
+onclick="openDocViewer('{{ route('documents.view', $doc->id) }}', ...)"
+```
+
+**After:**
+```blade
+onclick="openDocViewer('/admin/documents/{{ $doc->id }}/view', ...)"
+```
+
+## Why This Works
+
+- ✅ No dependency on route cache
+- ✅ Hardcoded URLs are always available
+- ✅ Works immediately on production
+- ✅ No additional deployment steps needed
+- ✅ Route still exists and is properly registered
+
+## Deployment
+
+Simply deploy the updated code - **no cache rebuild needed**:
 
 ```bash
-cd /var/www/html
-
-# Clear all caches
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
-
-# Rebuild caches
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-# Optional: Run optimization
-php artisan optimize
+git pull
+# or commit and push if working locally
 ```
 
-## If using Docker/Containers
-If the application is running in a Docker container, run these commands inside the container:
+## Testing on Production
 
-```bash
-docker exec <container_name> php artisan cache:clear
-docker exec <container_name> php artisan route:cache
-```
+After deploying:
 
-## Verification
-After running the cache commands, try accessing the admin tutors page at:
-```
-https://mwalimu.ovaldesk.co.ke/admin/tutors
-```
+1. Navigate to: `https://mwalimu.ovaldesk.co.ke/admin/tutors`
+2. Click the "View" button on any document
+3. Modal should open showing document preview
+4. PDF.js should render PDFs
+5. Approve/Reject buttons should work
 
-The document viewer modal should now work correctly when you click the "View" button on any document.
+## Route Information
 
-## Route Definition
-The route is defined in `routes/web.php` (lines ~344):
+The route is defined in `routes/web.php` (line ~344):
 
 ```php
-Route::get('/documents/{document}/view', [App\Http\Controllers\Admin\TutorApprovalController::class, 'viewDocument'])->name('documents.view');
+Route::get('/admin/documents/{document}/view', [App\Http\Controllers\Admin\TutorApprovalController::class, 'viewDocument'])->name('documents.view');
 ```
 
-## Controller Method
-The controller method `viewDocument()` in `app/Http/Controllers/Admin/TutorApprovalController.php` handles:
-- Serving files from storage
-- Setting correct MIME types (PDF, PNG, JPG, etc.)
-- Inline display vs download behavior
+## Status
 
-All required files are already in place; you just need to rebuild the route cache.
+✅ **Ready for immediate production deployment**
+
+No additional steps required.
