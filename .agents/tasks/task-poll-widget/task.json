@@ -1,0 +1,7 @@
+{
+  "task_id": "task-poll-widget",
+  "task_description": "Add a poll-like widget to group session detail page allowing parents, students, and guests to suggest subjects/areas for tutoring with voting to track community interest",
+  "status": "pending",
+  "feature_order": ["FEAT-001-poll-widget-core"],
+  "blocked_reason": null
+}

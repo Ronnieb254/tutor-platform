@@ -27,6 +27,19 @@ Route::get('/examiner-clinic', [App\Http\Controllers\ClinicController::class, 'i
 Route::get('/group-sessions', [App\Http\Controllers\GroupSessionController::class, 'index'])->name('group-sessions.index');
 // Constrain to numeric IDs so the static /my-sessions route is never swallowed by this wildcard
 Route::get('/group-sessions/{groupSession}', [App\Http\Controllers\GroupSessionController::class, 'show'])->name('group-sessions.show')->whereNumber('groupSession');
+
+// Group session suggestions (poll widget) - public access (guests allowed)
+Route::get('/group-sessions/{groupSession}/suggestions', [App\Http\Controllers\GroupSessionSuggestionController::class, 'index'])->whereNumber('groupSession');
+Route::post('/group-sessions/{groupSession}/suggestions', [App\Http\Controllers\GroupSessionSuggestionController::class, 'store'])->whereNumber('groupSession');
+Route::post('/group-sessions/{groupSession}/suggestions/{suggestion}/vote', [App\Http\Controllers\GroupSessionSuggestionController::class, 'vote'])->whereNumber('groupSession')->whereNumber('suggestion');
+Route::delete('/group-sessions/{groupSession}/suggestions/{suggestion}/vote', [App\Http\Controllers\GroupSessionSuggestionController::class, 'unvote'])->whereNumber('groupSession')->whereNumber('suggestion');
+
+// API: Get active subjects for poll widget
+Route::get('/api/subjects', function (\Illuminate\Http\Request $request) {
+    $subjects = \App\Models\Subject::where('is_active', true)->orderBy('name')->get();
+    return response()->json($subjects);
+});
+
 Route::get('/contact', fn() => view('pages.contact'))->name('contact');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
 
@@ -381,6 +394,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/group-sessions/{groupSession}/cancel',   [App\Http\Controllers\Admin\GroupSessionController::class, 'cancel'])->name('group-sessions.cancel');
         Route::post('/group-sessions/{groupSession}/start',    [App\Http\Controllers\Admin\GroupSessionController::class, 'start'])->name('group-sessions.start');
         Route::post('/group-sessions/{groupSession}/complete', [App\Http\Controllers\Admin\GroupSessionController::class, 'complete'])->name('group-sessions.complete');
+
+        // Group Session Suggestions management
+        Route::get('/group-sessions/suggestions', [App\Http\Controllers\Admin\GroupSessionSuggestionController::class, 'index'])->name('group-sessions.suggestions');
+        Route::delete('/group-sessions/suggestions/{suggestion}', [App\Http\Controllers\Admin\GroupSessionSuggestionController::class, 'destroy'])->name('group-sessions.suggestions.destroy');
 
         // Manual payment verification queue
         Route::get('/manual-payments', [App\Http\Controllers\Admin\ManualPaymentController::class, 'index'])->name('manual-payments');

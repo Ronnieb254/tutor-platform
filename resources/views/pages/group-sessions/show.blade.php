@@ -118,6 +118,9 @@
  </div>
  @endif
 
+ {{-- Poll widget for suggestions --}}
+ @include('partials.group-session-poll', ['groupSession' => $groupSession])
+
  {{-- Capacity bar --}}
  <div style="margin-bottom:24px;">
  <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
