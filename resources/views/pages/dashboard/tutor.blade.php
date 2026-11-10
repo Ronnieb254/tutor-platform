@@ -492,19 +492,19 @@ $activeTab = request('tab','overview');
                 @if($unreadNotifs > 0)<span class="notif-dot"></span>@endif
             </button>
             <div x-data="{ dropdownOpen: false }" style="position:relative;">
-                <button type="button" @click="dropdownOpen = !dropdownOpen" style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;border:1.5px solid var(--hair);background:#fff;cursor:pointer;transition:all .15s;font-family:inherit;" @mouseover="this.style.borderColor='rgba(10,100,188,.4)'" @mouseout="this.style.borderColor='var(--hair)'">
+                <button type="button" @click="dropdownOpen = !dropdownOpen" style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;border:1.5px solid var(--hair);background:#fff;cursor:pointer;transition:all .15s;font-family:inherit;" @mouseover="$el.style.borderColor='rgba(10,100,188,.4)'" @mouseout="$el.style.borderColor='var(--hair)'">
                     <img src="{{ $user->avatar_url }}" style="width:26px;height:26px;border-radius:999px;object-fit:cover;">
-                    <span style="font-size:13px;font-weight:600;">{{ Str::limit($user->name,6) }}</span>
+                    <span style="font-size:13px;font-weight:600;">{{ Str::limit($user->name,18) }}</span>
                     <i class="fa-solid fa-chevron-down" style="font-size:11px;color:var(--muted);transition:transform .2s;" :style="dropdownOpen ? 'transform:rotate(180deg)' : ''"></i>
                 </button>
                 <div x-show="dropdownOpen" @click.outside="dropdownOpen = false" style="position:absolute;top:100%;right:0;margin-top:8px;background:#fff;border:1px solid var(--hair);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.1);overflow:hidden;min-width:180px;z-index:1000;" x-cloak>
-                    <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:var(--ink);font-size:13px;font-weight:500;transition:all .15s;border-bottom:1px solid var(--hair);" onmouseover="this.style.background='#F4F6F4'" onmouseout="this.style.background='transparent'">
+                    <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:var(--ink);font-size:13px;font-weight:500;transition:all .15s;border-bottom:1px solid var(--hair);" @mouseover="$el.style.background='#F4F6F4'" @mouseout="$el.style.background='transparent'">
                         <i class="fa-solid fa-globe" style="font-size:14px;color:var(--trust-blue);width:16px;"></i>
                         View Public Site
                     </a>
                     <form method="POST" action="{{ route('logout') }}" style="margin:0;">
                         @csrf
-                        <button type="submit" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:#991B1B;font-size:13px;font-weight:500;transition:all .15s;width:100%;border:none;background:none;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='#FEE2E2'" onmouseout="this.style.background='transparent'">
+                        <button type="submit" style="display:flex;align-items:center;gap:10px;padding:12px 16px;color:#991B1B;font-size:13px;font-weight:500;transition:all .15s;width:100%;border:none;background:none;cursor:pointer;font-family:inherit;" @mouseover="$el.style.background='#FEE2E2'" @mouseout="$el.style.background='transparent'">
                             <i class="fa-solid fa-right-from-bracket" style="font-size:14px;color:#991B1B;width:16px;"></i>
                             Logout
                         </button>
