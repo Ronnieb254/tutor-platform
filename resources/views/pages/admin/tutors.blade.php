@@ -73,6 +73,7 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
                 'name'   => $doc->document_type ?? 'Uploaded document',
                 'status' => $doc->status ?? 'pending',
                 'url'    => route('tutor.documents.view', $doc->id),
+                'isPdf'  => $doc->file_path && str_ends_with(strtolower($doc->file_path), '.pdf'),
             ];
         })->values()->all(),
     ];
@@ -1184,7 +1185,7 @@ function rejectDoc(docId, docName) {
 }
 
 // Document viewer modal
-function openDocViewer(docPath, docName, docId = null) {
+function openDocViewer(docPath, docName, docId = null, isPdf = false) {
  const modal = document.getElementById('doc-viewer-modal');
  const loading = document.getElementById('doc-viewer-loading');
  const content = document.getElementById('doc-viewer-content');
@@ -1208,11 +1209,16 @@ function openDocViewer(docPath, docName, docId = null) {
  // Clear previous content
  content.innerHTML = '';
  
- // Check if it's an image
- if (docPath.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+ // For PDF documents, use PDF.js
+ if (isPdf) {
+ const pdfUrl = docPath;
+ renderPdfPreview(pdfUrl, content, loading, actions, docId, modal);
+ } else {
+ // For images, fetch and display
  const img = document.createElement('img');
  img.src = docPath;
- img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;';
+ img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;';
+ img.crossOrigin = 'anonymous';
  img.onload = () => {
  // Show content and hide loading
  loading.style.display = 'none';
@@ -1224,36 +1230,13 @@ function openDocViewer(docPath, docName, docId = null) {
  modal.classList.remove('loading');
  };
  img.onerror = () => {
- content.innerHTML = '<p style="color:rgba(21,40,31,.6);">Error loading image</p>';
+ content.innerHTML = '<p style="color:rgba(21,40,31,.6);">Error loading image. <a href="' + docPath + '" download style="color:#0A64BC;">Download instead</a></p>';
  loading.style.display = 'none';
  content.style.display = 'flex';
  actions.style.display = 'flex';
  modal.classList.remove('loading');
  };
  content.appendChild(img);
- } else if (docPath.match(/\.pdf$/i)) {
- // Handle PDF files with PDF.js
- const pdfUrl = docPath;
- renderPdfPreview(pdfUrl, content, loading, actions, docId, modal);
- } else {
- // For other files, show file icon with download option
- content.innerHTML = `
- <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
- <i class="fa-solid fa-file" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
- <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
- File type preview not available
- </p>
- <a href="${docPath}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
- <i class="fa-solid fa-download"></i> Download File
- </a>
- </div>
- `;
- 
- // Show content and hide loading
- loading.style.display = 'none';
- content.style.display = 'flex';
- actions.style.display = 'flex';
- modal.classList.remove('loading');
  }
  }, 300);
 }
@@ -1507,7 +1490,7 @@ window.openTutorDetails = function(id) {
             link.onmouseout = () => { link.style.color = '#0A64BC'; link.style.textDecoration = 'none'; };
             link.onclick = (e) => {
                 e.preventDefault();
-                openDocViewer(doc.url, doc.name, doc.id);
+                openDocViewer(doc.url, doc.name, doc.id, doc.isPdf);
             };
             row.appendChild(link);
         }
