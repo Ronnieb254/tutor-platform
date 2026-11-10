@@ -11,6 +11,40 @@ use Illuminate\Support\Facades\Notification;
 
 class TutorApprovalController extends Controller
 {
+    /** View/download a tutor document */
+    public function viewDocument(TutorDocument $document)
+    {
+        // Check if file exists
+        $filePath = storage_path('app/public/' . $document->file_path);
+        
+        if (!file_exists($filePath)) {
+            abort(404, 'Document not found');
+        }
+
+        // Return file for inline viewing or download
+        return response()->file($filePath, [
+            'Content-Type' => $this->getMimeType($filePath),
+            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
+        ]);
+    }
+
+    /** Get MIME type for file */
+    private function getMimeType($filePath)
+    {
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        
+        $mimeTypes = [
+            'pdf'  => 'application/pdf',
+            'jpg'  => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png'  => 'image/png',
+            'gif'  => 'image/gif',
+            'webp' => 'image/webp',
+        ];
+
+        return $mimeTypes[$extension] ?? 'application/octet-stream';
+    }
+
     /** Approve a tutor profile → make it live */
     public function approve(TutorProfile $profile)
     {

@@ -341,6 +341,7 @@ Route::middleware('auth')->group(function () {
         // Document approve / reject
         Route::patch('/documents/{document}/approve', [App\Http\Controllers\Admin\TutorApprovalController::class, 'approveDoc'])->name('documents.approve');
         Route::patch('/documents/{document}/reject',  [App\Http\Controllers\Admin\TutorApprovalController::class, 'rejectDoc'])->name('documents.reject');
+        Route::get('/documents/{document}/view', [App\Http\Controllers\Admin\TutorApprovalController::class, 'viewDocument'])->name('documents.view');
 
         // User toggle active
         Route::patch('/users/{user}/toggle-active', [App\Http\Controllers\Admin\TutorApprovalController::class, 'toggleUser'])->name('users.toggle');

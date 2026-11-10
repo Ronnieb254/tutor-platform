@@ -573,9 +573,9 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  @forelse($docs as $doc)
  <div class="doc-row">
  @if($doc->file_path && (str_ends_with($doc->file_path, '.jpg') || str_ends_with($doc->file_path, '.jpeg') || str_ends_with($doc->file_path, '.png') || str_ends_with($doc->file_path, '.gif')))
- <img src="{{ asset('storage/' . $doc->file_path) }}" alt="Document" class="doc-thumb" onclick="openDocViewer('{{ asset('storage/' . $doc->file_path) }}', '{{ $doc->document_type }}', '{{ $doc->id }}')">
+ <img src="{{ asset('storage/' . $doc->file_path) }}" alt="Document" class="doc-thumb" onclick="openDocViewer('{{ route('documents.view', $doc->id) }}', '{{ $doc->document_type }}', '{{ $doc->id }}')">
  @else
- <div class="doc-thumb-placeholder" onclick="openDocViewer('{{ asset('storage/' . $doc->file_path ?? '') }}', '{{ $doc->document_type }}', '{{ $doc->id }}')"><i class="fa-solid fa-file"></i></div>
+ <div class="doc-thumb-placeholder" onclick="openDocViewer('{{ route('documents.view', $doc->id) }}', '{{ $doc->document_type }}', '{{ $doc->id }}')"><i class="fa-solid fa-file"></i></div>
  @endif
  <div style="flex:1;">
  <p style="font-size:12px;font-weight:600;color:#15281F;margin:0;text-transform:capitalize;">{{ str_replace('_', ' ', $doc->document_type) }}</p>
