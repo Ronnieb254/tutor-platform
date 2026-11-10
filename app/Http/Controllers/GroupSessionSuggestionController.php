@@ -18,7 +18,8 @@ class GroupSessionSuggestionController extends Controller
         $suggestions = GroupSessionSuggestion::where('group_session_id', $groupSession->id)
             ->with(['subject', 'createdBy'])
             ->orderByDesc('votes_count')
-            ->paginate(10);
+            ->orderByDesc('created_at')
+            ->get();
 
         return response()->json($suggestions);
     }

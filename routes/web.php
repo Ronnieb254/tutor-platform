@@ -29,10 +29,10 @@ Route::get('/group-sessions', [App\Http\Controllers\GroupSessionController::clas
 Route::get('/group-sessions/{groupSession}', [App\Http\Controllers\GroupSessionController::class, 'show'])->name('group-sessions.show')->whereNumber('groupSession');
 
 // Group session suggestions (poll widget) - public access (guests allowed)
-Route::get('/group-sessions/{groupSession}/suggestions', [App\Http\Controllers\GroupSessionSuggestionController::class, 'index'])->whereNumber('groupSession');
-Route::post('/group-sessions/{groupSession}/suggestions', [App\Http\Controllers\GroupSessionSuggestionController::class, 'store'])->whereNumber('groupSession');
-Route::post('/group-sessions/{groupSession}/suggestions/{suggestion}/vote', [App\Http\Controllers\GroupSessionSuggestionController::class, 'vote'])->whereNumber('groupSession')->whereNumber('suggestion');
-Route::delete('/group-sessions/{groupSession}/suggestions/{suggestion}/vote', [App\Http\Controllers\GroupSessionSuggestionController::class, 'unvote'])->whereNumber('groupSession')->whereNumber('suggestion');
+Route::get('/group-sessions/{groupSession}/suggestions', [App\Http\Controllers\GroupSessionSuggestionController::class, 'index'])->name('group-sessions.suggestions.index')->whereNumber('groupSession');
+Route::post('/group-sessions/{groupSession}/suggestions', [App\Http\Controllers\GroupSessionSuggestionController::class, 'store'])->name('group-sessions.suggestions.store')->whereNumber('groupSession');
+Route::post('/group-sessions/{groupSession}/suggestions/{suggestion}/vote', [App\Http\Controllers\GroupSessionSuggestionController::class, 'vote'])->name('group-sessions.suggestions.vote')->whereNumber('groupSession')->whereNumber('suggestion');
+Route::delete('/group-sessions/{groupSession}/suggestions/{suggestion}/vote', [App\Http\Controllers\GroupSessionSuggestionController::class, 'unvote'])->name('group-sessions.suggestions.unvote')->whereNumber('groupSession')->whereNumber('suggestion');
 
 // API: Get active subjects for poll widget
 Route::get('/api/subjects', function (\Illuminate\Http\Request $request) {

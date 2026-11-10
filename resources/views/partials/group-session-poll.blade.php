@@ -1,5 +1,5 @@
 {{-- Poll widget for group sessions --}}
-<div x-data="pollWidget({{ $groupSession->id }})" x-cloak class="poll-widget" style="margin-bottom:24px;">
+<div x-data="pollWidget({{ $groupSession->id }})" @init="init()" x-cloak class="poll-widget" style="margin-bottom:24px;">
     {{-- Error toast --}}
     <template x-if="error">
         <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;color:#dc2626;font-weight:600;">
@@ -227,7 +227,7 @@
                     const response = await fetch(`/group-sessions/${groupSessionId}/suggestions`);
                     if (response.ok) {
                         const data = await response.json();
-                        this.suggestions = data.data || data;
+                        this.suggestions = Array.isArray(data) ? data : (data.data || []);
                         this.userVotes.clear();
                     } else {
                         this.error = 'Failed to load suggestions';
