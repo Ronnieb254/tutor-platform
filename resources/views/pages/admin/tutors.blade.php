@@ -51,12 +51,38 @@ $newCount = TutorProfile::whereDoesntHave('documents')->count();
 $approvedCount = TutorProfile::where('is_approved', true)->count();
 $pendingCount = TutorProfile::where('is_approved', false)->whereNull('approved_at')->whereHas('documents')->count();
 $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('approved_at')->count();
+
+// Payload for the shared tutor-details modal. Built here (not via @json closure)
+// so a single bad record can never break the whole script block.
+$tutorDetailsPayload = $tutors->map(function ($profile) {
+    $user = $profile->user;
+    return [
+        'id'       => $profile->id,
+        'name'     => $user?->name ?? 'Unknown',
+        'email'    => $user?->email ?? '',
+        'joined'   => $profile->created_at ? $profile->created_at->format('M d, Y') : '--',
+        'status'   => $profile->documents->isEmpty()
+            ? 'New'
+            : ($profile->is_approved
+                ? 'Approved'
+                : ($profile->approved_at ? 'Suspended' : 'Pending')),
+        'subjects' => $profile->subjects->map(fn ($s) => $s->name)->values()->all(),
+        'documents' => $profile->documents->map(function ($doc) {
+            return [
+                'id'     => $doc->id,
+                'name'   => $doc->document_type ?? 'Uploaded document',
+                'status' => $doc->status ?? 'pending',
+                'url'    => $doc->file_path ? asset('storage/' . $doc->file_path) : null,
+            ];
+        })->values()->all(),
+    ];
+})->values()->all();
 @endphp
 
 <style>
 /* Modal styles */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
-.modal-box{background:#fff;border-radius:20px;width:100%;max-width:900px;max-height:85vh;min-height:500px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2);will-change:transform;}
+.modal-box{background:#fff;border-radius:20px;width:100%;max-width:900px;max-height:85vh;min-height:500px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.25);will-change:transform;animation:modalSlideIn .3s cubic-bezier(.2,.68,.68,1.55);}
 .modal-head{padding:16px 22px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .modal-body{flex:1;overflow-y:auto;padding:20px;overflow-x:hidden;}
 .review-panel{background:#fff;border-radius:18px;border:1px solid rgba(21,40,31,.08);margin-bottom:14px;overflow:hidden;}
@@ -68,31 +94,32 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
 .doc-thumb-placeholder{width:48px;height:48px;border-radius:10px;background:rgba(21,40,31,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;cursor:pointer;}
 .email-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1500;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
 .email-modal-overlay.open{display:flex;}
-.email-modal-box{background:#fff;border-radius:20px;width:100%;max-width:520px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.email-modal-box{background:#fff;border-radius:20px;width:100%;max-width:520px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.25);animation:modalSlideIn .3s cubic-bezier(.2,.68,.68,1.55);}
 .email-form-group{margin-bottom:18px;}
 .email-form-group label{display:block;font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
-.email-form-group input,.email-form-group textarea{width:100%;padding:12px 14px;border:1.5px solid rgba(21,40,31,.18);border-radius:12px;font-size:14px;font-family:inherit;outline:none;color:#15281F;line-height:1.5;}
-.email-form-group input:focus,.email-form-group textarea:focus{border-color:#0A64BC;background:rgba(10,100,188,.02);}
+.email-form-group input,.email-form-group textarea{width:100%;padding:12px 14px;border:1.5px solid rgba(21,40,31,.12);border-radius:12px;font-size:14px;font-family:inherit;outline:none;color:#15281F;line-height:1.5;background:#fff;transition:all .3s;}
+.email-form-group input:focus,.email-form-group textarea:focus{border-color:#0A64BC;background:rgba(10,100,188,.02);box-shadow:0 0 0 4px rgba(10,100,188,.1);}
 .email-form-group textarea{resize:none;min-height:120px;}
 .email-char-counter{font-size:12px;color:rgba(21,40,31,.5);margin-top:4px;}
 
 /* Table styles */
-.tutors-table-wrapper{overflow-x:auto;border-radius:14px;border:1px solid var(--hairline);}
+.tutors-table-wrapper{overflow-x:auto;border-radius:14px;border:1px solid var(--hairline);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.04);}
 .tutors-table{width:100%;border-collapse:collapse;background:#fff;}
-.tutors-table th{background:#F9FAF9;padding:14px 16px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--hairline);}
-.tutors-table th a{color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.tutors-table th{background:linear-gradient(135deg,#f9fafb 0%,#f3f4f6 100%);padding:16px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--hairline);}
+.tutors-table th a{color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:color .2s;}
 .tutors-table th a:hover{color:var(--ink);}
-.tutors-table td{padding:12px 16px;border-bottom:1px solid var(--hairline);}
-.tutors-table tbody tr:hover{background:#F9FAF9;}
+.tutors-table td{padding:14px 16px;border-bottom:1px solid var(--hairline);}
+.tutors-table tbody tr{transition:all .2s;}
+.tutors-table tbody tr:hover{background:rgba(10,100,188,.02);}
 .tutor-name-cell{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--ink);}
 .tutor-avatar{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
 .tutor-email-link{color:#0A64BC;text-decoration:none;}
 .tutor-email-link:hover{text-decoration:underline;}
-.status-badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;}
-.status-new{background:#E0E7FF;color:#3730A3;}
-.status-pending{background:#FEF9C3;color:#854D0E;}
-.status-approved{background:#DCFCE7;color:#166534;}
-.status-suspended{background:#FEE2E2;color:#991B1B;}
+.status-badge{display:inline-block;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;backdrop-filter:blur(10px);}
+.status-new{background:rgba(99,102,241,.15);color:#4f46e5;border:1px solid rgba(99,102,241,.3);}
+.status-pending{background:rgba(251,146,60,.15);color:#d97706;border:1px solid rgba(251,146,60,.3);}
+.status-approved{background:rgba(34,197,94,.15);color:#16a34a;border:1px solid rgba(34,197,94,.3);}
+.status-suspended{background:rgba(239,68,68,.15);color:#dc2626;border:1px solid rgba(239,68,68,.3);}
 .tutor-actions{display:flex;gap:6px;flex-wrap:wrap;}
 .tutor-actions button,.tutor-actions a{padding:6px 12px;font-size:12px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:all .2s;}
 .btn-view{background:rgba(10,100,188,.1);color:#0A64BC;}
@@ -102,8 +129,10 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
 
 /* Card Grid Styles */
 .tutors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:24px;}
-.tutor-card{background:#fff;border-radius:18px;border:1.5px solid rgba(21,40,31,.08);box-shadow:0 2px 10px rgba(0,0,0,.06);padding:20px;transition:all .2s;display:flex;flex-direction:column;}
-.tutor-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.12);transform:translateY(-2px);}
+.tutor-card{background:#fff;border-radius:18px;border:1.5px solid rgba(21,40,31,.08);box-shadow:0 2px 8px rgba(0,0,0,.04);padding:20px;transition:all .3s cubic-bezier(.2,.68,.68,1.55);display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.tutor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0A64BC,#10B981);opacity:0;transition:opacity .3s;}
+.tutor-card:hover{box-shadow:0 16px 32px rgba(0,0,0,.12);transform:translateY(-6px);border-color:rgba(21,40,31,.15);}
+.tutor-card:hover::before{opacity:1;}
 .tutor-card-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;justify-content:space-between;}
 .tutor-card-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;}
 .tutor-card-info{flex:1;}
@@ -119,26 +148,26 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
 .tutor-card-footer{display:flex;align-items:center;gap:10px;margin-top:16px;padding-top:12px;border-top:1px solid rgba(21,40,31,.08);}
 .tutor-card-checkbox{width:18px;height:18px;cursor:pointer;flex-shrink:0;}
 .tutor-card-actions{display:flex;gap:8px;flex:1;}
-.tutor-card-btn{flex:1;padding:8px 12px;font-size:12px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:4px;transition:all .2s;white-space:nowrap;}
-.tutor-card-btn-email{background:rgba(16,185,129,.1);color:#10B981;}
-.tutor-card-btn-email:hover{background:rgba(16,185,129,.2);}
-.tutor-card-btn-view{background:rgba(10,100,188,.1);color:#0A64BC;}
-.tutor-card-btn-view:hover{background:rgba(10,100,188,.2);}
+.tutor-card-btn{flex:1;padding:8px 12px;font-size:12px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:4px;transition:all .2s;white-space:nowrap;font-weight:600;}
+.tutor-card-btn-email{background:rgba(16,185,129,.1);color:#10B981;border:1px solid rgba(16,185,129,.2);}
+.tutor-card-btn-email:hover{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.4);transform:translateY(-2px);box-shadow:0 4px 12px rgba(16,185,129,.15);}
+.tutor-card-btn-view{background:rgba(10,100,188,.1);color:#0A64BC;border:1px solid rgba(10,100,188,.2);}
+.tutor-card-btn-view:hover{background:rgba(10,100,188,.2);border-color:rgba(10,100,188,.4);transform:translateY(-2px);box-shadow:0 4px 12px rgba(10,100,188,.15);}
 
 /* Search and filter bar */
-.tutors-controls{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:20px;}
+.tutors-controls{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:24px;}
 .search-box{flex:1;min-width:200px;}
-.search-box input{width:100%;padding:10px 14px;border:1.5px solid var(--hairline);border-radius:10px;font-size:14px;outline:none;}
-.search-box input:focus{border-color:#0A64BC;background:rgba(10,100,188,.02);}
+.search-box input{width:100%;padding:12px 16px;border:1.5px solid rgba(21,40,31,.12);border-radius:12px;font-size:14px;outline:none;transition:all .3s;background:#fff;}
+.search-box input:focus{border-color:#0A64BC;background:rgba(10,100,188,.02);box-shadow:0 0 0 4px rgba(10,100,188,.1);}
 .filter-select{min-width:160px;}
-.filter-select select{padding:10px 14px;border:1.5px solid var(--hairline);border-radius:10px;font-size:14px;outline:none;background:#fff;cursor:pointer;appearance:none;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:12px;}
-.filter-select select:focus{border-color:#0A64BC;background-color:rgba(10,100,188,.02);}
+.filter-select select{padding:12px 16px;border:1.5px solid rgba(21,40,31,.12);border-radius:12px;font-size:14px;outline:none;background:#fff;cursor:pointer;appearance:none;padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:12px;transition:all .3s;}
+.filter-select select:focus{border-color:#0A64BC;background-color:rgba(10,100,188,.02);box-shadow:0 0 0 4px rgba(10,100,188,.1);}
 .bulk-actions{display:flex;gap:12px;align-items:center;}
 .bulk-checkbox{width:20px;height:20px;cursor:pointer;}
-.email-selected-btn{padding:10px 14px;border-radius:10px;border:none;background:#0A64BC;color:#fff;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;display:flex;align-items:center;gap:6px;}
-.email-selected-btn:hover{background:#084BA6;}
-.email-all-btn{padding:10px 14px;border-radius:10px;border:1.5px solid rgba(10,100,188,.3);background:rgba(10,100,188,.02);color:#0A64BC;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;display:flex;align-items:center;gap:6px;}
-.email-all-btn:hover{border-color:rgba(10,100,188,.5);background:rgba(10,100,188,.08);}
+.email-selected-btn{padding:12px 18px;border-radius:12px;border:none;background:linear-gradient(135deg,#0A64BC 0%,#084BA6 100%);color:#fff;cursor:pointer;font-size:13px;font-weight:700;transition:all .3s;display:flex;align-items:center;gap:8px;letter-spacing:.05em;box-shadow:0 4px 12px rgba(10,100,188,.3);}
+.email-selected-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(10,100,188,.4);}
+.email-all-btn{padding:12px 18px;border-radius:12px;border:1.5px solid rgba(10,100,188,.3);background:rgba(10,100,188,.05);color:#0A64BC;cursor:pointer;font-size:13px;font-weight:700;transition:all .3s;display:flex;align-items:center;gap:8px;letter-spacing:.05em;}
+.email-all-btn:hover{border-color:rgba(10,100,188,.6);background:rgba(10,100,188,.1);transform:translateY(-2px);box-shadow:0 4px 12px rgba(10,100,188,.15);}
 
 /* Responsive */
 @media(max-width:768px){
@@ -157,14 +186,304 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  .modal-box{ width:95vw !important; max-width:95vw !important; max-height:90vh !important; }
  .email-modal-box{ width:95vw !important; max-width:95vw !important; }
 }
+
+.tutor-details-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(10, 20, 15, .65);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.tutor-details-overlay.active {
+    display: flex;
+}
+
+.tutor-details-box {
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    background: linear-gradient(135deg, #fff 0%, #f9fafb 100%);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 80px rgba(0,0,0,.25);
+    animation: modalSlideIn .3s cubic-bezier(.2,.68,.68,1.55);
+}
+
+.tutor-details-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+}
+
+.tutor-details-identity {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.tutor-details-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #0A64BC;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.tutor-details-header h2 {
+    font-size: 19px;
+    color: #15281F;
+    margin: 0;
+}
+
+.tutor-details-header p {
+    font-size: 12px;
+    color: #888;
+    margin: 4px 0 0;
+}
+
+.tutor-details-close {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #f3f4f6;
+    font-size: 18px;
+}
+
+.tutor-details-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.td-section {
+    padding: 22px;
+    border: 1px solid rgba(10,100,188,.08);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, rgba(10,100,188,.02) 0%, rgba(16,185,129,.02) 100%);
+    transition: all .3s;
+}
+
+.td-section:hover {
+    border-color: rgba(10,100,188,.15);
+    box-shadow: 0 4px 12px rgba(10,100,188,.08);
+}
+
+.td-section h3 {
+    font-size: 14px;
+    margin: 0 0 18px;
+    color: #15281F;
+}
+
+.td-section h3 i {
+    color: #0A64BC;
+    margin-right: 8px;
+}
+
+.td-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.td-field label {
+    display: block;
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.td-field strong {
+    color: #15281F;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.td-subject-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.td-subject {
+    background: linear-gradient(135deg, #0A64BC 0%, #0852A6 100%);
+    color: #fff;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing:.05em;
+    box-shadow: 0 2px 8px rgba(10,100,188,.2);
+    transition: all .3s;
+    display: inline-block;
+}
+
+.td-subject:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(10,100,188,.3);
+}
+
+.td-document {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px;
+    border: 1.5px solid rgba(10,100,188,.12);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, rgba(10,100,188,.03) 0%, rgba(16,185,129,.03) 100%);
+    transition: all .3s;
+}
+
+.td-document-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #15281F;
+}
+
+.td-document-status {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.td-document a {
+    color: #0A64BC;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.td-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.td-summary div {
+    background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+    padding: 20px;
+    border-radius: 14px;
+    text-align: center;
+    border: 1px solid rgba(10,100,188,.1);
+    transition: all .3s;
+}
+
+.td-summary div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(10,100,188,.12);
+    border-color: rgba(10,100,188,.2);
+}
+
+.td-summary strong {
+    display: block;
+    font-size: 23px;
+    color: #15281F;
+}
+
+.td-summary span {
+    font-size: 11px;
+    color: #888;
+}
+
+.td-muted {
+    color: #999;
+    font-size: 13px;
+}
+
+.tutor-details-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.td-btn {
+    border: none;
+    padding: 11px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13px;
+    transition: all .3s cubic-bezier(.2,.68,.68,1.55);
+    letter-spacing:.05em;
+}
+
+.td-btn-secondary {
+    background: #f3f4f6;
+    color: #15281F;
+    border: 1px solid #e5e7eb;
+}
+
+.td-btn-secondary:hover {
+    background: #e5e7eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+}
+
+.td-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media(max-width:600px) {
+    .tutor-details-overlay {
+        padding: 8px;
+    }
+
+    .tutor-details-box {
+        max-height: 95vh;
+    }
+
+    .td-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .td-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .tutor-details-body {
+        padding: 12px;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
 </style>
 
-<div class="page-header" style="margin-bottom:32px;">
+<div class="page-header" style="margin-bottom:40px;background:linear-gradient(135deg,rgba(10,100,188,.03) 0%,rgba(16,185,129,.03) 100%);padding:40px;border-radius:24px;border:1px solid rgba(10,100,188,.08);">
  <div style="max-width:1400px;margin:0 auto;">
  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;">
  <div>
- <h1 style="font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:#15281F;margin-bottom:8px;">Tutor Management</h1>
- <p style="font-size:15px;color:rgba(21,40,31,.6);line-height:1.5;">Manage all tutors on the platform. Review documents, approve profiles, and handle communications.</p>
+ <h1 style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#15281F;margin-bottom:12px;letter-spacing:-.5px;">Tutor Management</h1>
+ <p style="font-size:15px;color:rgba(21,40,31,.65);line-height:1.6;margin:0;max-width:500px;">Manage all tutors on the platform. Review documents, approve profiles, and handle communications with precision and ease.</p>
  </div>
  </div>
  </div>
@@ -207,13 +526,13 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  ['Suspended', $suspendedCount, '#EF4444', 'fa-ban', 'rgba(239,68,68,.08)', 'suspended'],
  ['Total', $totalTutors, '#3B82F6', 'fa-users', 'rgba(59,130,246,.08)', null],
  ] as [$label, $val, $col, $ic, $bg, $status_param])
- <div style="background:#fff;border-radius:18px;border:1.5px solid rgba(21,40,31,.08);padding:20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,.05);">
- <div style="width:48px;height:48px;border-radius:14px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;color:{{ $col }};">
+ <div style="background:linear-gradient(135deg,#fff 0%,#f9fafb 100%);border-radius:18px;border:1.5px solid rgba(21,40,31,.06);padding:24px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.03);transition:all .3s;cursor:pointer;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 24px rgba(0,0,0,.1)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(0,0,0,.03)'">
+ <div style="width:56px;height:56px;border-radius:16px;background:{{ $bg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;color:{{ $col }};box-shadow:0 4px 12px {{ $col }}33;">
  <i class="fa-solid {{ $ic }}"></i>
  </div>
  <div style="flex:1;">
- <div style="font-size:12px;color:rgba(21,40,31,.5);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">{{ $label }}</div>
- <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:#15281F;line-height:1;">{{ $val }}</div>
+ <div style="font-size:12px;color:rgba(21,40,31,.5);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">{{ $label }}</div>
+ <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:#15281F;line-height:1;">{{ $val }}</div>
  </div>
  </div>
  @endforeach
@@ -319,12 +638,18 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  <div class="tutor-card-footer">
  <input type="checkbox" class="tutor-card-checkbox tutor-checkbox" value="{{ $profile->id }}" onchange="updateEmailButton()">
  <div class="tutor-card-actions">
- <button class="tutor-card-btn tutor-card-btn-email" onclick="openEmailModal('{{ $profile->id }}', '{{ addslashes($profile->user->name) }}', '{{ $profile->user->email }}')">
+ <button type="button" class="tutor-card-btn tutor-card-btn-email"
+ data-email-id="{{ $profile->id }}"
+ data-email-name="{{ $profile->user->name }}"
+ data-email-email="{{ $profile->user->email }}">
  <i class="fa-solid fa-envelope"></i> Email
  </button>
- <button class="tutor-card-btn tutor-card-btn-view" onclick="openTutorDetailModal('{{ $profile->id }}', '{{ addslashes($profile->user->name) }}')">
- <i class="fa-solid fa-eye"></i> View
- </button>
+ 
+<button type="button"
+    class="tutor-card-btn tutor-card-btn-view"
+    data-view-tutor="{{ $profile->id }}">
+    <i class="fa-solid fa-eye"></i> View
+</button>
  </div>
  </div>
  </div>
@@ -361,7 +686,7 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
 @endif
 
 {{-- Reject doc modal --}}
-<div id="reject-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:center;justify-content:center;padding:20px;">
+<div id="reject-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99997;align-items:center;justify-content:center;padding:20px;">
  <div style="background:#fff;border-radius:20px;padding:32px;width:100%;max-width:440px;">
  <h3 style="font-family:'Fraunces',serif;font-size:19px;color:#15281F;margin-bottom:6px;">Reject Document</h3>
  <p style="font-size:13px;color:rgba(21,40,31,.55);margin-bottom:18px;" id="reject-doc-name"></p>
@@ -395,7 +720,7 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
 </div>
 
 {{-- Document Viewer Modal --}}
-<div id="doc-viewer-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2500;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this && !document.getElementById('doc-viewer-modal').classList.contains('loading')) closeDocViewer()">
+<div id="doc-viewer-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this && !document.getElementById('doc-viewer-modal').classList.contains('loading')) closeDocViewer()">
  <div style="background:#fff;border-radius:20px;width:100%;max-width:900px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);">
  <div style="padding:20px 24px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
  <h3 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#15281F;margin:0;text-transform:capitalize;" id="doc-viewer-title">Document</h3>
@@ -416,12 +741,14 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
  </div>
  
  {{-- Action Buttons --}}
- <div style="padding:16px 24px;border-top:1px solid rgba(21,40,31,.08);display:none;gap:10px;justify-content:flex-end;flex-shrink:0;" id="doc-viewer-actions">
- <button onclick="closeDocViewer()" class="btn btn-outline" style="padding:8px 16px;">Close</button>
- <button onclick="rejectDocFromViewer()" class="btn btn-danger" style="padding:8px 16px;">
+ <div style="padding:16px 24px;border-top:1px solid rgba(21,40,31,.08);display:flex;gap:12px;justify-content:flex-end;flex-shrink:0;" id="doc-viewer-actions">
+ <button onclick="closeDocViewer()" class="btn btn-outline" style="padding:10px 18px;border-radius:10px;border:1.5px solid rgba(21,40,31,.12);background:#fff;color:#15281F;cursor:pointer;font-weight:700;font-size:13px;transition:all .3s;">
+ <i class="fa-solid fa-circle-xmark"></i> Close
+ </button>
+ <button onclick="rejectDocFromViewer()" class="btn btn-danger" style="padding:10px 18px;border-radius:10px;border:none;background:#EF4444;color:#fff;cursor:pointer;font-weight:700;font-size:13px;transition:all .3s;">
  <i class="fa-solid fa-circle-xmark"></i> Reject
  </button>
- <button onclick="approveDoc()" class="btn btn-primary" style="padding:8px 16px;">
+ <button onclick="approveDoc()" class="btn btn-primary" style="padding:10px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,#10B981 0%,#059669 100%);color:#fff;cursor:pointer;font-weight:700;font-size:13px;transition:all .3s;box-shadow:0 4px 12px rgba(16,185,129,.3);">
  <i class="fa-solid fa-check-circle"></i> Approve
  </button>
  </div>
@@ -507,144 +834,111 @@ $suspendedCount = TutorProfile::where('is_approved', false)->whereNotNull('appro
 </div>
 
 {{-- Per-Tutor Detail Modals --}}
-@php $allTutors = $tutors; @endphp
-@foreach($allTutors as $profile)
- @php
- $docs = $profile->documents;
- $approvedDocs = $docs->where('status', 'approved')->count();
- $totalDocs = $docs->count();
- $subjectCount = $profile->subjects->count();
- 
- // Determine status display
- if ($profile->documents->isEmpty()) {
- $statusLabel = 'New';
- $statusClass = 'status-new';
- } elseif ($profile->is_approved) {
- $statusLabel = 'Approved';
- $statusClass = 'status-approved';
- } elseif ($profile->approved_at) {
- $statusLabel = 'Suspended';
- $statusClass = 'status-suspended';
- } else {
- $statusLabel = 'Pending';
- $statusClass = 'status-pending';
- }
- 
- // Avatar color based on email
- $avatarColor = '#' . substr(md5($profile->user->email), 0, 6);
- @endphp
- <div id="tutor-{{ $profile->id }}" class="modal-overlay" style="display:none;z-index:{{ 1500 + $loop->index }};" onclick="if(event.target===this) closeTutorModal('tutor-{{ $profile->id }}')">
- <div class="modal-box" onclick="event.stopPropagation()">
- <div class="modal-head">
- <div style="display:flex;align-items:center;gap:12px;">
- <div class="tutor-avatar" style="background-color:{{ $avatarColor }};width:40px;height:40px;font-size:16px;">{{ substr($profile->user->name, 0, 1) }}</div>
- <div>
- <h2 style="font-size:18px;font-weight:700;color:#15281F;margin:0;">{{ $profile->user->name }}</h2>
- <p style="font-size:12px;color:rgba(21,40,31,.5);margin:2px 0 0 0;">Tutor #{{ $profile->id }}</p>
- </div>
- </div>
- <button onclick="closeTutorModal('tutor-{{ $profile->id }}')" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;">
- <i class="fa-solid fa-circle-xmark"></i>
- </button>
- </div>
- <div class="modal-body">
- {{-- Basic Info --}}
- <div class="review-panel">
- <div class="review-head">
- <h3 style="font-size:14px;font-weight:700;color:#15281F;">Contact Information</h3>
- </div>
- <div class="review-detail open">
- <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:6px;"><strong>Email:</strong> <a href="mailto:{{ $profile->user->email }}" style="color:#0A64BC;text-decoration:none;">{{ $profile->user->email }}</a></p>
- <p style="font-size:13px;color:rgba(21,40,31,.65);margin-bottom:6px;"><strong>Joined:</strong> {{ $profile->created_at->format('M d, Y') }}</p>
- <p style="font-size:13px;color:rgba(21,40,31,.65);"><strong>Status:</strong> <span class="status-badge {{ $statusClass }}">{{ $statusLabel }}</span></p>
- </div>
- </div>
 
- {{-- Documents --}}
- <div class="review-panel">
- <div class="review-head">
- <h3 style="font-size:14px;font-weight:700;color:#15281F;">Documents ({{ $approvedDocs }}/{{ max(4, $totalDocs) }} Verified)</h3>
- </div>
- <div class="review-detail open" style="max-height:400px;overflow-y:auto;">
- @forelse($docs as $doc)
- <div class="doc-row">
- @if($doc->file_path && (str_ends_with($doc->file_path, '.jpg') || str_ends_with($doc->file_path, '.jpeg') || str_ends_with($doc->file_path, '.png') || str_ends_with($doc->file_path, '.gif')))
- <img src="{{ asset('storage/' . $doc->file_path) }}" alt="Document" class="doc-thumb" onclick="openDocViewer('/admin/documents/{{ $doc->id }}/view', '{{ $doc->document_type }}', '{{ $doc->id }}')">
- @else
- <div class="doc-thumb-placeholder" onclick="openDocViewer('/admin/documents/{{ $doc->id }}/view', '{{ $doc->document_type }}', '{{ $doc->id }}')"><i class="fa-solid fa-file"></i></div>
- @endif
- <div style="flex:1;">
- <p style="font-size:12px;font-weight:600;color:#15281F;margin:0;text-transform:capitalize;">{{ str_replace('_', ' ', $doc->document_type) }}</p>
- <p style="font-size:12px;color:rgba(21,40,31,.5);margin:2px 0 0 0;">Uploaded {{ $doc->created_at->diffForHumans() }}</p>
- </div>
- <span class="status-badge @if($doc->status === 'approved') status-approved @elseif($doc->status === 'rejected') status-suspended @else status-pending @endif" style="font-size:10px;padding:3px 8px;">{{ ucfirst($doc->status) }}</span>
- @if($doc->status !== 'approved')
- <button type="button" class="btn btn-o" style="font-size:12px;padding:4px 8px;" onclick="rejectDoc('{{ $doc->id }}', '{{ $doc->document_type }}')">
- <i class="fa-solid fa-circle-xmark"></i>
- </button>
- @endif
- </div>
- @empty
- <p style="font-size:13px;color:rgba(21,40,31,.5);text-align:center;padding:20px;">No documents uploaded yet.</p>
- @endforelse
- </div>
- </div>
+{{-- SHARED TUTOR DETAILS MODAL --}}
+<div id="tutor-details-modal" class="tutor-details-overlay"
+     onclick="if(event.target === this) closeTutorDetails()">
 
- {{-- Subjects --}}
- <div class="review-panel">
- <div class="review-head">
- <h3 style="font-size:14px;font-weight:700;color:#15281F;">Subjects ({{ $subjectCount }})</h3>
- </div>
- <div class="review-detail open">
- @forelse($profile->subjects as $subject)
- <div style="padding:10px;background:rgba(10,100,188,.05);border-radius:8px;margin-bottom:8px;font-size:13px;color:#0A64BC;font-weight:600;">
- {{ $subject->name }}
- </div>
- @empty
- <p style="font-size:13px;color:rgba(21,40,31,.5);text-align:center;padding:20px;">No subjects yet.</p>
- @endforelse
- </div>
- </div>
+    <div class="tutor-details-box" onclick="event.stopPropagation()">
 
- {{-- Actions --}}
- <div style="display:flex;gap:12px;padding-top:20px;border-top:1px solid rgba(21,40,31,.08);">
- @if($statusLabel === 'New')
- <div style="flex:1;padding:16px;background:rgba(99,102,241,.08);border-radius:12px;border:1.5px solid rgba(99,102,241,.2);text-align:center;">
- <div style="font-size:13px;color:#3730A3;font-weight:600;">
- <i class="fa-solid fa-star" style="margin-right:6px;"></i>Awaiting Documents
- </div>
- <div style="font-size:11px;color:rgba(55,48,163,.6);margin-top:4px;">This tutor has not uploaded any documents yet. Documents are required before approval.</div>
- </div>
- @elseif($statusLabel === 'Pending')
- <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
- @csrf @method('PATCH')
- <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
- <i class="fa-solid fa-check"></i> Approve Profile
- </button>
- </form>
- @endif
- @if($statusLabel === 'Approved')
- <form method="POST" action="{{ route('admin.tutors.suspend', $profile->id) }}" style="flex:1;">
- @csrf @method('PATCH')
- <button type="submit" class="btn btn-danger" style="width:100%;justify-content:center;">
- <i class="fa-solid fa-ban"></i> Suspend Profile
- </button>
- </form>
- @endif
- @if($statusLabel === 'Suspended')
- <form method="POST" action="{{ route('admin.tutors.approve', $profile->id) }}" style="flex:1;">
- @csrf @method('PATCH')
- <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
- <i class="fa-solid fa-check"></i> Re-approve Profile
- </button>
- </form>
- @endif
- </div>
- </div>
- </div>
-@endforeach
+        {{-- Header --}}
+        <div class="tutor-details-header">
+            <div class="tutor-details-identity">
+                <div class="tutor-details-avatar" id="td-avatar">T</div>
+                <div>
+                    <h2 id="td-name">Tutor Details</h2>
+                    <p id="td-id">Tutor #--</p>
+                </div>
+            </div>
+
+            <button type="button" class="tutor-details-close"
+                    onclick="closeTutorDetails()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        {{-- Scrollable content --}}
+        <div class="tutor-details-body">
+
+            <section class="td-section">
+                <h3><i class="fa-solid fa-user"></i> Personal Information</h3>
+                <div class="td-grid">
+                    <div class="td-field">
+                        <label>Full Name</label>
+                        <strong id="td-full-name">--</strong>
+                    </div>
+                    <div class="td-field">
+                        <label>Email Address</label>
+                        <strong id="td-email">--</strong>
+                    </div>
+                    <div class="td-field">
+                        <label>Registration Date</label>
+                        <strong id="td-joined">--</strong>
+                    </div>
+                    <div class="td-field">
+                        <label>Approval Status</label>
+                        <span id="td-status" style="display:inline-block;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="td-section">
+                <h3><i class="fa-solid fa-book-open"></i> Teaching Subjects</h3>
+                <div id="td-subjects" class="td-subject-list">
+                    <span class="td-muted">No subjects available.</span>
+                </div>
+            </section>
+
+            <section class="td-section">
+                <h3><i class="fa-solid fa-folder-open"></i> Uploaded Documents</h3>
+                <div id="td-documents">
+                    <span class="td-muted">No documents uploaded.</span>
+                </div>
+            </section>
+
+            <section class="td-section">
+                <h3><i class="fa-solid fa-chart-pie"></i> Verification Summary</h3>
+                <div class="td-summary">
+                    <div>
+                        <strong id="td-total-docs">0</strong>
+                        <span>Total Documents</span>
+                    </div>
+                    <div>
+                        <strong id="td-approved-docs">0</strong>
+                        <span>Approved Documents</span>
+                    </div>
+                    <div>
+                        <strong id="td-pending-docs">0</strong>
+                        <span>Other Documents</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        {{-- Footer --}}
+        <div class="tutor-details-footer">
+            <button type="button" class="td-btn td-btn-secondary"
+                    onclick="closeTutorDetails()">
+                Close
+            </button>
+            <button type="button" id="td-btn-suspend" class="td-btn" style="background:#EF4444;color:#fff;margin-left:10px;"
+                    onclick="suspendTutor()">
+                <i class="fa-solid fa-ban"></i> Suspend
+            </button>
+            <button type="button" id="td-btn-approve" class="td-btn" style="background:#10B981;color:#fff;margin-left:10px;"
+                    onclick="approveTutor()">
+                <i class="fa-solid fa-check-circle"></i> Approve
+            </button>
+        </div>
+
+    </div>
+</div>
+    
+
 
 <script>
+
 // Store profile data for single email
 let currentProfileId = null;
 let selectedTutorIds = [];
@@ -656,46 +950,6 @@ function getCsrfToken() {
  let input = document.querySelector('input[name="_token"]');
  if (input) return input.value;
  return '';
-}
-
-// Modal management
-let currentOpenModal = null;
-
-// Open tutor detail modal
-function openTutorDetailModal(profileId, profileName) {
- const modalId = 'tutor-' + profileId;
- 
- // Debug: check if modal exists
- const allModals = document.querySelectorAll('.modal-overlay');
- console.log('Total modals on page:', allModals.length);
- 
- // Close currently open modal first
- if (currentOpenModal && currentOpenModal !== modalId) {
- const prevModal = document.getElementById(currentOpenModal);
- if (prevModal) {
- prevModal.style.display = 'none';
- }
- }
- 
- const modal = document.getElementById(modalId);
- if (modal) {
- modal.style.display = 'flex';
- currentOpenModal = modalId;
- console.log('✓ Opened modal:', modalId);
- } else {
- console.error('✗ Modal not found:', modalId);
- }
-}
-
-// Close tutor detail modal
-function closeTutorModal(modalId) {
- const modal = document.getElementById(modalId);
- if (modal) {
- modal.style.display = 'none';
- if (currentOpenModal === modalId) {
- currentOpenModal = null;
- }
- }
 }
 
 // Client-side search filter
@@ -826,7 +1080,7 @@ function submitEmail(event, form, type) {
  data = {
  subject: subject,
  message: message,
- profile_ids: String(selectedTutorIds.join(',')),
+ profile_ids: selectedTutorIds,
  _token: getCsrfToken()
  };
  } else {
@@ -856,14 +1110,7 @@ function submitEmail(event, form, type) {
  },
  body: JSON.stringify(data)
  })
- .then(res => {
- if (!res.ok && res.status === 422) {
- return res.json().then(err => {
- throw new Error(err.message || Object.values(err.errors || {})[0]?.[0] || 'Validation error');
- });
- }
- return res.json();
- })
+ .then(res => res.json())
  .then(data => {
  submitBtn.disabled = false;
  if (isAll) {
@@ -943,30 +1190,18 @@ function openDocViewer(docPath, docName, docId = null) {
  const content = document.getElementById('doc-viewer-content');
  const actions = document.getElementById('doc-viewer-actions');
  
- if (!modal) {
- console.error('Document viewer modal not found');
- return;
- }
- 
- // Ensure absolute URL - if relative path, make it absolute
- if (!docPath.startsWith('http')) {
- docPath = window.location.origin + docPath;
- }
- 
  // Show loading state
  modal.classList.add('loading');
  modal.style.display = 'flex';
  loading.style.display = 'flex';
  content.style.display = 'none';
- actions.style.display = 'none';
+ actions.style.display = 'flex';
  
  // Store document ID for actions
  modal.dataset.docId = docId || '';
  
  // Update title
  document.getElementById('doc-viewer-title').textContent = docName;
- 
- console.log('Opening document:', docPath);
  
  // Simulate loading delay for better UX
  setTimeout(() => {
@@ -977,8 +1212,7 @@ function openDocViewer(docPath, docName, docId = null) {
  if (docPath.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
  const img = document.createElement('img');
  img.src = docPath;
- img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;';
- img.crossOrigin = 'anonymous';
+ img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;';
  img.onload = () => {
  // Show content and hide loading
  loading.style.display = 'none';
@@ -986,58 +1220,21 @@ function openDocViewer(docPath, docName, docId = null) {
  content.style.flexDirection = 'column';
  content.style.alignItems = 'center';
  content.style.justifyContent = 'center';
- if (docId) actions.style.display = 'flex';
+ actions.style.display = 'flex';
  modal.classList.remove('loading');
- console.log('Image loaded successfully:', docPath);
  };
- img.onerror = (e) => {
- console.error('Error loading image:', docPath, e);
- console.log('Image error details - status:', img.status);
- 
- // Try direct fetch to check if file is accessible
- fetch(docPath, {method: 'HEAD'})
- .then(r => console.log('HEAD request status:', r.status, r.headers.get('content-type')))
- .catch(err => console.error('HEAD request failed:', err));
- 
- content.innerHTML = `
- <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;padding:20px;">
- <i class="fa-solid fa-triangle-exclamation" style="font-size:48px;color:#DC2626;"></i>
- <div style="text-align:center;">
- <p style="color:rgba(21,40,31,.6);font-size:14px;margin:0 0 10px 0;font-weight:600;">Error loading image preview</p>
- <p style="color:rgba(21,40,31,.4);font-size:12px;margin:0;">The image failed to load. You can download it instead.</p>
- </div>
- <a href="${docPath}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
- <i class="fa-solid fa-download"></i> Download Image
- </a>
- </div>
- `;
+ img.onerror = () => {
+ content.innerHTML = '<p style="color:rgba(21,40,31,.6);">Error loading image</p>';
  loading.style.display = 'none';
  content.style.display = 'flex';
+ actions.style.display = 'flex';
  modal.classList.remove('loading');
  };
  content.appendChild(img);
  } else if (docPath.match(/\.pdf$/i)) {
  // Handle PDF files with PDF.js
- if (typeof pdfjsLib === 'undefined') {
- console.warn('PDF.js not loaded');
- content.innerHTML = `
- <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
- <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
- <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
- PDF preview not available
- </p>
- <a href="${docPath}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
- <i class="fa-solid fa-download"></i> Download PDF
- </a>
- </div>
- `;
- loading.style.display = 'none';
- content.style.display = 'flex';
- if (docId) actions.style.display = 'flex';
- modal.classList.remove('loading');
- } else {
- renderPdfPreview(docPath, content, loading, actions, docId, modal);
- }
+ const pdfUrl = docPath;
+ renderPdfPreview(pdfUrl, content, loading, actions, docId, modal);
  } else {
  // For other files, show file icon with download option
  content.innerHTML = `
@@ -1055,7 +1252,7 @@ function openDocViewer(docPath, docName, docId = null) {
  // Show content and hide loading
  loading.style.display = 'none';
  content.style.display = 'flex';
- if (docId) actions.style.display = 'flex';
+ actions.style.display = 'flex';
  modal.classList.remove('loading');
  }
  }, 300);
@@ -1064,12 +1261,11 @@ function openDocViewer(docPath, docName, docId = null) {
 // Render PDF preview using PDF.js
 function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  if (typeof pdfjsLib === 'undefined') {
- console.warn('PDF.js library not loaded');
  content.innerHTML = `
  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
  <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
  <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
- PDF.js library failed to load. Download to view.
+ PDF.js library failed to load
  </p>
  <a href="${pdfUrl}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
  <i class="fa-solid fa-download"></i> Download PDF
@@ -1078,12 +1274,11 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  `;
  loading.style.display = 'none';
  content.style.display = 'flex';
- if (docId) actions.style.display = 'flex';
+ actions.style.display = 'flex';
  modal.classList.remove('loading');
  return;
  }
 
- try {
  pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
  // Render first page as preview
  pdf.getPage(1).then(page => {
@@ -1114,9 +1309,8 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  
  loading.style.display = 'none';
  content.style.display = 'flex';
- if (docId) actions.style.display = 'flex';
+ actions.style.display = 'flex';
  modal.classList.remove('loading');
- console.log('PDF rendered successfully');
  });
  });
  }).catch(error => {
@@ -1125,7 +1319,7 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
  <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
  <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
- Error loading PDF. Download to view.
+ Error loading PDF preview
  </p>
  <a href="${pdfUrl}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
  <i class="fa-solid fa-download"></i> Download PDF
@@ -1134,27 +1328,9 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  `;
  loading.style.display = 'none';
  content.style.display = 'flex';
- if (docId) actions.style.display = 'flex';
+ actions.style.display = 'flex';
  modal.classList.remove('loading');
  });
- } catch (err) {
- console.error('PDF.js error:', err);
- content.innerHTML = `
- <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;">
- <i class="fa-solid fa-file-pdf" style="font-size:64px;color:rgba(21,40,31,.2);"></i>
- <p style="color:rgba(21,40,31,.6);font-size:14px;text-align:center;margin:0;">
- Cannot preview PDF. Download to view.
- </p>
- <a href="${pdfUrl}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
- <i class="fa-solid fa-download"></i> Download PDF
- </a>
- </div>
- `;
- loading.style.display = 'none';
- content.style.display = 'flex';
- if (docId) actions.style.display = 'flex';
- modal.classList.remove('loading');
- }
 }
 
 function closeDocViewer() {
@@ -1220,6 +1396,248 @@ style.textContent = `
 document.head.appendChild(style);
 </script>
 
+<script>
+window.tutorDetailsData = {!! json_encode($tutorDetailsPayload, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES) !!};
+console.log('Tutor details loaded:', (window.tutorDetailsData || []).length, 'tutors');
+</script>
+
+<script>
+window.openTutorDetails = function(id) {
+    try {
+    const list = Array.isArray(window.tutorDetailsData) ? window.tutorDetailsData : Object.values(window.tutorDetailsData || {});
+    const tutor = list.find(item => String(item.id) === String(id));
+
+    if (!tutor) {
+        console.error('Tutor data not found:', id, 'Loaded ids:', list.map(t => t.id));
+        alert('Tutor details are unavailable. Please refresh the page and try again.');
+        return;
+    }
+
+    // Store tutor ID for action functions
+    currentTutorId = id;
+
+    const modal = document.getElementById('tutor-details-modal');
+
+    // Always place shared modal directly under body
+    if (modal.parentElement !== document.body) {
+        document.body.appendChild(modal);
+    }
+
+    document.getElementById('td-avatar').textContent =
+        tutor.name.charAt(0).toUpperCase();
+
+    document.getElementById('td-name').textContent = tutor.name;
+    document.getElementById('td-id').textContent = 'Tutor #' + tutor.id;
+    document.getElementById('td-full-name').textContent = tutor.name;
+    document.getElementById('td-email').textContent = tutor.email;
+    document.getElementById('td-joined').textContent = tutor.joined;
+
+    const status = document.getElementById('td-status');
+    status.textContent = tutor.status;
+    
+    // Apply status-specific styling
+    status.className = '';
+    if (tutor.status === 'Approved') {
+        status.style.cssText = 'background:linear-gradient(135deg,rgba(34,197,94,.2) 0%,rgba(16,185,129,.2) 100%);color:#16a34a;border:1.5px solid rgba(34,197,94,.4);display:inline-block;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 4px 12px rgba(34,197,94,.15);';
+    } else if (tutor.status === 'Pending') {
+        status.style.cssText = 'background:linear-gradient(135deg,rgba(251,146,60,.2) 0%,rgba(245,158,11,.2) 100%);color:#d97706;border:1.5px solid rgba(251,146,60,.4);display:inline-block;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 4px 12px rgba(251,146,60,.15);';
+    } else if (tutor.status === 'Suspended') {
+        status.style.cssText = 'background:linear-gradient(135deg,rgba(239,68,68,.2) 0%,rgba(220,38,38,.2) 100%);color:#dc2626;border:1.5px solid rgba(239,68,68,.4);display:inline-block;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 4px 12px rgba(239,68,68,.15);';
+    } else if (tutor.status === 'New') {
+        status.style.cssText = 'background:linear-gradient(135deg,rgba(99,102,241,.2) 0%,rgba(79,70,229,.2) 100%);color:#4f46e5;border:1.5px solid rgba(99,102,241,.4);display:inline-block;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 4px 12px rgba(99,102,241,.15);';
+    }
+
+    // Subjects
+    const subjectList = Array.isArray(tutor.subjects) ? tutor.subjects : Object.values(tutor.subjects || {});
+    const subjects = document.getElementById('td-subjects');
+    subjects.replaceChildren();
+
+    if (subjectList.length) {
+        subjectList.forEach(name => {
+            const item = document.createElement('span');
+            item.className = 'td-subject';
+            item.textContent = name;
+            subjects.appendChild(item);
+        });
+    } else {
+        subjects.textContent = 'No subjects available.';
+    }
+
+    // Documents
+    const documents = document.getElementById('td-documents');
+    documents.replaceChildren();
+
+    let approved = 0;
+    const docList = Array.isArray(tutor.documents) ? tutor.documents : Object.values(tutor.documents || {});
+
+    docList.forEach(doc => {
+        if (doc.status === 'approved') approved++;
+
+        const row = document.createElement('div');
+        row.className = 'td-document';
+
+        const info = document.createElement('div');
+
+        const name = document.createElement('div');
+        name.className = 'td-document-name';
+        name.textContent = doc.name;
+
+        const docStatus = document.createElement('span');
+        docStatus.className = 'td-document-status';
+        docStatus.textContent = doc.status;
+        
+        // Apply status-specific styling to document status badge
+        if (doc.status === 'approved') {
+            docStatus.style.cssText = 'background:linear-gradient(135deg,rgba(34,197,94,.2) 0%,rgba(16,185,129,.2) 100%);color:#16a34a;border:1px solid rgba(34,197,94,.4);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;box-shadow:0 2px 6px rgba(34,197,94,.1);';
+        } else if (doc.status === 'pending') {
+            docStatus.style.cssText = 'background:linear-gradient(135deg,rgba(251,146,60,.2) 0%,rgba(245,158,11,.2) 100%);color:#d97706;border:1px solid rgba(251,146,60,.4);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;box-shadow:0 2px 6px rgba(251,146,60,.1);';
+        } else if (doc.status === 'rejected') {
+            docStatus.style.cssText = 'background:linear-gradient(135deg,rgba(239,68,68,.2) 0%,rgba(220,38,38,.2) 100%);color:#dc2626;border:1px solid rgba(239,68,68,.4);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;box-shadow:0 2px 6px rgba(239,68,68,.1);';
+        }
+
+        info.append(name, docStatus);
+        row.appendChild(info);
+
+        if (doc.url) {
+            const link = document.createElement('a');
+            link.href = '#';
+            link.style.cssText = 'color:#0A64BC;font-size:12px;text-decoration:none;cursor:pointer;font-weight:600;transition:all .2s;';
+            link.textContent = 'View document';
+            link.onmouseover = () => { link.style.color = '#084BA6'; link.style.textDecoration = 'underline'; };
+            link.onmouseout = () => { link.style.color = '#0A64BC'; link.style.textDecoration = 'none'; };
+            link.onclick = (e) => {
+                e.preventDefault();
+                openDocViewer(doc.url, doc.name, doc.id);
+            };
+            row.appendChild(link);
+        }
+
+        documents.appendChild(row);
+    });
+
+    if (!docList.length) {
+        documents.textContent = 'No documents uploaded.';
+    }
+
+    document.getElementById('td-total-docs').textContent =
+        docList.length;
+
+    document.getElementById('td-approved-docs').textContent = approved;
+
+    document.getElementById('td-pending-docs').textContent =
+        docList.length - approved;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    } catch (err) {
+        console.error('openTutorDetails failed:', err);
+        alert('Could not load tutor details. Check the browser console (F12) for details.');
+    }
+};
+
+// Event delegation: works for every card, regardless of inline-JS breakage
+// or special characters in names/emails.
+document.addEventListener('click', function (e) {
+    const viewBtn = e.target.closest('[data-view-tutor]');
+    if (viewBtn) {
+        window.openTutorDetails(viewBtn.getAttribute('data-view-tutor'));
+        return;
+    }
+    const emailBtn = e.target.closest('[data-email-id]');
+    if (emailBtn) {
+        openEmailModal(
+            emailBtn.getAttribute('data-email-id'),
+            emailBtn.getAttribute('data-email-name'),
+            emailBtn.getAttribute('data-email-email')
+        );
+    }
+});
+
+window.closeTutorDetails = function() {
+    document.getElementById('tutor-details-modal')
+        .classList.remove('active');
+
+    document.body.style.overflow = '';
+};
+
+// Close details modal with Escape key (same behaviour as email modals)
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('tutor-details-modal');
+        if (modal && modal.classList.contains('active')) {
+            window.closeTutorDetails();
+        }
+    }
+});
+
+// Tutor profile action functions
+let currentTutorId = null;
+
+function approveTutor() {
+    if (!currentTutorId) return;
+    
+    if (!confirm('Are you sure you want to approve this tutor profile? They will go live immediately.')) {
+        return;
+    }
+    
+    const btn = document.getElementById('td-btn-approve');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i> Approving...';
+    
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/admin/tutors/${currentTutorId}/approve`;
+    form.style.display = 'none';
+    
+    const token = document.createElement('input');
+    token.type = 'hidden';
+    token.name = '_token';
+    token.value = document.querySelector('meta[name="csrf-token"]').content;
+    form.appendChild(token);
+    
+    const method = document.createElement('input');
+    method.type = 'hidden';
+    method.name = '_method';
+    method.value = 'PATCH';
+    form.appendChild(method);
+    
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function suspendTutor() {
+    if (!currentTutorId) return;
+    
+    if (!confirm('Are you sure you want to suspend this tutor profile? They will no longer be visible to students.')) {
+        return;
+    }
+    
+    const btn = document.getElementById('td-btn-suspend');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i> Suspending...';
+    
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/admin/tutors/${currentTutorId}/suspend`;
+    form.style.display = 'none';
+    
+    const token = document.createElement('input');
+    token.type = 'hidden';
+    token.name = '_token';
+    token.value = document.querySelector('meta[name="csrf-token"]').content;
+    form.appendChild(token);
+    
+    const method = document.createElement('input');
+    method.type = 'hidden';
+    method.name = '_method';
+    method.value = 'PATCH';
+    form.appendChild(method);
+    
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+
+
 @livewireScripts
 @endsection
-
