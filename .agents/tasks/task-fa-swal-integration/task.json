@@ -1,7 +1,0 @@
-{
-  "task_id": "task-fa-swal-integration",
-  "task_description": "Standardize icon and notification UI by replacing emoji/SVG icons with Font Awesome 6 and replacing native alert()/confirm() calls with SweetAlert2 throughout the Laravel tutor platform",
-  "status": "pending",
-  "feature_order": ["FEAT-001", "FEAT-002"],
-  "blocked_reason": null
-}

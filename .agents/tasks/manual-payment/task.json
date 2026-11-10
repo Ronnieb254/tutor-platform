@@ -1,7 +1,0 @@
-{
-  "task_id": "task-manual-payment",
-  "task_description": "Replace IntaSend + Daraja STK Push with a manual I&M Bank Paybill payment flow. Student enters M-Pesa transaction code after paying to Paybill 542542 / Account 313126. Booking is saved as pending_verification. Admin verifies or rejects in a new admin UI. On verification: BookingService::confirmBooking() runs, session codes sent to student and tutor. On rejection: PaymentRejected notification sent, booking cancelled.",
-  "status": "pending",
-  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003"],
-  "blocked_reason": null
-}
