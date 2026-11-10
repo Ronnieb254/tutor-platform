@@ -72,7 +72,7 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
                 'id'     => $doc->id,
                 'name'   => $doc->document_type ?? 'Uploaded document',
                 'status' => $doc->status ?? 'pending',
-                'url'    => $doc->file_path ? asset('storage/' . $doc->file_path) : null,
+                'url'    => route('tutor.documents.view', $doc->id),
             ];
         })->values()->all(),
     ];
