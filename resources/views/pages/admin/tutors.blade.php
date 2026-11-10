@@ -948,6 +948,11 @@ function openDocViewer(docPath, docName, docId = null) {
  return;
  }
  
+ // Ensure absolute URL - if relative path, make it absolute
+ if (!docPath.startsWith('http')) {
+ docPath = window.location.origin + docPath;
+ }
+ 
  // Show loading state
  modal.classList.add('loading');
  modal.style.display = 'flex';
@@ -973,6 +978,7 @@ function openDocViewer(docPath, docName, docId = null) {
  const img = document.createElement('img');
  img.src = docPath;
  img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;';
+ img.crossOrigin = 'anonymous';
  img.onload = () => {
  // Show content and hide loading
  loading.style.display = 'none';
@@ -982,11 +988,29 @@ function openDocViewer(docPath, docName, docId = null) {
  content.style.justifyContent = 'center';
  if (docId) actions.style.display = 'flex';
  modal.classList.remove('loading');
- console.log('Image loaded successfully');
+ console.log('Image loaded successfully:', docPath);
  };
- img.onerror = () => {
- console.error('Error loading image:', docPath);
- content.innerHTML = '<p style="color:rgba(21,40,31,.6);">Error loading image. The file may not exist or the path may be incorrect.</p>';
+ img.onerror = (e) => {
+ console.error('Error loading image:', docPath, e);
+ console.log('Image error details - status:', img.status);
+ 
+ // Try direct fetch to check if file is accessible
+ fetch(docPath, {method: 'HEAD'})
+ .then(r => console.log('HEAD request status:', r.status, r.headers.get('content-type')))
+ .catch(err => console.error('HEAD request failed:', err));
+ 
+ content.innerHTML = `
+ <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;padding:20px;">
+ <i class="fa-solid fa-triangle-exclamation" style="font-size:48px;color:#DC2626;"></i>
+ <div style="text-align:center;">
+ <p style="color:rgba(21,40,31,.6);font-size:14px;margin:0 0 10px 0;font-weight:600;">Error loading image preview</p>
+ <p style="color:rgba(21,40,31,.4);font-size:12px;margin:0;">The image failed to load. You can download it instead.</p>
+ </div>
+ <a href="${docPath}" download style="padding:10px 20px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
+ <i class="fa-solid fa-download"></i> Download Image
+ </a>
+ </div>
+ `;
  loading.style.display = 'none';
  content.style.display = 'flex';
  modal.classList.remove('loading');

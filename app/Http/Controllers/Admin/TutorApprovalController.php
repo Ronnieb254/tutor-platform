@@ -21,10 +21,20 @@ class TutorApprovalController extends Controller
             abort(404, 'Document not found');
         }
 
-        // Return file for inline viewing or download
+        // Get MIME type
+        $mimeType = $this->getMimeType($filePath);
+        
+        // Determine if content should be inline or attachment
+        $isImage = in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
+        $isPdf = $mimeType === 'application/pdf';
+        $disposition = ($isImage || $isPdf) ? 'inline' : 'attachment';
+
+        // Return file with proper headers for modal preview
         return response()->file($filePath, [
-            'Content-Type' => $this->getMimeType($filePath),
-            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => $disposition . '; filename="' . basename($filePath) . '"',
+            'Cache-Control' => 'public, max-age=3600',
+            'Pragma' => 'public',
         ]);
     }
 
