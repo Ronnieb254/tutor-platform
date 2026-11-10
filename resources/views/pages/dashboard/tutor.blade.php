@@ -24,14 +24,14 @@ button{font-family:inherit;cursor:pointer;}
 .layout{display:flex;height:100vh;overflow:hidden;}
 
 /* Sidebar */
-.sidebar{width:256px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:relative;z-index:50;}
+.sidebar{width:256px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;position:relative;z-index:50;pointer-events:auto;}
 .sb-logo{padding:22px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
 .sb-logo-text{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:#fff;}
 .sb-logo-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:1px;}
 .sb-nav{flex:1;padding:10px 8px;overflow-y:auto;}
 .sb-section{margin-bottom:18px;}
 .sb-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);padding:0 10px;margin-bottom:5px;}
-.sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.58);transition:all .15s;margin-bottom:1px;cursor:pointer;border:none;background:none;width:100%;text-align:left;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.58);transition:all .15s;margin-bottom:1px;cursor:pointer;border:none;background:none;width:100%;text-align:left;pointer-events:auto;}
 .sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
 .sb-item.active{background:var(--trust-blue);color:#fff;}
 .sb-item svg{flex-shrink:0;opacity:.75;}
@@ -46,11 +46,11 @@ button{font-family:inherit;cursor:pointer;}
 .sb-logout:hover{background:rgba(255,255,255,.16);color:#fff;}
 
 /* Mobile sidebar */
-.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:49;}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:49;pointer-events:none;}
 @media(max-width:1023px){
     .sidebar{position:fixed;left:-256px;top:0;bottom:0;transition:left .25s;z-index:50;}
     .sidebar.open{left:0;}
-    .mob-overlay.show{display:block;}
+    .mob-overlay.show{display:block;pointer-events:auto;}
 }
 
 /* Main */
@@ -1413,11 +1413,10 @@ $activeTab = request('tab','overview');
             <form method="POST" action="/tutor/profile/tutor-update">
                 @csrf @method('PATCH')
                 <input type="hidden" name="_redirect" value="{{ route('tutor.dashboard') }}?tab=profile">
-                <div style="margin-bottom:12px;">
+                <div style="margin-bottom:12px;" x-data="{ count: {{ strlen($profile?->bio ?? '') }} }">
                     <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;">Bio</label>
                     <textarea name="bio" rows="4" maxlength="255" placeholder="Tell students about your experience and teaching style-"
-                              x-data="{ count: {{ strlen($profile?->bio ?? '') }} }"
-                              x-on:input="count = $el.value.length"
+                              @input="count = $el.value.length"
                               style="width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid var(--hair);font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;"
                               onfocus="this.style.borderColor='var(--trust-blue)'" onblur="this.style.borderColor='var(--hair)'">{{ $profile?->bio }}</textarea>
                     <p style="font-size:11px;color:var(--muted);margin-top:4px;text-align:right;">
