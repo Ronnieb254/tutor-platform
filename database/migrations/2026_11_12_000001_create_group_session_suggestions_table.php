@@ -10,13 +10,16 @@ return new class extends Migration
     {
         Schema::create('group_session_suggestions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('group_session_id')->constrained('examiner_clinics')->onDelete('cascade');
+            $table->unsignedBigInteger('group_session_id');
             $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('set null');
             $table->string('custom_subject', 255)->nullable();
             $table->text('area');
             $table->integer('votes_count')->default(0);
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
+
+            // Foreign key constraint
+            $table->foreign('group_session_id')->references('id')->on('examiner_clinics')->onDelete('cascade');
 
             // UNIQUE index on (group_session_id, area) to prevent duplicate suggestions
             $table->unique(['group_session_id', 'area']);
