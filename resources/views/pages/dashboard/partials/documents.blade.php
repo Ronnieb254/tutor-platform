@@ -24,8 +24,15 @@
 
     // Subject count
     $subjectCount = $profile?->subjects()->count() ?? 0;
-    $needsSubjects = $allRequiredApproved && !$isApproved && ($subjectCount < 1 || $subjectCount > 2);
-    $canSubmitForReview = $allRequiredUploaded && $subjectCount >= 1 && $subjectCount <= 2;
+    $subjectsComplete = $subjectCount >= 1 && $subjectCount <= 2;
+
+    // Availability count - NEW REQUIREMENT
+    $availabilityCount = $profile?->availabilities()->count() ?? 0;
+    $availabilityComplete = $availabilityCount > 0;
+
+    $needsSubjects = $allRequiredApproved && !$isApproved && !$subjectsComplete;
+    $needsAvailability = $allRequiredApproved && !$isApproved && $subjectsComplete && !$availabilityComplete;
+    $canSubmitForReview = $allRequiredUploaded && $subjectsComplete && $availabilityComplete;
     @endphp
 
     {{-- Header --}}
@@ -109,6 +116,24 @@
         </div>
     @endif
 
+    {{-- Availability requirement banner --}}
+    @if($needsAvailability && !$isApproved)
+        <div class="status-banner" style="background:#DBEAFE;border:1px solid #93C5FD;margin-bottom:24px;">
+            <span style="font-size:22px;flex-shrink:0;"><i class="fa-solid fa-calendar-days"></i></span>
+            <div style="flex:1;">
+                <div style="font-weight:700;color:#1E40AF;font-size:15px;">Set Your Teaching Availability</div>
+                <div style="font-size:13px;color:#1E40AF;margin-top:3px;line-height:1.6;">
+                    Great! Now you need to set your teaching schedule. Add at least one day of availability so students know when you're available for sessions.
+                </div>
+                <a href="{{ route('tutor.dashboard') }}?tab=availability"
+                   style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 16px;background:#0A64BC;color:#fff;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Set Availability
+                </a>
+            </div>
+        </div>
+    @endif
+
     {{-- Requirements checklist --}}
     @if(!$isApproved)
         <div class="card card-p" style="margin-bottom:20px;">
@@ -118,7 +143,8 @@
             <div style="display:flex;flex-direction:column;gap:10px;">
                 @foreach([
                     ['4 required documents uploaded', $allRequiredUploaded, route('tutor.dashboard').'?tab=documents'],
-                    ['1-2 teaching subjects selected', $subjectCount >= 1 && $subjectCount <= 2, route('tutor.subjects')],
+                    ['1-2 teaching subjects selected', $subjectsComplete, route('tutor.subjects')],
+                    ['Teaching availability set', $availabilityComplete, route('tutor.dashboard').'?tab=availability'],
                 ] as [$label, $done, $link])
                     <div style="display:flex;align-items:center;gap:10px;">
                         <div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
