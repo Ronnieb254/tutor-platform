@@ -311,7 +311,20 @@ $unreadNotifs = $user->unreadNotifications()->count();
  </div>
 </div>
 
-</div>
+{{-- Floating Save Button --}}
+<button type="button" form="subjects-form" class="btn btn-mint" style="position:fixed;bottom:30px;right:30px;padding:14px 28px;font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(16,185,129,.3);border-radius:12px;z-index:100;display:flex;align-items:center;gap:8px;transition:all .25s;cursor:pointer;" onclick="document.getElementById('subjects-form').submit();" onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 12px 32px rgba(16,185,129,.4)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 8px 24px rgba(16,185,129,.3)'">
+ <i class="fa-solid fa-floppy-disk"></i>
+ Save Subjects
+</button>
+
+@media(max-width:768px) {
+ .floating-save-btn {
+ bottom:20px !important;
+ right:20px !important;
+ padding:12px 20px !important;
+ font-size:13px !important;
+ }
+}
 
 <script>
 const selectedSubjects = new Set({{ json_encode($tutorProfile->subjects->pluck('id')->toArray()) }});

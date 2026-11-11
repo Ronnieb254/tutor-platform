@@ -155,13 +155,30 @@ class TutorProfile extends Model
         
         if (count($missingDocs) > 0) return 'no_documents'; // Still need to upload all 4
         
-        // All 4 docs uploaded, check if any are pending
-        if ($docs->where('status', 'pending')->count() > 0) return 'under_review';
+        // REQUIREMENT 1: All 4 docs uploaded and not rejected
+        $docsComplete = count($missingDocs) === 0 && $docs->where('status', 'rejected')->count() === 0;
         
-        // All approved
-        if ($this->is_approved) return 'approved';
+        // REQUIREMENT 2: 1-2 subjects selected
+        $subjectsCount = $this->subjects()->count();
+        $subjectsComplete = $subjectsCount >= 1 && $subjectsCount <= 2;
         
-        return 'under_review';
+        // REQUIREMENT 3: At least 1 availability set
+        $availabilityCount = $this->availabilities()->count();
+        $availabilityComplete = $availabilityCount > 0;
+        
+        // Only show 'under_review' when ALL 3 requirements are met
+        if ($docsComplete && $subjectsComplete && $availabilityComplete) {
+            // Check if any docs are pending
+            if ($docs->where('status', 'pending')->count() > 0) return 'under_review';
+            
+            // All approved
+            if ($this->is_approved) return 'approved';
+            
+            return 'under_review';
+        }
+        
+        // If not all requirements met, stay at no_documents
+        return 'no_documents';
     }
 
     public function getSlugAttribute(): string
