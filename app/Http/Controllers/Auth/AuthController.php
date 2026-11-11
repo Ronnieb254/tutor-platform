@@ -50,7 +50,10 @@ class AuthController extends Controller
                 'email'    => 'required|email|unique:users',
                 'password' => ['required', 'confirmed', Password::min(8)],
                 'role'     => 'required|in:student,tutor,parent',
-                'phone'    => 'nullable|string|max:30',
+                'phone'    => 'required|string|max:30|regex:/^(\+254|0)[0-9]{9,10}$/',
+            ], [
+                'phone.required' => 'Phone number is required.',
+                'phone.regex' => 'Phone number must be a valid Kenyan number (e.g., +254712345678 or 0712345678).',
             ]);
 
             // Create user
@@ -59,7 +62,7 @@ class AuthController extends Controller
                 'email'             => $validated['email'],
                 'password'          => $validated['password'],
                 'role'              => $validated['role'],
-                'phone'             => $validated['phone'] ?? null,
+                'phone'             => $validated['phone'],
                 'email_verified_at' => now(),
                 'is_active'         => true,
             ]);

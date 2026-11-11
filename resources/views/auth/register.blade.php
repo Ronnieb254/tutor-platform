@@ -505,7 +505,7 @@ svg{
 
  {{-- Phone Field --}}
  <div class="form-group">
- <label for="phone" class="form-label">Phone Number</label>
+ <label for="phone" class="form-label">Phone Number <span style="color:var(--coral);">*</span></label>
  <div class="input-wrapper">
  <div class="input-icon">
  <svg viewBox="0 0 24 24">
@@ -519,7 +519,8 @@ svg{
  class="form-input" 
  placeholder="+254 700 000 000"
  value="{{ old('phone') }}"
- autocomplete="tel">
+ autocomplete="tel"
+ required>
  </div>
  @error('phone')
  <span class="error-msg">{{ $message }}</span>
