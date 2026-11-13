@@ -361,7 +361,7 @@
  </label>
 
  <button type="submit" class="btn-accept" id="acceptButton" disabled>
- <i class="fa-solid fa-circle-check"></i> Agree &amp; Sign " I Accept the Agreement
+ <i class="fa-solid fa-circle-check"></i> Agree &amp; Sign - I Accept the Agreement
  </button>
 
  <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px;">

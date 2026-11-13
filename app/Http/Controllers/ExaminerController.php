@@ -190,7 +190,6 @@ class ExaminerController extends Controller
             'subject_id'       => $validated['subject_id'],
             'paper_type'       => $validated['paper_type'],
             'title'            => $validated['title'],
-            'name'             => $validated['title'],
             'description'      => $validated['description'] ?? null,
             'topics_covered'   => $validated['topics_covered'] ?? null,
             'price'            => $validated['price'],

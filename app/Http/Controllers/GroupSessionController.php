@@ -84,7 +84,7 @@ class GroupSessionController extends Controller
     }
 
     /**
-     * Enroll a student in a group session via Daraja M-Pesa STK Push.
+     * Enroll a student in a group session via M-Pesa payment code submission.
      */
     public function enroll(Request $request, ExaminerClinic $groupSession)
     {
@@ -92,7 +92,10 @@ class GroupSessionController extends Controller
             return back()->with('error', 'This is not a group session.');
         }
 
-        $request->validate(['phone' => 'required|string|min:9|max:15']);
+        $request->validate([
+            'phone'       => 'required|string|min:9|max:15',
+            'mpesa_code'  => 'required|string|min:6|max:30',
+        ]);
 
         $user = $request->user();
 
@@ -104,56 +107,92 @@ class GroupSessionController extends Controller
             return back()->with('error', 'This session is full. Please choose another time slot.');
         }
 
-        $daraja    = app(\App\Services\DarajaService::class);
-        $reference = $daraja->generateReference('GRP');
-
-        $paymentData = [
-            'user_id'             => $user->id,
-            'clinic_id'           => $groupSession->id,
-            'amount'              => $groupSession->price,
-            'currency'            => 'KES',
-            'payment_type'        => 'group_session',
-            'mpesa_reference'     => $reference,
-            'payer_phone'         => $daraja->normalizePhone($request->input('phone')),
-            'status'              => 'pending',
-        ];
-
-        if (\Schema::hasColumn('payments', 'commission_rate')) {
-            $paymentData['commission_rate'] = 75.00;
-            $paymentData['tutor_amount']    = round($groupSession->price * 0.25, 2);
-            $paymentData['platform_amount'] = round($groupSession->price * 0.75, 2);
-        }
-
         try {
-            $result = $daraja->initializeStkPush(
-                $request->input('phone'),
-                (float) $groupSession->price,
-                $reference,
-                'Mwalimu Group'
-            );
+            // Normalize phone number
+            $daraja = app(\App\Services\DarajaService::class);
+            $phone = $daraja->normalizePhone($request->input('phone'));
+            $mpesaCode = strtoupper(trim($request->input('mpesa_code')));
+            
+            // Generate reference for tracking
+            $reference = $daraja->generateReference('GRP');
 
-            $responseCode = $result['ResponseCode'] ?? ($result['errorCode'] ?? null);
+            // Create payment record with pending status for admin verification
+            $payment = Payment::create([
+                'user_id'         => $user->id,
+                'clinic_id'       => $groupSession->id,
+                'amount'          => $groupSession->price,
+                'currency'        => 'KES',
+                'payment_type'    => 'group_session',
+                'mpesa_code'      => $mpesaCode,
+                'mpesa_reference' => $reference,
+                'payer_phone'     => $phone,
+                'status'          => 'pending_verification',
+                'metadata'        => [
+                    'session_id'     => $groupSession->id,
+                    'session_title'  => $groupSession->title,
+                    'tutor_id'       => $groupSession->tutor_id,
+                    'submitted_at'   => now()->toDateTimeString(),
+                ],
+            ]);
 
-            if ($responseCode !== '0' && !isset($result['_mock'])) {
-                return back()->with('error', 'Payment initialization failed: ' . ($result['errorMessage'] ?? 'Please try again.'));
-            }
+            // Create provisional clinic enrollment (pending payment verification)
+            $enrollment = ClinicEnrollment::create([
+                'clinic_id'    => $groupSession->id,
+                'student_id'   => $user->id,
+                'payment_id'   => $payment->id,
+                'enrolled_at'  => now(),
+                'status'       => 'pending', // Will be activated once payment verified
+            ]);
 
-            $paymentData['checkout_request_id'] = $result['CheckoutRequestID'] ?? null;
-            $paymentData['merchant_request_id'] = $result['MerchantRequestID'] ?? null;
+            \Log::info('Group session enrollment initiated', [
+                'session_id' => $groupSession->id,
+                'student_id' => $user->id,
+                'payment_id' => $payment->id,
+                'mpesa_code' => $mpesaCode,
+            ]);
 
-            $payment = Payment::create($paymentData);
-
-            // Redirect to a polling/waiting page
-            session(['group_payment_ref' => $reference, 'group_session_id' => $groupSession->id]);
-            return redirect()->route('group-sessions.payment-pending', ['reference' => $reference]);
+            // Redirect to pending verification page
+            return redirect()
+                ->route('group-sessions.payment-pending', ['reference' => $reference])
+                ->with('info', 'Payment code submitted. Admin will verify within 2 hours.');
 
         } catch (\Exception $e) {
-            \Log::error('Group session payment init failed: ' . $e->getMessage(), [
+            \Log::error('Group session enrollment failed: ' . $e->getMessage(), [
                 'session_id' => $groupSession->id,
                 'user_id'    => $user->id,
             ]);
-            return back()->with('error', 'Something went wrong. Please try again or contact support.');
+            return back()->with('error', 'Failed to process enrollment. Please try again or contact support.');
         }
+    }
+
+    /**
+     * Show payment-pending page after student submits M-Pesa code.
+     */
+    public function paymentPending(Request $request)
+    {
+        $reference = $request->get('reference') ?? session('group_payment_ref');
+
+        if (!$reference) {
+            return redirect()->route('group-sessions.index')
+                ->with('error', 'Payment reference missing.');
+        }
+
+        $payment = Payment::where('mpesa_reference', $reference)->first();
+
+        if (!$payment) {
+            return redirect()->route('group-sessions.index')
+                ->with('error', 'Payment not found. Please contact support.');
+        }
+
+        $groupSession = $payment->clinic;
+
+        // If already verified, redirect to enrollment confirmed page
+        if ($payment->status === 'success') {
+            return redirect()->route('group-sessions.my-sessions')
+                ->with('success', 'Your enrollment is confirmed! Check your email for the session code.');
+        }
+
+        return view('pages.group-sessions.payment-pending', compact('groupSession', 'reference'));
     }
 
     /**
@@ -174,5 +213,59 @@ class GroupSessionController extends Controller
             ->paginate(10);
 
         return view('pages.group-sessions.my-sessions', compact('enrollments'));
+    }
+
+    /**
+     * Show checkout page with manual payment instructions.
+     */
+    public function checkout(ExaminerClinic $groupSession)
+    {
+        if (\Schema::hasColumn('examiner_clinics', 'is_group_session') && !$groupSession->is_group_session) {
+            abort(404);
+        }
+
+        $groupSession->load(['tutor', 'subject', 'enrollments']);
+
+        return view('pages.group-sessions.checkout', compact('groupSession'));
+    }
+
+    /**
+     * Store a topic suggestion for group sessions.
+     */
+    public function suggestTopic(Request $request)
+    {
+        $validated = $request->validate([
+            'topic'       => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        try {
+            // Build the data to insert
+            $data = [
+                'topic'       => $validated['topic'],
+                'description' => $validated['description'] ?? null,
+            ];
+
+            // Only add optional fields if user is authenticated
+            if (auth()->check()) {
+                $data['user_id'] = auth()->id();
+                $data['email'] = auth()->user()->email ?? null;
+            } else {
+                $data['email'] = $request->ip();
+            }
+
+            // Only add ip_address if column exists
+            if (\Schema::hasColumn('group_session_suggestions', 'ip_address')) {
+                $data['ip_address'] = $request->ip();
+            }
+
+            // Create the suggestion
+            \App\Models\GroupSessionSuggestion::create($data);
+
+            return back()->with('success', 'Thank you! Your topic suggestion has been recorded. Our team will review it soon.');
+        } catch (\Exception $e) {
+            \Log::error('Failed to create group session suggestion: ' . $e->getMessage());
+            return back()->with('error', 'Failed to submit suggestion. Please try again.');
+        }
     }
 }

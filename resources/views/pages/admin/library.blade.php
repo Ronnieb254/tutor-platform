@@ -281,8 +281,8 @@
  <div>
  <label class="form-label">Publish?</label>
  <select name="is_published" class="form-input">
- <option value="1">Yes " publish now</option>
- <option value="0">No " save as draft</option>
+ <option value="1">Yes - publish now</option>
+ <option value="0">No - save as draft</option>
  </select>
  </div>
  </div>
@@ -295,7 +295,7 @@
  <textarea name="content" class="form-input" rows="5" placeholder="Full content or notes"></textarea>
  </div>
  <div>
- <label class="form-label">File (PDF, video, doc " max 50MB)</label>
+ <label class="form-label">File (PDF, video, doc - max 50MB)</label>
  <input type="file" name="file" class="form-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.avi,.mov">
  </div>
  <div>

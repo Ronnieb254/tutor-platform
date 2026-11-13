@@ -37,7 +37,7 @@
  <div>
  <label class="form-label">Subject <span style="color:#E8522A;">*</span></label>
  <select name="subject_id" class="form-input form-select" required>
- <option value="">" Select subject "</option>
+ <option value=""> Select subject </option>
  @foreach($subjects as $s)
  <option value="{{ $s->id }}" {{ old('subject_id')==$s->id?'selected':'' }}>{{ $s->name }}</option>
  @endforeach
@@ -46,7 +46,7 @@
  <div>
  <label class="form-label">Assign Tutor <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
  <select name="tutor_id" class="form-input form-select">
- <option value="">" TBD "</option>
+ <option value=""> TBD </option>
  @foreach($tutors as $t)
  <option value="{{ $t->id }}" {{ old('tutor_id')==$t->id?'selected':'' }}>{{ $t->name }}</option>
  @endforeach
@@ -55,9 +55,9 @@
  </div>
 
  <div style="margin-bottom:16px;">
- <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional " leave blank to show to all tracks)</span></label>
+ <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional - leave blank to show to all tracks)</span></label>
  <select name="curriculum_id" class="form-input form-select">
- <option value="">" All tracks "</option>
+ <option value=""> All tracks </option>
  @foreach($curricula->groupBy('track') as $track => $group)
  <optgroup label="{{ ucfirst($track) }}">
  @foreach($group as $c)
@@ -118,8 +118,8 @@
  Auto-generated on save
  </h4>
  <div style="font-size:12px;color:var(--muted);line-height:1.7;">
- <p> <strong>Session code</strong> " GRP-XXXXXXXX</p>
- <p> <strong>Meeting room</strong> " Mwalimu-group-{uuid}</p>
+ <p> <strong>Session code</strong> - GRP-XXXXXXXX</p>
+ <p> <strong>Meeting room</strong> - Mwalimu-group-{uuid}</p>
  <p> <strong>Status</strong> set to "Scheduled"</p>
  </div>
  </div>

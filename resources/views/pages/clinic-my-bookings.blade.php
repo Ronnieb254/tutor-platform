@@ -143,7 +143,9 @@ a{color:inherit;text-decoration:none;}
  @if($booking->payment)
  <div style="font-size:11px;color:var(--muted);text-align:right;">
  Paid: KSh {{ number_format($booking->payment->amount) }}
+ @if($booking->payment->paid_at)
  <br>{{ $booking->payment->paid_at->format('M j, Y') }}
+ @endif
  </div>
  @endif
  </div>

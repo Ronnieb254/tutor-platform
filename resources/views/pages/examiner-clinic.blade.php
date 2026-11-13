@@ -3,7 +3,7 @@
 <head>
 @include('partials.head')
 <title>Examiner's Clinic - Mwalimu</title>
-<meta name="description" content="Learn directly from Kenya's national examiners and markers. Group sessions per paper (PP1, PP2, PP3). KSh 1,000 per session. Max 30 students per session.">
+<meta name="description" content="Learn directly from Kenya's national examiners and markers. Group sessions per paper Past Paper 1 (PP1), Past Paper 2 (PP2), Past Paper 3 (PP3). KSh 1,000 per session. Max 30 students per session.">
 </head>
 <body>
 @include('partials.nav')
@@ -22,7 +22,7 @@
  Learn from the experts who <span style="color:#EEBE15;">set and mark the exams.</span>
  </h1>
  <p style="font-size:17px;color:rgba(255,255,255,.65);max-width:560px;margin-bottom:28px;line-height:1.85;">
- Most revision resources focus on <em style="font-style:italic;">what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> - delivered by national examiners and markers, structured per paper (PP1, PP2, PP3) as it applies.
+ Most revision resources focus on <em style="font-style:italic;">what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> - delivered by national examiners and markers, structured per paper, paper Past Paper 1 (PP1), Past Paper 2 (PP2), Past Paper 3 (PP3) as it applies.
  </p>
  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
  <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">

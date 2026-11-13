@@ -1,5 +1,5 @@
 ﻿@extends('layouts.admin')
-@section('title', 'Group Session " ' . $groupSession->title)
+@section('title', 'Group Session - ' . $groupSession->title)
 
 @section('content')
 
@@ -12,7 +12,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
 <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
  <div>
  <a href="{{ route('admin.group-sessions.index') }}" style="display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:8px;">
- " All Group Sessions
+ - All Group Sessions
  </a>
  <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);">{{ $groupSession->title }}</h2>
  <div style="display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap;">
@@ -67,6 +67,9 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
  </div>
  </div>
  <div class="table-wrap">
+ @if($groupSession->enrollments->isEmpty())
+ <div style="text-align:center;padding:32px;color:var(--muted);">No students enrolled yet.</div>
+ @else
  <table id="session-enrollments-table">
  <thead>
  <tr>
@@ -77,7 +80,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
  </tr>
  </thead>
  <tbody>
- @forelse($groupSession->enrollments as $i => $enrollment)
+ @foreach($groupSession->enrollments as $i => $enrollment)
  <tr>
  <td style="color:var(--muted);font-size:13px;">{{ $i + 1 }}</td>
  <td>
@@ -87,13 +90,10 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
  <td><span style="font-family:monospace;font-size:12px;background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 8px;border-radius:6px;">{{ $enrollment->session_code ?? '"' }}</span></td>
  <td style="font-size:12px;color:var(--muted);">{{ $enrollment->created_at->format('M j, g:ia') }}</td>
  </tr>
- @empty
- <tr>
- <td colspan="4" style="text-align:center;padding:32px;color:var(--muted);">No students enrolled yet.</td>
- </tr>
- @endforelse
+ @endforeach
  </tbody>
  </table>
+ @endif
  </div>
  </div>
 
@@ -166,13 +166,16 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
 @push('scripts')
 <script>
 $(document).ready(function() {
+ // Only initialize DataTables if the table has data
+ var table = $('#session-enrollments-table');
+ if (table.length && $('tbody tr', table).length > 0) {
  initDataTable('#session-enrollments-table', {
- order: [[2, 'desc']], // Enrolled At descending
+ order: [[3, 'desc']], // Enrolled At (column 3) descending
  columnDefs: [
- { type: 'date', targets: 2 },
- { orderable: false, targets: 4 } // Actions
+ { orderable: false, targets: [0, 1] } // Non-orderable columns
  ]
  });
+ }
 });
 </script>
 @endpush

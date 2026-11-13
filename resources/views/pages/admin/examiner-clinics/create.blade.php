@@ -29,7 +29,7 @@
  <div>
  <label class="form-label">Subject <span style="color:#E8522A;">*</span></label>
  <select name="subject_id" required class="form-input form-select">
- <option value="">" Select subject "</option>
+ <option value=""> Select subject </option>
  @foreach($subjects as $s)
  <option value="{{ $s->id }}" {{ old('subject_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
  @endforeach
@@ -38,7 +38,7 @@
  <div>
  <label class="form-label">Curriculum <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
  <select name="curriculum_id" class="form-input form-select">
- <option value="">" All tracks "</option>
+ <option value=""> All tracks </option>
  @foreach($curricula->groupBy('track') as $track => $group)
  <optgroup label="{{ ucfirst($track) }}">
  @foreach($group as $c)
@@ -55,7 +55,7 @@
  <div style="margin-bottom:18px;">
  <label class="form-label">Clinic Title <span style="color:#E8522A;">*</span></label>
  <input type="text" name="title" class="form-input" value="{{ old('title') }}" required
- placeholder="e.g. Mathematics PP1 " Algebra & Calculus Mastery">
+ placeholder="e.g. Mathematics PP1 - Algebra & Calculus Mastery">
  </div>
 
  {{-- Description --}}

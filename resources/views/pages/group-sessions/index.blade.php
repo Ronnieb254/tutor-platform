@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Group Sessions " Mwalimu</title>
+<title>Group Sessions - Mwalimu</title>
 <meta name="description" content="Live group classes hosted by top tutors. Learn together, pay less per seat. Browse upcoming sessions and book your spot.">
 </head>
 <body>
@@ -56,7 +56,7 @@
  </div>
  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;">
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">How group sessions work</p>
- @foreach(['Browse upcoming live classes by subject/topic','Book your seat " pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
+ @foreach(['Browse upcoming live classes by subject/topic','Book your seat - pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
  <i class="fa-solid fa-circle-check"></i>
  <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
@@ -65,6 +65,12 @@
  <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);text-align:center;">
  <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">KSh 600</span>
  <span style="font-size:14px;color:rgba(255,255,255,.45);margin-left:8px;">/ per session</span>
+ </div>
+ <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);">
+ <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:12px;">Don't see what you're looking for?</p>
+ <button onclick="openSuggestTopicModal()" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:12px;background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;">
+ <i class="fa-solid fa-lightbulb"></i> Suggest a Topic
+ </button>
  </div>
  </div>
  </div>
@@ -78,7 +84,7 @@
  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px;">
  <div>
  <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,38px);color:#15281F;margin-bottom:6px;">Upcoming Group Sessions</h2>
- <p style="color:rgba(21,40,31,.55);">Live cohort classes. Max 30 learners per session " book your seat before it fills up.</p>
+ <p style="color:rgba(21,40,31,.55);">Live cohort classes. Max 30 learners per session - book your seat before it fills up.</p>
  </div>
  </div>
 
@@ -156,19 +162,16 @@
  @auth
  @if($session->isEnrolledBy(auth()->user()))
  <a href="{{ route('group-sessions.show', $session) }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:rgba(16,185,129,.1);color:#10B981;border:1px solid rgba(16,185,129,.3);font-size:13px;font-weight:600;text-decoration:none;">
- <i class="fa-solid fa-circle-check"></i> Enrolled " View
+ <i class="fa-solid fa-circle-check"></i> Enrolled - View
  </a>
  @elseif($isFull)
  <span style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:999px;background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;font-size:13px;font-weight:600;">
  <i class="fa-solid fa-lock"></i> Session Full
  </span>
  @else
- <form method="POST" action="{{ route('group-sessions.enroll', $session) }}" style="flex:1;">
- @csrf
- <button type="submit" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
- <i class="fa-solid fa-ticket"></i> Book Seat " KSh {{ number_format($session->price) }}
- </button>
- </form>
+ <a href="{{ route('group-sessions.checkout', $session) }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:13px;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+ <i class="fa-solid fa-ticket"></i> Book Seat - KSh {{ number_format($session->price) }}
+ </a>
  @endif
  @else
  <a href="{{ route('register') }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:13px;font-weight:700;text-decoration:none;">
@@ -205,6 +208,85 @@
  @endif
  </div>
 </section>
+
+{{-- Suggest Topic Modal --}}
+<div id="suggest-topic-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;">
+ <div style="background:#fff;border-radius:20px;width:100%;max-width:500px;padding:32px;box-shadow:0 25px 80px rgba(0,0,0,.25);animation:slideIn .3s ease-out;">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+ <h2 style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#15281F;margin:0;">Suggest a Topic</h2>
+ <button onclick="closeSuggestTopicModal()" style="background:none;border:none;font-size:24px;color:#888;cursor:pointer;padding:0;">
+ <i class="fa-solid fa-xmark"></i>
+ </button>
+ </div>
+
+ <form id="suggest-topic-form" method="POST" action="{{ route('group-sessions.suggest-topic') }}" style="display:flex;flex-direction:column;gap:18px;">
+ @csrf
+ 
+ <div>
+ <label style="display:block;font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">
+ Topic or Subject
+ </label>
+ <input type="text" name="topic" placeholder="e.g., Calculus, IELTS Writing, Physics" required style="width:100%;padding:12px 14px;border:1.5px solid rgba(21,40,31,.12);border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:all .2s;" onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 4px rgba(10,100,188,.1)'" onblur="this.style.borderColor='rgba(21,40,31,.12)';this.style.boxShadow='none'">
+ </div>
+
+ <div>
+ <label style="display:block;font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">
+ Description (optional)
+ </label>
+ <textarea name="description" placeholder="Tell us why you'd like this topic..." style="width:100%;padding:12px 14px;border:1.5px solid rgba(21,40,31,.12);border-radius:10px;font-size:14px;font-family:inherit;outline:none;resize:none;min-height:100px;transition:all .2s;" onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 4px rgba(10,100,188,.1)'" onblur="this.style.borderColor='rgba(21,40,31,.12)';this.style.boxShadow='none'"></textarea>
+ </div>
+
+ <div style="display:flex;gap:12px;margin-top:12px;">
+ <button type="button" onclick="closeSuggestTopicModal()" style="flex:1;padding:11px 20px;border-radius:10px;background:#f3f4f6;color:#15281F;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+ Cancel
+ </button>
+ <button type="submit" style="flex:1;padding:11px 20px;border-radius:10px;background:#0A64BC;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#084BA6'" onmouseout="this.style.background='#0A64BC'">
+ <i class="fa-solid fa-paper-plane"></i> Submit Suggestion
+ </button>
+ </div>
+ </form>
+ </div>
+</div>
+
+<script>
+function openSuggestTopicModal() {
+ document.getElementById('suggest-topic-modal').style.display = 'flex';
+ document.body.style.overflow = 'hidden';
+}
+
+function closeSuggestTopicModal() {
+ document.getElementById('suggest-topic-modal').style.display = 'none';
+ document.body.style.overflow = 'auto';
+ document.getElementById('suggest-topic-form').reset();
+}
+
+// Close on background click
+document.getElementById('suggest-topic-modal')?.addEventListener('click', function(e) {
+ if (e.target === this) closeSuggestTopicModal();
+});
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+ if (e.key === 'Escape') closeSuggestTopicModal();
+});
+</script>
+
+<style>
+#suggest-topic-modal {
+ animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+ from {
+ opacity: 0;
+ transform: scale(0.95) translateY(-20px);
+ }
+ to {
+ opacity: 1;
+ transform: scale(1) translateY(0);
+ }
+}
+</style>
 
 @include('partials.footer')
 @livewireScripts

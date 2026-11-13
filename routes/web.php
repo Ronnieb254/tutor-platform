@@ -56,10 +56,13 @@ Route::get('/examiner-clinic', [App\Http\Controllers\ClinicController::class, 'i
 Route::get('/group-sessions', [App\Http\Controllers\GroupSessionController::class, 'index'])->name('group-sessions.index');
 // Constrain to numeric IDs so the static /my-sessions route is never swallowed by this wildcard
 Route::get('/group-sessions/{groupSession}', [App\Http\Controllers\GroupSessionController::class, 'show'])->name('group-sessions.show')->whereNumber('groupSession');
+Route::get('/group-sessions/{groupSession}/checkout', [App\Http\Controllers\GroupSessionController::class, 'checkout'])->name('group-sessions.checkout')->whereNumber('groupSession');
+Route::get('/group-sessions/payment-pending/{reference}', [App\Http\Controllers\GroupSessionController::class, 'paymentPending'])->name('group-sessions.payment-pending');
 
 // Group session suggestions (poll widget) - public access (guests allowed)
 Route::get('/group-sessions/{groupSession}/suggestions', [App\Http\Controllers\GroupSessionSuggestionController::class, 'index'])->name('group-sessions.suggestions.index')->whereNumber('groupSession');
 Route::post('/group-sessions/{groupSession}/suggestions', [App\Http\Controllers\GroupSessionSuggestionController::class, 'store'])->name('group-sessions.suggestions.store')->whereNumber('groupSession');
+Route::post('/group-sessions/suggest-topic', [App\Http\Controllers\GroupSessionController::class, 'suggestTopic'])->name('group-sessions.suggest-topic');
 Route::post('/group-sessions/{groupSession}/suggestions/{suggestion}/vote', [App\Http\Controllers\GroupSessionSuggestionController::class, 'vote'])->name('group-sessions.suggestions.vote')->whereNumber('groupSession')->whereNumber('suggestion');
 Route::delete('/group-sessions/{groupSession}/suggestions/{suggestion}/vote', [App\Http\Controllers\GroupSessionSuggestionController::class, 'unvote'])->name('group-sessions.suggestions.unvote')->whereNumber('groupSession')->whereNumber('suggestion');
 
@@ -429,10 +432,21 @@ Route::middleware('auth')->group(function () {
         Route::get('/group-sessions/suggestions', [App\Http\Controllers\Admin\GroupSessionSuggestionController::class, 'index'])->name('group-sessions.suggestions');
         Route::delete('/group-sessions/suggestions/{suggestion}', [App\Http\Controllers\Admin\GroupSessionSuggestionController::class, 'destroy'])->name('group-sessions.suggestions.destroy');
 
+        // Topic Suggestions Analytics
+        Route::get('/group-session-suggestions', [App\Http\Controllers\Admin\TopicSuggestionsController::class, 'index'])->name('group-session-suggestions.index');
+        Route::get('/group-session-suggestions/export', [App\Http\Controllers\Admin\TopicSuggestionsController::class, 'export'])->name('group-session-suggestions.export');
+        Route::get('/group-session-suggestions/{suggestion}', [App\Http\Controllers\Admin\TopicSuggestionsController::class, 'show'])->name('group-session-suggestions.show');
+        Route::delete('/group-session-suggestions/{suggestion}', [App\Http\Controllers\Admin\TopicSuggestionsController::class, 'destroy'])->name('group-session-suggestions.destroy');
+
         // Manual payment verification queue
         Route::get('/manual-payments', [App\Http\Controllers\Admin\ManualPaymentController::class, 'index'])->name('manual-payments');
         Route::post('/manual-payments/{payment}/verify', [App\Http\Controllers\Admin\ManualPaymentController::class, 'verify'])->name('manual-payments.verify');
         Route::post('/manual-payments/{payment}/reject', [App\Http\Controllers\Admin\ManualPaymentController::class, 'reject'])->name('manual-payments.reject');
+
+        // Group Session Payment Verification
+        Route::get('/group-session-payments', [App\Http\Controllers\Admin\PaymentVerificationController::class, 'index'])->name('group-session-payments.index');
+        Route::post('/group-session-payments/{payment}/verify', [App\Http\Controllers\Admin\PaymentVerificationController::class, 'verify'])->name('group-session-payments.verify');
+        Route::post('/group-session-payments/bulk-verify', [App\Http\Controllers\Admin\PaymentVerificationController::class, 'bulkVerify'])->name('group-session-payments.bulk-verify');
     });
     
     // Tutor can manage their own subjects
@@ -472,22 +486,4 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/clinic/payment-pending', [App\Http\Controllers\ClinicBookingController::class, 'paymentPending'])
         ->name('clinic.payment-pending');
-
-    Route::get('/group-sessions/payment-pending', function (\Illuminate\Http\Request $request) {
-        $reference = $request->get('reference') ?? session('group_payment_ref');
-        if (!$reference) {
-            return redirect()->route('group-sessions.index')->with('error', 'Payment reference missing.');
-        }
-        $payment = \App\Models\Payment::where('mpesa_reference', $reference)->first();
-        if (!$payment) {
-            return redirect()->route('group-sessions.index')->with('error', 'Payment not found.');
-        }
-        if ($payment->status === 'success') {
-            session()->forget(['group_payment_ref', 'group_session_id']);
-            $enrollment = \App\Models\ClinicEnrollment::where('payment_id', $payment->id)->first();
-            return redirect()->route('group-sessions.my-sessions')
-                ->with('success', $enrollment ? "Enrolled! Your session code: {$enrollment->session_code}." : 'Payment confirmed.');
-        }
-        return view('pages.group-sessions.payment-pending', compact('payment', 'reference'));
-    })->name('group-sessions.payment-pending');
 });

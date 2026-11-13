@@ -26,7 +26,7 @@
  @endphp
 
  <h1 style="font-size:24px;font-weight:700;color:#15281F;margin:0 0 8px;">
- @if($delivery === 'fully_delivered') - Session Completed " Earnings Credited
+ @if($delivery === 'fully_delivered') - Session Completed - Earnings Credited
  @elseif($delivery === 'partially_delivered')  Session Partially Delivered
  @else  Session Not Delivered @endif
  </h1>

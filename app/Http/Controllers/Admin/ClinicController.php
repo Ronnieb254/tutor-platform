@@ -21,6 +21,7 @@ class ClinicController extends Controller
 
         $query = ExaminerClinic::with(['subject', 'tutor', 'creator'])
             ->withCount('enrollments')
+            ->clinics()  // Exclude group sessions
             ->orderBy('scheduled_at', 'desc');
 
         if ($status) {
@@ -42,10 +43,10 @@ class ClinicController extends Controller
         $clinics = $query->paginate(20)->withQueryString();
 
         $stats = [
-            'total'     => ExaminerClinic::count(),
-            'scheduled' => ExaminerClinic::where('status', 'scheduled')->count(),
-            'today'     => ExaminerClinic::whereDate('scheduled_at', today())->count(),
-            'full'      => ExaminerClinic::withCount('enrollments')
+            'total'     => ExaminerClinic::clinics()->count(),
+            'scheduled' => ExaminerClinic::clinics()->where('status', 'scheduled')->count(),
+            'today'     => ExaminerClinic::clinics()->whereDate('scheduled_at', today())->count(),
+            'full'      => ExaminerClinic::clinics()->withCount('enrollments')
                               ->get()
                               ->filter(fn($c) => $c->enrollments_count >= $c->max_students)
                               ->count(),
@@ -88,7 +89,6 @@ class ClinicController extends Controller
             'subject_id'       => $validated['subject_id'],
             'paper_type'       => $validated['paper_type'],
             'title'            => $validated['title'],
-            'name'             => $validated['title'],
             'description'      => $validated['description'] ?? null,
             'tutor_id'         => $validated['tutor_id'],
             'price'            => $validated['price'],

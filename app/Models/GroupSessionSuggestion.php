@@ -3,39 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class GroupSessionSuggestion extends Model
 {
+    protected $table = 'group_session_suggestions';
+
     protected $fillable = [
-        'group_session_id',
-        'subject_id',
-        'custom_subject',
-        'area',
-        'votes_count',
-        'created_by',
+        'user_id',
+        'email',
+        'topic',
+        'description',
+        'ip_address',
     ];
 
     protected $casts = [
-        'votes_count' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
-    public function groupSession()
+    /**
+     * Get the user who submitted the suggestion.
+     */
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(ExaminerClinic::class, 'group_session_id');
-    }
-
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class);
-    }
-
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function votes()
-    {
-        return $this->hasMany(GroupSessionSuggestionVote::class, 'suggestion_id');
+        return $this->belongsTo(User::class);
     }
 }

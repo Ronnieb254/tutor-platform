@@ -7,7 +7,7 @@ use App\Models\TutorProfile;
 use App\Models\User;
 
 // Fetch all tutors with filtering and pagination
-$status = request('status', 'all'); // all|pending|approved|suspended
+$status = request('status', 'pending'); // all|pending|approved|suspended (default: pending)
 $search = request('search', ''); // Client-side filter
 $sortBy = request('sort', 'created'); // Server-side sort: created|name|email|status
 $perPage = 25;
@@ -60,6 +60,7 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
         'id'       => $profile->id,
         'name'     => $user?->name ?? 'Unknown',
         'email'    => $user?->email ?? '',
+        'phone'    => $user?->phone ?? '',
         'joined'   => $profile->created_at ? $profile->created_at->format('M d, Y') : '--',
         'status'   => $profile->documents->isEmpty()
             ? 'New'
@@ -624,6 +625,10 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
  <a href="mailto:{{ $profile->user->email }}" class="tutor-card-email">{{ $profile->user->email }}</a>
  </div>
  <div class="tutor-card-row">
+ <i class="fa-solid fa-phone"></i>
+ <span>{{ $profile->user->phone ?? 'Not provided' }}</span>
+ </div>
+ <div class="tutor-card-row">
  <i class="fa-solid fa-check"></i>
  <span>{{ $approvedDocs }}/{{ max(4, $totalDocs) }} docs verified</span>
  </div>
@@ -871,6 +876,10 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
                     <div class="td-field">
                         <label>Email Address</label>
                         <strong id="td-email">--</strong>
+                    </div>
+                    <div class="td-field">
+                        <label>Phone Number</label>
+                        <strong id="td-phone">--</strong>
                     </div>
                     <div class="td-field">
                         <label>Registration Date</label>
@@ -1413,6 +1422,7 @@ window.openTutorDetails = function(id) {
     document.getElementById('td-id').textContent = 'Tutor #' + tutor.id;
     document.getElementById('td-full-name').textContent = tutor.name;
     document.getElementById('td-email').textContent = tutor.email;
+    document.getElementById('td-phone').textContent = tutor.phone || 'Not provided';
     document.getElementById('td-joined').textContent = tutor.joined;
 
     const status = document.getElementById('td-status');

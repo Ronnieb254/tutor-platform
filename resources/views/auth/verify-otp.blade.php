@@ -5,7 +5,7 @@
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <meta name="csrf-token" content="{{ csrf_token() }}">
- <title>Verify Your Account " Mwalimu</title>
+ <title>Verify Your Account - Mwalimu</title>
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -172,7 +172,7 @@ h1{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);
  @if(session('otp_fallback'))
  <div style="background:rgba(238,190,21,.1);border:2px dashed #EEBE15;border-radius:16px;padding:20px;margin-bottom:24px;text-align:center;">
  <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.5);margin-bottom:8px;">
-  Email delivery failed " use this code
+  Email delivery failed - use this code
  </div>
  <div style="font-family:monospace;font-size:38px;font-weight:800;color:#15281F;letter-spacing:10px;">
  {{ session('otp_fallback') }}
@@ -218,7 +218,7 @@ h1{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--ink);
  <div style="margin-bottom:8px;">
  <div class="section-label">
  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 15.1 19.79 19.79 0 0 1 1.62 6.47 2 2 0 0 1 3.6 4h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 11.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
- Phone Code (Optional) " {{ $phone }}
+ Phone Code (Optional) - {{ $phone }}
  </div>
  <div class="otp-group" id="phone-otp-group">
  @for($i = 0; $i < 6; $i++)
@@ -319,7 +319,7 @@ function setupOtpInputs(group) {
 function checkSubmitReady() {
  const emailVal = document.getElementById('email_otp_value').value;
  const emailReady = emailVal.length === 6;
- // Email code is sufficient " phone code is optional
+ // Email code is sufficient - phone code is optional
  document.getElementById('submit-btn').disabled = !emailReady;
 }
 

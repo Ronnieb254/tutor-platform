@@ -218,7 +218,7 @@
 
 @push('scripts')
 <script>
-// No DataTables " table uses server-side filtering and pagination
+// No DataTables - table uses server-side filtering and pagination
 </script>
 @endpush
 @endsection

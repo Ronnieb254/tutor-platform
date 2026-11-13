@@ -104,7 +104,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  width: { ideal: 1280, max: 1920, min: 320 }
  }
  },
- // Screen sharing " all sources
+ // Screen sharing - all sources
  desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
  desktopSharingChromeSources: ['screen', 'window', 'tab'],
  desktopSharingChromeExtId: null,
@@ -138,7 +138,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  RECENT_LIST_ENABLED: false,
  SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar'],
  VIDEO_LAYOUT_FIT: 'both',
- // Full toolbar " all tools visible and available
+ // Full toolbar - all tools visible and available
  TOOLBAR_BUTTONS: [
  'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
  'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',

@@ -59,7 +59,7 @@
 </section>
 
 {{-- ROLE TOGGLE --}}
-<section style="padding:80px 0;" x-data="{ role: 'student' }">
+<!-- <section style="padding:80px 0;" x-data="{ role: 'student' }">
  <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
  <div style="text-align:center;margin-bottom:36px;">
  <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#15281F;margin-bottom:10px;">How does it work?</h2>
@@ -151,51 +151,7 @@
  </div>
  </div>
  <style>.steps-grid{grid-template-columns:1fr!important;}@media(min-width:768px){.steps-grid{grid-template-columns:repeat(2,1fr)!important;}}@media(min-width:1024px){.steps-grid{grid-template-columns:repeat(3,1fr)!important;}}</style>
-</section>
-
-{{-- SESSION PRICING --}}
-<section style="background:#0D1F14;padding:80px 0;">
- <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
- <div style="text-align:center;margin-bottom:44px;">
- <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#fff;margin-bottom:10px;">Simple, fixed pricing</h2>
- <!-- <p style="font-size:17px;color:rgba(255,255,255,.5);">No negotiation, no surprises. Same price for every tutor.</p> -->
- </div>
- <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-grid">
- @foreach([
- ['20','Quick Help','fa-solid fa-zap','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week','individual','#0A64BC'],
- ['40','Guided Practice','fa-solid fa-chalkboard','KSh 600','A full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics','individual','#10B981'],
- ['60','Deep Dive','fa-solid fa-book-open','KSh 900','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics','individual','#E8522A'],
- ['60','Group Session','fa-solid fa-users','KSh 600','Learn together with other students. Share the cost, maximize value.','Group revision, study buddies, exam prep','group','#EEBE15'],
- ] as [$mins,$name,$icon,$price,$desc,$ideal,$type,$color])
- <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px;transition:background .2s;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
- <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
- <div style="display:flex;align-items:center;gap:10px;">
- <div style="width:52px;height:52px;border-radius:14px;background:{{ $color }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;">
- <i class="{{ $icon }}" style="color:#fff;"></i>
- </div>
- <div>
- <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#fff;">{{ $name }}</div>
- <div style="font-size:12px;color:rgba(255,255,255,.4);">{{ $mins }} minutes</div>
- </div>
- </div>
- 
- </div>
- <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:10px;">{{ $desc }}</p>
- <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fa-solid fa-circle-check"></i>{{ $ideal }}</p>
- <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
- </div>
- @endforeach
- </div>
- <div style="text-align:center;margin-top:28px;">
- @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
- <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
- <i class="fa-solid fa-magnifying-glass"></i> Browse Tutors & Book Now
- </a>
- @endif
- </div>
- </div>
- <style>.price-grid{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.price-grid{grid-template-columns:repeat(4,1fr)!important;}}</style>
-</section>
+</section> -->
 
 {{-- SESSION CODE EXPLAINER --}}
 <section style="padding:80px 0;">
@@ -254,6 +210,51 @@
  <style>.code-grid{grid-template-columns:1fr!important;}@media(min-width:1024px){.code-grid{grid-template-columns:1fr 1fr!important;}}</style>
 </section>
 
+{{-- SESSION PRICING --}}
+<section style="background:#0D1F14;padding:80px 0;">
+ <div style="max-width:1360px;margin:0 auto;padding:0 24px;">
+ <div style="text-align:center;margin-bottom:44px;">
+ <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,40px);color:#fff;margin-bottom:10px;">Simple, fixed pricing</h2>
+ <!-- <p style="font-size:17px;color:rgba(255,255,255,.5);">No negotiation, no surprises. Same price for every tutor.</p> -->
+ </div>
+ <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto;" class="price-grid">
+ @foreach([
+ ['20','Quick Help','fa-solid fa-zap','KSh 300','Rapid revision drill, a single exam question, or a quick topic check.','Daily revision, quick questions, exam week','individual','#0A64BC'],
+ ['40','Guided Practice','fa-solid fa-chalkboard','KSh 600','A full structured lesson with warm-up, teaching, practice and Q&A.','Weekly lessons, exam preparation, new topics','individual','#10B981'],
+ ['60','Deep Dive','fa-solid fa-book-open','KSh 900','Maximum learning. Best value per minute for multiple topics.','Holiday intensive prep, catching up, multiple topics','individual','#E8522A'],
+ ['60','Group Session','fa-solid fa-users','KSh 600','Learn together with other students. Share the cost, maximize value.','Group revision, study buddies, exam prep','group','#EEBE15'],
+ ] as [$mins,$name,$icon,$price,$desc,$ideal,$type,$color])
+ <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px;transition:background .2s;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+ <div style="display:flex;align-items:center;gap:10px;">
+ <div style="width:52px;height:52px;border-radius:14px;background:{{ $color }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;">
+ <i class="{{ $icon }}" style="color:#fff;"></i>
+ </div>
+ <div>
+ <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#fff;">{{ $name }}</div>
+ <div style="font-size:12px;color:rgba(255,255,255,.4);">{{ $mins }} minutes</div>
+ </div>
+ </div>
+ 
+ </div>
+ <p style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:10px;">{{ $desc }}</p>
+ <p style="font-size:12px;color:rgba(255,255,255,.35);font-style:italic;"><i class="fa-solid fa-circle-check"></i>{{ $ideal }}</p>
+ <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:#EEBE15;">{{ $price }}</div>
+ </div>
+ @endforeach
+ </div>
+ <div style="text-align:center;margin-top:28px;">
+ @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
+ <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 36px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+ <i class="fa-solid fa-magnifying-glass"></i> Browse Tutors & Book Now
+ </a>
+ @endif
+ </div>
+ </div>
+ <style>.price-grid{grid-template-columns:repeat(2,1fr)!important;}@media(min-width:768px){.price-grid{grid-template-columns:repeat(4,1fr)!important;}}</style>
+</section>
+
+
 {{-- COMPARISON TABLE --}}
 <section style="padding:80px 0;background:rgba(21,40,31,.03);">
  <div style="max-width:900px;margin:0 auto;padding:0 24px;">
@@ -265,7 +266,7 @@
  <thead>
  <tr style="background:#F9FAF9;">
  <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.5);width:40%;border-bottom:1.5px solid rgba(21,40,31,.08);">Feature</th>
- <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0A64BC;border-bottom:1.5px solid rgba(21,40,31,.08);"><i class="fa-solid fa-check"></i> Mwalimu</th>
+ <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0A64BC;border-bottom:1.5px solid rgba(21,40,31,.08);"> Mwalimu</th>
  <th style="text-align:left;padding:14px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(21,40,31,.4);border-bottom:1.5px solid rgba(21,40,31,.08);">Traditional</th>
  </tr>
  </thead>

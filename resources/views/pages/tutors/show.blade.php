@@ -910,10 +910,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
             <i class="fa-solid fa-chalkboard"></i>
             <strong>{{ number_format($tutor->total_sessions) }}</strong> sessions
           </span>
-          <span class="hero-stat-item">
-            <i class="fa-solid fa-clock"></i>
-            Responds within <strong>2hr</strong>
-          </span>
+
         </div>
       </div>
     </div>
@@ -950,11 +947,10 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
         {{-- Stats Cards Grid --}}
         <div style="display:grid;grid-template-columns:repeat(1,1fr);gap:18px;margin-bottom:32px;">
          
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px;" class="stats-grid-desktop">
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:32px;" class="stats-grid-desktop">
             @foreach([
             ['fa-chalkboard','#0A64BC',number_format($tutor->total_sessions),'Sessions Completed'],
             ['fa-star','#EEBE15',$tutor->total_reviews,'Total Reviews'],
-            ['fa-reply','#E8522A','<2hr','Response Time'],
             ] as [$ic,$col,$val,$lbl])
             <div class="stat-card">
               <div class="stat-card-icon" style="background:{{ $col }};box-shadow:0 4px 12px {{ $col }}40;">
@@ -1523,15 +1519,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
             <div class="sidebar-stat-label">Rating</div>
           </div>
         </div>
-        <div class="sidebar-stat-row">
-          <div class="sidebar-stat-icon" style="background:#E8522A;">
-            <i class="fa-solid fa-reply"></i>
-          </div>
-          <div class="sidebar-stat-text">
-            <div class="sidebar-stat-value">&lt;2hr</div>
-            <div class="sidebar-stat-label">Response Time</div>
-          </div>
-        </div>
+
       </div>
 
       {{-- Book Session CTA Button --}}

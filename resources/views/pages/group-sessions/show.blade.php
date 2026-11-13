@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>{{ $groupSession->title }} " Mwalimu</title>
+<title>{{ $groupSession->title }} - Mwalimu</title>
 <meta name="description" content="{{ Str::limit($groupSession->description, 160) }}">
 </head>
 <body>
@@ -199,7 +199,7 @@
  <form method="POST" action="{{ route('group-sessions.enroll', $groupSession) }}">
  @csrf
  <button type="submit" style="width:100%;padding:14px;border-radius:12px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:12px;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
- <i class="fa-solid fa-ticket"></i> Book Seat " KSh {{ number_format($groupSession->price) }}
+ <i class="fa-solid fa-ticket"></i> Book Seat - KSh {{ number_format($groupSession->price) }}
  </button>
  </form>
 

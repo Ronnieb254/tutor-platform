@@ -7,6 +7,7 @@ use App\Models\ClinicEnrollment;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 
 class ClinicBookingController extends Controller
 {
@@ -116,7 +117,14 @@ class ClinicBookingController extends Controller
 
         $bookings = ClinicEnrollment::where('student_id', $user->id)
             ->with(['clinic.tutor', 'clinic.subject', 'payment'])
-            ->orderBy('created_at', 'desc')
+            ->join('examiner_clinics', 'clinic_enrollments.clinic_id', '=', 'examiner_clinics.id')
+            ->where(function ($q) {
+                if (Schema::hasColumn('examiner_clinics', 'is_group_session')) {
+                    $q->where('examiner_clinics.is_group_session', false);
+                }
+            })
+            ->select('clinic_enrollments.*')
+            ->orderBy('clinic_enrollments.created_at', 'desc')
             ->paginate(10);
 
         $upcomingCount = $bookings->filter(fn($b) => $b->clinic->scheduled_at->isFuture())->count();

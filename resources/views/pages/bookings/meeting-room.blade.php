@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Session Room " Mwalimu</title>
+<title>Session Room - Mwalimu</title>
 <style>
 :root{--ink:#15281F;--trust-blue:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -52,7 +52,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  {{-- Closing-buffer banner (hidden until 5 min left) --}}
  <div id="closing-banner">
  <i class="fa-solid fa-triangle-exclamation"></i>
- <span>Session ending soon " closing buffer active. You may finish your lesson.</span>
+ <span>Session ending soon - closing buffer active. You may finish your lesson.</span>
  @if(auth()->id() === $booking->tutor_id)
  <button onclick="document.getElementById('closing-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 14px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:600;">Dismiss</button>
  @endif
@@ -193,7 +193,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  // Show closing-buffer warning
  if (remaining <= closingBufferSeconds && !inClosingBuffer) {
  inClosingBuffer = true;
- showToast('? Session ending in ' + formatTime(remaining) + ' " closing buffer started.', 'warning');
+ showToast('? Session ending in ' + formatTime(remaining) + ' - closing buffer started.', 'warning');
  document.getElementById('closing-banner').style.display = 'flex';
  }
 

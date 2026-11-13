@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 @include('partials.head')
-<title>Clinic Details " {{ $clinic->title ?? $clinic->name }}</title>
+<title>Clinic Details - {{ $clinic->title ?? $clinic->name }}</title>
 </head>
 <body>
 @include('partials.nav')
@@ -163,7 +163,7 @@
  </div>
  @elseif($clinic->isFull())
  <div style="background:rgba(232,82,42,.06);border:1px solid rgba(232,82,42,.2);border-radius:14px;padding:16px;font-size:13px;color:#B45309;">
- <i class="fa-solid fa-user"></i> <strong>Session is full</strong> " overflow will be auto-created when a student books, or you can trigger it manually from the admin panel.
+ <i class="fa-solid fa-user"></i> <strong>Session is full</strong> - overflow will be auto-created when a student books, or you can trigger it manually from the admin panel.
  </div>
  @endif
 

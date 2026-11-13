@@ -1,5 +1,5 @@
 ﻿@extends('layouts.admin')
-@section('title', 'Clinic " ' . ($clinic->title ?? 'Detail'))
+@section('title', 'Clinic - ' . ($clinic->title ?? 'Detail'))
 @section('content')
 <div style="max-width:1100px;margin:0 auto;padding:24px;">
 
@@ -185,10 +185,10 @@
 <script>
 $(document).ready(function() {
  initDataTable('#clinic-bookings-table', {
- order: [[3, 'desc']], // Booked At descending
+ order: [[4, 'desc']], // Enrolled at descending
  columnDefs: [
- { type: 'date', targets: 3 },
- { orderable: false, targets: 5 } // Actions
+ { orderable: false, targets: 0 }, // # (row number)
+ { type: 'date', targets: 4 } // Enrolled (date column)
  ]
  });
 });

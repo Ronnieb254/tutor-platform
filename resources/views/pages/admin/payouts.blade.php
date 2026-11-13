@@ -60,6 +60,11 @@ $paid = PayoutRequest::where('status','paid')->sum('amount');
  <span style="font-size:13px;color:var(--muted);">{{ $payouts->total() }} requests</span>
  </div>
  <div class="table-wrap">
+ @if($payouts->isEmpty())
+ <div style="text-align:center;padding:32px;color:var(--muted);font-size:14px;">
+ <p style="margin:0;">No {{ strtolower($status) }} payout requests found</p>
+ </div>
+ @else
  <table id="payouts-table">
  <thead>
  <tr>
@@ -72,7 +77,7 @@ $paid = PayoutRequest::where('status','paid')->sum('amount');
  </tr>
  </thead>
  <tbody>
- @forelse($payouts as $payout)
+ @foreach($payouts as $payout)
  <tr>
  <td>
  <div style="display:flex;align-items:center;gap:10px;">
@@ -119,11 +124,10 @@ $paid = PayoutRequest::where('status','paid')->sum('amount');
  </div>
  </td>
  </tr>
- @empty
- <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted);font-size:14px;">No payout requests found</td></tr>
- @endforelse
+ @endforeach
  </tbody>
  </table>
+ @endif
  </div>
  @if($payouts->hasPages())
  <div style="padding:16px 24px;border-top:1px solid var(--hairline);">{{ $payouts->withQueryString()->links() }}</div>
@@ -138,14 +142,21 @@ $paid = PayoutRequest::where('status','paid')->sum('amount');
 @push('scripts')
 <script>
 $(document).ready(function() {
+ // Only initialize DataTables if the table has rows
+ var table = $('#payouts-table');
+ if (table.length && $('tbody tr', table).length > 0) {
  initDataTable('#payouts-table', {
  order: [[3, 'desc']], // Requested date descending
  columnDefs: [
  { type: 'num', targets: 1 }, // Amount
  { type: 'date', targets: 3 }, // Requested
- { orderable: false, targets: 5 } // Actions
- ]
+ { orderable: false, targets: [0, 2, 4, 5] } // Non-orderable columns
+ ],
+ colReorder: false,
+ info: true,
+ pageLength: 20
  });
+ }
 });
 </script>
 @endpush

@@ -132,7 +132,7 @@
  <div style="max-width:1360px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
  <a href="{{ route('home') }}" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
  <img src="/images/logo.svg" alt="Mwalimu" style="height:20px;width:auto;">
- <span style="font-size:11px;color:rgba(255,255,255,.35);">by <a href="https://ovaldesk.co.ke" target="_blank" style="color:rgba(255,255,255,.45);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">OvalDesk Ventures</a></span>
+ <!-- <span style="font-size:11px;color:rgba(255,255,255,.35);">by <a href="https://ovaldesk.co.ke" target="_blank" style="color:rgba(255,255,255,.45);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">OvalDesk Ventures</a></span> -->
  </a>
  <div style="display:flex;align-items:center;gap:14px;">
  <span style="font-size:11px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;"><i class="fa-solid fa-scroll"></i> TSC Verified</span>
