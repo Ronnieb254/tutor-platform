@@ -11,8 +11,14 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $variant = $request->query('variant', 'kenyan');
+        
+        if (!in_array($variant, ['kenyan', 'international'])) {
+            $variant = 'kenyan';
+        }
+
         $categories     = Category::active()->with('subjects')->take(8)->get();
         $featuredTutors = TutorProfile::approved()
             ->with(['user', 'subjects'])
@@ -22,7 +28,9 @@ class HomeController extends Controller
         $recentPosts       = BlogPost::published()->with('author')->latest('published_at')->take(3)->get();
         $upcomingClinics   = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
 
-        return view('pages.home', compact('categories', 'featuredTutors', 'recentPosts', 'upcomingClinics'));
+        $viewName = $variant === 'international' ? 'pages.home-international' : 'pages.home';
+        
+        return view($viewName, compact('categories', 'featuredTutors', 'recentPosts', 'upcomingClinics', 'variant'));
     }
 
     /**
