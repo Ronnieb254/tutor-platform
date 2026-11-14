@@ -1,0 +1,26 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "label": "Emoji literals in button attributes",
+      "description": "The navbar switcher uses raw emoji characters (🇰🇪, 🌍) in inline HTML strings. These may not render consistently on older browsers, accessibility overlays, or screen readers. Use CSS or icon fonts instead."
+    },
+    {
+      "label": "Switcher button label always hidden",
+      "description": "The `.cs-label` span in the switcher button is hard-coded to `display:none` and is never revealed. The button only shows the globe icon. This appears unintended; either the label should be visible or the markup should be removed."
+    },
+    {
+      "label": "Unused data query in international view",
+      "description": "The HomeController fetches `categories` for both views, but home-international.blade.php doesn't use it (no category selection in hero form or display). Either remove the query for international requests or use the data in the view."
+    },
+    {
+      "label": "localStorage state lag on first visit",
+      "description": "First-time visitors always see the Kenyan variant because localStorage is empty. The switcher only sets localStorage after a user clicks to switch. If the brief intends for international to be accessible without pre-set localStorage, document this or add a default preference mechanism."
+    },
+    {
+      "label": "Switcher initialization timing fragility",
+      "description": "The `CurriculumSwitcher.init()` runs on DOMContentLoaded and updates button styles inline. If buttons are rendered or styled after JS runs, active state may not reflect correctly. No race condition detected, but the pattern could be more robust."
+    }
+  ],
+  "reviewDoc": "c:/Users/Administrator/Downloads/mediacity.co.in-2026-10-13/mediacity.co.in-2026-10-13/tutor-platform/.agents/tasks/review.md"
+}

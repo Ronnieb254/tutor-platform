@@ -52,7 +52,6 @@
  style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1.5px solid rgba(21,40,31,.12);background:#fff;cursor:pointer;transition:all .15s;font-size:13px;font-weight:600;color:#15281F;"
  onmouseover="this.style.borderColor='rgba(10,100,188,.4)'" onmouseout="this.style.borderColor='rgba(21,40,31,.12)'">
  <i class="fa-solid fa-globe"></i>
- <span style="display:none;" class="cs-label">{{ $variant ?? 'kenyan' === 'international' ? '🌍 International' : '🇰🇪 Kenyan' }}</span>
  <i class="fa-solid fa-chevron-down" style="font-size:11px;"></i>
  </button>
  <div x-show="csopen" x-transition x-cloak
@@ -60,12 +59,12 @@
  <button @click="CurriculumSwitcher.switchVariant('kenyan');csopen=false" data-curriculum-switch="kenyan"
  style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(21,40,31,.08);border:none;cursor:pointer;font-family:inherit;font-size:13.5px;color:#15281F;font-weight:600;text-align:left;transition:all .15s;margin-bottom:4px;"
  onmouseover="this.style.background='rgba(21,40,31,.12)'" onmouseout="this.style.background='rgba(21,40,31,.08)'">
- <i class="fa-solid fa-flag"></i> 🇰🇪 Kenyan (CBC)
+ <i class="fa-solid fa-flag"></i> Kenyan (CBC)
  </button>
  <button @click="CurriculumSwitcher.switchVariant('international');csopen=false" data-curriculum-switch="international"
  style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(21,40,31,.08);border:none;cursor:pointer;font-family:inherit;font-size:13.5px;color:#15281F;font-weight:600;text-align:left;transition:all .15s;"
  onmouseover="this.style.background='rgba(21,40,31,.12)'" onmouseout="this.style.background='rgba(21,40,31,.08)'">
- <i class="fa-solid fa-globe"></i> 🌍 International
+ <i class="fa-solid fa-globe"></i> International
  </button>
  </div>
  </div>

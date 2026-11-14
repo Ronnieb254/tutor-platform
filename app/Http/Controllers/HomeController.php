@@ -19,7 +19,12 @@ class HomeController extends Controller
             $variant = 'kenyan';
         }
 
-        $categories     = Category::active()->with('subjects')->take(8)->get();
+        // First-time visitors default to 'kenyan' (localStorage is empty).
+        // They can access international directly via ?variant=international query param,
+        // or by clicking the switcher in the navbar. After any switch, their preference
+        // persists via localStorage across the site.
+
+        // Fetch common data needed by both variants
         $featuredTutors = TutorProfile::approved()
             ->with(['user', 'subjects'])
             ->orderByDesc('rating_avg')
@@ -27,6 +32,9 @@ class HomeController extends Controller
             ->get();
         $recentPosts       = BlogPost::published()->with('author')->latest('published_at')->take(3)->get();
         $upcomingClinics   = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
+
+        // Only fetch categories for Kenyan variant
+        $categories = $variant === 'kenyan' ? Category::active()->with('subjects')->take(8)->get() : [];
 
         $viewName = $variant === 'international' ? 'pages.home-international' : 'pages.home';
         

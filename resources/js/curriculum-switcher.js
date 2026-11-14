@@ -33,22 +33,36 @@ const CurriculumSwitcher = {
 
   /**
    * Initialize the switcher UI
+   * Ensures buttons are found and styled before any race conditions
    */
   init() {
     const current = this.getCurrent();
+    let attempts = 0;
+    const maxAttempts = 10;
     
-    // Update switcher UI to show current variant as active
-    const curriculumBtns = document.querySelectorAll('[data-curriculum-switch]');
-    curriculumBtns.forEach((btn) => {
-      const variant = btn.dataset.curriculumSwitch;
-      if (variant === current) {
-        btn.style.background = 'rgba(26, 45, 61, 1)';
-        btn.style.color = '#fff';
-      } else {
-        btn.style.background = 'rgba(26, 45, 61, 0.08)';
-        btn.style.color = 'var(--navy)';
+    const updateStyles = () => {
+      const curriculumBtns = document.querySelectorAll('[data-curriculum-switch]');
+      
+      if (curriculumBtns.length === 0 && attempts < maxAttempts) {
+        attempts++;
+        requestAnimationFrame(updateStyles);
+        return;
       }
-    });
+      
+      curriculumBtns.forEach((btn) => {
+        const variant = btn.dataset.curriculumSwitch;
+        if (variant === current) {
+          btn.style.background = 'rgba(26, 45, 61, 1)';
+          btn.style.color = '#fff';
+        } else {
+          btn.style.background = 'rgba(26, 45, 61, 0.08)';
+          btn.style.color = 'var(--navy)';
+        }
+      });
+    };
+    
+    // Start the update process
+    updateStyles();
   },
 };
 
