@@ -4,7 +4,7 @@
  <div class="text-4xl mb-3"></div>
  <h3 class="font-serif text-xl font-semibold text-ink mb-2">Session not yet available</h3>
  <p class="text-muted text-sm">Your session is on
- <strong class="text-ink">{{ $booking->scheduled_at->format('D, M j \a\t g:ia') }}</strong>.
+ <strong class="text-ink">{{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</strong>.
  </p>
  <p class="text-sm text-muted mt-1">The Join button becomes available 15 minutes before your session.</p>
  <div class="mt-4 bg-cream rounded-2xl p-4">

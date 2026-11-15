@@ -40,7 +40,7 @@
  <div class="flex-1 min-w-0">
  <p class="font-semibold text-ink">{{ $booking->tutor->name }}</p>
  <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }}  {{ $booking->duration_minutes }} min</p>
- <p class="text-xs text-trust-blue font-semibold mt-1">{{ $booking->scheduled_at->format('D, M j \a\t g:ia') }}</p>
+ <p class="text-xs text-trust-blue font-semibold mt-1">{{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</p>
  </div>
  <div class="flex flex-col items-end gap-2 flex-shrink-0">
  @if($booking->canJoin())

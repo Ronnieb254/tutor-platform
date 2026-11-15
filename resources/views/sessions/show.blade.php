@@ -22,7 +22,7 @@
  <h1 class="text-2xl font-bold text-gray-900">{{ $booking->subject->name }}</h1>
  <p class="text-gray-600 mt-1">Tutor: <strong>{{ $booking->tutor->name }}</strong></p>
  @endif
- <p class="text-sm text-gray-500 mt-1">{{ $booking->scheduled_at->format('l, F j, Y \a\t g:i A') }}</p>
+ <p class="text-sm text-gray-500 mt-1">{{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('l, F j, Y \a\t g:i A') }} EAT</p>
  </div>
  </div>
  <div class="text-right">
@@ -138,7 +138,7 @@
  </div>
  <div>
  <p class="text-sm text-gray-500">Date & Time</p>
- <p class="font-medium text-gray-900">{{ $booking->scheduled_at->format('M d, Y - g:i A') }}</p>
+ <p class="font-medium text-gray-900">{{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('M d, Y - g:i A') }} EAT</p>
  </div>
  <div>
  <p class="text-sm text-gray-500">Duration</p>

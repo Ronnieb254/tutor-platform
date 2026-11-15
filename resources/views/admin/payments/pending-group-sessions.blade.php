@@ -42,7 +42,7 @@
  </td>
  <td style="padding:16px;">
  <div style="font-weight:700;color:#15281F;font-size:13px;">{{ $payment->clinic->title }}</div>
- <div style="font-size:12px;color:rgba(21,40,31,.55);margin-top:4px;">{{ $payment->clinic->scheduled_at->format('D, M j g:ia') }}</div>
+ <div style="font-size:12px;color:rgba(21,40,31,.55);margin-top:4px;">{{ $payment->clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j g:ia') }} EAT</div>
  </td>
  <td style="padding:16px;">
  <span style="font-weight:700;color:#15281F;font-size:13px;">KSh {{ number_format($payment->amount) }}</span>

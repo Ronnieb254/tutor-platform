@@ -44,7 +44,7 @@
  <h3 class="text-lg font-semibold text-gray-900">{{ $session->subject->name }}</h3>
  <p class="text-gray-600">Tutor: <strong>{{ $session->tutor->name }}</strong></p>
  @endif
- <p class="text-sm text-gray-500">{{ $session->scheduled_at->format('l, F j, Y \a\t g:i A') }}</p>
+ <p class="text-sm text-gray-500">{{ $session->scheduled_at->setTimezone('Africa/Nairobi')->format('l, F j, Y \a\t g:i A') }} EAT</p>
  <p class="text-sm text-gray-500">Duration: {{ $session->duration_minutes }} minutes</p>
  </div>
  </div>
