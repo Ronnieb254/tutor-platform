@@ -167,16 +167,16 @@ Route::middleware('auth')->group(function () {
 
     // Bookings
     Route::get('/bookings/payment-status',    [BookingController::class, 'paymentStatus'])->name('bookings.payment-status');
-    Route::get('/bookings/{booking}/payment-pending', [BookingController::class, 'paymentPending'])->name('bookings.payment-pending');
-    Route::get('/bookings/{booking}',         [BookingController::class, 'show'])->name('bookings.show');
-    Route::get('/bookings/{booking}/room',    [BookingController::class, 'meetingRoom'])->name('bookings.room');
+    Route::get('/bookings/{booking}/payment-pending', [BookingController::class, 'paymentPending'])->name('bookings.payment-pending')->whereUuid('booking');
+    Route::get('/bookings/{booking}',         [BookingController::class, 'show'])->name('bookings.show')->whereUuid('booking');
+    Route::get('/bookings/{booking}/room',    [BookingController::class, 'meetingRoom'])->name('bookings.room')->whereUuid('booking');
     Route::post('/bookings',                  [BookingController::class, 'store'])->name('bookings.store');
     Route::post('/bookings/confirm',          [BookingController::class, 'confirm'])->name('bookings.confirm');
-    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
-    Route::post('/bookings/{booking}/joined', [BookingController::class, 'markJoined'])->name('bookings.joined');
-    Route::post('/bookings/{booking}/left', [BookingController::class, 'markLeft'])->name('bookings.left');
-    Route::post('/bookings/{booking}/complete', [BookingController::class, 'completeSession'])->name('bookings.complete');
-    Route::get('/bookings/{booking}/attendance', [BookingController::class, 'attendanceStatus'])->name('bookings.attendance');
+    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel')->whereUuid('booking');
+    Route::post('/bookings/{booking}/joined', [BookingController::class, 'markJoined'])->name('bookings.joined')->whereUuid('booking');
+    Route::post('/bookings/{booking}/left', [BookingController::class, 'markLeft'])->name('bookings.left')->whereUuid('booking');
+    Route::post('/bookings/{booking}/complete', [BookingController::class, 'completeSession'])->name('bookings.complete')->whereUuid('booking');
+    Route::get('/bookings/{booking}/attendance', [BookingController::class, 'attendanceStatus'])->name('bookings.attendance')->whereUuid('booking');
 
     // Tutor availability - get available time slots
     Route::get('/api/tutors/{tutor}/availability', [BookingController::class, 'getAvailableSlots'])->name('api.tutor.availability');
