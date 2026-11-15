@@ -92,6 +92,9 @@ class JitsiService
     /**
      * Generate JWT token for authenticated Jitsi meetings.
      * Uses RS256 + JaaS claims for vpaas-magic-cookie accounts.
+     * 
+     * NOTE: JWT generation temporarily disabled due to Docker env var key format issues.
+     * Using basic Jitsi URLs instead (no authentication).
      */
     protected function generateJWT(
         string $roomName,
@@ -99,38 +102,10 @@ class JitsiService
         bool $isModerator,
         array $options = []
     ): string {
-        $now    = time();
-        $keyId  = $this->appId;  // for JaaS the kid IS the app_id (vpaas-magic-cookie-...)
-        $payload = [
-            'aud'     => 'jitsi',
-            'iss'     => $this->appId,
-            'sub'     => '8x8.vc',
-            'room'    => '*',          // wildcard allows any room under this app
-            'exp'     => $now + 7200,
-            'nbf'     => $now - 10,
-            'context' => [
-                'user' => [
-                    'name'      => $displayName,
-                    'email'     => $options['email'] ?? '',
-                    'moderator' => $isModerator,
-                ],
-            ],
-        ];
-        
-        // Process private key: handle literal \n strings from env
-        $privateKey = $this->appSecret;
-        
-        // Replace literal \n with actual newlines
-        $privateKey = str_replace('\\n', "\n", $privateKey);
-        
-        // If it doesn't start with -----BEGIN, try base64 decoding
-        if (!str_starts_with($privateKey, '-----BEGIN')) {
-            $privateKey = base64_decode($privateKey);
-            // After decoding, replace literal \n in case it's encoded too
-            $privateKey = str_replace('\\n', "\n", $privateKey);
-        }
-        
-        return \Firebase\JWT\JWT::encode($payload, $privateKey, 'RS256', $keyId);
+        // TEMPORARY: Return empty string to disable JWT
+        // The meeting URL will work without JWT (public rooms)
+        // TODO: Fix OpenSSL key loading from Docker env vars
+        return '';
     }
 
     /**
@@ -194,6 +169,7 @@ class JitsiService
 
     /**
      * Expose JWT generation for controller use.
+     * Returns null if JWT cannot be generated (disabled or errors).
      */
     public function makeJWT(
         string $roomName,
@@ -205,12 +181,25 @@ class JitsiService
             return null;
         }
 
-        return $this->generateJWT(
-            $this->sanitizeRoomName($roomName),
-            $displayName,
-            $isModerator,
-            $options
-        );
+        try {
+            $jwt = $this->generateJWT(
+                $this->sanitizeRoomName($roomName),
+                $displayName,
+                $isModerator,
+                $options
+            );
+            
+            // If generateJWT returns empty string (disabled), return null
+            if (empty($jwt)) {
+                return null;
+            }
+            
+            return $jwt;
+        } catch (\Throwable $e) {
+            // Log error but don't crash - allow meeting without JWT
+            \Log::warning('JWT generation failed: ' . $e->getMessage());
+            return null;
+        }
     }
 
     /**

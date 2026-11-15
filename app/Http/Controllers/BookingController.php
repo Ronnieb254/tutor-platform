@@ -379,7 +379,7 @@ class BookingController extends Controller
 
         $booking->load(['student', 'tutor', 'subject']);
 
-        // Generate Jitsi JWT if configured
+        // Generate Jitsi JWT if configured (can be null if JWT disabled/failed)
         $isModerator = $user->id === $booking->tutor_id;
         $jitsiService = app(\App\Services\JitsiService::class);
         $jitsiJwt = $jitsiService->makeJWT(
@@ -388,6 +388,9 @@ class BookingController extends Controller
             $isModerator,
             ['email' => $user->email]
         );
+        
+        // jitsiJwt can be null if JWT is disabled - that's OK
+        // The meeting room URL will still work (public room)
 
         return view('pages.bookings.meeting-room', compact('booking', 'jitsiJwt'));
     }
