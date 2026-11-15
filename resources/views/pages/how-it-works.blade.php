@@ -53,9 +53,15 @@
  </div>
  {{-- Trust stats --}}
  <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;padding-top:36px;border-top:1px solid rgba(255,255,255,.1);">
- @foreach([['500+','Verified Tutors'],['4.9<i class="fa-solid fa-star" style="font-size:inherit; color:#EEBE15;"></i>','Average Rating'],['10,000+','Sessions Done'],['48hr','Max Approval Time'],['80+','Subjects']] as [$n,$l])
+ @foreach([['500+','Verified Tutors'],['4.9','Average Rating'],['10,000+','Sessions Done'],['48hr','Max Approval Time'],['80+','Subjects']] as [$n,$l])
  <div style="text-align:center;">
- <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#fff;">{!! $n !!}</div>
+ <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#fff;">
+ @if($n === '4.9')
+ 4.9<i class="fa-solid fa-star" style="font-size:inherit; color:#EEBE15;"></i>
+ @else
+ {{ $n }}
+ @endif
+ </div>
  <div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:3px;">{{ $l }}</div>
  </div>
  @endforeach

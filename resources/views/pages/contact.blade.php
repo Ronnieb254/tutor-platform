@@ -92,7 +92,7 @@
  <h3 style="font-size:15px;font-weight:700;color:#15281F;margin-bottom:12px;display:flex;align-items:center;gap:7px;">
  <i class="fa-solid fa-circle-question"></i> Common Questions
  </h3>
- @foreach(['How are tutors verified?','What if I\'m not satisfied with my session?','How do I join a live session?','How do tutors get paid?'] as $q)
+ @foreach(["How are tutors verified?","What if I'm not satisfied with my session?","How do I join a live session?","How do tutors get paid?"] as $q)
  <a href="{{ route('how-it-works') }}" style="display:flex;align-items:center;gap:8px;padding:8px 0;font-size:13px;font-weight:500;color:#0A64BC;text-decoration:none;border-bottom:1px solid rgba(10,100,188,.1);">
  <i class="fa-solid fa-circle-info"></i>{{ $q }}
  </a>

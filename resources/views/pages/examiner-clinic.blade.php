@@ -118,7 +118,7 @@
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="vs-g">
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;border-left:4px solid rgba(21,40,31,.12);">
  <h3 style="font-size:15px;font-weight:700;color:rgba(21,40,31,.5);margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-book-open"></i> Generic Tuition</h3>
- @foreach(['Generic exam prep','Limited to one exam board','No marking scheme insight','Expensive international tuition']) as $item)
+ @foreach(['Generic exam prep','Limited to one exam board','No marking scheme insight','Expensive international tuition'] as $item)
  <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:13px;color:rgba(21,40,31,.6);">
  <i class="fa-solid fa-circle-xmark"></i>{{ $item }}
  </div>
