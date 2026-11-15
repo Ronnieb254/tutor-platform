@@ -956,7 +956,7 @@ $activeTab = request('tab','overview');
                             </div>
                         </td>
                         <td style="color:var(--muted);">{{ $b->subject?->name ?? 'General' }}</td>
-                        <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y g:ia') }}</td>
+                        <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y g:ia') }} EAT</td>
                         <td>{{ $b->duration_minutes }}min</td>
                         <td style="font-weight:600;color:var(--mint);">KSh {{ number_format($b->tutor_earning) }}</td>
                         <td>

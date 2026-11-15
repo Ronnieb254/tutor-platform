@@ -323,8 +323,8 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }}  {{ $b->duration_minutes }}min</div>
  </div>
  <div style="text-align:right;flex-shrink:0;">
- <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $b->scheduled_at->format('M j') }}</div>
- <div style="font-size:12px;color:var(--muted);">{{ $b->scheduled_at->format('g:ia') }}</div>
+ <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('M j') }}</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia') }}</div>
  </div>
  @if($b->session_code_student)
  <div class="code-box" style="flex-shrink:0;">
@@ -393,11 +393,11 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;">
  <div style="display:flex;align-items:center;gap:6px;font-size:13px;">
  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
- <span style="color:var(--ink);font-weight:500;">{{ $b->scheduled_at->format('D, M j, Y') }}</span>
+ <span style="color:var(--ink);font-weight:500;">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y') }}</span>
  </div>
  <div style="display:flex;align-items:center;gap:6px;font-size:13px;">
  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
- <span style="color:var(--ink);font-weight:500;">{{ $b->scheduled_at->format('g:i a') }}</span>
+ <span style="color:var(--ink);font-weight:500;">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('g:i a') . ' EAT' }}</span>
  </div>
  <div style="display:flex;align-items:center;gap:6px;font-size:13px;">
  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--muted)" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
@@ -479,7 +479,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  </td>
  <td style="color:var(--muted);">{{ $b->subject?->name ?? 'General' }}</td>
- <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y g:ia') }}</td>
+ <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y g:ia') . ' EAT' }}</td>
  <td>{{ $b->duration_minutes }}min</td>
  <td style="font-weight:600;">KSh {{ number_format($b->total_amount) }}</td>
  <td>
@@ -870,3 +870,4 @@ $(document).ready(function() {
 </script>
 </body>
 </html>
+
