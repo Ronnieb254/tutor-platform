@@ -1084,7 +1084,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
               <div class="review-header">
                 <div>
                   <span class="review-name">{{ $review->student->name }}</span>
-                  <span class="review-date">{{ $review->created_at->format('M Y') }}</span>
+                  <span class="review-date">{{ $review->created_at->setTimezone('Africa/Nairobi')->format('M Y') }} EAT</span>
                 </div>
                 <div style="display:flex;gap:2px;">
                   @for($i=1;$i<=5;$i++)<i class="fa-solid fa-star" style="color:{{ $i<=$review->rating ? '#EEBE15' : '#E5E7EB' }};font-size:13px;"></i>@endfor

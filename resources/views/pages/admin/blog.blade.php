@@ -65,7 +65,7 @@ $categories = BlogCategory::all();
  @endif
  </td>
  <td style="color:var(--muted);font-size:13px;">{{ $post->author->name }}</td>
- <td data-order="{{ $post->created_at->timestamp }}" style="color:var(--muted);font-size:13px;white-space:nowrap;">{{ $post->created_at->format('M j, Y') }}</td>
+ <td data-order="{{ $post->created_at->timestamp }}" style="color:var(--muted);font-size:13px;white-space:nowrap;">{{ $post->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</td>
  <td>
  <span class="badge {{ $post->is_published ? 'badge-green' : 'badge-amber' }}">
  {{ $post->is_published ? 'Published' : 'Draft' }}

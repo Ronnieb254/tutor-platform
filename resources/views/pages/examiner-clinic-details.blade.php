@@ -27,7 +27,7 @@
  <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:rgba(21,40,31,.55);">
  @if($clinic->subject)<span><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span> {{ $clinic->subject->name }}</span>@endif
  @if($clinic->paper_type)<span><i class="fa-solid fa-file-lines"></i> {{ $clinic->paper_type }}</span>@endif
- <span><i class="fa-solid fa-calendar"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
+ <span><i class="fa-solid fa-calendar"></i> {{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:ia') }} EAT</span>
  <span><i class="fa-solid fa-clock"></i> {{ $clinic->duration_minutes ?? 60 }} min</span>
  </div>
  </div>
@@ -157,7 +157,7 @@
  @php $overflow = $clinic->childSessions()->latest()->first(); @endphp
  @if($overflow)
  <div style="font-size:13px;font-weight:600;color:#15281F;margin-bottom:3px;">{{ $overflow->title }}</div>
- <div style="font-size:12px;color:rgba(21,40,31,.55);">{{ $overflow->scheduled_at->format('D, M j \a\t g:ia') }}</div>
+ <div style="font-size:12px;color:rgba(21,40,31,.55);">{{ $overflow->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</div>
  <a href="{{ route('examiner.clinics.show', $overflow) }}" style="font-size:12px;color:#059669;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:8px;">View overflow <span style="font-size:inherit;"></span></a>
  @endif
  </div>

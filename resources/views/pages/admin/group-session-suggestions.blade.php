@@ -37,7 +37,7 @@
  <option value="">-- All Sessions --</option>
  @foreach($groupSessions as $session)
  <option value="{{ $session->id }}" {{ request('group_session_id') == $session->id ? 'selected' : '' }}>
- {{ Str::limit($session->title, 50) }} • {{ $session->scheduled_at->format('M j, g:ia') }}
+ {{ Str::limit($session->title, 50) }} • {{ $session->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, g:ia') }} EAT
  </option>
  @endforeach
  </select>
@@ -75,7 +75,7 @@
  <tr style="border-bottom:1px solid var(--hair);">
  <td style="padding:14px;">
  <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ Str::limit($suggestion->groupSession?->title ?? 'N/A', 40) }}</div>
- <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $suggestion->groupSession?->scheduled_at?->format('M j, g:ia') ?? '-' }}</div>
+ <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ $suggestion->groupSession?->scheduled_at?->setTimezone('Africa/Nairobi')->format('M j, g:ia') ?? '-' }} EAT</div>
  </td>
  <td style="padding:14px;font-size:13px;">
  @if($suggestion->subject)
@@ -105,7 +105,7 @@
  @endif
  </td>
  <td style="padding:14px;font-size:13px;color:var(--muted);">
- {{ $suggestion->created_at->format('M j, Y') }}
+ {{ $suggestion->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT
  </td>
  <td style="padding:14px;text-align:center;">
  <form 

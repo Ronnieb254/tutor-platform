@@ -125,9 +125,9 @@
  </td>
  <td style="padding:14px 16px;">
  <div style="font-weight:600;color:{{ $isToday ? '#0A64BC' : 'var(--ink)' }};">
- {{ $clinic->scheduled_at->format('D, M j') }}
+ {{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j') }}
  </div>
- <div style="font-size:11px;color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}  {{ $clinic->duration_minutes }}min</div>
+ <div style="font-size:11px;color:var(--muted);">{{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT  {{ $clinic->duration_minutes }}min</div>
  </td>
  <td style="padding:14px 16px;">
  <div style="font-size:13px;color:var(--ink);">{{ $clinic->tutor?->name ?? '"' }}</div>

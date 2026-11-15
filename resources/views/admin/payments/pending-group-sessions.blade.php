@@ -54,7 +54,7 @@
  <span style="font-family:monospace;font-size:11px;color:rgba(21,40,31,.55);">{{ $payment->mpesa_reference }}</span>
  </td>
  <td style="padding:16px;">
- <span style="font-size:12px;color:rgba(21,40,31,.55);">{{ $payment->created_at->format('M j, H:i') }}</span>
+ <span style="font-size:12px;color:rgba(21,40,31,.55);">{{ $payment->created_at->setTimezone('Africa/Nairobi')->format('M j, H:i') }} EAT</span>
  </td>
  <td style="padding:16px;text-align:center;">
  <button onclick="openVerifyModal({{ $payment->id }}, '{{ $payment->mpesa_code }}', '{{ $payment->user->name }}')" style="padding:8px 16px;border-radius:6px;background:#10B981;color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10B981'">

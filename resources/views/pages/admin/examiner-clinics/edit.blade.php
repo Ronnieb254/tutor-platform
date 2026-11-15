@@ -69,7 +69,7 @@
  <div>
  <label class="form-label">Scheduled Date & Time <span style="color:#E8522A;">*</span></label>
  <input type="datetime-local" name="scheduled_at" class="form-input"
- value="{{ old('scheduled_at', $examinerClinic->scheduled_at->format('Y-m-d\TH:i')) }}" required>
+ value="{{ old('scheduled_at', $examinerClinic->scheduled_at->setTimezone('Africa/Nairobi')->format('Y-m-d\TH:i')) }}" required>
  </div>
  <div>
  <label class="form-label">Duration (minutes) <span style="color:#E8522A;">*</span></label>

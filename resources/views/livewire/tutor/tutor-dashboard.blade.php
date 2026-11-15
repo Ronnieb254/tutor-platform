@@ -105,7 +105,7 @@
  </div>
  <div class="text-right">
  <p class="text-sm font-semibold text-mint">+KSh {{ number_format($booking->tutor_earning, 0) }}</p>
- <p class="text-xs text-muted">{{ $booking->completed_at?->format('M j') }}</p>
+ <p class="text-xs text-muted">{{ $booking->completed_at?->setTimezone('Africa/Nairobi')->format('M j') }} EAT</p>
  </div>
  </div>
  @endforeach

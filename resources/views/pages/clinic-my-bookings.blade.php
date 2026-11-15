@@ -90,8 +90,8 @@ a{color:inherit;text-decoration:none;}
  <div class="booking-info">
  <div class="booking-title">{{ $booking->clinic->title }}</div>
  <div class="booking-meta">
- <span><i class="fa-solid fa-calendar"></i> {{ $booking->clinic->scheduled_at->format('D, M j, Y') }}</span>
- <span><i class="fa-solid fa-clock"></i> {{ $booking->clinic->scheduled_at->format('g:ia') }}</span>
+ <span><i class="fa-solid fa-calendar"></i> {{ $booking->clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y') }} EAT</span>
+ <span><i class="fa-solid fa-clock"></i> {{ $booking->clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT</span>
  <span><i class="fa-solid fa-hourglass-half"></i> {{ $booking->clinic->duration_minutes }}min</span>
  @if($booking->clinic->tutor)
  <span><i class="fa-solid fa-user-tie"></i> {{ $booking->clinic->tutor->name }}</span>
@@ -144,7 +144,7 @@ a{color:inherit;text-decoration:none;}
  <div style="font-size:11px;color:var(--muted);text-align:right;">
  Paid: KSh {{ number_format($booking->payment->amount) }}
  @if($booking->payment->paid_at)
- <br>{{ $booking->payment->paid_at->format('M j, Y') }}
+ <br>{{ $booking->payment->paid_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT
  @endif
  </div>
  @endif

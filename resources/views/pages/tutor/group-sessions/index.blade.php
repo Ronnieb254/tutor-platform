@@ -242,8 +242,8 @@ $unreadNotifs = $user->unreadNotifications()->count();
  </div>
  </td>
  <td style="padding:14px 12px;white-space:nowrap;color:var(--muted);">
- {{ $session->scheduled_at->format('M j, Y') }}<br>
- <span style="font-size:11px;">{{ $session->scheduled_at->format('g:ia') }}  {{ $session->duration_minutes }}min</span>
+ {{ $session->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y') }}<br>
+ <span style="font-size:11px;">{{ $session->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT  {{ $session->duration_minutes }}min</span>
  </td>
  <td style="padding:14px 12px;text-align:center;">
  <span style="font-weight:700;color:{{ $enrolled >= $max ? '#991B1B' : '#10B981' }};">{{ $enrolled }}/{{ $max }}</span>

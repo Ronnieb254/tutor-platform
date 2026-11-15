@@ -46,7 +46,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  </div>
  <div class="session-meta">
  <span class="dot"></span>
- <span class="time">{{ $clinic->scheduled_at->format('D, M j  g:ia') }}</span>
+ <span class="time">{{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j  g:ia') }} EAT</span>
  @if($isModerator)
  <span class="moderator-badge"><i class="fa-solid fa-shield-halved"></i> MODERATOR</span>
  @endif

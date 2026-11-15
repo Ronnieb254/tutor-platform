@@ -133,7 +133,7 @@ $pendingApprovals= TutorProfile::where('is_approved',false)->with(['user','docum
  </td>
  <td style="color:var(--muted);">{{ $booking->tutor->name }}</td>
  <td>{{ $booking->subject?->name ?? '-' }}</td>
- <td style="color:var(--muted);white-space:nowrap;">{{ $booking->scheduled_at->format('M j, g:ia') }}</td>
+ <td style="color:var(--muted);white-space:nowrap;">{{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, g:ia') }} EAT</td>
  <td style="font-weight:600;">KSh {{ number_format($booking->total_amount) }}</td>
  <td>
  @php $sc = ['pending'=>'badge-amber','confirmed'=>'badge-green','completed'=>'badge-blue','cancelled'=>'badge-red'][$booking->status] ?? 'badge-gray'; @endphp

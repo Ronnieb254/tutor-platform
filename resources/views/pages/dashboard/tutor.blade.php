@@ -777,8 +777,8 @@ $activeTab = request('tab','overview');
                     <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} - {{ $b->duration_minutes }}min</div>
                 </div>
                 <div style="text-align:right;flex-shrink:0;">
-                    <div style="font-size:13px;font-weight:600;color:var(--ink);">{{ $b->scheduled_at->format('M j') }}</div>
-                    <div style="font-size:12px;color:var(--muted);">{{ $b->scheduled_at->format('g:ia') }}</div>
+                    <div style="font-size:13px;font-weight:600;color:var(--ink);">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('M j') }}</div>
+                    <div style="font-size:12px;color:var(--muted);">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT</div>
                 </div>
                 <div style="flex-shrink:0;">
                     @if($b->status === 'confirmed')
@@ -834,8 +834,8 @@ $activeTab = request('tab','overview');
                 <div style="font-size:12px;color:var(--muted);">{{ $b->subject?->name ?? 'General' }} - {{ $b->duration_minutes }}min - KSh {{ number_format($b->tutor_earning) }}</div>
             </div>
             <div style="text-align:right;">
-                <div style="font-weight:600;font-size:13px;">{{ $b->scheduled_at->format('D, M j') }}</div>
-                <div style="font-size:12px;color:var(--muted);">{{ $b->scheduled_at->format('g:ia') }}</div>
+                <div style="font-weight:600;font-size:13px;">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j') }}</div>
+                <div style="font-size:12px;color:var(--muted);">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT</div>
             </div>
             @php $sc=['pending'=>'bdg-amber','confirmed'=>'bdg-blue','completed'=>'bdg-green','cancelled'=>'bdg-gray'][$b->status]??'bdg-gray'; @endphp
             <span class="bdg {{ $sc }}">{{ ucfirst($b->status) }}</span>
@@ -876,7 +876,7 @@ $activeTab = request('tab','overview');
                             </div>
                         </td>
                         <td style="color:var(--muted);">{{ $b->subject?->name ?? 'General' }}</td>
-                        <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->format('M j, Y g:ia') }}</td>
+                        <td style="white-space:nowrap;font-size:13px;">{{ $b->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y g:ia') }} EAT</td>
                         <td>{{ $b->duration_minutes }}min</td>
                         <td style="font-weight:600;color:var(--mint);">KSh {{ number_format($b->tutor_earning) }}</td>
                         <td>
@@ -1025,7 +1025,7 @@ $activeTab = request('tab','overview');
                         <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
                             {{ $lastMsg ? Str::limit($lastMsg->body, 40) : $cb->subject?->name.' session' }}
                         </div>
-                        <div style="font-size:11px;color:rgba(21,40,31,.35);margin-top:2px;">{{ $lastMsg ? $lastMsg->created_at->diffForHumans() : $cb->scheduled_at->format('M j') }}</div>
+                        <div style="font-size:11px;color:rgba(21,40,31,.35);margin-top:2px;">{{ $lastMsg ? $lastMsg->created_at->diffForHumans() : $cb->scheduled_at->setTimezone('Africa/Nairobi')->format('M j') }}</div>
                     </div>
                 </div>
                 @empty
@@ -1046,7 +1046,7 @@ $activeTab = request('tab','overview');
                 <div class="av" style="width:38px;height:38px;background:#0A64BC;border-radius:10px;font-size:14px;">{{ substr($firstBooking->student->name,0,1) }}</div>
                 <div>
                     <div style="font-weight:700;font-size:14px;">{{ $firstBooking->student->name }}</div>
-                    <div style="font-size:12px;color:var(--muted);">{{ $firstBooking->subject?->name ?? 'General' }} - {{ $firstBooking->scheduled_at->format('M j, g:ia') }}</div>
+                    <div style="font-size:12px;color:var(--muted);">{{ $firstBooking->subject?->name ?? 'General' }} - {{ $firstBooking->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, g:ia') }} EAT</div>
                 </div>
                 <a href="{{ route('bookings.show', $firstBooking->uuid) }}" class="btn btn-o btn-sm" style="margin-left:auto;">View Booking</a>
             </div>
@@ -1060,7 +1060,7 @@ $activeTab = request('tab','overview');
                     @endif
                     <div>
                         <div class="msg-bubble">{{ $msg->body }}</div>
-                        <div class="msg-time" style="{{ $isMine ? 'text-align:right;' : '' }}">{{ $msg->created_at->format('g:ia') }}</div>
+                        <div class="msg-time" style="{{ $isMine ? 'text-align:right;' : '' }}">{{ $msg->created_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT</div>
                     </div>
                 </div>
                 @empty
@@ -1107,7 +1107,7 @@ $activeTab = request('tab','overview');
         <div style="position:relative;z-index:1;">
             <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.45);margin-bottom:8px;">Available Balance</div>
             <div style="font-family:'Fraunces',serif;font-size:48px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px;">KSh {{ number_format($wallet?->balance ?? 0) }}</div>
-            <div style="font-size:13px;color:rgba(255,255,255,.5);">{{ $wallet?->currency ?? 'KES' }} - Updated {{ now()->format('M j, Y') }}</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.5);">{{ $wallet?->currency ?? 'KES' }} - Updated {{ now()->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</div>
             <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);">
                 @foreach([['Total Earned','KSh '.number_format($totalEarned)],['Withdrawn','KSh '.number_format($totalWithdrawn)],['This Month','KSh '.number_format($thisMonth)],['Last Month','KSh '.number_format($lastMonth)]] as [$l,$v])
                 <div>
@@ -1143,7 +1143,7 @@ $activeTab = request('tab','overview');
                                 @else -
                                 @endif
                             </td>
-                            <td style="font-size:12px;color:var(--muted);white-space:nowrap;">{{ $tx->created_at->format('M j, Y') }}</td>
+                            <td style="font-size:12px;color:var(--muted);white-space:nowrap;">{{ $tx->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</td>
                             <td>
                                 <span class="bdg {{ $tx->type==='credit' ? 'bdg-green' : 'bdg-red' }}">
                                     {{ $tx->type==='credit' ? 'Credit' : 'Debit' }}

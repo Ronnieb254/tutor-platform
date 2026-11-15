@@ -75,7 +75,7 @@
  <span style="font-size:11px;color:var(--muted);">All tracks</span>
  @endif
  </td>
- <td style="padding:12px 16px;color:var(--muted);white-space:nowrap;">{{ $clinic->scheduled_at->format('M j, Y g:ia') }}</td>
+ <td style="padding:12px 16px;color:var(--muted);white-space:nowrap;">{{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y g:ia') }} EAT</td>
  <td style="padding:12px 16px;">
  @php $statusColors = ['scheduled'=>'#DBEAFE:#1E40AF','in_progress'=>'#DCFCE7:#166534','completed'=>'#F3F4F6:#6B7280','cancelled'=>'#FEE2E2:#991B1B']; $sc = explode(':',$statusColors[$clinic->status]??'#F3F4F6:#6B7280'); @endphp
  <span style="font-size:11px;font-weight:700;background:{{ $sc[0] }};color:{{ $sc[1] }};padding:3px 10px;border-radius:999px;">{{ ucwords(str_replace('_',' ',$clinic->status)) }}</span>

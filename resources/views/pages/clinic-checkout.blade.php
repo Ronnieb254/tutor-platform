@@ -67,7 +67,7 @@ a{color:inherit;text-decoration:none;}
  {{-- Clinic Information --}}
  <div class="clinic-info">
  <div class="clinic-title">{{ $clinic->title }}</div>
- <div class="clinic-detail"><i class="fa-solid fa-circle-check"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</div>
+ <div class="clinic-detail"><i class="fa-solid fa-circle-check"></i> {{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:ia') }} EAT</div>
  <div class="clinic-detail"><i class="fa-solid fa-clock"></i> {{ $clinic->duration_minutes }} minutes</div>
  <div class="clinic-detail"><i class="fa-solid fa-user"></i> {{ $clinic->tutor->name }}</div>
  @if($clinic->subject)

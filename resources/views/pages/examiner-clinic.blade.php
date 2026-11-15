@@ -231,7 +231,7 @@
  @endif
  </div>
  <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:rgba(21,40,31,.55);align-items:center;">
- <span><i class="fa-solid fa-calendar"></i>{{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</span>
+ <span><i class="fa-solid fa-calendar"></i>{{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</span>
  <span><i class="fa-solid fa-clock"></i>{{ $clinic->duration_minutes }} min</span>
  <span style="color:{{ $isFull ? '#991B1B' : '#10B981' }};font-weight:600;">
  <i class="fa-solid fa-user"></i>{{ $enrolledCount }}/{{ $maxStudents }} enrolled

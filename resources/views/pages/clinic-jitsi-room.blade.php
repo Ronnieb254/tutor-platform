@@ -37,7 +37,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> {{ $clinic->title ?? $clinic->name }}
  </div>
  <span style="color:var(--muted);margin:0 12px;font-size:10px;"></span>
- <span style="color:var(--muted);">{{ $clinic->scheduled_at->format('g:ia') }}</span>
+ <span style="color:var(--muted);">{{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT</span>
  @if($isModerator)
  <span class="moderator-badge">
  <i class="fa-solid fa-shield-halved"></i> MODERATOR

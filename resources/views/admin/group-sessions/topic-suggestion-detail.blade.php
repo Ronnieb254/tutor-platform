@@ -10,7 +10,7 @@
             Back to Suggestions
         </a>
         <h1 style="font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--ink);margin:0 0 6px 0;">{{ $suggestion->topic }}</h1>
-        <p style="color:var(--muted);font-size:14px;margin:0;">Submitted on {{ $suggestion->created_at->format('F d, Y \a\t g:i A') }}</p>
+        <p style="color:var(--muted);font-size:14px;margin:0;">Submitted on {{ $suggestion->created_at->setTimezone('Africa/Nairobi')->format('F d, Y \a\t g:i A') }} EAT</p>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 320px;gap:24px;">
@@ -40,13 +40,13 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;padding-top:24px;border-top:1px solid rgba(21,40,31,.05);">
                         <div>
                             <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Submitted Date</label>
-                            <p style="font-size:14px;color:var(--ink);margin:0;">{{ $suggestion->created_at->format('M d, Y') }}</p>
-                            <p style="font-size:12px;color:var(--muted);margin:6px 0 0 0;">{{ $suggestion->created_at->format('g:i A') }}</p>
+                            <p style="font-size:14px;color:var(--ink);margin:0;">{{ $suggestion->created_at->setTimezone('Africa/Nairobi')->format('M d, Y') }}</p>
+                            <p style="font-size:12px;color:var(--muted);margin:6px 0 0 0;">{{ $suggestion->created_at->setTimezone('Africa/Nairobi')->format('g:i A') }} EAT</p>
                         </div>
                         <div>
                             <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Last Updated</label>
-                            <p style="font-size:14px;color:var(--ink);margin:0;">{{ $suggestion->updated_at->format('M d, Y') }}</p>
-                            <p style="font-size:12px;color:var(--muted);margin:6px 0 0 0;">{{ $suggestion->updated_at->diffForHumans() }}</p>
+                            <p style="font-size:14px;color:var(--ink);margin:0;">{{ $suggestion->updated_at->setTimezone('Africa/Nairobi')->format('M d, Y') }}</p>
+                            <p style="font-size:12px;color:var(--muted);margin:6px 0 0 0;">{{ $suggestion->updated_at->setTimezone('Africa/Nairobi')->diffForHumans() }}</p>
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
                     </div>
                     <div>
                         <label style="display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Created</label>
-                        <p style="font-size:12px;color:var(--ink);margin:0;">{{ $suggestion->created_at->format('M d, Y H:i:s') }}</p>
+                        <p style="font-size:12px;color:var(--ink);margin:0;">{{ $suggestion->created_at->setTimezone('Africa/Nairobi')->format('M d, Y H:i:s') }} EAT</p>
                     </div>
                 </div>
             </div>

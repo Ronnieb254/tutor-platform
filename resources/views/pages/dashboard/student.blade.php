@@ -561,7 +561,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @if(!$isMine)<div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:11px;flex-shrink:0;">{{ substr($msg->sender->name,0,1) }}</div>@endif
  <div>
  <div class="msg-bubble">{{ $msg->body }}</div>
- <div style="font-size:11px;color:var(--muted);margin-top:3px;{{ $isMine ? 'text-align:right;' : '' }}">{{ $msg->created_at->format('g:ia') }}</div>
+ <div style="font-size:11px;color:var(--muted);margin-top:3px;{{ $isMine ? 'text-align:right;' : '' }}">{{ $msg->created_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT</div>
  </div>
  </div>
  @empty

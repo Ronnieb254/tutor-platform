@@ -160,7 +160,7 @@ $canJoin = $groupSession->canJoin($user);
  </div>
  <h2 style="font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:14px;">{{ $groupSession->title }}</h2>
  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;" class="meta-g">
- @foreach([['fa-calendar','Date',$groupSession->scheduled_at->format('M j, Y')],['fa-clock','Time',$groupSession->scheduled_at->format('g:ia')],['fa-hourglass','Duration',$groupSession->duration_minutes.' min']] as [$ic,$lbl,$val])
+ @foreach([['fa-calendar','Date',$groupSession->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y')],['fa-clock','Time',$groupSession->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia').' EAT'],['fa-hourglass','Duration',$groupSession->duration_minutes.' min']] as [$ic,$lbl,$val])
  <div style="background:rgba(21,40,31,.02);border-radius:10px;padding:12px;">
  <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;"><i class="fa-solid {{ $ic }}"></i>{{ $lbl }}</p>
  <p style="font-size:15px;font-weight:700;color:var(--ink);">{{ $val }}</p>

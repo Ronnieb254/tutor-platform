@@ -161,7 +161,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 <div x-show="tab==='overview'">
  <div style="margin-bottom:20px;">
  <h2 style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">Hello, {{ explode(' ',$user->name)[0] }} <i class="fa-solid fa-hand"></i></h2>
- <p style="font-size:14px;color:var(--muted);margin-top:4px;">Manage your children's learning journey  {{ now()->format('l, F j, Y') }}</p>
+ <p style="font-size:14px;color:var(--muted);margin-top:4px;">Manage your children's learning journey  {{ now()->setTimezone('Africa/Nairobi')->format('l, F j, Y') }} EAT</p>
  </div>
  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px;" class="stats-g">
  <div class="stat">
@@ -420,7 +420,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @php $isMine = $msg->sender_id === $user->id; @endphp
  <div class="msg {{ $isMine ? 'mine' : 'theirs' }}">
  @if(!$isMine)<div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:11px;flex-shrink:0;">{{ substr($msg->sender->name,0,1) }}</div>@endif
- <div><div class="msg-bubble">{{ $msg->body }}</div><div style="font-size:11px;color:var(--muted);margin-top:3px;{{ $isMine ? 'text-align:right;' : '' }}">{{ $msg->created_at->format('g:ia') }}</div></div>
+ <div><div class="msg-bubble">{{ $msg->body }}</div><div style="font-size:11px;color:var(--muted);margin-top:3px;{{ $isMine ? 'text-align:right;' : '' }}">{{ $msg->created_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT</div></div>
  </div>
  @empty
  <div style="text-align:center;color:var(--muted);font-size:14px;padding:40px;">Start the conversation with your tutor!</div>
@@ -493,7 +493,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  @endphp
  <span class="bdg {{ $statusColors[$refund->status] ?? 'bdg-gray' }}">{{ ucfirst($refund->status) }}</span>
  </td>
- <td>{{ $refund->created_at->format('M j, Y') }}</td>
+ <td>{{ $refund->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</td>
  </tr>
  @endforeach
  </tbody>
@@ -515,7 +515,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <tr>
  <td><div style="display:flex;align-items:center;gap:10px;"><div class="av" style="width:30px;height:30px;background:#0A64BC;border-radius:8px;font-size:12px;">{{ substr($pb?->tutor?->name ?? 'T',0,1) }}</div>{{ $pb?->tutor?->name ?? '' }}</div></td>
  <td><code style="background:#F4F6F4;padding:2px 8px;border-radius:6px;font-size:11px;">{{ Str::limit($payment->mpesa_reference,18) }}</code></td>
- <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? '' }}</td>
+ <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->setTimezone('Africa/Nairobi')->format('M j, Y') ?? '' }} EAT</td>
  <td style="font-size:13px;color:var(--muted);">{{ $pb?->duration_minutes }}min  {{ $pb?->subject?->name ?? 'General' }}</td>
  <td style="font-weight:700;color:var(--ink);">KSh {{ number_format($payment->amount) }}</td>
  <td><span class="bdg bdg-green"> Paid</span></td>
@@ -545,7 +545,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  <div style="flex:1;">
  <div style="font-weight:{{ $isUnread?'700':'500' }};font-size:14px;color:var(--ink);">{{ $data['message'] ?? 'New notification' }}</div>
  @if(!empty($data['code']))<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(10,100,188,.08);border:1px solid rgba(10,100,188,.2);border-radius:8px;padding:4px 10px;margin-top:6px;"><span style="font-size:11px;color:var(--muted);">Your access code:</span><code style="font-size:14px;font-weight:800;color:var(--trust-blue);">{{ $data['code'] }}</code></div>@endif
- @if(!empty($data['scheduled_at']))<div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-calendar"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>@endif
+ @if(!empty($data['scheduled_at']))<div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fa-solid fa-calendar"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</div>@endif
  <div style="font-size:11px;color:var(--muted);margin-top:6px;">{{ $notif->created_at->diffForHumans() }}</div>
  @if(!empty($data['url']))<a href="{{ $data['url'] }}" class="btn btn-mint btn-sm" style="margin-top:8px;">Join / View Session</a>@endif
  </div>

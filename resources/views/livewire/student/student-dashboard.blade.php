@@ -69,7 +69,7 @@
  <img src="{{ $booking->tutor->avatar_url }}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
  <div class="flex-1 min-w-0">
  <p class="font-semibold text-sm text-ink">{{ $booking->tutor->name }}</p>
- <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }}  {{ $booking->scheduled_at->format('M j, Y') }}</p>
+ <p class="text-xs text-muted">{{ $booking->subject?->name ?? 'General' }}  {{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</p>
  </div>
  <div class="flex items-center gap-2 flex-shrink-0">
  @if(!$booking->review)

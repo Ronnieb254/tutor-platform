@@ -109,7 +109,7 @@ body { background: #F2F5F2; }
                 @endif
                 <div style="display:flex;justify-content:space-between;font-size:13px;">
                     <span style="color:rgba(21,40,31,.55);">Session</span>
-                    <span style="font-weight:600;color:#15281F;">{{ $booking->duration_minutes }}min  {{ $booking->scheduled_at->format('D, M j, Y') }}</span>
+                    <span style="font-weight:600;color:#15281F;">{{ $booking->duration_minutes }}min  {{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y') }} EAT</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:13px;">
                     <span style="color:rgba(21,40,31,.55);">Time</span>

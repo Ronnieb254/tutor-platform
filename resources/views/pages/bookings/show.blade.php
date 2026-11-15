@@ -77,8 +77,8 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  {{ $sessionName }} with {{ $otherName }}
  </h1>
  <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:rgba(255,255,255,.6);">
- <span><i class="fa-solid fa-calendar"></i>  {{ $sessionStart->format('D, M j, Y') }}</span>
- <span><i class="fa-solid fa-clock"></i>  {{ $sessionStart->format('g:i a') }} - {{ $sessionEnd->format('g:i a') }} EAT</span>
+ <span><i class="fa-solid fa-calendar"></i>  {{ $sessionStart->setTimezone('Africa/Nairobi')->format('D, M j, Y') }}</span>
+ <span><i class="fa-solid fa-clock"></i>  {{ $sessionStart->setTimezone('Africa/Nairobi')->format('g:i a') }} - {{ $sessionEnd->setTimezone('Africa/Nairobi')->format('g:i a') }} EAT</span>
  <span><i class="fa-solid fa-hourglass-half"></i>  {{ $booking->duration_minutes }} minutes</span>
  <span><i class="fa-solid  {{ ($booking->session_type ?? 'individual') === 'group' ? 'fa-users' : 'fa-user' }}"></i>  {{ ucfirst($booking->session_type ?? 'individual') }} Session</span>
  @if($booking->subject)<span><span style="font-size:inherit;"><i class="fa-solid fa-book-open"></i></span>  {{ $booking->subject->name }}</span>@endif
@@ -347,7 +347,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if(!$mine)<div style="width:28px;height:28px;border-radius:8px;background:#{{ substr(md5($msg->sender->email),0,6) }};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;">{{ strtoupper(substr($msg->sender->name,0,1)) }}</div>@endif
  <div>
  <div class="chat-bubble {{ $mine ? 'chat-mine' : 'chat-theirs' }}">{{ $msg->body }}</div>
- <div style="font-size:11px;color:rgba(21,40,31,.35);margin-top:3px;{{ $mine ? 'text-align:right' : '' }}">{{ $msg->created_at->format('g:ia') }}</div>
+ <div style="font-size:11px;color:rgba(21,40,31,.35);margin-top:3px;{{ $mine ? 'text-align:right' : '' }}">{{ $msg->created_at->setTimezone('Africa/Nairobi')->format('g:ia') }} EAT</div>
  </div>
  </div>
  @empty
@@ -425,8 +425,8 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @foreach([
  ['fa-user',''.($isTutor?'Student':'Tutor'),$otherName],
  ['fa-book-open','Subject',$booking->subject?->name ?? 'General'],
- ['fa-calendar','Date',$sessionStart->format('D, M j, Y')],
- ['fa-clock','Time',$sessionStart->format('g:i a').' - '.$sessionEnd->format('g:i a').' EAT'],
+ ['fa-calendar','Date',$sessionStart->setTimezone('Africa/Nairobi')->format('D, M j, Y')],
+ ['fa-clock','Time',$sessionStart->setTimezone('Africa/Nairobi')->format('g:i a').' - '.$sessionEnd->setTimezone('Africa/Nairobi')->format('g:i a').' EAT'],
  ['fa-hourglass-half','Duration',$booking->duration_minutes.' minutes  '.$sessionName],
  ['fa-money-bill','Amount Paid','KSh '.number_format($booking->total_amount)],
  ] as [$icon,$label,$val])
@@ -469,7 +469,7 @@ $sessionName = $tutorProfile ? $tutorProfile->getSessionNameForSession($booking-
  @if($booking->payment->paid_at)
  <div style="display:flex;justify-content:space-between;font-size:13px;">
  <span style="color:rgba(21,40,31,.5);">Paid on</span>
- <span style="font-weight:500;color:#15281F;">{{ $booking->payment->paid_at->format('M j, Y') }}</span>
+ <span style="font-weight:500;color:#15281F;">{{ $booking->payment->paid_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</span>
  </div>
  @endif
  </div>

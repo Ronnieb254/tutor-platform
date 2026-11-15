@@ -102,7 +102,7 @@
  <div class="max-w-xs {{ $message->sender_id === Auth::id() ? 'bg-purple-600 text-white' : 'bg-white border border-gray-200' }} rounded-lg p-4">
  <p class="text-sm">{{ $message->body }}</p>
  <p class="text-xs {{ $message->sender_id === Auth::id() ? 'text-purple-100' : 'text-gray-500' }} mt-1">
- {{ $message->created_at->format('g:i A') }}
+ {{ $message->created_at->setTimezone('Africa/Nairobi')->format('g:i A') }} EAT
  </p>
  </div>
  </div>

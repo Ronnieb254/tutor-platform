@@ -217,7 +217,7 @@
                                 @endif
                             </td>
                             <td style="padding:13px 16px;font-size:13px;color:var(--muted);">{{ $suggestion->email ?? 'N/A' }}</td>
-                            <td style="padding:13px 16px;font-size:13px;color:var(--muted);">{{ $suggestion->created_at->format('M d, Y') }}</td>
+                            <td style="padding:13px 16px;font-size:13px;color:var(--muted);">{{ $suggestion->created_at->setTimezone('Africa/Nairobi')->format('M d, Y') }} EAT</td>
                             <td style="padding:13px 16px;">
                                 <a href="{{ route('admin.group-session-suggestions.show', $suggestion) }}" class="btn btn-o btn-sm" style="padding:6px 10px;">
                                     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>

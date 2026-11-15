@@ -105,7 +105,7 @@
     @if($payment->booking)
     <div style="padding:0 22px 14px;font-size:12px;color:var(--muted);">
         <strong>Session:</strong> {{ $payment->booking->subject->name ?? 'N/A' }} 
-        {{ $payment->booking->scheduled_at?->format('d M Y, g:ia') ?? 'N/A' }} 
+        {{ $payment->booking->scheduled_at?->setTimezone('Africa/Nairobi')->format('d M Y, g:ia') ?? 'N/A' }} EAT 
         Tutor: {{ $payment->booking->tutor->name ?? 'N/A' }}
     </div>
     @endif
@@ -182,7 +182,7 @@
             <tbody>
                 @foreach($recentlyVerified as $pmt)
                 <tr style="border-bottom:1px solid rgba(21,40,31,.04);">
-                    <td style="padding:12px 16px;color:var(--muted);">{{ $pmt->verified_at?->format('d M, g:ia') }}</td>
+                    <td style="padding:12px 16px;color:var(--muted);">{{ $pmt->verified_at?->setTimezone('Africa/Nairobi')->format('d M, g:ia') }} EAT</td>
                     <td style="padding:12px 16px;font-weight:600;color:var(--ink);">{{ $pmt->user->name ?? '' }}</td>
                     <td style="padding:12px 16px;">KSh {{ number_format($pmt->amount, 2) }}</td>
                     <td style="padding:12px 16px;font-family:monospace;font-weight:700;color:#0A64BC;">{{ $pmt->mpesa_code ?? '' }}</td>

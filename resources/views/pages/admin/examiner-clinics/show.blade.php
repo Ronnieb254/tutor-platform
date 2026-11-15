@@ -32,7 +32,7 @@
  <dt style="font-weight:600;color:var(--muted);">Curriculum</dt>
  <dd>{{ $examinerClinic->curriculum?->name ?? 'All tracks' }}</dd>
  <dt style="font-weight:600;color:var(--muted);">Scheduled</dt>
- <dd>{{ $examinerClinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</dd>
+ <dd>{{ $examinerClinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:ia') }} EAT</dd>
  <dt style="font-weight:600;color:var(--muted);">Duration</dt>
  <dd>{{ $examinerClinic->duration_minutes }} minutes</dd>
  <dt style="font-weight:600;color:var(--muted);">Status</dt>

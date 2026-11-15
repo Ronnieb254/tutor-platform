@@ -46,7 +46,7 @@
  @php $rows = [
  ['Student', $booking->student->name],
  ['Subject', $booking->subject?->name ?? 'General Session'],
- ['Date', $booking->scheduled_at->format('l, F j, Y')],
+ ['Date', $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('l, F j, Y').' (EAT)'],
  ['Duration', $booking->duration_minutes . ' min (scheduled)'],
  ]; @endphp
  @foreach($rows as [$label, $value])
