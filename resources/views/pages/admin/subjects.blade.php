@@ -112,7 +112,11 @@
  </div>
  </td>
  <td>
- <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(26,45,61,.12);color:#1A2D3D;">CBC</span>
+ @if($subject->curriculum_variant ?? 'kenyan' === 'kenyan')
+ <span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;background:rgba(15,23,42,.12);color:#0F1726;">Kenyan (CBC)</span>
+ @else
+ <span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;background:rgba(245,158,11,.12);color:#F59E0B;">International</span>
+ @endif
  </td>
  <td><code style="background:#F4F6F4;padding:3px 8px;border-radius:6px;font-size:11px;">{{ $subject->slug }}</code></td>
  <td>

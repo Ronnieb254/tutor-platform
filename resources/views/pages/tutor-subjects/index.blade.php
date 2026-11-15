@@ -294,7 +294,7 @@ $unreadNotifs = $user->unreadNotifications()->count();
  <div>
  <div style="font-size:14px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;">
  {{ $subject->name }}
- <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(26,45,61,.12);color:#1A2D3D;display:inline-flex;">CBC</span>
+ <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(26,45,61,.12);color:#1A2D3D;display:inline-flex;">{{ ($subject->curriculum_variant ?? 'kenyan') === 'kenyan' ? 'CBC' : 'International' }}</span>
  </div>
  <div style="font-size:11px;color:var(--muted);">{{ $category->name }}</div>
  </div>
