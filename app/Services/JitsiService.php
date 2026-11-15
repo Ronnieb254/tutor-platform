@@ -116,7 +116,21 @@ class JitsiService
                 ],
             ],
         ];
-        return \Firebase\JWT\JWT::encode($payload, $this->appSecret, 'RS256', $keyId);
+        
+        // Process private key: handle literal \n strings from env
+        $privateKey = $this->appSecret;
+        
+        // Replace literal \n with actual newlines
+        $privateKey = str_replace('\\n', "\n", $privateKey);
+        
+        // If it doesn't start with -----BEGIN, try base64 decoding
+        if (!str_starts_with($privateKey, '-----BEGIN')) {
+            $privateKey = base64_decode($privateKey);
+            // After decoding, replace literal \n in case it's encoded too
+            $privateKey = str_replace('\\n', "\n", $privateKey);
+        }
+        
+        return \Firebase\JWT\JWT::encode($payload, $privateKey, 'RS256', $keyId);
     }
 
     /**
