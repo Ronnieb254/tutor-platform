@@ -52,11 +52,11 @@ const CurriculumSwitcher = {
       curriculumBtns.forEach((btn) => {
         const variant = btn.dataset.curriculumSwitch;
         if (variant === current) {
-          btn.style.background = 'rgba(26, 45, 61, 1)';
-          btn.style.color = '#fff';
+          btn.style.background = 'rgba(26, 45, 61, 0.15)';
+          btn.style.borderColor = 'rgba(26, 45, 61, 0.3)';
         } else {
           btn.style.background = 'rgba(26, 45, 61, 0.08)';
-          btn.style.color = 'var(--navy)';
+          btn.style.borderColor = 'rgba(21, 40, 31, 0.12)';
         }
       });
     };
@@ -69,9 +69,15 @@ const CurriculumSwitcher = {
 // Export for use in other modules or inline scripts
 window.CurriculumSwitcher = CurriculumSwitcher;
 
-// Auto-init on load
+// Auto-init on load - wait for DOM to be ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => CurriculumSwitcher.init());
 } else {
+  // If script loads after DOMContentLoaded, init immediately
   CurriculumSwitcher.init();
+}
+
+// Also init on Alpine initialization to handle timing issues
+if (window.Alpine) {
+  window.Alpine.onElUiCreated(() => CurriculumSwitcher.init());
 }

@@ -45,19 +45,24 @@ class HomeController extends Controller
      * How It Works page — uses a controller method (not a closure)
      * so that route:cache doesn't break.
      */
-    public function howItWorks()
+    public function howItWorks(Request $request)
     {
-        return view('pages.how-it-works');
+        $variant = $request->query('variant') ?: (session('curriculum_variant') ?? 'kenyan');
+        return view('pages.how-it-works', compact('variant'));
     }
 
     public function tutors(Request $request)
     {
-        // Store track in session when provided via query string
-        if ($request->has('track') && in_array($request->track, ['kenyan', 'international'])) {
-            session(['curriculum_track' => $request->track]);
+        // Get curriculum from query or localStorage
+        $variant = $request->query('variant') ?: (session('curriculum_variant') ?? 'kenyan');
+        $curriculum = $request->query('curriculum', $variant);
+
+        // Store preferences in session
+        if ($request->has('curriculum')) {
+            session(['curriculum_variant' => $curriculum]);
         }
 
-        return view('pages.tutors.index');
+        return view('pages.tutors.index', compact('variant', 'curriculum'));
     }
 
     public function tutorProfile(int $id)

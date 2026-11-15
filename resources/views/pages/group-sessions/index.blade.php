@@ -18,14 +18,23 @@
  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.3);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:22px;">
  <i class="fa-solid fa-user"></i> Live Cohorts
  </div>
+ @if($isKenyan)
  <h1 style="font-family:'Fraunces',serif;font-size:clamp(34px,5vw,58px);color:#fff;margin-bottom:16px;line-height:1.1;">
  Learn together, <span style="color:#EEBE15;">pay less.</span>
  </h1>
  <p style="font-size:17px;color:rgba(255,255,255,.65);max-width:560px;margin-bottom:28px;line-height:1.85;">
  Small live classes hosted by our top mentors. Same energy as 1-on-1, lower per-seat price. Book a single session or join a multi-week series.
  </p>
+ @else
+ <h1 style="font-family:'Fraunces',serif;font-size:clamp(34px,5vw,58px);color:#fff;margin-bottom:16px;line-height:1.1;">
+ Study <span style="color:#F59E0B;">IGCSE, Cambridge & International</span> Exams in <span style="color:#F59E0B;">group cohorts.</span>
+ </h1>
+ <p style="font-size:17px;color:rgba(255,255,255,.65);max-width:560px;margin-bottom:28px;line-height:1.85;">
+ Small live cohorts focused on international exam boards: Cambridge, IB, Edexcel, and American curricula. Taught by expert international tutors with exam board expertise.
+ </p>
+ @endif
  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
- <a href="#sessions" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
+ <a href="#sessions" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:{{ $isInternational ? '#F59E0B' : '#EEBE15' }};color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
  <i class="fa-solid fa-circle-check"></i> Browse Sessions
  </a>
  @auth
@@ -56,14 +65,23 @@
  </div>
  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;">
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">How group sessions work</p>
+ @if($isKenyan)
  @foreach(['Browse upcoming live classes by subject/topic','Book your seat - pay once per session','Join the Jitsi room at the scheduled time','Learn together with up to 30 peers','Series? Enroll in each session individually'] as $item)
  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
  <i class="fa-solid fa-circle-check"></i>
  <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
  </div>
  @endforeach
+ @else
+ @foreach(['Browse Cambridge, IB, Edexcel & American exam cohorts','Book your seat - same price for all exam boards','Join the live video class at scheduled time','Study with peers preparing for the same exam board','Series supported - enroll in each session individually'] as $item)
+ <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+ <i class="fa-solid fa-circle-check"></i>
+ <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
+ </div>
+ @endforeach
+ @endif
  <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);text-align:center;">
- <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">KSh 600</span>
+ <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:{{ $isInternational ? '#F59E0B' : '#EEBE15' }};">{{ $isInternational ? 'USD 8' : 'KSh 600' }}</span>
  <span style="font-size:14px;color:rgba(255,255,255,.45);margin-left:8px;">/ per session</span>
  </div>
  <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);">

@@ -59,7 +59,7 @@
  <button @click="CurriculumSwitcher.switchVariant('kenyan');csopen=false" data-curriculum-switch="kenyan"
  style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(21,40,31,.08);border:none;cursor:pointer;font-family:inherit;font-size:13.5px;color:#15281F;font-weight:600;text-align:left;transition:all .15s;margin-bottom:4px;"
  onmouseover="this.style.background='rgba(21,40,31,.12)'" onmouseout="this.style.background='rgba(21,40,31,.08)'">
- <i class="fa-solid fa-flag"></i> Kenyan (CBC)
+ <i class="fa-solid fa-flag"></i> Kenyan
  </button>
  <button @click="CurriculumSwitcher.switchVariant('international');csopen=false" data-curriculum-switch="international"
  style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(21,40,31,.08);border:none;cursor:pointer;font-family:inherit;font-size:13.5px;color:#15281F;font-weight:600;text-align:left;transition:all .15s;"

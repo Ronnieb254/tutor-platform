@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script src="{{ asset('js/curriculum-switcher.js') }}" defer></script>
 <style>
 :root{--ink:#15281F;--cream:#FBF5E6;--trust-blue:#0A64BC;--coral:#E8522A;--gold:#EEBE15;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);--sidebar:#111C16;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -291,7 +292,10 @@ $unreadNotifs = $user->unreadNotifications()->count();
  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0A64BC" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
  </div>
  <div>
- <div style="font-size:14px;font-weight:600;color:var(--ink);">{{ $subject->name }}</div>
+ <div style="font-size:14px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;">
+ {{ $subject->name }}
+ <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(26,45,61,.12);color:#1A2D3D;display:inline-flex;">CBC</span>
+ </div>
  <div style="font-size:11px;color:var(--muted);">{{ $category->name }}</div>
  </div>
  </div>

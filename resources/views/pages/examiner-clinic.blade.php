@@ -18,12 +18,21 @@
  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(212,160,23,.2);color:#FCD34D;border:1px solid rgba(212,160,23,.3);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:22px;">
  <i class="fa-solid fa-star"></i> The Examiner's Clinic
  </div>
+ @if($isKenyan)
  <h1 style="font-family:'Fraunces',serif;font-size:clamp(34px,5vw,58px);color:#fff;margin-bottom:16px;line-height:1.1;">
  Learn from the experts who <span style="color:#EEBE15;">set and mark the exams.</span>
  </h1>
  <p style="font-size:17px;color:rgba(255,255,255,.65);max-width:560px;margin-bottom:28px;line-height:1.85;">
  Most revision resources focus on <em style="font-style:italic;">what</em> to study. The Examiner's Clinic focuses on <strong style="color:#fff;">how to interpret and answer questions</strong> - delivered by national examiners and markers, structured per paper, paper Past Paper 1 (PP1), Past Paper 2 (PP2), Past Paper 3 (PP3) as it applies.
  </p>
+ @else
+ <h1 style="font-family:'Fraunces',serif;font-size:clamp(34px,5vw,58px);color:#fff;margin-bottom:16px;line-height:1.1;">
+ Learn from <span style="color:#F59E0B;">Cambridge, IB, Edexcel & American</span> exam experts.
+ </h1>
+ <p style="font-size:17px;color:rgba(255,255,255,.65);max-width:560px;margin-bottom:28px;line-height:1.85;">
+ Specialized clinics led by international exam board examiners and markers. Focus on question interpretation, marking schemes, and strategic answering across different exam boards.
+ </p>
+ @endif
  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
  <a href="#clinics" style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border-radius:999px;background:#EEBE15;color:#15281F;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.opacity='.9';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
  <i class="fa-solid fa-circle-check"></i> Book a Clinic Spot
@@ -50,14 +59,23 @@
  </div>
  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;">
  <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:18px;">What each clinic covers</p>
+ @if($isKenyan)
  @foreach(['Exam strategy & question time management','High-frequency exam questions by topic','Examiner traps - mistakes and NRT areas','Marking scheme analysis - how marks are awarded','Common student errors and how to avoid them','How KNEC examiners grade papers'] as $item)
  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
  <i class="fa-solid fa-circle-check"></i>
  <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
  </div>
  @endforeach
+ @else
+ @foreach(['Exam board-specific strategy (Cambridge, IB, Edexcel, American)','High-frequency questions from official past papers','Marking scheme interpretation across exam boards','Question interpretation & trap question recognition','Common student errors for each exam board','How different examiners grade internationally'] as $item)
+ <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+ <i class="fa-solid fa-circle-check"></i>
+ <span style="font-size:14px;color:rgba(255,255,255,.82);">{{ $item }}</span>
+ </div>
+ @endforeach
+ @endif
  <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);text-align:center;">
- <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:#EEBE15;">KSh 1,000</span>
+ <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:{{ $isInternational ? '#F59E0B' : '#EEBE15' }};">{{ $isInternational ? 'USD 15' : 'KSh 1,000' }}</span>
  <span style="font-size:14px;color:rgba(255,255,255,.45);margin-left:8px;">/ 60-minute session</span>
  </div>
  </div>
@@ -71,8 +89,13 @@
  <div style="max-width:860px;margin:0 auto;padding:0 24px;">
  <div style="text-align:center;margin-bottom:40px;">
  <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,4vw,38px);color:#15281F;margin-bottom:10px;">Why the Examiner's Clinic?</h2>
+ @if($isKenyan)
  <p style="font-size:16px;color:rgba(21,40,31,.55);">A fraction of the cost of private tuition, in a focused, high-impact group environment.</p>
+ @else
+ <p style="font-size:16px;color:rgba(21,40,31,.55);">Get exam board expertise at a fraction of the cost of private international tutoring.</p>
+ @endif
  </div>
+ @if($isKenyan)
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="vs-g">
  <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;border-left:4px solid rgba(21,40,31,.12);">
  <h3 style="font-size:15px;font-weight:700;color:rgba(21,40,31,.5);margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-book-open"></i> Regular Revision</h3>
@@ -91,6 +114,26 @@
  @endforeach
  </div>
  </div>
+ @else
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="vs-g">
+ <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;border-left:4px solid rgba(21,40,31,.12);">
+ <h3 style="font-size:15px;font-weight:700;color:rgba(21,40,31,.5);margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-book-open"></i> Generic Tuition</h3>
+ @foreach(['Generic exam prep','Limited to one exam board','No marking scheme insight','Expensive international tuition']) as $item)
+ <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:13px;color:rgba(21,40,31,.6);">
+ <i class="fa-solid fa-circle-xmark"></i>{{ $item }}
+ </div>
+ @endforeach
+ </div>
+ <div style="background:#fff;border-radius:20px;border:1px solid rgba(21,40,31,.08);padding:24px;border-left:4px solid #F59E0B;">
+ <h3 style="font-size:15px;font-weight:700;color:#15281F;margin-bottom:16px;display:flex;align-items:center;gap:7px;"><i class="fa-solid fa-star"></i> Examiner's Clinic</h3>
+ @foreach(['Cambridge, IB, Edexcel & American focus','Exam board-specific strategies','Direct marking scheme analysis','USD 15 for a 60-minute group session'] as $item)
+ <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:13px;color:#15281F;">
+ <i class="fa-solid fa-circle-check"></i>{{ $item }}
+ </div>
+ @endforeach
+ </div>
+ </div>
+ @endif
  <style>.vs-g{grid-template-columns:1fr!important;}@media(min-width:640px){.vs-g{grid-template-columns:1fr 1fr!important;}}</style>
  </div>
 </section>

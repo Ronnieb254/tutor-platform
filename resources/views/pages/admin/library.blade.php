@@ -63,6 +63,14 @@
  </select>
  </div>
  <div>
+ <label class="form-label">Curriculum</label>
+ <select name="curriculum" class="form-input" style="min-width:140px;">
+ <option value="">All Variants</option>
+ <option value="kenyan" {{ request('curriculum') === 'kenyan' ? 'selected' : '' }}>Kenyan (CBC)</option>
+ <option value="international" {{ request('curriculum') === 'international' ? 'selected' : '' }}>International</option>
+ </select>
+ </div>
+ <div>
  <label class="form-label">Status</label>
  <select name="status" class="form-input" style="min-width:130px;">
  <option value="">All</option>
@@ -72,7 +80,7 @@
  </select>
  </div>
  <button type="submit" class="btn btn-primary">Filter</button>
- @if(request()->hasAny(['search','type','category','status']))
+ @if(request()->hasAny(['search','type','category','status','curriculum']))
  <a href="{{ route('admin.library') }}" class="btn btn-secondary">Clear</a>
  @endif
  </form>

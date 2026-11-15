@@ -30,12 +30,20 @@
  {{-- Search & Filters --}}
  <div class="card" style="margin-bottom:20px;">
  <form method="GET" action="{{ route('admin.subjects') }}" style="padding:20px;">
- <div style="display:grid;grid-template-columns:1fr 200px 180px auto;gap:12px;align-items:end;">
+ <div style="display:grid;grid-template-columns:1fr 200px 140px 140px auto;gap:12px;align-items:end;">
  <div>
  <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Search</label>
  <input type="text" name="search" value="{{ request('search') }}" placeholder="Search subjects or categories..."
  style="width:100%;height:42px;padding:0 14px;border:1.5px solid var(--hair);border-radius:10px;font-size:14px;outline:none;"
  onfocus="this.style.borderColor='#0A64BC'" onblur="this.style.borderColor='var(--hair)'">
+ </div>
+ <div>
+ <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Curriculum</label>
+ <select name="curriculum" style="width:100%;height:42px;padding:0 12px;border:1.5px solid var(--hair);border-radius:10px;font-size:14px;outline:none;background:#fff;">
+ <option value="">All Variants</option>
+ <option value="kenyan" {{ request('curriculum') === 'kenyan' ? 'selected' : '' }}>Kenyan (CBC)</option>
+ <option value="international" {{ request('curriculum') === 'international' ? 'selected' : '' }}>International</option>
+ </select>
  </div>
  <div>
  <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Category</label>
@@ -58,7 +66,7 @@
  <button type="submit" class="btn btn-v" style="height:42px;">
  <i class="fa-solid fa-magnifying-glass"></i> Search
  </button>
- @if(request()->hasAny(['search', 'category_id', 'status']))
+ @if(request()->hasAny(['search', 'category_id', 'status', 'curriculum']))
  <a href="{{ route('admin.subjects') }}" class="btn btn-o" style="height:42px;">
  <i class="fa-solid fa-circle-xmark"></i> Clear
  </a>
@@ -86,6 +94,7 @@
  <th>Icon</th>
  <th>Subject Name</th>
  <th>Category</th>
+ <th>Curriculum</th>
  <th>Slug</th>
  <th>Status</th>
  <th class="no-export">Actions</th>
@@ -101,6 +110,9 @@
  <span style="font-size:18px;">{{ $subject->category->icon ?? '' }}</span>
  <span style="font-size:13px;color:var(--muted);">{{ $subject->category->name }}</span>
  </div>
+ </td>
+ <td>
+ <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(26,45,61,.12);color:#1A2D3D;">CBC</span>
  </td>
  <td><code style="background:#F4F6F4;padding:3px 8px;border-radius:6px;font-size:11px;">{{ $subject->slug }}</code></td>
  <td>

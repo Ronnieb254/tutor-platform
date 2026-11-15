@@ -16,32 +16,37 @@
 @include('partials.nav')
 
 {{-- HERO --}}
-<section style="background:linear-gradient(135deg,#111C16,#15281F);padding:80px 0;text-align:center;position:relative;overflow:hidden;">
- <div style="position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:rgba(10,100,188,.1);border-radius:50%;pointer-events:none;"></div>
+<section style="background:linear-gradient(135deg,{{ $isInternational ? '#1A2D3D' : '#111C16' }},{{ $isInternational ? '#0f1e2d' : '#15281F' }});padding:80px 0;text-align:center;position:relative;overflow:hidden;">
+ <div style="position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:rgba({{ $isInternational ? '26,45,61' : '10,100,188' }},.1);border-radius:50%;pointer-events:none;"></div>
  <div style="max-width:1360px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
- <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(10,100,188,.3);color:rgba(255,255,255,.9);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:20px;">
- <i class="fa-solid fa-circle-info"></i> Simple  Secure  Effective
+ <div style="display:inline-flex;align-items:center;gap:8px;background:rgba({{ $isInternational ? '245,158,15' : '10,100,188' }},.3);color:rgba(255,255,255,.9);padding:6px 18px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:20px;">
+ <i class="fa-solid fa-circle-info"></i> {{ $isInternational ? 'Global  Certified  Expert' : 'Simple  Secure  Effective' }}
  </div>
- <h1 style="font-family:'Fraunces',serif;font-size:clamp(36px,6vw,64px);color:#fff;margin-bottom:16px;line-height:1.1;">Learning made <span style="color:#EEBE15;">simple.</span></h1>
+ <h1 style="font-family:'Fraunces',serif;font-size:clamp(36px,6vw,64px);color:#fff;margin-bottom:16px;line-height:1.1;">
+ {{ $isInternational ? 'International exams' : 'Learning made' }} <span style="color:{{ $isInternational ? '#F59E0B' : '#EEBE15' }};">{{ $isInternational ? 'simplified.' : 'simple.' }}</span>
+ </h1>
  <p style="font-size:18px;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto 32px;line-height:1.8;">
- Mwalimu connects Kenyan students and parents with verified, TSC-registered expert tutors. Book in minutes, pay securely, join a live class from anywhere.
+ {{ $isInternational 
+   ? 'Mwalimu connects students and families with expert tutors specializing in Cambridge, IB, Edexcel, and American curricula. Expert guidance for global excellence.'
+   : 'Mwalimu connects Kenyan students and parents with verified, TSC-registered expert tutors. Book in minutes, pay securely, join a live class from anywhere.'
+ }}
  </p>
  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:48px;">
  @if(!auth()->check() || (auth()->check() && !in_array(auth()->user()->role, ['tutor','admin'])))
- <a href="{{ route('tutors.index') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
+ <a href="{{ route('tutors.index', ['curriculum' => $curriculum_variant]) }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:{{ $isInternational ? '#1A2D3D' : '#0A64BC' }};color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='{{ $isInternational ? '#0f1e2d' : '#120A8F' }}';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='{{ $isInternational ? '#1A2D3D' : '#0A64BC' }}';this.style.transform='translateY(0)'">
  <i class="fa-solid fa-magnifying-glass"></i> Find a Tutor
  </a>
  @if(!auth()->check() || auth()->user()->role === 'parent')
- <a href="{{ route('register') }}?role=tutor" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
+ <a href="{{ route('register', ['role' => 'tutor', 'curriculum' => $curriculum_variant]) }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);font-size:15px;font-weight:600;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">
  <span style="font-size:inherit;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-school"></i></span> Become a Tutor
  </a>
  @endif
  @elseif(auth()->check() && auth()->user()->role === 'admin')
- <a href="{{ route('admin.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
+ <a href="{{ route('admin.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:{{ $isInternational ? '#1A2D3D' : '#0A64BC' }};color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='{{ $isInternational ? '#0f1e2d' : '#120A8F' }}';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='{{ $isInternational ? '#1A2D3D' : '#0A64BC' }}';this.style.transform='translateY(0)'">
  <i class="fa-solid fa-chart-bar"></i> Admin Dashboard
  </a>
  @else
- <a href="{{ route('tutor.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:#0A64BC;color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='#120A8F';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#0A64BC';this.style.transform='translateY(0)'">
+ <a href="{{ route('tutor.dashboard') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;border-radius:999px;background:{{ $isInternational ? '#1A2D3D' : '#0A64BC' }};color:#fff;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s;" onmouseover="this.style.background='{{ $isInternational ? '#0f1e2d' : '#120A8F' }}';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='{{ $isInternational ? '#1A2D3D' : '#0A64BC' }}';this.style.transform='translateY(0)'">
  <i class="fa-solid fa-chart-bar"></i> Go to Dashboard
  </a>
  @endif

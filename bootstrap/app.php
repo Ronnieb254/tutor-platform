@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\EnsureTutorContractAccepted;
+use App\Http\Middleware\CurriculumVariant;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -25,7 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'tutor.contract' => EnsureTutorContractAccepted::class,
         ]);
         
-        // Apply tutor contract middleware globally to auth routes
+        // Apply global middleware
+        $middleware->append(CurriculumVariant::class);
         $middleware->append(EnsureTutorContractAccepted::class);
         
         $middleware->trustProxies(at: '*');
