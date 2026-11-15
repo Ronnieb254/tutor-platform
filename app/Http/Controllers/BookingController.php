@@ -572,8 +572,9 @@ class BookingController extends Controller
         $availableSlots = array_filter($allSlots, function ($slot) use ($existingBookings, $date, $nowEAT, $eat) {
             $slotStart = \Carbon\Carbon::parse($slot['datetime'], $eat);
 
-            // If date is today, only show slots at least 1 hour from now (EAT)
-            if ($date->isSameDay($nowEAT) && $slotStart <= $nowEAT->copy()->addHour()) {
+            // If date is today, only show slots starting now or in the future
+            // Allow immediate booking (within current 30-min slot)
+            if ($date->isSameDay($nowEAT) && $slotStart < $nowEAT) {
                 return false;
             }
 
