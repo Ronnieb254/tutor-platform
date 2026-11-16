@@ -152,6 +152,7 @@ class JitsiService
         } catch (\Throwable $e) {
             throw new \Exception('JWT Generation Error: ' . $e->getMessage());
         }
+    }
 
     /**
      * Sanitize room name for Jitsi
