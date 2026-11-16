@@ -18,7 +18,7 @@
  <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--muted);">
  @if($clinic->subject)<span><i class="fa-solid fa-book-open"></i> {{ $clinic->subject->name }}</span>@endif
  @if($clinic->paper_type)<span><i class="fa-solid fa-file-lines"></i> {{ $clinic->paper_type }}</span>@endif
- <span><i class="fa-solid fa-calendar"></i> {{ $clinic->scheduled_at->format('D, M j, Y \a\t g:ia') }}</span>
+ <span><i class="fa-solid fa-calendar"></i> {{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:ia') }} EAT</span>
  <span><i class="fa-solid fa-clock"></i> {{ $clinic->duration_minutes }} min</span>
  </div>
  </div>
@@ -107,7 +107,7 @@
  <span style="color:rgba(21,40,31,.2);"><i class="fa-solid fa-minus"></i></span>
  @endif
  </td>
- <td style="padding:12px 16px;font-size:12px;color:var(--muted);">{{ $enrollment->created_at->format('M j, g:ia') }}</td>
+ <td style="padding:12px 16px;font-size:12px;color:var(--muted);">{{ $enrollment->created_at->setTimezone('Africa/Nairobi')->format('M j, g:ia') }} EAT</td>
  </tr>
  @endforeach
  </tbody>
@@ -125,7 +125,7 @@
  <div style="padding:14px 20px;border-bottom:1px solid rgba(21,40,31,.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
  <div>
  <div style="font-weight:600;font-size:13px;color:var(--ink);">{{ $child->title }}</div>
- <div style="font-size:12px;color:var(--muted);">{{ $child->scheduled_at->format('D, M j \a\t g:ia') }}  {{ $child->enrollments_count ?? $child->enrollments()->count() }}/30 enrolled</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $child->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT  {{ $child->enrollments_count ?? $child->enrollments()->count() }}/30 enrolled</div>
  </div>
  <a href="{{ route('admin.clinics.show', $child) }}" style="font-size:12px;color:#0A64BC;text-decoration:none;font-weight:600;">View <span style="font-size:inherit;"></span></a>
  </div>

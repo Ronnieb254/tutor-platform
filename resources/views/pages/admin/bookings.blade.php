@@ -96,7 +96,7 @@
  <td style="color:var(--muted);">{{ $booking->subject?->name ?? '"' }}</td>
  <td data-order="{{ $booking->scheduled_at->timestamp }}" style="white-space:nowrap;font-size:13px;">
  <div>{{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y') }}</div>
- <div style="color:var(--muted);font-size:11px;">{{ $booking->scheduled_at->format('g:i a') }} EAT</div>
+ <div style="color:var(--muted);font-size:11px;">{{ $booking->scheduled_at->setTimezone('Africa/Nairobi')->format('g:i a') }} EAT</div>
  </td>
  <td data-order="{{ $booking->duration_minutes }}" style="font-size:13px;">{{ $booking->duration_minutes }} min</td>
  <td data-order="{{ $booking->total_amount }}" style="font-weight:600;font-size:13px;">KSh {{ number_format($booking->total_amount) }}</td>

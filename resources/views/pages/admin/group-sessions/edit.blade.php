@@ -78,7 +78,7 @@
  <div>
  <label class="form-label">Scheduled Date & Time <span style="color:#E8522A;">*</span></label>
  <input type="datetime-local" name="scheduled_at" class="form-input"
- value="{{ old('scheduled_at', $groupSession->scheduled_at->format('Y-m-d\TH:i')) }}" required>
+ value="{{ old('scheduled_at', $groupSession->scheduled_at->setTimezone('Africa/Nairobi')->format('Y-m-d\TH:i')) }}" required>
  </div>
  <div>
  <label class="form-label">Duration (minutes) <span style="color:#E8522A;">*</span></label>
@@ -124,7 +124,7 @@
  </span>
  <p style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;">
  Enrollments: <strong>{{ $enrolled }}</strong> / {{ $groupSession->max_students ?? 30 }}<br>
- Created: {{ $groupSession->created_at->format('M j, Y') }}
+ Created: {{ $groupSession->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT
  </p>
  </div>
  </div>

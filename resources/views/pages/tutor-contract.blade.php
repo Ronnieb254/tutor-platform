@@ -365,7 +365,7 @@
  </button>
 
  <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px;">
- Clicking above is my electronic acceptance and signature as of {{ now()->format('F d, Y') }}.
+ Clicking above is my electronic acceptance and signature as of {{ now()->setTimezone('Africa/Nairobi')->format('F d, Y') }} EAT.
  This constitutes a legally binding agreement under Kenyan law.
  </p>
  </div>

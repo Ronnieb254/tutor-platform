@@ -268,7 +268,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
 <div x-show="tab==='overview'">
  <div style="margin-bottom:20px;">
  <h2 style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--ink);">Hello, {{ explode(' ',$user->name)[0] }} </h2>
- <p style="font-size:14px;color:var(--muted);margin-top:4px;">{{ now()->format('l, F j, Y') }}</p>
+ <p style="font-size:14px;color:var(--muted);margin-top:4px;">{{ now()->setTimezone('Africa/Nairobi')->format('l, F j, Y') }} EAT</p>
  </div>
 
  {{-- Stats --}}
@@ -638,7 +638,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  </td>
  <td><code style="background:#F4F6F4;padding:2px 8px;border-radius:6px;font-size:11px;">{{ Str::limit($payment->mpesa_reference,18) }}</code></td>
- <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->format('M j, Y') ?? '' }}</td>
+ <td style="font-size:13px;white-space:nowrap;">{{ $payment->paid_at?->setTimezone('Africa/Nairobi')->format('M j, Y') ?? '' }} EAT</td>
  <td style="font-size:13px;color:var(--muted);">
  {{ $payment->booking?->duration_minutes }}min  {{ $payment->booking?->subject?->name ?? 'General' }}
  </td>
@@ -690,7 +690,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  @endif
  @if(!empty($data['scheduled_at']))
- <div style="font-size:12px;color:var(--muted);margin-top:4px;"> {{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
+ <div style="font-size:12px;color:var(--muted);margin-top:4px;"> {{ \Carbon\Carbon::parse($data['scheduled_at'])->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</div>
  @endif
  <div style="font-size:11px;color:var(--muted);margin-top:6px;">{{ $notif->created_at->diffForHumans() }}</div>
  @if(!empty($data['url']))

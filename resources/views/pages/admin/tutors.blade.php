@@ -62,7 +62,7 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
         'name'     => $user?->name ?? 'Unknown',
         'email'    => $user?->email ?? '',
         'phone'    => $user?->phone ?? '',
-        'joined'   => $profile->created_at ? $profile->created_at->format('M d, Y') : '--',
+        'joined'   => $profile->created_at ? $profile->created_at->setTimezone('Africa/Nairobi')->format('M d, Y') : '--',
         'status'   => $profile->documents->isEmpty()
             ? 'New'
             : ($profile->is_approved

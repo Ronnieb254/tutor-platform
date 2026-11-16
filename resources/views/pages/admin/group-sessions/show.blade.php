@@ -18,7 +18,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
  <div style="display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap;">
  <span class="badge {{ $statusColor }}">{{ $statusLabel }}</span>
  @if($groupSession->subject)<span style="font-size:13px;color:var(--muted);">{{ $groupSession->subject->name }}</span>@endif
- <span style="font-size:13px;color:var(--muted);">{{ $groupSession->scheduled_at->format('D, M j, Y \a\t g:i a') }}</span>
+ <span style="font-size:13px;color:var(--muted);">{{ $groupSession->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:i a') }} EAT</span>
  </div>
  </div>
  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
@@ -88,7 +88,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
  <div style="font-size:11px;color:var(--muted);">{{ $enrollment->student?->email }}</div>
  </td>
  <td><span style="font-family:monospace;font-size:12px;background:rgba(10,100,188,.08);color:#0A64BC;padding:3px 8px;border-radius:6px;">{{ $enrollment->session_code ?? '"' }}</span></td>
- <td style="font-size:12px;color:var(--muted);">{{ $enrollment->created_at->format('M j, g:ia') }}</td>
+ <td style="font-size:12px;color:var(--muted);">{{ $enrollment->created_at->setTimezone('Africa/Nairobi')->format('M j, g:ia') }} EAT</td>
  </tr>
  @endforeach
  </tbody>
@@ -110,7 +110,7 @@ $statusLabel = ucwords(str_replace('_',' ',$groupSession->status));
  ['Price', 'KSh ' . number_format($groupSession->price ?? 0)],
  ['Duration', ($groupSession->duration_minutes ?? 60) . ' minutes'],
  ['Max Students', $groupSession->max_students ?? 30],
- ['Scheduled', $groupSession->scheduled_at->format('D, M j, Y \a\t g:i a')],
+ ['Scheduled', $groupSession->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:i a').' EAT'],
  ['Created By', $groupSession->creator?->name ?? 'System'],
  ] as [$label, $value])
  <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--hairline);font-size:13px;">

@@ -33,7 +33,7 @@
  <img src="{{ $post->author->avatar_url }}" style="width:40px;height:40px;border-radius:12px;object-fit:cover;">
  <div>
  <div style="font-weight:700;font-size:14px;color:var(--ink);">{{ $post->author->name }}</div>
- <div style="font-size:12px;color:var(--muted);">{{ $post->published_at->format('D, M j, Y') }}</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $post->published_at->setTimezone('Africa/Nairobi')->format('D, M j, Y') }}</div>
  </div>
  </div>
  </div>
@@ -63,7 +63,7 @@
  <div style="width:60px;height:50px;border-radius:10px;background:rgba(10,100,188,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">-</div>
  <div>
  <div style="font-size:13px;font-weight:600;color:var(--ink);line-height:1.4;">{{ Str::limit($r->title,55) }}</div>
- <div style="font-size:11px;color:var(--muted);margin-top:3px;">{{ $r->published_at->format('M j') }}</div>
+ <div style="font-size:11px;color:var(--muted);margin-top:3px;">{{ $r->published_at->setTimezone('Africa/Nairobi')->format('M j') }}</div>
  </div>
  </a>
  @endforeach

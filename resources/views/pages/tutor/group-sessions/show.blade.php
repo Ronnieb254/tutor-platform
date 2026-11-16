@@ -221,7 +221,7 @@ $canJoin = $groupSession->canJoin($user);
  <td style="padding:12px;text-align:right;font-weight:700;color:#EEBE15;font-family:'Fraunces',serif;">
  KSh {{ number_format($enroll->payment?->amount ?? $groupSession->price) }}
  </td>
- <td style="padding:12px;font-size:12px;color:var(--muted);">{{ $enroll->created_at->format('M j, Y g:ia') }}</td>
+ <td style="padding:12px;font-size:12px;color:var(--muted);">{{ $enroll->created_at->setTimezone('Africa/Nairobi')->format('M j, Y g:ia') }} EAT</td>
  </tr>
  @endforeach
  </tbody>
@@ -265,7 +265,7 @@ $canJoin = $groupSession->canJoin($user);
  <div style="padding:8px 10px;border-radius:9px;background:{{ $isThis ? 'rgba(212,160,23,.08)' : 'rgba(21,40,31,.02)' }};border:1px solid {{ $isThis ? 'rgba(212,160,23,.25)' : 'transparent' }};margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
  <div>
  <p style="font-size:12px;font-weight:600;color:var(--ink);margin:0;">Session {{ $s->session_number }}</p>
- <p style="font-size:11px;color:var(--muted);margin:0;">{{ $s->scheduled_at->format('M j') }}  {{ $s->enrolledCount() }}/{{ $s->max_students }}</p>
+ <p style="font-size:11px;color:var(--muted);margin:0;">{{ $s->scheduled_at->setTimezone('Africa/Nairobi')->format('M j') }} EAT  {{ $s->enrolledCount() }}/{{ $s->max_students }}</p>
  </div>
  @if(!$isThis)
  <a href="{{ route('tutor.group-sessions.show', $s) }}" style="font-size:11px;color:#0A64BC;font-weight:600;">View</a>

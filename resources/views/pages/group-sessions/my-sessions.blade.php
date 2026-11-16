@@ -69,7 +69,7 @@
  @endif
  </div>
  <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:rgba(21,40,31,.55);">
- <span><i class="fa-solid fa-calendar"></i>{{ $session->scheduled_at->format('D, M j \a\t g:ia') }}</span>
+ <span><i class="fa-solid fa-calendar"></i>{{ $session->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</span>
  <span><i class="fa-solid fa-clock"></i>{{ $session->duration_minutes }}min</span>
  @if($enrollment->session_code)
  <span><i class="fa-solid fa-key"></i>Code: <strong style="color:#15281F;">{{ $enrollment->session_code }}</strong></span>

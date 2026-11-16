@@ -1215,7 +1215,7 @@ $activeTab = request('tab','overview');
                 <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(21,40,31,.05);">
                     <div>
                         <div style="font-weight:600;font-size:13px;">KSh {{ number_format($pr->amount) }}</div>
-                        <div style="font-size:11px;color:var(--muted);">{{ $pr->created_at->format('M j, Y') }}</div>
+                        <div style="font-size:11px;color:var(--muted);">{{ $pr->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</div>
                     </div>
                     @php $pc=['pending'=>'bdg-amber','approved'=>'bdg-trust-blue','paid'=>'bdg-green','rejected'=>'bdg-red'][$pr->status]??'bdg-gray'; @endphp
                     <span class="bdg {{ $pc }}">{{ ucfirst($pr->status) }}</span>
@@ -1269,7 +1269,7 @@ $activeTab = request('tab','overview');
                         </div>
                         @endif
                         @if(!empty($data['scheduled_at']))
-                        <div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fas fa-calendar" style="margin-right:4px;"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->format('D, M j \a\t g:ia') }}</div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:4px;"><i class="fas fa-calendar" style="margin-right:4px;"></i>{{ \Carbon\Carbon::parse($data['scheduled_at'])->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</div>
                         @endif
                     </div>
                     <div style="text-align:right;flex-shrink:0;">

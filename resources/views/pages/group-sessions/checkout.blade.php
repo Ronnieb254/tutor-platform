@@ -43,7 +43,7 @@
 
  <div style="padding-top:20px;">
  @foreach([
- ['Date & Time', $groupSession->scheduled_at->format('D, M j, Y \a\t g:ia')],
+ ['Date & Time', $groupSession->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:ia').' EAT'],
  ['Duration', $groupSession->duration_minutes . ' minutes'],
  ['Class Size', 'Max ' . $groupSession->max_students . ' students'],
  ['Enrollment', $groupSession->enrolledCount() . '/' . $groupSession->max_students . ' enrolled'],

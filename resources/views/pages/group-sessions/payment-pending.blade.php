@@ -37,7 +37,7 @@
  <div style="padding:24px 0;border-bottom:1px solid rgba(21,40,31,.08);">
  <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;">
  <span style="font-size:13px;color:rgba(21,40,31,.55);"><i class="fa-solid fa-calendar"></i> Date & Time</span>
- <strong style="font-size:13px;color:#15281F;">{{ $groupSession->scheduled_at->format('D, M j, Y g:ia') }}</strong>
+ <strong style="font-size:13px;color:#15281F;">{{ $groupSession->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y g:ia') }} EAT</strong>
  </div>
  <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;">
  <span style="font-size:13px;color:rgba(21,40,31,.55);"><i class="fa-solid fa-clock"></i> Duration</span>

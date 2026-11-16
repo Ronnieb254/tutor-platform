@@ -239,7 +239,7 @@
                         <div style="font-size:12px;color:var(--muted);">
                             <i class="fa-solid fa-file"></i> {{ $doc->original_name ?? 'Uploaded file' }}
                             &nbsp;&nbsp;
-                            {{ $doc->created_at->format('M j, Y') }}
+                            {{ $doc->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT
                         </div>
                         @if($doc->admin_note)
                             <div style="font-size:12px;color:var(--coral);margin-top:4px;font-weight:500;">

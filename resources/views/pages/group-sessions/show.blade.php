@@ -84,7 +84,7 @@
  <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:24px;padding:18px;background:#F9FAF9;border-radius:14px;border:1px solid rgba(21,40,31,.07);">
  <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#15281F;">
  <div style="width:32px;height:32px;background:rgba(10,100,188,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-calendar"></i></div>
- <div><p style="font-size:11px;color:rgba(21,40,31,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:0;">Date & Time</p><p style="font-size:14px;font-weight:600;color:#15281F;margin:0;">{{ $groupSession->scheduled_at->format('D, M j \a\t g:ia') }}</p></div>
+ <div><p style="font-size:11px;color:rgba(21,40,31,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:0;">Date & Time</p><p style="font-size:14px;font-weight:600;color:#15281F;margin:0;">{{ $groupSession->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</p></div>
  </div>
  <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#15281F;">
  <div style="width:32px;height:32px;background:rgba(10,100,188,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-clock"></i></div>
@@ -142,7 +142,7 @@
  @php $isThis = $s->id === $groupSession->id; @endphp
  <div style="padding:14px 16px;border-radius:12px;border:{{ $isThis ? '2px solid #EEBE15' : '1px solid rgba(21,40,31,.08)' }};background:{{ $isThis ? 'rgba(212,160,23,.04)' : '#fff' }};display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
  <div>
- <p style="font-size:13px;font-weight:700;color:#15281F;margin:0 0 2px;">Session {{ $s->session_number }}: {{ $s->scheduled_at->format('D, M j \a\t g:ia') }}</p>
+ <p style="font-size:13px;font-weight:700;color:#15281F;margin:0 0 2px;">Session {{ $s->session_number }}: {{ $s->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</p>
  <p style="font-size:12px;color:rgba(21,40,31,.5);margin:0;">{{ $s->duration_minutes }}min  {{ $s->enrolledCount() }}/{{ $s->max_students }} enrolled</p>
  </div>
  @if($isThis)

@@ -209,7 +209,7 @@
  @endif
  </div>
  <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:rgba(21,40,31,.55);align-items:center;margin-bottom:10px;">
- <span><i class="fa-solid fa-calendar"></i>{{ $clinic->scheduled_at->format('D, M j \a\t g:ia') }}</span>
+ <span><i class="fa-solid fa-calendar"></i>{{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') }} EAT</span>
  <span><i class="fa-solid fa-clock"></i>{{ $clinic->duration_minutes }} min</span>
  <span style="color:{{ $isFull ? '#991B1B' : '#10B981' }};font-weight:600;"><i class="fa-solid fa-user"></i>{{ $enrolled }}/{{ $capacity }} enrolled</span>
  <span><span style="font-size:inherit;"><i class="fa-solid fa-money-bill"></i></span>KSh {{ number_format($clinic->price, 0) }}</span>
@@ -274,7 +274,7 @@
  </div>
  </div>
  </td>
- <td style="color:rgba(21,40,31,.65);">{{ $clinic->scheduled_at->format('M j, Y') }}</td>
+ <td style="color:rgba(21,40,31,.65);">{{ $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y g:ia') }} EAT</td>
  <td><span style="font-weight:600;color:#15281F;">{{ $enrolled }}</span><span style="color:rgba(21,40,31,.4);">/{{ $clinic->max_students ?: 30 }}</span></td>
  <td style="font-weight:700;color:#10B981;">KSh {{ number_format($clinicEarn, 0) }}</td>
  <td style="text-align:right;">
@@ -316,7 +316,7 @@
  </div>
  </div>
  <div style="font-size:12px;color:rgba(21,40,31,.45);flex-shrink:0;text-align:right;white-space:nowrap;">
- {{ $enrollment->created_at?->format('M j, Y') }}
+ {{ $enrollment->created_at?->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT
  </div>
  </div>
  @endforeach

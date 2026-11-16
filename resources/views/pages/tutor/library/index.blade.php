@@ -169,7 +169,7 @@ td{padding:12px 14px;font-size:13.5px;vertical-align:middle;}
  </div>
  <div>
  <div style="font-weight:600;font-size:13.5px;">{{ Str::limit($resource->title, 45) }}</div>
- <div style="font-size:12px;color:var(--muted);">{{ $resource->created_at->format('M j, Y') }}</div>
+ <div style="font-size:12px;color:var(--muted);">{{ $resource->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</div>
  </div>
  </div>
  </td>

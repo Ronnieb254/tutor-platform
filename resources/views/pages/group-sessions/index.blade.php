@@ -154,7 +154,7 @@
 
  {{-- Meta --}}
  <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:rgba(21,40,31,.55);">
- <span><i class="fa-solid fa-calendar"></i>{{ $session->scheduled_at->format('D, M j  g:ia') }}</span>
+ <span><i class="fa-solid fa-calendar"></i>{{ $session->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j  g:ia') }} EAT</span>
  <span><i class="fa-solid fa-clock"></i>{{ $session->duration_minutes }}m</span>
  </div>
 

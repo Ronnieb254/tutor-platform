@@ -84,7 +84,7 @@ $users = User::when($search, fn($q) => $q->where('name','like',"%$search%")->orW
  @php $rc=['student'=>'badge-blue','parent'=>'badge-trust-blue','tutor'=>'badge-green','admin'=>'badge-amber','super-admin'=>'badge-purple'][$user->role]??'badge-gray'; @endphp
  <span class="badge {{ $rc }}" style="{{ $user->role==='super-admin'?'background:#7C3AED;color:#fff;':'' }}">{{ $user->role==='super-admin'?' Super Admin':ucfirst($user->role) }}</span>
  </td>
- <td data-order="{{ $user->created_at->timestamp }}" style="color:var(--muted);font-size:13px;">{{ $user->created_at->format('M j, Y') }}</td>
+ <td data-order="{{ $user->created_at->timestamp }}" style="color:var(--muted);font-size:13px;">{{ $user->created_at->setTimezone('Africa/Nairobi')->format('M j, Y') }} EAT</td>
  <td>
  @if($user->email_verified_at)
  <span class="badge badge-green"><i class="fa-solid fa-check"></i> Verified</span>

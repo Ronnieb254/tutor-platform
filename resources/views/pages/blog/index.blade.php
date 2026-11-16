@@ -67,7 +67,7 @@ $colors = ['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899'];
  <img src="{{ $post->author->avatar_url }}" style="width:24px;height:24px;border-radius:999px;object-fit:cover;">
  <span>{{ $post->author->name }}</span>
  <span></span>
- <span><i class="fa-solid fa-calendar"></i> {{ $post->published_at->format('M j, Y') }}</span>
+ <span><i class="fa-solid fa-calendar"></i> {{ $post->published_at->setTimezone('Africa/Nairobi')->format('M j, Y') }}</span>
  </div>
  </div>
  </a>
