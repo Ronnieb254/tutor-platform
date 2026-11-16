@@ -6,7 +6,7 @@
  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ $clinic->title ?? $clinic->name }} - Clinic Session</title>
-<script src="https://meet.jit.si/external_api.js"></script>
+<script src="https://8x8.vc/vpaas-magic-cookie-cc2d0135136f437386cca0c5abf2eb38/external_api.js"></script>
 <style>
 :root{--ink:#15281F;--trust-blue:#0A64BC;--mint:#10B981;--muted:rgba(21,40,31,.55);--hair:rgba(21,40,31,.1);}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -60,8 +60,8 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
 </div>
 
 <script>
-const domain = "meet.jit.si";
-const roomName = "{{ $roomId }}";
+const domain = "8x8.vc";
+const roomName = "vpaas-magic-cookie-cc2d0135136f437386cca0c5abf2eb38/{{ $roomId }}";
 const displayName = "{{ $displayName }}";
 const isModerator = {{ $isModerator ? 'true' : 'false' }};
 const clinicTitle = "{{ $clinic->title ?? $clinic->name }}";
@@ -83,6 +83,21 @@ const options = {
  disableAudioLevels: false,
  enableNoAudioDetection: true,
  enableNoiseSuppression: true,
+ // ── Video quality ──────────────────────────────────────────────
+ resolution: 720,
+ constraints: {
+ video: {
+ height: { ideal: 720, max: 720, min: 360 },
+ width: { ideal: 1280, max: 1280, min: 640 },
+ frameRate: { ideal: 30, max: 30 },
+ },
+ },
+ maxFullResolutionParticipants: -1,
+ videoQuality: {
+ codecPreferenceOrder: ['VP8', 'H264', 'VP9'],
+ mobileCodecPreferenceOrder: ['VP8', 'H264'],
+ enableAdaptiveMode: true,
+ },
  // Disable P2P for clinic sessions (always use server)
  p2p: {
  enabled: false
@@ -115,8 +130,9 @@ const options = {
 // Initialize Jitsi Meet
 const jitsiAPI = new JitsiMeetExternalAPI(domain, options);
 
-// Log session start
+// Request 720p on join
 jitsiAPI.addEventListener('videoConferenceJoined', function() {
+ jitsiAPI.executeCommand('setVideoQuality', 720);
  // Mark attendance in backend
  fetch('/clinic/{{ $clinic->id }}/attendance', {
  method: 'POST',

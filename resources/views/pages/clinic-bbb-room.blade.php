@@ -76,10 +76,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  <div id="jitsi-container"></div>
 </div>
 
-<script src="https://meet.jit.si/external_api.js"></script>
+<script src="https://8x8.vc/vpaas-magic-cookie-cc2d0135136f437386cca0c5abf2eb38/external_api.js"></script>
 <script>
- const domain = 'meet.jit.si';
- const meetingRoom = '{{ $clinic->meeting_room }}';
+ const domain = '8x8.vc';
+ const meetingRoom = 'vpaas-magic-cookie-cc2d0135136f437386cca0c5abf2eb38/{{ $clinic->meeting_room }}';
  const userDisplayName = '{{ addslashes(auth()->user()->name) }}';
  const userEmail = '{{ addslashes(auth()->user()->email) }}';
  const isModerator = {{ $isModerator ? 'true' : 'false' }};
@@ -100,9 +100,16 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  resolution: 720,
  constraints: {
  video: {
- height: { ideal: 720, max: 1080, min: 240 },
- width: { ideal: 1280, max: 1920, min: 320 }
+ height: { ideal: 720, max: 720, min: 360 },
+ width: { ideal: 1280, max: 1280, min: 640 },
+ frameRate: { ideal: 30, max: 30 },
  }
+ },
+ maxFullResolutionParticipants: -1,
+ videoQuality: {
+ codecPreferenceOrder: ['VP8', 'H264', 'VP9'],
+ mobileCodecPreferenceOrder: ['VP8', 'H264'],
+ enableAdaptiveMode: true,
  },
  // Screen sharing - all sources
  desktopSharingChromeDesktopSources: ['screen', 'window', 'tab'],
@@ -160,6 +167,7 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  const api = new JitsiMeetExternalAPI(domain, options);
 
  api.addEventListener('videoConferenceJoined', () => {
+ api.executeCommand('setVideoQuality', 720);
  console.log('Joined as ' + (isModerator ? 'moderator' : 'participant'));
  });
 
