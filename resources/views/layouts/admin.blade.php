@@ -169,38 +169,64 @@
  align-items: center;
  justify-content: center;
  z-index: 9999;
+ padding: 16px;
  }
 
- .swal2-popup {
- min-height: 650px;
- max-height: 85vh;
- height: auto;
- overflow: auto;
+ /* When showing a document the popup grows to 92vh */
+ .swal2-popup.doc-viewer-popup {
+ width: min(960px, 96vw) !important;
+ height: 92vh !important;
+ max-height: 92vh !important;
+ min-height: unset !important;
+ overflow: hidden !important;
  border-radius: 20px;
- box-shadow: 0 20px 60px rgba(0,0,0,.3);
- will-change: auto;
+ box-shadow: 0 20px 60px rgba(0,0,0,.35);
+ display: flex !important;
+ flex-direction: column !important;
  }
 
- .swal2-html-container {
+ /* Title bar: fixed height */
+ .swal2-popup.doc-viewer-popup .swal2-title {
+ flex-shrink: 0;
+ font-size: 16px;
+ padding: 16px 48px 12px 20px;
+ border-bottom: 1px solid rgba(21,40,31,.08);
+ margin: 0;
+ }
+
+ /* Content area: fill all remaining height */
+ .swal2-popup.doc-viewer-popup .swal2-html-container {
+ flex: 1 1 0 !important;
+ min-height: 0 !important;
  margin: 0 !important;
  padding: 0 !important;
- min-height: 600px;
- display: flex;
- align-items: center;
- justify-content: center;
- overflow: visible;
+ overflow: hidden !important;
+ display: flex !important;
+ flex-direction: column !important;
  }
 
- .swal2-html-container iframe,
- .swal2-html-container img {
+ /* iframe and img fill the content area completely */
+ .swal2-popup.doc-viewer-popup .swal2-html-container iframe {
+ width: 100% !important;
+ height: 100% !important;
+ flex: 1 1 0 !important;
+ border: none !important;
+ display: block !important;
+ }
+
+ .swal2-popup.doc-viewer-popup .swal2-html-container img {
+ max-width: 100%;
+ max-height: 100%;
+ object-fit: contain;
  display: block;
- margin: 0 auto;
+ margin: auto;
  }
 
  .swal2-close {
- top: 14px;
+ top: 10px;
  right: 14px;
  color: rgba(21,40,31,.4);
+ z-index: 10;
  }
 
  .swal2-close:focus,
@@ -426,54 +452,23 @@ window.showConfirm = (title, text, confirmText = 'Yes', cancelText = 'Cancel') =
  cancelButtonText: cancelText,
  });
 
-// Document lightbox  view docs in-page without redirect
+// Document lightbox — view docs in-page without redirect
 window.viewDocModal = function(url, isPdf, docName) {
  const content = isPdf
- ? `<iframe src="${url}" style="width:100%;height:600px;border:none;border-radius:8px;margin:0;padding:0;display:block;"></iframe>`
- : `<img src="${url}" style="max-width:100%;max-height:600px;border-radius:8px;object-fit:contain;display:block;margin:0 auto;" onerror="this.outerHTML='<p style=\'color:#E8522A;text-align:center;margin:20px 0;\'>Could not load image.</p>'">`;
- const popup = Swal.fire({
+ ? `<iframe src="${url}#toolbar=1&navpanes=1&scrollbar=1&view=FitH" allowfullscreen></iframe>`
+ : `<img src="${url}" alt="${docName || 'Document'}" onerror="this.outerHTML='<p style=\'color:#E8522A;text-align:center;padding:40px 0;\'>Could not load image.</p>'">`;
+
+ Swal.fire({
  title: docName || 'Document',
  html: content,
- width: '900px',
  showConfirmButton: false,
  showCloseButton: true,
- padding: '24px',
+ padding: 0,
  allowOutsideClick: true,
  allowEscapeKey: true,
- didOpen: function(modal) {
- const popup = modal.closest('.swal2-container');
- if (popup) {
- popup.style.display = 'flex';
- popup.style.alignItems = 'center';
- popup.style.justifyContent = 'center';
- popup.style.zIndex = '9999';
- }
- const modalBox = modal.querySelector('.swal2-popup');
- if (modalBox) {
- modalBox.style.minHeight = '650px';
- modalBox.style.maxHeight = '85vh';
- modalBox.style.overflow = 'auto';
- modalBox.style.willChange = 'auto';
- }
- const htmlContainer = modal.querySelector('.swal2-html-container');
- if (htmlContainer) {
- htmlContainer.style.margin = '0';
- htmlContainer.style.padding = '0';
- htmlContainer.style.minHeight = '600px';
- }
+ customClass: {
+ popup: 'doc-viewer-popup',
  },
- didRender: function(modal) {
- const iframe = modal.querySelector('iframe');
- const img = modal.querySelector('img');
- if (iframe || img) {
- const htmlContainer = modal.querySelector('.swal2-html-container');
- if (htmlContainer) {
- htmlContainer.style.display = 'flex';
- htmlContainer.style.alignItems = 'center';
- htmlContainer.style.justifyContent = 'center';
- }
- }
- }
  });
 };
 

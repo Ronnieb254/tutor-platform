@@ -102,11 +102,56 @@ class JitsiService
         bool $isModerator,
         array $options = []
     ): string {
-        // TEMPORARY: Return empty string to disable JWT
-        // The meeting URL will work without JWT (public rooms)
-        // TODO: Fix OpenSSL key loading from Docker env vars
-        return '';
-    }
+        try {
+            $now = time();
+            $exp = $now + 3600; // 1 hour expiration
+            
+            // Parse the private key from env (PEM format with \n escaping)
+            $privateKeyStr = $this->appSecret;
+            
+            // Convert \n string literals to actual newlines
+            $privateKeyStr = str_replace('\\n', "\n", $privateKeyStr);
+            
+            // Verify key is in valid PEM format
+            if (!str_contains($privateKeyStr, '-----BEGIN PRIVATE KEY-----')) {
+                throw new \Exception('Invalid private key format: missing PEM header');
+            }
+            
+            // Create JWT payload for JaaS
+            $payload = [
+                'iss' => $this->appId,           // vpaas-magic-cookie
+                'sub' => $this->domain,          // meet.jit.si or 8x8.vc
+                'aud' => 'jitsi',
+                'room' => $roomName,
+                'exp' => $exp,
+                'iat' => $now,
+                'nbf' => $now,
+                'name' => $displayName,
+                'email' => $options['email'] ?? '',
+                'context' => [
+                    'user' => [
+                        'name' => $displayName,
+                        'email' => $options['email'] ?? '',
+                        'avatar' => $options['avatarUrl'] ?? '',
+                        'affiliation' => $isModerator ? 'owner' : 'member',
+                    ],
+                    'group' => 'mwalimu',
+                ],
+            ];
+            
+            // Add moderator claims if applicable
+            if ($isModerator) {
+                $payload['moderator'] = true;
+            }
+            
+            // Sign JWT with RS256 (RS256 is required for JaaS)
+            $jwt = JWT::encode($payload, $privateKeyStr, 'RS256');
+            
+            return $jwt;
+            
+        } catch (\Throwable $e) {
+            throw new \Exception('JWT Generation Error: ' . $e->getMessage());
+        }
 
     /**
      * Sanitize room name for Jitsi
@@ -169,7 +214,7 @@ class JitsiService
 
     /**
      * Expose JWT generation for controller use.
-     * Returns null if JWT cannot be generated (disabled or errors).
+     * Returns the JWT token if successful, null if JWT is disabled, throws exception on errors.
      */
     public function makeJWT(
         string $roomName,
@@ -189,16 +234,13 @@ class JitsiService
                 $options
             );
             
-            // If generateJWT returns empty string (disabled), return null
-            if (empty($jwt)) {
-                return null;
-            }
-            
             return $jwt;
+            
         } catch (\Throwable $e) {
-            // Log error but don't crash - allow meeting without JWT
-            \Log::warning('JWT generation failed: ' . $e->getMessage());
-            return null;
+            // Log error and throw so controllers can see what's wrong
+            $errorMsg = 'JWT generation failed: ' . $e->getMessage();
+            \Log::error($errorMsg);
+            throw new \Exception($errorMsg);
         }
     }
 

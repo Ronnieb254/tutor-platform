@@ -260,8 +260,8 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  width: '100%',
  height: '100%',
  parentNode: document.querySelector('#jitsi-container'),
- @if(app(\App\Services\JitsiService::class)->isConfigured() && config('services.jitsi.use_jwt'))
- jwt: '{{ $jitsiJwt ?? "" }}',
+ @if(app(\App\Services\JitsiService::class)->isConfigured() && config('services.jitsi.use_jwt') && $jitsiJwt)
+ jwt: '{{ $jitsiJwt }}',
  @endif
  configOverwrite: {
  startWithAudioMuted: false,
