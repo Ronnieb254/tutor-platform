@@ -5,6 +5,7 @@
 @php
 use App\Models\TutorProfile;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 // Fetch all tutors with filtering and pagination
 $status = request('status', 'pending'); // all|pending|approved|suspended (default: pending)
@@ -71,7 +72,11 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
         'documents' => $profile->documents->map(function ($doc) {
             return [
                 'id'     => $doc->id,
-                'name'   => $doc->type ?? 'Uploaded document',
+                <!-- 'name'   => $doc->type ?? 'Uploaded document', -->
+                'name' => Str::of($doc->type ?? 'Uploaded document')
+    ->replace('_', ' ')
+    ->upper()
+    ->toString(),
                 'status' => $doc->status ?? 'pending',
                 'url'    => route('tutor.documents.view', $doc->id),
                 'isPdf'  => $doc->file_path && str_ends_with(strtolower($doc->file_path), '.pdf'),
