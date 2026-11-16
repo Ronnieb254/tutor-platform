@@ -143,8 +143,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/clinic/{clinic}/enroll', [App\Http\Controllers\ClinicController::class, 'enroll'])->name('clinic.enroll');
 
     // Group session enrollment (multi-student classes)
-    Route::post('/group-sessions/{groupSession}/enroll', [App\Http\Controllers\GroupSessionController::class, 'enroll'])->name('group-sessions.enroll');
+    Route::post('/group-sessions/{groupSession}/enroll', [App\Http\Controllers\GroupSessionController::class, 'enroll'])->name('group-sessions.enroll')->whereNumber('groupSession');
     Route::get('/group-sessions/my-sessions', [App\Http\Controllers\GroupSessionController::class, 'mySessions'])->name('group-sessions.my-sessions');
+
+    // Group session meeting room
+    Route::get('/group-sessions/{groupSession}/room',          [App\Http\Controllers\GroupSessionController::class, 'room'])->name('group-sessions.room')->whereNumber('groupSession');
+    Route::post('/group-sessions/{groupSession}/joined',       [App\Http\Controllers\GroupSessionController::class, 'joined'])->name('group-sessions.joined')->whereNumber('groupSession');
+    Route::get('/group-sessions/{groupSession}/attendance',    [App\Http\Controllers\GroupSessionController::class, 'attendance'])->name('group-sessions.attendance')->whereNumber('groupSession');
 
     // Clinic booking & payment flow
     Route::get('/clinic/{clinic}/checkout', [App\Http\Controllers\ClinicBookingController::class, 'checkout'])->name('clinic.checkout');

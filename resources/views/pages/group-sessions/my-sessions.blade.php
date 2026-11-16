@@ -83,7 +83,7 @@
  @elseif($isPast)
  <span style="background:rgba(21,40,31,.06);color:rgba(21,40,31,.45);padding:8px 16px;border-radius:999px;font-size:12px;font-weight:600;">Completed</span>
  @elseif($canJoin)
- <a href="{{ route('clinic.join', $session) }}" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;background:#0A64BC;color:#fff;font-size:13px;font-weight:700;text-decoration:none;">
+ <a href="{{ route('group-sessions.room', $session) }}" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;background:#0A64BC;color:#fff;font-size:13px;font-weight:700;text-decoration:none;">
  <i class="fa-solid fa-video"></i> Join Now
  </a>
  @else

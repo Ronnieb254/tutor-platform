@@ -69,7 +69,7 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
         'subjects' => $profile->subjects->map(fn ($s) => $s->name)->values()->all(),
         'documents' => $profile->documents->map(function ($doc) {
             return [
-                'name'   => $doc->document_type ?? 'Uploaded document',
+                'name'   => $doc->type ?? 'Uploaded document',
                 'status' => $doc->status ?? 'pending',
                 'url'    => $doc->file_path ? asset('storage/' . $doc->file_path) : null,
             ];

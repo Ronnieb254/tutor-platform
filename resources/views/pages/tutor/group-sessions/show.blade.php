@@ -124,7 +124,7 @@ $canJoin = $groupSession->canJoin($user);
  </div>
  <div style="display:flex;gap:8px;">
  @if($canJoin)
- <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="padding:7px 14px;font-size:12px;">
+ <a href="{{ route('group-sessions.room', $groupSession) }}" class="btn btn-blue" style="padding:7px 14px;font-size:12px;">
  <i class="fa-solid fa-video"></i> Join as Moderator
  </a>
  @endif
@@ -251,7 +251,7 @@ $canJoin = $groupSession->canJoin($user);
  </div>
 
  @if($canJoin)
- <a href="{{ route('clinic.join', $groupSession) }}" class="btn btn-blue" style="width:100%;justify-content:center;margin-top:16px;">
+ <a href="{{ route('group-sessions.room', $groupSession) }}" class="btn btn-blue" style="width:100%;justify-content:center;margin-top:16px;">
  <i class="fa-solid fa-video"></i> Join as Moderator
  </a>
  @endif

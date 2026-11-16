@@ -230,6 +230,113 @@ class GroupSessionController extends Controller
     }
 
     /**
+     * Dedicated group session meeting room.
+     * Verifies the user is the tutor/moderator or has an active enrollment.
+     */
+    public function room(Request $request, ExaminerClinic $groupSession)
+    {
+        $user = $request->user();
+
+        if (\Schema::hasColumn('examiner_clinics', 'is_group_session') && !$groupSession->is_group_session) {
+            abort(404);
+        }
+
+        $isModerator = $user->isAdmin()
+            || $user->id === $groupSession->tutor_id
+            || $user->id === $groupSession->created_by;
+
+        if (!$isModerator) {
+            $enrollment = ClinicEnrollment::where('clinic_id', $groupSession->id)
+                ->where('student_id', $user->id)
+                ->first();
+
+            if (!$enrollment) {
+                return redirect()->route('group-sessions.my-sessions')
+                    ->with('error', 'You are not enrolled in this session.');
+            }
+
+            // Allow joining 15 min before start
+            $canJoinFrom = $groupSession->scheduled_at->copy()->subMinutes(15);
+            if (now()->lt($canJoinFrom)) {
+                return redirect()->route('group-sessions.my-sessions')
+                    ->with('error', 'This session opens at ' . $canJoinFrom->setTimezone('Africa/Nairobi')->format('g:ia') . ' EAT.');
+            }
+
+            if (!$enrollment->attended) {
+                $enrollment->update(['attended' => true]);
+            }
+
+            $sessionCode = $enrollment->session_code;
+        } else {
+            $sessionCode = $groupSession->tutor_code ?? $groupSession->session_code;
+        }
+
+        $groupSession->load(['tutor', 'subject', 'enrollments']);
+
+        return view('pages.group-sessions.room', [
+            'groupSession' => $groupSession,
+            'isModerator'  => $isModerator,
+            'sessionCode'  => $sessionCode,
+        ]);
+    }
+
+    /**
+     * Mark that the current user has joined the group session room.
+     * Returns attendance counts so the client can start the timer.
+     */
+    public function joined(Request $request, ExaminerClinic $groupSession)
+    {
+        $user = $request->user();
+
+        // For the tutor we track via a lightweight cache flag; for students via enrollment.
+        $isModerator = $user->id === $groupSession->tutor_id || $user->id === $groupSession->created_by || $user->isAdmin();
+
+        if ($isModerator) {
+            cache()->put("gs_{$groupSession->id}_tutor_joined", true, now()->addHours(4));
+        } else {
+            ClinicEnrollment::where('clinic_id', $groupSession->id)
+                ->where('student_id', $user->id)
+                ->update(['attended' => true]);
+            cache()->put("gs_{$groupSession->id}_student_{$user->id}_joined", true, now()->addHours(4));
+        }
+
+        $tutorJoined   = (bool) cache("gs_{$groupSession->id}_tutor_joined");
+        $studentsJoined = ClinicEnrollment::where('clinic_id', $groupSession->id)
+            ->where('attended', true)
+            ->count();
+
+        return response()->json([
+            'tutor_joined'    => $tutorJoined,
+            'students_joined' => $studentsJoined,
+            'both_joined'     => $tutorJoined && $studentsJoined > 0,
+        ]);
+    }
+
+    /**
+     * Poll attendance for the group session room.
+     */
+    public function attendance(Request $request, ExaminerClinic $groupSession)
+    {
+        $tutorJoined = (bool) cache("gs_{$groupSession->id}_tutor_joined");
+        $studentsJoined = ClinicEnrollment::where('clinic_id', $groupSession->id)
+            ->where('attended', true)
+            ->count();
+        $totalEnrolled = ClinicEnrollment::where('clinic_id', $groupSession->id)->count();
+
+        // Elapsed seconds since session was scheduled to start
+        $startedAt = $groupSession->scheduled_at;
+        $elapsed   = max(0, now()->diffInSeconds($startedAt, false) * -1);
+
+        return response()->json([
+            'tutor_joined'    => $tutorJoined,
+            'students_joined' => $studentsJoined,
+            'total_enrolled'  => $totalEnrolled,
+            'both_joined'     => $tutorJoined && $studentsJoined > 0,
+            'elapsed_seconds' => (int) $elapsed,
+        ]);
+    }
+
+    /**
      * Store a topic suggestion for group sessions.
      */
     public function suggestTopic(Request $request)
