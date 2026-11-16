@@ -57,7 +57,7 @@ class BookingController extends Controller
         $request->validate([
             'tutor_profile_id' => 'required|exists:tutor_profiles,id',
             'subject_id'       => 'nullable|exists:subjects,id',
-            'scheduled_at'     => 'required|date|after:now',
+            'scheduled_at'     => 'required|date',
             'duration_minutes' => 'required|in:20,40,60',
             'session_type'     => 'nullable|in:individual,group',
             'booking_for'      => 'nullable|in:self,child',
@@ -68,6 +68,14 @@ class BookingController extends Controller
 
         // Parse scheduled_at as EAT and convert to UTC before storing
         $scheduledAtEat = \Carbon\Carbon::parse($request->input('scheduled_at'), 'Africa/Nairobi')->utc();
+
+        // Re-validate the parsed time is in the future (using UTC now for comparison)
+        if ($scheduledAtEat->isPast()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'The selected time has already passed. Please choose a future time slot.',
+            ], 422);
+        }
 
         $booking = $this->bookingService->createBooking(array_merge(
             $request->all(),

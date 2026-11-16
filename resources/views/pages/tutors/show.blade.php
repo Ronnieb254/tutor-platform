@@ -1128,6 +1128,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
       bookingRef: '',
       slots: [],
       loadingSlots: false,
+      timeLabel: '',
       prices: {{ json_encode($prices) }},
       get price() {
         const base = this.prices[this.dur] || 300;
@@ -1144,6 +1145,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
         this.loadingSlots = true;
         this.slots = [];
         this.time = '';
+        this.timeLabel = '';
         try {
           const resp = await fetch('/api/tutors/{{ $tutor->id }}/availability?date=' + this.date, {
             headers: { 'Accept': 'application/json' }
@@ -1243,7 +1245,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
               <template x-if="!loadingSlots && slots.length > 0">
               <div class="time-slot-grid">
                 <template x-for="slot in slots" :key="slot.time">
-                <button @click="time = slot.time"
+                <button @click="time = slot.time; timeLabel = slot.label"
                 :class="time === slot.time ? 'time-slot-btn selected' : 'time-slot-btn'"
                 x-text="slot.label"
                 onmouseover="if(!this.classList.contains('selected')) this.style.borderColor='#0A64BC'"
@@ -1316,7 +1318,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
               ['fa-user','Tutor',$tutor->user->name],
               ['fa-clock','Session','<span x-text="dur+\' min - \'+sessionName"></span>'],
               ['fa-calendar','Date','<span x-text="date ? new Date(date).toDateString() : \'-\'"></span>'],
-              ['fa-clock','Time','<span x-text="time || \'-\'"></span> EAT'],
+              ['fa-clock','Time','<span x-text="timeLabel || time || \'-\'"></span>'],
               ] as [$ic,$label,$val])
               <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(21,40,31,.07);">
                 <span style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(21,40,31,.55);">
