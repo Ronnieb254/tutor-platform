@@ -72,11 +72,10 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
         'documents' => $profile->documents->map(function ($doc) {
             return [
                 'id'     => $doc->id,
-                <!-- 'name'   => $doc->type ?? 'Uploaded document', -->
-                'name' => Str::of($doc->type ?? 'Uploaded document')
-    ->replace('_', ' ')
-    ->upper()
-    ->toString(),
+                'name'   => Str::of($doc->type ?? 'Uploaded document')
+                                ->replace('_', ' ')
+                                ->title()
+                                ->toString(),
                 'status' => $doc->status ?? 'pending',
                 'url'    => route('tutor.documents.view', $doc->id),
                 'isPdf'  => $doc->file_path && str_ends_with(strtolower($doc->file_path), '.pdf'),
