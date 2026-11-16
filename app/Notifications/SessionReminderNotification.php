@@ -33,7 +33,7 @@ class SessionReminderNotification extends Notification implements ShouldQueue
             ->line('Your session is starting in 1 hour.')
             ->line('With: ' . $otherPerson->name)
             ->line('Subject: ' . $this->booking->subject->name)
-            ->line('Time: ' . $this->booking->scheduled_at->format('g:i A'))
+            ->line('Time: ' . $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('g:i A') . ' EAT')
             ->action('Join Session', route('sessions.join', $this->booking->uuid))
             ->line('Please be ready a few minutes before the session starts.');
     }
@@ -49,7 +49,7 @@ class SessionReminderNotification extends Notification implements ShouldQueue
             'booking_uuid' => $this->booking->uuid,
             'other_person' => $otherPerson->name,
             'subject' => $this->booking->subject->name,
-            'scheduled_at' => $this->booking->scheduled_at->toISOString(),
+            'scheduled_at' => $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s'),
             'message' => 'Session starting in 1 hour with ' . $otherPerson->name,
             'type' => 'session_reminder',
         ];

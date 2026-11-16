@@ -30,7 +30,7 @@ class BookingConfirmedStudent extends Notification
             'booking_uuid' => $this->booking->uuid,
             'message'      => 'Your session with ' . $this->booking->tutor->name . ' is confirmed!',
             'code'         => $this->booking->session_code_student,
-            'scheduled_at' => $this->booking->scheduled_at->toDateTimeString(),
+            'scheduled_at' => $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s'),
             'url'          => route('bookings.show', $this->booking->uuid),
         ];
     }

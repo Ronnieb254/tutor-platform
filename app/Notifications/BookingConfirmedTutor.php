@@ -18,7 +18,7 @@ class BookingConfirmedTutor extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('New Session Booked – ' . $this->booking->student->name . ' on ' . $this->booking->scheduled_at->format('M j, Y'))
+            ->subject('New Session Booked – ' . $this->booking->student->name . ' on ' . $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('M j, Y') . ' EAT')
             ->view('emails.booking-confirmed-tutor', ['booking' => $this->booking]);
     }
 
@@ -30,8 +30,7 @@ class BookingConfirmedTutor extends Notification
             'booking_uuid' => $this->booking->uuid,
             'message'      => 'New booking from ' . $this->booking->student->name,
             'code'         => $this->booking->session_code_tutor,
-            'scheduled_at' => $this->booking->scheduled_at->toDateTimeString(),
-            'url'          => route('bookings.show', $this->booking->uuid),
+            'scheduled_at' => $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s'),
         ];
     }
 }

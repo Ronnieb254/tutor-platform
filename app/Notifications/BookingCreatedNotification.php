@@ -28,7 +28,7 @@ class BookingCreatedNotification extends Notification implements ShouldQueue
             ->greeting('Hello ' . $notifiable->name . '!')
             ->line('You have a new booking request from ' . $this->booking->student->name)
             ->line('Subject: ' . $this->booking->subject->name)
-            ->line('Scheduled: ' . $this->booking->scheduled_at->format('l, F j, Y \a\t g:i A'))
+            ->line('Scheduled: ' . $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('l, F j, Y \a\t g:i A') . ' EAT')
             ->line('Duration: ' . $this->booking->duration_minutes . ' minutes')
             ->action('View Booking', route('sessions.show', $this->booking->uuid))
             ->line('Please confirm or decline this booking at your earliest convenience.');
@@ -41,8 +41,7 @@ class BookingCreatedNotification extends Notification implements ShouldQueue
             'booking_uuid' => $this->booking->uuid,
             'student_name' => $this->booking->student->name,
             'subject' => $this->booking->subject->name,
-            'scheduled_at' => $this->booking->scheduled_at->toISOString(),
-            'message' => 'New booking request from ' . $this->booking->student->name,
+            'scheduled_at' => $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s'),
             'type' => 'booking_created',
         ];
     }

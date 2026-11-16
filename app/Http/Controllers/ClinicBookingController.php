@@ -157,7 +157,7 @@ class ClinicBookingController extends Controller
             // Allow joining 15 minutes before session starts
             $canJoinFrom = $clinic->scheduled_at->copy()->subMinutes(15);
             if (now()->lt($canJoinFrom)) {
-                return back()->with('error', "This clinic starts at {$clinic->scheduled_at->format('g:ia')}. You can join from " . $canJoinFrom->format('g:ia') . '.');
+                return back()->with('error', "This clinic starts at {$clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('g:ia')} EAT. You can join from " . $canJoinFrom->setTimezone('Africa/Nairobi')->format('g:ia') . ' EAT.');
             }
 
             // Mark attendance

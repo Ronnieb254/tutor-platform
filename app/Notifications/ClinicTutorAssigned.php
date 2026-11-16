@@ -23,7 +23,7 @@ class ClinicTutorAssigned extends Notification implements ShouldQueue
     {
         $sessionType = $this->clinic->is_group_session ? 'group session' : 'clinic session';
         $scheduledAt = $this->clinic->scheduled_at
-            ? $this->clinic->scheduled_at->format('D, d M Y \a\t H:i')
+            ? $this->clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, d M Y \a\t H:i') . ' EAT'
             : 'TBC';
 
         return (new MailMessage)
@@ -46,7 +46,7 @@ class ClinicTutorAssigned extends Notification implements ShouldQueue
             'clinic_id'   => $this->clinic->id,
             'title'       => $this->clinic->title,
             'tutor_code'  => $this->clinic->tutor_code,
-            'scheduled_at'=> $this->clinic->scheduled_at?->toDateTimeString(),
+            'scheduled_at'=> $this->clinic->scheduled_at?->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s'),
             'message'     => 'You have been assigned as the tutor for: ' . $this->clinic->title,
             'url'         => url('/clinic/' . $this->clinic->id),
         ];

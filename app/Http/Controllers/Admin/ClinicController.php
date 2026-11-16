@@ -142,7 +142,7 @@ class ClinicController extends Controller
 
         if ($overflow) {
             return redirect()->route('admin.clinics')
-                ->with('success', "Overflow clinic created: {$overflow->title} starting {$overflow->scheduled_at->format('D, M j \\a\\t g:ia')}.");
+                ->with('success', "Overflow clinic created: {$overflow->title} starting {$overflow->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia')} EAT.");
         }
 
         return back()->with('error', 'Could not create overflow clinic.');

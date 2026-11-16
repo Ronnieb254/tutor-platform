@@ -87,7 +87,7 @@ class ClinicController extends Controller
 
             if ($next) {
                 return redirect()->route('examiner-clinic')
-                    ->with('info', "This session is full. A new session has been opened: {$next->paperLabel()} on {$next->scheduled_at->format('D, M j \a\t g:ia')}.")
+                    ->with('info', "This session is full. A new session has been opened: {$next->paperLabel()} on {$next->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia')} EAT.")
                     ->with('redirect_clinic_id', $next->id);
             }
 
@@ -142,7 +142,7 @@ class ClinicController extends Controller
                     }
                 }
 
-                return back()->with('success', "You're enrolled! Your session code is {$enrollment->session_code}. The clinic is on {$clinic->scheduled_at->format('D, M j \a\t g:ia')}.");
+                return back()->with('success', "You're enrolled! Your session code is {$enrollment->session_code}. The clinic is on {$clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia')} EAT.");
             });
         } catch (\Exception $e) {
             \Log::error('Clinic enrollment failed: ' . $e->getMessage(), [

@@ -136,7 +136,7 @@ class TopicSuggestionsController extends Controller
         // Data
         foreach ($suggestions as $suggestion) {
             fputcsv($handle, [
-                $suggestion->created_at->format('Y-m-d H:i:s'),
+                $suggestion->created_at->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s') . ' EAT',
                 $suggestion->topic,
                 $suggestion->description,
                 $suggestion->user?->name ?? 'Guest',

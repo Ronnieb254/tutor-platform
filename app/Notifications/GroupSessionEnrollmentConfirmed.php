@@ -35,7 +35,7 @@ class GroupSessionEnrollmentConfirmed extends Notification implements ShouldQueu
             ->line('**Session Details:**')
             ->line('• **Title:** ' . $clinic->title)
             ->line('• **Instructor:** ' . ($tutor?->name ?? 'Mwalimu Team'))
-            ->line('• **Date & Time:** ' . $clinic->scheduled_at->format('D, M j, Y \a\t g:ia'))
+            ->line('• **Date & Time:** ' . $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:ia') . ' EAT')
             ->line('• **Duration:** ' . $clinic->duration_minutes . ' minutes')
             ->line('• **Your Session Code:** ' . $sessionCode)
             ->line('')

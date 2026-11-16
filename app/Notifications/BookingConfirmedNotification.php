@@ -28,7 +28,7 @@ class BookingConfirmedNotification extends Notification implements ShouldQueue
             ->greeting('Great news, ' . $notifiable->name . '!')
             ->line('Your booking with ' . $this->booking->tutor->name . ' has been confirmed.')
             ->line('Subject: ' . $this->booking->subject->name)
-            ->line('Scheduled: ' . $this->booking->scheduled_at->format('l, F j, Y \a\t g:i A'))
+            ->line('Scheduled: ' . $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('l, F j, Y \a\t g:i A') . ' EAT')
             ->line('Duration: ' . $this->booking->duration_minutes . ' minutes')
             ->action('View Session Details', route('sessions.show', $this->booking->uuid))
             ->line('You can join the session 1 hour before the scheduled time.');
@@ -41,8 +41,7 @@ class BookingConfirmedNotification extends Notification implements ShouldQueue
             'booking_uuid' => $this->booking->uuid,
             'tutor_name' => $this->booking->tutor->name,
             'subject' => $this->booking->subject->name,
-            'scheduled_at' => $this->booking->scheduled_at->toISOString(),
-            'message' => 'Your booking with ' . $this->booking->tutor->name . ' has been confirmed',
+            'scheduled_at' => $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s'),
             'type' => 'booking_confirmed',
         ];
     }

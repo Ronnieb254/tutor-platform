@@ -107,7 +107,7 @@ class PaystackCallbackHelper
 
         $isGroup   = $payment->payment_type === 'group_session';
         $route     = $isGroup ? route('group-sessions.show', $clinic->id) : route('clinic.my-bookings');
-        $dateStr   = $clinic->scheduled_at->format('D, M j \a\t g:ia');
+        $dateStr   = $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') . ' EAT';
 
         return redirect($route)
             ->with('success', "Booking confirmed! Your session code: {$enrollment->session_code}. The session is on {$dateStr}.");

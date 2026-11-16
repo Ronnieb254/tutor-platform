@@ -34,7 +34,7 @@ class StudentEnrolledInGroupSession extends Notification implements ShouldQueue
             ->line('')
             ->line('**Session Details:**')
             ->line('• **Title:** ' . $clinic->title)
-            ->line('• **Date & Time:** ' . $clinic->scheduled_at->format('D, M j, Y \a\t g:ia'))
+            ->line('• **Date & Time:** ' . $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j, Y \a\t g:ia') . ' EAT')
             ->line('• **Duration:** ' . $clinic->duration_minutes . ' minutes')
             ->line('• **Student:** ' . $student->name)
             ->line('• **Total Enrollments:** ' . $enrollmentCount . ' / ' . $clinic->max_students)

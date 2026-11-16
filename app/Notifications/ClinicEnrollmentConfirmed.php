@@ -23,7 +23,7 @@ class ClinicEnrollmentConfirmed extends Notification implements ShouldQueue
     {
         $clinic      = $this->enrollment->clinic;
         $scheduledAt = $clinic->scheduled_at
-            ? $clinic->scheduled_at->format('D, d M Y \a\t H:i')
+            ? $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, d M Y \a\t H:i') . ' EAT'
             : 'TBC';
         $price = 'KES ' . number_format($clinic->price, 2);
 
@@ -51,7 +51,7 @@ class ClinicEnrollmentConfirmed extends Notification implements ShouldQueue
             'clinic_id'     => $this->enrollment->clinic_id,
             'title'         => $clinic?->title,
             'session_code'  => $this->enrollment->session_code,
-            'scheduled_at'  => $clinic?->scheduled_at?->toDateTimeString(),
+            'scheduled_at'  => $clinic?->scheduled_at?->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s'),
             'message'       => 'Your booking for "' . ($clinic?->title ?? 'clinic') . '" is confirmed. Code: ' . $this->enrollment->session_code,
             'url'           => url('/clinic/my-bookings'),
         ];

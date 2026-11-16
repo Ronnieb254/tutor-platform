@@ -32,7 +32,7 @@ class BookingCancelledNotification extends Notification implements ShouldQueue
             ->greeting('Hello ' . $notifiable->name)
             ->line('A booking has been cancelled by ' . $canceller->name)
             ->line('Subject: ' . $this->booking->subject->name)
-            ->line('Scheduled: ' . $this->booking->scheduled_at->format('l, F j, Y \a\t g:i A'))
+            ->line('Scheduled: ' . $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('l, F j, Y \a\t g:i A') . ' EAT')
             ->line('Reason: ' . ($this->booking->cancellation_reason ?? 'No reason provided'))
             ->action('View Details', route('sessions.show', $this->booking->uuid))
             ->line('If you have any questions, please contact support.');
@@ -47,8 +47,7 @@ class BookingCancelledNotification extends Notification implements ShouldQueue
             'booking_uuid' => $this->booking->uuid,
             'cancelled_by' => $canceller->name,
             'subject' => $this->booking->subject->name,
-            'scheduled_at' => $this->booking->scheduled_at->toISOString(),
-            'reason' => $this->booking->cancellation_reason,
+            'scheduled_at' => $this->booking->scheduled_at->setTimezone('Africa/Nairobi')->format('Y-m-d H:i:s'),
             'message' => 'Booking cancelled by ' . $canceller->name,
             'type' => 'booking_cancelled',
         ];
