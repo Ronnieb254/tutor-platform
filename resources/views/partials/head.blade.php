@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
 <script src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="{{ asset('js/curriculum-switcher.js') }}" defer></script>
+{{-- Emit the server-known curriculum so the JS can sync on load --}}
+<script>window.__SERVER_CURRICULUM = '{{ $curriculum_variant ?? 'kenyan' }}';</script>
 <style>
 /* -- MWALIMU DESIGN SYSTEM ------------------------------------------- */
 :root{
