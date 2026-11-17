@@ -47,7 +47,7 @@ class BookingWizard extends Component
         if (!isset($prices[$key])) {
             $key = "{$this->duration}_individual";
         }
-        return (float) ($prices[$key]['price'] ?? 300);
+        return (float) ($prices[$key]['price'] ?? 1);
     }
 
     public function getSessionNameProperty(): string
