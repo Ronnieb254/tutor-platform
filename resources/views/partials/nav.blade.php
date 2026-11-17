@@ -124,7 +124,7 @@
  style="display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;border:1.5px solid rgba(21,40,31,.12);background:#fff;cursor:pointer;transition:all .15s;"
  onmouseover="this.style.borderColor='rgba(10,100,188,.4)'" onmouseout="this.style.borderColor='rgba(21,40,31,.12)'">
  <img src="{{ auth()->user()->avatar_url }}" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;">
- <span style="font-size:13px;font-weight:600;color:#15281F;display:none;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" class="mw-uname">{{ Str::limit(auth()->user()->name,15) }}</span>
+ <span style="font-size:13px;font-weight:600;color:#15281F;display:none;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" class="mw-uname">{{ Str::limit(auth()->user()->name,5) }}</span>
  <i class="fa-solid fa-chevron-down"></i>
  </button>
  <div x-show="uopen" x-transition x-cloak
