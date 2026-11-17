@@ -75,19 +75,31 @@ class BookingService
         $studentCode = 'STU-' . strtoupper(Str::random(6));
         $meetingID   = 'Mwalimu-session-' . $booking->uuid;
 
-        $tutorJoinUrl = $this->jitsi->getJoinUrl(
-            $meetingID,
-            $booking->tutor->name,
-            true,
-            ['email' => $booking->tutor->email, 'recording' => true]
-        );
+        // Jitsi URL generation is best-effort — a JWT/OpenSSL failure must
+        // never block the booking confirmation.
+        try {
+            $tutorJoinUrl = $this->jitsi->getJoinUrl(
+                $meetingID,
+                $booking->tutor->name,
+                true,
+                ['email' => $booking->tutor->email, 'recording' => true]
+            );
+        } catch (\Throwable $e) {
+            Log::warning('Jitsi tutor URL generation failed (non-fatal): ' . $e->getMessage());
+            $tutorJoinUrl = null;
+        }
 
-        $studentJoinUrl = $this->jitsi->getJoinUrl(
-            $meetingID,
-            $booking->student->name,
-            false,
-            ['email' => $booking->student->email, 'restrictGuests' => true]
-        );
+        try {
+            $studentJoinUrl = $this->jitsi->getJoinUrl(
+                $meetingID,
+                $booking->student->name,
+                false,
+                ['email' => $booking->student->email, 'restrictGuests' => true]
+            );
+        } catch (\Throwable $e) {
+            Log::warning('Jitsi student URL generation failed (non-fatal): ' . $e->getMessage());
+            $studentJoinUrl = null;
+        }
 
         // Keep the DB transaction tight — only data writes, no external calls
         DB::transaction(function () use ($booking, $tutorCode, $studentCode, $meetingID, $tutorJoinUrl, $studentJoinUrl) {
