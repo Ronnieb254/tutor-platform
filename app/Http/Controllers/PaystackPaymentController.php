@@ -70,9 +70,25 @@ class PaystackPaymentController extends Controller
         );
 
         if (!($result['status'] ?? false) || empty($result['data']['authorization_url'])) {
+            // Log the full Paystack response for server-side debugging.
+            \Log::error('Paystack initializeTransaction failed in initiate()', [
+                'payment_id' => $payment->id,
+                'reference'  => $payment->mpesa_reference,
+                'amount_kobo'=> (int) round((float) $payment->amount * 100),
+                'email'      => $user->email,
+                'result'     => $result,
+                'secret_key_set' => !empty(config('paystack.secret_key')),
+            ]);
+
+            $errorMsg = $result['message'] ?? 'Could not initialize payment.';
+            // Expose Paystack's exact message in non-production for easier debugging.
+            if (config('app.debug')) {
+                $errorMsg .= ' [Paystack: ' . ($result['message'] ?? 'no message') . ']';
+            }
+
             return response()->json([
                 'status'  => 'error',
-                'message' => $result['message'] ?? 'Could not initialize payment. Please try again.',
+                'message' => $errorMsg,
             ], 422);
         }
 

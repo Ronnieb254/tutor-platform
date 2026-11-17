@@ -62,14 +62,18 @@ class PaystackService
 
             if (!$response->successful()) {
                 Log::error('Paystack initializeTransaction failed', [
-                    'status'    => $response->status(),
-                    'body'      => $response->body(),
-                    'reference' => $reference,
+                    'status'         => $response->status(),
+                    'body'           => $response->body(),
+                    'reference'      => $reference,
+                    'secret_key_set' => !empty($this->secretKey),
+                    'url'            => "{$this->paymentUrl}/transaction/initialize",
                 ]);
 
+                // Return the actual Paystack error message so it surfaces to the user.
+                $decoded = $response->json();
                 return [
                     'status'  => false,
-                    'message' => 'Paystack initialization failed.',
+                    'message' => $decoded['message'] ?? ('Paystack error: HTTP ' . $response->status()),
                 ];
             }
 
