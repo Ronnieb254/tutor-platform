@@ -1,6 +1,6 @@
 ﻿@php
 $sessionTiers = [
- 20 => ['name' => 'Quick Help', 'price' => 300, 'icon' => '', 'desc' => 'Rapid revision or a quick question'],
+ 20 => ['name' => 'Quick Help', 'price' => 1, 'icon' => '', 'desc' => 'Rapid revision or a quick question'],
  40 => ['name' => 'Guided Practice', 'price' => 600, 'icon' => '', 'desc' => 'Full structured lesson with Q&A'],
  60 => ['name' => 'Deep Dive', 'price' => 900, 'icon' => '', 'desc' => 'Maximum learning, best value'],
 ];
