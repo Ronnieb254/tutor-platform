@@ -51,6 +51,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Curriculum selection
 Route::get('/select-curriculum', [CurriculumController::class, 'show'])->name('curriculum.select');
 Route::post('/select-curriculum', [CurriculumController::class, 'store'])->name('curriculum.store');
+Route::post('/curriculum/sync', [CurriculumController::class, 'sync'])->name('curriculum.sync');
 Route::get('/how-it-works', [HomeController::class, 'howItWorks'])->name('how-it-works');
 Route::get('/examiner-clinic', [App\Http\Controllers\ClinicController::class, 'index'])->name('examiner-clinic');
 Route::get('/group-sessions', [App\Http\Controllers\GroupSessionController::class, 'index'])->name('group-sessions.index');
@@ -154,7 +155,12 @@ Route::middleware('auth')->group(function () {
     // Clinic booking & payment flow
     Route::get('/clinic/{clinic}/checkout', [App\Http\Controllers\ClinicBookingController::class, 'checkout'])->name('clinic.checkout');
     Route::post('/clinic/{clinic}/pay', [App\Http\Controllers\ClinicBookingController::class, 'pay'])->name('clinic.pay');
-    Route::get('/clinic/callback', [App\Http\Controllers\ClinicBookingController::class, 'callback'])->name('clinic.callback');
+    // Removed: ClinicBookingController::callback() does not exist — calling it would 500.
+    // Route::get('/clinic/callback', [App\Http\Controllers\ClinicBookingController::class, 'callback'])->name('clinic.callback');
+
+    // Paystack payment flow (Standard / redirect).
+    Route::get('/paystack/callback', [App\Http\Controllers\PaystackPaymentController::class, 'callback'])->name('paystack.callback');
+    Route::post('/paystack/initiate', [App\Http\Controllers\PaystackPaymentController::class, 'initiate'])->name('paystack.initiate');
 
     // Clinic session access (platform-only)
     Route::get('/clinic/my-bookings', [App\Http\Controllers\ClinicBookingController::class, 'myBookings'])->name('clinic.my-bookings');

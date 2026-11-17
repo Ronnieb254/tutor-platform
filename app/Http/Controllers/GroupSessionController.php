@@ -6,6 +6,7 @@ use App\Models\ExaminerClinic;
 use App\Models\ClinicEnrollment;
 use App\Models\Payment;
 use App\Models\Subject;
+use App\Services\PaystackService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -84,18 +85,17 @@ class GroupSessionController extends Controller
     }
 
     /**
-     * Enroll a student in a group session via M-Pesa payment code submission.
+     * Enroll a student in a group session via Paystack.
+     *
+     * Creates a pending Payment and redirects to Paystack's hosted checkout
+     * page. The actual ClinicEnrollment (with session code) is created by
+     * PaystackCallbackHelper once the payment is verified on the callback.
      */
     public function enroll(Request $request, ExaminerClinic $groupSession)
     {
         if (\Schema::hasColumn('examiner_clinics', 'is_group_session') && !$groupSession->is_group_session) {
             return back()->with('error', 'This is not a group session.');
         }
-
-        $request->validate([
-            'phone'       => 'required|string|min:9|max:15',
-            'mpesa_code'  => 'required|string|min:6|max:30',
-        ]);
 
         $user = $request->user();
 
@@ -107,62 +107,53 @@ class GroupSessionController extends Controller
             return back()->with('error', 'This session is full. Please choose another time slot.');
         }
 
-        try {
-            // Normalize phone number
-            $daraja = app(\App\Services\DarajaService::class);
-            $phone = $daraja->normalizePhone($request->input('phone'));
-            $mpesaCode = strtoupper(trim($request->input('mpesa_code')));
-            
-            // Generate reference for tracking
-            $reference = $daraja->generateReference('GRP');
+        $paystack  = app(PaystackService::class);
+        $reference = $paystack->generateReference('GRP');
 
-            // Create payment record with pending status for admin verification
-            $payment = Payment::create([
-                'user_id'         => $user->id,
-                'clinic_id'       => $groupSession->id,
-                'amount'          => $groupSession->price,
-                'currency'        => 'KES',
-                'payment_type'    => 'group_session',
-                'mpesa_code'      => $mpesaCode,
-                'mpesa_reference' => $reference,
-                'payer_phone'     => $phone,
-                'status'          => 'pending_verification',
-                'metadata'        => [
-                    'session_id'     => $groupSession->id,
-                    'session_title'  => $groupSession->title,
-                    'tutor_id'       => $groupSession->tutor_id,
-                    'submitted_at'   => now()->toDateTimeString(),
-                ],
-            ]);
+        $payment = Payment::create([
+            'user_id'         => $user->id,
+            'clinic_id'        => $groupSession->id,
+            'amount'          => $groupSession->price,
+            'currency'         => 'KES',
+            'payment_type'     => 'group_session',
+            'mpesa_reference'  => $reference,
+            'status'           => 'pending',
+            'metadata'         => [
+                'flow'         => 'paystack',
+                'session_id'   => $groupSession->id,
+                'session_title' => $groupSession->title,
+            ],
+        ]);
 
-            // Create provisional clinic enrollment (pending payment verification)
-            $enrollment = ClinicEnrollment::create([
-                'clinic_id'    => $groupSession->id,
-                'student_id'   => $user->id,
-                'payment_id'   => $payment->id,
-                'enrolled_at'  => now(),
-                'status'       => 'pending', // Will be activated once payment verified
-            ]);
+        $result = $paystack->initializeTransaction(
+            $user->email,
+            (int) round((float) $groupSession->price * 100),
+            $reference,
+            [
+                'flow'          => 'paystack',
+                'session_id'    => $groupSession->id,
+                'session_title' => $groupSession->title,
+            ],
+            route('paystack.callback')
+        );
 
-            \Log::info('Group session enrollment initiated', [
-                'session_id' => $groupSession->id,
-                'student_id' => $user->id,
-                'payment_id' => $payment->id,
-                'mpesa_code' => $mpesaCode,
-            ]);
+        if (!($result['status'] ?? false) || empty($result['data']['authorization_url'])) {
+            // Roll back the pending payment so the student can retry cleanly.
+            $payment->delete();
 
-            // Redirect to pending verification page
-            return redirect()
-                ->route('group-sessions.payment-pending', ['reference' => $reference])
-                ->with('info', 'Payment code submitted. Admin will verify within 2 hours.');
-
-        } catch (\Exception $e) {
-            \Log::error('Group session enrollment failed: ' . $e->getMessage(), [
-                'session_id' => $groupSession->id,
-                'user_id'    => $user->id,
-            ]);
-            return back()->with('error', 'Failed to process enrollment. Please try again or contact support.');
+            return back()->with('error', $result['message'] ?? 'Could not start payment. Please try again or contact support.');
         }
+
+        $data = $result['data'];
+
+        $metadata = $payment->metadata ?? [];
+        $metadata['access_code']       = $data['access_code'] ?? null;
+        $metadata['authorization_url'] = $data['authorization_url'] ?? null;
+        $payment->metadata = $metadata;
+        $payment->save();
+
+        // Send the student to Paystack's hosted checkout page.
+        return redirect($data['authorization_url']);
     }
 
     /**

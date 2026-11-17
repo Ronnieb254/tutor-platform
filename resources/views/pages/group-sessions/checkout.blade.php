@@ -56,88 +56,62 @@
  </div>
  </div>
 
- {{-- M-Pesa Payment Form --}}
+ {{-- Pay with Paystack --}}
  <div style="background:rgba(10,100,188,.02);border:1px solid rgba(10,100,188,.1);border-radius:18px;padding:24px;">
  <h2 style="font-family:'Fraunces',serif;font-size:18px;color:#15281F;margin:0 0 18px;display:flex;align-items:center;gap:10px;">
- <i class="fa-solid fa-mobile" style="color:#0A64BC;"></i> M-Pesa Payment
+ <i class="fa-solid fa-credit-card" style="color:#0A64BC;"></i> Secure Payment
  </h2>
+
+ {{--
+ ══════════════════════════════════════════════════════════════════
+ MANUAL M-PESA PAYMENT COMMENTED OUT — Paystack integration active
+ ══════════════════════════════════════════════════════════════════
 
  <form method="POST" action="{{ route('group-sessions.enroll', $groupSession) }}" id="enrollForm" style="display:flex;flex-direction:column;gap:16px;">
  @csrf
-
  <div>
- <label style="display:block;font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Your M-Pesa Phone Number</label>
- <input 
-  type="tel" 
-  name="phone" 
-  placeholder="254712345678" 
-  value="{{ old('phone') }}"
-  style="width:100%;padding:12px 14px;border:1.5px solid rgba(21,40,31,.1);border-radius:10px;font-size:14px;font-family:monospace;transition:all .2s;"
-  onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 3px rgba(10,100,188,.1)'"
-  onblur="this.style.borderColor='rgba(21,40,31,.1)';this.style.boxShadow='none'"
-  required
- />
- @error('phone')
-  <span style="font-size:12px;color:#DC2626;margin-top:6px;display:block;">{{ $message }}</span>
- @enderror
- <span style="font-size:11px;color:rgba(21,40,31,.55);margin-top:6px;display:block;">
-  <i class="fa-solid fa-info-circle"></i> Format: 254712345678 (Kenya number)
- </span>
+ <label>Your M-Pesa Phone Number</label>
+ <input type="tel" name="phone" placeholder="254712345678" value="{{ old('phone') }}" required />
+ @error('phone')<span>{{ $message }}</span>@enderror
  </div>
-
  <div>
- <label style="display:block;font-size:12px;font-weight:700;color:rgba(21,40,31,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">M-Pesa Transaction Code</label>
- <input 
-  type="text" 
-  name="mpesa_code" 
-  placeholder="e.g., ABC123DEF456" 
-  value="{{ old('mpesa_code') }}"
-  style="width:100%;padding:12px 14px;border:1.5px solid rgba(21,40,31,.1);border-radius:10px;font-size:14px;font-family:monospace;transition:all .2s;"
-  onfocus="this.style.borderColor='#0A64BC';this.style.boxShadow='0 0 0 3px rgba(10,100,188,.1)'"
-  onblur="this.style.borderColor='rgba(21,40,31,.1)';this.style.boxShadow='none'"
-  required
- />
- @error('mpesa_code')
-  <span style="font-size:12px;color:#DC2626;margin-top:6px;display:block;">{{ $message }}</span>
- @enderror
- <span style="font-size:11px;color:rgba(21,40,31,.55);margin-top:6px;display:block;">
-  <i class="fa-solid fa-info-circle"></i> Enter the 10-digit code sent to your phone after payment
- </span>
+ <label>M-Pesa Transaction Code</label>
+ <input type="text" name="mpesa_code" placeholder="e.g., ABC123DEF456" value="{{ old('mpesa_code') }}" required />
+ @error('mpesa_code')<span>{{ $message }}</span>@enderror
  </div>
-
- <div style="background:#fff;border-radius:12px;padding:14px;border:1px solid rgba(10,100,188,.1);">
- <div style="font-size:12px;color:rgba(21,40,31,.55);line-height:1.6;">
- <p style="margin:0 0 10px;"><strong style="color:#15281F;">How to pay:</strong></p>
- <ol style="margin:0;padding-left:18px;line-height:1.8;">
-  <li>Go to your M-Pesa menu</li>
-  <li>Select <strong>Lipa Na M-Pesa Online</strong></li>
-  <li>Enter Business: <strong>542542</strong></li>
-  <li>Enter Account: <strong>313126</strong></li>
-  <li>Enter Amount: <strong>KSh {{ number_format($groupSession->price) }}</strong></li>
-  <li>Enter your M-Pesa PIN</li>
-  <li>You'll receive a confirmation code - paste it above</li>
- </ol>
- </div>
- </div>
-
- <button 
-  type="submit" 
-  id="submitBtn"
-  style="padding:14px;border-radius:10px;background:#0A64BC;color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;"
-  onmouseover="this.style.background='#084BA6'"
-  onmouseout="this.style.background='#0A64BC'"
- >
-  <i class="fa-solid fa-check-circle"></i> <span id="btnText">Submit Payment Code</span>
- </button>
-
- <a href="{{ route('group-sessions.show', $groupSession) }}" style="display:block;width:100%;padding:12px;border-radius:10px;background:transparent;color:#0A64BC;text-decoration:none;text-align:center;font-weight:600;font-size:13px;border:1.5px solid rgba(10,100,188,.2);cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#0A64BC';this.style.background='rgba(10,100,188,.05)'" onmouseout="this.style.borderColor='rgba(10,100,188,.2)';this.style.background='transparent'">
- Cancel
- </a>
+ <div>How to pay: M-Pesa → Lipa Na M-Pesa Online → Business 542542 → Account 313126 → Amount → PIN</div>
+ <button type="submit">Submit Payment Code</button>
  </form>
+ --}}
 
- <div style="background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:12px;margin-top:16px;display:flex;align-items:flex-start;gap:10px;">
+ {{-- Paystack redirect form --}}
+ <div style="background:#fff;border-radius:14px;padding:20px;border:1px solid rgba(10,100,188,.12);text-align:center;margin-bottom:16px;">
+ <i class="fa-solid fa-shield-halved" style="font-size:32px;color:#0A64BC;margin-bottom:12px;display:block;"></i>
+ <p style="font-size:14px;font-weight:700;color:#15281F;margin:0 0 6px;">Pay securely with Paystack</p>
+ <p style="font-size:12px;color:rgba(21,40,31,.55);margin:0 0 20px;line-height:1.5;">
+ You'll be redirected to Paystack's secure checkout to pay <strong>KSh {{ number_format($groupSession->price) }}</strong>.<br>
+ Accepts Visa, Mastercard, and M-Pesa.
+ </p>
+ @auth
+ <form method="POST" action="{{ route('group-sessions.enroll', $groupSession) }}" id="enrollForm">
+ @csrf
+ <button type="submit" id="paystackBtn"
+ style="padding:14px 28px;border-radius:10px;background:#0A64BC;color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:10px;min-width:220px;justify-content:center;"
+ onmouseover="this.style.background='#084BA6'"
+ onmouseout="this.style.background='#0A64BC'">
+ <i class="fa-solid fa-lock"></i> Pay KSh {{ number_format($groupSession->price) }}
+ </button>
+ </form>
+ @else
+ <a href="{{ route('login') }}" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;background:#0A64BC;color:#fff;font-weight:700;font-size:15px;text-decoration:none;">
+ <i class="fa-solid fa-right-to-bracket"></i> Sign in to Pay
+ </a>
+ @endauth
+ </div>
+
+ <div style="background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
  <i class="fa-solid fa-circle-check" style="color:#10B981;flex-shrink:0;margin-top:2px;"></i>
- <span style="font-size:12px;color:#047857;"><strong>Secure process:</strong> Our team will verify your payment quickly and send you a session code within 2 hours.</span>
+ <span style="font-size:12px;color:#047857;"><strong>Instant confirmation:</strong> Your session code is sent immediately after payment.</span>
  </div>
  </div>
  </div>
@@ -163,7 +137,7 @@
  </div>
 
  <div style="background:rgba(212,160,23,.05);border:1px solid rgba(212,160,23,.2);border-radius:12px;padding:12px;margin-top:12px;text-align:center;font-size:11px;color:#B45309;">
- <i class="fa-solid fa-clock"></i> Verified within 2 hours
+ <i class="fa-solid fa-bolt"></i> Instant confirmation via Paystack
  </div>
  @else
  <a href="{{ route('register') }}" style="display:block;width:100%;padding:12px;border-radius:10px;background:#0A64BC;color:#fff;text-decoration:none;text-align:center;font-weight:700;font-size:14px;margin-top:20px;transition:all .2s;" onmouseover="this.style.background='#084BA6'" onmouseout="this.style.background='#0A64BC'">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Services\BookingService;
+use App\Services\PaystackService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -110,31 +111,29 @@ class BookingController extends Controller
             ]);
         }
 
-        // All paid bookings now use manual Paybill payment
-        $request->validate(['mpesa_code' => 'required|string|min:6|max:30']);
+        // Paid bookings are processed via Paystack. We create a pending Payment
+        // here and hand the payment_id back to the client, which then calls
+        // /paystack/initiate to obtain the Paystack authorization_url.
+        $reference = app(PaystackService::class)->generateReference('BK');
 
         $payment = Payment::create([
-            'booking_id'   => $booking->id,
-            'user_id'      => auth()->id(),
-            'amount'       => $booking->total_amount,
-            'currency'     => 'KES',
-            'payment_type' => 'booking',
-            'status'       => 'pending_verification',
-            'mpesa_code'   => strtoupper(trim($request->input('mpesa_code'))),
-            'metadata'     => [
-                'payment_instructions' => 'Paybill 542542, Account 313126',
-                'student_submitted_at' => now()->toDateTimeString(),
+            'booking_id'      => $booking->id,
+            'user_id'         => auth()->id(),
+            'amount'          => $booking->total_amount,
+            'currency'        => 'KES',
+            'payment_type'    => 'booking',
+            'status'          => 'pending',
+            'mpesa_reference' => $reference,
+            'metadata'        => [
+                'flow' => 'paystack',
             ],
         ]);
 
         return response()->json([
-            'status'       => 'ok',
-            'mode'         => 'manual',
-            'booking_id'   => $booking->id,
-            'booking_uuid' => $booking->uuid,
-            'payment_id'   => $payment->id,
-            'message'      => 'Booking received. Admin will verify your payment within 5 minutes.',
-            'pending_url'  => route('bookings.payment-pending', $booking->uuid),
+            'status'    => 'ok',
+            'mode'      => 'paystack',
+            'payment_id' => $payment->id,
+            'reference' => $reference,
         ]);
     }
 

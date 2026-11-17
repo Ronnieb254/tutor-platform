@@ -1356,7 +1356,8 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
                 <i class="fa-solid fa-mobile-screen"></i> Pay Now
               </p>
 
-              {{-- M-Pesa Paybill Instructions --}}
+              {{-- M-Pesa Paybill Instructions (removed — Paystack flow) --}}
+              {{--
               <div x-show="!isFree" style="background:#F0FDF4;border:1.5px solid #10B981;border-radius:14px;padding:18px;margin-bottom:16px;">
                 <div style="font-weight:700;font-size:13px;color:#065F46;margin-bottom:12px;">
                   <i class="fa-solid fa-mobile-screen-button"></i> Pay via M-Pesa Paybill
@@ -1378,8 +1379,10 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
                   <strong>Steps:</strong> M-Pesa  Lipa na M-Pesa  Pay Bill  Paybill: <strong>542542</strong>  Account: <strong>313126</strong>  Amount: KSh <span x-text="price"></span>
                 </div>
               </div>
+              --}}
 
-              {{-- Transaction Code Input --}}
+              {{-- Transaction Code Input (removed — Paystack flow) --}}
+              {{--
               <div style="margin-bottom:14px;" x-show="!isFree">
                 <label class="field-label">M-Pesa Transaction Code <span style="color:#E8522A;">*</span></label>
                 <input type="text" x-model="mpesaCode"
@@ -1389,6 +1392,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
                 oninput="this.value=this.value.toUpperCase()" maxlength="20">
                 <p style="font-size:11px;color:rgba(21,40,31,.5);margin-top:4px;">Enter the code from your M-Pesa confirmation SMS (e.g. RKA7X1Y2Z3)</p>
               </div>
+              --}}
 
               <button @click="processPayment($data)"
               :disabled="processing"
@@ -1603,13 +1607,10 @@ function processPayment(data) {
     showError('Missing Information', 'Please select a date and time.');
     return;
   }
-  if (!data.isFree && (!data.mpesaCode || data.mpesaCode.trim().length < 6)) {
-    showError('Transaction Code Required', 'Please enter the M-Pesa transaction code from your confirmation SMS.');
-    return;
-  }
 
   data.processing = true;
 
+  // Step 1 — create the booking (and a pending Payment for paid sessions).
   fetch('/bookings', {
     method: 'POST',
     headers: {
@@ -1623,13 +1624,13 @@ function processPayment(data) {
       scheduled_at: data.date + ' ' + data.time,
       subject_id: data.subject || null,
       notes: data.notes,
-      mpesa_code: data.mpesaCode ? data.mpesaCode.trim().toUpperCase() : '',
     })
   })
   .then(r => r.json())
   .then(res => {
-    data.processing = false;
     if (res.status === 'ok' && res.free) {
+      // Free session — booking is already confirmed.
+      data.processing = false;
       data.studentCode = res.student_code || '';
       data.bookingRef = res.booking_uuid || '';
       data.step = 3;
@@ -1638,10 +1639,28 @@ function processPayment(data) {
       }
       return;
     }
-    if (res.status === 'ok' && res.mode === 'manual') {
-      window.location.href = res.pending_url || '/dashboard';
-      return;
+    if (res.status === 'ok' && res.mode === 'paystack' && res.payment_id) {
+      // Step 2 — initialize Paystack and redirect to the hosted checkout page.
+      return fetch('/paystack/initiate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ payment_id: res.payment_id })
+      })
+      .then(r2 => r2.json())
+      .then(res2 => {
+        data.processing = false;
+        if (res2.status === 'ok' && res2.authorization_url) {
+          window.location.href = res2.authorization_url;
+          return;
+        }
+        showError('Payment Failed', res2.message || 'Could not start payment. Please try again.');
+      });
     }
+    data.processing = false;
     showError('Booking Failed', res.message || 'Could not process booking. Please try again.');
   })
   .catch(() => {

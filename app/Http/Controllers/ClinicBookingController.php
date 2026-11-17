@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ExaminerClinic;
 use App\Models\ClinicEnrollment;
 use App\Models\Payment;
+use App\Services\PaystackService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
@@ -40,7 +41,8 @@ class ClinicBookingController extends Controller
     }
 
     /**
-     * Process the payment — manual Paybill M-Pesa code submission.
+     * Process the payment — initializes a Paystack transaction and redirects
+     * the student to Paystack's hosted checkout page.
      */
     public function pay(Request $request, ExaminerClinic $clinic)
     {
@@ -54,25 +56,53 @@ class ClinicBookingController extends Controller
             return back()->with('error', 'You are already enrolled in this session.');
         }
 
-        $request->validate(['mpesa_code' => 'required|string|min:6|max:30']);
+        $paystack = app(PaystackService::class);
+        $reference = $paystack->generateReference('CL');
 
-        Payment::create([
-            'user_id'      => $user->id,
-            'clinic_id'    => $clinic->id,
-            'amount'       => $clinic->price,
-            'currency'     => 'KES',
-            'payment_type' => 'clinic',
-            'status'       => 'pending_verification',
-            'mpesa_code'   => strtoupper(trim($request->input('mpesa_code'))),
-            'metadata'     => [
+        $payment = Payment::create([
+            'user_id'         => $user->id,
+            'clinic_id'        => $clinic->id,
+            'amount'          => $clinic->price,
+            'currency'         => 'KES',
+            'payment_type'     => 'clinic',
+            'status'           => 'pending',
+            'mpesa_reference'  => $reference,
+            'metadata'         => [
+                'flow'         => 'paystack',
                 'clinic_id'    => $clinic->id,
                 'clinic_title' => $clinic->title ?? $clinic->name,
-                'payment_instructions' => 'Paybill 542542, Account 313126',
             ],
         ]);
 
-        return redirect()->route('clinic.my-bookings')
-            ->with('info', 'Your payment code has been submitted. Admin will verify within 5 minutes and send your session code by email.');
+        $result = $paystack->initializeTransaction(
+            $user->email,
+            (int) round((float) $clinic->price * 100),
+            $reference,
+            [
+                'flow'         => 'paystack',
+                'clinic_id'    => $clinic->id,
+                'clinic_title' => $clinic->title ?? $clinic->name,
+            ],
+            route('paystack.callback')
+        );
+
+        if (!($result['status'] ?? false) || empty($result['data']['authorization_url'])) {
+            // Roll back the pending payment so the student can retry cleanly.
+            $payment->delete();
+
+            return back()->with('error', $result['message'] ?? 'Could not start payment. Please try again or contact support.');
+        }
+
+        $data = $result['data'];
+
+        $metadata = $payment->metadata ?? [];
+        $metadata['access_code']       = $data['access_code'] ?? null;
+        $metadata['authorization_url'] = $data['authorization_url'] ?? null;
+        $payment->metadata = $metadata;
+        $payment->save();
+
+        // Send the student to Paystack's hosted checkout page.
+        return redirect($data['authorization_url']);
     }
 
     /**

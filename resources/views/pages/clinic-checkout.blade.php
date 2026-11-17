@@ -93,9 +93,13 @@ a{color:inherit;text-decoration:none;}
 
  {{-- Payment Method --}}
  <div style="margin-bottom:24px;">
+ <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;">Pay with Paystack</h3>
+
+ {{--
+   Manual M-Pesa Paybill checkout removed — payments now go through Paystack.
+   Original instructions and form preserved below (commented out).
  <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;">Pay via M-Pesa Paybill</h3>
 
- {{-- I&M Bank Paybill Instructions --}}
  <div style="background:#F0FDF4;border:1.5px solid #10B981;border-radius:14px;padding:18px;margin-bottom:16px;">
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
  <div style="background:#fff;border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(16,185,129,.3);">
@@ -113,11 +117,9 @@ a{color:inherit;text-decoration:none;}
  </div>
  </div>
 
- {{-- Payment Form --}}
  <form id="paymentForm" method="POST" action="{{ route('clinic.pay', $clinic) }}">
  @csrf
 
- {{-- Transaction Code Input --}}
  <div style="margin-bottom:18px;">
  <label style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;">
  <i class="fa-solid fa-receipt"></i> M-Pesa Transaction Code <span style="color:var(--coral);">*</span>
@@ -138,14 +140,12 @@ a{color:inherit;text-decoration:none;}
  </p>
  </div>
 
- {{-- User Verification --}}
  <div style="background:#F9FAFB;border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;">
  <div style="color:var(--muted);margin-bottom:6px;">Logged in as:</div>
  <div style="font-weight:600;color:var(--ink);">{{ $user->name }} ({{ $user->email }})</div>
  <div style="font-size:12px;color:var(--muted);margin-top:4px;"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();" style="color:var(--trust-blue);">Sign out</a></div>
  </div>
 
- {{-- Terms & Conditions --}}
  <div class="terms">
  <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
  <input type="checkbox" name="terms" required style="margin-top:3px;cursor:pointer;width:16px;height:16px;">
@@ -153,7 +153,6 @@ a{color:inherit;text-decoration:none;}
  </label>
  </div>
 
- {{-- Submit Button --}}
  <button type="submit" class="btn btn-primary" id="submitBtn">
  <i class="fa-solid fa-paper-plane"></i> Submit Payment  KSh {{ number_format($clinic->price) }}
  </button>
@@ -162,11 +161,29 @@ a{color:inherit;text-decoration:none;}
  </a>
  </form>
 
- {{-- Loading State --}}
  <div class="loading" id="loadingState">
  <div class="spinner"></div>
  <p style="margin-top:16px;font-size:14px;color:var(--muted);">Submitting your payment...</p>
  </div>
+ --}}
+
+ {{-- Pay with Paystack — form POSTs to clinic.pay which redirects to Paystack --}}
+ <form method="POST" action="{{ route('clinic.pay', $clinic) }}">
+ @csrf
+ <div style="background:rgba(10,100,188,.05);border:1px solid rgba(10,100,188,.15);border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;">
+ <i class="fa-solid fa-credit-card" style="font-size:30px;color:var(--trust-blue);margin-bottom:10px;"></i>
+ <p style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;">Pay with Paystack</p>
+ <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5;">
+ You will be redirected to Paystack's secure checkout to complete your payment of <strong>KSh {{ number_format($clinic->price) }}</strong>.
+ </p>
+ <button type="submit" class="btn btn-primary" id="paystackBtn">
+ <i class="fa-solid fa-lock"></i> Pay KSh {{ number_format($clinic->price) }}
+ </button>
+ </div>
+ <a href="{{ route('examiner-clinic') }}" class="btn btn-secondary" style="margin-top:8px;">
+ Back
+ </a>
+ </form>
  </div>
 
  {{-- Security Badge --}}
@@ -179,10 +196,24 @@ a{color:inherit;text-decoration:none;}
 <form id="logoutForm" method="POST" action="{{ route('logout') }}" style="display:none;">@csrf</form>
 
 <script>
-document.getElementById('paymentForm').addEventListener('submit', function() {
- document.getElementById('submitBtn').disabled = true;
- document.getElementById('loadingState').style.display = 'block';
-});
+// Old manual form (commented out) — guard against its absence.
+var payForm = document.getElementById('paymentForm');
+if (payForm) {
+ payForm.addEventListener('submit', function() {
+ var btn = document.getElementById('submitBtn');
+ if (btn) btn.disabled = true;
+ var loading = document.getElementById('loadingState');
+ if (loading) loading.style.display = 'block';
+ });
+}
+// Paystack button — show a loading state while redirecting.
+var paystackBtn = document.getElementById('paystackBtn');
+if (paystackBtn && paystackBtn.closest('form')) {
+ paystackBtn.closest('form').addEventListener('submit', function() {
+ paystackBtn.disabled = true;
+ paystackBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Redirecting to Paystack...';
+ });
+}
 </script>
 
 @include('partials.footer')

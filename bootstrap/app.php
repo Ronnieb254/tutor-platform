@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Exclude Daraja M-Pesa callback from CSRF (Safaricom POSTs without a token)
         $middleware->validateCsrfTokens(except: [
             'api/daraja/callback',
+            'api/paystack/webhook',
         ]);
 
         // Register named middleware alias

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DarajaCallbackController;
+use App\Http\Controllers\PaystackPaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,5 +42,15 @@ Route::post('/imbank/timeout', [IMBankPaymentController::class, 'timeout'])
 // Payment status polling endpoint
 Route::get('/imbank/status', [IMBankPaymentController::class, 'queryStatus'])
     ->name('imbank.status');
+
+/*
+|--------------------------------------------------------------------------
+| Paystack Webhook
+|--------------------------------------------------------------------------
+| Paystack POSTs server-to-server events here after a transaction completes.
+| Excluded from CSRF in bootstrap/app.php (Paystack has no session token).
+*/
+Route::post('/paystack/webhook', [PaystackPaymentController::class, 'webhook'])
+    ->name('paystack.webhook');
 
 
