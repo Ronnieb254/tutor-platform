@@ -846,7 +846,7 @@
 </head>
 <body style="display:flex;flex-direction:column;min-height:100vh;margin:0;padding:0;">
 @php
-$prices = [20=>300,40=>600,60=>900];
+$prices = [20=>1,40=>600,60=>900];
 $sessNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
 $sessDesc = [20=>'Rapid revision or a quick question',40=>'Full structured lesson with Q&A',60=>'Maximum learning, best value'];
 $isFreeFirstSession = false;
