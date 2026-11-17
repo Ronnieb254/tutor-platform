@@ -129,6 +129,13 @@ class PaystackPaymentController extends Controller
                 ->with('error', 'Payment not found. Please contact support.');
         }
 
+        // Ensure the authenticated user matches the payment owner.
+        // Paystack redirects back without a fresh login so the session
+        // should still be valid; this is a safety net.
+        if (!auth()->check() && $payment->user) {
+            auth()->login($payment->user);
+        }
+
         // The webhook may have confirmed before the browser arrived.
         if ($payment->status === 'success') {
             return PaystackCallbackHelper::redirectAfterPayment(
@@ -145,9 +152,10 @@ class PaystackPaymentController extends Controller
         if ($verified) {
             $data     = $result['data'] ?? [];
             $metadata = (array) ($payment->metadata ?? []);
-            $metadata['flow']            = 'paystack';
+            $metadata['flow']             = 'paystack';
             $metadata['gateway_response'] = $data['gateway_response'] ?? null;
             $metadata['channel']          = $data['channel'] ?? null;
+            $metadata['paystack_id']      = $data['id'] ?? null;
 
             $payment->status        = 'success';
             $payment->paid_at       = now();
@@ -155,17 +163,39 @@ class PaystackPaymentController extends Controller
             $payment->metadata      = $metadata;
             $payment->save();
 
+            Log::info('Paystack payment verified via callback', [
+                'payment_id' => $payment->id,
+                'reference'  => $reference,
+                'channel'    => $data['channel'] ?? null,
+                'amount'     => $data['amount'] ?? null,
+            ]);
+
             return PaystackCallbackHelper::confirmAndRedirect($payment);
         }
 
-        // Verification failed — mark the payment and notify the customer.
-        $payment->status         = 'failed';
-        $payment->failure_reason = ($result['data']['gateway_response'] ?? null)
+        // Verification failed — mark the payment and redirect with error.
+        $failReason = ($result['data']['gateway_response'] ?? null)
             ?: ($result['message'] ?? 'Verification failed');
+
+        $payment->status         = 'failed';
+        $payment->failure_reason = $failReason;
         $payment->save();
 
-        return redirect()->route('dashboard')
-            ->with('error', 'Payment could not be verified. If you were charged, please contact support with reference: ' . $reference);
+        Log::warning('Paystack payment verification failed in callback', [
+            'payment_id' => $payment->id,
+            'reference'  => $reference,
+            'reason'     => $failReason,
+        ]);
+
+        // Route to a sensible page based on payment type
+        $failRoute = match($payment->payment_type) {
+            'clinic'        => route('clinic.my-bookings'),
+            'group_session' => route('group-sessions.my-sessions'),
+            default         => route('dashboard'),
+        };
+
+        return redirect($failRoute)
+            ->with('error', 'Payment could not be verified. Reference: ' . $reference . '. Please contact support if you were charged.');
     }
 
     /**
@@ -207,9 +237,10 @@ class PaystackPaymentController extends Controller
         }
 
         $metadata = (array) ($payment->metadata ?? []);
-        $metadata['flow']            = 'paystack';
+        $metadata['flow']             = 'paystack';
         $metadata['gateway_response'] = $data['gateway_response'] ?? null;
         $metadata['channel']          = $data['channel'] ?? null;
+        $metadata['paystack_id']      = $data['id'] ?? null;
 
         $payment->status        = 'success';
         $payment->paid_at       = now();
@@ -217,12 +248,11 @@ class PaystackPaymentController extends Controller
         $payment->metadata      = $metadata;
         $payment->save();
 
-        // PaystackCallbackHelper relies on auth()->user(); there is no session
-        // in a webhook, so set the payment's owner as the current user for the
-        // duration of this request only (setUser does not touch the session).
+        // Set the payment owner as the authenticated user so
+        // confirmAndRedirect / confirmClinicEnrollment can call auth()->user().
         $owner = $payment->user;
-        if ($owner && !auth()->user()) {
-            auth()->setUser($owner);
+        if ($owner && !auth()->check()) {
+            auth()->login($owner);
         }
 
         try {
