@@ -19,13 +19,13 @@ class HomeController extends Controller
             $variant = 'kenyan';
         }
 
-        // Featured tutors filtered to the active curriculum track.
+        // Featured tutors: show tutors who teach this curriculum OR have no curriculum set (default = kenyan).
         $featuredTutors = TutorProfile::approved()
             ->with(['user', 'subjects'])
-            ->when($variant, fn($q) => $q->whereHas(
-                'approvedCurricula', fn($c) => $c->where('track', $variant)
-            ))
-            ->orWhere(fn($q) => $q->approved()->doesntHave('approvedCurricula'))
+            ->where(fn($q) => $q
+                ->whereHas('approvedCurricula', fn($c) => $c->where('track', $variant))
+                ->orWhereDoesntHave('approvedCurricula')
+            )
             ->orderByDesc('rating_avg')
             ->take(6)
             ->get();

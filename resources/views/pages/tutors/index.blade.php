@@ -41,7 +41,7 @@ $q=TutorProfile::approved()->with(['user','subjects','approvedCurricula'])
  ->when($minP,fn($x)=>$x->where('hourly_rate','>=',$minP))
  ->when($maxP,fn($x)=>$x->where('hourly_rate','<=',$maxP))
  ->when($minR,fn($x)=>$x->where('rating_avg','>=',$minR))
- ->when($track,fn($x)=>$x->whereHas('approvedCurricula',fn($c)=>$c->where('track',$track)));
+ ->when($track,fn($x)=>$x->where(fn($q)=>$q->whereHas('approvedCurricula',fn($c)=>$c->where('track',$track))->orWhereDoesntHave('approvedCurricula')));
 $q=$sort==='price_asc'?$q->orderBy('hourly_rate'):($sort==='sessions'?$q->orderByDesc('total_sessions'):$q->orderByDesc('rating_avg'));
 $tutors=$q->paginate(12)->withQueryString();
 $colors=['#0A64BC','#10B981','#E8522A','#EEBE15','#3B82F6','#EC4899','#0EA5E9','#8B5CF6'];

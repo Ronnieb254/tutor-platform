@@ -49,22 +49,34 @@
  {{-- Curriculum Switcher Dropdown --}}
  <div x-data="{ csopen: false }" style="position:relative;">
  <button @click="csopen=!csopen" @click.outside="csopen=false"
- style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1.5px solid rgba(21,40,31,.12);background:#fff;cursor:pointer;transition:all .15s;font-size:13px;font-weight:600;color:#15281F;"
+ style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1.5px solid rgba(21,40,31,.12);background:#fff;cursor:pointer;transition:all .15s;font-size:13px;font-weight:600;color:#15281F;"
  onmouseover="this.style.borderColor='rgba(10,100,188,.4)'" onmouseout="this.style.borderColor='rgba(21,40,31,.12)'">
- <i class="fa-solid fa-globe"></i>
- <i class="fa-solid fa-chevron-down" style="font-size:11px;"></i>
+ @if(($curriculum_variant ?? 'kenyan') === 'international')
+ <i class="fa-solid fa-globe" style="color:#6366F1;"></i>
+ <span style="color:#6366F1;">International</span>
+ @else
+ <i class="fa-solid fa-flag" style="color:#10B981;"></i>
+ <span>Kenyan</span>
+ @endif
+ <i class="fa-solid fa-chevron-down" style="font-size:10px;color:rgba(21,40,31,.45);"></i>
  </button>
  <div x-show="csopen" x-transition x-cloak
- style="position:absolute;right:0;top:calc(100% + 8px);width:220px;background:#fff;border-radius:14px;border:1px solid rgba(21,40,31,.1);box-shadow:0 8px 24px rgba(21,40,31,.12);padding:8px;z-index:200;">
+ style="position:absolute;right:0;top:calc(100% + 8px);width:200px;background:#fff;border-radius:14px;border:1px solid rgba(21,40,31,.1);box-shadow:0 8px 24px rgba(21,40,31,.12);padding:8px;z-index:200;">
  <button @click="CurriculumSwitcher.switchVariant('kenyan');csopen=false" data-curriculum-switch="kenyan"
- style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(21,40,31,.08);border:none;cursor:pointer;font-family:inherit;font-size:13.5px;color:#15281F;font-weight:600;text-align:left;transition:all .15s;margin-bottom:4px;"
- onmouseover="this.style.background='rgba(21,40,31,.12)'" onmouseout="this.style.background='rgba(21,40,31,.08)'">
- <i class="fa-solid fa-flag"></i> Kenyan
+ style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;color:#15281F;font-weight:600;text-align:left;transition:all .15s;margin-bottom:4px;background:{{ ($curriculum_variant ?? 'kenyan') === 'kenyan' ? 'rgba(16,185,129,.1)' : 'rgba(21,40,31,.04)' }};">
+ <i class="fa-solid fa-flag" style="color:#10B981;width:16px;"></i>
+ Kenyan CBC
+ @if(($curriculum_variant ?? 'kenyan') === 'kenyan')
+ <i class="fa-solid fa-check" style="margin-left:auto;color:#10B981;font-size:12px;"></i>
+ @endif
  </button>
  <button @click="CurriculumSwitcher.switchVariant('international');csopen=false" data-curriculum-switch="international"
- style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(21,40,31,.08);border:none;cursor:pointer;font-family:inherit;font-size:13.5px;color:#15281F;font-weight:600;text-align:left;transition:all .15s;"
- onmouseover="this.style.background='rgba(21,40,31,.12)'" onmouseout="this.style.background='rgba(21,40,31,.08)'">
- <i class="fa-solid fa-globe"></i> International
+ style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;color:#15281F;font-weight:600;text-align:left;transition:all .15s;background:{{ ($curriculum_variant ?? 'kenyan') === 'international' ? 'rgba(99,102,241,.1)' : 'rgba(21,40,31,.04)' }};">
+ <i class="fa-solid fa-globe" style="color:#6366F1;width:16px;"></i>
+ International
+ @if(($curriculum_variant ?? 'kenyan') === 'international')
+ <i class="fa-solid fa-check" style="margin-left:auto;color:#6366F1;font-size:12px;"></i>
+ @endif
  </button>
  </div>
  </div>
