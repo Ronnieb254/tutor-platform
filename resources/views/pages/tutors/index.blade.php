@@ -29,10 +29,11 @@ use App\Models\Category; use App\Models\Subject; use App\Models\TutorProfile;
 $search=$req=request('search',''); $catId=request('category',''); $subjId=request('subject','');
 $minP=request('min_price',''); $maxP=request('max_price',''); $minR=request('min_rating','');
 $sort=request('sort','rating_avg');
-$track=request('track',session('curriculum_track',''));
-if($track && in_array($track,['kenyan','international'])){session(['curriculum_track'=>$track]);}
-$categories=Category::active()->with('subjects')->get();
-$subjects=$catId?Subject::where('category_id',$catId)->active()->get():collect();
+$track=request('track', session('curriculum_variant', session('curriculum_track', 'kenyan')));
+if(!in_array($track,['kenyan','international'])){$track='kenyan';}
+if($track && in_array($track,['kenyan','international'])){session(['curriculum_track'=>$track,'curriculum_variant'=>$track]);}
+$categories=Category::active()->with(['subjects'=>fn($q)=>$q->where('is_active',true)->whereHas('curriculum',fn($c)=>$c->where('track',$track))->orWhere(fn($q2)=>$q2->where('is_active',true)->whereNull('curriculum_id'))])->get();
+$subjects=$catId?Subject::where('category_id',$catId)->active()->where(fn($q)=>$q->whereHas('curriculum',fn($c)=>$c->where('track',$track))->orWhereNull('curriculum_id'))->get():collect();
 $q=TutorProfile::approved()->with(['user','subjects','approvedCurricula'])
  ->when($search,fn($x)=>$x->search($search))
  ->when($subjId,fn($x)=>$x->whereHas('subjects',fn($s)=>$s->where('subjects.id',$subjId)))

@@ -33,7 +33,8 @@ class LibraryController extends Controller
     public function create()
     {
         $categories    = BlogCategory::all();
-        $track         = session('curriculum_track', '');
+        $track         = session('curriculum_variant') ?? session('curriculum_track') ?? 'kenyan';
+        if (!in_array($track, ['kenyan', 'international'])) $track = 'kenyan';
         $subjects      = $track
             ? Subject::active()
                 ->whereHas('curriculum', fn($q) => $q->where('track', $track))

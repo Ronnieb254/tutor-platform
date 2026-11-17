@@ -155,7 +155,11 @@ class ExaminerController extends Controller
                 ->with('error', 'You must be an approved examiner.');
         }
 
-        $subjects = Subject::active()->orderBy('name')->get();
+        $track    = session('curriculum_variant') ?? session('curriculum_track') ?? 'kenyan';
+        $subjects = Subject::active()
+            ->where(fn($q) => $q->whereHas('curriculum', fn($c) => $c->where('track', $track))
+                                ->orWhereNull('curriculum_id'))
+            ->orderBy('name')->get();
 
         return view('pages.examiner-create-clinic', compact('subjects'));
     }

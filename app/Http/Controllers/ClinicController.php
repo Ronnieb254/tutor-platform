@@ -19,7 +19,8 @@ class ClinicController extends Controller
         $subjectId = $request->get('subject', '');
         $paperType = $request->get('paper', '');
         $sort      = $request->get('sort', 'date');
-        $track     = session('curriculum_track', '');
+        $track     = session('curriculum_variant') ?? session('curriculum_track') ?? 'kenyan';
+        if (!in_array($track, ['kenyan', 'international'])) $track = 'kenyan';
 
         // Load subjects filtered by active track (graceful fallback: show all if no track set)
         $subjects = $track

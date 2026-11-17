@@ -55,6 +55,7 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+        try {
         $request->validate([
             'tutor_profile_id' => 'required|exists:tutor_profiles,id',
             'subject_id'       => 'nullable|exists:subjects,id',
@@ -130,11 +131,27 @@ class BookingController extends Controller
         ]);
 
         return response()->json([
-            'status'    => 'ok',
-            'mode'      => 'paystack',
+            'status'     => 'ok',
+            'mode'       => 'paystack',
             'payment_id' => $payment->id,
-            'reference' => $reference,
+            'reference'  => $reference,
         ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => collect($e->errors())->flatten()->first() ?? 'Validation failed.',
+            ], 422);
+        } catch (\Throwable $e) {
+            \Log::error('BookingController::store failed: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'input' => $request->except(['_token']),
+            ]);
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Booking failed. Please try again. (' . class_basename($e) . ')',
+            ], 500);
+        }
     }
 
     public function paymentPending(Booking $booking)

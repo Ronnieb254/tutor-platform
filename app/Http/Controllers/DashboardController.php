@@ -156,8 +156,12 @@ class DashboardController extends Controller
         // Unread notifications
         $unreadNotifs = $user->unreadNotifications()->count();
 
-        // Load categories with subjects for the subjects tab
-        $categories = Category::with('subjects')->get();
+        // Load categories with subjects filtered to the tutor's curriculum track.
+        $curriculumTrack = session('curriculum_variant') ?? session('curriculum_track') ?? 'kenyan';
+        $categories = Category::with(['subjects' => fn($q) => $q->where('is_active', true)
+            ->where(fn($s) => $s->whereHas('curriculum', fn($c) => $c->where('track', $curriculumTrack))
+                               ->orWhereNull('curriculum_id'))
+        ])->get()->filter(fn($cat) => $cat->subjects->isNotEmpty())->values();
 
         return view('pages.dashboard.tutor', compact(
             'user',

@@ -1295,8 +1295,8 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
           <button @click="notes.trim() ? (step=2) : (notesTouched=true)" :disabled="!date || !time || !notes.trim()"
           style="width:100%;height:88px;background:linear-gradient(135deg,#10B981 0%,#059669 100%);color:#fff;font-size:20px;font-weight:800;border:3px solid #10B981;cursor:pointer;font-family:inherit;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:14px;border-radius:16px;box-shadow:0 10px 36px rgba(16,185,129,.4);margin-bottom:16px;"
           :style="(!date||!time||!notes.trim())?'opacity:.3;cursor:not-allowed;box-shadow:none;background:linear-gradient(135deg,#999 0%,#666 100%);border-color:#999':''"
-          @mouseover="!(!date||!time||!notes.trim()) && (this.style.transform='translateY(-4px)',this.style.boxShadow='0 16px 48px rgba(16,185,129,.5)')"
-          @mouseout="(!date||!time||!notes.trim()) ? (this.style.boxShadow='none') : (this.style.transform='translateY(0)',this.style.boxShadow='0 10px 36px rgba(16,185,129,.4)')">
+          @mouseover="!(!date||!time||!notes.trim()) && ($el.style.transform='translateY(-4px)',$el.style.boxShadow='0 16px 48px rgba(16,185,129,.5)')"
+          @mouseout="(!date||!time||!notes.trim()) ? ($el.style.boxShadow='none') : ($el.style.transform='translateY(0)',$el.style.boxShadow='0 10px 36px rgba(16,185,129,.4)')">
             <i class="fa-solid fa-arrow-right" style="font-size:24px;"></i> Continue to Review
           </button>
           <p style="text-align:center;font-size:13px;color:rgba(21,40,31,.6);margin:16px 0 0;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;">
@@ -1398,8 +1398,8 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
               :disabled="processing"
               :style="isFree ? 'background:linear-gradient(135deg,#10B981 0%,#059669 100%);border-color:#10B981;box-shadow:0 10px 36px rgba(16,185,129,.4);' : 'background:linear-gradient(135deg,#0A64BC 0%,#0052A3 100%);border-color:#0A64BC;box-shadow:0 10px 36px rgba(10,100,188,.4);'"
               style="width:100%;height:88px;border-radius:16px;color:#fff;font-size:22px;font-weight:800;border:3px solid;cursor:pointer;font-family:inherit;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;"
-              @mouseover="this.style.transform='translateY(-4px)';this.style.boxShadow=(isFree ? '0 16px 48px rgba(16,185,129,.5)' : '0 16px 48px rgba(10,100,188,.5)')"
-              @mouseout="this.style.transform='translateY(0)';this.style.boxShadow=(isFree ? '0 10px 36px rgba(16,185,129,.4)' : '0 10px 36px rgba(10,100,188,.4)')">
+              @mouseover="$el.style.transform='translateY(-4px)';$el.style.boxShadow=(isFree ? '0 16px 48px rgba(16,185,129,.5)' : '0 16px 48px rgba(10,100,188,.5)')"
+              @mouseout="$el.style.transform='translateY(0)';$el.style.boxShadow=(isFree ? '0 10px 36px rgba(16,185,129,.4)' : '0 10px 36px rgba(10,100,188,.4)')">
                 <template x-if="!processing">
                 <span style="display:flex;align-items:center;gap:12px;">
                   <i :class="isFree ? 'fa-solid fa-gift' : 'fa-solid fa-paper-plane'" style="font-size:26px;"></i>

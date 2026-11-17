@@ -181,8 +181,15 @@ class BookingWizard extends Component
 
     public function render()
     {
+        $track = session('curriculum_variant') ?? session('curriculum_track') ?? 'kenyan';
+        // Show only subjects that belong to the tutor AND match the active curriculum.
+        $subjects = $this->tutorProfile->subjects()
+            ->where(fn($q) => $q->whereHas('curriculum', fn($c) => $c->where('track', $track))
+                               ->orWhereNull('curriculum_id'))
+            ->get();
+
         return view('livewire.booking.booking-wizard', [
-            'subjects' => $this->tutorProfile->subjects,
+            'subjects' => $subjects,
             'children' => auth()->user()?->childProfiles ?? collect(),
         ]);
     }

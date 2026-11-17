@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltersByCurriculum;
 use App\Models\ExaminerClinic;
 use App\Models\ExaminerClinicEnrollment;
 use Illuminate\Http\Request;
@@ -9,15 +10,19 @@ use Illuminate\Support\Facades\Auth;
 
 class ExaminerClinicEnrollmentController extends Controller
 {
+    use FiltersByCurriculum;
     /**
      * Display available examiner clinics for students to enroll.
      */
     public function index(Request $request)
     {
+        $track = $this->curriculumTrack();
+
         $query = ExaminerClinic::with(['subject'])
             ->where('status', 'upcoming')
             ->where('scheduled_at', '>', now())
             ->withCount('enrollments')
+            ->when($track && \Schema::hasColumn('examiner_clinics', 'curriculum_id'), fn($q) => $this->applyCurriculumFilter($q, $track))
             ->orderBy('scheduled_at', 'asc');
 
         // Filter by subject

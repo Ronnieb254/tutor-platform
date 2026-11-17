@@ -13,31 +13,46 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $variant = $request->query('variant', 'kenyan');
-        
+        // Read curriculum from the middleware-set session (unified by CurriculumVariant middleware).
+        $variant = session('curriculum_variant', session('curriculum_track', 'kenyan'));
         if (!in_array($variant, ['kenyan', 'international'])) {
             $variant = 'kenyan';
         }
 
-        // First-time visitors default to 'kenyan' (localStorage is empty).
-        // They can access international directly via ?variant=international query param,
-        // or by clicking the switcher in the navbar. After any switch, their preference
-        // persists via localStorage across the site.
-
-        // Fetch common data needed by both variants
+        // Featured tutors filtered to the active curriculum track.
         $featuredTutors = TutorProfile::approved()
             ->with(['user', 'subjects'])
+            ->when($variant, fn($q) => $q->whereHas(
+                'approvedCurricula', fn($c) => $c->where('track', $variant)
+            ))
+            ->orWhere(fn($q) => $q->approved()->doesntHave('approvedCurricula'))
             ->orderByDesc('rating_avg')
             ->take(6)
             ->get();
-        $recentPosts       = BlogPost::published()->with('author')->latest('published_at')->take(3)->get();
-        $upcomingClinics   = ExaminerClinic::upcoming()->with(['tutor','subject'])->orderBy('scheduled_at')->take(4)->get();
 
-        // Only fetch categories for Kenyan variant
-        $categories = $variant === 'kenyan' ? Category::active()->with('subjects')->take(8)->get() : [];
+        $recentPosts = BlogPost::published()->with('author')->latest('published_at')->take(3)->get();
+
+        // Upcoming clinics filtered to the active curriculum track.
+        $upcomingClinics = ExaminerClinic::upcoming()
+            ->with(['tutor', 'subject'])
+            ->when(\Schema::hasColumn('examiner_clinics', 'curriculum_id'), fn($q) => $q->where(function ($inner) use ($variant) {
+                $inner->whereHas('curriculum', fn($c) => $c->where('track', $variant))
+                      ->orWhereNull('curriculum_id');
+            }))
+            ->orderBy('scheduled_at')
+            ->take(4)
+            ->get();
+
+        // Categories/subjects for Kenyan variant only (international uses different UX).
+        $categories = $variant === 'kenyan'
+            ? Category::active()->with([
+                'subjects' => fn($q) => $q->whereHas('curriculum', fn($c) => $c->where('track', 'kenyan'))
+                                           ->orWhereNull('curriculum_id')
+              ])->take(8)->get()
+            : [];
 
         $viewName = $variant === 'international' ? 'pages.home-international' : 'pages.home';
-        
+
         return view($viewName, compact('categories', 'featuredTutors', 'recentPosts', 'upcomingClinics', 'variant'));
     }
 
@@ -67,8 +82,16 @@ class HomeController extends Controller
 
     public function tutorProfile(int $id)
     {
-        $tutor = TutorProfile::with(['user', 'subjects.category', 'reviews.student', 'availabilities'])
-            ->findOrFail($id);
+        $track = session('curriculum_variant') ?? session('curriculum_track') ?? 'kenyan';
+        $tutor = TutorProfile::with([
+            'user',
+            'subjects' => fn($q) => $q->where('is_active', true)
+                ->where(fn($s) => $s->whereHas('curriculum', fn($c) => $c->where('track', $track))
+                                   ->orWhereNull('curriculum_id')),
+            'subjects.category',
+            'reviews.student',
+            'availabilities',
+        ])->findOrFail($id);
         return view('pages.tutors.show', compact('tutor'));
     }
 

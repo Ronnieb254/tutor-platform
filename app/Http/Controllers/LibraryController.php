@@ -12,14 +12,16 @@ class LibraryController extends Controller
 {
     public function index(Request $request)
     {
-        $track = session('curriculum_track', '');
+        $track = session('curriculum_variant') ?? session('curriculum_track') ?? 'kenyan';
+        if (!in_array($track, ['kenyan', 'international'])) $track = 'kenyan';
+
         $query = BlogPost::published()->with(['author', 'category', 'subject']);
 
-        // Filter by curriculum track when set (graceful fallback: null = show all)
-        if ($track && \Schema::hasColumn('blog_posts', 'curriculum_id')) {
+        // Filter by curriculum track (always — default is kenyan).
+        if (\Schema::hasColumn('blog_posts', 'curriculum_id')) {
             $query->where(function ($q) use ($track) {
                 $q->whereHas('curriculum', fn($c) => $c->where('track', $track))
-                  ->orWhereNull('curriculum_id'); // include untagged legacy content
+                  ->orWhereNull('curriculum_id');
             });
         }
 
