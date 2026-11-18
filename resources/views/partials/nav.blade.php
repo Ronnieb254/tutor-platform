@@ -45,7 +45,7 @@
  {{-- Right actions --}}
  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
 
- {{-- Curriculum switcher (desktop: full label; mobile: icon only) --}}
+ {{-- Curriculum switcher (desktop: full label; mobile: icon only) — COMMENTED OUT
  <div x-data="{ csopen: false }" style="position:relative;">
  <button @click="csopen=!csopen" @click.outside="csopen=false"
  class="mw-curr-btn"
@@ -80,6 +80,7 @@
  </button>
  </div>
  </div>
+ --}}
 
  @auth
  {{-- Notification Bell --}}
