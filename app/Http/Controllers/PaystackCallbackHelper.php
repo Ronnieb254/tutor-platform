@@ -108,7 +108,6 @@ class PaystackCallbackHelper
         if ($existing) {
             $existing->update([
                 'session_code' => strtoupper(Str::random(8)),
-                'enrolled_at'  => now(),
                 'attended'     => false,
             ]);
             $enrollment = $existing->fresh();
@@ -118,7 +117,7 @@ class PaystackCallbackHelper
                 'student_id'  => $user->id,
                 'payment_id'  => $payment->id,
                 'session_code'=> strtoupper(Str::random(8)),
-                'enrolled_at' => now(),
+                'attended'    => false,
             ]);
         }
 
@@ -131,16 +130,32 @@ class PaystackCallbackHelper
             }
         }
 
-        // Send enrollment confirmed notification
+        // Send the correct notification based on payment type
         try {
-            $user->notify(new \App\Notifications\ClinicEnrollmentConfirmed($enrollment));
+            if ($payment->payment_type === 'group_session') {
+                $user->notify(new \App\Notifications\GroupSessionEnrollmentConfirmed(
+                    $enrollment,
+                    $enrollment->session_code
+                ));
+            } else {
+                $user->notify(new \App\Notifications\ClinicEnrollmentConfirmed($enrollment));
+            }
         } catch (\Throwable $e) {
-            Log::warning('ClinicEnrollmentConfirmed notification failed: ' . $e->getMessage());
+            Log::warning('Enrollment confirmation notification failed: ' . $e->getMessage());
         }
 
         $isGroup = $payment->payment_type === 'group_session';
         $route   = $isGroup ? route('group-sessions.my-sessions') : route('clinic.my-bookings');
         $dateStr = $clinic->scheduled_at->setTimezone('Africa/Nairobi')->format('D, M j \a\t g:ia') . ' EAT';
+
+        // Notify tutor for group session enrollment
+        if ($isGroup && $clinic->tutor) {
+            try {
+                $clinic->tutor->notify(new \App\Notifications\StudentEnrolledInGroupSession($enrollment));
+            } catch (\Throwable $e) {
+                Log::warning('StudentEnrolledInGroupSession notification failed: ' . $e->getMessage());
+            }
+        }
 
         return redirect($route)
             ->with('success', "Enrolled! Your session code: {$enrollment->session_code}. Session on {$dateStr}.");
