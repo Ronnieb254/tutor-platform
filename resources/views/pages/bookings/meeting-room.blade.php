@@ -264,11 +264,19 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  jwt: '{{ $jitsiJwt }}',
  @endif
  configOverwrite: {
- startWithAudioMuted: false,
+ // Audio — must use the numeric startAudioMuted (0 = unmuted) for JaaS/8x8.vc
+ // startWithAudioMuted is the old API and is ignored on 8x8.vc
+ startAudioMuted: 0,
+ startAudioOnly: false,
+ startSilent: false,
+ startWithAudioMuted: false,   // kept for meet.jit.si fallback
  startWithVideoMuted: false,
  enableWelcomePage: false,
  prejoinPageEnabled: false,
  enableNoisyMicDetection: true,
+ disableAudioLevels: false,
+ enableNoAudioDetection: true,
+ enableNoiseSuppression: true,
  // ── Video quality ───────────────────────────────────────────────
  resolution: 720,
  constraints: {
@@ -333,6 +341,10 @@ body,html{width:100%;height:100%;font-family:'DM Sans',sans-serif;background:var
  // Request 720p from both send and receive paths
  api.addEventListener('videoConferenceJoined', () => {
  api.executeCommand('setVideoQuality', 720);
+ // Explicitly unmute audio after join — JaaS ignores startAudioMuted:0 sometimes
+ api.isAudioMuted().then(muted => {
+ if (muted) api.executeCommand('toggleAudio'); // unmute if still muted
+ }).catch(() => {});
 
  if (!hasJoined) {
  hasJoined = true;

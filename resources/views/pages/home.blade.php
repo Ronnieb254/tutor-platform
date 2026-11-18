@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Mwalimu - Instant 1-on-1 Tutoring in Kenya</title>
-<meta name="description" content="Instant 1-on-1 tutoring matched in seconds. TSC-registered teachers, secure classrooms, 100% money-back guarantee. Book, pay, and learn in one safe place.">
+<meta name="description" content="Instant 1-on-1 tutoring matched in seconds. TSC-registered teachers, secure classrooms. Book, pay, and learn in one safe place.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -138,7 +138,6 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  @foreach([
  ['fa-certificate','TSC Registered','All tutors'],
  ['fa-shield-halved','Background Checked','Every tutor'],
- ['fa-rotate-left','100% Refund','If unsatisfied'],
  ['fa-lock','Secure Sessions','Always private'],
  ] as [$ic,$title,$sub])
  <div style="display:flex;align-items:center;gap:8px;">
@@ -250,7 +249,6 @@ $sessionNames = [20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive','60_grou
  ['fa-lock','Secure Classrooms','Lessons run in a secure space, assuring parents and learners of unmatched comfort and safety.','#E8522A'],
  ['fa-certificate','Verified Credentials','Subject expertise and teaching credentials are thoroughly reviewed by our academic team.','#EEBE15'],
  ['fa-user-secret','Privacy & Safety','All communication is managed and maintained within the platform.','#3B82F6'],
- ['fa-rotate-left','100% Money-Back','Not satisfied with your first lesson? We\'ll refund it in full - no questions asked.','#EC4899'],
  ] as [$icon,$title,$desc,$color])
  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">
  <div style="width:48px;height:48px;background:{{ $color }}33;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">

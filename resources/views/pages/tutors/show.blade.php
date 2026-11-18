@@ -1132,7 +1132,6 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
       prices: {{ json_encode($prices) }},
       get price() {
         const base = this.prices[this.dur] || 300;
-        if (this.dur === 20 && {{ $isFreeFirstSession ? 'true' : 'false' }}) return 0;
         return base;
       },
       get isFree() { return this.price === 0; },
@@ -1187,13 +1186,10 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
             </h3>
             <div style="display:grid;grid-template-columns:1fr;gap:12px;" class="tier-grid">
               @foreach([20=>['fa-solid fa-zap', 'Quick Help','#0A64BC'],40=>['fa-solid fa-chalkboard', 'Guided Practice','#10B981'],60=>['fa-solid fa-book-open','Deep Dive','#E8522A']] as $mins => [$icon,$tname,$color])
-              @php $actualPrice = ($mins===20 && $isFreeFirstSession) ? 0 : $prices[$mins]; @endphp
+              @php $actualPrice = $prices[$mins]; @endphp
               <button @click="dur={{ $mins }}"
               :class="dur==={{ $mins }} ? 'tier-card selected' : 'tier-card'"
               style="position:relative;">
-                @if($mins===20 && $isFreeFirstSession)
-                <span style="position:absolute;top:-10px;right:10px;background:#10B981;color:#fff;font-size:10px;font-weight:800;padding:4px 12px;border-radius:999px;letter-spacing:.05em;">FREE FIRST SESSION</span>
-                @endif
                 <div class="tier-card-header">
                   <div style="display:flex;align-items:center;gap:10px;">
                     <div class="tier-card-icon" style="background:{{ $color }};">
@@ -1205,12 +1201,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
                     </div>
                   </div>
                   <div class="tier-card-price" :style="dur==={{ $mins }} ? 'color:#0A64BC;' : 'color:#15281F;'">
-                    @if($actualPrice === 0)
-                    <span style="font-size:20px;color:#10B981;">FREE</span>
-                    <div style="font-size:11px;text-decoration:line-through;color:rgba(21,40,31,.35);">KSh {{ $prices[$mins] }}</div>
-                    @else
                     <span style="font-size:18px;">KSh {{ $actualPrice }}</span>
-                    @endif
                   </div>
                 </div>
                 <div class="tier-card-description">{{ $sessDesc[$mins] }}</div>
@@ -1300,7 +1291,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
             <i class="fa-solid fa-arrow-right" style="font-size:24px;"></i> Continue to Review
           </button>
           <p style="text-align:center;font-size:13px;color:rgba(21,40,31,.6);margin:16px 0 0;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;">
-            <i class="fa-solid fa-shield-halved" style="color:#10B981;"></i> 100% money-back if unsatisfied with your first lesson
+            <i class="fa-solid fa-shield-halved" style="color:#10B981;"></i> Secure booking &mdash; TSC-registered tutors
           </p>
         </div>
 
@@ -1329,15 +1320,7 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
               @endforeach
               <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0 0;">
                 <span style="font-size:15px;font-weight:700;color:#15281F;">Total</span>
-                <template x-if="isFree">
-                <div style="text-align:right;">
-                  <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#10B981;">FREE</span>
-                  <div style="font-size:12px;text-decoration:line-through;color:rgba(21,40,31,.35);">KSh 300</div>
-                </div>
-                </template>
-                <template x-if="!isFree">
                 <span style="font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#0A64BC;">KSh <span x-text="price"></span></span>
-                </template>
               </div>
             </div>
 
@@ -1396,14 +1379,13 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
 
               <button @click="processPayment($data)"
               :disabled="processing"
-              :style="isFree ? 'background:linear-gradient(135deg,#10B981 0%,#059669 100%);border-color:#10B981;box-shadow:0 10px 36px rgba(16,185,129,.4);' : 'background:linear-gradient(135deg,#0A64BC 0%,#0052A3 100%);border-color:#0A64BC;box-shadow:0 10px 36px rgba(10,100,188,.4);'"
-              style="width:100%;height:88px;border-radius:16px;color:#fff;font-size:22px;font-weight:800;border:3px solid;cursor:pointer;font-family:inherit;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;"
-              @mouseover="$el.style.transform='translateY(-4px)';$el.style.boxShadow=(isFree ? '0 16px 48px rgba(16,185,129,.5)' : '0 16px 48px rgba(10,100,188,.5)')"
-              @mouseout="$el.style.transform='translateY(0)';$el.style.boxShadow=(isFree ? '0 10px 36px rgba(16,185,129,.4)' : '0 10px 36px rgba(10,100,188,.4)')">
+              style="width:100%;height:88px;border-radius:16px;color:#fff;font-size:22px;font-weight:800;border:3px solid #0A64BC;cursor:pointer;font-family:inherit;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;background:linear-gradient(135deg,#0A64BC 0%,#0052A3 100%);box-shadow:0 10px 36px rgba(10,100,188,.4);"
+              @mouseover="$el.style.transform='translateY(-4px)';$el.style.boxShadow='0 16px 48px rgba(10,100,188,.5)'"
+              @mouseout="$el.style.transform='translateY(0)';$el.style.boxShadow='0 10px 36px rgba(10,100,188,.4)'">
                 <template x-if="!processing">
                 <span style="display:flex;align-items:center;gap:12px;">
-                  <i :class="isFree ? 'fa-solid fa-gift' : 'fa-solid fa-paper-plane'" style="font-size:26px;"></i>
-                  <span x-text="isFree ? 'Book Free Session' : 'Submit Payment'" style="font-size:inherit;"></span>
+                  <i class="fa-solid fa-paper-plane" style="font-size:26px;"></i>
+                  <span style="font-size:inherit;">Submit Payment</span>
                 </span>
                 </template>
                 <template x-if="processing">
@@ -1555,8 +1537,8 @@ $reviews = $tutor->reviews()->where('is_visible',true)->with('student')->latest(
         <div style="font-size:22px;margin-bottom:8px;">
           <i class="fa-solid fa-shield-halved" style="color:#10B981;"></i>
         </div>
-        <p style="font-size:11px;font-weight:700;color:#065F46;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">100% Money-Back</p>
-        <p style="font-size:12px;color:#047857;margin:0;">Guarantee if unsatisfied with your first lesson</p>
+        <p style="font-size:11px;font-weight:700;color:#065F46;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">TSC-Registered &amp; Verified</p>
+        <p style="font-size:12px;color:#047857;margin:0;">All tutors are background-checked and approved by our academic team</p>
       </div>
     </div>
 

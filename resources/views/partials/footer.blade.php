@@ -10,14 +10,13 @@
  <a href="{{ route('home') }}" style="display:inline-block;margin-bottom:16px;">
  <img src="/images/logo.svg" alt="Mwalimu" style="height:38px;width:auto;">
  </a>
- <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;max-width:280px;margin-bottom:20px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms. 100% money-back if unsatisfied with your first lesson.</p>
+ <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;max-width:280px;margin-bottom:20px;">Instant 1-on-1 tutoring, matched in seconds. TSC-registered teachers. Secure classrooms.</p>
 
  {{-- Trust badges --}}
  <!-- <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
  @foreach([
  ['fa-certificate','TSC-Registered Tutors','#10B981'],
  ['fa-shield-halved','Background Checked','#10B981'],
- ['fa-rotate-left','100% Money-Back Guarantee','#10B981'],
  ] as [$ic,$label,$color])
  <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);">
  <i class="fa-solid {{ $ic }}"></i>

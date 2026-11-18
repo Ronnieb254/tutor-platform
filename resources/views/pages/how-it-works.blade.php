@@ -314,7 +314,7 @@
 
  @foreach([
  ['How do I know tutors are trustworthy?','Every tutor on Mwalimu is TSC-registered, has submitted a National ID, and passes a background check including a Certificate of Good Conduct. Our academic team manually reviews all documents before approving any tutor profile.'],
- ['What if I\'m not happy with my session?','Contact our support team within 24 hours of your session. We review all disputes fairly. If you are unsatisfied with your first lesson, we offer a 100% money-back guarantee - no questions asked.'],
+ ['What if I\'m not happy with my session?','Contact our support team within 24 hours of your session. We review all disputes fairly and handle each case on its merits.'],
  ['Do I need to download anything to join a session?','No. Sessions run in your browser using Jitsi. Just enter your access code on the booking page and your session opens in a new browser tab. Works on mobile and desktop.'],
  ['Can parents book sessions for their children?','Yes. Select "Parent" when creating your account. You can add child profiles (name, age, grade level) and book sessions on their behalf. Your session code is sent to your email.'],
  ['How are session prices calculated?','Mwalimu uses fixed pricing for all sessions: Quick Help (20min) = KSh 300, Guided Practice (40min) = KSh 600, Deep Dive (60min) = KSh 900. The same price applies regardless of which tutor you choose.'],

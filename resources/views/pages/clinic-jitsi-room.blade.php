@@ -78,7 +78,11 @@ const options = {
  configOverwrite: {
  prejoinPageEnabled: false,
  disableModeratorIndicator: false,
- startAudioMuted: isModerator ? 0 : 1,
+ // Audio: 0 = unmuted for everyone (participants control their own mic)
+ startAudioMuted: 0,
+ startAudioOnly: false,
+ startSilent: false,
+ startWithAudioMuted: false,
  startVideoMuted: 1,
  disableAudioLevels: false,
  enableNoAudioDetection: true,
@@ -130,9 +134,13 @@ const options = {
 // Initialize Jitsi Meet
 const jitsiAPI = new JitsiMeetExternalAPI(domain, options);
 
-// Request 720p on join
+// Request 720p on join and ensure audio is unmuted
 jitsiAPI.addEventListener('videoConferenceJoined', function() {
  jitsiAPI.executeCommand('setVideoQuality', 720);
+ // Unmute audio if JaaS joined muted despite config
+ jitsiAPI.isAudioMuted().then(function(muted) {
+ if (muted) jitsiAPI.executeCommand('toggleAudio');
+ }).catch(function() {});
  // Mark attendance in backend
  fetch('/clinic/{{ $clinic->id }}/attendance', {
  method: 'POST',

@@ -68,10 +68,10 @@ class BookingController extends Controller
             'payment_method'   => 'nullable|in:mpesa,airtel,card',
         ]);
 
-        // Parse scheduled_at as EAT and convert to UTC before storing
-        $scheduledAtEat = \Carbon\Carbon::parse($request->input('scheduled_at'), 'Africa/Nairobi')->utc();
+        // Store the selected time exactly as the user entered it — no timezone conversion
+        $scheduledAtEat = \Carbon\Carbon::parse($request->input('scheduled_at'));
 
-        // Re-validate the parsed time is in the future (using UTC now for comparison)
+        // Re-validate the parsed time is in the future
         if ($scheduledAtEat->isPast()) {
             return response()->json([
                 'status'  => 'error',

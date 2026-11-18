@@ -406,7 +406,11 @@ const options = {
     @endif
 
     configOverwrite: {
-        startWithAudioMuted: !IS_MODERATOR,
+        // Audio: everyone joins unmuted — participants control their own mic
+        startAudioMuted: 0,
+        startAudioOnly: false,
+        startSilent: false,
+        startWithAudioMuted: false,  // kept for meet.jit.si fallback
         startWithVideoMuted: false,
         enableWelcomePage:   false,
         prejoinPageEnabled:  false,
@@ -475,6 +479,11 @@ const api = new JitsiMeetExternalAPI(DOMAIN, options);
 api.addEventListener('videoConferenceJoined', () => {
     // Request 720p
     api.executeCommand('setVideoQuality', 720);
+
+    // Unmute audio if JaaS joined muted despite config
+    api.isAudioMuted().then(muted => {
+        if (muted) api.executeCommand('toggleAudio');
+    }).catch(() => {});
 
     if (!hasJoined) {
         hasJoined = true;

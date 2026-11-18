@@ -197,7 +197,7 @@ $sessionNames=[20=>'Quick Help',40=>'Guided Practice',60=>'Deep Dive'];
  <!-- <div class="dur-pills">
  @foreach([20=>['Quick Help',300],40=>['Guided Practice',500],60=>['Deep Dive',700]] as $mins=>[$name,$price])
  @php
- $isFreeForUser = false; // No free first session - 100% money-back guarantee instead
+ $isFreeForUser = false;
  @endphp
  <div class="dp" title="{{ $name }}">
  <div class="dp-min">{{ $mins }}m</div>
