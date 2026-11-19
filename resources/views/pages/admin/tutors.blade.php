@@ -731,7 +731,7 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
 
 {{-- Document Viewer Modal --}}
 <div id="doc-viewer-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this && !document.getElementById('doc-viewer-modal').classList.contains('loading')) closeDocViewer()">
- <div style="background:#fff;border-radius:20px;width:100%;max-width:900px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);">
+ <div style="background:#fff;border-radius:20px;width:100%;max-width:960px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);">
  <div style="padding:20px 24px;border-bottom:1px solid rgba(21,40,31,.08);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
  <h3 style="font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#15281F;margin:0;text-transform:capitalize;" id="doc-viewer-title">Document</h3>
  <button id="doc-viewer-close-btn" onclick="closeDocViewer()" style="width:36px;height:36px;border-radius:10px;border:none;background:rgba(0,0,0,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .2s;">
@@ -745,8 +745,8 @@ $tutorDetailsPayload = $tutors->map(function ($profile) {
  <p style="color:rgba(21,40,31,.6);font-size:14px;margin:0;">Loading document & tutor details...</p>
  </div>
  
- {{-- Content State --}}
- <div id="doc-viewer-content" style="flex:1;overflow:auto;display:none;padding:20px;background:#F9FAF9;">
+ {{-- Content State: scrollable, never clips the document --}}
+ <div id="doc-viewer-content" style="flex:1;overflow-y:auto;overflow-x:hidden;display:none;padding:20px;background:#F9FAF9;">
  <!-- Document content will be inserted here -->
  </div>
  
@@ -1230,15 +1230,12 @@ function openDocViewer(docPath, docName, docId = null, isPdf = false) {
  // For images, fetch and display
  const img = document.createElement('img');
  img.src = docPath;
- img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;';
+ img.style.cssText = 'width:100%;height:auto;display:block;border-radius:8px;';
  img.crossOrigin = 'anonymous';
  img.onload = () => {
  // Show content and hide loading
  loading.style.display = 'none';
- content.style.display = 'flex';
- content.style.flexDirection = 'column';
- content.style.alignItems = 'center';
- content.style.justifyContent = 'center';
+ content.style.display = 'block';
  actions.style.display = 'flex';
  modal.classList.remove('loading');
  };
@@ -1276,38 +1273,42 @@ function renderPdfPreview(pdfUrl, content, loading, actions, docId, modal) {
  }
 
  pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
- // Render first page as preview
- pdf.getPage(1).then(page => {
+ const totalPages = pdf.numPages;
+ const wrapper = document.createElement('div');
+ wrapper.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;padding:8px 0;';
+
+ // Render every page sequentially
+ const renderPage = (pageNum) => {
+ return pdf.getPage(pageNum).then(page => {
+ const scale = 1.8;
+ const viewport = page.getViewport({ scale });
  const canvas = document.createElement('canvas');
  const context = canvas.getContext('2d');
- const scale = 1.5;
- const viewport = page.getViewport({ scale: scale });
- 
  canvas.width = viewport.width;
  canvas.height = viewport.height;
- 
- page.render({ canvasContext: context, viewport: viewport }).promise.then(() => {
- content.innerHTML = `
- <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;height:100%;overflow:auto;padding:16px;">
- <canvas style="max-width:100%;max-height:70%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);"></canvas>
- <p style="color:rgba(21,40,31,.6);font-size:12px;text-align:center;margin:0;width:100%;">
- Page 1 of ${pdf.numPages} (${pdf.numPages > 1 ? 'showing preview only' : ''})
- </p>
- ${pdf.numPages > 1 ? '<a href="' + pdfUrl + '" download style="padding:8px 16px;background:#0A64BC;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:12px;"><i class="fa-solid fa-download"></i> Download Full PDF</a>' : ''}
- </div>
- `;
- 
- // Append the canvas with rendered PDF
- const canvases = content.querySelectorAll('canvas');
- if (canvases.length > 0) {
- canvases[0].replaceWith(canvas);
+ canvas.style.cssText = 'width:100%;height:auto;display:block;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.12);';
+ const label = document.createElement('p');
+ label.style.cssText = 'color:rgba(21,40,31,.45);font-size:11px;margin:0;';
+ label.textContent = `Page ${pageNum} of ${totalPages}`;
+ wrapper.appendChild(canvas);
+ wrapper.appendChild(label);
+ return page.render({ canvasContext: context, viewport }).promise;
+ });
+ };
+
+ // Chain all pages
+ let chain = Promise.resolve();
+ for (let i = 1; i <= totalPages; i++) {
+ chain = chain.then(() => renderPage(i));
  }
- 
+
+ chain.then(() => {
+ content.innerHTML = '';
+ content.appendChild(wrapper);
  loading.style.display = 'none';
- content.style.display = 'flex';
+ content.style.display = 'block';
  actions.style.display = 'flex';
  modal.classList.remove('loading');
- });
  });
  }).catch(error => {
  console.error('PDF loading error:', error);
