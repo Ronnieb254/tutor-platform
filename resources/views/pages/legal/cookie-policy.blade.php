@@ -171,7 +171,7 @@
  <div style="background:rgba(10,100,188,.05);border-left:3px solid var(--trust-blue);padding:16px;border-radius:8px;">
  <p style="line-height:1.8;color:var(--ink);margin-bottom:8px;"><strong>Oval Desk Ventures</strong></p>
  <p style="line-height:1.8;color:var(--muted);margin-bottom:4px;">Email: <a href="mailto:privacy@ovaldesk.co.ke" style="color:var(--trust-blue);">privacy@ovaldesk.co.ke</a></p>
- <p style="line-height:1.8;color:var(--muted);">Phone: 0724 367 814 / 0723 636 901</p>
+ <p style="line-height:1.8;color:var(--muted);">Phone: 0724 367 814 / 0184 722 117</p>
  </div>
  </section>
  </div>

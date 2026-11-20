@@ -42,7 +42,7 @@
  @foreach([
  ['fa-location-dot','Office','Suite 11, Samima Suites, Nairobi West',null],
  ['fa-envelope','Email','support@ovaldesk.co.ke','mailto:support@ovaldesk.co.ke'],
- ['fa-phone','Phone','0724 367 814 / 0723 636 901','tel:+254724367814'],
+ ['fa-phone','Phone','0724 367 814 / 0184 722 117','tel:+254724367814'],
  ['fa-globe','Website','ovaldesk.co.ke','https://ovaldesk.co.ke'],
  ] as [$ic,$label,$val,$href])
  <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;">

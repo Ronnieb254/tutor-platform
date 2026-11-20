@@ -184,7 +184,7 @@
  <p style="line-height:1.8;color:var(--muted);margin-bottom:4px;">P.O BOX 47210, 00100 - G.P.O., Nairobi</p>
  <p style="line-height:1.8;color:var(--muted);margin-bottom:4px;">Suite 11, Samima Suites, Nairobi West</p>
  <p style="line-height:1.8;color:var(--muted);margin-bottom:4px;">Email: <a href="mailto:privacy@ovaldesk.co.ke" style="color:var(--trust-blue);">privacy@ovaldesk.co.ke</a></p>
- <p style="line-height:1.8;color:var(--muted);">Phone: 0724 367 814 / 0723 636 901</p>
+ <p style="line-height:1.8;color:var(--muted);">Phone: 0724 367 814 / 0184 722 117</p>
  </div>
  </section>
  </div>

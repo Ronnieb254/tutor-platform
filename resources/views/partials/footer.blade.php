@@ -29,7 +29,7 @@
  <div style="display:flex;flex-direction:column;gap:6px;">
  @foreach([
  ['fa-envelope','support@ovaldesk.co.ke','mailto:support@ovaldesk.co.ke'],
- ['fa-phone','0724 367 814 / 0723 636 901','tel:+254724367814'],
+ ['fa-phone','0724 367 814 / 0184 722 117','tel:+254724367814'],
  ['fa-location-dot','Suite 11, Samima Suites, Nairobi West',null],
  ] as [$ic,$text,$href])
  <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,.5);">
