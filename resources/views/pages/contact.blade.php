@@ -194,6 +194,26 @@
  <i class="fa-solid fa-phone"></i> 0724 367 814
  </a>
  </div>
+
+ {{-- Social handles --}}
+ <p style="font-size:13px;color:rgba(21,40,31,.5);margin-top:18px;margin-bottom:12px;">Follow us on social media</p>
+ <div style="display:flex;justify-content:center;gap:10px;">
+ @foreach([
+ ['https://x.com/MwalimuOvald','fa-x-twitter','X (Twitter)','@MwalimuOvald'],
+ ['https://www.instagram.com/mwalimu.ovaldesk/','fa-instagram','Instagram','@mwalimu.ovaldesk'],
+ ['https://www.tiktok.com/@mwalimuovaldesk','fa-tiktok','TikTok','@mwalimuovaldesk'],
+ ['https://www.facebook.com/profile.php?id=61596643262776','fa-facebook-f','Facebook','Mwalimu'],
+ ] as [$url,$icon,$label,$handle])
+ <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
+ title="{{ $label }} · {{ $handle }}"
+ style="display:flex;flex-direction:column;align-items:center;gap:5px;width:64px;padding:12px 8px;border-radius:14px;border:1.5px solid rgba(21,40,31,.1);color:#15281F;text-decoration:none;font-size:11px;font-weight:600;transition:all .15s;"
+ onmouseover="this.style.borderColor='#0A64BC';this.style.background='rgba(10,100,188,.05)'"
+ onmouseout="this.style.borderColor='rgba(21,40,31,.1)';this.style.background='transparent'">
+ <i class="fa-brands {{ $icon }}" style="font-size:20px;"></i>
+ <span style="font-size:10px;color:rgba(21,40,31,.5);text-align:center;line-height:1.2;">{{ $label }}</span>
+ </a>
+ @endforeach
+ </div>
  </div>
  </div>
  </div>

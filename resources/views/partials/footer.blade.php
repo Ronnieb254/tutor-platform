@@ -42,6 +42,24 @@
  </div>
  @endforeach
  </div>
+
+ {{-- Social handles --}}
+ <div style="display:flex;align-items:center;gap:10px;margin-top:20px;">
+ @foreach([
+ ['https://x.com/MwalimuOvald','fa-x-twitter','X (Twitter)','#fff'],
+ ['https://www.instagram.com/mwalimu.ovaldesk/','fa-instagram','Instagram','#E1306C'],
+ ['https://www.tiktok.com/@mwalimuovaldesk','fa-tiktok','TikTok','#fff'],
+ ['https://www.facebook.com/profile.php?id=61596643262776','fa-facebook-f','Facebook','#1877F2'],
+ ] as [$url,$icon,$label,$hoverColor])
+ <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
+ aria-label="{{ $label }}"
+ style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);text-decoration:none;transition:all .2s;font-size:14px;"
+ onmouseover="this.style.background='rgba(255,255,255,.15)';this.style.color='{{ $hoverColor }}';this.style.borderColor='rgba(255,255,255,.25)'"
+ onmouseout="this.style.background='rgba(255,255,255,.08)';this.style.color='rgba(255,255,255,.6)';this.style.borderColor='rgba(255,255,255,.1)'">
+ <i class="fa-brands {{ $icon }}"></i>
+ </a>
+ @endforeach
+ </div>
  </div>
 
  {{-- For Learners --}}
